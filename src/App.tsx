@@ -11,6 +11,7 @@ import {
 } from '@mantine/core';
 import { theme } from './theme';
 import { useState } from 'react';
+import { ADDR } from './constants/addresses';
 
 export default function App() {
   return (
@@ -57,6 +58,7 @@ export const TestCard = ({
     <Paper p={'xl'}>
       <Text size="xl" fw={500} mb="md">
         {title}
+        {ADDR.ALLO}
       </Text>
       <Text>{description}</Text>
       <Flex mt="xl">

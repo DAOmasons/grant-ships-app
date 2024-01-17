@@ -1,6 +1,15 @@
-export const ADDR = {
+export const ADDR_TESTNET = {
   ALLO: '0x00000000',
   REGISTRY: '0x00000000',
   GAME_MANAGER: '0x00000000',
   FACTORY: '0x00000000',
 };
+
+export const ADDR_PROD = {
+  ALLO: '0x00000000',
+  REGISTRY: '0x00000000',
+  GAME_MANAGER: '0x00000000',
+  FACTORY: '0x00000000',
+};
+
+export const ADDR = import.meta.env.VITE_RUNTIME_ENV ? ADDR_TESTNET : ADDR_PROD;
