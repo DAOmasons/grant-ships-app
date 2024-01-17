@@ -1,0 +1,6 @@
+export const ADDR = {
+  ALLO: '0x00000000',
+  REGISTRY: '0x00000000',
+  GAME_MANAGER: '0x00000000',
+  FACTORY: '0x00000000',
+};
