@@ -1,4 +1,5 @@
 import '@mantine/core/styles.css';
+import '@mantine/notifications/styles.css';
 import {
   ActionIcon,
   Avatar,
@@ -26,12 +27,27 @@ import {
   IconUser,
 } from '@tabler/icons-react';
 import { AvatarPickerIPFS } from './components/AvatarPickerIPFS';
+import { notifications } from '@mantine/notifications';
 
 export default function App() {
   return (
     <Layout>
       <FormPageLayout title="Register Project Profile">
-        <AvatarPickerIPFS />
+        <AvatarPickerIPFS
+          onUploadSuccess={(hash: string) => {
+            notifications.show({
+              title: 'IPFS Image Uploaded',
+              message: `IPFS Hash: ${hash}`,
+            });
+          }}
+          onUploadError={(errMsg: string) => {
+            notifications.show({
+              title: 'IPFS Upload Error',
+              message: errMsg,
+              color: 'red',
+            });
+          }}
+        />
         <TextInput
           w="100%"
           label="Project Name"
