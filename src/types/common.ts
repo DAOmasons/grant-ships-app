@@ -7,3 +7,8 @@ export type Json =
   | null
   | Json[]
   | { [key: string]: Json };
+
+export type Metadata = {
+  pointer: string;
+  protocol: number;
+};

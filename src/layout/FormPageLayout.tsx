@@ -19,16 +19,18 @@ export const FormPageLayout = ({
   children?: ReactNode;
 }) => {
   return (
-    <Stack w={350} align="center" m="xl" mt="lg">
-      <Group w="100%" mb="xl">
-        <ActionIcon variant="subtle">
-          <IconArrowNarrowLeft />
-        </ActionIcon>
-        <Text fz={24} fw={500}>
-          {title}
-        </Text>
-      </Group>
-      {children}
-    </Stack>
+    <form>
+      <Stack maw={375} miw={300} w={'100%'} align="center" m="xl" mt="lg">
+        <Group w="100%" mb="xl">
+          <ActionIcon variant="subtle">
+            <IconArrowNarrowLeft />
+          </ActionIcon>
+          <Text fz={24} fw={500}>
+            {title}
+          </Text>
+        </Group>
+        {children}
+      </Stack>
+    </form>
   );
 };
