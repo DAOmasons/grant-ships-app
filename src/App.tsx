@@ -5,6 +5,7 @@ import {
   Flex,
   Grid,
   MantineProvider,
+  NavLink,
   Paper,
   Text,
   Title,
@@ -13,30 +14,28 @@ import { theme } from './theme';
 import { useState } from 'react';
 import { ADDR } from './constants/addresses';
 import { pinJSONToIPFS } from './utils/ipfs/pin';
+import { DesktopNav } from './layout/DesktopNav/DesktopNav';
 
 export default function App() {
   return (
-    <MantineProvider theme={theme} defaultColorScheme="dark">
-      <Container mt="xl">
-        <Title mb="xl">Test Functions</Title>
-        <Grid overflow="hidden">
-          <Grid.Col span={6}>
-            <TestCard
-              title="Register GameManager Pool"
-              description="This function sets up the GameManager Pool. It should be called once."
-              onClick={() => {}}
-            />
-          </Grid.Col>
-          <Grid.Col span={6}>
-            <TestCard
-              title="Pin Test Data"
-              description="This function pins test data to IPFS."
-              onClick={() => pinJSONToIPFS({})}
-            />
-          </Grid.Col>
-        </Grid>
-      </Container>
-    </MantineProvider>
+    <Layout>
+      <Grid overflow="hidden">
+        <Grid.Col span={6}>
+          <TestCard
+            title="Register GameManager Pool"
+            description="This function sets up the GameManager Pool. It should be called once."
+            onClick={() => {}}
+          />
+        </Grid.Col>
+        <Grid.Col span={6}>
+          <TestCard
+            title="Pin Test Data"
+            description="This function pins test data to IPFS."
+            onClick={() => pinJSONToIPFS({})}
+          />
+        </Grid.Col>
+      </Grid>
+    </Layout>
   );
 }
 
@@ -75,5 +74,18 @@ export const TestCard = ({
         </Button>
       </Flex>
     </Paper>
+  );
+};
+
+const Layout = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <MantineProvider theme={theme} defaultColorScheme="dark">
+      <Container size={1200}>
+        <Flex>
+          <DesktopNav />
+          {children}
+        </Flex>
+      </Container>
+    </MantineProvider>
   );
 };
