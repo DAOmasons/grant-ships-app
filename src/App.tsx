@@ -6,6 +6,7 @@ import {
   Grid,
   MantineProvider,
   Paper,
+  Stack,
   Text,
 } from '@mantine/core';
 import { theme } from './theme';
@@ -17,22 +18,38 @@ import { DesktopNav } from './layout/DesktopNav/DesktopNav';
 export default function App() {
   return (
     <Layout>
-      <Grid overflow="hidden">
-        <Grid.Col span={6}>
-          <TestCard
-            title="Register GameManager Pool"
-            description="This function sets up the GameManager Pool. It should be called once."
-            onClick={() => {}}
-          />
-        </Grid.Col>
-        <Grid.Col span={6}>
-          <TestCard
-            title="Pin Test Data"
-            description="This function pins test data to IPFS."
-            onClick={() => pinJSONToIPFS({})}
-          />
-        </Grid.Col>
-      </Grid>
+      <Stack>
+        <TestCard
+          title="Register GameManager Pool"
+          description="This function sets up the GameManager Pool. It should be called once."
+          onClick={() => {}}
+        />
+        <TestCard
+          title="Pin Test Data"
+          description="This function pins test data to IPFS."
+          onClick={() => pinJSONToIPFS({})}
+        />
+        <TestCard
+          title="Register GameManager Pool"
+          description="This function sets up the GameManager Pool. It should be called once."
+          onClick={() => {}}
+        />
+        <TestCard
+          title="Pin Test Data"
+          description="This function pins test data to IPFS."
+          onClick={() => pinJSONToIPFS({})}
+        />
+        <TestCard
+          title="Register GameManager Pool"
+          description="This function sets up the GameManager Pool. It should be called once."
+          onClick={() => {}}
+        />
+        <TestCard
+          title="Pin Test Data"
+          description="This function pins test data to IPFS."
+          onClick={() => pinJSONToIPFS({})}
+        />
+      </Stack>
     </Layout>
   );
 }
@@ -63,7 +80,6 @@ export const TestCard = ({
     <Paper p={'xl'}>
       <Text size="xl" fw={500} mb="md">
         {title}
-        {ADDR.ALLO}
       </Text>
       <Text>{description}</Text>
       <Flex mt="xl">
@@ -78,8 +94,8 @@ export const TestCard = ({
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <MantineProvider theme={theme} defaultColorScheme="dark">
-      <Container size={1200} h="100%">
-        <Flex h="100%">
+      <Container size={1200}>
+        <Flex maw={1200}>
           <DesktopNav />
           {children}
         </Flex>
