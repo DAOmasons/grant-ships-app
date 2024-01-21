@@ -1,0 +1,34 @@
+import {
+  ActionIcon,
+  Group,
+  Paper,
+  Stack,
+  Text,
+  TextInput,
+  ThemeIcon,
+  Title,
+} from '@mantine/core';
+import { IconArrowNarrowLeft } from '@tabler/icons-react';
+import React, { ReactNode } from 'react';
+
+export const FormPageLayout = ({
+  title,
+  children,
+}: {
+  title?: string;
+  children?: ReactNode;
+}) => {
+  return (
+    <Stack w={350} align="center" m="xl" mt="lg">
+      <Group w="100%" mb="xl">
+        <ActionIcon variant="subtle">
+          <IconArrowNarrowLeft />
+        </ActionIcon>
+        <Text fz={24} fw={500}>
+          {title}
+        </Text>
+      </Group>
+      {children}
+    </Stack>
+  );
+};

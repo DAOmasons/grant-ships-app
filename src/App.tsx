@@ -1,56 +1,57 @@
 import '@mantine/core/styles.css';
 import {
+  Avatar,
   Button,
-  Container,
   Flex,
-  Grid,
-  MantineProvider,
+  InputLabel,
   Paper,
   Stack,
   Text,
+  TextInput,
+  Textarea,
 } from '@mantine/core';
-import { theme } from './theme';
 import { useState } from 'react';
-import { ADDR } from './constants/addresses';
 import { pinJSONToIPFS } from './utils/ipfs/pin';
-import { DesktopNav } from './layout/DesktopNav/DesktopNav';
 import { Layout } from './layout/Layout';
+import { FormPageLayout } from './layout/FormPageLayout';
+import { IconUser } from '@tabler/icons-react';
 
 export default function App() {
   return (
     <Layout>
-      <Stack>
-        <TestCard
-          title="Register GameManager Pool"
-          description="This function sets up the GameManager Pool. It should be called once."
-          onClick={() => {}}
+      <FormPageLayout title="Register Project Profile">
+        <Avatar size={120} mb="lg">
+          <IconUser size={80} />
+        </Avatar>
+        <TextInput w="100%" label="Project Name" required />
+        <Textarea
+          w="100%"
+          label="Team Members"
+          description="Paste addresses here. Must be comma separated."
         />
-        <TestCard
-          title="Pin Test Data"
-          description="This function pins test data to IPFS."
-          onClick={() => pinJSONToIPFS({})}
+        <Textarea
+          w="100%"
+          label="Short Project Description"
+          description="Max 350 characters"
+          required
+          autosize
+          minRows={4}
         />
-        <TestCard
-          title="Register GameManager Pool"
-          description="This function sets up the GameManager Pool. It should be called once."
-          onClick={() => {}}
-        />
-        <TestCard
-          title="Pin Test Data"
-          description="This function pins test data to IPFS."
-          onClick={() => pinJSONToIPFS({})}
-        />
-        <TestCard
-          title="Register GameManager Pool"
-          description="This function sets up the GameManager Pool. It should be called once."
-          onClick={() => {}}
-        />
-        <TestCard
-          title="Pin Test Data"
-          description="This function pins test data to IPFS."
-          onClick={() => pinJSONToIPFS({})}
-        />
-      </Stack>
+
+        <Stack w="100%" gap={14}>
+          <TextInput
+            w="100%"
+            label="Links/Contact"
+            description="Please provide at least one contact method"
+            placeholder="Email"
+            required
+          />
+          <TextInput w="100%" placeholder="Twitter" />
+          <TextInput w="100%" placeholder="Github" />
+          <TextInput w="100%" placeholder="Discord" />
+          <TextInput w="100%" placeholder="Telegram" />
+        </Stack>
+      </FormPageLayout>
     </Layout>
   );
 }

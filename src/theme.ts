@@ -1,4 +1,4 @@
-import { createTheme, MantineTheme } from '@mantine/core';
+import { MantineStyleProp, MantineTheme, createTheme } from '@mantine/core';
 
 export const theme = createTheme({
   fontFamily: 'Roboto',
@@ -7,7 +7,15 @@ export const theme = createTheme({
   },
 
   defaultRadius: 'md',
-  components: {},
+  components: {
+    ThemeIcon: {
+      styles: {
+        default: {
+          border: 'none',
+        },
+      },
+    },
+  },
 
   /* Put your mantine theme override here */
 });
