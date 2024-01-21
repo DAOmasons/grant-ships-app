@@ -5,10 +5,8 @@ import {
   Flex,
   Grid,
   MantineProvider,
-  NavLink,
   Paper,
   Text,
-  Title,
 } from '@mantine/core';
 import { theme } from './theme';
 import { useState } from 'react';
@@ -80,8 +78,8 @@ export const TestCard = ({
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <MantineProvider theme={theme} defaultColorScheme="dark">
-      <Container size={1200}>
-        <Flex>
+      <Container size={1200} h="100%">
+        <Flex h="100%">
           <DesktopNav />
           {children}
         </Flex>
