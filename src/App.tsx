@@ -12,6 +12,7 @@ import {
 import { theme } from './theme';
 import { useState } from 'react';
 import { ADDR } from './constants/addresses';
+import { pinJSONToIPFS } from './utils/ipfs/pin';
 
 export default function App() {
   return (
@@ -24,6 +25,13 @@ export default function App() {
               title="Register GameManager Pool"
               description="This function sets up the GameManager Pool. It should be called once."
               onClick={() => {}}
+            />
+          </Grid.Col>
+          <Grid.Col span={6}>
+            <TestCard
+              title="Pin Test Data"
+              description="This function pins test data to IPFS."
+              onClick={() => pinJSONToIPFS({})}
             />
           </Grid.Col>
         </Grid>
