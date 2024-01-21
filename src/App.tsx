@@ -14,6 +14,7 @@ import { useState } from 'react';
 import { ADDR } from './constants/addresses';
 import { pinJSONToIPFS } from './utils/ipfs/pin';
 import { DesktopNav } from './layout/DesktopNav/DesktopNav';
+import { Layout } from './layout/Layout';
 
 export default function App() {
   return (
@@ -88,18 +89,5 @@ export const TestCard = ({
         </Button>
       </Flex>
     </Paper>
-  );
-};
-
-const Layout = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <MantineProvider theme={theme} defaultColorScheme="dark">
-      <Container size={1200}>
-        <Flex maw={1200}>
-          <DesktopNav />
-          {children}
-        </Flex>
-      </Container>
-    </MantineProvider>
   );
 };
