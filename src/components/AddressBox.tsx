@@ -17,6 +17,8 @@ import {
 import { IconSquareRoundedX, IconX } from '@tabler/icons-react';
 import React, { forwardRef, useMemo, useState } from 'react';
 import { isAddress } from 'viem';
+import { SCAN_URL } from '../constants/enpoints';
+import { scanAddressLink } from '../utils/scan';
 
 export const AddressBox = (props: TextareaProps) => {
   const theme = useMantineTheme();
@@ -49,7 +51,6 @@ export const AddressBox = (props: TextareaProps) => {
     const scrub1 = value.replace(addr, '');
     const scrub2 = scrub1.replace(',,', ',');
     const scrub3 = scrub2.replace(/(\r?\n\s*),/g, '');
-    console.log(scrub3);
     setValue(scrub3);
   };
   return (
@@ -60,11 +61,13 @@ export const AddressBox = (props: TextareaProps) => {
         error={errorMessage}
         value={value}
         autosize
+        minRows={4}
+        maxRows={6}
       />
       <Flex w="100%" direction="column">
         {addrData.map((addr, index) => (
           <Paper
-            bg={theme.colors.dark[5]}
+            bg={theme.colors.dark[6]}
             w="fit-content"
             key={addr + index}
             mb={'xs'}
@@ -73,9 +76,11 @@ export const AddressBox = (props: TextareaProps) => {
             <Group align="center">
               <Text
                 component="a"
-                href=""
+                href={scanAddressLink(addr)}
+                rel="noopener noreferrer"
+                target="_blank"
                 size="xs"
-                c={theme.colors.blue[5]}
+                c={theme.colors.blue[4]}
                 style={{ transform: 'translateY(1px)' }}
               >
                 {isAddress(addr) ? addr : <Mark color="red">{addr}</Mark>}
