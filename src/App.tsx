@@ -1,11 +1,7 @@
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
 import {
-  ActionIcon,
-  Avatar,
   Button,
-  Container,
-  FileButton,
   Flex,
   Group,
   Paper,
@@ -14,7 +10,7 @@ import {
   TextInput,
   Textarea,
 } from '@mantine/core';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { Layout } from './layout/Layout';
 import { FormPageLayout } from './layout/FormPageLayout';
 import {
@@ -23,13 +19,13 @@ import {
   IconBrandTelegram,
   IconBrandX,
   IconMail,
-  IconPencil,
-  IconUser,
 } from '@tabler/icons-react';
 import { AvatarPickerIPFS } from './components/AvatarPickerIPFS';
 import { notifications } from '@mantine/notifications';
+import { AddressBox } from './components/AddressBox';
 
 export default function App() {
+  const ref = useRef('test');
   return (
     <Layout>
       <FormPageLayout title="Register Project Profile">
@@ -54,12 +50,13 @@ export default function App() {
           required
           placeholder="Project Name"
         />
-        <Textarea
+        <AddressBox
           w="100%"
           label="Team Members"
           description="Paste addresses here. Must be comma separated."
           placeholder="Paste here"
         />
+
         <Textarea
           w="100%"
           label="Short Project Description"
@@ -69,7 +66,6 @@ export default function App() {
           minRows={4}
           placeholder="Project Description"
         />
-
         <Stack w="100%" gap={14}>
           <TextInput
             w="100%"
