@@ -25,7 +25,6 @@ import { notifications } from '@mantine/notifications';
 import { AddressBox } from './components/AddressBox';
 
 export default function App() {
-  const ref = useRef('test');
   return (
     <Layout>
       <FormPageLayout title="Register Project Profile">

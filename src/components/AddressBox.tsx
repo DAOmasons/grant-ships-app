@@ -1,31 +1,23 @@
 import {
   ActionIcon,
-  CloseIcon,
   Flex,
   Group,
-  Highlight,
-  MantineComponent,
   Mark,
   Paper,
-  Pill,
   Text,
   Textarea,
   TextareaProps,
-  __InputStylesNames,
   useMantineTheme,
 } from '@mantine/core';
-import { IconSquareRoundedX, IconX } from '@tabler/icons-react';
-import React, { forwardRef, useMemo, useState } from 'react';
+import { IconX } from '@tabler/icons-react';
+import React, { useMemo, useState } from 'react';
 import { isAddress } from 'viem';
-import { SCAN_URL } from '../constants/enpoints';
+
 import { scanAddressLink } from '../utils/scan';
 
 export const AddressBox = (props: TextareaProps) => {
   const theme = useMantineTheme();
   const [value, setValue] = useState('');
-  //   const [addrData, setAddrData] = useState<string[]>([]);
-
-  //   const [hasInvalidAddress, setHasInvalidAddress] = useState(false);
 
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setValue(e.target.value);
@@ -53,6 +45,7 @@ export const AddressBox = (props: TextareaProps) => {
     const scrub3 = scrub2.replace(/(\r?\n\s*),/g, '');
     setValue(scrub3);
   };
+
   return (
     <>
       <Textarea
@@ -61,6 +54,7 @@ export const AddressBox = (props: TextareaProps) => {
         error={errorMessage}
         value={value}
         autosize
+        spellCheck={false}
         minRows={4}
         maxRows={6}
       />

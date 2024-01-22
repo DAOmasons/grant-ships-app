@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Group, Code, Title, ThemeIcon } from '@mantine/core';
+import { Group, Code, Title } from '@mantine/core';
 import {
   IconHome,
   IconRocket,
@@ -8,7 +8,6 @@ import {
   IconFileDescription,
   IconSquareRoundedLetterG,
 } from '@tabler/icons-react';
-// import { MantineLogo } from '@mantinex/mantine-logo';
 import classes from './DesktoNavStyles.module.css';
 import Logo from '../../assets/Logo.svg';
 
