@@ -35,7 +35,6 @@ export const AddressBox = (props: TextareaProps) => {
       .map((addr) => addr.trim())
       .filter(Boolean);
 
-    console.log('addresses', addresses);
     return addresses;
   }, [value]);
 
@@ -47,7 +46,11 @@ export const AddressBox = (props: TextareaProps) => {
     : props.error;
 
   const deleteAddress = (addr: string) => {
-    setValue(value.replace(addr, ''));
+    const scrub1 = value.replace(addr, '');
+    const scrub2 = scrub1.replace(',,', ',');
+    const scrub3 = scrub2.replace(/(\r?\n\s*),/g, '');
+    console.log(scrub3);
+    setValue(scrub3);
   };
   return (
     <>
@@ -56,6 +59,7 @@ export const AddressBox = (props: TextareaProps) => {
         onChange={handleChange}
         error={errorMessage}
         value={value}
+        autosize
       />
       <Flex w="100%" direction="column">
         {addrData.map((addr, index) => (
