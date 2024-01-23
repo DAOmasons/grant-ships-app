@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Group, Code, Title } from '@mantine/core';
+import { Group, Code, Title, Flex } from '@mantine/core';
 import {
   IconHome,
   IconRocket,
@@ -7,6 +7,8 @@ import {
   IconAward,
   IconFileDescription,
   IconSquareRoundedLetterG,
+  IconList,
+  IconUserCircle,
 } from '@tabler/icons-react';
 import classes from './DesktoNavStyles.module.css';
 import Logo from '../../assets/Logo.svg';
@@ -44,12 +46,34 @@ export function DesktopNav() {
       <div className={classes.navbarMain}>
         <Group className={classes.header}>
           <Logo />
-          <Title order={1} fw={100}>
+          <Title order={1} fw={100} fz={32}>
             Grant Ships
           </Title>
-          <Code w="fit-content">v{process.env.PACKAGE_VERSION}</Code>
         </Group>
         {links}
+      </div>
+
+      <Code w="fit-content" ml={'md'}>
+        App Version: {process.env.PACKAGE_VERSION}
+      </Code>
+      <div className={classes.footer}>
+        <a
+          href="#"
+          className={classes.link}
+          onClick={(event) => event.preventDefault()}
+        >
+          <IconList className={classes.linkIcon} stroke={1.5} />
+          <span>My Projects</span>
+        </a>
+
+        <a
+          href="#"
+          className={classes.link}
+          onClick={(event) => event.preventDefault()}
+        >
+          <IconUserCircle className={classes.linkIcon} stroke={1.5} />
+          <span>Logout</span>
+        </a>
       </div>
     </nav>
   );
