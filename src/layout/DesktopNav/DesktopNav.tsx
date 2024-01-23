@@ -1,5 +1,13 @@
 import { useState } from 'react';
-import { Group, Code, Title, Button, Modal, Stack } from '@mantine/core';
+import {
+  Group,
+  Code,
+  Title,
+  Button,
+  Modal,
+  Stack,
+  Avatar,
+} from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import {
   IconHome,
@@ -13,7 +21,16 @@ import {
 } from '@tabler/icons-react';
 import classes from './DesktoNavStyles.module.css';
 import Logo from '../../assets/Logo.svg';
-import { useConnect } from 'wagmi';
+import {
+  createConfig,
+  useAccount,
+  useChainId,
+  useConnect,
+  useEnsAvatar,
+  useEnsName,
+} from 'wagmi';
+import { Address, http } from 'viem';
+import { mainnet } from 'viem/chains';
 
 const data = [
   { link: '', label: 'Home', icon: IconHome },
@@ -75,22 +92,29 @@ export function DesktopNav() {
 }
 
 const ConnectButton = () => {
+  const { address, isConnected } = useAccount();
+
+  // console.log('isConnected', isConnected);
+
+  if (isConnected && address) return <AccountAvatar address={address} />;
+
+  return <IsNotConnected />;
+};
+
+const IsNotConnected = () => {
   const { connectors, connect } = useConnect();
   const [opened, { open, close }] = useDisclosure(false);
-
   return (
     <>
-      <a
-        href="#"
-        className={classes.link}
-        onClick={(event) => {
-          event.preventDefault();
+      <button
+        className={classes.button}
+        onClick={() => {
           open();
         }}
       >
         <IconUserCircle className={classes.linkIcon} stroke={1.5} />
         <span>Connect Wallet</span>
-      </a>
+      </button>
       <Modal opened={opened} onClose={close} centered title="Connect Wallet">
         <Stack>
           {[...connectors]?.reverse()?.map((connector) => (
@@ -107,5 +131,35 @@ const ConnectButton = () => {
         </Stack>
       </Modal>
     </>
+  );
+};
+
+const ensConfig = createConfig({
+  chains: [mainnet],
+  transports: {
+    [mainnet.id]: http(import.meta.env.VITE_RPC_URL_ENS_MAINNET),
+  },
+});
+
+const AccountAvatar = ({ address }: { address: Address }) => {
+  const { data: ensName } = useEnsName({
+    address,
+    config: ensConfig,
+    chainId: mainnet.id,
+  });
+
+  // console.log('ensName', ensName);
+  const { data: ensAvatar } = useEnsAvatar({ name: ensName! });
+
+  return (
+    <button
+      className={classes.button}
+      onClick={() => {
+        open();
+      }}
+    >
+      <Avatar></Avatar>
+      <span></span>
+    </button>
   );
 };

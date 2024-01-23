@@ -71,3 +71,41 @@
   height: rem(28px);
   transform: translateY(-2px);
 }
+.button {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  font-size: var(--mantine-font-size-md);
+  color: light-dark(var(--mantine-color-gray-7), var(--mantine-color-dark-1));
+  padding: var(--mantine-spacing-xs) var(--mantine-spacing-sm);
+  border-radius: var(--mantine-radius-sm);
+  font-weight: 400;
+  height: rem(52px);
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+
+  @mixin hover {
+    background-color: light-dark(
+      var(--mantine-color-gray-0),
+      var(--mantine-color-dark-6)
+    );
+    color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
+
+    .linkIcon {
+      color: light-dark(var(--mantine-color-black), var(--mantine-color-white));
+    }
+  }
+
+  &[data-active] {
+    &,
+    &:hover {
+      background-color: var(--mantine-color-blue-light);
+      color: var(--mantine-color-blue-light-color);
+
+      .linkIcon {
+        color: var(--mantine-color-blue-light-color);
+      }
+    }
+  }
+}
