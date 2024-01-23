@@ -8,7 +8,7 @@ import {
   Stack,
   Avatar,
 } from '@mantine/core';
-import { useDisclosure } from '@mantine/hooks';
+import { useClipboard, useDisclosure } from '@mantine/hooks';
 import {
   IconHome,
   IconRocket,
@@ -18,6 +18,7 @@ import {
   IconSquareRoundedLetterG,
   IconList,
   IconUserCircle,
+  IconLogout,
 } from '@tabler/icons-react';
 import classes from './DesktoNavStyles.module.css';
 import Logo from '../../assets/Logo.svg';
@@ -26,11 +27,13 @@ import {
   useAccount,
   useChainId,
   useConnect,
+  useDisconnect,
   useEnsAvatar,
   useEnsName,
 } from 'wagmi';
 import { Address, http } from 'viem';
 import { mainnet } from 'viem/chains';
+import { notifications } from '@mantine/notifications';
 
 const data = [
   { link: '', label: 'Home', icon: IconHome },
@@ -96,13 +99,12 @@ const ConnectButton = () => {
 
   // console.log('isConnected', isConnected);
 
-  if (isConnected && address) return <AccountAvatar address={address} />;
+  if (isConnected && address) return <IsConnected address={address} />;
 
   return <IsNotConnected />;
 };
 
 const IsNotConnected = () => {
-  const { connectors, connect } = useConnect();
   const [opened, { open, close }] = useDisclosure(false);
   return (
     <>
@@ -115,22 +117,29 @@ const IsNotConnected = () => {
         <IconUserCircle className={classes.linkIcon} stroke={1.5} />
         <span>Connect Wallet</span>
       </button>
-      <Modal opened={opened} onClose={close} centered title="Connect Wallet">
-        <Stack>
-          {[...connectors]?.reverse()?.map((connector) => (
-            <Button
-              key={connector.uid}
-              onClick={() => {
-                connect({ connector });
-                close();
-              }}
-            >
-              {connector.name}
-            </Button>
-          ))}
-        </Stack>
-      </Modal>
+      <NetworksModal opened={opened} close={close} />
     </>
+  );
+};
+
+const NetworksModal = ({ opened }: { opened: boolean; close: () => void }) => {
+  const { connectors, connect } = useConnect();
+  return (
+    <Modal opened={opened} onClose={close} centered title="Connect Wallet">
+      <Stack>
+        {[...connectors]?.reverse()?.map((connector) => (
+          <Button
+            key={connector.uid}
+            onClick={() => {
+              connect({ connector });
+              close();
+            }}
+          >
+            {connector.name}
+          </Button>
+        ))}
+      </Stack>
+    </Modal>
   );
 };
 
@@ -141,25 +150,49 @@ const ensConfig = createConfig({
   },
 });
 
-const AccountAvatar = ({ address }: { address: Address }) => {
+const IsConnected = ({ address }: { address: Address }) => {
   const { data: ensName } = useEnsName({
     address,
     config: ensConfig,
     chainId: mainnet.id,
   });
 
-  // console.log('ensName', ensName);
   const { data: ensAvatar } = useEnsAvatar({ name: ensName! });
 
+  const { disconnect } = useDisconnect();
+
+  const { copy } = useClipboard();
+
   return (
-    <button
-      className={classes.button}
-      onClick={() => {
-        open();
-      }}
-    >
-      <Avatar></Avatar>
-      <span></span>
-    </button>
+    <>
+      <button
+        className={classes.button}
+        onClick={() => {
+          copy(address);
+          notifications.show({
+            title: 'Address Copied',
+            message: `Address: ${address} has been copied to clipboard`,
+          });
+        }}
+      >
+        <Avatar
+          className={classes.avatar}
+          src={ensAvatar || `https://effigy.im/a/${address}.svg`}
+          size={28}
+        />
+        <span>
+          {ensName ? ensName : address.slice(0, 6) + '...' + address.slice(-4)}
+        </span>
+      </button>
+      <button
+        className={classes.button}
+        onClick={() => {
+          disconnect();
+        }}
+      >
+        <IconLogout className={classes.linkIcon} stroke={1.5} />
+        <span>Disconnect</span>
+      </button>
+    </>
   );
 };

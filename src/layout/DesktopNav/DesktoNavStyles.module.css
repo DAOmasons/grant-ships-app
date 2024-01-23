@@ -71,6 +71,14 @@
   height: rem(28px);
   transform: translateY(-2px);
 }
+
+.avatar {
+  margin-right: var(--mantine-spacing-md);
+  /* width: rem(20px);
+  height: rem(2px); */
+  transform: translateY(-2px);
+  background: transparent;
+}
 .button {
   display: flex;
   align-items: center;
