@@ -21,7 +21,7 @@ const data = [
 ];
 
 export function DesktopNav() {
-  const [active, setActive] = useState('Billing');
+  const [active, setActive] = useState('Home');
 
   const links = data.map((item) => (
     <a

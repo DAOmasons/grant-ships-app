@@ -1,15 +1,6 @@
-import {
-  ActionIcon,
-  Group,
-  Paper,
-  Stack,
-  Text,
-  TextInput,
-  ThemeIcon,
-  Title,
-} from '@mantine/core';
+import { ActionIcon, Group, Stack, Text } from '@mantine/core';
 import { IconArrowNarrowLeft } from '@tabler/icons-react';
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 export const FormPageLayout = ({
   title,
