@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Group, Code, Title, Flex } from '@mantine/core';
+import { Group, Code, Title, Button, Modal } from '@mantine/core';
+import { useDisclosure } from '@mantine/hooks';
 import {
   IconHome,
   IconRocket,
@@ -12,6 +13,7 @@ import {
 } from '@tabler/icons-react';
 import classes from './DesktoNavStyles.module.css';
 import Logo from '../../assets/Logo.svg';
+import { useConnect } from 'wagmi';
 
 const data = [
   { link: '', label: 'Home', icon: IconHome },
@@ -75,6 +77,21 @@ export function DesktopNav() {
           <span>Logout</span>
         </a>
       </div>
+      <ConnectorModal />
     </nav>
   );
 }
+
+const ConnectorModal = () => {
+  const { connectors, connect } = useConnect();
+  const [opened, { close }] = useDisclosure(false);
+  return (
+    <Modal opened={opened} onClose={close}>
+      {connectors?.map((connector) => (
+        <Button key={connector.uid} onClick={() => connect({ connector })}>
+          {connector.name}
+        </Button>
+      ))}
+    </Modal>
+  );
+};
