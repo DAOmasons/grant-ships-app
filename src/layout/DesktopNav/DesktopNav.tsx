@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Group, Code, Title, Button, Modal } from '@mantine/core';
+import { Group, Code, Title, Button, Modal, Stack } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import {
   IconHome,
@@ -26,6 +26,7 @@ const data = [
 
 export function DesktopNav() {
   const [active, setActive] = useState('Home');
+  const [, { open }] = useDisclosure(false);
 
   const links = data.map((item) => (
     <a
@@ -67,31 +68,44 @@ export function DesktopNav() {
           <IconList className={classes.linkIcon} stroke={1.5} />
           <span>My Projects</span>
         </a>
-
-        <a
-          href="#"
-          className={classes.link}
-          onClick={(event) => event.preventDefault()}
-        >
-          <IconUserCircle className={classes.linkIcon} stroke={1.5} />
-          <span>Logout</span>
-        </a>
       </div>
-      <ConnectorModal />
+      <ConnectButton />
     </nav>
   );
 }
 
-const ConnectorModal = () => {
+const ConnectButton = () => {
   const { connectors, connect } = useConnect();
-  const [opened, { close }] = useDisclosure(false);
+  const [opened, { open, close }] = useDisclosure(false);
+
   return (
-    <Modal opened={opened} onClose={close}>
-      {connectors?.map((connector) => (
-        <Button key={connector.uid} onClick={() => connect({ connector })}>
-          {connector.name}
-        </Button>
-      ))}
-    </Modal>
+    <>
+      <a
+        href="#"
+        className={classes.link}
+        onClick={(event) => {
+          event.preventDefault();
+          open();
+        }}
+      >
+        <IconUserCircle className={classes.linkIcon} stroke={1.5} />
+        <span>Connect Wallet</span>
+      </a>
+      <Modal opened={opened} onClose={close} centered title="Connect Wallet">
+        <Stack>
+          {[...connectors]?.reverse()?.map((connector) => (
+            <Button
+              key={connector.uid}
+              onClick={() => {
+                connect({ connector });
+                close();
+              }}
+            >
+              {connector.name}
+            </Button>
+          ))}
+        </Stack>
+      </Modal>
+    </>
   );
 };
