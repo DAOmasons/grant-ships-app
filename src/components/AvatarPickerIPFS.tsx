@@ -25,7 +25,6 @@ export const AvatarPickerIPFS = ({
       onUploadError?.('No file selected');
       return;
     }
-
     setIsLoading(true);
     onUploadLoad?.();
     try {
