@@ -15,17 +15,23 @@ import { notifications } from '@mantine/notifications';
 import { AddressBox } from '../../components/AddressBox';
 
 import { useForm, zodResolver } from '@mantine/form';
-import { FormEvent, useEffect } from 'react';
+import { FormEvent } from 'react';
 import { registerProjectSchema } from './validationSchemas/registerProjectSchema';
 import { z } from 'zod';
+import { generateNonce } from '../../types/common';
+import { pinJSONToIPFS } from '../../utils/ipfs/pin';
+import { useAccount } from 'wagmi';
 
 type FormValues = z.infer<typeof registerProjectSchema>;
 
 export const RegisterProject = () => {
+  const { address } = useAccount();
+
   const form = useForm({
     initialValues: {
       avatarHash: '',
       name: '',
+      projectOwner: address || '',
       teamMembers: [''],
       description: '',
       email: '',
@@ -36,14 +42,47 @@ export const RegisterProject = () => {
     },
     validate: zodResolver(registerProjectSchema),
   });
-  const handleFormSubmit = (
+  const handleFormSubmit = async (
     values: FormValues,
     e?: FormEvent<HTMLFormElement>
   ) => {
     e?.preventDefault();
     const res = form.validate();
-    console.log('res', res);
-    console.log('values', values);
+
+    if (res.hasErrors) return;
+
+    const nonce = generateNonce();
+    console.log(nonce);
+
+    const metadata = {
+      name: values.name,
+      description: values.description,
+      avatarHash_IPFS: values.avatarHash,
+      email: values.email,
+      x: values.x,
+      github: values.github,
+      discord: values.discord,
+      telegram: values.telegram,
+    };
+
+    const pinRes = await pinJSONToIPFS(metadata);
+
+    if (pinRes.status !== 'success') {
+      notifications.show({
+        title: 'IPFS Upload Error',
+        message: pinRes.message,
+        color: 'red',
+      });
+      return;
+    }
+
+    const args = [
+      nonce,
+      values.name,
+      pinRes.IpfsHash,
+      address,
+      values.teamMembers,
+    ];
   };
 
   const handleBlur = (fieldName: string) => {
@@ -100,11 +139,19 @@ export const RegisterProject = () => {
         placeholder="Project Name"
         {...form.getInputProps('name')}
       />
+      <TextInput
+        w="100%"
+        label="Project Owner"
+        description="Project owner has permissions to edit metadata, team members, apply for grants, and transfer ownership."
+        required
+        placeholder="0x000"
+        {...form.getInputProps('projectOwner')}
+      />
       <AddressBox
         w="100%"
         label="Team Members"
-        description="Paste addresses here. Must be comma separated."
-        placeholder="Paste here"
+        description={`Team members can edit metadata and apply for grants.`}
+        placeholder="Paste addresses here. Must be comma separated."
         {...form.getInputProps('teamMembers')}
         onBlur={() => handleBlur('teamMembers')}
         formSetValue={(addresses: string[]) => {
