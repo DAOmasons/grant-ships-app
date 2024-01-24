@@ -18,6 +18,11 @@ export type NestedButton = {
   onClick: () => void;
 };
 
+export type AlloMetadata = {
+  protocol: bigint;
+  pointer: string;
+};
+
 export const generateNonce = (): string => {
   const array = new Uint8Array(32);
   window.crypto.getRandomValues(array);
