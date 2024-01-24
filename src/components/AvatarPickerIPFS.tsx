@@ -1,19 +1,21 @@
-import { ActionIcon, Avatar, Container, FileButton } from '@mantine/core';
+import { ActionIcon, Avatar, Container, FileButton, Text } from '@mantine/core';
 import { IconPencil, IconUser } from '@tabler/icons-react';
 import { pinFileToIPFS } from '../utils/ipfs/pin';
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { PINATA_GATEWAY } from '../utils/ipfs/gateway';
 
 type PickerProps = {
   onUploadSuccess?: (metadata: string) => void;
   onUploadError?: (errMsg: string) => void;
   onUploadLoad?: () => void;
+  validationError?: ReactNode;
 };
 
 export const AvatarPickerIPFS = ({
   onUploadError,
   onUploadSuccess,
   onUploadLoad,
+  validationError,
 }: PickerProps) => {
   const [pfpIpfsHash, setIpfsHash] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -43,24 +45,31 @@ export const AvatarPickerIPFS = ({
   const canPreview = avatarPreview && !isLoading;
 
   return (
-    <Container pos="relative" mb="lg">
-      <Avatar size={120} src={canPreview ? avatarPreview : undefined}>
-        {canPreview || <IconUser size={80} />}
-      </Avatar>
-      <FileButton onChange={handleUpload} accept={'image/png,image/jpeg'}>
-        {(props) => (
-          <ActionIcon
-            {...props}
-            pos={'absolute'}
-            bottom={0}
-            right={20}
-            radius="xl"
-            loading={isLoading}
-          >
-            <IconPencil />
-          </ActionIcon>
-        )}
-      </FileButton>
-    </Container>
+    <>
+      <Container pos="relative" mb="lg">
+        <Avatar size={120} src={canPreview ? avatarPreview : undefined}>
+          {canPreview || <IconUser size={80} />}
+        </Avatar>
+        <FileButton onChange={handleUpload} accept={'image/png,image/jpeg'}>
+          {(props) => (
+            <ActionIcon
+              {...props}
+              pos={'absolute'}
+              bottom={0}
+              right={20}
+              radius="xl"
+              loading={isLoading}
+            >
+              <IconPencil />
+            </ActionIcon>
+          )}
+        </FileButton>
+      </Container>
+      {validationError && (
+        <Text fz={12} color="red">
+          {validationError}
+        </Text>
+      )}
+    </>
   );
 };

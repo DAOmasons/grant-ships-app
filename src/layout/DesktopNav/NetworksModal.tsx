@@ -1,5 +1,5 @@
 import { Button, Modal, Stack } from '@mantine/core';
-import { useConnect } from 'wagmi';
+import { Connector, useConnect } from 'wagmi';
 
 export const NetworksModal = ({
   opened,
@@ -7,7 +7,12 @@ export const NetworksModal = ({
   opened: boolean;
   close: () => void;
 }) => {
+  console.log('opened', opened);
   const { connectors, connect } = useConnect();
+
+  const handleConnect = (connector: Connector) => {
+    connect({ connector });
+  };
   return (
     <Modal opened={opened} onClose={close} centered title="Connect Wallet">
       <Stack>
@@ -15,8 +20,8 @@ export const NetworksModal = ({
           <Button
             key={connector.uid}
             onClick={() => {
-              connect({ connector });
               close();
+              console.log('fired');
             }}
           >
             {connector.name}

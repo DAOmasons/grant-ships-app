@@ -6,25 +6,49 @@ import {
   createConfig,
   http,
   useAccount,
+  useConnect,
   useDisconnect,
   useEnsAvatar,
   useEnsName,
 } from 'wagmi';
-import { NetworksModal } from './NetworksModal';
+
 import { Address } from 'viem';
 import classes from './DesktoNavStyles.module.css';
-import { Avatar } from '@mantine/core';
+import { Avatar, Button, Modal, Stack } from '@mantine/core';
 
 export const ConnectButton = () => {
   const { address, isConnected } = useAccount();
+  const [opened, { open, close }] = useDisclosure(false);
+  const { connectors, connect } = useConnect();
 
-  if (isConnected && address) return <IsConnected address={address} />;
+  return (
+    <>
+      {address && isConnected ? (
+        <IsConnected address={address} />
+      ) : (
+        <IsNotConnected open={open} />
+      )}
 
-  return <IsNotConnected />;
+      <Modal opened={opened} onClose={close} centered title="Connect Wallet">
+        <Stack>
+          {[...connectors]?.reverse()?.map((connector) => (
+            <Button
+              key={connector.uid}
+              onClick={() => {
+                close();
+                connect({ connector });
+              }}
+            >
+              {connector.name}
+            </Button>
+          ))}
+        </Stack>
+      </Modal>
+    </>
+  );
 };
 
-const IsNotConnected = () => {
-  const [opened, { open, close }] = useDisclosure(false);
+const IsNotConnected = ({ open }: { open: () => void }) => {
   return (
     <>
       <button
@@ -36,7 +60,6 @@ const IsNotConnected = () => {
         <IconUserCircle className={classes.linkIcon} stroke={1.5} />
         <span>Connect Wallet</span>
       </button>
-      <NetworksModal opened={opened} close={close} />
     </>
   );
 };

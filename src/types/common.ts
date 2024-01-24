@@ -12,3 +12,8 @@ export type Metadata = {
   pointer: string;
   protocol: number;
 };
+
+export type NestedButton = {
+  label: string;
+  onClick: () => void;
+};

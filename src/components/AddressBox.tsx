@@ -10,29 +10,45 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import { IconX } from '@tabler/icons-react';
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { isAddress } from 'viem';
 
 import { scanAddressLink } from '../utils/scan';
 
-export const AddressBox = (props: TextareaProps) => {
+export const AddressBox = (
+  props: TextareaProps & { formSetValue?: (addresses: string[]) => void }
+) => {
+  const { formSetValue, ...rest } = props;
   const theme = useMantineTheme();
   const [value, setValue] = useState('');
+  const [addrData, setAddrData] = useState<string[]>([]);
 
+  // Sets string value of the text area
   const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setValue(e.target.value);
   };
 
-  const addrData = useMemo(() => {
+  // Parses the comma separated string into an array of strings
+  useEffect(() => {
     const addresses = value
       .split(',')
       .map((addr) => addr.trim())
       .filter(Boolean);
 
-    return addresses;
+    setAddrData(addresses);
   }, [value]);
 
+  // Optionally sets the form value
+  useEffect(() => {
+    formSetValue?.(addrData);
+
+    // disable exhaustive-deps because formSetValue triggers effect
+    // Should only have addrData as a dependency
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [addrData]);
+
   const nonValidAddresses = addrData.filter((addr) => !isAddress(addr));
+
   const errorMessage = nonValidAddresses.length
     ? `Has ${nonValidAddresses?.length} Invalid ${
         nonValidAddresses?.length === 1 ? 'Address' : 'Addresses'
@@ -49,7 +65,7 @@ export const AddressBox = (props: TextareaProps) => {
   return (
     <>
       <Textarea
-        {...props}
+        {...rest}
         onChange={handleChange}
         error={errorMessage}
         value={value}

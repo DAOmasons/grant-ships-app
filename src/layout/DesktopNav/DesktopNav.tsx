@@ -53,9 +53,6 @@ export function DesktopNav() {
         {links}
       </div>
 
-      <Code w="fit-content" ml={'md'}>
-        App Version: {process.env.PACKAGE_VERSION}
-      </Code>
       <div className={classes.footer}>
         <a
           href="#"
@@ -67,6 +64,10 @@ export function DesktopNav() {
         </a>
       </div>
       <ConnectButton />
+
+      <Code w="fit-content" ml={'sm'} mt={'lg'}>
+        v{process.env.PACKAGE_VERSION}
+      </Code>
     </nav>
   );
 }
