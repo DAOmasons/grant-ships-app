@@ -17,6 +17,7 @@ import {
   IconBrandTelegram,
   IconBrandX,
   IconCheck,
+  IconCircleX,
   IconMail,
   IconUfo,
 } from '@tabler/icons-react';
@@ -46,7 +47,7 @@ export const RegisterProject = () => {
 
   const { data: hash, writeContract, error } = useWriteContract();
   const [opened, { open, close }] = useDisclosure(true);
-  const [txState, setTxState] = useState<TxStates>(TxStates.Success);
+  const [txState, setTxState] = useState<TxStates>(TxStates.Error);
   const config = useConfig();
 
   const form = useForm({
@@ -230,9 +231,9 @@ export const RegisterProject = () => {
     if (txState === TxStates.Error || txState === TxStates.SyncError) {
       return (
         <ErrorState
-          title="Project Profile Failed"
-          description="Your project profile has failed."
-          nerdDetails="State: doing things with stuff..."
+          title="Something went wrong"
+          description="Tells which thing failed"
+          nerdDetails="State: Possibly tells you how it failed"
           txHash="/"
         />
       );
@@ -463,7 +464,8 @@ const ErrorState = ({
 }) => {
   const theme = useMantineTheme();
   return (
-    <Stack align="center" mt={-14} pb={'xl'}>
+    <Stack align="center" pb={'xl'}>
+      <IconCircleX size={80} color={theme.colors.red[4]} />
       <Text size="lg">{title}</Text>
       <Text size="sm" c={theme.colors.dark[2]}>
         {description}
@@ -479,7 +481,7 @@ const ErrorState = ({
           target="_blank"
           td="underline"
           style={{ cursor: 'pointer' }}
-          c={theme.colors.blue[4]}
+          c={theme.colors.dark[3]}
         >
           View on Etherscan
         </Text>
