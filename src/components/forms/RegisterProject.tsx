@@ -1,6 +1,6 @@
 import {
   Button,
-  Container,
+  Group,
   Loader,
   Modal,
   Stack,
@@ -10,15 +10,15 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 
-import { Link } from 'react-router-dom';
-
 import { FormPageLayout } from '../../layout/FormPageLayout';
 import {
   IconBrandDiscord,
   IconBrandGithub,
   IconBrandTelegram,
   IconBrandX,
+  IconCheck,
   IconMail,
+  IconUfo,
 } from '@tabler/icons-react';
 import { AvatarPickerIPFS } from '../../components/AvatarPickerIPFS';
 import { notifications } from '@mantine/notifications';
@@ -26,7 +26,7 @@ import { AddressBox } from '../../components/AddressBox';
 import Registry from '../../abi/Registry.json';
 
 import { useForm, zodResolver } from '@mantine/form';
-import { FormEvent } from 'react';
+import { FormEvent, ReactNode, useMemo, useState } from 'react';
 import { registerProjectSchema } from './validationSchemas/registerProjectSchema';
 import { z } from 'zod';
 import { generateNonce } from '../../utils/helpers';
@@ -36,6 +36,8 @@ import { createMetadata, projectProfileHash } from '../../utils/metadata';
 import { ADDR } from '../../constants/addresses';
 import { arbitrumSepolia } from 'viem/chains';
 import { useDisclosure } from '@mantine/hooks';
+import { TxStates } from '../../types/common';
+import classes from './txModalStyles.module.css';
 
 type FormValues = z.infer<typeof registerProjectSchema>;
 
@@ -44,6 +46,7 @@ export const RegisterProject = () => {
 
   const { data: hash, writeContract, error } = useWriteContract();
   const [opened, { open, close }] = useDisclosure(true);
+  const [txState, setTxState] = useState<TxStates>(TxStates.Success);
   const config = useConfig();
 
   const form = useForm({
@@ -150,20 +153,20 @@ export const RegisterProject = () => {
       });
       return;
     }
-    console.log('isConnected', isConnected);
-    console.log('Registry', Registry);
-    console.log('ADDR.REGISTRY', ADDR.REGISTRY);
-    console.log('nonce', nonce);
-    console.log('values.name', values.name);
-    console.log(
-      'createMetadata',
-      createMetadata({
-        protocol: projectProfileHash(),
-        ipfsHash: pinRes.IpfsHash,
-      })
-    );
-    console.log('address', address);
-    console.log('values.teamMembers', values.teamMembers);
+    // console.log('isConnected', isConnected);
+    // console.log('Registry', Registry);
+    // console.log('ADDR.REGISTRY', ADDR.REGISTRY);
+    // console.log('nonce', nonce);
+    // console.log('values.name', values.name);
+    // console.log(
+    //   'createMetadata',
+    //   createMetadata({
+    //     protocol: projectProfileHash(),
+    //     ipfsHash: pinRes.IpfsHash,
+    //   })
+    // );
+    // console.log('address', address);
+    // console.log('values.teamMembers', values.teamMembers);
 
     const tx = await writeContract({
       abi: Registry,
@@ -189,6 +192,53 @@ export const RegisterProject = () => {
   };
 
   const hasErrors = Object.keys(form.errors).length > 0;
+
+  const txModalContent = useMemo(() => {
+    if (txState === TxStates.Idle) return <></>;
+
+    if (
+      txState === TxStates.Pinning ||
+      txState === TxStates.Signing ||
+      txState === TxStates.Validating ||
+      txState === TxStates.Syncing
+    ) {
+      return (
+        <LoadingState
+          title="Creating Your Project Profile"
+          description="Submitting your project profile to the Allo Registry."
+          nerdDetails="State: doing things with stuff..."
+          txHash="/"
+        />
+      );
+    }
+
+    if (txState === TxStates.Success) {
+      return (
+        <SuccessState
+          title="Project Profile Created"
+          description="Your project profile has been created."
+          ctaElement={
+            <Button onClick={() => {}} w="65%">
+              Go Find Grants
+            </Button>
+          }
+          txHash="/"
+        />
+      );
+    }
+
+    if (txState === TxStates.Error || txState === TxStates.SyncError) {
+      return (
+        <ErrorState
+          title="Project Profile Failed"
+          description="Your project profile has failed."
+          nerdDetails="State: doing things with stuff..."
+          txHash="/"
+        />
+      );
+    }
+  }, []);
+
   return (
     <>
       <FormPageLayout
@@ -313,12 +363,7 @@ export const RegisterProject = () => {
         </Stack>
       </FormPageLayout>
       <Modal opened={opened} onClose={close} centered>
-        <LoadingState
-          title="Creating Your Project Profile"
-          description="Submitting your project profile to the Allo Registry."
-          nerdDetails="State: doing things with stuff..."
-          txHash="/"
-        />
+        {txModalContent}
       </Modal>
     </>
   );
@@ -354,7 +399,7 @@ const LoadingState = ({
           target="_blank"
           td="underline"
           style={{ cursor: 'pointer' }}
-          c={theme.colors.blue[4]}
+          c={theme.colors.dark[3]}
         >
           View on Etherscan
         </Text>
@@ -366,24 +411,28 @@ const LoadingState = ({
 const SuccessState = ({
   title,
   description,
-  nerdDetails,
+  ctaElement,
   txHash,
 }: {
   title?: string;
   description?: string;
-  nerdDetails?: string;
+  ctaElement?: ReactNode;
   txHash?: string;
 }) => {
   const theme = useMantineTheme();
   return (
-    <Stack align="center" mt={-14} pb={'xl'}>
-      <Text size="lg">{title}</Text>
+    <Stack align="center" pb={'xl'}>
+      <div className={classes.ufo}>
+        <IconUfo size={80} color={theme.colors.blue[4]} />
+      </div>
+      <Group gap={6}>
+        <Text size="lg">{title}</Text>
+        <IconCheck size={24} />
+      </Group>
       <Text size="sm" c={theme.colors.dark[2]}>
         {description}
       </Text>
-      <Text size="sm" c={theme.colors.dark[2]}>
-        {nerdDetails}
-      </Text>
+      {ctaElement}
       {txHash && (
         <Text
           component={'a'}
@@ -392,7 +441,7 @@ const SuccessState = ({
           target="_blank"
           td="underline"
           style={{ cursor: 'pointer' }}
-          c={theme.colors.blue[4]}
+          c={theme.colors.dark[3]}
         >
           View on Etherscan
         </Text>
