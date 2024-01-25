@@ -22,32 +22,34 @@ export const FormPageLayout = ({
   errors?: Record<string, string>;
 }) => {
   return (
-    <form onSubmit={onSubmit}>
-      <Stack maw={375} miw={300} w={'100%'} align="center" m="xl" mt="lg">
-        <Group w="100%" mb="xl">
-          {backBtn && (
-            <ActionIcon variant="subtle" onClick={backBtn.onClick}>
-              <IconArrowNarrowLeft />
-            </ActionIcon>
-          )}
-          <Text fz={24} fw={500}>
-            {title}
-          </Text>
-        </Group>
-        {children}
-        <Group w="100%" mt="md" justify="flex-end">
-          {secondaryBtn && (
-            <Button variant="light" onClick={secondaryBtn.onClick}>
-              {secondaryBtn.label}
-            </Button>
-          )}
-          {primaryBtn && (
-            <Button type="submit" disabled={disableSubmit}>
-              {primaryBtn.label}
-            </Button>
-          )}
-        </Group>
-      </Stack>
-    </form>
+    <>
+      <form onSubmit={onSubmit}>
+        <Stack maw={375} miw={300} w={'100%'} align="center" m="xl" mt="lg">
+          <Group w="100%" mb="xl">
+            {backBtn && (
+              <ActionIcon variant="subtle" onClick={backBtn.onClick}>
+                <IconArrowNarrowLeft />
+              </ActionIcon>
+            )}
+            <Text fz={24} fw={500}>
+              {title}
+            </Text>
+          </Group>
+          {children}
+          <Group w="100%" mt="md" justify="flex-end">
+            {secondaryBtn && (
+              <Button variant="light" onClick={secondaryBtn.onClick}>
+                {secondaryBtn.label}
+              </Button>
+            )}
+            {primaryBtn && (
+              <Button type="submit" disabled={disableSubmit}>
+                {primaryBtn.label}
+              </Button>
+            )}
+          </Group>
+        </Stack>
+      </form>
+    </>
   );
 };

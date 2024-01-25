@@ -10,9 +10,7 @@ export const NetworksModal = ({
   console.log('opened', opened);
   const { connectors, connect } = useConnect();
 
-  const handleConnect = (connector: Connector) => {
-    connect({ connector });
-  };
+  const handleConnect = (connector: Connector) => {};
   return (
     <Modal opened={opened} onClose={close} centered title="Connect Wallet">
       <Stack>

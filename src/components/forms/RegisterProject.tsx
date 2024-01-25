@@ -1,6 +1,6 @@
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
-import { Stack, TextInput, Textarea } from '@mantine/core';
+import { Button, Stack, TextInput, Textarea } from '@mantine/core';
 
 import { FormPageLayout } from '../../layout/FormPageLayout';
 import {
@@ -13,19 +13,30 @@ import {
 import { AvatarPickerIPFS } from '../../components/AvatarPickerIPFS';
 import { notifications } from '@mantine/notifications';
 import { AddressBox } from '../../components/AddressBox';
+import Registry from '../../abi/Registry.json';
 
 import { useForm, zodResolver } from '@mantine/form';
 import { FormEvent } from 'react';
 import { registerProjectSchema } from './validationSchemas/registerProjectSchema';
 import { z } from 'zod';
-import { generateNonce } from '../../types/common';
+import { generateNonce } from '../../utils/helpers';
 import { pinJSONToIPFS } from '../../utils/ipfs/pin';
-import { useAccount } from 'wagmi';
+import { useAccount, useConfig, useWriteContract } from 'wagmi';
+import { createMetadata, projectProfileHash } from '../../utils/metadata';
+import { ADDR } from '../../constants/addresses';
+import { arbitrumSepolia } from 'viem/chains';
 
 type FormValues = z.infer<typeof registerProjectSchema>;
 
 export const RegisterProject = () => {
-  const { address } = useAccount();
+  const { address, isConnected } = useAccount();
+
+  const { data: hash, writeContract, error } = useWriteContract();
+
+  console.log('hash', hash);
+  console.log('error', error);
+
+  const config = useConfig();
 
   const form = useForm({
     initialValues: {
@@ -42,6 +53,65 @@ export const RegisterProject = () => {
     },
     validate: zodResolver(registerProjectSchema),
   });
+
+  const handleTest = async () => {
+    console.log('test');
+
+    const nonce = generateNonce();
+
+    const metadata = {
+      name: 'test',
+      description: 'test',
+      avatarHash_IPFS: 'test',
+      email: 'test',
+      x: 'test',
+      github: 'test',
+      discord: 'test',
+      telegram: 'test',
+    };
+
+    const pinRes = await pinJSONToIPFS(metadata);
+
+    if (!pinRes?.IpfsHash) {
+      notifications.show({
+        title: 'IPFS Upload Error',
+        message: "Pin to IPFS didn't return an IPFS hash",
+        color: 'red',
+      });
+      return;
+    }
+
+    console.log('isConnected', isConnected);
+
+    const teamMembers = [
+      '0xDE6bcde54CF040088607199FC541f013bA53C21E',
+      '0x57abda4ee50Bb3079A556C878b2c345310057569',
+      '0xD800B05c70A2071BC1E5Eac5B3390Da1Eb67bC9D',
+    ];
+
+    console.log('config', config);
+
+    writeContract({
+      abi: Registry,
+
+      chainId: arbitrumSepolia.id,
+      address: ADDR.REGISTRY,
+      functionName: 'createProfile',
+      args: [
+        33,
+        // nonce,
+        'test',
+
+        createMetadata({
+          protocol: projectProfileHash(),
+          ipfsHash: pinRes.IpfsHash,
+        }),
+        address,
+        teamMembers,
+      ],
+    });
+  };
+
   const handleFormSubmit = async (
     values: FormValues,
     e?: FormEvent<HTMLFormElement>
@@ -52,7 +122,6 @@ export const RegisterProject = () => {
     if (res.hasErrors) return;
 
     const nonce = generateNonce();
-    console.log(nonce);
 
     const metadata = {
       name: values.name,
@@ -67,7 +136,7 @@ export const RegisterProject = () => {
 
     const pinRes = await pinJSONToIPFS(metadata);
 
-    if (pinRes.status !== 'success') {
+    if (!pinRes.IpfsHash) {
       notifications.show({
         title: 'IPFS Upload Error',
         message: pinRes.message,
@@ -75,14 +144,38 @@ export const RegisterProject = () => {
       });
       return;
     }
+    console.log('isConnected', isConnected);
+    console.log('Registry', Registry);
+    console.log('ADDR.REGISTRY', ADDR.REGISTRY);
+    console.log('nonce', nonce);
+    console.log('values.name', values.name);
+    console.log(
+      'createMetadata',
+      createMetadata({
+        protocol: projectProfileHash(),
+        ipfsHash: pinRes.IpfsHash,
+      })
+    );
+    console.log('address', address);
+    console.log('values.teamMembers', values.teamMembers);
 
-    const args = [
-      nonce,
-      values.name,
-      pinRes.IpfsHash,
-      address,
-      values.teamMembers,
-    ];
+    const tx = await writeContract({
+      abi: Registry,
+      address: ADDR.REGISTRY,
+      functionName: 'createProfile',
+      args: [
+        nonce,
+        values.name,
+        createMetadata({
+          protocol: projectProfileHash(),
+          ipfsHash: pinRes.IpfsHash,
+        }),
+        address,
+        values.teamMembers,
+      ],
+    });
+
+    console.log('tx', tx);
   };
 
   const handleBlur = (fieldName: string) => {
@@ -209,6 +302,7 @@ export const RegisterProject = () => {
           {...form.getInputProps('telegram')}
           onBlur={() => handleBlur('telegram')}
         />
+        <Button onClick={() => handleTest()}>Test</Button>
       </Stack>
     </FormPageLayout>
   );
