@@ -1,4 +1,5 @@
-import { MantineStyleProp, MantineTheme, createTheme } from '@mantine/core';
+import { Loader, createTheme } from '@mantine/core';
+import { RingLoader } from './components/loader/RingLoader';
 
 export const theme = createTheme({
   fontFamily: 'Roboto',
@@ -15,6 +16,12 @@ export const theme = createTheme({
         },
       },
     },
+    Loader: Loader.extend({
+      defaultProps: {
+        loaders: { ...Loader.defaultLoaders, ring: RingLoader },
+        type: 'ring',
+      },
+    }),
   },
 
   /* Put your mantine theme override here */
