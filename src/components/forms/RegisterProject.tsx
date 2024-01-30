@@ -1,14 +1,4 @@
-import {
-  Button,
-  Group,
-  Loader,
-  Modal,
-  Stack,
-  Text,
-  TextInput,
-  Textarea,
-  useMantineTheme,
-} from '@mantine/core';
+import { Button, Modal, Stack, TextInput, Textarea } from '@mantine/core';
 
 import { FormPageLayout } from '../../layout/FormPageLayout';
 import {
@@ -16,10 +6,7 @@ import {
   IconBrandGithub,
   IconBrandTelegram,
   IconBrandX,
-  IconCheck,
-  IconCircleX,
   IconMail,
-  IconUfo,
 } from '@tabler/icons-react';
 import { AvatarPickerIPFS } from '../../components/AvatarPickerIPFS';
 import { notifications } from '@mantine/notifications';
@@ -27,7 +14,7 @@ import { AddressBox } from '../../components/AddressBox';
 import Registry from '../../abi/Registry.json';
 
 import { useForm, zodResolver } from '@mantine/form';
-import { FormEvent, ReactNode, useMemo, useState } from 'react';
+import { FormEvent, useState } from 'react';
 import { registerProjectSchema } from './validationSchemas/registerProjectSchema';
 import { z } from 'zod';
 import { generateRandomUint256 } from '../../utils/helpers';
@@ -35,10 +22,8 @@ import { pinJSONToIPFS } from '../../utils/ipfs/pin';
 import { useAccount } from 'wagmi';
 import { createMetadata, shipProfileHash } from '../../utils/metadata';
 import { ADDR } from '../../constants/addresses';
-import { useDisclosure } from '@mantine/hooks';
 import { TxStates } from '../../types/common';
-import classes from './txModalStyles.module.css';
-import { generateTxNerdLabels } from '../../utils/tx';
+
 import { useTx } from '../../hooks/useTx';
 
 type FormValues = z.infer<typeof registerProjectSchema>;
@@ -46,15 +31,8 @@ type FormValues = z.infer<typeof registerProjectSchema>;
 export const RegisterProject = () => {
   const { address } = useAccount();
 
-  const {
-    writeContract,
-    isAwaitingSignature,
-    isConfirming,
-    isConfirmed,
-    isError,
-  } = useTx();
+  const { tx } = useTx();
 
-  const [opened, { open, close }] = useDisclosure(false);
   const [txState, setTxState] = useState<TxStates>(TxStates.Idle);
 
   const form = useForm({
@@ -89,7 +67,6 @@ export const RegisterProject = () => {
         website: 'test',
       };
 
-      open();
       const pinRes = await pinJSONToIPFS(shipMetadata);
 
       if (!pinRes?.IpfsHash) {
@@ -103,21 +80,39 @@ export const RegisterProject = () => {
         '0xD800B05c70A2071BC1E5Eac5B3390Da1Eb67bC9D',
       ];
 
-      writeContract({
-        abi: Registry,
-        address: ADDR.REGISTRY,
-        functionName: 'createProfile',
-        args: [
-          nonce,
-          'test',
-          createMetadata({
-            protocol: shipProfileHash(),
-            ipfsHash: pinRes.IpfsHash,
-          }),
-          address,
-          teamMembers,
-        ],
+      tx({
+        writeContractParams: {
+          abi: Registry,
+          address: ADDR.REGISTRY,
+          functionName: 'createProfile',
+          args: [
+            nonce,
+            'test',
+            createMetadata({
+              protocol: shipProfileHash(),
+              ipfsHash: pinRes.IpfsHash,
+            }),
+            address,
+            teamMembers,
+          ],
+        },
       });
+
+      //  {
+      //     abi: Registry,
+      //     address: ADDR.REGISTRY,
+      //     functionName: 'createProfile',
+      //     args: [
+      //       nonce,
+      //       'test',
+      //       createMetadata({
+      //         protocol: shipProfileHash(),
+      //         ipfsHash: pinRes.IpfsHash,
+      //       }),
+      //       address,
+      //       teamMembers,
+      //     ],
+      //   },
     } catch (error: any) {
       console.error(error);
       setTxState(TxStates.Error);
@@ -168,45 +163,6 @@ export const RegisterProject = () => {
   };
 
   const hasErrors = Object.keys(form.errors).length > 0;
-
-  const txModalContent = useMemo(() => {
-    if (isConfirming || isAwaitingSignature) {
-      return (
-        <LoadingState
-          title="Creating Your Project Profile"
-          description="Submitting your project profile to the Allo Registry."
-          nerdDetails={generateTxNerdLabels(txState)}
-          txHash="/"
-        />
-      );
-    }
-
-    if (isConfirmed) {
-      return (
-        <SuccessState
-          title="Project Profile Created"
-          description="Your project profile has been created."
-          ctaElement={
-            <Button onClick={() => {}} w="65%">
-              Go Find Grants
-            </Button>
-          }
-          txHash="/"
-        />
-      );
-    }
-
-    if (isError) {
-      return (
-        <ErrorState
-          title="Something went wrong"
-          description="Tells which thing failed"
-          nerdDetails="State: Possibly tells you how it failed"
-          txHash="/"
-        />
-      );
-    }
-  }, [isConfirmed, isConfirming, txState, isAwaitingSignature, isError]);
 
   return (
     <>
@@ -333,129 +289,6 @@ export const RegisterProject = () => {
           </Button>
         </Stack>
       </FormPageLayout>
-      <Modal opened={opened} onClose={close} centered>
-        {txModalContent}
-      </Modal>
     </>
-  );
-};
-
-const LoadingState = ({
-  title,
-  description,
-  nerdDetails,
-  txHash,
-}: {
-  title?: string;
-  description?: string;
-  nerdDetails?: string;
-  txHash?: string;
-}) => {
-  const theme = useMantineTheme();
-  return (
-    <Stack align="center" mt={-14} pb={'xl'}>
-      <Loader type="ring" style={{ width: '8rem', height: '8rem' }} />
-      <Text size="lg">{title}</Text>
-      <Text size="sm" c={theme.colors.dark[2]}>
-        {description}
-      </Text>
-      <Text size="sm" c={theme.colors.dark[2]}>
-        {nerdDetails}
-      </Text>
-      {txHash && (
-        <Text
-          component={'a'}
-          size="sm"
-          rel="noopener noreferrer"
-          target="_blank"
-          td="underline"
-          style={{ cursor: 'pointer' }}
-          c={theme.colors.dark[3]}
-        >
-          View on Etherscan
-        </Text>
-      )}
-    </Stack>
-  );
-};
-
-const SuccessState = ({
-  title,
-  description,
-  ctaElement,
-  txHash,
-}: {
-  title?: string;
-  description?: string;
-  ctaElement?: ReactNode;
-  txHash?: string;
-}) => {
-  const theme = useMantineTheme();
-  return (
-    <Stack align="center" pb={'xl'}>
-      <div className={classes.ufo}>
-        <IconUfo size={80} color={theme.colors.blue[4]} />
-      </div>
-      <Group gap={6}>
-        <Text size="lg">{title}</Text>
-        <IconCheck size={24} />
-      </Group>
-      <Text size="sm" c={theme.colors.dark[2]}>
-        {description}
-      </Text>
-      {ctaElement}
-      {txHash && (
-        <Text
-          component={'a'}
-          size="sm"
-          rel="noopener noreferrer"
-          target="_blank"
-          td="underline"
-          style={{ cursor: 'pointer' }}
-          c={theme.colors.dark[3]}
-        >
-          View on Etherscan
-        </Text>
-      )}
-    </Stack>
-  );
-};
-
-const ErrorState = ({
-  title,
-  description,
-  nerdDetails,
-  txHash,
-}: {
-  title?: string;
-  description?: string;
-  nerdDetails?: string;
-  txHash?: string;
-}) => {
-  const theme = useMantineTheme();
-  return (
-    <Stack align="center" pb={'xl'}>
-      <IconCircleX size={80} color={theme.colors.red[4]} />
-      <Text size="lg">{title}</Text>
-      <Text size="sm" c={theme.colors.dark[2]}>
-        {description}
-      </Text>
-      <Text size="sm" c={theme.colors.dark[2]}>
-        {nerdDetails}
-      </Text>
-      {txHash && (
-        <Text
-          component={'a'}
-          size="sm"
-          rel="noopener noreferrer"
-          target="_blank"
-          td="underline"
-          style={{ cursor: 'pointer' }}
-          c={theme.colors.dark[3]}
-        >
-          View on Etherscan
-        </Text>
-      )}
-    </Stack>
   );
 };
