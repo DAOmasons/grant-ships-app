@@ -56,6 +56,7 @@ export const RegisterProject = () => {
 
   const {
     data: hash,
+
     writeContract,
     writeContractAsync,
     isPending,
