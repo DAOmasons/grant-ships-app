@@ -1,4 +1,4 @@
-import { Button, Stack, TextInput, Textarea } from '@mantine/core';
+import { Stack, TextInput, Textarea } from '@mantine/core';
 
 import { FormPageLayout } from '../../layout/FormPageLayout';
 import {
@@ -14,13 +14,12 @@ import { AddressBox } from '../../components/AddressBox';
 import Registry from '../../abi/Registry.json';
 
 import { useForm, zodResolver } from '@mantine/form';
-import { FormEvent } from 'react';
 import { registerProjectSchema } from './validationSchemas/registerProjectSchema';
 import { z } from 'zod';
 import { generateRandomUint256 } from '../../utils/helpers';
 import { pinJSONToIPFS } from '../../utils/ipfs/pin';
 import { useAccount } from 'wagmi';
-import { createMetadata, shipProfileHash } from '../../utils/metadata';
+import { createMetadata, projectProfileHash } from '../../utils/metadata';
 import { ADDR } from '../../constants/addresses';
 
 import { useTx } from '../../hooks/useTx';
@@ -48,20 +47,20 @@ export const RegisterProject = () => {
     validate: zodResolver(registerProjectSchema),
   });
 
-  const handleTest = async () => {
+  const handleFormSubmit = async (values: FormValues) => {
     try {
       const nonce = generateRandomUint256();
 
       const shipMetadata = {
-        name: 'test',
-        mission: 'test',
-        avatarHash_IPFS: 'test',
-        email: 'test',
-        x: 'test',
-        github: 'test',
-        discord: 'test',
-        telegram: 'test',
-        website: 'test',
+        name: values.name,
+        description: values.description,
+        avatarHash_IPFS: values.avatarHash,
+        email: values.email,
+        x: values.x,
+        github: values.github,
+        discord: values.discord,
+        telegram: values.telegram,
+        website: '',
       };
 
       const pinRes = await pinJSONToIPFS(shipMetadata);
@@ -75,11 +74,7 @@ export const RegisterProject = () => {
         return;
       }
 
-      const teamMembers = [
-        '0xDE6bcde54CF040088607199FC541f013bA53C21E',
-        '0x57abda4ee50Bb3079A556C878b2c345310057569',
-        '0xD800B05c70A2071BC1E5Eac5B3390Da1Eb67bC9D',
-      ];
+      const teamMembers = values.teamMembers.filter(Boolean);
 
       tx({
         writeContractParams: {
@@ -88,12 +83,12 @@ export const RegisterProject = () => {
           functionName: 'createProfile',
           args: [
             nonce,
-            'test',
+            values.name,
             createMetadata({
-              protocol: shipProfileHash(),
+              protocol: projectProfileHash(),
               ipfsHash: pinRes.IpfsHash,
             }),
-            address,
+            values.projectOwner,
             teamMembers,
           ],
         },
@@ -128,26 +123,15 @@ export const RegisterProject = () => {
     }
   };
 
-  const handleFormSubmit = async (
-    values: FormValues,
-    e?: FormEvent<HTMLFormElement>
-  ) => {
-    console.log(values);
-    console.log(e);
-  };
-
   const handleBlur = (fieldName: string) => {
     form.validateField(fieldName);
   };
-
-  const hasErrors = Object.keys(form.errors).length > 0;
 
   return (
     <>
       <FormPageLayout
         title="Register Project Profile"
-        disableSubmit={hasErrors}
-        onSubmit={form.onSubmit((values, e) => handleFormSubmit(values, e))}
+        onSubmit={form.onSubmit((values) => handleFormSubmit(values))}
         primaryBtn={{
           label: 'Create Project',
           onClick: () => {
@@ -262,9 +246,6 @@ export const RegisterProject = () => {
             {...form.getInputProps('telegram')}
             onBlur={() => handleBlur('telegram')}
           />
-          <Button onClick={() => handleTest()} type="button">
-            Test
-          </Button>
         </Stack>
       </FormPageLayout>
     </>
