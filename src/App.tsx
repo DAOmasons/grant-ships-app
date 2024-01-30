@@ -7,6 +7,7 @@ import { config } from './utils/config';
 import { RegisterProject } from './components/forms/RegisterProject';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter } from 'react-router-dom';
+import { TxProvider } from './contexts/TxContext';
 
 const queryClient = new QueryClient();
 export default function App() {
@@ -15,7 +16,9 @@ export default function App() {
       <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
           <Layout>
-            <RegisterProject />
+            <TxProvider>
+              <RegisterProject />
+            </TxProvider>
           </Layout>
         </QueryClientProvider>
       </WagmiProvider>

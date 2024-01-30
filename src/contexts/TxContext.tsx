@@ -1,4 +1,8 @@
 import React, { ReactNode } from 'react';
+import {
+  WaitForTransactionReceiptErrorType,
+  WriteContractErrorType,
+} from 'viem';
 import { Config, useWaitForTransactionReceipt, useWriteContract } from 'wagmi';
 import { WriteContractMutate } from 'wagmi/query';
 
@@ -10,9 +14,14 @@ type TxContextType = {
   isError: boolean;
   txHash?: string;
   isIdle: boolean;
+  txError: WaitForTransactionReceiptErrorType | null;
+  error: WriteContractErrorType | null;
+  txData: ReturnType<typeof useWaitForTransactionReceipt>['data'];
 };
 
-const TXContext = React.createContext<TxContextType | undefined>(undefined);
+export const TXContext = React.createContext<TxContextType | undefined>(
+  undefined
+);
 
 export const TxProvider = ({ children }: { children: ReactNode }) => {
   const {
@@ -21,13 +30,18 @@ export const TxProvider = ({ children }: { children: ReactNode }) => {
     writeContract,
     isError,
     reset,
+    error,
     isIdle,
   } = useWriteContract();
 
-  const { isSuccess: isConfirmed, isLoading: isConfirming } =
-    useWaitForTransactionReceipt({
-      hash: hash,
-    });
+  const {
+    isSuccess: isConfirmed,
+    isLoading: isConfirming,
+    error: txError,
+    data: txData,
+  } = useWaitForTransactionReceipt({
+    hash: hash,
+  });
 
   return (
     <TXContext.Provider
@@ -38,6 +52,9 @@ export const TxProvider = ({ children }: { children: ReactNode }) => {
         writeContract,
         isError,
         isIdle,
+        txError,
+        txData,
+        error: error as unknown as WriteContractErrorType | null,
         // TODO: Make sure this is the correct naming
         // this should be true if the transaction is awaiting signature
         isAwaitingSignature,
@@ -46,14 +63,4 @@ export const TxProvider = ({ children }: { children: ReactNode }) => {
       {children}
     </TXContext.Provider>
   );
-};
-
-export const useTx = () => {
-  const context = React.useContext(TXContext);
-
-  if (context === undefined) {
-    throw new Error('useTx must be used within a TxProvider');
-  }
-
-  return context;
 };

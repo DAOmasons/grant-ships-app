@@ -32,22 +32,14 @@ import { registerProjectSchema } from './validationSchemas/registerProjectSchema
 import { z } from 'zod';
 import { generateRandomUint256 } from '../../utils/helpers';
 import { pinJSONToIPFS } from '../../utils/ipfs/pin';
-import {
-  useAccount,
-  useConfig,
-  useWaitForTransactionReceipt,
-  useWriteContract,
-} from 'wagmi';
-import {
-  createMetadata,
-  projectProfileHash,
-  shipProfileHash,
-} from '../../utils/metadata';
+import { useAccount } from 'wagmi';
+import { createMetadata, shipProfileHash } from '../../utils/metadata';
 import { ADDR } from '../../constants/addresses';
 import { useDisclosure } from '@mantine/hooks';
 import { TxStates } from '../../types/common';
 import classes from './txModalStyles.module.css';
 import { generateTxNerdLabels } from '../../utils/tx';
+import { useTx } from '../../hooks/useTx';
 
 type FormValues = z.infer<typeof registerProjectSchema>;
 
@@ -55,25 +47,15 @@ export const RegisterProject = () => {
   const { address } = useAccount();
 
   const {
-    data: hash,
-
     writeContract,
-    writeContractAsync,
-    isPending,
-  } = useWriteContract();
-
-  const { isSuccess: isConfirmed, isLoading: isConfirming } =
-    useWaitForTransactionReceipt({
-      hash: hash,
-    });
+    isAwaitingSignature,
+    isConfirming,
+    isConfirmed,
+    isError,
+  } = useTx();
 
   const [opened, { open, close }] = useDisclosure(false);
   const [txState, setTxState] = useState<TxStates>(TxStates.Idle);
-  const [loading, setLoading] = useState(false);
-  const config = useConfig();
-
-  console.log('isConfirmed', isConfirmed);
-  console.log('isConfirming', isConfirming);
 
   const form = useForm({
     initialValues: {
@@ -93,7 +75,6 @@ export const RegisterProject = () => {
 
   const handleTest = async () => {
     try {
-      setLoading(true);
       const nonce = generateRandomUint256();
 
       const shipMetadata = {
@@ -122,33 +103,21 @@ export const RegisterProject = () => {
         '0xD800B05c70A2071BC1E5Eac5B3390Da1Eb67bC9D',
       ];
 
-      writeContract(
-        {
-          abi: Registry,
-          address: ADDR.REGISTRY,
-          functionName: 'createProfile',
-          args: [
-            nonce,
-            'test',
-            createMetadata({
-              protocol: shipProfileHash(),
-              ipfsHash: pinRes.IpfsHash,
-            }),
-            address,
-            teamMembers,
-          ],
-        },
-        {
-          onError: (error) => {
-            console.error(error);
-            notifications.show({
-              title: 'Transaction Error',
-              message: error.message,
-              color: 'red',
-            });
-          },
-        }
-      );
+      writeContract({
+        abi: Registry,
+        address: ADDR.REGISTRY,
+        functionName: 'createProfile',
+        args: [
+          nonce,
+          'test',
+          createMetadata({
+            protocol: shipProfileHash(),
+            ipfsHash: pinRes.IpfsHash,
+          }),
+          address,
+          teamMembers,
+        ],
+      });
     } catch (error: any) {
       console.error(error);
       setTxState(TxStates.Error);
@@ -192,39 +161,6 @@ export const RegisterProject = () => {
       });
       return;
     }
-    // console.log('isConnected', isConnected);
-    // console.log('Registry', Registry);
-    // console.log('ADDR.REGISTRY', ADDR.REGISTRY);
-    // console.log('nonce', nonce);
-    // console.log('values.name', values.name);
-    // console.log(
-    //   'createMetadata',
-    //   createMetadata({
-    //     protocol: projectProfileHash(),
-    //     ipfsHash: pinRes.IpfsHash,
-    //   })
-    // );
-    // console.log('address', address);
-    // console.log('values.teamMembers', values.teamMembers);
-
-    const tx = await writeContractAsync({
-      abi: Registry,
-      address: ADDR.REGISTRY,
-      functionName: 'createProfile',
-      dataSuffix: '0xgrantships',
-      args: [
-        nonce,
-        values.name,
-        createMetadata({
-          protocol: projectProfileHash(),
-          ipfsHash: pinRes.IpfsHash,
-        }),
-        address,
-        values.teamMembers,
-      ],
-    });
-
-    console.log('tx', tx);
   };
 
   const handleBlur = (fieldName: string) => {
@@ -234,7 +170,7 @@ export const RegisterProject = () => {
   const hasErrors = Object.keys(form.errors).length > 0;
 
   const txModalContent = useMemo(() => {
-    if (isConfirming || isPending) {
+    if (isConfirming || isAwaitingSignature) {
       return (
         <LoadingState
           title="Creating Your Project Profile"
@@ -260,7 +196,7 @@ export const RegisterProject = () => {
       );
     }
 
-    if (txState === TxStates.Error || txState === TxStates.SyncError) {
+    if (isError) {
       return (
         <ErrorState
           title="Something went wrong"
@@ -270,7 +206,7 @@ export const RegisterProject = () => {
         />
       );
     }
-  }, [isConfirmed, isConfirming, txState, isPending]);
+  }, [isConfirmed, isConfirming, txState, isAwaitingSignature, isError]);
 
   return (
     <>
