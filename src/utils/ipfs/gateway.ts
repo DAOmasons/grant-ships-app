@@ -4,4 +4,5 @@ export const getIpfsImage = async (cid: string) => {
   const res = await fetch(`${PINATA_GATEWAY}/${cid}`);
 
   const data = await res.blob();
+  return data;
 };

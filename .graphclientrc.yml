@@ -1,0 +1,7 @@
+sources: 
+  - name: grant-ships
+    handler: 
+      graphql: 
+        endpoint: https://api.thegraph.com/subgraphs/name/ui369/grant-ships
+documents: 
+  - './src/**/*.graphql'

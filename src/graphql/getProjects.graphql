@@ -1,0 +1,16 @@
+query GetProjects {
+  projects {
+    id
+    name
+    profileId
+    nonce
+    anchor
+    metadata_protocol
+    owner
+    metadata {
+      name
+      description
+      avatarHash_IPFS
+    }
+  }
+}
