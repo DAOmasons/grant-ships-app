@@ -23,13 +23,12 @@ export const projectProfileHash = () =>
     model: Models.ProjectProfile,
   });
 
-export const shipProfileHash = () => {
+export const shipProfileHash = () =>
   createMedataProtocol({
     storageProtocol: StorageProtocol.IPFS,
     fileType: FileType.JSON,
     model: Models.ShipProfile,
   });
-};
 
 export const projectGrantHash = () =>
   createMedataProtocol({

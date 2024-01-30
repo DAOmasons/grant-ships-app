@@ -30,25 +30,49 @@ import { useForm, zodResolver } from '@mantine/form';
 import { FormEvent, ReactNode, useMemo, useState } from 'react';
 import { registerProjectSchema } from './validationSchemas/registerProjectSchema';
 import { z } from 'zod';
-import { generateNonce } from '../../utils/helpers';
+import { generateRandomUint256 } from '../../utils/helpers';
 import { pinJSONToIPFS } from '../../utils/ipfs/pin';
-import { useAccount, useConfig, useWriteContract } from 'wagmi';
-import { createMetadata, projectProfileHash } from '../../utils/metadata';
+import {
+  useAccount,
+  useConfig,
+  useWaitForTransactionReceipt,
+  useWriteContract,
+} from 'wagmi';
+import {
+  createMetadata,
+  projectProfileHash,
+  shipProfileHash,
+} from '../../utils/metadata';
 import { ADDR } from '../../constants/addresses';
-import { arbitrumSepolia } from 'viem/chains';
 import { useDisclosure } from '@mantine/hooks';
 import { TxStates } from '../../types/common';
 import classes from './txModalStyles.module.css';
+import { generateTxNerdLabels } from '../../utils/tx';
 
 type FormValues = z.infer<typeof registerProjectSchema>;
 
 export const RegisterProject = () => {
-  const { address, isConnected } = useAccount();
+  const { address } = useAccount();
 
-  const { data: hash, writeContract, error } = useWriteContract();
-  const [opened, { open, close }] = useDisclosure(true);
-  const [txState, setTxState] = useState<TxStates>(TxStates.Error);
+  const {
+    data: hash,
+    writeContract,
+    writeContractAsync,
+    isPending,
+  } = useWriteContract();
+
+  const { isSuccess: isConfirmed, isLoading: isConfirming } =
+    useWaitForTransactionReceipt({
+      hash: hash,
+    });
+
+  const [opened, { open, close }] = useDisclosure(false);
+  const [txState, setTxState] = useState<TxStates>(TxStates.Idle);
+  const [loading, setLoading] = useState(false);
   const config = useConfig();
+
+  console.log('isConfirmed', isConfirmed);
+  console.log('isConfirming', isConfirming);
 
   const form = useForm({
     initialValues: {
@@ -67,59 +91,72 @@ export const RegisterProject = () => {
   });
 
   const handleTest = async () => {
-    const nonce = generateNonce();
+    try {
+      setLoading(true);
+      const nonce = generateRandomUint256();
 
-    const metadata = {
-      name: 'test',
-      description: 'test',
-      avatarHash_IPFS: 'test',
-      email: 'test',
-      x: 'test',
-      github: 'test',
-      discord: 'test',
-      telegram: 'test',
-    };
+      const shipMetadata = {
+        name: 'test',
+        mission: 'test',
+        avatarHash_IPFS: 'test',
+        email: 'test',
+        x: 'test',
+        github: 'test',
+        discord: 'test',
+        telegram: 'test',
+        website: 'test',
+      };
 
-    const pinRes = await pinJSONToIPFS(metadata);
+      open();
+      const pinRes = await pinJSONToIPFS(shipMetadata);
 
-    if (!pinRes?.IpfsHash) {
+      if (!pinRes?.IpfsHash) {
+        setTxState(TxStates.Error);
+        return;
+      }
+
+      const teamMembers = [
+        '0xDE6bcde54CF040088607199FC541f013bA53C21E',
+        '0x57abda4ee50Bb3079A556C878b2c345310057569',
+        '0xD800B05c70A2071BC1E5Eac5B3390Da1Eb67bC9D',
+      ];
+
+      writeContract(
+        {
+          abi: Registry,
+          address: ADDR.REGISTRY,
+          functionName: 'createProfile',
+          args: [
+            nonce,
+            'test',
+            createMetadata({
+              protocol: shipProfileHash(),
+              ipfsHash: pinRes.IpfsHash,
+            }),
+            address,
+            teamMembers,
+          ],
+        },
+        {
+          onError: (error) => {
+            console.error(error);
+            notifications.show({
+              title: 'Transaction Error',
+              message: error.message,
+              color: 'red',
+            });
+          },
+        }
+      );
+    } catch (error: any) {
+      console.error(error);
+      setTxState(TxStates.Error);
       notifications.show({
-        title: 'IPFS Upload Error',
-        message: "Pin to IPFS didn't return an IPFS hash",
+        title: 'Transaction Error',
+        message: error.message,
         color: 'red',
       });
-      return;
     }
-
-    console.log('isConnected', isConnected);
-
-    const teamMembers = [
-      '0xDE6bcde54CF040088607199FC541f013bA53C21E',
-      '0x57abda4ee50Bb3079A556C878b2c345310057569',
-      '0xD800B05c70A2071BC1E5Eac5B3390Da1Eb67bC9D',
-    ];
-
-    console.log('config', config);
-
-    writeContract({
-      abi: Registry,
-
-      chainId: arbitrumSepolia.id,
-      address: ADDR.REGISTRY,
-      functionName: 'createProfile',
-      args: [
-        33,
-        // nonce,
-        'test',
-
-        createMetadata({
-          protocol: projectProfileHash(),
-          ipfsHash: pinRes.IpfsHash,
-        }),
-        address,
-        teamMembers,
-      ],
-    });
   };
 
   const handleFormSubmit = async (
@@ -131,7 +168,7 @@ export const RegisterProject = () => {
 
     if (res.hasErrors) return;
 
-    const nonce = generateNonce();
+    const nonce = generateRandomUint256();
 
     const metadata = {
       name: values.name,
@@ -169,10 +206,11 @@ export const RegisterProject = () => {
     // console.log('address', address);
     // console.log('values.teamMembers', values.teamMembers);
 
-    const tx = await writeContract({
+    const tx = await writeContractAsync({
       abi: Registry,
       address: ADDR.REGISTRY,
       functionName: 'createProfile',
+      dataSuffix: '0xgrantships',
       args: [
         nonce,
         values.name,
@@ -195,25 +233,18 @@ export const RegisterProject = () => {
   const hasErrors = Object.keys(form.errors).length > 0;
 
   const txModalContent = useMemo(() => {
-    if (txState === TxStates.Idle) return <></>;
-
-    if (
-      txState === TxStates.Pinning ||
-      txState === TxStates.Signing ||
-      txState === TxStates.Validating ||
-      txState === TxStates.Syncing
-    ) {
+    if (isConfirming || isPending) {
       return (
         <LoadingState
           title="Creating Your Project Profile"
           description="Submitting your project profile to the Allo Registry."
-          nerdDetails="State: doing things with stuff..."
+          nerdDetails={generateTxNerdLabels(txState)}
           txHash="/"
         />
       );
     }
 
-    if (txState === TxStates.Success) {
+    if (isConfirmed) {
       return (
         <SuccessState
           title="Project Profile Created"
@@ -238,7 +269,7 @@ export const RegisterProject = () => {
         />
       );
     }
-  }, []);
+  }, [isConfirmed, isConfirming, txState, isPending]);
 
   return (
     <>
@@ -360,7 +391,9 @@ export const RegisterProject = () => {
             {...form.getInputProps('telegram')}
             onBlur={() => handleBlur('telegram')}
           />
-          <Button onClick={() => handleTest()}>Test</Button>
+          <Button onClick={() => handleTest()} type="button">
+            Test
+          </Button>
         </Stack>
       </FormPageLayout>
       <Modal opened={opened} onClose={close} centered>

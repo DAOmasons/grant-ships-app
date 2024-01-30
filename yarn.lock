@@ -3994,6 +3994,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"crypto@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "crypto@npm:1.0.1"
+  checksum: fcf7dbd68ac5415b7fde7d7208fe203038e92e83e8a8fcf6e86ab4771ce3dd026d6967a990ba56b9d1c771378210814d5c90d907d3739fbd1723d552ad6c8ab8
+  languageName: node
+  linkType: hard
+
 "cssesc@npm:^3.0.0":
   version: 3.0.0
   resolution: "cssesc@npm:3.0.0"
@@ -9448,6 +9455,7 @@ __metadata:
     "@vitejs/plugin-react": "npm:^4.2.1"
     api: "npm:^6.1.1"
     axios: "npm:^1.6.5"
+    crypto: "npm:^1.0.1"
     eslint: "npm:^8.53.0"
     eslint-plugin-react-hooks: "npm:^4.6.0"
     eslint-plugin-react-refresh: "npm:^0.4.4"

@@ -6,7 +6,6 @@ export const theme = createTheme({
   headings: {
     fontFamily: 'Share Tech',
   },
-
   defaultRadius: 'md',
   components: {
     ThemeIcon: {
@@ -23,6 +22,5 @@ export const theme = createTheme({
       },
     }),
   },
-
   /* Put your mantine theme override here */
 });
