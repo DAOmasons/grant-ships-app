@@ -8,6 +8,7 @@ import { RegisterProject } from './components/forms/RegisterProject';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter } from 'react-router-dom';
 import { TxProvider } from './contexts/TxContext';
+import { Projects } from './pages/Projects';
 
 const queryClient = new QueryClient();
 export default function App() {
@@ -17,7 +18,8 @@ export default function App() {
         <QueryClientProvider client={queryClient}>
           <Layout>
             <TxProvider>
-              <RegisterProject />
+              <Projects />
+              {/* <RegisterProject /> */}
             </TxProvider>
           </Layout>
         </QueryClientProvider>
