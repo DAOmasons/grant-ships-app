@@ -1,4 +1,4 @@
-import React, { ReactNode, useMemo, useState } from 'react';
+import React, { ReactNode, useCallback, useMemo, useState } from 'react';
 import {
   WaitForTransactionReceiptErrorType,
   WriteContractErrorType,
@@ -12,7 +12,6 @@ import {
 } from '../components/modals/txModal/txModalStates';
 import { Button, Modal } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-// import { writeContract } from 'viem/actions';
 
 type WriteContractParams = Parameters<
   ReturnType<typeof useWriteContract>['writeContract']
@@ -34,7 +33,7 @@ type ViewParams = {
     title?: string;
     fallback?: string;
   };
-  successButton: {
+  successButton?: {
     label: string;
     onClick: () => void;
   };
@@ -86,10 +85,10 @@ export const TxProvider = ({ children }: { children: ReactNode }) => {
     undefined
   );
 
-  const clearTx = () => {
+  const clearTx = useCallback(() => {
     reset();
     setViewParams(undefined);
-  };
+  }, [reset, setViewParams]);
 
   const tx = ({
     viewParams,
@@ -105,17 +104,17 @@ export const TxProvider = ({ children }: { children: ReactNode }) => {
     setViewParams(viewParams);
   };
 
-  const handleClose = () => {
+  const handleClose = useCallback(() => {
     clearTx();
     close();
-  };
+  }, [clearTx, close]);
 
   const txModalContent = useMemo(() => {
     if (isConfirming || isAwaitingSignature) {
       return (
         <LoadingState
-          title="Creating Your Project Profile"
-          description="Submitting your project profile to the Allo Registry."
+          title={viewParams?.loading?.title || 'Validating Transaction'}
+          description={viewParams?.loading?.description || 'Please wait...'}
           txHash={hash}
         />
       );
@@ -124,12 +123,23 @@ export const TxProvider = ({ children }: { children: ReactNode }) => {
     if (isConfirmed) {
       return (
         <SuccessState
-          title="Project Profile Created"
-          description="Your project profile has been created."
+          title={viewParams?.success?.title || 'Transaction Successful!'}
+          description={
+            viewParams?.success?.description ||
+            'You did it! Your transaction was successfully confirmed onchain.'
+          }
           ctaElement={
-            <Button onClick={() => {}} w="65%">
-              Go Find Grants
-            </Button>
+            <>
+              {viewParams?.successButton ? (
+                <Button onClick={viewParams?.successButton.onClick} w="65%">
+                  {viewParams?.successButton.label}
+                </Button>
+              ) : (
+                <Button onClick={handleClose} w="65%">
+                  Close
+                </Button>
+              )}
+            </>
           }
           txHash={hash}
         />
@@ -139,14 +149,26 @@ export const TxProvider = ({ children }: { children: ReactNode }) => {
     if (isError) {
       return (
         <ErrorState
-          title="Something went wrong"
-          description="Tells which thing failed"
-          nerdDetails="State: Possibly tells you how it failed"
+          title={viewParams?.error?.title || 'Something went wrong.'}
+          description={
+            error?.message ||
+            viewParams?.error?.fallback ||
+            'Error message unknown.'
+          }
           txHash={hash}
         />
       );
     }
-  }, [isConfirmed, isConfirming, isAwaitingSignature, isError, hash]);
+  }, [
+    isConfirmed,
+    isConfirming,
+    isAwaitingSignature,
+    isError,
+    hash,
+    viewParams,
+    error,
+    handleClose,
+  ]);
 
   return (
     <TXContext.Provider

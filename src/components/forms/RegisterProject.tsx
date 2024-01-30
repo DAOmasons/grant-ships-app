@@ -1,4 +1,4 @@
-import { Button, Modal, Stack, TextInput, Textarea } from '@mantine/core';
+import { Button, Stack, TextInput, Textarea } from '@mantine/core';
 
 import { FormPageLayout } from '../../layout/FormPageLayout';
 import {
@@ -14,7 +14,7 @@ import { AddressBox } from '../../components/AddressBox';
 import Registry from '../../abi/Registry.json';
 
 import { useForm, zodResolver } from '@mantine/form';
-import { FormEvent, useState } from 'react';
+import { FormEvent } from 'react';
 import { registerProjectSchema } from './validationSchemas/registerProjectSchema';
 import { z } from 'zod';
 import { generateRandomUint256 } from '../../utils/helpers';
@@ -22,7 +22,6 @@ import { pinJSONToIPFS } from '../../utils/ipfs/pin';
 import { useAccount } from 'wagmi';
 import { createMetadata, shipProfileHash } from '../../utils/metadata';
 import { ADDR } from '../../constants/addresses';
-import { TxStates } from '../../types/common';
 
 import { useTx } from '../../hooks/useTx';
 
@@ -32,8 +31,6 @@ export const RegisterProject = () => {
   const { address } = useAccount();
 
   const { tx } = useTx();
-
-  const [txState, setTxState] = useState<TxStates>(TxStates.Idle);
 
   const form = useForm({
     initialValues: {
@@ -70,7 +67,11 @@ export const RegisterProject = () => {
       const pinRes = await pinJSONToIPFS(shipMetadata);
 
       if (!pinRes?.IpfsHash) {
-        setTxState(TxStates.Error);
+        notifications.show({
+          title: 'IPFS Upload Error',
+          message: pinRes.message,
+          color: 'red',
+        });
         return;
       }
 
@@ -96,26 +97,29 @@ export const RegisterProject = () => {
             teamMembers,
           ],
         },
+        viewParams: {
+          loading: {
+            title: 'Creating Your Project Profile',
+            description:
+              'Submitting your project profile to the Allo Registry.',
+          },
+          success: {
+            title: 'Project Profile Created',
+            description: 'Your project profile has been created.',
+          },
+          error: {
+            title: 'Something went wrong.',
+            fallback:
+              'There was an unknown error creating your project profile.',
+          },
+          successButton: {
+            label: 'Go find some Grants!',
+            onClick: () => {},
+          },
+        },
       });
-
-      //  {
-      //     abi: Registry,
-      //     address: ADDR.REGISTRY,
-      //     functionName: 'createProfile',
-      //     args: [
-      //       nonce,
-      //       'test',
-      //       createMetadata({
-      //         protocol: shipProfileHash(),
-      //         ipfsHash: pinRes.IpfsHash,
-      //       }),
-      //       address,
-      //       teamMembers,
-      //     ],
-      //   },
     } catch (error: any) {
       console.error(error);
-      setTxState(TxStates.Error);
       notifications.show({
         title: 'Transaction Error',
         message: error.message,

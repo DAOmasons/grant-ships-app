@@ -1,4 +1,11 @@
-import { Group, Loader, Stack, Text, useMantineTheme } from '@mantine/core';
+import {
+  Group,
+  Loader,
+  Mark,
+  Stack,
+  Text,
+  useMantineTheme,
+} from '@mantine/core';
 import { IconCheck, IconCircleX, IconUfo } from '@tabler/icons-react';
 import { ReactNode } from 'react';
 import classes from './txModalStyles.module.css';
@@ -6,12 +13,10 @@ import classes from './txModalStyles.module.css';
 export const LoadingState = ({
   title,
   description,
-  nerdDetails,
   txHash,
 }: {
   title?: string;
   description?: string;
-  nerdDetails?: string;
   txHash?: string;
 }) => {
   const theme = useMantineTheme();
@@ -21,9 +26,6 @@ export const LoadingState = ({
       <Text size="lg">{title}</Text>
       <Text size="sm" c={theme.colors.dark[2]}>
         {description}
-      </Text>
-      <Text size="sm" c={theme.colors.dark[2]}>
-        {nerdDetails}
       </Text>
       {txHash && (
         <Text
@@ -87,24 +89,30 @@ export const SuccessState = ({
 export const ErrorState = ({
   title,
   description,
-  nerdDetails,
   txHash,
 }: {
   title?: string;
   description?: string;
-  nerdDetails?: string;
   txHash?: string;
 }) => {
   const theme = useMantineTheme();
   return (
     <Stack align="center" pb={'xl'}>
       <IconCircleX size={80} color={theme.colors.red[4]} />
-      <Text size="lg">{title}</Text>
-      <Text size="sm" c={theme.colors.dark[2]}>
-        {description}
+      <Text size="lg" mb={'xs'}>
+        {title}
       </Text>
-      <Text size="sm" c={theme.colors.dark[2]}>
-        {nerdDetails}
+      <Text
+        size="sm"
+        c={theme.colors.dark[2]}
+        lineClamp={4}
+        style={{ wordBreak: 'break-word' }}
+        px={'lg'}
+      >
+        <Text span fw={700}>
+          Error Message:{' '}
+        </Text>{' '}
+        {description}
       </Text>
       {txHash && (
         <Text
