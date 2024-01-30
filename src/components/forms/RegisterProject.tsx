@@ -132,34 +132,8 @@ export const RegisterProject = () => {
     values: FormValues,
     e?: FormEvent<HTMLFormElement>
   ) => {
-    e?.preventDefault();
-    const res = form.validate();
-
-    if (res.hasErrors) return;
-
-    const nonce = generateRandomUint256();
-
-    const metadata = {
-      name: values.name,
-      description: values.description,
-      avatarHash_IPFS: values.avatarHash,
-      email: values.email,
-      x: values.x,
-      github: values.github,
-      discord: values.discord,
-      telegram: values.telegram,
-    };
-
-    const pinRes = await pinJSONToIPFS(metadata);
-
-    if (!pinRes.IpfsHash) {
-      notifications.show({
-        title: 'IPFS Upload Error',
-        message: pinRes.message,
-        color: 'red',
-      });
-      return;
-    }
+    console.log(values);
+    console.log(e);
   };
 
   const handleBlur = (fieldName: string) => {

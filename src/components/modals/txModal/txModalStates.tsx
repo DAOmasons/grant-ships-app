@@ -1,11 +1,4 @@
-import {
-  Group,
-  Loader,
-  Mark,
-  Stack,
-  Text,
-  useMantineTheme,
-} from '@mantine/core';
+import { Group, Loader, Stack, Text, useMantineTheme } from '@mantine/core';
 import { IconCheck, IconCircleX, IconUfo } from '@tabler/icons-react';
 import { ReactNode } from 'react';
 import classes from './txModalStyles.module.css';

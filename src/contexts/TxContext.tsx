@@ -182,9 +182,7 @@ export const TxProvider = ({ children }: { children: ReactNode }) => {
         isIdle,
         txError,
         txData,
-        error: error as unknown as WriteContractErrorType | null,
-        // TODO: Make sure this is the correct naming
-        // this should be true if the transaction is awaiting signature
+        error: error as WriteContractErrorType | null,
         isAwaitingSignature,
       }}
     >
