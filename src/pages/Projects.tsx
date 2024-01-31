@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { getBuiltGraphSDK } from '../.graphclient';
 import { useQuery } from '@tanstack/react-query';
 

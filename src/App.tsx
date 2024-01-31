@@ -4,11 +4,10 @@ import '@mantine/notifications/styles.css';
 import { Layout } from './layout/Layout';
 import { WagmiProvider } from 'wagmi';
 import { config } from './utils/config';
-import { RegisterProject } from './components/forms/RegisterProject';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter } from 'react-router-dom';
 import { TxProvider } from './contexts/TxContext';
-import { Projects } from './pages/Projects';
+import { ClientRoutes } from './routes';
 
 const queryClient = new QueryClient();
 export default function App() {
@@ -18,8 +17,7 @@ export default function App() {
         <QueryClientProvider client={queryClient}>
           <Layout>
             <TxProvider>
-              <Projects />
-              {/* <RegisterProject /> */}
+              <ClientRoutes />
             </TxProvider>
           </Layout>
         </QueryClientProvider>

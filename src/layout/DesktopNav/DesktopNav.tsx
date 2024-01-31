@@ -1,45 +1,42 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Group, Code, Title } from '@mantine/core';
 import {
   IconHome,
   IconRocket,
   IconPacman,
   IconAward,
-  IconFileDescription,
-  IconSquareRoundedLetterG,
   IconList,
+  IconFileDescription,
 } from '@tabler/icons-react';
 import classes from './DesktoNavStyles.module.css';
 import Logo from '../../assets/Logo.svg';
 import { ConnectButton } from './ConnectButton';
+import { Link, useLocation } from 'react-router-dom';
 
 const data = [
-  { link: '', label: 'Home', icon: IconHome },
-  { link: '', label: 'Ships', icon: IconRocket },
-  { link: '', label: 'Projects', icon: IconAward },
-  { link: '', label: 'Game Rules', icon: IconPacman },
-  { link: '', label: 'Apply', icon: IconFileDescription },
-  { link: '', label: 'About', icon: IconSquareRoundedLetterG },
+  { link: '/', label: 'Home', icon: IconHome },
+  { link: '/ships', label: 'Ships', icon: IconRocket },
+  { link: '/projects', label: 'Projects', icon: IconAward },
+  { link: '/game-rules', label: 'Game Rules', icon: IconPacman },
+  { link: '/apply', label: 'Apply', icon: IconFileDescription },
 ];
 
 export function DesktopNav() {
-  const [active, setActive] = useState('Home');
+  const location = useLocation();
 
-  const links = data.map((item) => (
-    <a
-      className={classes.link}
-      data-active={item.label === active || undefined}
-      href={item.link}
-      key={item.label}
-      onClick={(event) => {
-        event.preventDefault();
-        setActive(item.label);
-      }}
-    >
-      <item.icon className={classes.linkIcon} stroke={1.5} />
-      <span>{item.label}</span>
-    </a>
-  ));
+  const links = data.map((item) => {
+    return (
+      <Link
+        className={classes.link}
+        data-active={location.pathname === item.link ? item.link : undefined}
+        to={item.link}
+        key={item.label}
+      >
+        <item.icon className={classes.linkIcon} stroke={1.5} />
+        <span>{item.label}</span>
+      </Link>
+    );
+  });
 
   return (
     <nav className={classes.navbar}>
