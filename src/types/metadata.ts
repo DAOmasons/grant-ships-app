@@ -91,7 +91,7 @@ export enum FileType {
 }
 
 export enum Models {
-  ProjectProfile = '001',
-  ShipProfile = '002',
-  ProjectGrant = '003',
+  ProjectProfile = '003',
+  ShipProfile = '004',
+  ProjectGrant = '005',
 }

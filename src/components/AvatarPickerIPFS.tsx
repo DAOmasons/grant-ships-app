@@ -44,10 +44,18 @@ export const AvatarPickerIPFS = ({
   const avatarPreview = pfpIpfsHash ? `${PINATA_GATEWAY}/${pfpIpfsHash}` : null;
   const canPreview = avatarPreview && !isLoading;
 
+  console.log('canPreview', canPreview);
+  console.log('avatarPreview', avatarPreview);
+
   return (
     <>
       <Container pos="relative" mb="lg">
-        <Avatar size={120} src={canPreview ? avatarPreview : undefined}>
+        <Avatar
+          size={120}
+          src={
+            'https://gateway.pinata.cloud/ipfs/QmTGQ89Ysi8g3nAdH1w511X1YKqoCBkTsLq2tEDMFAyCPz'
+          }
+        >
           {canPreview || <IconUser size={80} />}
         </Avatar>
         <FileButton onChange={handleUpload} accept={'image/png,image/jpeg'}>

@@ -46,7 +46,6 @@ export const createMetadata = ({
 }): AlloMetadata => {
   // check that protocol string is all numbers
 
-  console.log('protocol', protocol);
   //   if (protocol.match(/^[0-9]+$/)) {
   //     throw new Error('Protocol must be a number');
   //   }
