@@ -143,12 +143,6 @@ export const RegisterProject = () => {
           console.log('go back');
         },
       }}
-      backBtn={{
-        label: 'Back',
-        onClick: () => {
-          console.log('go back');
-        },
-      }}
     >
       <AvatarPickerIPFS
         onUploadSuccess={(hash: string) => {

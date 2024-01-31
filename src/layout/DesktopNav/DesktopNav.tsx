@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { Group, Code, Title } from '@mantine/core';
 import {
   IconHome,
