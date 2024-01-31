@@ -128,126 +128,124 @@ export const RegisterProject = () => {
   };
 
   return (
-    <>
-      <FormPageLayout
-        title="Register Project Profile"
-        onSubmit={form.onSubmit((values) => handleFormSubmit(values))}
-        primaryBtn={{
-          label: 'Create Project',
-          onClick: () => {
-            console.log('create project');
-          },
+    <FormPageLayout
+      title="Register Project Profile"
+      onSubmit={form.onSubmit((values) => handleFormSubmit(values))}
+      primaryBtn={{
+        label: 'Create Project',
+        onClick: () => {
+          console.log('create project');
+        },
+      }}
+      secondaryBtn={{
+        label: 'Back',
+        onClick: () => {
+          console.log('go back');
+        },
+      }}
+      backBtn={{
+        label: 'Back',
+        onClick: () => {
+          console.log('go back');
+        },
+      }}
+    >
+      <AvatarPickerIPFS
+        onUploadSuccess={(hash: string) => {
+          notifications.show({
+            title: 'IPFS Image Uploaded',
+            message: `IPFS Hash: ${hash}`,
+          });
+          form.setFieldValue('avatarHash', hash);
         }}
-        secondaryBtn={{
-          label: 'Back',
-          onClick: () => {
-            console.log('go back');
-          },
+        onUploadError={(errMsg: string) => {
+          notifications.show({
+            title: 'IPFS Upload Error',
+            message: errMsg,
+            color: 'red',
+          });
         }}
-        backBtn={{
-          label: 'Back',
-          onClick: () => {
-            console.log('go back');
-          },
-        }}
-      >
-        <AvatarPickerIPFS
-          onUploadSuccess={(hash: string) => {
-            notifications.show({
-              title: 'IPFS Image Uploaded',
-              message: `IPFS Hash: ${hash}`,
-            });
-            form.setFieldValue('avatarHash', hash);
-          }}
-          onUploadError={(errMsg: string) => {
-            notifications.show({
-              title: 'IPFS Upload Error',
-              message: errMsg,
-              color: 'red',
-            });
-          }}
-          validationError={form.errors.avatarHash}
-        />
+        validationError={form.errors.avatarHash}
+      />
 
+      <TextInput
+        w="100%"
+        label="Project Name"
+        required
+        placeholder="Project Name"
+        {...form.getInputProps('name')}
+      />
+      <TextInput
+        w="100%"
+        label="Project Owner"
+        description="Project owner has permissions to edit metadata, team members, apply for grants, and transfer ownership."
+        required
+        placeholder="0x000"
+        {...form.getInputProps('projectOwner')}
+      />
+      <AddressBox
+        w="100%"
+        label="Team Members"
+        description={`Team members can edit metadata and apply for grants.`}
+        placeholder="Paste addresses here. Must be comma separated."
+        {...form.getInputProps('teamMembers')}
+        onBlur={() => handleBlur('teamMembers')}
+        formSetValue={(addresses: string[]) => {
+          form.setFieldValue('teamMembers', addresses);
+        }}
+      />
+      <Textarea
+        w="100%"
+        label="Short Project Description"
+        description="Max 350 characters"
+        required
+        autosize
+        minRows={4}
+        maxRows={8}
+        placeholder="Project Description"
+        {...form.getInputProps('description')}
+        onBlur={() => handleBlur('description')}
+      />
+      <Stack w="100%" gap={14}>
         <TextInput
           w="100%"
-          label="Project Name"
+          label="Links/Contact"
+          description="Email is required. Please provide at least one other contact "
+          placeholder="Email"
           required
-          placeholder="Project Name"
-          {...form.getInputProps('name')}
+          leftSection={<IconMail />}
+          {...form.getInputProps('email')}
+          onBlur={() => handleBlur('email')}
         />
         <TextInput
           w="100%"
-          label="Project Owner"
-          description="Project owner has permissions to edit metadata, team members, apply for grants, and transfer ownership."
-          required
-          placeholder="0x000"
-          {...form.getInputProps('projectOwner')}
+          placeholder="X"
+          leftSection={<IconBrandX />}
+          {...form.getInputProps('x')}
+          onBlur={() => handleBlur('x')}
         />
-        <AddressBox
+        <TextInput
           w="100%"
-          label="Team Members"
-          description={`Team members can edit metadata and apply for grants.`}
-          placeholder="Paste addresses here. Must be comma separated."
-          {...form.getInputProps('teamMembers')}
-          onBlur={() => handleBlur('teamMembers')}
-          formSetValue={(addresses: string[]) => {
-            form.setFieldValue('teamMembers', addresses);
-          }}
+          placeholder="Github"
+          leftSection={<IconBrandGithub />}
+          {...form.getInputProps('github')}
+          onBlur={() => handleBlur('github')}
         />
-        <Textarea
+        <TextInput
           w="100%"
-          label="Short Project Description"
-          description="Max 350 characters"
-          required
-          autosize
-          minRows={4}
-          maxRows={8}
-          placeholder="Project Description"
-          {...form.getInputProps('description')}
-          onBlur={() => handleBlur('description')}
+          placeholder="Discord"
+          leftSection={<IconBrandDiscord />}
+          {...form.getInputProps('discord')}
+          onBlur={() => handleBlur('discord')}
         />
-        <Stack w="100%" gap={14}>
-          <TextInput
-            w="100%"
-            label="Links/Contact"
-            description="Email is required. Please provide at least one other contact "
-            placeholder="Email"
-            required
-            leftSection={<IconMail />}
-            {...form.getInputProps('email')}
-            onBlur={() => handleBlur('email')}
-          />
-          <TextInput
-            w="100%"
-            placeholder="X"
-            leftSection={<IconBrandX />}
-            {...form.getInputProps('x')}
-            onBlur={() => handleBlur('x')}
-          />
-          <TextInput
-            w="100%"
-            placeholder="Github"
-            leftSection={<IconBrandGithub />}
-            {...form.getInputProps('github')}
-            onBlur={() => handleBlur('github')}
-          />
-          <TextInput
-            w="100%"
-            placeholder="Discord"
-            leftSection={<IconBrandDiscord />}
-            {...form.getInputProps('discord')}
-            onBlur={() => handleBlur('discord')}
-          />
-          <TextInput
-            w="100%"
-            placeholder="Telegram"
-            leftSection={<IconBrandTelegram />}
-            {...form.getInputProps('telegram')}
-            onBlur={() => handleBlur('telegram')}
-          />
-        </Stack>
-      </FormPageLayout>
-    </>
+        <TextInput
+          w="100%"
+          placeholder="Telegram"
+          leftSection={<IconBrandTelegram />}
+          {...form.getInputProps('telegram')}
+          onBlur={() => handleBlur('telegram')}
+        />
+      </Stack>
+    </FormPageLayout>
   );
 };

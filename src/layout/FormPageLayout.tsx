@@ -31,7 +31,7 @@ export const FormPageLayout = ({
                 <IconArrowNarrowLeft />
               </ActionIcon>
             )}
-            <Text fz={24} fw={500}>
+            <Text fz={20} fw={500}>
               {title}
             </Text>
           </Group>

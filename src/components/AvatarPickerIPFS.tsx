@@ -36,6 +36,7 @@ export const AvatarPickerIPFS = ({
       setIsLoading(false);
     } catch (error: any) {
       console.error(error);
+      setIsLoading(false);
       onUploadError?.(error?.message || 'Error uploading file');
     }
   };
