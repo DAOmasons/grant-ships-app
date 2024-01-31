@@ -25,6 +25,7 @@ export const registerProjectSchema = z.object({
       message: 'Description should not have more than 350 characters',
     }),
   email: z.string().email({ message: 'Invalid email address' }),
+  website: z.string().url({ message: 'Invalid url' }).or(z.literal('')),
   x: z.string().url({ message: 'Invalid x url' }).or(z.literal('')),
   github: z.string().url({ message: 'Invalid github url' }).or(z.literal('')),
   discord: z.string().url({ message: 'Invalid discord url' }).or(z.literal('')),

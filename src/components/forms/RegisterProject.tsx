@@ -7,6 +7,7 @@ import {
   IconBrandTelegram,
   IconBrandX,
   IconMail,
+  IconWorld,
 } from '@tabler/icons-react';
 import { AvatarPickerIPFS } from '../../components/AvatarPickerIPFS';
 import { notifications } from '@mantine/notifications';
@@ -43,6 +44,7 @@ export const RegisterProject = () => {
       github: '',
       discord: '',
       telegram: '',
+      website: '',
     },
     validate: zodResolver(registerProjectSchema),
   });
@@ -51,7 +53,7 @@ export const RegisterProject = () => {
     try {
       const nonce = generateRandomUint256();
 
-      const shipMetadata = {
+      const projectMetadata = {
         name: values.name,
         description: values.description,
         avatarHash_IPFS: values.avatarHash,
@@ -60,10 +62,10 @@ export const RegisterProject = () => {
         github: values.github,
         discord: values.discord,
         telegram: values.telegram,
-        website: '',
+        website: values.website,
       };
 
-      const pinRes = await pinJSONToIPFS(shipMetadata);
+      const pinRes = await pinJSONToIPFS(projectMetadata);
 
       if (!pinRes?.IpfsHash) {
         notifications.show({
@@ -75,7 +77,9 @@ export const RegisterProject = () => {
       }
 
       const teamMembers = values.teamMembers.filter(Boolean);
+      const schemaCode = projectProfileHash();
 
+      console.log('schemaCode', schemaCode);
       tx({
         writeContractParams: {
           abi: Registry,
@@ -85,7 +89,7 @@ export const RegisterProject = () => {
             nonce,
             values.name,
             createMetadata({
-              protocol: projectProfileHash(),
+              protocol: schemaCode,
               ipfsHash: pinRes.IpfsHash,
             }),
             values.projectOwner,
@@ -210,6 +214,14 @@ export const RegisterProject = () => {
           leftSection={<IconMail />}
           {...form.getInputProps('email')}
           onBlur={() => handleBlur('email')}
+        />
+        <TextInput
+          w="100%"
+          placeholder="https://yourwebsite.com"
+          required
+          leftSection={<IconWorld />}
+          {...form.getInputProps('website')}
+          onBlur={() => handleBlur('website')}
         />
         <TextInput
           w="100%"
