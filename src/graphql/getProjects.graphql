@@ -1,16 +1,25 @@
+fragment ProjectDetails on Project {
+  id
+  name
+  profileId
+  nonce
+  anchor
+  metadata_protocol
+  metadata_pointer
+  owner
+}
+
+fragment MetadataDetails on ProjectMetadata {
+  name
+  description
+  avatarHash_IPFS
+}
+
 query GetProjects {
   projects {
-    id
-    name
-    profileId
-    nonce
-    anchor
-    metadata_protocol
-    owner
+    ...ProjectDetails
     metadata {
-      name
-      description
-      avatarHash_IPFS
+      ...MetadataDetails
     }
   }
 }

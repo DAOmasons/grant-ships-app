@@ -14,11 +14,11 @@ export const ProjectCard = ({ project }: { project: ProjectCardType }) => {
       h={140}
       mb={16}
     >
-      <Flex h={'100%'} pt="lg" pl="lg">
+      <Flex h={'100%'} p="lg">
         <Box mr="md">
           <Avatar size={65} src={project.imgUrl} />
         </Box>
-        <Box mr="md">
+        <Box>
           <Text fw={600} mb={'xs'}>
             {project.name}
           </Text>

@@ -59,6 +59,38 @@ export type OrderDirection =
   | 'asc'
   | 'desc';
 
+export type ProfileMemberGroup = {
+  id: Scalars['Bytes'];
+  addresses?: Maybe<Array<Scalars['Bytes']>>;
+};
+
+export type ProfileMemberGroup_filter = {
+  id?: InputMaybe<Scalars['Bytes']>;
+  id_not?: InputMaybe<Scalars['Bytes']>;
+  id_gt?: InputMaybe<Scalars['Bytes']>;
+  id_lt?: InputMaybe<Scalars['Bytes']>;
+  id_gte?: InputMaybe<Scalars['Bytes']>;
+  id_lte?: InputMaybe<Scalars['Bytes']>;
+  id_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  id_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  id_contains?: InputMaybe<Scalars['Bytes']>;
+  id_not_contains?: InputMaybe<Scalars['Bytes']>;
+  addresses?: InputMaybe<Array<Scalars['Bytes']>>;
+  addresses_not?: InputMaybe<Array<Scalars['Bytes']>>;
+  addresses_contains?: InputMaybe<Array<Scalars['Bytes']>>;
+  addresses_contains_nocase?: InputMaybe<Array<Scalars['Bytes']>>;
+  addresses_not_contains?: InputMaybe<Array<Scalars['Bytes']>>;
+  addresses_not_contains_nocase?: InputMaybe<Array<Scalars['Bytes']>>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<ProfileMemberGroup_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<ProfileMemberGroup_filter>>>;
+};
+
+export type ProfileMemberGroup_orderBy =
+  | 'id'
+  | 'addresses';
+
 export type Project = {
   id: Scalars['Bytes'];
   profileId: Scalars['Bytes'];
@@ -66,12 +98,13 @@ export type Project = {
   name: Scalars['String'];
   metadata_protocol: Scalars['BigInt'];
   metadata_pointer: Scalars['String'];
-  metadata: ProjectMetadata;
+  metadata?: Maybe<ProjectMetadata>;
   owner: Scalars['Bytes'];
   anchor: Scalars['Bytes'];
   blockNumber: Scalars['BigInt'];
   blockTimestamp: Scalars['BigInt'];
   transactionHash: Scalars['Bytes'];
+  members?: Maybe<ProfileMemberGroup>;
 };
 
 export type ProjectMetadata = {
@@ -85,7 +118,6 @@ export type ProjectMetadata = {
   discord?: Maybe<Scalars['String']>;
   telegram?: Maybe<Scalars['String']>;
   website?: Maybe<Scalars['String']>;
-  members?: Maybe<Array<Scalars['Bytes']>>;
 };
 
 export type ProjectMetadata_filter = {
@@ -289,12 +321,6 @@ export type ProjectMetadata_filter = {
   website_ends_with_nocase?: InputMaybe<Scalars['String']>;
   website_not_ends_with?: InputMaybe<Scalars['String']>;
   website_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
-  members?: InputMaybe<Array<Scalars['Bytes']>>;
-  members_not?: InputMaybe<Array<Scalars['Bytes']>>;
-  members_contains?: InputMaybe<Array<Scalars['Bytes']>>;
-  members_contains_nocase?: InputMaybe<Array<Scalars['Bytes']>>;
-  members_not_contains?: InputMaybe<Array<Scalars['Bytes']>>;
-  members_not_contains_nocase?: InputMaybe<Array<Scalars['Bytes']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
   and?: InputMaybe<Array<InputMaybe<ProjectMetadata_filter>>>;
@@ -311,8 +337,7 @@ export type ProjectMetadata_orderBy =
   | 'github'
   | 'discord'
   | 'telegram'
-  | 'website'
-  | 'members';
+  | 'website';
 
 export type Project_filter = {
   id?: InputMaybe<Scalars['Bytes']>;
@@ -458,6 +483,27 @@ export type Project_filter = {
   transactionHash_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   transactionHash_contains?: InputMaybe<Scalars['Bytes']>;
   transactionHash_not_contains?: InputMaybe<Scalars['Bytes']>;
+  members?: InputMaybe<Scalars['String']>;
+  members_not?: InputMaybe<Scalars['String']>;
+  members_gt?: InputMaybe<Scalars['String']>;
+  members_lt?: InputMaybe<Scalars['String']>;
+  members_gte?: InputMaybe<Scalars['String']>;
+  members_lte?: InputMaybe<Scalars['String']>;
+  members_in?: InputMaybe<Array<Scalars['String']>>;
+  members_not_in?: InputMaybe<Array<Scalars['String']>>;
+  members_contains?: InputMaybe<Scalars['String']>;
+  members_contains_nocase?: InputMaybe<Scalars['String']>;
+  members_not_contains?: InputMaybe<Scalars['String']>;
+  members_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  members_starts_with?: InputMaybe<Scalars['String']>;
+  members_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  members_not_starts_with?: InputMaybe<Scalars['String']>;
+  members_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  members_ends_with?: InputMaybe<Scalars['String']>;
+  members_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  members_not_ends_with?: InputMaybe<Scalars['String']>;
+  members_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  members_?: InputMaybe<ProfileMemberGroup_filter>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
   and?: InputMaybe<Array<InputMaybe<Project_filter>>>;
@@ -486,7 +532,9 @@ export type Project_orderBy =
   | 'anchor'
   | 'blockNumber'
   | 'blockTimestamp'
-  | 'transactionHash';
+  | 'transactionHash'
+  | 'members'
+  | 'members__id';
 
 export type Query = {
   project?: Maybe<Project>;
@@ -495,6 +543,8 @@ export type Query = {
   shipProfile?: Maybe<ShipProfile>;
   shipProfiles: Array<ShipProfile>;
   shipProfileMetadata: Array<ShipProfileMetadata>;
+  profileMemberGroup?: Maybe<ProfileMemberGroup>;
+  profileMemberGroups: Array<ProfileMemberGroup>;
   /** Access to subgraph metadata */
   _meta?: Maybe<_Meta_>;
 };
@@ -558,6 +608,24 @@ export type QueryshipProfileMetadataArgs = {
 };
 
 
+export type QueryprofileMemberGroupArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryprofileMemberGroupsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<ProfileMemberGroup_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<ProfileMemberGroup_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
 export type Query_metaArgs = {
   block?: InputMaybe<Block_height>;
 };
@@ -575,6 +643,7 @@ export type ShipProfile = {
   blockNumber: Scalars['BigInt'];
   blockTimestamp: Scalars['BigInt'];
   transactionHash: Scalars['Bytes'];
+  alloProfileMembers?: Maybe<ProfileMemberGroup>;
 };
 
 export type ShipProfileMetadata = {
@@ -953,6 +1022,27 @@ export type ShipProfile_filter = {
   transactionHash_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   transactionHash_contains?: InputMaybe<Scalars['Bytes']>;
   transactionHash_not_contains?: InputMaybe<Scalars['Bytes']>;
+  alloProfileMembers?: InputMaybe<Scalars['String']>;
+  alloProfileMembers_not?: InputMaybe<Scalars['String']>;
+  alloProfileMembers_gt?: InputMaybe<Scalars['String']>;
+  alloProfileMembers_lt?: InputMaybe<Scalars['String']>;
+  alloProfileMembers_gte?: InputMaybe<Scalars['String']>;
+  alloProfileMembers_lte?: InputMaybe<Scalars['String']>;
+  alloProfileMembers_in?: InputMaybe<Array<Scalars['String']>>;
+  alloProfileMembers_not_in?: InputMaybe<Array<Scalars['String']>>;
+  alloProfileMembers_contains?: InputMaybe<Scalars['String']>;
+  alloProfileMembers_contains_nocase?: InputMaybe<Scalars['String']>;
+  alloProfileMembers_not_contains?: InputMaybe<Scalars['String']>;
+  alloProfileMembers_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  alloProfileMembers_starts_with?: InputMaybe<Scalars['String']>;
+  alloProfileMembers_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  alloProfileMembers_not_starts_with?: InputMaybe<Scalars['String']>;
+  alloProfileMembers_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  alloProfileMembers_ends_with?: InputMaybe<Scalars['String']>;
+  alloProfileMembers_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  alloProfileMembers_not_ends_with?: InputMaybe<Scalars['String']>;
+  alloProfileMembers_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  alloProfileMembers_?: InputMaybe<ProfileMemberGroup_filter>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
   and?: InputMaybe<Array<InputMaybe<ShipProfile_filter>>>;
@@ -981,7 +1071,9 @@ export type ShipProfile_orderBy =
   | 'anchor'
   | 'blockNumber'
   | 'blockTimestamp'
-  | 'transactionHash';
+  | 'transactionHash'
+  | 'alloProfileMembers'
+  | 'alloProfileMembers__id';
 
 export type Subscription = {
   project?: Maybe<Project>;
@@ -990,6 +1082,8 @@ export type Subscription = {
   shipProfile?: Maybe<ShipProfile>;
   shipProfiles: Array<ShipProfile>;
   shipProfileMetadata: Array<ShipProfileMetadata>;
+  profileMemberGroup?: Maybe<ProfileMemberGroup>;
+  profileMemberGroups: Array<ProfileMemberGroup>;
   /** Access to subgraph metadata */
   _meta?: Maybe<_Meta_>;
 };
@@ -1048,6 +1142,24 @@ export type SubscriptionshipProfileMetadataArgs = {
   orderBy?: InputMaybe<ShipProfileMetadata_orderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
   where?: InputMaybe<ShipProfileMetadata_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionprofileMemberGroupArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionprofileMemberGroupsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<ProfileMemberGroup_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<ProfileMemberGroup_filter>;
   block?: InputMaybe<Block_height>;
   subgraphError?: _SubgraphErrorPolicy_;
 };
@@ -1185,6 +1297,9 @@ export type ResolversTypes = ResolversObject<{
   Int: ResolverTypeWrapper<Scalars['Int']>;
   Int8: ResolverTypeWrapper<Scalars['Int8']>;
   OrderDirection: OrderDirection;
+  ProfileMemberGroup: ResolverTypeWrapper<ProfileMemberGroup>;
+  ProfileMemberGroup_filter: ProfileMemberGroup_filter;
+  ProfileMemberGroup_orderBy: ProfileMemberGroup_orderBy;
   Project: ResolverTypeWrapper<Project>;
   ProjectMetadata: ResolverTypeWrapper<ProjectMetadata>;
   ProjectMetadata_filter: ProjectMetadata_filter;
@@ -1217,6 +1332,8 @@ export type ResolversParentTypes = ResolversObject<{
   ID: Scalars['ID'];
   Int: Scalars['Int'];
   Int8: Scalars['Int8'];
+  ProfileMemberGroup: ProfileMemberGroup;
+  ProfileMemberGroup_filter: ProfileMemberGroup_filter;
   Project: Project;
   ProjectMetadata: ProjectMetadata;
   ProjectMetadata_filter: ProjectMetadata_filter;
@@ -1264,6 +1381,12 @@ export interface Int8ScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
   name: 'Int8';
 }
 
+export type ProfileMemberGroupResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['ProfileMemberGroup'] = ResolversParentTypes['ProfileMemberGroup']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
+  addresses?: Resolver<Maybe<Array<ResolversTypes['Bytes']>>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type ProjectResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Project'] = ResolversParentTypes['Project']> = ResolversObject<{
   id?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
   profileId?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
@@ -1271,12 +1394,13 @@ export type ProjectResolvers<ContextType = MeshContext, ParentType extends Resol
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   metadata_protocol?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   metadata_pointer?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  metadata?: Resolver<ResolversTypes['ProjectMetadata'], ParentType, ContextType>;
+  metadata?: Resolver<Maybe<ResolversTypes['ProjectMetadata']>, ParentType, ContextType>;
   owner?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
   anchor?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
   blockNumber?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   blockTimestamp?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
+  members?: Resolver<Maybe<ResolversTypes['ProfileMemberGroup']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -1291,7 +1415,6 @@ export type ProjectMetadataResolvers<ContextType = MeshContext, ParentType exten
   discord?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   telegram?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   website?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  members?: Resolver<Maybe<Array<ResolversTypes['Bytes']>>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -1302,6 +1425,8 @@ export type QueryResolvers<ContextType = MeshContext, ParentType extends Resolve
   shipProfile?: Resolver<Maybe<ResolversTypes['ShipProfile']>, ParentType, ContextType, RequireFields<QueryshipProfileArgs, 'id' | 'subgraphError'>>;
   shipProfiles?: Resolver<Array<ResolversTypes['ShipProfile']>, ParentType, ContextType, RequireFields<QueryshipProfilesArgs, 'skip' | 'first' | 'subgraphError'>>;
   shipProfileMetadata?: Resolver<Array<ResolversTypes['ShipProfileMetadata']>, ParentType, ContextType, RequireFields<QueryshipProfileMetadataArgs, 'skip' | 'first' | 'subgraphError'>>;
+  profileMemberGroup?: Resolver<Maybe<ResolversTypes['ProfileMemberGroup']>, ParentType, ContextType, RequireFields<QueryprofileMemberGroupArgs, 'id' | 'subgraphError'>>;
+  profileMemberGroups?: Resolver<Array<ResolversTypes['ProfileMemberGroup']>, ParentType, ContextType, RequireFields<QueryprofileMemberGroupsArgs, 'skip' | 'first' | 'subgraphError'>>;
   _meta?: Resolver<Maybe<ResolversTypes['_Meta_']>, ParentType, ContextType, Partial<Query_metaArgs>>;
 }>;
 
@@ -1318,6 +1443,7 @@ export type ShipProfileResolvers<ContextType = MeshContext, ParentType extends R
   blockNumber?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   blockTimestamp?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   transactionHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
+  alloProfileMembers?: Resolver<Maybe<ResolversTypes['ProfileMemberGroup']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -1342,6 +1468,8 @@ export type SubscriptionResolvers<ContextType = MeshContext, ParentType extends 
   shipProfile?: SubscriptionResolver<Maybe<ResolversTypes['ShipProfile']>, "shipProfile", ParentType, ContextType, RequireFields<SubscriptionshipProfileArgs, 'id' | 'subgraphError'>>;
   shipProfiles?: SubscriptionResolver<Array<ResolversTypes['ShipProfile']>, "shipProfiles", ParentType, ContextType, RequireFields<SubscriptionshipProfilesArgs, 'skip' | 'first' | 'subgraphError'>>;
   shipProfileMetadata?: SubscriptionResolver<Array<ResolversTypes['ShipProfileMetadata']>, "shipProfileMetadata", ParentType, ContextType, RequireFields<SubscriptionshipProfileMetadataArgs, 'skip' | 'first' | 'subgraphError'>>;
+  profileMemberGroup?: SubscriptionResolver<Maybe<ResolversTypes['ProfileMemberGroup']>, "profileMemberGroup", ParentType, ContextType, RequireFields<SubscriptionprofileMemberGroupArgs, 'id' | 'subgraphError'>>;
+  profileMemberGroups?: SubscriptionResolver<Array<ResolversTypes['ProfileMemberGroup']>, "profileMemberGroups", ParentType, ContextType, RequireFields<SubscriptionprofileMemberGroupsArgs, 'skip' | 'first' | 'subgraphError'>>;
   _meta?: SubscriptionResolver<Maybe<ResolversTypes['_Meta_']>, "_meta", ParentType, ContextType, Partial<Subscription_metaArgs>>;
 }>;
 
@@ -1364,6 +1492,7 @@ export type Resolvers<ContextType = MeshContext> = ResolversObject<{
   BigInt?: GraphQLScalarType;
   Bytes?: GraphQLScalarType;
   Int8?: GraphQLScalarType;
+  ProfileMemberGroup?: ProfileMemberGroupResolvers<ContextType>;
   Project?: ProjectResolvers<ContextType>;
   ProjectMetadata?: ProjectMetadataResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
@@ -1426,7 +1555,7 @@ const grantShipsTransforms = [];
 const additionalTypeDefs = [] as any[];
 const grantShipsHandler = new GraphqlHandler({
               name: "grant-ships",
-              config: {"endpoint":"https://api.thegraph.com/subgraphs/name/ui369/grant-ships"},
+              config: {"endpoint":"https://api.thegraph.com/subgraphs/name/jordanlesich/grant-ships"},
               baseDir,
               cache,
               pubsub,
@@ -1503,33 +1632,48 @@ export function getBuiltGraphSDK<TGlobalContext = any, TOperationContext = any>(
   const sdkRequester$ = getBuiltGraphClient().then(({ sdkRequesterFactory }) => sdkRequesterFactory(globalContext));
   return getSdk<TOperationContext, TGlobalContext>((...args) => sdkRequester$.then(sdkRequester => sdkRequester(...args)));
 }
+export type ProjectDetailsFragment = Pick<Project, 'id' | 'name' | 'profileId' | 'nonce' | 'anchor' | 'metadata_protocol' | 'metadata_pointer' | 'owner'>;
+
+export type MetadataDetailsFragment = Pick<ProjectMetadata, 'name' | 'description' | 'avatarHash_IPFS'>;
+
 export type GetProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetProjectsQuery = { projects: Array<(
-    Pick<Project, 'id' | 'name' | 'profileId' | 'nonce' | 'anchor' | 'metadata_protocol' | 'owner'>
-    & { metadata: Pick<ProjectMetadata, 'name' | 'description' | 'avatarHash_IPFS'> }
+    Pick<Project, 'id' | 'name' | 'profileId' | 'nonce' | 'anchor' | 'metadata_protocol' | 'metadata_pointer' | 'owner'>
+    & { metadata?: Maybe<Pick<ProjectMetadata, 'name' | 'description' | 'avatarHash_IPFS'>> }
   )> };
 
-
+export const ProjectDetailsFragmentDoc = gql`
+    fragment ProjectDetails on Project {
+  id
+  name
+  profileId
+  nonce
+  anchor
+  metadata_protocol
+  metadata_pointer
+  owner
+}
+    ` as unknown as DocumentNode<ProjectDetailsFragment, unknown>;
+export const MetadataDetailsFragmentDoc = gql`
+    fragment MetadataDetails on ProjectMetadata {
+  name
+  description
+  avatarHash_IPFS
+}
+    ` as unknown as DocumentNode<MetadataDetailsFragment, unknown>;
 export const GetProjectsDocument = gql`
     query GetProjects {
   projects {
-    id
-    name
-    profileId
-    nonce
-    anchor
-    metadata_protocol
-    owner
+    ...ProjectDetails
     metadata {
-      name
-      description
-      avatarHash_IPFS
+      ...MetadataDetails
     }
   }
 }
-    ` as unknown as DocumentNode<GetProjectsQuery, GetProjectsQueryVariables>;
+    ${ProjectDetailsFragmentDoc}
+${MetadataDetailsFragmentDoc}` as unknown as DocumentNode<GetProjectsQuery, GetProjectsQueryVariables>;
 
 
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>

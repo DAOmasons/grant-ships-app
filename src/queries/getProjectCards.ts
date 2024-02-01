@@ -1,8 +1,37 @@
-import { getBuiltGraphSDK } from '../.graphclient';
+import { Project, ProjectMetadata, getBuiltGraphSDK } from '../.graphclient';
 import { PINATA_GATEWAY } from '../utils/ipfs/gateway';
 
-export type ProjectCards = Awaited<ReturnType<typeof getProjectCards>>;
-export type ProjectCard = ProjectCards[number];
+export type ProjectCard = Pick<
+  Project,
+  | 'anchor'
+  | 'profileId'
+  | 'nonce'
+  | 'name'
+  | 'owner'
+  | 'id'
+  | 'metadata_protocol'
+  | 'metadata_pointer'
+> & {
+  metadata: Pick<ProjectMetadata, 'name' | 'description' | 'avatarHash_IPFS'>;
+  imgUrl: string;
+};
+
+export const metadataRedunantCheck = async (project: any) => {
+  if (!project.metadata) {
+    const res = await fetch(`${PINATA_GATEWAY}/${project.metadata_pointer}`);
+    const metadata = await res.json();
+    return {
+      ...project,
+      metadata,
+      imgUrl: `${PINATA_GATEWAY}/${metadata.avatarHash_IPFS}`,
+    };
+  } else {
+    return {
+      ...project,
+      imgUrl: `${PINATA_GATEWAY}/${project.metadata.avatarHash_IPFS}`,
+    };
+  }
+};
 
 export const getProjectCards = async () => {
   try {
@@ -10,10 +39,11 @@ export const getProjectCards = async () => {
 
     const { projects } = await GetProjects();
 
-    return projects?.map((project) => ({
-      ...project,
-      imgUrl: `${PINATA_GATEWAY}/${project.metadata?.avatarHash_IPFS}`,
-    }));
+    const resolvedProjects = await Promise.all(
+      projects?.map((project) => metadataRedunantCheck(project))
+    );
+
+    return resolvedProjects as ProjectCard[];
   } catch (error: any) {
     console.error(error);
     throw new Error(error?.mesasge || 'Error fetching projects');

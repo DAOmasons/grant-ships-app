@@ -37,6 +37,38 @@ export type OrderDirection =
   | 'asc'
   | 'desc';
 
+export type ProfileMemberGroup = {
+  id: Scalars['Bytes'];
+  addresses?: Maybe<Array<Scalars['Bytes']>>;
+};
+
+export type ProfileMemberGroup_filter = {
+  id?: InputMaybe<Scalars['Bytes']>;
+  id_not?: InputMaybe<Scalars['Bytes']>;
+  id_gt?: InputMaybe<Scalars['Bytes']>;
+  id_lt?: InputMaybe<Scalars['Bytes']>;
+  id_gte?: InputMaybe<Scalars['Bytes']>;
+  id_lte?: InputMaybe<Scalars['Bytes']>;
+  id_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  id_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  id_contains?: InputMaybe<Scalars['Bytes']>;
+  id_not_contains?: InputMaybe<Scalars['Bytes']>;
+  addresses?: InputMaybe<Array<Scalars['Bytes']>>;
+  addresses_not?: InputMaybe<Array<Scalars['Bytes']>>;
+  addresses_contains?: InputMaybe<Array<Scalars['Bytes']>>;
+  addresses_contains_nocase?: InputMaybe<Array<Scalars['Bytes']>>;
+  addresses_not_contains?: InputMaybe<Array<Scalars['Bytes']>>;
+  addresses_not_contains_nocase?: InputMaybe<Array<Scalars['Bytes']>>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<ProfileMemberGroup_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<ProfileMemberGroup_filter>>>;
+};
+
+export type ProfileMemberGroup_orderBy =
+  | 'id'
+  | 'addresses';
+
 export type Project = {
   id: Scalars['Bytes'];
   profileId: Scalars['Bytes'];
@@ -44,12 +76,13 @@ export type Project = {
   name: Scalars['String'];
   metadata_protocol: Scalars['BigInt'];
   metadata_pointer: Scalars['String'];
-  metadata: ProjectMetadata;
+  metadata?: Maybe<ProjectMetadata>;
   owner: Scalars['Bytes'];
   anchor: Scalars['Bytes'];
   blockNumber: Scalars['BigInt'];
   blockTimestamp: Scalars['BigInt'];
   transactionHash: Scalars['Bytes'];
+  members?: Maybe<ProfileMemberGroup>;
 };
 
 export type ProjectMetadata = {
@@ -63,7 +96,6 @@ export type ProjectMetadata = {
   discord?: Maybe<Scalars['String']>;
   telegram?: Maybe<Scalars['String']>;
   website?: Maybe<Scalars['String']>;
-  members?: Maybe<Array<Scalars['Bytes']>>;
 };
 
 export type ProjectMetadata_filter = {
@@ -267,12 +299,6 @@ export type ProjectMetadata_filter = {
   website_ends_with_nocase?: InputMaybe<Scalars['String']>;
   website_not_ends_with?: InputMaybe<Scalars['String']>;
   website_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
-  members?: InputMaybe<Array<Scalars['Bytes']>>;
-  members_not?: InputMaybe<Array<Scalars['Bytes']>>;
-  members_contains?: InputMaybe<Array<Scalars['Bytes']>>;
-  members_contains_nocase?: InputMaybe<Array<Scalars['Bytes']>>;
-  members_not_contains?: InputMaybe<Array<Scalars['Bytes']>>;
-  members_not_contains_nocase?: InputMaybe<Array<Scalars['Bytes']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
   and?: InputMaybe<Array<InputMaybe<ProjectMetadata_filter>>>;
@@ -289,8 +315,7 @@ export type ProjectMetadata_orderBy =
   | 'github'
   | 'discord'
   | 'telegram'
-  | 'website'
-  | 'members';
+  | 'website';
 
 export type Project_filter = {
   id?: InputMaybe<Scalars['Bytes']>;
@@ -436,6 +461,27 @@ export type Project_filter = {
   transactionHash_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   transactionHash_contains?: InputMaybe<Scalars['Bytes']>;
   transactionHash_not_contains?: InputMaybe<Scalars['Bytes']>;
+  members?: InputMaybe<Scalars['String']>;
+  members_not?: InputMaybe<Scalars['String']>;
+  members_gt?: InputMaybe<Scalars['String']>;
+  members_lt?: InputMaybe<Scalars['String']>;
+  members_gte?: InputMaybe<Scalars['String']>;
+  members_lte?: InputMaybe<Scalars['String']>;
+  members_in?: InputMaybe<Array<Scalars['String']>>;
+  members_not_in?: InputMaybe<Array<Scalars['String']>>;
+  members_contains?: InputMaybe<Scalars['String']>;
+  members_contains_nocase?: InputMaybe<Scalars['String']>;
+  members_not_contains?: InputMaybe<Scalars['String']>;
+  members_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  members_starts_with?: InputMaybe<Scalars['String']>;
+  members_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  members_not_starts_with?: InputMaybe<Scalars['String']>;
+  members_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  members_ends_with?: InputMaybe<Scalars['String']>;
+  members_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  members_not_ends_with?: InputMaybe<Scalars['String']>;
+  members_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  members_?: InputMaybe<ProfileMemberGroup_filter>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
   and?: InputMaybe<Array<InputMaybe<Project_filter>>>;
@@ -464,7 +510,9 @@ export type Project_orderBy =
   | 'anchor'
   | 'blockNumber'
   | 'blockTimestamp'
-  | 'transactionHash';
+  | 'transactionHash'
+  | 'members'
+  | 'members__id';
 
 export type Query = {
   project?: Maybe<Project>;
@@ -473,6 +521,8 @@ export type Query = {
   shipProfile?: Maybe<ShipProfile>;
   shipProfiles: Array<ShipProfile>;
   shipProfileMetadata: Array<ShipProfileMetadata>;
+  profileMemberGroup?: Maybe<ProfileMemberGroup>;
+  profileMemberGroups: Array<ProfileMemberGroup>;
   /** Access to subgraph metadata */
   _meta?: Maybe<_Meta_>;
 };
@@ -536,6 +586,24 @@ export type QueryshipProfileMetadataArgs = {
 };
 
 
+export type QueryprofileMemberGroupArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryprofileMemberGroupsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<ProfileMemberGroup_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<ProfileMemberGroup_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
 export type Query_metaArgs = {
   block?: InputMaybe<Block_height>;
 };
@@ -553,6 +621,7 @@ export type ShipProfile = {
   blockNumber: Scalars['BigInt'];
   blockTimestamp: Scalars['BigInt'];
   transactionHash: Scalars['Bytes'];
+  alloProfileMembers?: Maybe<ProfileMemberGroup>;
 };
 
 export type ShipProfileMetadata = {
@@ -931,6 +1000,27 @@ export type ShipProfile_filter = {
   transactionHash_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   transactionHash_contains?: InputMaybe<Scalars['Bytes']>;
   transactionHash_not_contains?: InputMaybe<Scalars['Bytes']>;
+  alloProfileMembers?: InputMaybe<Scalars['String']>;
+  alloProfileMembers_not?: InputMaybe<Scalars['String']>;
+  alloProfileMembers_gt?: InputMaybe<Scalars['String']>;
+  alloProfileMembers_lt?: InputMaybe<Scalars['String']>;
+  alloProfileMembers_gte?: InputMaybe<Scalars['String']>;
+  alloProfileMembers_lte?: InputMaybe<Scalars['String']>;
+  alloProfileMembers_in?: InputMaybe<Array<Scalars['String']>>;
+  alloProfileMembers_not_in?: InputMaybe<Array<Scalars['String']>>;
+  alloProfileMembers_contains?: InputMaybe<Scalars['String']>;
+  alloProfileMembers_contains_nocase?: InputMaybe<Scalars['String']>;
+  alloProfileMembers_not_contains?: InputMaybe<Scalars['String']>;
+  alloProfileMembers_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  alloProfileMembers_starts_with?: InputMaybe<Scalars['String']>;
+  alloProfileMembers_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  alloProfileMembers_not_starts_with?: InputMaybe<Scalars['String']>;
+  alloProfileMembers_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  alloProfileMembers_ends_with?: InputMaybe<Scalars['String']>;
+  alloProfileMembers_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  alloProfileMembers_not_ends_with?: InputMaybe<Scalars['String']>;
+  alloProfileMembers_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  alloProfileMembers_?: InputMaybe<ProfileMemberGroup_filter>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
   and?: InputMaybe<Array<InputMaybe<ShipProfile_filter>>>;
@@ -959,7 +1049,9 @@ export type ShipProfile_orderBy =
   | 'anchor'
   | 'blockNumber'
   | 'blockTimestamp'
-  | 'transactionHash';
+  | 'transactionHash'
+  | 'alloProfileMembers'
+  | 'alloProfileMembers__id';
 
 export type Subscription = {
   project?: Maybe<Project>;
@@ -968,6 +1060,8 @@ export type Subscription = {
   shipProfile?: Maybe<ShipProfile>;
   shipProfiles: Array<ShipProfile>;
   shipProfileMetadata: Array<ShipProfileMetadata>;
+  profileMemberGroup?: Maybe<ProfileMemberGroup>;
+  profileMemberGroups: Array<ProfileMemberGroup>;
   /** Access to subgraph metadata */
   _meta?: Maybe<_Meta_>;
 };
@@ -1031,6 +1125,24 @@ export type SubscriptionshipProfileMetadataArgs = {
 };
 
 
+export type SubscriptionprofileMemberGroupArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionprofileMemberGroupsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<ProfileMemberGroup_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<ProfileMemberGroup_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
 export type Subscription_metaArgs = {
   block?: InputMaybe<Block_height>;
 };
@@ -1079,6 +1191,10 @@ export type _SubgraphErrorPolicy_ =
   shipProfiles: InContextSdkMethod<Query['shipProfiles'], QueryshipProfilesArgs, MeshContext>,
   /** null **/
   shipProfileMetadata: InContextSdkMethod<Query['shipProfileMetadata'], QueryshipProfileMetadataArgs, MeshContext>,
+  /** null **/
+  profileMemberGroup: InContextSdkMethod<Query['profileMemberGroup'], QueryprofileMemberGroupArgs, MeshContext>,
+  /** null **/
+  profileMemberGroups: InContextSdkMethod<Query['profileMemberGroups'], QueryprofileMemberGroupsArgs, MeshContext>,
   /** Access to subgraph metadata **/
   _meta: InContextSdkMethod<Query['_meta'], Query_metaArgs, MeshContext>
   };
@@ -1100,6 +1216,10 @@ export type _SubgraphErrorPolicy_ =
   shipProfiles: InContextSdkMethod<Subscription['shipProfiles'], SubscriptionshipProfilesArgs, MeshContext>,
   /** null **/
   shipProfileMetadata: InContextSdkMethod<Subscription['shipProfileMetadata'], SubscriptionshipProfileMetadataArgs, MeshContext>,
+  /** null **/
+  profileMemberGroup: InContextSdkMethod<Subscription['profileMemberGroup'], SubscriptionprofileMemberGroupArgs, MeshContext>,
+  /** null **/
+  profileMemberGroups: InContextSdkMethod<Subscription['profileMemberGroups'], SubscriptionprofileMemberGroupsArgs, MeshContext>,
   /** Access to subgraph metadata **/
   _meta: InContextSdkMethod<Subscription['_meta'], Subscription_metaArgs, MeshContext>
   };
