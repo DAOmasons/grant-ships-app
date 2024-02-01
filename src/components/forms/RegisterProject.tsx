@@ -65,8 +65,20 @@ export const RegisterProject = () => {
         website: values.website,
       };
 
-      const pinRes = await pinJSONToIPFS(projectMetadata);
+      const testData = {
+        name: 'test2',
+        description: 'test2',
+        avatarHash_IPFS: 'test2',
+        email: 'test2',
+        x: 'test2',
+        github: 'test2',
+        discord: 'test2',
+        telegram: 'test2',
+        website: 'test2',
+      };
 
+      const pinRes = await pinJSONToIPFS(testData);
+      console.log('pinRes', pinRes);
       if (!pinRes?.IpfsHash) {
         notifications.show({
           title: 'IPFS Upload Error',
@@ -79,6 +91,11 @@ export const RegisterProject = () => {
       const teamMembers = values.teamMembers.filter(Boolean);
       const schemaCode = projectProfileHash();
 
+      const metadataStruct = createMetadata({
+        protocol: schemaCode,
+        ipfsHash: pinRes.IpfsHash,
+      });
+      console.log('metadataStruct', metadataStruct);
       console.log('schemaCode', schemaCode);
       tx({
         writeContractParams: {
@@ -88,10 +105,7 @@ export const RegisterProject = () => {
           args: [
             nonce,
             values.name,
-            createMetadata({
-              protocol: schemaCode,
-              ipfsHash: pinRes.IpfsHash,
-            }),
+            metadataStruct,
             values.projectOwner,
             teamMembers,
           ],
@@ -218,7 +232,6 @@ export const RegisterProject = () => {
         <TextInput
           w="100%"
           placeholder="https://yourwebsite.com"
-          required
           leftSection={<IconWorld />}
           {...form.getInputProps('website')}
           onBlur={() => handleBlur('website')}
