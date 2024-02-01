@@ -24,6 +24,7 @@ import { createMetadata, projectProfileHash } from '../../utils/metadata';
 import { ADDR } from '../../constants/addresses';
 
 import { useTx } from '../../hooks/useTx';
+import { useNavigate } from 'react-router-dom';
 
 type FormValues = z.infer<typeof registerProjectSchema>;
 
@@ -49,6 +50,8 @@ export const RegisterProject = () => {
     validate: zodResolver(registerProjectSchema),
   });
 
+  const navigate = useNavigate();
+
   const handleFormSubmit = async (values: FormValues) => {
     try {
       const nonce = generateRandomUint256();
@@ -65,20 +68,7 @@ export const RegisterProject = () => {
         website: values.website,
       };
 
-      const testData = {
-        name: 'test2',
-        description: 'test2',
-        avatarHash_IPFS: 'test2',
-        email: 'test2',
-        x: 'test2',
-        github: 'test2',
-        discord: 'test2',
-        telegram: 'test2',
-        website: 'test2',
-      };
-
-      const pinRes = await pinJSONToIPFS(testData);
-      console.log('pinRes', pinRes);
+      const pinRes = await pinJSONToIPFS(projectMetadata);
       if (!pinRes?.IpfsHash) {
         notifications.show({
           title: 'IPFS Upload Error',
@@ -95,8 +85,7 @@ export const RegisterProject = () => {
         protocol: schemaCode,
         ipfsHash: pinRes.IpfsHash,
       });
-      console.log('metadataStruct', metadataStruct);
-      console.log('schemaCode', schemaCode);
+
       tx({
         writeContractParams: {
           abi: Registry,
@@ -127,7 +116,7 @@ export const RegisterProject = () => {
           },
           successButton: {
             label: 'Go find some Grants!',
-            onClick: () => {},
+            onClick: () => navigate('/ships'),
           },
         },
       });

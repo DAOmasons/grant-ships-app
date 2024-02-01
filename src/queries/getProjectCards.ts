@@ -1,22 +1,19 @@
-import { Project, ProjectMetadata, getBuiltGraphSDK } from '../.graphclient';
+import {
+  MetadataDetailsFragment,
+  ProjectDetailsFragment,
+  getBuiltGraphSDK,
+} from '../.graphclient';
 import { PINATA_GATEWAY } from '../utils/ipfs/gateway';
 
-export type ProjectCard = Pick<
-  Project,
-  | 'anchor'
-  | 'profileId'
-  | 'nonce'
-  | 'name'
-  | 'owner'
-  | 'id'
-  | 'metadata_protocol'
-  | 'metadata_pointer'
-> & {
-  metadata: Pick<ProjectMetadata, 'name' | 'description' | 'avatarHash_IPFS'>;
+export type ProjectCardFromQuery = ProjectDetailsFragment & {
+  metadata?: MetadataDetailsFragment | null;
+};
+
+export type ProjectCard = ProjectCardFromQuery & {
   imgUrl: string;
 };
 
-export const metadataRedunantCheck = async (project: any) => {
+export const metadataRedunantCheck = async (project: ProjectCardFromQuery) => {
   if (!project.metadata) {
     const res = await fetch(`${PINATA_GATEWAY}/${project.metadata_pointer}`);
     const metadata = await res.json();

@@ -2,6 +2,7 @@ import { Group, Loader, Stack, Text, useMantineTheme } from '@mantine/core';
 import { IconCheck, IconCircleX, IconUfo } from '@tabler/icons-react';
 import { ReactNode } from 'react';
 import classes from './txModalStyles.module.css';
+import { SCAN_URL } from '../../../constants/enpoints';
 
 export const LoadingState = ({
   title,
@@ -25,6 +26,7 @@ export const LoadingState = ({
           component={'a'}
           size="sm"
           rel="noopener noreferrer"
+          href={`${SCAN_URL}/tx/${txHash}`}
           target="_blank"
           td="underline"
           style={{ cursor: 'pointer' }}
@@ -66,6 +68,7 @@ export const SuccessState = ({
         <Text
           component={'a'}
           size="sm"
+          href={`${SCAN_URL}/tx/${txHash}`}
           rel="noopener noreferrer"
           target="_blank"
           td="underline"
@@ -113,6 +116,7 @@ export const ErrorState = ({
           size="sm"
           rel="noopener noreferrer"
           target="_blank"
+          href={`${SCAN_URL}/tx/${txHash}`}
           td="underline"
           style={{ cursor: 'pointer' }}
           c={theme.colors.dark[3]}
