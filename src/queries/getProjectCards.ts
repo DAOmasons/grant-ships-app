@@ -15,6 +15,7 @@ export type ProjectCard = ProjectCardFromQuery & {
 
 export const metadataRedunantCheck = async (project: ProjectCardFromQuery) => {
   if (!project.metadata) {
+    console.log('Pin not found');
     const res = await fetch(`${PINATA_GATEWAY}/${project.metadata_pointer}`);
     const metadata = await res.json();
     return {

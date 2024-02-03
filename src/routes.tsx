@@ -6,18 +6,26 @@ import { RegisterProject } from './components/forms/RegisterProject';
 import { Ships } from './pages/Ships';
 import { GameRules } from './pages/GameRules';
 import { Apply } from './pages/Apply';
-import { ThirdwebProvider } from '@thirdweb-dev/react';
+import { ThirdwebProvider, useChain } from '@thirdweb-dev/react';
+import { useChainId } from 'wagmi';
 
-export const ClientRoutes = () => (
-  <ThirdwebProvider>
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="projects" element={<Projects />} />
-      <Route path="create-project" element={<RegisterProject />} />
-      <Route path="ships" element={<Ships />} />
-      <Route path="game-rules" element={<GameRules />} />
-      <Route path="apply" element={<Apply />} />
-      <Route path="project/:id" element={<Project />} />
-    </Routes>
-  </ThirdwebProvider>
-);
+export const ClientRoutes = () => {
+  const chainId = useChainId();
+  return (
+    <ThirdwebProvider
+      clientId={import.meta.env.VITE_TW_CLIENT_ID}
+      secretKey={import.meta.env.VITE_TW_KEY}
+      // activeChain={chainId}
+    >
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="projects" element={<Projects />} />
+        <Route path="create-project" element={<RegisterProject />} />
+        <Route path="ships" element={<Ships />} />
+        <Route path="game-rules" element={<GameRules />} />
+        <Route path="apply" element={<Apply />} />
+        <Route path="project/:id" element={<Project />} />
+      </Routes>
+    </ThirdwebProvider>
+  );
+};

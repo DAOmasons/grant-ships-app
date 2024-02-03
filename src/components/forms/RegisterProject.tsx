@@ -18,13 +18,14 @@ import { useForm, zodResolver } from '@mantine/form';
 import { registerProjectSchema } from './validationSchemas/registerProjectSchema';
 import { z } from 'zod';
 import { generateRandomUint256 } from '../../utils/helpers';
-import { pinJSONToIPFS } from '../../utils/ipfs/pin';
 import { useAccount } from 'wagmi';
 import { createMetadata, projectProfileHash } from '../../utils/metadata';
 import { ADDR } from '../../constants/addresses';
 
 import { useTx } from '../../hooks/useTx';
 import { useNavigate } from 'react-router-dom';
+import { useStorageUpload } from '@thirdweb-dev/react';
+import { Json } from '../../types/common';
 
 type FormValues = z.infer<typeof registerProjectSchema>;
 
@@ -32,6 +33,7 @@ export const RegisterProject = () => {
   const { address } = useAccount();
 
   const { tx } = useTx();
+  const { mutateAsync: upload } = useStorageUpload();
 
   const form = useForm({
     initialValues: {
@@ -57,6 +59,7 @@ export const RegisterProject = () => {
       const nonce = generateRandomUint256();
 
       const projectMetadata = {
+        notStale: generateRandomUint256().toString(),
         name: values.name,
         description: values.description,
         avatarHash_IPFS: values.avatarHash,
@@ -68,22 +71,21 @@ export const RegisterProject = () => {
         website: values.website,
       };
 
-      const pinRes = await pinJSONToIPFS(projectMetadata);
-      if (!pinRes?.IpfsHash) {
+      if (typeof ipfsHash !== 'string' && ipfsHash[0] !== 'Q') {
         notifications.show({
           title: 'IPFS Upload Error',
-          message: pinRes.message,
+          message: ipfsHash[1],
           color: 'red',
         });
         return;
       }
-
       const teamMembers = values.teamMembers.filter(Boolean);
       const schemaCode = projectProfileHash();
 
       const metadataStruct = createMetadata({
         protocol: schemaCode,
         ipfsHash: pinRes.IpfsHash,
+        // ipfsHash: 'QmYdZuYQT9tGz1GFPgDaV7kxgkASsSHV9PFTqy1JJcrk8T',
       });
 
       tx({
