@@ -24,8 +24,8 @@ import { ADDR } from '../../constants/addresses';
 
 import { useTx } from '../../hooks/useTx';
 import { useNavigate } from 'react-router-dom';
-import { useStorageUpload } from '@thirdweb-dev/react';
-import { Json } from '../../types/common';
+
+import { pinJSONToIPFS } from '../../utils/ipfs/pin';
 
 type FormValues = z.infer<typeof registerProjectSchema>;
 
@@ -33,7 +33,6 @@ export const RegisterProject = () => {
   const { address } = useAccount();
 
   const { tx } = useTx();
-  const { mutateAsync: upload } = useStorageUpload();
 
   const form = useForm({
     initialValues: {
@@ -71,10 +70,12 @@ export const RegisterProject = () => {
         website: values.website,
       };
 
-      if (typeof ipfsHash !== 'string' && ipfsHash[0] !== 'Q') {
+      const pinRes = await pinJSONToIPFS(projectMetadata);
+
+      if (typeof pinRes.IpfsHash !== 'string' && pinRes.IpfsHash[0] !== 'Q') {
         notifications.show({
           title: 'IPFS Upload Error',
-          message: ipfsHash[1],
+          message: pinRes.IpfsHash[1],
           color: 'red',
         });
         return;
@@ -85,7 +86,6 @@ export const RegisterProject = () => {
       const metadataStruct = createMetadata({
         protocol: schemaCode,
         ipfsHash: pinRes.IpfsHash,
-        // ipfsHash: 'QmYdZuYQT9tGz1GFPgDaV7kxgkASsSHV9PFTqy1JJcrk8T',
       });
 
       tx({
