@@ -1,5 +1,12 @@
 import { useState } from 'react';
-import { Stepper, Stack, TextInput, Textarea } from '@mantine/core';
+import {
+  Stepper,
+  Stack,
+  TextInput,
+  Textarea,
+  Button,
+  Flex,
+} from '@mantine/core';
 import { MainSection, PageTitle } from '../../layout/Sections';
 import {
   IconBrandGithub,
@@ -46,7 +53,7 @@ export const RegisterShip = () => {
       <PageTitle title="Grant Ship Application" />
       <Stepper active={step} maw={375} miw={300} w={'100%'}>
         <Stepper.Step label="First Step" description="Grant Ship Profile">
-          <RegisterForm />
+          <RegisterForm nextStep={nextStep} />
         </Stepper.Step>
         <Stepper.Step
           label="Second Step"
@@ -59,7 +66,7 @@ export const RegisterShip = () => {
 
 type FormValues = z.infer<typeof registerShipSchema>;
 
-const RegisterForm = () => {
+const RegisterForm = ({ nextStep }: { nextStep: () => void }) => {
   const { address } = useAccount();
   const { tx } = useTx();
 
@@ -134,22 +141,21 @@ const RegisterForm = () => {
         },
         viewParams: {
           loading: {
-            title: 'Creating Your Project Profile',
+            title: 'Creating Your Ship Profile',
             description:
-              'Submitting your project profile to the Allo Registry.',
+              'Submitting your Grant Ship profile to the Allo Registry.',
           },
           success: {
-            title: 'Project Profile Created',
-            description: 'Your project profile has been created.',
+            title: 'Grant Ship Profile Created',
+            description: 'Your ship profile has been created.',
           },
           error: {
             title: 'Something went wrong.',
-            fallback:
-              'There was an unknown error creating your project profile.',
+            fallback: 'There was an unknown error creating your Ship profile.',
           },
           successButton: {
-            label: 'Go find some Grants!',
-            onClick: () => {},
+            label: 'Next Step',
+            onClick: () => nextStep(),
           },
         },
       });
@@ -164,7 +170,7 @@ const RegisterForm = () => {
   };
 
   return (
-    <form>
+    <form onSubmit={form.onSubmit((values) => handleFormSubmit(values))}>
       <Stack maw={375} miw={300} w={'100%'} align="center" m="xl">
         <AvatarPickerIPFS
           onUploadSuccess={(hash: string) => {
@@ -186,9 +192,9 @@ const RegisterForm = () => {
 
         <TextInput
           w="100%"
-          label="Project Name"
+          label="Grant Ship Name"
           required
-          placeholder="Project Name"
+          placeholder="ex. Public Goods Death Star"
           {...form.getInputProps('name')}
         />
         <AddressBox
@@ -205,12 +211,12 @@ const RegisterForm = () => {
         <Textarea
           w="100%"
           label="Mission"
-          description="What is your Ship's funding mission? Max 350 characters"
+          description="Max 350 characters"
           required
           autosize
           minRows={4}
           maxRows={8}
-          placeholder="Project Description"
+          placeholder="What is your Ship's funding mission?"
           {...form.getInputProps('mission')}
           onBlur={() => handleBlur('mission')}
         />
@@ -261,6 +267,11 @@ const RegisterForm = () => {
             onBlur={() => handleBlur('telegram')}
           />
         </Stack>
+        <Flex w="100%" mt="md">
+          <Button ml="auto" type="submit">
+            Create Ship Profile
+          </Button>
+        </Flex>
       </Stack>
     </form>
   );
