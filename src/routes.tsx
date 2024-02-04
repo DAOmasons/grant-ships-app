@@ -6,7 +6,7 @@ import { RegisterProject } from './components/forms/RegisterProject';
 import { Ships } from './pages/Ships';
 import { GameRules } from './pages/GameRules';
 import { Apply } from './pages/Apply';
-import { RegisterShip } from './components/forms/RegisterShip';
+import { CreateShip } from './pages/CreateShip';
 
 export const ClientRoutes = () => {
   return (
@@ -14,7 +14,7 @@ export const ClientRoutes = () => {
       <Route path="/" element={<Home />} />
       <Route path="projects" element={<Projects />} />
       <Route path="create-project" element={<RegisterProject />} />
-      <Route path="create-ship" element={<RegisterShip />} />
+      <Route path="create-ship" element={<CreateShip />} />
       <Route path="ships" element={<Ships />} />
       <Route path="game-rules" element={<GameRules />} />
       <Route path="apply" element={<Apply />} />

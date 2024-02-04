@@ -1,13 +1,5 @@
-import { useState } from 'react';
-import {
-  Stepper,
-  Stack,
-  TextInput,
-  Textarea,
-  Button,
-  Flex,
-} from '@mantine/core';
-import { MainSection, PageTitle } from '../../layout/Sections';
+import { Stack, TextInput, Textarea, Button, Flex } from '@mantine/core';
+
 import {
   IconBrandGithub,
   IconBrandTelegram,
@@ -20,11 +12,8 @@ import { AddressBox } from '../AddressBox';
 import { notifications } from '@mantine/notifications';
 import { AvatarPickerIPFS } from '../AvatarPickerIPFS';
 import { useForm, zodResolver } from '@mantine/form';
-import {
-  registerProjectSchema,
-  registerShipSchema,
-} from './validationSchemas/registerProjectSchema';
-import { useAccount, useWatchContractEvent } from 'wagmi';
+import { registerShipSchema } from './validationSchemas/registerProjectSchema';
+import { useAccount } from 'wagmi';
 import { z } from 'zod';
 import Registry from '../../abi/Registry.json';
 import { ADDR } from '../../constants/addresses';
@@ -33,40 +22,9 @@ import { generateRandomUint256 } from '../../utils/helpers';
 import { pinJSONToIPFS } from '../../utils/ipfs/pin';
 import { createMetadata, shipProfileHash } from '../../utils/metadata';
 
-export const RegisterShip = () => {
-  const [step, setStep] = useState(0);
-  useWatchContractEvent({
-    abi: Registry,
-    address: ADDR.Registry,
-    eventName: 'ProfileCreated',
-    onLogs: (logs) => {
-      console.log('ProfileCreated', logs);
-    },
-  });
-
-  const nextStep = () =>
-    setStep((current) => (current < 2 ? current + 1 : current));
-  const prevStep = () =>
-    setStep((current) => (current > 0 ? current - 1 : current));
-  return (
-    <MainSection>
-      <PageTitle title="Grant Ship Application" />
-      <Stepper active={step} maw={375} miw={300} w={'100%'}>
-        <Stepper.Step label="First Step" description="Grant Ship Profile">
-          <RegisterForm nextStep={nextStep} />
-        </Stepper.Step>
-        <Stepper.Step
-          label="Second Step"
-          description="Ship Profile"
-        ></Stepper.Step>
-      </Stepper>
-    </MainSection>
-  );
-};
-
 type FormValues = z.infer<typeof registerShipSchema>;
 
-const RegisterForm = ({ nextStep }: { nextStep: () => void }) => {
+export const RegisterShip = ({ nextStep }: { nextStep: () => void }) => {
   const { address } = useAccount();
   const { tx } = useTx();
 
