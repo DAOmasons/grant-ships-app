@@ -33,10 +33,8 @@ export const ShipApplication = ({
   };
   return (
     <form>
-      <Stack maw={600} miw={300} w={'100%'}>
-        <Text fw={600} mt="xl">
-          {profileData?.name || 'Should Not See This'}
-        </Text>
+      <Stack maw={600} miw={300} w={'100%'} mt="xl">
+        <Text fw={600}>{profileData?.name || 'Should Not See This'}</Text>
         <Textarea
           w="100%"
           inputWrapperOrder={['label', 'input', 'description', 'error']}

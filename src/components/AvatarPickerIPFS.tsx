@@ -1,4 +1,11 @@
-import { ActionIcon, Avatar, Container, FileButton, Text } from '@mantine/core';
+import {
+  ActionIcon,
+  Avatar,
+  Box,
+  Container,
+  FileButton,
+  Text,
+} from '@mantine/core';
 import { IconPencil, IconUser } from '@tabler/icons-react';
 import { pinFileToIPFS } from '../utils/ipfs/pin';
 import { ReactNode, useState } from 'react';
@@ -46,7 +53,7 @@ export const AvatarPickerIPFS = ({
 
   return (
     <>
-      <Container pos="relative" mb="lg">
+      <Box pos="relative" mb="lg" mt="xl">
         <Avatar size={120} src={canPreview ? avatarPreview : undefined}>
           {canPreview || <IconUser size={80} />}
         </Avatar>
@@ -56,7 +63,7 @@ export const AvatarPickerIPFS = ({
               {...props}
               pos={'absolute'}
               bottom={0}
-              right={20}
+              left={85}
               radius="xl"
               loading={isLoading}
             >
@@ -64,7 +71,7 @@ export const AvatarPickerIPFS = ({
             </ActionIcon>
           )}
         </FileButton>
-      </Container>
+      </Box>
       {validationError && (
         <Text fz={12} color="red">
           {validationError}

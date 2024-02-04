@@ -1,4 +1,4 @@
-import { Stack, TextInput, Textarea } from '@mantine/core';
+import { Box, Flex, Stack, TextInput, Textarea, em } from '@mantine/core';
 
 import { FormPageLayout } from '../../layout/FormPageLayout';
 import {
@@ -26,11 +26,13 @@ import { useTx } from '../../hooks/useTx';
 import { useNavigate } from 'react-router-dom';
 
 import { pinJSONToIPFS } from '../../utils/ipfs/pin';
+import { useMediaQuery } from '@mantine/hooks';
 
 type FormValues = z.infer<typeof registerProjectSchema>;
 
 export const RegisterProject = () => {
   const { address } = useAccount();
+  const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
 
   const { tx } = useTx();
 
@@ -175,6 +177,7 @@ export const RegisterProject = () => {
         w="100%"
         label="Project Name"
         required
+        maw={292}
         placeholder="Project Name"
         {...form.getInputProps('name')}
       />
@@ -209,53 +212,115 @@ export const RegisterProject = () => {
         {...form.getInputProps('description')}
         onBlur={() => handleBlur('description')}
       />
-      <Stack w="100%" gap={14}>
-        <TextInput
-          w="100%"
-          label="Links/Contact"
-          description="Email is required. Please provide at least one other contact "
-          placeholder="Email"
-          required
-          leftSection={<IconMail />}
-          {...form.getInputProps('email')}
-          onBlur={() => handleBlur('email')}
-        />
-        <TextInput
-          w="100%"
-          placeholder="https://yourwebsite.com"
-          leftSection={<IconWorld />}
-          {...form.getInputProps('website')}
-          onBlur={() => handleBlur('website')}
-        />
-        <TextInput
-          w="100%"
-          placeholder="X"
-          leftSection={<IconBrandX />}
-          {...form.getInputProps('x')}
-          onBlur={() => handleBlur('x')}
-        />
-        <TextInput
-          w="100%"
-          placeholder="Github"
-          leftSection={<IconBrandGithub />}
-          {...form.getInputProps('github')}
-          onBlur={() => handleBlur('github')}
-        />
-        <TextInput
-          w="100%"
-          placeholder="Discord"
-          leftSection={<IconBrandDiscord />}
-          {...form.getInputProps('discord')}
-          onBlur={() => handleBlur('discord')}
-        />
-        <TextInput
-          w="100%"
-          placeholder="Telegram"
-          leftSection={<IconBrandTelegram />}
-          {...form.getInputProps('telegram')}
-          onBlur={() => handleBlur('telegram')}
-        />
-      </Stack>
+      {isMobile ? (
+        <Stack w="100%" gap={14}>
+          <TextInput
+            w="100%"
+            label="Links/Contact"
+            description="Email is required. Please provide at least one other contact "
+            placeholder="Email"
+            required
+            leftSection={<IconMail />}
+            {...form.getInputProps('email')}
+            onBlur={() => handleBlur('email')}
+          />
+          <TextInput
+            w="100%"
+            placeholder="https://yourwebsite.com"
+            leftSection={<IconWorld />}
+            {...form.getInputProps('website')}
+            onBlur={() => handleBlur('website')}
+          />
+          <TextInput
+            w="100%"
+            placeholder="X"
+            leftSection={<IconBrandX />}
+            {...form.getInputProps('x')}
+            onBlur={() => handleBlur('x')}
+          />
+          <TextInput
+            w="100%"
+            placeholder="Github"
+            leftSection={<IconBrandGithub />}
+            {...form.getInputProps('github')}
+            onBlur={() => handleBlur('github')}
+          />
+          <TextInput
+            w="100%"
+            placeholder="Discord"
+            leftSection={<IconBrandDiscord />}
+            {...form.getInputProps('discord')}
+            onBlur={() => handleBlur('discord')}
+          />
+          <TextInput
+            w="100%"
+            placeholder="Telegram"
+            leftSection={<IconBrandTelegram />}
+            {...form.getInputProps('telegram')}
+            onBlur={() => handleBlur('telegram')}
+          />
+        </Stack>
+      ) : (
+        <Box>
+          <Flex gap="md" mb="lg">
+            <TextInput
+              w="100%"
+              label="Email"
+              placeholder="email@email.mail"
+              required
+              leftSection={<IconMail />}
+              {...form.getInputProps('email')}
+              onBlur={() => handleBlur('email')}
+            />
+            <TextInput
+              w="100%"
+              label="Website"
+              placeholder="https://yourwebsite.com"
+              leftSection={<IconWorld />}
+              {...form.getInputProps('website')}
+              onBlur={() => handleBlur('website')}
+            />
+          </Flex>
+          <Flex align={'flex-start'}>
+            <TextInput
+              w="50%"
+              mr={'md'}
+              placeholder="X"
+              label="Social Media"
+              leftSection={<IconBrandX />}
+              {...form.getInputProps('x')}
+              onBlur={() => handleBlur('x')}
+            />
+            <TextInput
+              w="50%"
+              label=" "
+              placeholder="Github"
+              leftSection={<IconBrandGithub />}
+              {...form.getInputProps('github')}
+              onBlur={() => handleBlur('github')}
+            />
+          </Flex>
+          <Flex mb="lg" align={'flex-start'}>
+            <TextInput
+              w="50%"
+              label=" "
+              mr={'md'}
+              placeholder="Discord"
+              leftSection={<IconBrandDiscord />}
+              {...form.getInputProps('discord')}
+              onBlur={() => handleBlur('discord')}
+            />
+            <TextInput
+              w="50%"
+              label=" "
+              placeholder="Telegram"
+              leftSection={<IconBrandTelegram />}
+              {...form.getInputProps('telegram')}
+              onBlur={() => handleBlur('telegram')}
+            />
+          </Flex>
+        </Box>
+      )}
     </FormPageLayout>
   );
 };

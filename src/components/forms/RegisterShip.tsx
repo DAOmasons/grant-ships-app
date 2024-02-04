@@ -1,4 +1,12 @@
-import { Stack, TextInput, Textarea, Button, Flex } from '@mantine/core';
+import {
+  Stack,
+  TextInput,
+  Textarea,
+  Button,
+  Flex,
+  Box,
+  em,
+} from '@mantine/core';
 
 import {
   IconBrandGithub,
@@ -21,12 +29,14 @@ import { useTx } from '../../hooks/useTx';
 import { generateRandomUint256 } from '../../utils/helpers';
 import { pinJSONToIPFS } from '../../utils/ipfs/pin';
 import { createMetadata, shipProfileHash } from '../../utils/metadata';
+import { useMediaQuery } from '@mantine/hooks';
 
 type FormValues = z.infer<typeof registerShipSchema>;
 
 export const RegisterShip = ({ nextStep }: { nextStep: () => void }) => {
   const { address } = useAccount();
   const { tx } = useTx();
+  const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
 
   const form = useForm({
     initialValues: {
@@ -129,7 +139,7 @@ export const RegisterShip = ({ nextStep }: { nextStep: () => void }) => {
 
   return (
     <form onSubmit={form.onSubmit((values) => handleFormSubmit(values))}>
-      <Stack maw={375} miw={300} w={'100%'} align="center">
+      <Stack maw={600} miw={300} w={'100%'}>
         <AvatarPickerIPFS
           onUploadSuccess={(hash: string) => {
             notifications.show({
@@ -149,8 +159,8 @@ export const RegisterShip = ({ nextStep }: { nextStep: () => void }) => {
         />
 
         <TextInput
-          w="100%"
           label="Grant Ship Name"
+          maw={292}
           required
           placeholder="ex. Public Goods Death Star"
           {...form.getInputProps('name')}
@@ -179,53 +189,115 @@ export const RegisterShip = ({ nextStep }: { nextStep: () => void }) => {
           {...form.getInputProps('mission')}
           onBlur={() => handleBlur('mission')}
         />
-        <Stack w="100%" gap={14}>
-          <TextInput
-            w="100%"
-            label="Links/Contact"
-            description="Email is required. Please provide at least one other contact "
-            placeholder="Email"
-            required
-            leftSection={<IconMail />}
-            {...form.getInputProps('email')}
-            onBlur={() => handleBlur('email')}
-          />
-          <TextInput
-            w="100%"
-            placeholder="https://yourwebsite.com"
-            leftSection={<IconWorld />}
-            {...form.getInputProps('website')}
-            onBlur={() => handleBlur('website')}
-          />
-          <TextInput
-            w="100%"
-            placeholder="X"
-            leftSection={<IconBrandX />}
-            {...form.getInputProps('x')}
-            onBlur={() => handleBlur('x')}
-          />
-          <TextInput
-            w="100%"
-            placeholder="Github"
-            leftSection={<IconBrandGithub />}
-            {...form.getInputProps('github')}
-            onBlur={() => handleBlur('github')}
-          />
-          <TextInput
-            w="100%"
-            placeholder="Discord"
-            leftSection={<IconBrandDiscord />}
-            {...form.getInputProps('discord')}
-            onBlur={() => handleBlur('discord')}
-          />
-          <TextInput
-            w="100%"
-            placeholder="Telegram"
-            leftSection={<IconBrandTelegram />}
-            {...form.getInputProps('telegram')}
-            onBlur={() => handleBlur('telegram')}
-          />
-        </Stack>
+        {isMobile ? (
+          <Stack w="100%" gap={14}>
+            <TextInput
+              w="100%"
+              label="Links/Contact"
+              description="Email is required. Please provide at least one other contact "
+              placeholder="Email"
+              required
+              leftSection={<IconMail />}
+              {...form.getInputProps('email')}
+              onBlur={() => handleBlur('email')}
+            />
+            <TextInput
+              w="100%"
+              placeholder="https://yourwebsite.com"
+              leftSection={<IconWorld />}
+              {...form.getInputProps('website')}
+              onBlur={() => handleBlur('website')}
+            />
+            <TextInput
+              w="100%"
+              placeholder="X"
+              leftSection={<IconBrandX />}
+              {...form.getInputProps('x')}
+              onBlur={() => handleBlur('x')}
+            />
+            <TextInput
+              w="100%"
+              placeholder="Github"
+              leftSection={<IconBrandGithub />}
+              {...form.getInputProps('github')}
+              onBlur={() => handleBlur('github')}
+            />
+            <TextInput
+              w="100%"
+              placeholder="Discord"
+              leftSection={<IconBrandDiscord />}
+              {...form.getInputProps('discord')}
+              onBlur={() => handleBlur('discord')}
+            />
+            <TextInput
+              w="100%"
+              placeholder="Telegram"
+              leftSection={<IconBrandTelegram />}
+              {...form.getInputProps('telegram')}
+              onBlur={() => handleBlur('telegram')}
+            />
+          </Stack>
+        ) : (
+          <Box>
+            <Flex gap="md" mb="lg">
+              <TextInput
+                w="100%"
+                label="Email"
+                placeholder="email@email.mail"
+                required
+                leftSection={<IconMail />}
+                {...form.getInputProps('email')}
+                onBlur={() => handleBlur('email')}
+              />
+              <TextInput
+                w="100%"
+                label="Website"
+                placeholder="https://yourwebsite.com"
+                leftSection={<IconWorld />}
+                {...form.getInputProps('website')}
+                onBlur={() => handleBlur('website')}
+              />
+            </Flex>
+            <Flex align={'flex-start'}>
+              <TextInput
+                w="50%"
+                mr={'md'}
+                placeholder="X"
+                label="Social Media"
+                leftSection={<IconBrandX />}
+                {...form.getInputProps('x')}
+                onBlur={() => handleBlur('x')}
+              />
+              <TextInput
+                w="50%"
+                label=" "
+                placeholder="Github"
+                leftSection={<IconBrandGithub />}
+                {...form.getInputProps('github')}
+                onBlur={() => handleBlur('github')}
+              />
+            </Flex>
+            <Flex mb="lg" align={'flex-start'}>
+              <TextInput
+                w="50%"
+                label=" "
+                mr={'md'}
+                placeholder="Discord"
+                leftSection={<IconBrandDiscord />}
+                {...form.getInputProps('discord')}
+                onBlur={() => handleBlur('discord')}
+              />
+              <TextInput
+                w="50%"
+                label=" "
+                placeholder="Telegram"
+                leftSection={<IconBrandTelegram />}
+                {...form.getInputProps('telegram')}
+                onBlur={() => handleBlur('telegram')}
+              />
+            </Flex>
+          </Box>
+        )}
         <Flex w="100%" mt="md">
           <Button ml="auto" type="submit">
             Create Ship Profile
