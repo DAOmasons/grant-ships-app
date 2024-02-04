@@ -129,7 +129,7 @@ export const RegisterShip = ({ nextStep }: { nextStep: () => void }) => {
 
   return (
     <form onSubmit={form.onSubmit((values) => handleFormSubmit(values))}>
-      <Stack maw={375} miw={300} w={'100%'} align="center" m="xl">
+      <Stack maw={375} miw={300} w={'100%'} align="center">
         <AvatarPickerIPFS
           onUploadSuccess={(hash: string) => {
             notifications.show({
@@ -154,6 +154,7 @@ export const RegisterShip = ({ nextStep }: { nextStep: () => void }) => {
           required
           placeholder="ex. Public Goods Death Star"
           {...form.getInputProps('name')}
+          onBlur={() => handleBlur('teamMembers')}
         />
         <AddressBox
           w="100%"

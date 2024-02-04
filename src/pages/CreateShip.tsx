@@ -7,8 +7,9 @@ import { ADDR } from '../constants/addresses';
 import { MainSection, PageTitle } from '../layout/Sections';
 import { Stepper } from '@mantine/core';
 import { RegisterShip } from '../components/forms/RegisterShip';
+import { ShipApplication } from '../components/forms/ShipApplication';
 
-type EventArg = {
+export type ProfileData = {
   anchor: string;
   metadata: {
     protocol: string;
@@ -22,7 +23,7 @@ type EventArg = {
 export const CreateShip = () => {
   const [step, setStep] = useState(0);
   const { address } = useAccount();
-  const [eventData, setEventData] = useState<EventArg | null>(null);
+  const [profileData, setProfileData] = useState<ProfileData | undefined>();
 
   useWatchContractEvent({
     abi: Registry,
@@ -33,7 +34,7 @@ export const CreateShip = () => {
 
       const owner = log?.args?.owner;
       if (owner && owner.toLowerCase() === address?.toLowerCase()) {
-        setEventData(log.args);
+        setProfileData(log.args);
       } else {
         console.warn(
           'Owner address does not match the entity found on the event log'
@@ -50,14 +51,13 @@ export const CreateShip = () => {
   return (
     <MainSection>
       <PageTitle title="Grant Ship Application" />
-      <Stepper active={step} maw={375} miw={300} w={'100%'}>
+      <Stepper active={step} maw={600} miw={300} w={'100%'} mt={'lg'} mb="xl">
         <Stepper.Step label="First Step" description="Grant Ship Profile">
           <RegisterShip nextStep={nextStep} />
         </Stepper.Step>
-        <Stepper.Step
-          label="Second Step"
-          description="Ship Application"
-        ></Stepper.Step>
+        <Stepper.Step label="Second Step" description="Ship Application">
+          <ShipApplication profileData={profileData} />
+        </Stepper.Step>
       </Stepper>
     </MainSection>
   );
