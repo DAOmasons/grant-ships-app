@@ -63,7 +63,7 @@ export const AddressBox = (
   };
 
   return (
-    <>
+    <div>
       <Textarea
         {...rest}
         onChange={handleChange}
@@ -74,7 +74,7 @@ export const AddressBox = (
         minRows={4}
         maxRows={6}
       />
-      <Flex w="100%" direction="column">
+      <Flex w="100%" direction="column" mb={0}>
         {addrData.map((addr, index) => (
           <Paper
             bg={theme.colors.dark[6]}
@@ -106,6 +106,6 @@ export const AddressBox = (
           </Paper>
         ))}
       </Flex>
-    </>
+    </div>
   );
 };
