@@ -12,6 +12,7 @@ import {
 } from '../components/modals/txModal/txModalStates';
 import { Button, Modal } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
+import { pollSubgraph } from '../queries/getRecentTransaction';
 
 type WriteContractParams = Parameters<
   ReturnType<typeof useWriteContract>['writeContract']
@@ -20,7 +21,16 @@ type WriteContractOptions = Parameters<
   ReturnType<typeof useWriteContract>['writeContract']
 >[1];
 
+enum PollStatus {
+  Idle,
+  Polling,
+  Error,
+  Success,
+  Timeout,
+}
+
 type ViewParams = {
+  awaitGraphPoll?: boolean;
   loading?: {
     title?: string;
     description?: string;
@@ -28,6 +38,7 @@ type ViewParams = {
   success?: {
     title?: string;
     description?: string;
+    shouldCloseAfterButton?: boolean;
   };
   error?: {
     title?: string;
@@ -42,6 +53,7 @@ type ViewParams = {
 type TxContextType = {
   tx: (params: {
     writeContractParams: WriteContractParams;
+    writeContractOptions?: WriteContractOptions;
     viewParams?: ViewParams;
   }) => void;
   writeContract: WriteContractMutate<Config, unknown>;
@@ -54,6 +66,9 @@ type TxContextType = {
   txError: WaitForTransactionReceiptErrorType | null;
   error: WriteContractErrorType | null;
   txData: ReturnType<typeof useWaitForTransactionReceipt>['data'];
+  isModalOpen: boolean;
+  openModal: () => void;
+  closeModal: () => void;
 };
 
 export const TXContext = React.createContext<TxContextType | undefined>(
@@ -84,6 +99,7 @@ export const TxProvider = ({ children }: { children: ReactNode }) => {
   const [viewParams, setViewParams] = useState<ViewParams | undefined>(
     undefined
   );
+  const [pollStatus, setPollStatus] = useState(PollStatus.Idle);
 
   const clearTx = useCallback(() => {
     reset();
@@ -100,7 +116,27 @@ export const TxProvider = ({ children }: { children: ReactNode }) => {
     viewParams?: ViewParams;
   }) => {
     open();
-    writeContract(writeContractParams, writeContractOptions);
+    writeContract(writeContractParams, {
+      ...writeContractOptions,
+      onSuccess: (data, variables, context) => {
+        writeContractOptions?.onSuccess?.(data, variables, context);
+        if (viewParams?.awaitGraphPoll !== false && data) {
+          setPollStatus(PollStatus.Idle);
+          pollSubgraph({
+            txHash: data,
+            onPollSuccess: () => {
+              setPollStatus(PollStatus.Success);
+            },
+            onPollError: () => {
+              setPollStatus(PollStatus.Error);
+            },
+            onPollTimeout: () => {
+              setPollStatus(PollStatus.Timeout);
+            },
+          });
+        }
+      },
+    });
     setViewParams(viewParams);
   };
 
@@ -109,8 +145,12 @@ export const TxProvider = ({ children }: { children: ReactNode }) => {
     close();
   }, [clearTx, close]);
 
+  const shouldWaitForPoll =
+    viewParams?.awaitGraphPoll !== false &&
+    (pollStatus === PollStatus.Idle || pollStatus === PollStatus.Polling);
+
   const txModalContent = useMemo(() => {
-    if (isConfirming || isAwaitingSignature) {
+    if (isConfirming || isAwaitingSignature || shouldWaitForPoll) {
       return (
         <LoadingState
           title={viewParams?.loading?.title || 'Validating Transaction'}
@@ -131,7 +171,13 @@ export const TxProvider = ({ children }: { children: ReactNode }) => {
           ctaElement={
             <>
               {viewParams?.successButton ? (
-                <Button onClick={viewParams?.successButton.onClick} w="65%">
+                <Button
+                  onClick={() => {
+                    handleClose();
+                    viewParams?.successButton?.onClick?.();
+                  }}
+                  w="65%"
+                >
                   {viewParams?.successButton.label}
                 </Button>
               ) : (
@@ -168,6 +214,7 @@ export const TxProvider = ({ children }: { children: ReactNode }) => {
     viewParams,
     error,
     handleClose,
+    shouldWaitForPoll,
   ]);
 
   return (
@@ -184,6 +231,9 @@ export const TxProvider = ({ children }: { children: ReactNode }) => {
         txData,
         error: error as WriteContractErrorType | null,
         isAwaitingSignature,
+        isModalOpen: opened,
+        openModal: open,
+        closeModal: handleClose,
       }}
     >
       {children}

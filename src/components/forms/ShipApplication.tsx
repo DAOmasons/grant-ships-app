@@ -1,9 +1,10 @@
-import { useForm } from '@mantine/form';
+import { useForm, zodResolver } from '@mantine/form';
 import { ProfileData } from '../../pages/CreateShip';
 import { useAccount } from 'wagmi';
 import { Flex, Stack, Text, TextInput, Textarea, em } from '@mantine/core';
 import { IconExternalLink } from '@tabler/icons-react';
 import { useMediaQuery } from '@mantine/hooks';
+import { shipApplicationSchema } from './validationSchemas/shipApplicationSchema';
 
 export const ShipApplication = ({
   profileData,
@@ -15,22 +16,20 @@ export const ShipApplication = ({
 
   const form = useForm({
     initialValues: {
-      avatarHash: '',
-      name: '',
-      teamMembers: [''],
-      mission: '',
-      email: '',
-      x: '',
-      github: '',
-      discord: '',
-      telegram: '',
-      website: '',
+      thesis: '',
+      guidelines: '',
+      fee: 0,
+      extraLink: '',
+      extraInfo: '',
     },
-    // validate: zodResolver(registerShipSchema),
+    validate: zodResolver(shipApplicationSchema),
   });
   const handleBlur = (fieldName: string) => {
     form.validateField(fieldName);
   };
+
+  console.log('profileData', profileData);
+
   return (
     <form>
       <Stack maw={600} miw={300} w={'100%'} mt="xl">

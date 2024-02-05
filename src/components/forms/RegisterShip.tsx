@@ -20,7 +20,7 @@ import { AddressBox } from '../AddressBox';
 import { notifications } from '@mantine/notifications';
 import { AvatarPickerIPFS } from '../AvatarPickerIPFS';
 import { useForm, zodResolver } from '@mantine/form';
-import { registerShipSchema } from './validationSchemas/registerProjectSchema';
+import { registerShipSchema } from './validationSchemas/registerShipSchema';
 import { useAccount } from 'wagmi';
 import { z } from 'zod';
 import Registry from '../../abi/Registry.json';
@@ -30,12 +30,13 @@ import { generateRandomUint256 } from '../../utils/helpers';
 import { pinJSONToIPFS } from '../../utils/ipfs/pin';
 import { createMetadata, shipProfileHash } from '../../utils/metadata';
 import { useMediaQuery } from '@mantine/hooks';
+import { ProfileData } from '../../pages/CreateShip';
 
 type FormValues = z.infer<typeof registerShipSchema>;
 
 export const RegisterShip = ({ nextStep }: { nextStep: () => void }) => {
   const { address } = useAccount();
-  const { tx } = useTx();
+  const { tx, closeModal } = useTx();
   const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
 
   const form = useForm({
@@ -107,6 +108,17 @@ export const RegisterShip = ({ nextStep }: { nextStep: () => void }) => {
             teamMembers,
           ],
         },
+        writeContractOptions: {
+          onSuccess(data, variables, context) {
+            console.log('data', data);
+            console.log('variables', variables);
+            console.log('context', context);
+          },
+          onSettled(data, error) {
+            console.log('data', data);
+            console.log('error', error);
+          },
+        },
         viewParams: {
           loading: {
             title: 'Creating Your Ship Profile',
@@ -123,7 +135,9 @@ export const RegisterShip = ({ nextStep }: { nextStep: () => void }) => {
           },
           successButton: {
             label: 'Next Step',
-            onClick: () => nextStep(),
+            onClick: () => {
+              nextStep();
+            },
           },
         },
       });

@@ -1,0 +1,5 @@
+query getRecentTransaction($txHash: ID!) {
+  transaction(id: $txHash) {
+    id
+  }
+}

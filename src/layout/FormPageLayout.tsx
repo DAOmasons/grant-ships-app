@@ -21,7 +21,7 @@ export const FormPageLayout = ({
   errors?: Record<string, string>;
 }) => {
   return (
-    <form onSubmit={onSubmit} style={{ width: '100%' }}>
+    <form onSubmit={onSubmit}>
       <Stack maw={600} miw={300} w={'100%'} m="xl">
         {title && <PageTitle title={title} />}
         {children}

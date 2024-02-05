@@ -523,6 +523,8 @@ export type Query = {
   shipProfileMetadata: Array<ShipProfileMetadata>;
   profileMemberGroup?: Maybe<ProfileMemberGroup>;
   profileMemberGroups: Array<ProfileMemberGroup>;
+  transaction?: Maybe<Transaction>;
+  transactions: Array<Transaction>;
   /** Access to subgraph metadata */
   _meta?: Maybe<_Meta_>;
 };
@@ -599,6 +601,24 @@ export type QueryprofileMemberGroupsArgs = {
   orderBy?: InputMaybe<ProfileMemberGroup_orderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
   where?: InputMaybe<ProfileMemberGroup_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QuerytransactionArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QuerytransactionsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Transaction_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<Transaction_filter>;
   block?: InputMaybe<Block_height>;
   subgraphError?: _SubgraphErrorPolicy_;
 };
@@ -1062,6 +1082,8 @@ export type Subscription = {
   shipProfileMetadata: Array<ShipProfileMetadata>;
   profileMemberGroup?: Maybe<ProfileMemberGroup>;
   profileMemberGroups: Array<ProfileMemberGroup>;
+  transaction?: Maybe<Transaction>;
+  transactions: Array<Transaction>;
   /** Access to subgraph metadata */
   _meta?: Maybe<_Meta_>;
 };
@@ -1143,9 +1165,83 @@ export type SubscriptionprofileMemberGroupsArgs = {
 };
 
 
+export type SubscriptiontransactionArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptiontransactionsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Transaction_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<Transaction_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
 export type Subscription_metaArgs = {
   block?: InputMaybe<Block_height>;
 };
+
+export type Transaction = {
+  id: Scalars['ID'];
+  blockNumber: Scalars['BigInt'];
+  sender: Scalars['Bytes'];
+  txHash: Scalars['Bytes'];
+};
+
+export type Transaction_filter = {
+  id?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']>;
+  id_gt?: InputMaybe<Scalars['ID']>;
+  id_lt?: InputMaybe<Scalars['ID']>;
+  id_gte?: InputMaybe<Scalars['ID']>;
+  id_lte?: InputMaybe<Scalars['ID']>;
+  id_in?: InputMaybe<Array<Scalars['ID']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']>>;
+  blockNumber?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_not?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_gt?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_lt?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_gte?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_lte?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  sender?: InputMaybe<Scalars['Bytes']>;
+  sender_not?: InputMaybe<Scalars['Bytes']>;
+  sender_gt?: InputMaybe<Scalars['Bytes']>;
+  sender_lt?: InputMaybe<Scalars['Bytes']>;
+  sender_gte?: InputMaybe<Scalars['Bytes']>;
+  sender_lte?: InputMaybe<Scalars['Bytes']>;
+  sender_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  sender_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  sender_contains?: InputMaybe<Scalars['Bytes']>;
+  sender_not_contains?: InputMaybe<Scalars['Bytes']>;
+  txHash?: InputMaybe<Scalars['Bytes']>;
+  txHash_not?: InputMaybe<Scalars['Bytes']>;
+  txHash_gt?: InputMaybe<Scalars['Bytes']>;
+  txHash_lt?: InputMaybe<Scalars['Bytes']>;
+  txHash_gte?: InputMaybe<Scalars['Bytes']>;
+  txHash_lte?: InputMaybe<Scalars['Bytes']>;
+  txHash_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  txHash_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  txHash_contains?: InputMaybe<Scalars['Bytes']>;
+  txHash_not_contains?: InputMaybe<Scalars['Bytes']>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Transaction_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Transaction_filter>>>;
+};
+
+export type Transaction_orderBy =
+  | 'id'
+  | 'blockNumber'
+  | 'sender'
+  | 'txHash';
 
 export type _Block_ = {
   /** The hash of the block */
@@ -1195,6 +1291,10 @@ export type _SubgraphErrorPolicy_ =
   profileMemberGroup: InContextSdkMethod<Query['profileMemberGroup'], QueryprofileMemberGroupArgs, MeshContext>,
   /** null **/
   profileMemberGroups: InContextSdkMethod<Query['profileMemberGroups'], QueryprofileMemberGroupsArgs, MeshContext>,
+  /** null **/
+  transaction: InContextSdkMethod<Query['transaction'], QuerytransactionArgs, MeshContext>,
+  /** null **/
+  transactions: InContextSdkMethod<Query['transactions'], QuerytransactionsArgs, MeshContext>,
   /** Access to subgraph metadata **/
   _meta: InContextSdkMethod<Query['_meta'], Query_metaArgs, MeshContext>
   };
@@ -1220,6 +1320,10 @@ export type _SubgraphErrorPolicy_ =
   profileMemberGroup: InContextSdkMethod<Subscription['profileMemberGroup'], SubscriptionprofileMemberGroupArgs, MeshContext>,
   /** null **/
   profileMemberGroups: InContextSdkMethod<Subscription['profileMemberGroups'], SubscriptionprofileMemberGroupsArgs, MeshContext>,
+  /** null **/
+  transaction: InContextSdkMethod<Subscription['transaction'], SubscriptiontransactionArgs, MeshContext>,
+  /** null **/
+  transactions: InContextSdkMethod<Subscription['transactions'], SubscriptiontransactionsArgs, MeshContext>,
   /** Access to subgraph metadata **/
   _meta: InContextSdkMethod<Subscription['_meta'], Subscription_metaArgs, MeshContext>
   };

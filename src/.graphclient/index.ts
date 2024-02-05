@@ -545,6 +545,8 @@ export type Query = {
   shipProfileMetadata: Array<ShipProfileMetadata>;
   profileMemberGroup?: Maybe<ProfileMemberGroup>;
   profileMemberGroups: Array<ProfileMemberGroup>;
+  transaction?: Maybe<Transaction>;
+  transactions: Array<Transaction>;
   /** Access to subgraph metadata */
   _meta?: Maybe<_Meta_>;
 };
@@ -621,6 +623,24 @@ export type QueryprofileMemberGroupsArgs = {
   orderBy?: InputMaybe<ProfileMemberGroup_orderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
   where?: InputMaybe<ProfileMemberGroup_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QuerytransactionArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QuerytransactionsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Transaction_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<Transaction_filter>;
   block?: InputMaybe<Block_height>;
   subgraphError?: _SubgraphErrorPolicy_;
 };
@@ -1084,6 +1104,8 @@ export type Subscription = {
   shipProfileMetadata: Array<ShipProfileMetadata>;
   profileMemberGroup?: Maybe<ProfileMemberGroup>;
   profileMemberGroups: Array<ProfileMemberGroup>;
+  transaction?: Maybe<Transaction>;
+  transactions: Array<Transaction>;
   /** Access to subgraph metadata */
   _meta?: Maybe<_Meta_>;
 };
@@ -1165,9 +1187,83 @@ export type SubscriptionprofileMemberGroupsArgs = {
 };
 
 
+export type SubscriptiontransactionArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptiontransactionsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Transaction_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<Transaction_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
 export type Subscription_metaArgs = {
   block?: InputMaybe<Block_height>;
 };
+
+export type Transaction = {
+  id: Scalars['ID'];
+  blockNumber: Scalars['BigInt'];
+  sender: Scalars['Bytes'];
+  txHash: Scalars['Bytes'];
+};
+
+export type Transaction_filter = {
+  id?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']>;
+  id_gt?: InputMaybe<Scalars['ID']>;
+  id_lt?: InputMaybe<Scalars['ID']>;
+  id_gte?: InputMaybe<Scalars['ID']>;
+  id_lte?: InputMaybe<Scalars['ID']>;
+  id_in?: InputMaybe<Array<Scalars['ID']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']>>;
+  blockNumber?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_not?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_gt?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_lt?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_gte?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_lte?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  sender?: InputMaybe<Scalars['Bytes']>;
+  sender_not?: InputMaybe<Scalars['Bytes']>;
+  sender_gt?: InputMaybe<Scalars['Bytes']>;
+  sender_lt?: InputMaybe<Scalars['Bytes']>;
+  sender_gte?: InputMaybe<Scalars['Bytes']>;
+  sender_lte?: InputMaybe<Scalars['Bytes']>;
+  sender_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  sender_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  sender_contains?: InputMaybe<Scalars['Bytes']>;
+  sender_not_contains?: InputMaybe<Scalars['Bytes']>;
+  txHash?: InputMaybe<Scalars['Bytes']>;
+  txHash_not?: InputMaybe<Scalars['Bytes']>;
+  txHash_gt?: InputMaybe<Scalars['Bytes']>;
+  txHash_lt?: InputMaybe<Scalars['Bytes']>;
+  txHash_gte?: InputMaybe<Scalars['Bytes']>;
+  txHash_lte?: InputMaybe<Scalars['Bytes']>;
+  txHash_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  txHash_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  txHash_contains?: InputMaybe<Scalars['Bytes']>;
+  txHash_not_contains?: InputMaybe<Scalars['Bytes']>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Transaction_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Transaction_filter>>>;
+};
+
+export type Transaction_orderBy =
+  | 'id'
+  | 'blockNumber'
+  | 'sender'
+  | 'txHash';
 
 export type _Block_ = {
   /** The hash of the block */
@@ -1315,6 +1411,9 @@ export type ResolversTypes = ResolversObject<{
   ShipProfile_orderBy: ShipProfile_orderBy;
   String: ResolverTypeWrapper<Scalars['String']>;
   Subscription: ResolverTypeWrapper<{}>;
+  Transaction: ResolverTypeWrapper<Transaction>;
+  Transaction_filter: Transaction_filter;
+  Transaction_orderBy: Transaction_orderBy;
   _Block_: ResolverTypeWrapper<_Block_>;
   _Meta_: ResolverTypeWrapper<_Meta_>;
   _SubgraphErrorPolicy_: _SubgraphErrorPolicy_;
@@ -1345,6 +1444,8 @@ export type ResolversParentTypes = ResolversObject<{
   ShipProfile_filter: ShipProfile_filter;
   String: Scalars['String'];
   Subscription: {};
+  Transaction: Transaction;
+  Transaction_filter: Transaction_filter;
   _Block_: _Block_;
   _Meta_: _Meta_;
 }>;
@@ -1427,6 +1528,8 @@ export type QueryResolvers<ContextType = MeshContext, ParentType extends Resolve
   shipProfileMetadata?: Resolver<Array<ResolversTypes['ShipProfileMetadata']>, ParentType, ContextType, RequireFields<QueryshipProfileMetadataArgs, 'skip' | 'first' | 'subgraphError'>>;
   profileMemberGroup?: Resolver<Maybe<ResolversTypes['ProfileMemberGroup']>, ParentType, ContextType, RequireFields<QueryprofileMemberGroupArgs, 'id' | 'subgraphError'>>;
   profileMemberGroups?: Resolver<Array<ResolversTypes['ProfileMemberGroup']>, ParentType, ContextType, RequireFields<QueryprofileMemberGroupsArgs, 'skip' | 'first' | 'subgraphError'>>;
+  transaction?: Resolver<Maybe<ResolversTypes['Transaction']>, ParentType, ContextType, RequireFields<QuerytransactionArgs, 'id' | 'subgraphError'>>;
+  transactions?: Resolver<Array<ResolversTypes['Transaction']>, ParentType, ContextType, RequireFields<QuerytransactionsArgs, 'skip' | 'first' | 'subgraphError'>>;
   _meta?: Resolver<Maybe<ResolversTypes['_Meta_']>, ParentType, ContextType, Partial<Query_metaArgs>>;
 }>;
 
@@ -1470,7 +1573,17 @@ export type SubscriptionResolvers<ContextType = MeshContext, ParentType extends 
   shipProfileMetadata?: SubscriptionResolver<Array<ResolversTypes['ShipProfileMetadata']>, "shipProfileMetadata", ParentType, ContextType, RequireFields<SubscriptionshipProfileMetadataArgs, 'skip' | 'first' | 'subgraphError'>>;
   profileMemberGroup?: SubscriptionResolver<Maybe<ResolversTypes['ProfileMemberGroup']>, "profileMemberGroup", ParentType, ContextType, RequireFields<SubscriptionprofileMemberGroupArgs, 'id' | 'subgraphError'>>;
   profileMemberGroups?: SubscriptionResolver<Array<ResolversTypes['ProfileMemberGroup']>, "profileMemberGroups", ParentType, ContextType, RequireFields<SubscriptionprofileMemberGroupsArgs, 'skip' | 'first' | 'subgraphError'>>;
+  transaction?: SubscriptionResolver<Maybe<ResolversTypes['Transaction']>, "transaction", ParentType, ContextType, RequireFields<SubscriptiontransactionArgs, 'id' | 'subgraphError'>>;
+  transactions?: SubscriptionResolver<Array<ResolversTypes['Transaction']>, "transactions", ParentType, ContextType, RequireFields<SubscriptiontransactionsArgs, 'skip' | 'first' | 'subgraphError'>>;
   _meta?: SubscriptionResolver<Maybe<ResolversTypes['_Meta_']>, "_meta", ParentType, ContextType, Partial<Subscription_metaArgs>>;
+}>;
+
+export type TransactionResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Transaction'] = ResolversParentTypes['Transaction']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  blockNumber?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  sender?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
+  txHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type _Block_Resolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['_Block_'] = ResolversParentTypes['_Block_']> = ResolversObject<{
@@ -1499,6 +1612,7 @@ export type Resolvers<ContextType = MeshContext> = ResolversObject<{
   ShipProfile?: ShipProfileResolvers<ContextType>;
   ShipProfileMetadata?: ShipProfileMetadataResolvers<ContextType>;
   Subscription?: SubscriptionResolvers<ContextType>;
+  Transaction?: TransactionResolvers<ContextType>;
   _Block_?: _Block_Resolvers<ContextType>;
   _Meta_?: _Meta_Resolvers<ContextType>;
 }>;
@@ -1594,6 +1708,12 @@ const merger = new(BareMerger as any)({
           return printWithCache(GetProjectsDocument);
         },
         location: 'GetProjectsDocument.graphql'
+      },{
+        document: GetRecentTransactionDocument,
+        get rawSDL() {
+          return printWithCache(GetRecentTransactionDocument);
+        },
+        location: 'GetRecentTransactionDocument.graphql'
       }
     ];
     },
@@ -1644,6 +1764,13 @@ export type GetProjectsQuery = { projects: Array<(
     & { metadata?: Maybe<Pick<ProjectMetadata, 'name' | 'description' | 'avatarHash_IPFS'>> }
   )> };
 
+export type getRecentTransactionQueryVariables = Exact<{
+  txHash: Scalars['ID'];
+}>;
+
+
+export type getRecentTransactionQuery = { transaction?: Maybe<Pick<Transaction, 'id' | 'blockNumber' | 'txHash' | 'sender'>> };
+
 export const ProjectDetailsFragmentDoc = gql`
     fragment ProjectDetails on Project {
   id
@@ -1674,6 +1801,17 @@ export const GetProjectsDocument = gql`
 }
     ${ProjectDetailsFragmentDoc}
 ${MetadataDetailsFragmentDoc}` as unknown as DocumentNode<GetProjectsQuery, GetProjectsQueryVariables>;
+export const getRecentTransactionDocument = gql`
+    query getRecentTransaction($txHash: ID!) {
+  transaction(id: $txHash) {
+    id
+    blockNumber
+    txHash
+    sender
+  }
+}
+    ` as unknown as DocumentNode<getRecentTransactionQuery, getRecentTransactionQueryVariables>;
+
 
 
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
@@ -1681,6 +1819,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
     GetProjects(variables?: GetProjectsQueryVariables, options?: C): Promise<GetProjectsQuery> {
       return requester<GetProjectsQuery, GetProjectsQueryVariables>(GetProjectsDocument, variables, options) as Promise<GetProjectsQuery>;
+    },
+    getRecentTransaction(variables: getRecentTransactionQueryVariables, options?: C): Promise<getRecentTransactionQuery> {
+      return requester<getRecentTransactionQuery, getRecentTransactionQueryVariables>(getRecentTransactionDocument, variables, options) as Promise<getRecentTransactionQuery>;
     }
   };
 }

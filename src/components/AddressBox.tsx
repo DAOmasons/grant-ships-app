@@ -73,6 +73,7 @@ export const AddressBox = (
         spellCheck={false}
         minRows={4}
         maxRows={6}
+        mb={addrData.length ? 'xs' : 0}
       />
       <Flex w="100%" direction="column" mb={0}>
         {addrData.map((addr, index) => (

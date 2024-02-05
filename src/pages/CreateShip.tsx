@@ -24,15 +24,23 @@ export const CreateShip = () => {
   const [step, setStep] = useState(0);
   const { address } = useAccount();
   const [profileData, setProfileData] = useState<ProfileData | undefined>();
+  const [interval, setInterval] = useState(50);
 
   useWatchContractEvent({
     abi: Registry,
     address: ADDR.Registry,
     eventName: 'ProfileCreated',
+    syncConnectedChain: true,
+    pollingInterval: interval,
+    onError: (error) => {
+      console.log('error', error);
+    },
     onLogs: (logs: any) => {
       const log = logs[0];
 
       const owner = log?.args?.owner;
+      console.log('fired');
+      console.log('log', log);
       if (owner && owner.toLowerCase() === address?.toLowerCase()) {
         setProfileData(log.args);
       } else {
