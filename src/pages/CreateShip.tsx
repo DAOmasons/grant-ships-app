@@ -8,6 +8,7 @@ import { MainSection, PageTitle } from '../layout/Sections';
 import { Stepper } from '@mantine/core';
 import { RegisterShip } from '../components/forms/RegisterShip';
 import { ShipApplication } from '../components/forms/ShipApplication';
+import { createPoolProfile } from '../scripts/createGameManagerPool';
 
 export type ProfileData = {
   anchor: string;
@@ -21,7 +22,7 @@ export type ProfileData = {
 };
 
 export const CreateShip = () => {
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(1);
   const { address } = useAccount();
   const [profileData, setProfileData] = useState<ProfileData | undefined>();
   const [interval, setInterval] = useState(50);
@@ -39,8 +40,6 @@ export const CreateShip = () => {
       const log = logs[0];
 
       const owner = log?.args?.owner;
-      console.log('fired');
-      console.log('log', log);
       if (owner && owner.toLowerCase() === address?.toLowerCase()) {
         setProfileData(log.args);
       } else {
@@ -61,7 +60,7 @@ export const CreateShip = () => {
       <PageTitle title="Grant Ship Application" />
       <Stepper active={step} maw={600} miw={300} w={'100%'} mt={'lg'} mb="xl">
         <Stepper.Step label="First Step" description="Grant Ship Profile">
-          <RegisterShip nextStep={nextStep} />
+          <RegisterShip nextStep={nextStep} profileData={profileData} />
         </Stepper.Step>
         <Stepper.Step label="Second Step" description="Ship Application">
           <ShipApplication profileData={profileData} />
@@ -70,3 +69,5 @@ export const CreateShip = () => {
     </MainSection>
   );
 };
+
+createPoolProfile();

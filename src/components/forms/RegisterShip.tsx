@@ -34,9 +34,15 @@ import { ProfileData } from '../../pages/CreateShip';
 
 type FormValues = z.infer<typeof registerShipSchema>;
 
-export const RegisterShip = ({ nextStep }: { nextStep: () => void }) => {
+export const RegisterShip = ({
+  nextStep,
+  profileData,
+}: {
+  profileData?: ProfileData;
+  nextStep: () => void;
+}) => {
   const { address } = useAccount();
-  const { tx, closeModal } = useTx();
+  const { tx } = useTx();
   const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
 
   const form = useForm({
@@ -313,9 +319,15 @@ export const RegisterShip = ({ nextStep }: { nextStep: () => void }) => {
           </Box>
         )}
         <Flex w="100%" mt="md">
-          <Button ml="auto" type="submit">
-            Create Ship Profile
-          </Button>
+          {profileData ? (
+            <Button ml="auto" type="button" onClick={nextStep}>
+              Next Step
+            </Button>
+          ) : (
+            <Button ml="auto" type="submit">
+              Create Ship Profile
+            </Button>
+          )}
         </Flex>
       </Stack>
     </form>

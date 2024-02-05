@@ -1,17 +1,27 @@
 import { useForm, zodResolver } from '@mantine/form';
 import { ProfileData } from '../../pages/CreateShip';
 import { useAccount } from 'wagmi';
-import { Flex, Stack, Text, TextInput, Textarea, em } from '@mantine/core';
+import {
+  Button,
+  Flex,
+  Stack,
+  Text,
+  TextInput,
+  Textarea,
+  em,
+} from '@mantine/core';
 import { IconExternalLink } from '@tabler/icons-react';
 import { useMediaQuery } from '@mantine/hooks';
 import { shipApplicationSchema } from './validationSchemas/shipApplicationSchema';
+import { z } from 'zod';
+
+type FormValues = z.infer<typeof shipApplicationSchema>;
 
 export const ShipApplication = ({
   profileData,
 }: {
   profileData?: ProfileData;
 }) => {
-  const { address } = useAccount();
   const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
 
   const form = useForm({
@@ -28,10 +38,10 @@ export const ShipApplication = ({
     form.validateField(fieldName);
   };
 
-  console.log('profileData', profileData);
+  const handleFormSubmit = async (values: FormValues) => {};
 
   return (
-    <form>
+    <form onSubmit={form.onSubmit((values) => handleFormSubmit(values))}>
       <Stack maw={600} miw={300} w={'100%'} mt="xl">
         <Text fw={600}>{profileData?.name || 'Should Not See This'}</Text>
         <Textarea
@@ -90,6 +100,11 @@ export const ShipApplication = ({
           onBlur={() => handleBlur('extraInfo')}
         />
       </Stack>
+      <Flex w="100%" mt="md">
+        <Button ml="auto" type="submit">
+          Finish Application
+        </Button>
+      </Flex>
     </form>
   );
 };

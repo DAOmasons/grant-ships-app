@@ -13,6 +13,7 @@ import {
 import { Button, Modal } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { pollSubgraph } from '../queries/getRecentTransaction';
+import { set } from 'zod';
 
 type WriteContractParams = Parameters<
   ReturnType<typeof useWriteContract>['writeContract']
@@ -119,6 +120,8 @@ export const TxProvider = ({ children }: { children: ReactNode }) => {
     writeContract(writeContractParams, {
       ...writeContractOptions,
       onSuccess: (data, variables, context) => {
+        console.log('data', data);
+        console.log('viewParams?.awaitGraphPoll', viewParams?.awaitGraphPoll);
         writeContractOptions?.onSuccess?.(data, variables, context);
         if (viewParams?.awaitGraphPoll !== false && data) {
           setPollStatus(PollStatus.Idle);
@@ -143,6 +146,7 @@ export const TxProvider = ({ children }: { children: ReactNode }) => {
   const handleClose = useCallback(() => {
     clearTx();
     close();
+    setPollStatus(PollStatus.Idle);
   }, [clearTx, close]);
 
   const shouldWaitForPoll =
