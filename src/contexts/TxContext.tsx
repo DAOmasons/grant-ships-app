@@ -116,6 +116,7 @@ export const TxProvider = ({ children }: { children: ReactNode }) => {
     writeContractOptions?: WriteContractOptions;
     viewParams?: ViewParams;
   }) => {
+    console.log('fired');
     open();
     writeContract(writeContractParams, {
       ...writeContractOptions,
@@ -138,6 +139,10 @@ export const TxProvider = ({ children }: { children: ReactNode }) => {
             },
           });
         }
+      },
+      onError: (error, variables, context) => {
+        console.error('error', error);
+        writeContractOptions?.onError?.(error, variables, context);
       },
     });
     setViewParams(viewParams);

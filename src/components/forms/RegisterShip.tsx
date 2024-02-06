@@ -29,8 +29,10 @@ import { useTx } from '../../hooks/useTx';
 import { generateRandomUint256 } from '../../utils/helpers';
 import { pinJSONToIPFS } from '../../utils/ipfs/pin';
 import { createMetadata, shipProfileHash } from '../../utils/metadata';
-import { useMediaQuery } from '@mantine/hooks';
+import { useLocalStorage, useMediaQuery } from '@mantine/hooks';
 import { ProfileData } from '../../pages/CreateShip';
+import { useEffect } from 'react';
+import { CacheKeys } from './cacheKeys';
 
 type FormValues = z.infer<typeof registerShipSchema>;
 
@@ -62,6 +64,34 @@ export const RegisterShip = ({
     validate: zodResolver(registerShipSchema),
   });
 
+  useEffect(() => {
+    const storedValues = window.localStorage.getItem(CacheKeys.ShipProfileForm);
+
+    if (storedValues) {
+      try {
+        form.setValues(JSON.parse(storedValues));
+      } catch (error) {
+        console.warn('Failed to parse stored values');
+      }
+    }
+    // only want to run this on mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(
+    () => {
+      if (form.isTouched()) {
+        window.localStorage.setItem(
+          CacheKeys.ShipProfileForm,
+          JSON.stringify(form.values)
+        );
+      }
+    },
+    // Only want to run this on form change
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [form.values]
+  );
+
   const handleBlur = (fieldName: string) => {
     form.validateField(fieldName);
   };
@@ -71,7 +101,6 @@ export const RegisterShip = ({
       const nonce = generateRandomUint256();
 
       const projectMetadata = {
-        notStale: generateRandomUint256().toString(),
         name: values.name,
         mission: values.mission,
         avatarHash_IPFS: values.avatarHash,
@@ -114,17 +143,6 @@ export const RegisterShip = ({
             teamMembers,
           ],
         },
-        writeContractOptions: {
-          onSuccess(data, variables, context) {
-            console.log('data', data);
-            console.log('variables', variables);
-            console.log('context', context);
-          },
-          onSettled(data, error) {
-            console.log('data', data);
-            console.log('error', error);
-          },
-        },
         viewParams: {
           loading: {
             title: 'Creating Your Ship Profile',
@@ -157,6 +175,8 @@ export const RegisterShip = ({
     }
   };
 
+  const hasSubmitted = profileData !== undefined;
+
   return (
     <form onSubmit={form.onSubmit((values) => handleFormSubmit(values))}>
       <Stack maw={600} miw={300} w={'100%'}>
@@ -185,6 +205,7 @@ export const RegisterShip = ({
           placeholder="ex. Public Goods Death Star"
           {...form.getInputProps('name')}
           onBlur={() => handleBlur('teamMembers')}
+          disabled={hasSubmitted}
         />
         <AddressBox
           w="100%"
@@ -196,6 +217,7 @@ export const RegisterShip = ({
           formSetValue={(addresses: string[]) => {
             form.setFieldValue('teamMembers', addresses);
           }}
+          disabled={hasSubmitted}
         />
         <Textarea
           w="100%"
@@ -208,6 +230,7 @@ export const RegisterShip = ({
           placeholder="What is your Ship's funding mission?"
           {...form.getInputProps('mission')}
           onBlur={() => handleBlur('mission')}
+          disabled={hasSubmitted}
         />
         {isMobile ? (
           <Stack w="100%" gap={14}>
@@ -220,6 +243,7 @@ export const RegisterShip = ({
               leftSection={<IconMail />}
               {...form.getInputProps('email')}
               onBlur={() => handleBlur('email')}
+              disabled={hasSubmitted}
             />
             <TextInput
               w="100%"
@@ -227,6 +251,7 @@ export const RegisterShip = ({
               leftSection={<IconWorld />}
               {...form.getInputProps('website')}
               onBlur={() => handleBlur('website')}
+              disabled={hasSubmitted}
             />
             <TextInput
               w="100%"
@@ -234,6 +259,7 @@ export const RegisterShip = ({
               leftSection={<IconBrandX />}
               {...form.getInputProps('x')}
               onBlur={() => handleBlur('x')}
+              disabled={hasSubmitted}
             />
             <TextInput
               w="100%"
@@ -241,6 +267,7 @@ export const RegisterShip = ({
               leftSection={<IconBrandGithub />}
               {...form.getInputProps('github')}
               onBlur={() => handleBlur('github')}
+              disabled={hasSubmitted}
             />
             <TextInput
               w="100%"
@@ -248,6 +275,7 @@ export const RegisterShip = ({
               leftSection={<IconBrandDiscord />}
               {...form.getInputProps('discord')}
               onBlur={() => handleBlur('discord')}
+              disabled={hasSubmitted}
             />
             <TextInput
               w="100%"
@@ -255,6 +283,7 @@ export const RegisterShip = ({
               leftSection={<IconBrandTelegram />}
               {...form.getInputProps('telegram')}
               onBlur={() => handleBlur('telegram')}
+              disabled={hasSubmitted}
             />
           </Stack>
         ) : (
@@ -268,6 +297,7 @@ export const RegisterShip = ({
                 leftSection={<IconMail />}
                 {...form.getInputProps('email')}
                 onBlur={() => handleBlur('email')}
+                disabled={hasSubmitted}
               />
               <TextInput
                 w="100%"
@@ -276,6 +306,7 @@ export const RegisterShip = ({
                 leftSection={<IconWorld />}
                 {...form.getInputProps('website')}
                 onBlur={() => handleBlur('website')}
+                disabled={hasSubmitted}
               />
             </Flex>
             <Flex align={'flex-start'}>
@@ -287,6 +318,7 @@ export const RegisterShip = ({
                 leftSection={<IconBrandX />}
                 {...form.getInputProps('x')}
                 onBlur={() => handleBlur('x')}
+                disabled={hasSubmitted}
               />
               <TextInput
                 w="50%"
@@ -295,6 +327,7 @@ export const RegisterShip = ({
                 leftSection={<IconBrandGithub />}
                 {...form.getInputProps('github')}
                 onBlur={() => handleBlur('github')}
+                disabled={hasSubmitted}
               />
             </Flex>
             <Flex mb="lg" align={'flex-start'}>
@@ -306,6 +339,7 @@ export const RegisterShip = ({
                 leftSection={<IconBrandDiscord />}
                 {...form.getInputProps('discord')}
                 onBlur={() => handleBlur('discord')}
+                disabled={hasSubmitted}
               />
               <TextInput
                 w="50%"
@@ -314,6 +348,7 @@ export const RegisterShip = ({
                 leftSection={<IconBrandTelegram />}
                 {...form.getInputProps('telegram')}
                 onBlur={() => handleBlur('telegram')}
+                disabled={hasSubmitted}
               />
             </Flex>
           </Box>
