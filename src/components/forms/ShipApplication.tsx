@@ -16,20 +16,20 @@ import { shipApplicationSchema } from './validationSchemas/shipApplicationSchema
 import { z } from 'zod';
 import { pinJSONToIPFS } from '../../utils/ipfs/pin';
 import { notifications } from '@mantine/notifications';
-import { createMetadata } from '../../utils/metadata';
 import { Address, encodeAbiParameters, parseAbiParameters } from 'viem';
 
 import AlloAbi from '../../abi/Allo.json';
 import { ADDR } from '../../constants/addresses';
 import { useTx } from '../../hooks/useTx';
-import { useNavigate } from 'react-router-dom';
+
 import { CacheKeys } from './cacheKeys';
 import { useEffect } from 'react';
+import { GAME_MANAGER } from '../../constants/gameSetup';
 
 const defaultValues = {
   thesis: '',
   guidelines: '',
-  fee: 0,
+  fee: '',
   extraLink: '',
   extraInfo: '',
 };
@@ -38,12 +38,14 @@ type FormValues = z.infer<typeof shipApplicationSchema>;
 
 export const ShipApplication = ({
   profileData,
+  formComplete,
 }: {
   profileData?: ProfileData;
+  formComplete: () => void;
 }) => {
   const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
   const { tx } = useTx();
-  const navigate = useNavigate();
+
   const form = useForm({
     initialValues: defaultValues,
     validate: zodResolver(shipApplicationSchema),
@@ -107,10 +109,8 @@ export const ShipApplication = ({
       const initData = encodeAbiParameters(
         parseAbiParameters('address, string, (uint256, string)'),
         [
-          // profileData?.anchor as Address,
-          '0x41dcc0db16ce272fc3b2cefc591852e9ff1b421c',
-          //  profileData?.name,
-          'Public Goods Death Star',
+          profileData?.anchor as Address,
+          profileData?.name,
           [1n, pinRes.IpfsHash],
         ]
       );
@@ -120,11 +120,7 @@ export const ShipApplication = ({
           abi: AlloAbi,
           address: ADDR.ALLO,
           functionName: 'registerRecipient',
-          args: [
-            224n,
-            // profileData.profileId,
-            initData,
-          ],
+          args: [GAME_MANAGER.POOL.ID, initData],
         },
         viewParams: {
           loading: {
@@ -141,9 +137,9 @@ export const ShipApplication = ({
               'There was an unknown error creating your Ship Application.',
           },
           successButton: {
-            label: 'See Ships',
+            label: 'Finish Application',
             onClick: () => {
-              navigate('/ships');
+              formComplete();
             },
           },
         },

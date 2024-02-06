@@ -171,6 +171,7 @@ export const RegisterProject = () => {
           });
         }}
         validationError={form.errors.avatarHash}
+        defaultValue={form.values.avatarHash}
       />
 
       <TextInput

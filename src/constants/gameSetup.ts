@@ -9,6 +9,9 @@ export const GAME_MANAGER_TESTNET = {
     NONCE:
       49371134338728562921481680461000959006281654739148812712981382516603748637777n,
   },
+  POOL: {
+    ID: 224n,
+  },
 };
 
 export const GAME_MANAGER_PROD = {
@@ -18,6 +21,9 @@ export const GAME_MANAGER_PROD = {
     ID: '',
     ANCHOR: '',
     NONCE: 0n,
+  },
+  POOL: {
+    ID: 0n,
   },
 };
 

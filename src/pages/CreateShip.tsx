@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import { useAccount, useWatchContractEvent } from 'wagmi';
 
@@ -13,10 +13,6 @@ import { CacheKeys } from '../components/forms/cacheKeys';
 
 export type ProfileData = {
   anchor: string;
-  metadata: {
-    protocol: string;
-    pointer: string;
-  };
   name: string;
   owner: string;
   profileId: string;
@@ -25,15 +21,14 @@ export type ProfileData = {
 export const CreateShip = () => {
   const { address } = useAccount();
 
-  const [step, setStep, removeStepStorage] = useLocalStorage({
-    key: CacheKeys.Step,
-    defaultValue: 0,
-  });
+  const [step, setStep] = useState(0);
   const [profileData, setProfileData, removeProfileStorage] = useLocalStorage<
-    ProfileData | undefined
+    ProfileData | ''
   >({
     key: CacheKeys.ProfileData,
-    defaultValue: undefined,
+    // Initial value is an empty string.
+    // Null or undefined caches as 'null' or 'undefined' in localStorage
+    defaultValue: '',
   });
 
   useWatchContractEvent({
@@ -50,7 +45,14 @@ export const CreateShip = () => {
 
       const owner = log?.args?.owner;
       if (owner && owner.toLowerCase() === address?.toLowerCase()) {
-        setProfileData(log.args);
+        const profileData = {
+          anchor: log?.args?.anchor,
+          name: log.args.name,
+          owner: log.args.owner,
+          profileId: log.args.profileId,
+        };
+        console.log('profileData', profileData);
+        setProfileData(profileData);
       } else {
         console.warn(
           'Owner address does not match the entity found on the event log'
@@ -61,15 +63,13 @@ export const CreateShip = () => {
 
   const nextStep = () =>
     setStep((current) => (current < 2 ? current + 1 : current));
-  const prevStep = () =>
-    setStep((current) => (current > 0 ? current - 1 : current));
 
   const deleteAllCache = () => {
     removeProfileStorage();
-    removeStepStorage();
+
     window.localStorage.removeItem(CacheKeys.ShipApplicationForm);
     window.localStorage.removeItem(CacheKeys.ShipProfileForm);
-    setProfileData(undefined);
+    setProfileData('');
   };
   const formComplete = () => {
     deleteAllCache();
@@ -91,36 +91,26 @@ export const CreateShip = () => {
         <Stepper.Step label="First Step" description="Grant Ship Profile">
           <RegisterShip
             nextStep={nextStep}
-            profileData={profileData}
+            profileData={profileData !== '' ? profileData : undefined}
             deleteCache={deleteAllCache}
           />
         </Stepper.Step>
         <Stepper.Step label="Second Step" description="Ship Application">
-          <ShipApplication profileData={profileData} />
+          <ShipApplication
+            profileData={profileData !== '' ? profileData : undefined}
+            formComplete={formComplete}
+          />
         </Stepper.Step>
         <Stepper.Completed>
-          <ApplicationComplete removeStepStorage={removeStepStorage} />
+          <ApplicationComplete />
         </Stepper.Completed>
       </Stepper>
     </MainSection>
   );
 };
 
-const ApplicationComplete = ({
-  removeStepStorage,
-}: {
-  removeStepStorage: () => void;
-}) => {
+const ApplicationComplete = () => {
   const theme = useMantineTheme();
-
-  useEffect(
-    () => () => {
-      removeStepStorage();
-    },
-    // I only want this to run once on unmount
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
 
   return (
     <Paper bg={theme.colors.dark[6]} mt={80} py={68} px={25}>

@@ -111,7 +111,6 @@ export const RegisterShip = ({
       });
       return;
     }
-
     try {
       const nonce = generateRandomUint256();
 
@@ -192,7 +191,10 @@ export const RegisterShip = ({
   };
 
   return (
-    <form onSubmit={form.onSubmit((values) => handleFormSubmit(values))}>
+    <form
+      id="ship-register"
+      onSubmit={form.onSubmit((values) => handleFormSubmit(values))}
+    >
       <Stack maw={600} miw={300} w={'100%'}>
         <AvatarPickerIPFS
           defaultValue={form.values.avatarHash || null}
@@ -213,7 +215,6 @@ export const RegisterShip = ({
           validationError={form.errors.avatarHash}
           disabled={hasSubmitted}
         />
-
         {profileData && (
           <Alert>
             <Text fz="md" fw={600} mb={'xs'}>
@@ -390,7 +391,7 @@ export const RegisterShip = ({
               Next Step
             </Button>
           ) : (
-            <Button ml="auto" type="submit">
+            <Button ml="auto" onClick={() => handleFormSubmit(form.values)}>
               Create Ship Profile
             </Button>
           )}
