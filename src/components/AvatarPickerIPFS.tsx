@@ -1,14 +1,7 @@
-import {
-  ActionIcon,
-  Avatar,
-  Box,
-  Container,
-  FileButton,
-  Text,
-} from '@mantine/core';
+import { ActionIcon, Avatar, Box, FileButton, Text } from '@mantine/core';
 import { IconPencil, IconUser } from '@tabler/icons-react';
 import { pinFileToIPFS } from '../utils/ipfs/pin';
-import { ReactNode, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { PINATA_GATEWAY } from '../utils/ipfs/gateway';
 
 type PickerProps = {
@@ -16,6 +9,8 @@ type PickerProps = {
   onUploadError?: (errMsg: string) => void;
   onUploadLoad?: () => void;
   validationError?: ReactNode;
+  defaultValue: string | null;
+  disabled?: boolean;
 };
 
 export const AvatarPickerIPFS = ({
@@ -23,8 +18,10 @@ export const AvatarPickerIPFS = ({
   onUploadSuccess,
   onUploadLoad,
   validationError,
+  defaultValue,
+  disabled,
 }: PickerProps) => {
-  const [pfpIpfsHash, setIpfsHash] = useState<string | null>(null);
+  const [pfpIpfsHash, setIpfsHash] = useState<string | null>(defaultValue);
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleUpload = async (e: File | null) => {
@@ -48,6 +45,11 @@ export const AvatarPickerIPFS = ({
     }
   };
 
+  useEffect(() => {
+    if (!defaultValue) return;
+    setIpfsHash(defaultValue);
+  }, [defaultValue]);
+
   const avatarPreview = pfpIpfsHash ? `${PINATA_GATEWAY}/${pfpIpfsHash}` : null;
   const canPreview = avatarPreview && !isLoading;
 
@@ -66,6 +68,7 @@ export const AvatarPickerIPFS = ({
               left={85}
               radius="xl"
               loading={isLoading}
+              disabled={isLoading || disabled}
             >
               <IconPencil />
             </ActionIcon>

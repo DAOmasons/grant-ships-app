@@ -16,9 +16,12 @@ import { isAddress } from 'viem';
 import { scanAddressLink } from '../utils/scan';
 
 export const AddressBox = (
-  props: TextareaProps & { formSetValue?: (addresses: string[]) => void }
+  props: TextareaProps & {
+    formSetValue?: (addresses: string[]) => void;
+  }
 ) => {
   const { formSetValue, ...rest } = props;
+
   const theme = useMantineTheme();
   const [value, setValue] = useState('');
   const [addrData, setAddrData] = useState<string[]>([]);

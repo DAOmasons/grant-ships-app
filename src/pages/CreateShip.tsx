@@ -64,9 +64,15 @@ export const CreateShip = () => {
   const prevStep = () =>
     setStep((current) => (current > 0 ? current - 1 : current));
 
-  const handleFinishForms = () => {
+  const deleteAllCache = () => {
     removeProfileStorage();
     removeStepStorage();
+    window.localStorage.removeItem(CacheKeys.ShipApplicationForm);
+    window.localStorage.removeItem(CacheKeys.ShipProfileForm);
+    setProfileData(undefined);
+  };
+  const formComplete = () => {
+    deleteAllCache();
     nextStep();
   };
 
@@ -83,7 +89,11 @@ export const CreateShip = () => {
         onStepClick={setStep}
       >
         <Stepper.Step label="First Step" description="Grant Ship Profile">
-          <RegisterShip nextStep={nextStep} profileData={profileData} />
+          <RegisterShip
+            nextStep={nextStep}
+            profileData={profileData}
+            deleteCache={deleteAllCache}
+          />
         </Stepper.Step>
         <Stepper.Step label="Second Step" description="Ship Application">
           <ShipApplication profileData={profileData} />

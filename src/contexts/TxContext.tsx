@@ -13,7 +13,6 @@ import {
 import { Button, Modal } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { pollSubgraph } from '../queries/getRecentTransaction';
-import { set } from 'zod';
 
 type WriteContractParams = Parameters<
   ReturnType<typeof useWriteContract>['writeContract']

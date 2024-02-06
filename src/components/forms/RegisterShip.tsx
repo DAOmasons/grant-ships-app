@@ -6,6 +6,8 @@ import {
   Flex,
   Box,
   em,
+  Alert,
+  Text,
 } from '@mantine/core';
 
 import {
@@ -29,38 +31,42 @@ import { useTx } from '../../hooks/useTx';
 import { generateRandomUint256 } from '../../utils/helpers';
 import { pinJSONToIPFS } from '../../utils/ipfs/pin';
 import { createMetadata, shipProfileHash } from '../../utils/metadata';
-import { useLocalStorage, useMediaQuery } from '@mantine/hooks';
+import { useMediaQuery } from '@mantine/hooks';
 import { ProfileData } from '../../pages/CreateShip';
 import { useEffect } from 'react';
 import { CacheKeys } from './cacheKeys';
 
 type FormValues = z.infer<typeof registerShipSchema>;
 
+const defaultFormValues: FormValues = {
+  avatarHash: '',
+  name: '',
+  projectOwner: '',
+  teamMembers: [],
+  mission: '',
+  email: '',
+  x: '',
+  github: '',
+  discord: '',
+  telegram: '',
+  website: '',
+};
+
 export const RegisterShip = ({
   nextStep,
   profileData,
+  deleteCache,
 }: {
   profileData?: ProfileData;
   nextStep: () => void;
+  deleteCache?: () => void;
 }) => {
   const { address } = useAccount();
   const { tx } = useTx();
   const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
 
   const form = useForm({
-    initialValues: {
-      avatarHash: '',
-      name: '',
-      projectOwner: address || '',
-      teamMembers: [''],
-      mission: '',
-      email: '',
-      x: '',
-      github: '',
-      discord: '',
-      telegram: '',
-      website: '',
-    },
+    initialValues: defaultFormValues,
     validate: zodResolver(registerShipSchema),
   });
 
@@ -81,7 +87,6 @@ export const RegisterShip = ({
   useEffect(
     () => {
       if (form.isTouched()) {
-        console.log('form.values', form.values);
         window.localStorage.setItem(
           CacheKeys.ShipProfileForm,
           JSON.stringify(form.values)
@@ -98,6 +103,15 @@ export const RegisterShip = ({
   };
 
   const handleFormSubmit = async (values: FormValues) => {
+    if (!address) {
+      notifications.show({
+        title: 'Account Error',
+        message: 'No account found',
+        color: 'red',
+      });
+      return;
+    }
+
     try {
       const nonce = generateRandomUint256();
 
@@ -136,13 +150,7 @@ export const RegisterShip = ({
           abi: Registry,
           address: ADDR.REGISTRY,
           functionName: 'createProfile',
-          args: [
-            nonce,
-            values.name,
-            metadataStruct,
-            values.projectOwner,
-            teamMembers,
-          ],
+          args: [nonce, values.name, metadataStruct, address, teamMembers],
         },
         viewParams: {
           loading: {
@@ -178,10 +186,16 @@ export const RegisterShip = ({
 
   const hasSubmitted = profileData !== undefined;
 
+  const handleDeleteCache = () => {
+    form.setValues(defaultFormValues);
+    deleteCache?.();
+  };
+
   return (
     <form onSubmit={form.onSubmit((values) => handleFormSubmit(values))}>
       <Stack maw={600} miw={300} w={'100%'}>
         <AvatarPickerIPFS
+          defaultValue={form.values.avatarHash || null}
           onUploadSuccess={(hash: string) => {
             notifications.show({
               title: 'IPFS Image Uploaded',
@@ -197,8 +211,24 @@ export const RegisterShip = ({
             });
           }}
           validationError={form.errors.avatarHash}
+          disabled={hasSubmitted}
         />
 
+        {profileData && (
+          <Alert>
+            <Text fz="md" fw={600} mb={'xs'}>
+              Profile Data Submitted
+            </Text>
+            <Text mb="xs">
+              You have already submitted an onchain ship profile. If you would
+              like to create a new profile, you can delete your cache and start
+              over
+            </Text>
+            <Button size="xs" onClick={handleDeleteCache}>
+              Delete Cache
+            </Button>
+          </Alert>
+        )}
         <TextInput
           label="Grant Ship Name"
           maw={292}
