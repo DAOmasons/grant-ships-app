@@ -23,10 +23,16 @@ import AlloAbi from '../../abi/Allo.json';
 import { ADDR } from '../../constants/addresses';
 import { useTx } from '../../hooks/useTx';
 import { useNavigate } from 'react-router-dom';
-import { testShipApplication } from '../../constants/testCopy';
-import { simulateContract } from 'viem/actions';
-import { useAccount, useClient } from 'wagmi';
-import { publicClient } from '../../scripts/createGameManagerPool';
+import { CacheKeys } from './cacheKeys';
+import { useEffect } from 'react';
+
+const defaultValues = {
+  thesis: '',
+  guidelines: '',
+  fee: 0,
+  extraLink: '',
+  extraInfo: '',
+};
 
 type FormValues = z.infer<typeof shipApplicationSchema>;
 
@@ -39,22 +45,52 @@ export const ShipApplication = ({
   const { tx } = useTx();
   const navigate = useNavigate();
   const form = useForm({
-    initialValues: testShipApplication,
+    initialValues: defaultValues,
     validate: zodResolver(shipApplicationSchema),
   });
+
+  useEffect(() => {
+    const storedValues = window.localStorage.getItem(
+      CacheKeys.ShipApplicationForm
+    );
+
+    if (storedValues) {
+      try {
+        form.setValues(JSON.parse(storedValues));
+      } catch (error) {
+        console.warn('Failed to parse stored values');
+      }
+    }
+    // only want to run this on mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(
+    () => {
+      if (form.isTouched()) {
+        window.localStorage.setItem(
+          CacheKeys.ShipApplicationForm,
+          JSON.stringify(form.values)
+        );
+      }
+    },
+    // Only want to run this on form change
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [form.values]
+  );
   const handleBlur = (fieldName: string) => {
     form.validateField(fieldName);
   };
 
   const handleFormSubmit = async (formValues: FormValues) => {
-    // if (!profileData) {
-    //   notifications.show({
-    //     title: 'Profile Data Error',
-    //     message: 'Profile Data is missing',
-    //     color: 'red',
-    //   });
-    //   return;
-    // }
+    if (!profileData) {
+      notifications.show({
+        title: 'Profile Data Error',
+        message: 'Profile Data is missing',
+        color: 'red',
+      });
+      return;
+    }
 
     try {
       const pinRes = await pinJSONToIPFS(formValues);
