@@ -81,6 +81,7 @@ export const RegisterShip = ({
   useEffect(
     () => {
       if (form.isTouched()) {
+        console.log('form.values', form.values);
         window.localStorage.setItem(
           CacheKeys.ShipProfileForm,
           JSON.stringify(form.values)

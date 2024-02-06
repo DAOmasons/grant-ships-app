@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import { useAccount, useWatchContractEvent } from 'wagmi';
 
@@ -66,6 +66,7 @@ export const CreateShip = () => {
 
   const handleFinishForms = () => {
     removeProfileStorage();
+    removeStepStorage();
     nextStep();
   };
 
