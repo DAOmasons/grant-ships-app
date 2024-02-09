@@ -9,9 +9,10 @@ import {
   Text,
   useMantineTheme,
 } from '@mantine/core';
-import { IconEye, IconFlag } from '@tabler/icons-react';
+import { IconCheck, IconEye, IconFlag, IconX } from '@tabler/icons-react';
 import classes from './dashboard.module.css';
 import { GameStatus } from '../../types/common';
+import { useMemo } from 'react';
 
 type ShipDashCardProps = {
   name: string;
@@ -24,8 +25,35 @@ export const ShipDashCard = ({
   name,
   lastUpdate,
   avatarUrl,
+  shipStatus,
 }: ShipDashCardProps) => {
   const theme = useMantineTheme();
+
+  const reviewIcon = useMemo(() => {
+    if (shipStatus === GameStatus.Pending) {
+      return (
+        <Flex className={classes.statusIcon}>
+          <IconEye size={16} />
+        </Flex>
+      );
+    }
+    if (shipStatus === GameStatus.Rejected) {
+      return (
+        <Flex className={`${classes.statusIcon} ${classes.statusIconSolidRed}`}>
+          <IconX size={16} />
+        </Flex>
+      );
+    }
+
+    return (
+      <Flex className={`${classes.statusIcon} ${classes.statusIconSolid}`}>
+        <IconCheck size={16} />
+      </Flex>
+    );
+  }, [shipStatus]);
+
+  const canFlag =
+    shipStatus !== GameStatus.Pending && shipStatus !== GameStatus.Rejected;
 
   return (
     <Paper mih={144} w="100%" bg={theme.colors.dark[6]}>
@@ -46,33 +74,37 @@ export const ShipDashCard = ({
         </Group>
         <Group ml="xl" justify="space-between" gap="xl">
           <Flex className={classes.statusBox}>
-            <Flex className={classes.statusIcon}>
-              <IconEye size={12} />
-            </Flex>
+            {reviewIcon}
             <Text size="sm">Application</Text>
             <Button size="xs" mt="auto" variant="default">
-              Review
+              {shipStatus === GameStatus.Pending ? 'Review' : 'See Ship'}
             </Button>
           </Flex>
           <Flex className={classes.statusBox}>
             <Flex
               className={`${classes.statusIcon} ${classes.statusIconYellowBorder}`}
+              opacity={canFlag ? 1 : 0.5}
             >
               <IconFlag size={12} />
             </Flex>
-            <Text size="sm">Yellow Flag</Text>
-            <Button size="xs" mt="auto" variant="default">
+            <Text size="sm" opacity={canFlag ? 1 : 0.5}>
+              Yellow Flag
+            </Text>
+            <Button size="xs" mt="auto" variant="default" disabled={!canFlag}>
               Issue
             </Button>
           </Flex>
           <Flex className={classes.statusBox}>
             <Flex
+              opacity={canFlag ? 1 : 0.5}
               className={`${classes.statusIcon} ${classes.statusIconRedBorder}`}
             >
               <IconFlag size={12} />
             </Flex>
-            <Text size="sm">Red Flag</Text>
-            <Button size="xs" mt="auto" variant="default">
+            <Text size="sm" opacity={canFlag ? 1 : 0.5}>
+              Red Flag
+            </Text>
+            <Button size="xs" mt="auto" variant="default" disabled={!canFlag}>
               Issue
             </Button>
           </Flex>

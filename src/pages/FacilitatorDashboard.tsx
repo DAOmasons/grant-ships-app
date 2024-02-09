@@ -1,7 +1,10 @@
-import { Stack, Tabs, Text } from '@mantine/core';
+import { Box, Flex, Group, Stack, Tabs, Text } from '@mantine/core';
 import { MainSection, PageTitle } from '../layout/Sections';
 import { ShipDashCard } from '../components/dashboard/ShipDashCard';
 import { GameStatus } from '../types/common';
+import classes from '../components/dashboard/dashboard.module.css';
+import { IconCheck } from '@tabler/icons-react';
+import { ComponentProps, ReactNode, useMemo } from 'react';
 
 export const FacilitatorDashboard = () => {
   return (
@@ -10,28 +13,156 @@ export const FacilitatorDashboard = () => {
       <Tabs defaultValue="ships">
         <Tabs.List mb="xl" grow>
           <Tabs.Tab value="game-manager">Game</Tabs.Tab>
-          <Tabs.Tab px="xl" value="ships">
-            Ships
-          </Tabs.Tab>
-          {/* <Tabs.Tab value="projects">Projects</Tabs.Tab> */}
-
+          <Tabs.Tab value="ships">Ships</Tabs.Tab>
           <Tabs.Tab value="hats">Hats</Tabs.Tab>
-          {/* <Tabs.Tab value="flags">Flags</Tabs.Tab> */}
         </Tabs.List>
         <Tabs.Panel value="ships">
           <FacilitatorShipDash />
         </Tabs.Panel>
-        <Tabs.Panel value="game-manager">Game Manager</Tabs.Panel>
+        <Tabs.Panel value="game-manager">
+          <FacilitatorGameDash />
+        </Tabs.Panel>
       </Tabs>
     </MainSection>
   );
 };
 
 export const FacilitatorGameDash = () => {
+  const gameStatusNumber = 0;
+  const steps = useMemo((): VerticalStepContent[] => {
+    return [
+      {
+        title: 'Applications',
+        description: '1 Ship Approved',
+      },
+      {
+        title: 'Create Game Round',
+        description: 'Not Yet Started',
+      },
+      {
+        title: 'Allocate',
+        description: 'Not yet allocated',
+      },
+      {
+        title: 'Distribute',
+        description: 'Not yet distributed',
+      },
+      {
+        title: 'Start Game',
+        description: 'Game Round is not yet started',
+      },
+      {
+        title: 'End Game',
+        description: 'Game is not yet Active',
+      },
+      {
+        title: 'Game Complete',
+        description: 'Game is not yet complete',
+      },
+    ];
+  }, []);
+
   return (
-    <Stack gap="xl">
-      <Text>Game Manager</Text>
-    </Stack>
+    <Flex direction="column">
+      <VerticalStatus
+        key="game-manager"
+        steps={steps}
+        currentNumber={gameStatusNumber}
+      />
+    </Flex>
+  );
+};
+
+type VerticalStatusProps = {
+  steps: VerticalStepContent[];
+  key: string;
+  currentNumber: number;
+  containerProps?: ComponentProps<typeof Flex>;
+};
+
+const VerticalStatus = ({
+  steps,
+  key,
+  currentNumber,
+  containerProps = {},
+}: VerticalStatusProps) => {
+  return (
+    <Flex direction="column" {...containerProps}>
+      {steps.map((step, index) => (
+        <VerticalStatusBox
+          key={`${key}-${index}`}
+          {...step}
+          stepNumber={index}
+          currentNumber={currentNumber}
+          last={index === steps.length - 1}
+        />
+      ))}
+    </Flex>
+  );
+};
+
+type VerticalStepContent = Pick<
+  VerticalStatusBoxProps,
+  'title' | 'description' | 'content'
+>;
+
+type VerticalStatusBoxProps = {
+  title: string;
+  description?: string;
+  currentNumber: number;
+  stepNumber: number;
+  last?: boolean;
+  content?: ReactNode;
+};
+const VerticalStatusBox = ({
+  title,
+  description,
+  currentNumber,
+  stepNumber,
+  last,
+  content,
+}: VerticalStatusBoxProps) => {
+  const isStepCompleted = stepNumber < currentNumber;
+  const isStepActive = stepNumber === currentNumber;
+  const isUpcoming = stepNumber > currentNumber;
+
+  const leftBorderClasses = `${classes.statusContentBox} ${isUpcoming ? classes.statusContentBoxNotActive : ''}`;
+
+  const statusIconBorder = () => {
+    if (isStepCompleted) {
+      return `${classes.statusIcon} ${classes.statusIconSolid} `;
+    }
+    if (isStepActive) {
+      return classes.statusIcon;
+    }
+    if (isUpcoming) {
+      return `${classes.statusIcon} ${classes.statusIconInactive}`;
+    }
+  };
+
+  return (
+    <Box>
+      <Group mb="sm">
+        <Flex className={statusIconBorder()}>
+          {!isStepCompleted ? (
+            <Text size="sm">{stepNumber + 1}</Text>
+          ) : (
+            <IconCheck size={16} />
+          )}
+        </Flex>
+        <Box>
+          <Text fw={500}>{title}</Text>
+          <Text size="xs" opacity={0.5}>
+            {description}
+          </Text>
+        </Box>
+      </Group>
+      {!last && (
+        <Flex className={leftBorderClasses} mb={'sm'}>
+          {content}
+        </Flex>
+      )}
+    </Box>
   );
 };
 

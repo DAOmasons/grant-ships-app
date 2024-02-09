@@ -6,6 +6,16 @@
   min-width: rem(61);
 }
 
+.statusContentBox {
+  min-height: rem(50);
+  border-left: 2px solid var(--mantine-color-blue-7);
+  margin-left: rem(16);
+}
+
+.statusContentBoxNotActive {
+  border-left: 2px solid var(--mantine-color-gray-8);
+}
+
 .statusIcon {
   border-radius: 50%;
   border: 2px solid var(--mantine-color-blue-7);
@@ -20,14 +30,19 @@
   border: 2px solid var(--mantine-color-red-7);
 }
 
+.statusIconInactive {
+  border: 2px solid var(--mantine-color-gray-8);
+}
+
 .statusIconYellowBorder {
   border: 2px solid var(--mantine-color-yellow-7);
 }
 
-.statusIconComplete {
+.statusIconSolid {
   background-color: var(--mantine-color-blue-7);
 }
 
-.statusIconFail {
-  background-color: var(--mantine-color-red-7);
+.statusIconSolidRed {
+  background-color: var(--mantine-color-red-9);
+  border: 2px solid var(--mantine-color-red-9);
 }
