@@ -7,6 +7,7 @@ import { Ships } from './pages/Ships';
 import { GameRules } from './pages/GameRules';
 import { Apply } from './pages/Apply';
 import { CreateShip } from './pages/CreateShip';
+import { FacilitatorDashboard } from './pages/FacilitatorDashboard';
 
 export const ClientRoutes = () => {
   return (
@@ -19,6 +20,7 @@ export const ClientRoutes = () => {
       <Route path="game-rules" element={<GameRules />} />
       <Route path="apply" element={<Apply />} />
       <Route path="project/:id" element={<Project />} />
+      <Route path="facilitator-dashboard" element={<FacilitatorDashboard />} />
     </Routes>
   );
 };

@@ -1,0 +1,33 @@
+.statusBox {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: rem(98);
+  min-width: rem(61);
+}
+
+.statusIcon {
+  border-radius: 50%;
+  border: 2px solid var(--mantine-color-blue-7);
+  height: rem(32);
+  width: rem(32);
+  align-items: center;
+  justify-content: center;
+  margin-bottom: rem(4);
+}
+
+.statusIconRedBorder {
+  border: 2px solid var(--mantine-color-red-7);
+}
+
+.statusIconYellowBorder {
+  border: 2px solid var(--mantine-color-yellow-7);
+}
+
+.statusIconComplete {
+  background-color: var(--mantine-color-blue-7);
+}
+
+.statusIconFail {
+  background-color: var(--mantine-color-red-7);
+}

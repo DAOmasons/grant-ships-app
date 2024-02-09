@@ -11,6 +11,8 @@ import classes from './DesktoNavStyles.module.css';
 import Logo from '../../assets/Logo.svg';
 import { ConnectButton } from './ConnectButton';
 import { Link, useLocation } from 'react-router-dom';
+import { useAccount } from 'wagmi';
+import { FACILITATORS } from '../../constants/gameSetup';
 
 const data = [
   { link: '/', label: 'Home', icon: IconHome },
@@ -22,6 +24,7 @@ const data = [
 
 export function DesktopNav() {
   const location = useLocation();
+  const { address } = useAccount();
 
   const links = data.map((item) => {
     return (
@@ -37,6 +40,8 @@ export function DesktopNav() {
     );
   });
 
+  const isFacilitator = address && FACILITATORS.includes(address);
+
   return (
     <nav className={classes.navbar}>
       <div className={classes.navbarMain}>
@@ -50,14 +55,17 @@ export function DesktopNav() {
       </div>
 
       <div className={classes.footer}>
-        <a
-          href="#"
-          className={classes.link}
-          onClick={(event) => event.preventDefault()}
-        >
-          <IconList className={classes.linkIcon} stroke={1.5} />
-          <span>My Projects</span>
-        </a>
+        {isFacilitator ? (
+          <Link to="/facilitator-dashboard" className={classes.link}>
+            <IconList className={classes.linkIcon} stroke={1.5} />
+            <span>Dashboard</span>
+          </Link>
+        ) : (
+          <Link to="/my-projects" className={classes.link}>
+            <IconList className={classes.linkIcon} stroke={1.5} />
+            <span>My Projects</span>
+          </Link>
+        )}
       </div>
       <ConnectButton />
 

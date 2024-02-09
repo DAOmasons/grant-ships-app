@@ -54,6 +54,9 @@ export const HATS_PROD = {
   FACILITATOR: 0n,
 };
 
+// TODO: Hardcoding is for testing only. We will fetch for Hats/isWearer later on
+export const FACILITATORS = ['0xDE6bcde54CF040088607199FC541f013bA53C21E'];
+
 export const GAME_MANAGER =
   import.meta.env.VITE_RUNTIME_ENV === 'dev'
     ? GAME_MANAGER_TESTNET
