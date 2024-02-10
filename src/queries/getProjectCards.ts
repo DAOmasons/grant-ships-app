@@ -3,7 +3,7 @@ import {
   ProjectDetailsFragment,
   getBuiltGraphSDK,
 } from '../.graphclient';
-import { PINATA_GATEWAY } from '../utils/ipfs/gateway';
+import { PINATA_GATEWAY } from '../utils/ipfs/get';
 
 export type ProjectCardFromQuery = ProjectDetailsFragment & {
   metadata?: MetadataDetailsFragment | null;

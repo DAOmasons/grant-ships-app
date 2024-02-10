@@ -2,7 +2,7 @@ import { ActionIcon, Avatar, Box, FileButton, Text } from '@mantine/core';
 import { IconPencil, IconUser } from '@tabler/icons-react';
 import { pinFileToIPFS } from '../utils/ipfs/pin';
 import { ReactNode, useEffect, useState } from 'react';
-import { PINATA_GATEWAY } from '../utils/ipfs/gateway';
+import { PINATA_GATEWAY } from '../utils/ipfs/get';
 
 type PickerProps = {
   onUploadSuccess?: (metadata: string) => void;

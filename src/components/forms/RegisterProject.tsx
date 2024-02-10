@@ -27,6 +27,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { pinJSONToIPFS } from '../../utils/ipfs/pin';
 import { useMediaQuery } from '@mantine/hooks';
+import { ProjectProfileMetadata } from '../../utils/ipfs/metadataValidation';
 
 type FormValues = z.infer<typeof registerProjectSchema>;
 
@@ -60,7 +61,6 @@ export const RegisterProject = () => {
       const nonce = generateRandomUint256();
 
       const projectMetadata = {
-        notStale: generateRandomUint256().toString(),
         name: values.name,
         description: values.description,
         avatarHash_IPFS: values.avatarHash,
@@ -71,6 +71,17 @@ export const RegisterProject = () => {
         telegram: values.telegram,
         website: values.website,
       };
+
+      const validation = ProjectProfileMetadata.safeParse(projectMetadata);
+
+      if (!validation.success) {
+        notifications.show({
+          title: 'Validation Error',
+          message: validation.error.errors[0].message,
+          color: 'red',
+        });
+        return;
+      }
 
       const pinRes = await pinJSONToIPFS(projectMetadata);
 

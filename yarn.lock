@@ -12118,7 +12118,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"localforage@npm:1.10.0, localforage@npm:^1.7.4":
+"localforage@npm:1.10.0, localforage@npm:^1.10.0, localforage@npm:^1.7.4":
   version: 1.10.0
   resolution: "localforage@npm:1.10.0"
   dependencies:
@@ -16969,6 +16969,7 @@ __metadata:
     eslint-plugin-react-refresh: "npm:^0.4.4"
     form-data: "npm:^4.0.0"
     graphql: "npm:^16.8.1"
+    localforage: "npm:^1.10.0"
     mantine-form-zod-resolver: "npm:^1.1.0"
     postcss: "npm:^8.4.32"
     postcss-preset-mantine: "npm:1.12.3"
