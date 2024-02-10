@@ -4,22 +4,19 @@ fragment ProjectDetails on Project {
   profileId
   nonce
   anchor
-  metadata_protocol
-  metadata_pointer
   owner
 }
 
-fragment MetadataDetails on ProjectMetadata {
-  name
-  description
-  avatarHash_IPFS
+fragment RawMetadata on RawMetadata {
+  protocol
+  pointer
 }
 
 query GetProjects {
   projects {
     ...ProjectDetails
     metadata {
-      ...MetadataDetails
+      ...RawMetadata
     }
   }
 }

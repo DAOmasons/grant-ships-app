@@ -28,16 +28,651 @@ input Block_height {
 
 scalar Bytes
 
+type GameManager {
+  id: Bytes!
+  gameFacilitatorId: BigInt!
+  rootAccount: Bytes!
+  tokenAddress: Bytes!
+  currentRoundId: BigInt!
+  currentRound: GameRound
+  poolFunds: BigInt!
+}
+
+input GameManager_filter {
+  id: Bytes
+  id_not: Bytes
+  id_gt: Bytes
+  id_lt: Bytes
+  id_gte: Bytes
+  id_lte: Bytes
+  id_in: [Bytes!]
+  id_not_in: [Bytes!]
+  id_contains: Bytes
+  id_not_contains: Bytes
+  gameFacilitatorId: BigInt
+  gameFacilitatorId_not: BigInt
+  gameFacilitatorId_gt: BigInt
+  gameFacilitatorId_lt: BigInt
+  gameFacilitatorId_gte: BigInt
+  gameFacilitatorId_lte: BigInt
+  gameFacilitatorId_in: [BigInt!]
+  gameFacilitatorId_not_in: [BigInt!]
+  rootAccount: Bytes
+  rootAccount_not: Bytes
+  rootAccount_gt: Bytes
+  rootAccount_lt: Bytes
+  rootAccount_gte: Bytes
+  rootAccount_lte: Bytes
+  rootAccount_in: [Bytes!]
+  rootAccount_not_in: [Bytes!]
+  rootAccount_contains: Bytes
+  rootAccount_not_contains: Bytes
+  tokenAddress: Bytes
+  tokenAddress_not: Bytes
+  tokenAddress_gt: Bytes
+  tokenAddress_lt: Bytes
+  tokenAddress_gte: Bytes
+  tokenAddress_lte: Bytes
+  tokenAddress_in: [Bytes!]
+  tokenAddress_not_in: [Bytes!]
+  tokenAddress_contains: Bytes
+  tokenAddress_not_contains: Bytes
+  currentRoundId: BigInt
+  currentRoundId_not: BigInt
+  currentRoundId_gt: BigInt
+  currentRoundId_lt: BigInt
+  currentRoundId_gte: BigInt
+  currentRoundId_lte: BigInt
+  currentRoundId_in: [BigInt!]
+  currentRoundId_not_in: [BigInt!]
+  currentRound: String
+  currentRound_not: String
+  currentRound_gt: String
+  currentRound_lt: String
+  currentRound_gte: String
+  currentRound_lte: String
+  currentRound_in: [String!]
+  currentRound_not_in: [String!]
+  currentRound_contains: String
+  currentRound_contains_nocase: String
+  currentRound_not_contains: String
+  currentRound_not_contains_nocase: String
+  currentRound_starts_with: String
+  currentRound_starts_with_nocase: String
+  currentRound_not_starts_with: String
+  currentRound_not_starts_with_nocase: String
+  currentRound_ends_with: String
+  currentRound_ends_with_nocase: String
+  currentRound_not_ends_with: String
+  currentRound_not_ends_with_nocase: String
+  currentRound_: GameRound_filter
+  poolFunds: BigInt
+  poolFunds_not: BigInt
+  poolFunds_gt: BigInt
+  poolFunds_lt: BigInt
+  poolFunds_gte: BigInt
+  poolFunds_lte: BigInt
+  poolFunds_in: [BigInt!]
+  poolFunds_not_in: [BigInt!]
+  """Filter for the block changed event."""
+  _change_block: BlockChangedFilter
+  and: [GameManager_filter]
+  or: [GameManager_filter]
+}
+
+enum GameManager_orderBy {
+  id
+  gameFacilitatorId
+  rootAccount
+  tokenAddress
+  currentRoundId
+  currentRound
+  currentRound__id
+  currentRound__startTime
+  currentRound__endTime
+  currentRound__totalRoundAmount
+  currentRound__gameStatus
+  poolFunds
+}
+
+type GameRound {
+  id: ID!
+  startTime: BigInt!
+  endTime: BigInt!
+  totalRoundAmount: BigInt!
+  gameStatus: Int!
+  ships(skip: Int = 0, first: Int = 100, orderBy: GrantShip_orderBy, orderDirection: OrderDirection, where: GrantShip_filter): [GrantShip!]!
+}
+
+input GameRound_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  startTime: BigInt
+  startTime_not: BigInt
+  startTime_gt: BigInt
+  startTime_lt: BigInt
+  startTime_gte: BigInt
+  startTime_lte: BigInt
+  startTime_in: [BigInt!]
+  startTime_not_in: [BigInt!]
+  endTime: BigInt
+  endTime_not: BigInt
+  endTime_gt: BigInt
+  endTime_lt: BigInt
+  endTime_gte: BigInt
+  endTime_lte: BigInt
+  endTime_in: [BigInt!]
+  endTime_not_in: [BigInt!]
+  totalRoundAmount: BigInt
+  totalRoundAmount_not: BigInt
+  totalRoundAmount_gt: BigInt
+  totalRoundAmount_lt: BigInt
+  totalRoundAmount_gte: BigInt
+  totalRoundAmount_lte: BigInt
+  totalRoundAmount_in: [BigInt!]
+  totalRoundAmount_not_in: [BigInt!]
+  gameStatus: Int
+  gameStatus_not: Int
+  gameStatus_gt: Int
+  gameStatus_lt: Int
+  gameStatus_gte: Int
+  gameStatus_lte: Int
+  gameStatus_in: [Int!]
+  gameStatus_not_in: [Int!]
+  ships: [String!]
+  ships_not: [String!]
+  ships_contains: [String!]
+  ships_contains_nocase: [String!]
+  ships_not_contains: [String!]
+  ships_not_contains_nocase: [String!]
+  ships_: GrantShip_filter
+  """Filter for the block changed event."""
+  _change_block: BlockChangedFilter
+  and: [GameRound_filter]
+  or: [GameRound_filter]
+}
+
+enum GameRound_orderBy {
+  id
+  startTime
+  endTime
+  totalRoundAmount
+  gameStatus
+  ships
+}
+
+type GrantShip {
+  id: Bytes!
+  profileId: Bytes!
+  nonce: BigInt!
+  name: String!
+  profileMetadata: RawMetadata!
+  owner: Bytes!
+  anchor: Bytes!
+  blockNumber: BigInt!
+  blockTimestamp: BigInt!
+  transactionHash: Bytes!
+  status: Int!
+  alloProfileMembers: ProfileMemberGroup
+  shipApplicationBytesData: Bytes
+  hasSubmittedApplication: Boolean
+  isApproved: Boolean
+  applicationReviewReason: RawMetadata
+  poolId: BigInt
+  shipContractAddress: Bytes
+  shipLaunched: Boolean
+  isAllocated: Boolean
+  allocatedAmount: BigInt
+  isDistributed: Boolean
+  distributedAmount: BigInt
+}
+
+type GrantShipLookup {
+  id: Bytes!
+  anchorAddress: Bytes!
+}
+
+input GrantShipLookup_filter {
+  id: Bytes
+  id_not: Bytes
+  id_gt: Bytes
+  id_lt: Bytes
+  id_gte: Bytes
+  id_lte: Bytes
+  id_in: [Bytes!]
+  id_not_in: [Bytes!]
+  id_contains: Bytes
+  id_not_contains: Bytes
+  anchorAddress: Bytes
+  anchorAddress_not: Bytes
+  anchorAddress_gt: Bytes
+  anchorAddress_lt: Bytes
+  anchorAddress_gte: Bytes
+  anchorAddress_lte: Bytes
+  anchorAddress_in: [Bytes!]
+  anchorAddress_not_in: [Bytes!]
+  anchorAddress_contains: Bytes
+  anchorAddress_not_contains: Bytes
+  """Filter for the block changed event."""
+  _change_block: BlockChangedFilter
+  and: [GrantShipLookup_filter]
+  or: [GrantShipLookup_filter]
+}
+
+enum GrantShipLookup_orderBy {
+  id
+  anchorAddress
+}
+
+input GrantShip_filter {
+  id: Bytes
+  id_not: Bytes
+  id_gt: Bytes
+  id_lt: Bytes
+  id_gte: Bytes
+  id_lte: Bytes
+  id_in: [Bytes!]
+  id_not_in: [Bytes!]
+  id_contains: Bytes
+  id_not_contains: Bytes
+  profileId: Bytes
+  profileId_not: Bytes
+  profileId_gt: Bytes
+  profileId_lt: Bytes
+  profileId_gte: Bytes
+  profileId_lte: Bytes
+  profileId_in: [Bytes!]
+  profileId_not_in: [Bytes!]
+  profileId_contains: Bytes
+  profileId_not_contains: Bytes
+  nonce: BigInt
+  nonce_not: BigInt
+  nonce_gt: BigInt
+  nonce_lt: BigInt
+  nonce_gte: BigInt
+  nonce_lte: BigInt
+  nonce_in: [BigInt!]
+  nonce_not_in: [BigInt!]
+  name: String
+  name_not: String
+  name_gt: String
+  name_lt: String
+  name_gte: String
+  name_lte: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_contains: String
+  name_contains_nocase: String
+  name_not_contains: String
+  name_not_contains_nocase: String
+  name_starts_with: String
+  name_starts_with_nocase: String
+  name_not_starts_with: String
+  name_not_starts_with_nocase: String
+  name_ends_with: String
+  name_ends_with_nocase: String
+  name_not_ends_with: String
+  name_not_ends_with_nocase: String
+  profileMetadata: String
+  profileMetadata_not: String
+  profileMetadata_gt: String
+  profileMetadata_lt: String
+  profileMetadata_gte: String
+  profileMetadata_lte: String
+  profileMetadata_in: [String!]
+  profileMetadata_not_in: [String!]
+  profileMetadata_contains: String
+  profileMetadata_contains_nocase: String
+  profileMetadata_not_contains: String
+  profileMetadata_not_contains_nocase: String
+  profileMetadata_starts_with: String
+  profileMetadata_starts_with_nocase: String
+  profileMetadata_not_starts_with: String
+  profileMetadata_not_starts_with_nocase: String
+  profileMetadata_ends_with: String
+  profileMetadata_ends_with_nocase: String
+  profileMetadata_not_ends_with: String
+  profileMetadata_not_ends_with_nocase: String
+  profileMetadata_: RawMetadata_filter
+  owner: Bytes
+  owner_not: Bytes
+  owner_gt: Bytes
+  owner_lt: Bytes
+  owner_gte: Bytes
+  owner_lte: Bytes
+  owner_in: [Bytes!]
+  owner_not_in: [Bytes!]
+  owner_contains: Bytes
+  owner_not_contains: Bytes
+  anchor: Bytes
+  anchor_not: Bytes
+  anchor_gt: Bytes
+  anchor_lt: Bytes
+  anchor_gte: Bytes
+  anchor_lte: Bytes
+  anchor_in: [Bytes!]
+  anchor_not_in: [Bytes!]
+  anchor_contains: Bytes
+  anchor_not_contains: Bytes
+  blockNumber: BigInt
+  blockNumber_not: BigInt
+  blockNumber_gt: BigInt
+  blockNumber_lt: BigInt
+  blockNumber_gte: BigInt
+  blockNumber_lte: BigInt
+  blockNumber_in: [BigInt!]
+  blockNumber_not_in: [BigInt!]
+  blockTimestamp: BigInt
+  blockTimestamp_not: BigInt
+  blockTimestamp_gt: BigInt
+  blockTimestamp_lt: BigInt
+  blockTimestamp_gte: BigInt
+  blockTimestamp_lte: BigInt
+  blockTimestamp_in: [BigInt!]
+  blockTimestamp_not_in: [BigInt!]
+  transactionHash: Bytes
+  transactionHash_not: Bytes
+  transactionHash_gt: Bytes
+  transactionHash_lt: Bytes
+  transactionHash_gte: Bytes
+  transactionHash_lte: Bytes
+  transactionHash_in: [Bytes!]
+  transactionHash_not_in: [Bytes!]
+  transactionHash_contains: Bytes
+  transactionHash_not_contains: Bytes
+  status: Int
+  status_not: Int
+  status_gt: Int
+  status_lt: Int
+  status_gte: Int
+  status_lte: Int
+  status_in: [Int!]
+  status_not_in: [Int!]
+  alloProfileMembers: String
+  alloProfileMembers_not: String
+  alloProfileMembers_gt: String
+  alloProfileMembers_lt: String
+  alloProfileMembers_gte: String
+  alloProfileMembers_lte: String
+  alloProfileMembers_in: [String!]
+  alloProfileMembers_not_in: [String!]
+  alloProfileMembers_contains: String
+  alloProfileMembers_contains_nocase: String
+  alloProfileMembers_not_contains: String
+  alloProfileMembers_not_contains_nocase: String
+  alloProfileMembers_starts_with: String
+  alloProfileMembers_starts_with_nocase: String
+  alloProfileMembers_not_starts_with: String
+  alloProfileMembers_not_starts_with_nocase: String
+  alloProfileMembers_ends_with: String
+  alloProfileMembers_ends_with_nocase: String
+  alloProfileMembers_not_ends_with: String
+  alloProfileMembers_not_ends_with_nocase: String
+  alloProfileMembers_: ProfileMemberGroup_filter
+  shipApplicationBytesData: Bytes
+  shipApplicationBytesData_not: Bytes
+  shipApplicationBytesData_gt: Bytes
+  shipApplicationBytesData_lt: Bytes
+  shipApplicationBytesData_gte: Bytes
+  shipApplicationBytesData_lte: Bytes
+  shipApplicationBytesData_in: [Bytes!]
+  shipApplicationBytesData_not_in: [Bytes!]
+  shipApplicationBytesData_contains: Bytes
+  shipApplicationBytesData_not_contains: Bytes
+  hasSubmittedApplication: Boolean
+  hasSubmittedApplication_not: Boolean
+  hasSubmittedApplication_in: [Boolean!]
+  hasSubmittedApplication_not_in: [Boolean!]
+  isApproved: Boolean
+  isApproved_not: Boolean
+  isApproved_in: [Boolean!]
+  isApproved_not_in: [Boolean!]
+  applicationReviewReason: String
+  applicationReviewReason_not: String
+  applicationReviewReason_gt: String
+  applicationReviewReason_lt: String
+  applicationReviewReason_gte: String
+  applicationReviewReason_lte: String
+  applicationReviewReason_in: [String!]
+  applicationReviewReason_not_in: [String!]
+  applicationReviewReason_contains: String
+  applicationReviewReason_contains_nocase: String
+  applicationReviewReason_not_contains: String
+  applicationReviewReason_not_contains_nocase: String
+  applicationReviewReason_starts_with: String
+  applicationReviewReason_starts_with_nocase: String
+  applicationReviewReason_not_starts_with: String
+  applicationReviewReason_not_starts_with_nocase: String
+  applicationReviewReason_ends_with: String
+  applicationReviewReason_ends_with_nocase: String
+  applicationReviewReason_not_ends_with: String
+  applicationReviewReason_not_ends_with_nocase: String
+  applicationReviewReason_: RawMetadata_filter
+  poolId: BigInt
+  poolId_not: BigInt
+  poolId_gt: BigInt
+  poolId_lt: BigInt
+  poolId_gte: BigInt
+  poolId_lte: BigInt
+  poolId_in: [BigInt!]
+  poolId_not_in: [BigInt!]
+  shipContractAddress: Bytes
+  shipContractAddress_not: Bytes
+  shipContractAddress_gt: Bytes
+  shipContractAddress_lt: Bytes
+  shipContractAddress_gte: Bytes
+  shipContractAddress_lte: Bytes
+  shipContractAddress_in: [Bytes!]
+  shipContractAddress_not_in: [Bytes!]
+  shipContractAddress_contains: Bytes
+  shipContractAddress_not_contains: Bytes
+  shipLaunched: Boolean
+  shipLaunched_not: Boolean
+  shipLaunched_in: [Boolean!]
+  shipLaunched_not_in: [Boolean!]
+  isAllocated: Boolean
+  isAllocated_not: Boolean
+  isAllocated_in: [Boolean!]
+  isAllocated_not_in: [Boolean!]
+  allocatedAmount: BigInt
+  allocatedAmount_not: BigInt
+  allocatedAmount_gt: BigInt
+  allocatedAmount_lt: BigInt
+  allocatedAmount_gte: BigInt
+  allocatedAmount_lte: BigInt
+  allocatedAmount_in: [BigInt!]
+  allocatedAmount_not_in: [BigInt!]
+  isDistributed: Boolean
+  isDistributed_not: Boolean
+  isDistributed_in: [Boolean!]
+  isDistributed_not_in: [Boolean!]
+  distributedAmount: BigInt
+  distributedAmount_not: BigInt
+  distributedAmount_gt: BigInt
+  distributedAmount_lt: BigInt
+  distributedAmount_gte: BigInt
+  distributedAmount_lte: BigInt
+  distributedAmount_in: [BigInt!]
+  distributedAmount_not_in: [BigInt!]
+  """Filter for the block changed event."""
+  _change_block: BlockChangedFilter
+  and: [GrantShip_filter]
+  or: [GrantShip_filter]
+}
+
+enum GrantShip_orderBy {
+  id
+  profileId
+  nonce
+  name
+  profileMetadata
+  profileMetadata__id
+  profileMetadata__protocol
+  profileMetadata__pointer
+  owner
+  anchor
+  blockNumber
+  blockTimestamp
+  transactionHash
+  status
+  alloProfileMembers
+  alloProfileMembers__id
+  shipApplicationBytesData
+  hasSubmittedApplication
+  isApproved
+  applicationReviewReason
+  applicationReviewReason__id
+  applicationReviewReason__protocol
+  applicationReviewReason__pointer
+  poolId
+  shipContractAddress
+  shipLaunched
+  isAllocated
+  allocatedAmount
+  isDistributed
+  distributedAmount
+}
+
 """
 8 bytes signed integer
 
 """
 scalar Int8
 
+type Log {
+  id: ID!
+  message: String!
+  description: String
+  type: String!
+}
+
+input Log_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  message: String
+  message_not: String
+  message_gt: String
+  message_lt: String
+  message_gte: String
+  message_lte: String
+  message_in: [String!]
+  message_not_in: [String!]
+  message_contains: String
+  message_contains_nocase: String
+  message_not_contains: String
+  message_not_contains_nocase: String
+  message_starts_with: String
+  message_starts_with_nocase: String
+  message_not_starts_with: String
+  message_not_starts_with_nocase: String
+  message_ends_with: String
+  message_ends_with_nocase: String
+  message_not_ends_with: String
+  message_not_ends_with_nocase: String
+  description: String
+  description_not: String
+  description_gt: String
+  description_lt: String
+  description_gte: String
+  description_lte: String
+  description_in: [String!]
+  description_not_in: [String!]
+  description_contains: String
+  description_contains_nocase: String
+  description_not_contains: String
+  description_not_contains_nocase: String
+  description_starts_with: String
+  description_starts_with_nocase: String
+  description_not_starts_with: String
+  description_not_starts_with_nocase: String
+  description_ends_with: String
+  description_ends_with_nocase: String
+  description_not_ends_with: String
+  description_not_ends_with_nocase: String
+  type: String
+  type_not: String
+  type_gt: String
+  type_lt: String
+  type_gte: String
+  type_lte: String
+  type_in: [String!]
+  type_not_in: [String!]
+  type_contains: String
+  type_contains_nocase: String
+  type_not_contains: String
+  type_not_contains_nocase: String
+  type_starts_with: String
+  type_starts_with_nocase: String
+  type_not_starts_with: String
+  type_not_starts_with_nocase: String
+  type_ends_with: String
+  type_ends_with_nocase: String
+  type_not_ends_with: String
+  type_not_ends_with_nocase: String
+  """Filter for the block changed event."""
+  _change_block: BlockChangedFilter
+  and: [Log_filter]
+  or: [Log_filter]
+}
+
+enum Log_orderBy {
+  id
+  message
+  description
+  type
+}
+
 """Defines the order direction, either ascending or descending"""
 enum OrderDirection {
   asc
   desc
+}
+
+type PoolIdLookup {
+  id: ID!
+  entityId: Bytes!
+}
+
+input PoolIdLookup_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  entityId: Bytes
+  entityId_not: Bytes
+  entityId_gt: Bytes
+  entityId_lt: Bytes
+  entityId_gte: Bytes
+  entityId_lte: Bytes
+  entityId_in: [Bytes!]
+  entityId_not_in: [Bytes!]
+  entityId_contains: Bytes
+  entityId_not_contains: Bytes
+  """Filter for the block changed event."""
+  _change_block: BlockChangedFilter
+  and: [PoolIdLookup_filter]
+  or: [PoolIdLookup_filter]
+}
+
+enum PoolIdLookup_orderBy {
+  id
+  entityId
 }
 
 type ProfileMemberGroup {
@@ -78,248 +713,13 @@ type Project {
   profileId: Bytes!
   nonce: BigInt!
   name: String!
-  metadata_protocol: BigInt!
-  metadata_pointer: String!
-  metadata: ProjectMetadata
+  metadata: RawMetadata
   owner: Bytes!
   anchor: Bytes!
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
   members: ProfileMemberGroup
-}
-
-type ProjectMetadata {
-  id: String!
-  name: String
-  description: String
-  avatarHash_IPFS: String
-  email: String
-  x: String
-  github: String
-  discord: String
-  telegram: String
-  website: String
-}
-
-input ProjectMetadata_filter {
-  id: String
-  id_not: String
-  id_gt: String
-  id_lt: String
-  id_gte: String
-  id_lte: String
-  id_in: [String!]
-  id_not_in: [String!]
-  id_contains: String
-  id_contains_nocase: String
-  id_not_contains: String
-  id_not_contains_nocase: String
-  id_starts_with: String
-  id_starts_with_nocase: String
-  id_not_starts_with: String
-  id_not_starts_with_nocase: String
-  id_ends_with: String
-  id_ends_with_nocase: String
-  id_not_ends_with: String
-  id_not_ends_with_nocase: String
-  name: String
-  name_not: String
-  name_gt: String
-  name_lt: String
-  name_gte: String
-  name_lte: String
-  name_in: [String!]
-  name_not_in: [String!]
-  name_contains: String
-  name_contains_nocase: String
-  name_not_contains: String
-  name_not_contains_nocase: String
-  name_starts_with: String
-  name_starts_with_nocase: String
-  name_not_starts_with: String
-  name_not_starts_with_nocase: String
-  name_ends_with: String
-  name_ends_with_nocase: String
-  name_not_ends_with: String
-  name_not_ends_with_nocase: String
-  description: String
-  description_not: String
-  description_gt: String
-  description_lt: String
-  description_gte: String
-  description_lte: String
-  description_in: [String!]
-  description_not_in: [String!]
-  description_contains: String
-  description_contains_nocase: String
-  description_not_contains: String
-  description_not_contains_nocase: String
-  description_starts_with: String
-  description_starts_with_nocase: String
-  description_not_starts_with: String
-  description_not_starts_with_nocase: String
-  description_ends_with: String
-  description_ends_with_nocase: String
-  description_not_ends_with: String
-  description_not_ends_with_nocase: String
-  avatarHash_IPFS: String
-  avatarHash_IPFS_not: String
-  avatarHash_IPFS_gt: String
-  avatarHash_IPFS_lt: String
-  avatarHash_IPFS_gte: String
-  avatarHash_IPFS_lte: String
-  avatarHash_IPFS_in: [String!]
-  avatarHash_IPFS_not_in: [String!]
-  avatarHash_IPFS_contains: String
-  avatarHash_IPFS_contains_nocase: String
-  avatarHash_IPFS_not_contains: String
-  avatarHash_IPFS_not_contains_nocase: String
-  avatarHash_IPFS_starts_with: String
-  avatarHash_IPFS_starts_with_nocase: String
-  avatarHash_IPFS_not_starts_with: String
-  avatarHash_IPFS_not_starts_with_nocase: String
-  avatarHash_IPFS_ends_with: String
-  avatarHash_IPFS_ends_with_nocase: String
-  avatarHash_IPFS_not_ends_with: String
-  avatarHash_IPFS_not_ends_with_nocase: String
-  email: String
-  email_not: String
-  email_gt: String
-  email_lt: String
-  email_gte: String
-  email_lte: String
-  email_in: [String!]
-  email_not_in: [String!]
-  email_contains: String
-  email_contains_nocase: String
-  email_not_contains: String
-  email_not_contains_nocase: String
-  email_starts_with: String
-  email_starts_with_nocase: String
-  email_not_starts_with: String
-  email_not_starts_with_nocase: String
-  email_ends_with: String
-  email_ends_with_nocase: String
-  email_not_ends_with: String
-  email_not_ends_with_nocase: String
-  x: String
-  x_not: String
-  x_gt: String
-  x_lt: String
-  x_gte: String
-  x_lte: String
-  x_in: [String!]
-  x_not_in: [String!]
-  x_contains: String
-  x_contains_nocase: String
-  x_not_contains: String
-  x_not_contains_nocase: String
-  x_starts_with: String
-  x_starts_with_nocase: String
-  x_not_starts_with: String
-  x_not_starts_with_nocase: String
-  x_ends_with: String
-  x_ends_with_nocase: String
-  x_not_ends_with: String
-  x_not_ends_with_nocase: String
-  github: String
-  github_not: String
-  github_gt: String
-  github_lt: String
-  github_gte: String
-  github_lte: String
-  github_in: [String!]
-  github_not_in: [String!]
-  github_contains: String
-  github_contains_nocase: String
-  github_not_contains: String
-  github_not_contains_nocase: String
-  github_starts_with: String
-  github_starts_with_nocase: String
-  github_not_starts_with: String
-  github_not_starts_with_nocase: String
-  github_ends_with: String
-  github_ends_with_nocase: String
-  github_not_ends_with: String
-  github_not_ends_with_nocase: String
-  discord: String
-  discord_not: String
-  discord_gt: String
-  discord_lt: String
-  discord_gte: String
-  discord_lte: String
-  discord_in: [String!]
-  discord_not_in: [String!]
-  discord_contains: String
-  discord_contains_nocase: String
-  discord_not_contains: String
-  discord_not_contains_nocase: String
-  discord_starts_with: String
-  discord_starts_with_nocase: String
-  discord_not_starts_with: String
-  discord_not_starts_with_nocase: String
-  discord_ends_with: String
-  discord_ends_with_nocase: String
-  discord_not_ends_with: String
-  discord_not_ends_with_nocase: String
-  telegram: String
-  telegram_not: String
-  telegram_gt: String
-  telegram_lt: String
-  telegram_gte: String
-  telegram_lte: String
-  telegram_in: [String!]
-  telegram_not_in: [String!]
-  telegram_contains: String
-  telegram_contains_nocase: String
-  telegram_not_contains: String
-  telegram_not_contains_nocase: String
-  telegram_starts_with: String
-  telegram_starts_with_nocase: String
-  telegram_not_starts_with: String
-  telegram_not_starts_with_nocase: String
-  telegram_ends_with: String
-  telegram_ends_with_nocase: String
-  telegram_not_ends_with: String
-  telegram_not_ends_with_nocase: String
-  website: String
-  website_not: String
-  website_gt: String
-  website_lt: String
-  website_gte: String
-  website_lte: String
-  website_in: [String!]
-  website_not_in: [String!]
-  website_contains: String
-  website_contains_nocase: String
-  website_not_contains: String
-  website_not_contains_nocase: String
-  website_starts_with: String
-  website_starts_with_nocase: String
-  website_not_starts_with: String
-  website_not_starts_with_nocase: String
-  website_ends_with: String
-  website_ends_with_nocase: String
-  website_not_ends_with: String
-  website_not_ends_with_nocase: String
-  """Filter for the block changed event."""
-  _change_block: BlockChangedFilter
-  and: [ProjectMetadata_filter]
-  or: [ProjectMetadata_filter]
-}
-
-enum ProjectMetadata_orderBy {
-  id
-  name
-  description
-  avatarHash_IPFS
-  email
-  x
-  github
-  discord
-  telegram
-  website
 }
 
 input Project_filter {
@@ -371,34 +771,6 @@ input Project_filter {
   name_ends_with_nocase: String
   name_not_ends_with: String
   name_not_ends_with_nocase: String
-  metadata_protocol: BigInt
-  metadata_protocol_not: BigInt
-  metadata_protocol_gt: BigInt
-  metadata_protocol_lt: BigInt
-  metadata_protocol_gte: BigInt
-  metadata_protocol_lte: BigInt
-  metadata_protocol_in: [BigInt!]
-  metadata_protocol_not_in: [BigInt!]
-  metadata_pointer: String
-  metadata_pointer_not: String
-  metadata_pointer_gt: String
-  metadata_pointer_lt: String
-  metadata_pointer_gte: String
-  metadata_pointer_lte: String
-  metadata_pointer_in: [String!]
-  metadata_pointer_not_in: [String!]
-  metadata_pointer_contains: String
-  metadata_pointer_contains_nocase: String
-  metadata_pointer_not_contains: String
-  metadata_pointer_not_contains_nocase: String
-  metadata_pointer_starts_with: String
-  metadata_pointer_starts_with_nocase: String
-  metadata_pointer_not_starts_with: String
-  metadata_pointer_not_starts_with_nocase: String
-  metadata_pointer_ends_with: String
-  metadata_pointer_ends_with_nocase: String
-  metadata_pointer_not_ends_with: String
-  metadata_pointer_not_ends_with_nocase: String
   metadata: String
   metadata_not: String
   metadata_gt: String
@@ -419,7 +791,7 @@ input Project_filter {
   metadata_ends_with_nocase: String
   metadata_not_ends_with: String
   metadata_not_ends_with_nocase: String
-  metadata_: ProjectMetadata_filter
+  metadata_: RawMetadata_filter
   owner: Bytes
   owner_not: Bytes
   owner_gt: Bytes
@@ -498,19 +870,10 @@ enum Project_orderBy {
   profileId
   nonce
   name
-  metadata_protocol
-  metadata_pointer
   metadata
   metadata__id
-  metadata__name
-  metadata__description
-  metadata__avatarHash_IPFS
-  metadata__email
-  metadata__x
-  metadata__github
-  metadata__discord
-  metadata__telegram
-  metadata__website
+  metadata__protocol
+  metadata__pointer
   owner
   anchor
   blockNumber
@@ -547,22 +910,7 @@ type Query {
     """
     subgraphError: _SubgraphErrorPolicy_! = deny
   ): [Project!]!
-  projectMetadata(
-    skip: Int = 0
-    first: Int = 100
-    orderBy: ProjectMetadata_orderBy
-    orderDirection: OrderDirection
-    where: ProjectMetadata_filter
-    """
-    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-    """
-    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
-    """
-    subgraphError: _SubgraphErrorPolicy_! = deny
-  ): [ProjectMetadata!]!
-  shipProfile(
+  grantShip(
     id: ID!
     """
     The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
@@ -572,13 +920,13 @@ type Query {
     Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
     """
     subgraphError: _SubgraphErrorPolicy_! = deny
-  ): ShipProfile
-  shipProfiles(
+  ): GrantShip
+  grantShips(
     skip: Int = 0
     first: Int = 100
-    orderBy: ShipProfile_orderBy
+    orderBy: GrantShip_orderBy
     orderDirection: OrderDirection
-    where: ShipProfile_filter
+    where: GrantShip_filter
     """
     The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
     """
@@ -587,13 +935,9 @@ type Query {
     Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
     """
     subgraphError: _SubgraphErrorPolicy_! = deny
-  ): [ShipProfile!]!
-  shipProfileMetadata(
-    skip: Int = 0
-    first: Int = 100
-    orderBy: ShipProfileMetadata_orderBy
-    orderDirection: OrderDirection
-    where: ShipProfileMetadata_filter
+  ): [GrantShip!]!
+  grantShipLookup(
+    id: ID!
     """
     The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
     """
@@ -602,7 +946,100 @@ type Query {
     Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
     """
     subgraphError: _SubgraphErrorPolicy_! = deny
-  ): [ShipProfileMetadata!]!
+  ): GrantShipLookup
+  grantShipLookups(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: GrantShipLookup_orderBy
+    orderDirection: OrderDirection
+    where: GrantShipLookup_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): [GrantShipLookup!]!
+  poolIdLookup(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): PoolIdLookup
+  poolIdLookups(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: PoolIdLookup_orderBy
+    orderDirection: OrderDirection
+    where: PoolIdLookup_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): [PoolIdLookup!]!
+  gameManager(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): GameManager
+  gameManagers(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: GameManager_orderBy
+    orderDirection: OrderDirection
+    where: GameManager_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): [GameManager!]!
+  gameRound(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): GameRound
+  gameRounds(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: GameRound_orderBy
+    orderDirection: OrderDirection
+    where: GameRound_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): [GameRound!]!
   profileMemberGroup(
     id: ID!
     """
@@ -655,40 +1092,58 @@ type Query {
     """
     subgraphError: _SubgraphErrorPolicy_! = deny
   ): [Transaction!]!
+  rawMetadata(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: RawMetadata_orderBy
+    orderDirection: OrderDirection
+    where: RawMetadata_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): [RawMetadata!]!
+  log(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): Log
+  logs(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Log_orderBy
+    orderDirection: OrderDirection
+    where: Log_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): [Log!]!
   """Access to subgraph metadata"""
   _meta(block: Block_height): _Meta_
 }
 
-type ShipProfile {
-  id: Bytes!
-  profileId: Bytes!
-  nonce: BigInt!
-  name: String!
-  metadata_protocol: BigInt!
-  metadata_pointer: String!
-  metadata: ShipProfileMetadata!
-  owner: Bytes!
-  anchor: Bytes!
-  blockNumber: BigInt!
-  blockTimestamp: BigInt!
-  transactionHash: Bytes!
-  alloProfileMembers: ProfileMemberGroup
-}
-
-type ShipProfileMetadata {
+type RawMetadata {
   id: String!
-  name: String
-  mission: String
-  avatarHash_IPFS: String
-  email: String
-  x: String
-  github: String
-  discord: String
-  telegram: String
-  website: String
+  protocol: BigInt!
+  pointer: String!
 }
 
-input ShipProfileMetadata_filter {
+input RawMetadata_filter {
   id: String
   id_not: String
   id_gt: String
@@ -709,401 +1164,44 @@ input ShipProfileMetadata_filter {
   id_ends_with_nocase: String
   id_not_ends_with: String
   id_not_ends_with_nocase: String
-  name: String
-  name_not: String
-  name_gt: String
-  name_lt: String
-  name_gte: String
-  name_lte: String
-  name_in: [String!]
-  name_not_in: [String!]
-  name_contains: String
-  name_contains_nocase: String
-  name_not_contains: String
-  name_not_contains_nocase: String
-  name_starts_with: String
-  name_starts_with_nocase: String
-  name_not_starts_with: String
-  name_not_starts_with_nocase: String
-  name_ends_with: String
-  name_ends_with_nocase: String
-  name_not_ends_with: String
-  name_not_ends_with_nocase: String
-  mission: String
-  mission_not: String
-  mission_gt: String
-  mission_lt: String
-  mission_gte: String
-  mission_lte: String
-  mission_in: [String!]
-  mission_not_in: [String!]
-  mission_contains: String
-  mission_contains_nocase: String
-  mission_not_contains: String
-  mission_not_contains_nocase: String
-  mission_starts_with: String
-  mission_starts_with_nocase: String
-  mission_not_starts_with: String
-  mission_not_starts_with_nocase: String
-  mission_ends_with: String
-  mission_ends_with_nocase: String
-  mission_not_ends_with: String
-  mission_not_ends_with_nocase: String
-  avatarHash_IPFS: String
-  avatarHash_IPFS_not: String
-  avatarHash_IPFS_gt: String
-  avatarHash_IPFS_lt: String
-  avatarHash_IPFS_gte: String
-  avatarHash_IPFS_lte: String
-  avatarHash_IPFS_in: [String!]
-  avatarHash_IPFS_not_in: [String!]
-  avatarHash_IPFS_contains: String
-  avatarHash_IPFS_contains_nocase: String
-  avatarHash_IPFS_not_contains: String
-  avatarHash_IPFS_not_contains_nocase: String
-  avatarHash_IPFS_starts_with: String
-  avatarHash_IPFS_starts_with_nocase: String
-  avatarHash_IPFS_not_starts_with: String
-  avatarHash_IPFS_not_starts_with_nocase: String
-  avatarHash_IPFS_ends_with: String
-  avatarHash_IPFS_ends_with_nocase: String
-  avatarHash_IPFS_not_ends_with: String
-  avatarHash_IPFS_not_ends_with_nocase: String
-  email: String
-  email_not: String
-  email_gt: String
-  email_lt: String
-  email_gte: String
-  email_lte: String
-  email_in: [String!]
-  email_not_in: [String!]
-  email_contains: String
-  email_contains_nocase: String
-  email_not_contains: String
-  email_not_contains_nocase: String
-  email_starts_with: String
-  email_starts_with_nocase: String
-  email_not_starts_with: String
-  email_not_starts_with_nocase: String
-  email_ends_with: String
-  email_ends_with_nocase: String
-  email_not_ends_with: String
-  email_not_ends_with_nocase: String
-  x: String
-  x_not: String
-  x_gt: String
-  x_lt: String
-  x_gte: String
-  x_lte: String
-  x_in: [String!]
-  x_not_in: [String!]
-  x_contains: String
-  x_contains_nocase: String
-  x_not_contains: String
-  x_not_contains_nocase: String
-  x_starts_with: String
-  x_starts_with_nocase: String
-  x_not_starts_with: String
-  x_not_starts_with_nocase: String
-  x_ends_with: String
-  x_ends_with_nocase: String
-  x_not_ends_with: String
-  x_not_ends_with_nocase: String
-  github: String
-  github_not: String
-  github_gt: String
-  github_lt: String
-  github_gte: String
-  github_lte: String
-  github_in: [String!]
-  github_not_in: [String!]
-  github_contains: String
-  github_contains_nocase: String
-  github_not_contains: String
-  github_not_contains_nocase: String
-  github_starts_with: String
-  github_starts_with_nocase: String
-  github_not_starts_with: String
-  github_not_starts_with_nocase: String
-  github_ends_with: String
-  github_ends_with_nocase: String
-  github_not_ends_with: String
-  github_not_ends_with_nocase: String
-  discord: String
-  discord_not: String
-  discord_gt: String
-  discord_lt: String
-  discord_gte: String
-  discord_lte: String
-  discord_in: [String!]
-  discord_not_in: [String!]
-  discord_contains: String
-  discord_contains_nocase: String
-  discord_not_contains: String
-  discord_not_contains_nocase: String
-  discord_starts_with: String
-  discord_starts_with_nocase: String
-  discord_not_starts_with: String
-  discord_not_starts_with_nocase: String
-  discord_ends_with: String
-  discord_ends_with_nocase: String
-  discord_not_ends_with: String
-  discord_not_ends_with_nocase: String
-  telegram: String
-  telegram_not: String
-  telegram_gt: String
-  telegram_lt: String
-  telegram_gte: String
-  telegram_lte: String
-  telegram_in: [String!]
-  telegram_not_in: [String!]
-  telegram_contains: String
-  telegram_contains_nocase: String
-  telegram_not_contains: String
-  telegram_not_contains_nocase: String
-  telegram_starts_with: String
-  telegram_starts_with_nocase: String
-  telegram_not_starts_with: String
-  telegram_not_starts_with_nocase: String
-  telegram_ends_with: String
-  telegram_ends_with_nocase: String
-  telegram_not_ends_with: String
-  telegram_not_ends_with_nocase: String
-  website: String
-  website_not: String
-  website_gt: String
-  website_lt: String
-  website_gte: String
-  website_lte: String
-  website_in: [String!]
-  website_not_in: [String!]
-  website_contains: String
-  website_contains_nocase: String
-  website_not_contains: String
-  website_not_contains_nocase: String
-  website_starts_with: String
-  website_starts_with_nocase: String
-  website_not_starts_with: String
-  website_not_starts_with_nocase: String
-  website_ends_with: String
-  website_ends_with_nocase: String
-  website_not_ends_with: String
-  website_not_ends_with_nocase: String
+  protocol: BigInt
+  protocol_not: BigInt
+  protocol_gt: BigInt
+  protocol_lt: BigInt
+  protocol_gte: BigInt
+  protocol_lte: BigInt
+  protocol_in: [BigInt!]
+  protocol_not_in: [BigInt!]
+  pointer: String
+  pointer_not: String
+  pointer_gt: String
+  pointer_lt: String
+  pointer_gte: String
+  pointer_lte: String
+  pointer_in: [String!]
+  pointer_not_in: [String!]
+  pointer_contains: String
+  pointer_contains_nocase: String
+  pointer_not_contains: String
+  pointer_not_contains_nocase: String
+  pointer_starts_with: String
+  pointer_starts_with_nocase: String
+  pointer_not_starts_with: String
+  pointer_not_starts_with_nocase: String
+  pointer_ends_with: String
+  pointer_ends_with_nocase: String
+  pointer_not_ends_with: String
+  pointer_not_ends_with_nocase: String
   """Filter for the block changed event."""
   _change_block: BlockChangedFilter
-  and: [ShipProfileMetadata_filter]
-  or: [ShipProfileMetadata_filter]
+  and: [RawMetadata_filter]
+  or: [RawMetadata_filter]
 }
 
-enum ShipProfileMetadata_orderBy {
+enum RawMetadata_orderBy {
   id
-  name
-  mission
-  avatarHash_IPFS
-  email
-  x
-  github
-  discord
-  telegram
-  website
-}
-
-input ShipProfile_filter {
-  id: Bytes
-  id_not: Bytes
-  id_gt: Bytes
-  id_lt: Bytes
-  id_gte: Bytes
-  id_lte: Bytes
-  id_in: [Bytes!]
-  id_not_in: [Bytes!]
-  id_contains: Bytes
-  id_not_contains: Bytes
-  profileId: Bytes
-  profileId_not: Bytes
-  profileId_gt: Bytes
-  profileId_lt: Bytes
-  profileId_gte: Bytes
-  profileId_lte: Bytes
-  profileId_in: [Bytes!]
-  profileId_not_in: [Bytes!]
-  profileId_contains: Bytes
-  profileId_not_contains: Bytes
-  nonce: BigInt
-  nonce_not: BigInt
-  nonce_gt: BigInt
-  nonce_lt: BigInt
-  nonce_gte: BigInt
-  nonce_lte: BigInt
-  nonce_in: [BigInt!]
-  nonce_not_in: [BigInt!]
-  name: String
-  name_not: String
-  name_gt: String
-  name_lt: String
-  name_gte: String
-  name_lte: String
-  name_in: [String!]
-  name_not_in: [String!]
-  name_contains: String
-  name_contains_nocase: String
-  name_not_contains: String
-  name_not_contains_nocase: String
-  name_starts_with: String
-  name_starts_with_nocase: String
-  name_not_starts_with: String
-  name_not_starts_with_nocase: String
-  name_ends_with: String
-  name_ends_with_nocase: String
-  name_not_ends_with: String
-  name_not_ends_with_nocase: String
-  metadata_protocol: BigInt
-  metadata_protocol_not: BigInt
-  metadata_protocol_gt: BigInt
-  metadata_protocol_lt: BigInt
-  metadata_protocol_gte: BigInt
-  metadata_protocol_lte: BigInt
-  metadata_protocol_in: [BigInt!]
-  metadata_protocol_not_in: [BigInt!]
-  metadata_pointer: String
-  metadata_pointer_not: String
-  metadata_pointer_gt: String
-  metadata_pointer_lt: String
-  metadata_pointer_gte: String
-  metadata_pointer_lte: String
-  metadata_pointer_in: [String!]
-  metadata_pointer_not_in: [String!]
-  metadata_pointer_contains: String
-  metadata_pointer_contains_nocase: String
-  metadata_pointer_not_contains: String
-  metadata_pointer_not_contains_nocase: String
-  metadata_pointer_starts_with: String
-  metadata_pointer_starts_with_nocase: String
-  metadata_pointer_not_starts_with: String
-  metadata_pointer_not_starts_with_nocase: String
-  metadata_pointer_ends_with: String
-  metadata_pointer_ends_with_nocase: String
-  metadata_pointer_not_ends_with: String
-  metadata_pointer_not_ends_with_nocase: String
-  metadata: String
-  metadata_not: String
-  metadata_gt: String
-  metadata_lt: String
-  metadata_gte: String
-  metadata_lte: String
-  metadata_in: [String!]
-  metadata_not_in: [String!]
-  metadata_contains: String
-  metadata_contains_nocase: String
-  metadata_not_contains: String
-  metadata_not_contains_nocase: String
-  metadata_starts_with: String
-  metadata_starts_with_nocase: String
-  metadata_not_starts_with: String
-  metadata_not_starts_with_nocase: String
-  metadata_ends_with: String
-  metadata_ends_with_nocase: String
-  metadata_not_ends_with: String
-  metadata_not_ends_with_nocase: String
-  metadata_: ShipProfileMetadata_filter
-  owner: Bytes
-  owner_not: Bytes
-  owner_gt: Bytes
-  owner_lt: Bytes
-  owner_gte: Bytes
-  owner_lte: Bytes
-  owner_in: [Bytes!]
-  owner_not_in: [Bytes!]
-  owner_contains: Bytes
-  owner_not_contains: Bytes
-  anchor: Bytes
-  anchor_not: Bytes
-  anchor_gt: Bytes
-  anchor_lt: Bytes
-  anchor_gte: Bytes
-  anchor_lte: Bytes
-  anchor_in: [Bytes!]
-  anchor_not_in: [Bytes!]
-  anchor_contains: Bytes
-  anchor_not_contains: Bytes
-  blockNumber: BigInt
-  blockNumber_not: BigInt
-  blockNumber_gt: BigInt
-  blockNumber_lt: BigInt
-  blockNumber_gte: BigInt
-  blockNumber_lte: BigInt
-  blockNumber_in: [BigInt!]
-  blockNumber_not_in: [BigInt!]
-  blockTimestamp: BigInt
-  blockTimestamp_not: BigInt
-  blockTimestamp_gt: BigInt
-  blockTimestamp_lt: BigInt
-  blockTimestamp_gte: BigInt
-  blockTimestamp_lte: BigInt
-  blockTimestamp_in: [BigInt!]
-  blockTimestamp_not_in: [BigInt!]
-  transactionHash: Bytes
-  transactionHash_not: Bytes
-  transactionHash_gt: Bytes
-  transactionHash_lt: Bytes
-  transactionHash_gte: Bytes
-  transactionHash_lte: Bytes
-  transactionHash_in: [Bytes!]
-  transactionHash_not_in: [Bytes!]
-  transactionHash_contains: Bytes
-  transactionHash_not_contains: Bytes
-  alloProfileMembers: String
-  alloProfileMembers_not: String
-  alloProfileMembers_gt: String
-  alloProfileMembers_lt: String
-  alloProfileMembers_gte: String
-  alloProfileMembers_lte: String
-  alloProfileMembers_in: [String!]
-  alloProfileMembers_not_in: [String!]
-  alloProfileMembers_contains: String
-  alloProfileMembers_contains_nocase: String
-  alloProfileMembers_not_contains: String
-  alloProfileMembers_not_contains_nocase: String
-  alloProfileMembers_starts_with: String
-  alloProfileMembers_starts_with_nocase: String
-  alloProfileMembers_not_starts_with: String
-  alloProfileMembers_not_starts_with_nocase: String
-  alloProfileMembers_ends_with: String
-  alloProfileMembers_ends_with_nocase: String
-  alloProfileMembers_not_ends_with: String
-  alloProfileMembers_not_ends_with_nocase: String
-  alloProfileMembers_: ProfileMemberGroup_filter
-  """Filter for the block changed event."""
-  _change_block: BlockChangedFilter
-  and: [ShipProfile_filter]
-  or: [ShipProfile_filter]
-}
-
-enum ShipProfile_orderBy {
-  id
-  profileId
-  nonce
-  name
-  metadata_protocol
-  metadata_pointer
-  metadata
-  metadata__id
-  metadata__name
-  metadata__mission
-  metadata__avatarHash_IPFS
-  metadata__email
-  metadata__x
-  metadata__github
-  metadata__discord
-  metadata__telegram
-  metadata__website
-  owner
-  anchor
-  blockNumber
-  blockTimestamp
-  transactionHash
-  alloProfileMembers
-  alloProfileMembers__id
+  protocol
+  pointer
 }
 
 type Subscription {
@@ -1133,22 +1231,7 @@ type Subscription {
     """
     subgraphError: _SubgraphErrorPolicy_! = deny
   ): [Project!]!
-  projectMetadata(
-    skip: Int = 0
-    first: Int = 100
-    orderBy: ProjectMetadata_orderBy
-    orderDirection: OrderDirection
-    where: ProjectMetadata_filter
-    """
-    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-    """
-    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
-    """
-    subgraphError: _SubgraphErrorPolicy_! = deny
-  ): [ProjectMetadata!]!
-  shipProfile(
+  grantShip(
     id: ID!
     """
     The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
@@ -1158,13 +1241,13 @@ type Subscription {
     Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
     """
     subgraphError: _SubgraphErrorPolicy_! = deny
-  ): ShipProfile
-  shipProfiles(
+  ): GrantShip
+  grantShips(
     skip: Int = 0
     first: Int = 100
-    orderBy: ShipProfile_orderBy
+    orderBy: GrantShip_orderBy
     orderDirection: OrderDirection
-    where: ShipProfile_filter
+    where: GrantShip_filter
     """
     The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
     """
@@ -1173,13 +1256,9 @@ type Subscription {
     Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
     """
     subgraphError: _SubgraphErrorPolicy_! = deny
-  ): [ShipProfile!]!
-  shipProfileMetadata(
-    skip: Int = 0
-    first: Int = 100
-    orderBy: ShipProfileMetadata_orderBy
-    orderDirection: OrderDirection
-    where: ShipProfileMetadata_filter
+  ): [GrantShip!]!
+  grantShipLookup(
+    id: ID!
     """
     The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
     """
@@ -1188,7 +1267,100 @@ type Subscription {
     Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
     """
     subgraphError: _SubgraphErrorPolicy_! = deny
-  ): [ShipProfileMetadata!]!
+  ): GrantShipLookup
+  grantShipLookups(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: GrantShipLookup_orderBy
+    orderDirection: OrderDirection
+    where: GrantShipLookup_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): [GrantShipLookup!]!
+  poolIdLookup(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): PoolIdLookup
+  poolIdLookups(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: PoolIdLookup_orderBy
+    orderDirection: OrderDirection
+    where: PoolIdLookup_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): [PoolIdLookup!]!
+  gameManager(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): GameManager
+  gameManagers(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: GameManager_orderBy
+    orderDirection: OrderDirection
+    where: GameManager_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): [GameManager!]!
+  gameRound(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): GameRound
+  gameRounds(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: GameRound_orderBy
+    orderDirection: OrderDirection
+    where: GameRound_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): [GameRound!]!
   profileMemberGroup(
     id: ID!
     """
@@ -1241,6 +1413,47 @@ type Subscription {
     """
     subgraphError: _SubgraphErrorPolicy_! = deny
   ): [Transaction!]!
+  rawMetadata(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: RawMetadata_orderBy
+    orderDirection: OrderDirection
+    where: RawMetadata_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): [RawMetadata!]!
+  log(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): Log
+  logs(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Log_orderBy
+    orderDirection: OrderDirection
+    where: Log_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): [Log!]!
   """Access to subgraph metadata"""
   _meta(block: Block_height): _Meta_
 }

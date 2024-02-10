@@ -68,4 +68,4 @@ export const GAME_TOKEN =
 export const HATS =
   import.meta.env.VITE_RUNTIME_ENV === 'dev' ? HATS_DEV : HATS_PROD;
 
-export const SHIP_AMOUT = 3;
+export const SHIP_AMOUNT = 3;

@@ -1,10 +1,26 @@
-import { Box, Flex, Group, Stack, Tabs, Text } from '@mantine/core';
+import {
+  Avatar,
+  Box,
+  Button,
+  Divider,
+  Flex,
+  Group,
+  Spoiler,
+  SpoilerProps,
+  Stack,
+  Tabs,
+  Text,
+  TextInput,
+  useMantineTheme,
+} from '@mantine/core';
 import { MainSection, PageTitle } from '../layout/Sections';
 import { ShipDashCard } from '../components/dashboard/ShipDashCard';
 import { GameStatus } from '../types/common';
 import classes from '../components/dashboard/dashboard.module.css';
 import { IconCheck } from '@tabler/icons-react';
 import { ComponentProps, ReactNode, useMemo } from 'react';
+import { DatePicker, DatePickerInput, DateTimePicker } from '@mantine/dates';
+import { SHIP_AMOUNT } from '../constants/gameSetup';
 
 export const FacilitatorDashboard = () => {
   return (
@@ -28,32 +44,79 @@ export const FacilitatorDashboard = () => {
 };
 
 export const FacilitatorGameDash = () => {
-  const gameStatusNumber = 0;
+  const gameStatusNumber = 3;
+
+  const theme = useMantineTheme();
   const steps = useMemo((): VerticalStepContent[] => {
     return [
       {
         title: 'Applications',
-        description: '1 Ship Approved',
+        description: `1/${SHIP_AMOUNT} Ships Approved`,
+        content: (
+          <Box>
+            <Stack>
+              <Button
+                variant="default"
+                size="sm"
+                leftSection={<Avatar size={32} />}
+              >
+                <Text fz="sm">King Ship</Text>
+              </Button>
+              <Button
+                variant="default"
+                size="sm"
+                leftSection={<Avatar size={32} />}
+              >
+                <Text fz="sm">King Ship</Text>
+              </Button>
+              <Button
+                variant="default"
+                size="sm"
+                leftSection={<Avatar size={32} />}
+              >
+                <Text fz="sm">King Ship</Text>
+              </Button>
+            </Stack>
+          </Box>
+        ),
       },
       {
         title: 'Create Game Round',
         description: 'Not Yet Started',
+        content: <Button>Create Game Round</Button>,
       },
       {
         title: 'Allocate',
         description: 'Not yet allocated',
+        content: (
+          <Box>
+            <TextInput label="Ship 1" w={350} placeholder="22.5 ETH" mb="xs" />
+            <TextInput label="Ship 2" w={350} placeholder="22.5 ETH" mb="xs" />
+            <TextInput label="Ship 3" w={350} placeholder="22.5 ETH" mb="xs" />
+            <Button>Allocate</Button>
+          </Box>
+        ),
       },
       {
         title: 'Distribute',
         description: 'Not yet distributed',
+        content: (
+          <Box>
+            <DateTimePicker label="Start Time" w={350} mb={'md'} />
+            <DateTimePicker label="End Time" w={350} mb="md" />
+            <Button>Distribute Allocations</Button>
+          </Box>
+        ),
       },
       {
         title: 'Start Game',
         description: 'Game Round is not yet started',
+        content: <Button>Start Game</Button>,
       },
       {
         title: 'End Game',
         description: 'Game is not yet Active',
+        content: <Button>End Game</Button>,
       },
       {
         title: 'Game Complete',
@@ -68,6 +131,7 @@ export const FacilitatorGameDash = () => {
         key="game-manager"
         steps={steps}
         currentNumber={gameStatusNumber}
+        containerProps={{ w: '100%' }}
       />
     </Flex>
   );
@@ -113,6 +177,7 @@ type VerticalStatusBoxProps = {
   stepNumber: number;
   last?: boolean;
   content?: ReactNode;
+  foo?: SpoilerProps;
 };
 const VerticalStatusBox = ({
   title,
@@ -158,8 +223,22 @@ const VerticalStatusBox = ({
         </Box>
       </Group>
       {!last && (
-        <Flex className={leftBorderClasses} mb={'sm'}>
-          {content}
+        <Flex className={leftBorderClasses} mb={'sm'} px={'xl'} pt="md" pb={0}>
+          <Spoiler
+            maxHeight={0}
+            showLabel={<Text fz="sm">Expand</Text>}
+            hideLabel={<Text fz="sm">Collapse</Text>}
+            pb={'md'}
+            initialState={isStepActive}
+          >
+            <Box
+              opacity={isUpcoming || isStepCompleted ? 0.5 : 1}
+              style={{ cursor: isUpcoming ? 'not-allowed' : 'default' }}
+            >
+              {content}
+            </Box>
+          </Spoiler>
+          <Divider />
         </Flex>
       )}
     </Box>
