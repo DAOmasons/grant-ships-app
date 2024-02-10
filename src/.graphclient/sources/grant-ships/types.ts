@@ -232,8 +232,13 @@ export type GrantShip = {
   status: Scalars['Int'];
   alloProfileMembers?: Maybe<ProfileMemberGroup>;
   shipApplicationBytesData?: Maybe<Scalars['Bytes']>;
+  applicationSubmittedTime?: Maybe<Scalars['BigInt']>;
+  isAwaitingApproval?: Maybe<Scalars['Boolean']>;
   hasSubmittedApplication?: Maybe<Scalars['Boolean']>;
   isApproved?: Maybe<Scalars['Boolean']>;
+  approvedTime?: Maybe<Scalars['BigInt']>;
+  isRejected?: Maybe<Scalars['Boolean']>;
+  rejectedTime?: Maybe<Scalars['BigInt']>;
   applicationReviewReason?: Maybe<RawMetadata>;
   poolId?: Maybe<Scalars['BigInt']>;
   shipContractAddress?: Maybe<Scalars['Bytes']>;
@@ -435,6 +440,18 @@ export type GrantShip_filter = {
   shipApplicationBytesData_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   shipApplicationBytesData_contains?: InputMaybe<Scalars['Bytes']>;
   shipApplicationBytesData_not_contains?: InputMaybe<Scalars['Bytes']>;
+  applicationSubmittedTime?: InputMaybe<Scalars['BigInt']>;
+  applicationSubmittedTime_not?: InputMaybe<Scalars['BigInt']>;
+  applicationSubmittedTime_gt?: InputMaybe<Scalars['BigInt']>;
+  applicationSubmittedTime_lt?: InputMaybe<Scalars['BigInt']>;
+  applicationSubmittedTime_gte?: InputMaybe<Scalars['BigInt']>;
+  applicationSubmittedTime_lte?: InputMaybe<Scalars['BigInt']>;
+  applicationSubmittedTime_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  applicationSubmittedTime_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  isAwaitingApproval?: InputMaybe<Scalars['Boolean']>;
+  isAwaitingApproval_not?: InputMaybe<Scalars['Boolean']>;
+  isAwaitingApproval_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  isAwaitingApproval_not_in?: InputMaybe<Array<Scalars['Boolean']>>;
   hasSubmittedApplication?: InputMaybe<Scalars['Boolean']>;
   hasSubmittedApplication_not?: InputMaybe<Scalars['Boolean']>;
   hasSubmittedApplication_in?: InputMaybe<Array<Scalars['Boolean']>>;
@@ -443,6 +460,26 @@ export type GrantShip_filter = {
   isApproved_not?: InputMaybe<Scalars['Boolean']>;
   isApproved_in?: InputMaybe<Array<Scalars['Boolean']>>;
   isApproved_not_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  approvedTime?: InputMaybe<Scalars['BigInt']>;
+  approvedTime_not?: InputMaybe<Scalars['BigInt']>;
+  approvedTime_gt?: InputMaybe<Scalars['BigInt']>;
+  approvedTime_lt?: InputMaybe<Scalars['BigInt']>;
+  approvedTime_gte?: InputMaybe<Scalars['BigInt']>;
+  approvedTime_lte?: InputMaybe<Scalars['BigInt']>;
+  approvedTime_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  approvedTime_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  isRejected?: InputMaybe<Scalars['Boolean']>;
+  isRejected_not?: InputMaybe<Scalars['Boolean']>;
+  isRejected_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  isRejected_not_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  rejectedTime?: InputMaybe<Scalars['BigInt']>;
+  rejectedTime_not?: InputMaybe<Scalars['BigInt']>;
+  rejectedTime_gt?: InputMaybe<Scalars['BigInt']>;
+  rejectedTime_lt?: InputMaybe<Scalars['BigInt']>;
+  rejectedTime_gte?: InputMaybe<Scalars['BigInt']>;
+  rejectedTime_lte?: InputMaybe<Scalars['BigInt']>;
+  rejectedTime_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  rejectedTime_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   applicationReviewReason?: InputMaybe<Scalars['String']>;
   applicationReviewReason_not?: InputMaybe<Scalars['String']>;
   applicationReviewReason_gt?: InputMaybe<Scalars['String']>;
@@ -534,8 +571,13 @@ export type GrantShip_orderBy =
   | 'alloProfileMembers'
   | 'alloProfileMembers__id'
   | 'shipApplicationBytesData'
+  | 'applicationSubmittedTime'
+  | 'isAwaitingApproval'
   | 'hasSubmittedApplication'
   | 'isApproved'
+  | 'approvedTime'
+  | 'isRejected'
+  | 'rejectedTime'
   | 'applicationReviewReason'
   | 'applicationReviewReason__id'
   | 'applicationReviewReason__protocol'

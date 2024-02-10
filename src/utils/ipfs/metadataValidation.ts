@@ -11,3 +11,15 @@ export const ProjectProfileMetadata = z.object({
   telegram: z.string(),
   website: z.string(),
 });
+
+export const ShipProfileMetadata = z.object({
+  name: z.string(),
+  mission: z.string(),
+  avatarHash_IPFS: z.string(),
+  email: z.string(),
+  x: z.string(),
+  github: z.string(),
+  discord: z.string(),
+  telegram: z.string(),
+  website: z.string(),
+});

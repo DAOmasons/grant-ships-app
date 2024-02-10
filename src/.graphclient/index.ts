@@ -254,8 +254,13 @@ export type GrantShip = {
   status: Scalars['Int'];
   alloProfileMembers?: Maybe<ProfileMemberGroup>;
   shipApplicationBytesData?: Maybe<Scalars['Bytes']>;
+  applicationSubmittedTime?: Maybe<Scalars['BigInt']>;
+  isAwaitingApproval?: Maybe<Scalars['Boolean']>;
   hasSubmittedApplication?: Maybe<Scalars['Boolean']>;
   isApproved?: Maybe<Scalars['Boolean']>;
+  approvedTime?: Maybe<Scalars['BigInt']>;
+  isRejected?: Maybe<Scalars['Boolean']>;
+  rejectedTime?: Maybe<Scalars['BigInt']>;
   applicationReviewReason?: Maybe<RawMetadata>;
   poolId?: Maybe<Scalars['BigInt']>;
   shipContractAddress?: Maybe<Scalars['Bytes']>;
@@ -457,6 +462,18 @@ export type GrantShip_filter = {
   shipApplicationBytesData_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   shipApplicationBytesData_contains?: InputMaybe<Scalars['Bytes']>;
   shipApplicationBytesData_not_contains?: InputMaybe<Scalars['Bytes']>;
+  applicationSubmittedTime?: InputMaybe<Scalars['BigInt']>;
+  applicationSubmittedTime_not?: InputMaybe<Scalars['BigInt']>;
+  applicationSubmittedTime_gt?: InputMaybe<Scalars['BigInt']>;
+  applicationSubmittedTime_lt?: InputMaybe<Scalars['BigInt']>;
+  applicationSubmittedTime_gte?: InputMaybe<Scalars['BigInt']>;
+  applicationSubmittedTime_lte?: InputMaybe<Scalars['BigInt']>;
+  applicationSubmittedTime_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  applicationSubmittedTime_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  isAwaitingApproval?: InputMaybe<Scalars['Boolean']>;
+  isAwaitingApproval_not?: InputMaybe<Scalars['Boolean']>;
+  isAwaitingApproval_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  isAwaitingApproval_not_in?: InputMaybe<Array<Scalars['Boolean']>>;
   hasSubmittedApplication?: InputMaybe<Scalars['Boolean']>;
   hasSubmittedApplication_not?: InputMaybe<Scalars['Boolean']>;
   hasSubmittedApplication_in?: InputMaybe<Array<Scalars['Boolean']>>;
@@ -465,6 +482,26 @@ export type GrantShip_filter = {
   isApproved_not?: InputMaybe<Scalars['Boolean']>;
   isApproved_in?: InputMaybe<Array<Scalars['Boolean']>>;
   isApproved_not_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  approvedTime?: InputMaybe<Scalars['BigInt']>;
+  approvedTime_not?: InputMaybe<Scalars['BigInt']>;
+  approvedTime_gt?: InputMaybe<Scalars['BigInt']>;
+  approvedTime_lt?: InputMaybe<Scalars['BigInt']>;
+  approvedTime_gte?: InputMaybe<Scalars['BigInt']>;
+  approvedTime_lte?: InputMaybe<Scalars['BigInt']>;
+  approvedTime_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  approvedTime_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  isRejected?: InputMaybe<Scalars['Boolean']>;
+  isRejected_not?: InputMaybe<Scalars['Boolean']>;
+  isRejected_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  isRejected_not_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  rejectedTime?: InputMaybe<Scalars['BigInt']>;
+  rejectedTime_not?: InputMaybe<Scalars['BigInt']>;
+  rejectedTime_gt?: InputMaybe<Scalars['BigInt']>;
+  rejectedTime_lt?: InputMaybe<Scalars['BigInt']>;
+  rejectedTime_gte?: InputMaybe<Scalars['BigInt']>;
+  rejectedTime_lte?: InputMaybe<Scalars['BigInt']>;
+  rejectedTime_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  rejectedTime_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   applicationReviewReason?: InputMaybe<Scalars['String']>;
   applicationReviewReason_not?: InputMaybe<Scalars['String']>;
   applicationReviewReason_gt?: InputMaybe<Scalars['String']>;
@@ -556,8 +593,13 @@ export type GrantShip_orderBy =
   | 'alloProfileMembers'
   | 'alloProfileMembers__id'
   | 'shipApplicationBytesData'
+  | 'applicationSubmittedTime'
+  | 'isAwaitingApproval'
   | 'hasSubmittedApplication'
   | 'isApproved'
+  | 'approvedTime'
+  | 'isRejected'
+  | 'rejectedTime'
   | 'applicationReviewReason'
   | 'applicationReviewReason__id'
   | 'applicationReviewReason__protocol'
@@ -1697,8 +1739,13 @@ export type GrantShipResolvers<ContextType = MeshContext, ParentType extends Res
   status?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   alloProfileMembers?: Resolver<Maybe<ResolversTypes['ProfileMemberGroup']>, ParentType, ContextType>;
   shipApplicationBytesData?: Resolver<Maybe<ResolversTypes['Bytes']>, ParentType, ContextType>;
+  applicationSubmittedTime?: Resolver<Maybe<ResolversTypes['BigInt']>, ParentType, ContextType>;
+  isAwaitingApproval?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   hasSubmittedApplication?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   isApproved?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  approvedTime?: Resolver<Maybe<ResolversTypes['BigInt']>, ParentType, ContextType>;
+  isRejected?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  rejectedTime?: Resolver<Maybe<ResolversTypes['BigInt']>, ParentType, ContextType>;
   applicationReviewReason?: Resolver<Maybe<ResolversTypes['RawMetadata']>, ParentType, ContextType>;
   poolId?: Resolver<Maybe<ResolversTypes['BigInt']>, ParentType, ContextType>;
   shipContractAddress?: Resolver<Maybe<ResolversTypes['Bytes']>, ParentType, ContextType>;
@@ -1937,6 +1984,12 @@ const merger = new(BareMerger as any)({
     get documents() {
       return [
       {
+        document: FacDashShipDataDocument,
+        get rawSDL() {
+          return printWithCache(FacDashShipDataDocument);
+        },
+        location: 'FacDashShipDataDocument.graphql'
+      },{
         document: GetProjectsDocument,
         get rawSDL() {
           return printWithCache(GetProjectsDocument);
@@ -1986,6 +2039,25 @@ export function getBuiltGraphSDK<TGlobalContext = any, TOperationContext = any>(
   const sdkRequester$ = getBuiltGraphClient().then(({ sdkRequesterFactory }) => sdkRequesterFactory(globalContext));
   return getSdk<TOperationContext, TGlobalContext>((...args) => sdkRequester$.then(sdkRequester => sdkRequester(...args)));
 }
+export type FacShipDataFragment = (
+  Pick<GrantShip, 'id' | 'name' | 'status' | 'applicationSubmittedTime' | 'shipApplicationBytesData'>
+  & { profileMetadata: Pick<RawMetadata, 'pointer'> }
+);
+
+export type facDashShipDataQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type facDashShipDataQuery = { shipApplicants: Array<(
+    Pick<GrantShip, 'id' | 'name' | 'status' | 'applicationSubmittedTime' | 'shipApplicationBytesData'>
+    & { profileMetadata: Pick<RawMetadata, 'pointer'> }
+  )>, approvedShips: Array<(
+    Pick<GrantShip, 'approvedTime' | 'id' | 'name' | 'status' | 'applicationSubmittedTime' | 'shipApplicationBytesData'>
+    & { applicationReviewReason?: Maybe<Pick<RawMetadata, 'pointer'>>, profileMetadata: Pick<RawMetadata, 'pointer'> }
+  )>, rejectedShips: Array<(
+    Pick<GrantShip, 'rejectedTime' | 'id' | 'name' | 'status' | 'applicationSubmittedTime' | 'shipApplicationBytesData'>
+    & { applicationReviewReason?: Maybe<Pick<RawMetadata, 'pointer'>>, profileMetadata: Pick<RawMetadata, 'pointer'> }
+  )> };
+
 export type ProjectDetailsFragment = Pick<Project, 'id' | 'name' | 'profileId' | 'nonce' | 'anchor' | 'owner'>;
 
 export type RawMetadataFragment = Pick<RawMetadata, 'protocol' | 'pointer'>;
@@ -2005,6 +2077,18 @@ export type getRecentTransactionQueryVariables = Exact<{
 
 export type getRecentTransactionQuery = { transaction?: Maybe<Pick<Transaction, 'id'>> };
 
+export const FacShipDataFragmentDoc = gql`
+    fragment FacShipData on GrantShip {
+  id
+  name
+  status
+  applicationSubmittedTime
+  shipApplicationBytesData
+  profileMetadata {
+    pointer
+  }
+}
+    ` as unknown as DocumentNode<FacShipDataFragment, unknown>;
 export const ProjectDetailsFragmentDoc = gql`
     fragment ProjectDetails on Project {
   id
@@ -2021,6 +2105,29 @@ export const RawMetadataFragmentDoc = gql`
   pointer
 }
     ` as unknown as DocumentNode<RawMetadataFragment, unknown>;
+export const facDashShipDataDocument = gql`
+    query facDashShipData {
+  shipApplicants: grantShips(where: {isAwaitingApproval: true}) {
+    ...FacShipData
+  }
+  approvedShips: grantShips(
+    where: {isApproved: null, hasSubmittedApplication: true}
+  ) {
+    ...FacShipData
+    approvedTime
+    applicationReviewReason {
+      pointer
+    }
+  }
+  rejectedShips: grantShips(where: {isRejected: true}) {
+    ...FacShipData
+    rejectedTime
+    applicationReviewReason {
+      pointer
+    }
+  }
+}
+    ${FacShipDataFragmentDoc}` as unknown as DocumentNode<facDashShipDataQuery, facDashShipDataQueryVariables>;
 export const GetProjectsDocument = gql`
     query GetProjects {
   projects {
@@ -2042,9 +2149,13 @@ export const getRecentTransactionDocument = gql`
 
 
 
+
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
+    facDashShipData(variables?: facDashShipDataQueryVariables, options?: C): Promise<facDashShipDataQuery> {
+      return requester<facDashShipDataQuery, facDashShipDataQueryVariables>(facDashShipDataDocument, variables, options) as Promise<facDashShipDataQuery>;
+    },
     GetProjects(variables?: GetProjectsQueryVariables, options?: C): Promise<GetProjectsQuery> {
       return requester<GetProjectsQuery, GetProjectsQueryVariables>(GetProjectsDocument, variables, options) as Promise<GetProjectsQuery>;
     },

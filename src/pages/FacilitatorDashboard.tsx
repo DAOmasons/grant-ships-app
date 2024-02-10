@@ -19,14 +19,17 @@ import { GameStatus } from '../types/common';
 import classes from '../components/dashboard/dashboard.module.css';
 import { IconCheck } from '@tabler/icons-react';
 import { ComponentProps, ReactNode, useMemo } from 'react';
-import { DatePicker, DatePickerInput, DateTimePicker } from '@mantine/dates';
+import { DateTimePicker } from '@mantine/dates';
 import { SHIP_AMOUNT } from '../constants/gameSetup';
+import { useQuery } from '@tanstack/react-query';
+import { getFacDashShipData } from '../queries/getFacDashShipData';
+import { PINATA_GATEWAY } from '../utils/ipfs/get';
 
 export const FacilitatorDashboard = () => {
   return (
     <MainSection>
       <PageTitle title="Facilitator Dashboard" />
-      <Tabs defaultValue="ships">
+      <Tabs defaultValue="game-manager">
         <Tabs.List mb="xl" grow>
           <Tabs.Tab value="game-manager">Game</Tabs.Tab>
           <Tabs.Tab value="ships">Ships</Tabs.Tab>
@@ -44,10 +47,19 @@ export const FacilitatorDashboard = () => {
 };
 
 export const FacilitatorGameDash = () => {
+  const { data: ships, isLoading } = useQuery({
+    queryKey: ['facShipData'],
+    queryFn: getFacDashShipData,
+  });
+
   const gameStatusNumber = 3;
 
   const theme = useMantineTheme();
-  const steps = useMemo((): VerticalStepContent[] => {
+  const steps = useMemo((): VerticalStepContent[] | null => {
+    if (isLoading || !ships) {
+      return null;
+    }
+
     return [
       {
         title: 'Applications',
@@ -55,27 +67,21 @@ export const FacilitatorGameDash = () => {
         content: (
           <Box>
             <Stack>
-              <Button
-                variant="default"
-                size="sm"
-                leftSection={<Avatar size={32} />}
-              >
-                <Text fz="sm">King Ship</Text>
-              </Button>
-              <Button
-                variant="default"
-                size="sm"
-                leftSection={<Avatar size={32} />}
-              >
-                <Text fz="sm">King Ship</Text>
-              </Button>
-              <Button
-                variant="default"
-                size="sm"
-                leftSection={<Avatar size={32} />}
-              >
-                <Text fz="sm">King Ship</Text>
-              </Button>
+              {ships.shipApplicants.map((ship) => (
+                <Button
+                  variant="default"
+                  size="sm"
+                  style={{ display: 'flex', justifyItems: 'center' }}
+                  leftSection={
+                    <Avatar
+                      size={32}
+                      src={`${PINATA_GATEWAY}/${ship.profileMetadata.avatarHash_IPFS}`}
+                    />
+                  }
+                >
+                  <Text fz="sm">{ship.name}</Text>
+                </Button>
+              ))}
             </Stack>
           </Box>
         ),
@@ -123,16 +129,18 @@ export const FacilitatorGameDash = () => {
         description: 'Game is not yet complete',
       },
     ];
-  }, []);
+  }, [ships, isLoading]);
 
   return (
     <Flex direction="column">
-      <VerticalStatus
-        key="game-manager"
-        steps={steps}
-        currentNumber={gameStatusNumber}
-        containerProps={{ w: '100%' }}
-      />
+      {steps && (
+        <VerticalStatus
+          key="game-manager"
+          steps={steps}
+          currentNumber={gameStatusNumber}
+          containerProps={{ w: '100%' }}
+        />
+      )}
     </Flex>
   );
 };

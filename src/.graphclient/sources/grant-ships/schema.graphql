@@ -221,8 +221,13 @@ type GrantShip {
   status: Int!
   alloProfileMembers: ProfileMemberGroup
   shipApplicationBytesData: Bytes
+  applicationSubmittedTime: BigInt
+  isAwaitingApproval: Boolean
   hasSubmittedApplication: Boolean
   isApproved: Boolean
+  approvedTime: BigInt
+  isRejected: Boolean
+  rejectedTime: BigInt
   applicationReviewReason: RawMetadata
   poolId: BigInt
   shipContractAddress: Bytes
@@ -425,6 +430,18 @@ input GrantShip_filter {
   shipApplicationBytesData_not_in: [Bytes!]
   shipApplicationBytesData_contains: Bytes
   shipApplicationBytesData_not_contains: Bytes
+  applicationSubmittedTime: BigInt
+  applicationSubmittedTime_not: BigInt
+  applicationSubmittedTime_gt: BigInt
+  applicationSubmittedTime_lt: BigInt
+  applicationSubmittedTime_gte: BigInt
+  applicationSubmittedTime_lte: BigInt
+  applicationSubmittedTime_in: [BigInt!]
+  applicationSubmittedTime_not_in: [BigInt!]
+  isAwaitingApproval: Boolean
+  isAwaitingApproval_not: Boolean
+  isAwaitingApproval_in: [Boolean!]
+  isAwaitingApproval_not_in: [Boolean!]
   hasSubmittedApplication: Boolean
   hasSubmittedApplication_not: Boolean
   hasSubmittedApplication_in: [Boolean!]
@@ -433,6 +450,26 @@ input GrantShip_filter {
   isApproved_not: Boolean
   isApproved_in: [Boolean!]
   isApproved_not_in: [Boolean!]
+  approvedTime: BigInt
+  approvedTime_not: BigInt
+  approvedTime_gt: BigInt
+  approvedTime_lt: BigInt
+  approvedTime_gte: BigInt
+  approvedTime_lte: BigInt
+  approvedTime_in: [BigInt!]
+  approvedTime_not_in: [BigInt!]
+  isRejected: Boolean
+  isRejected_not: Boolean
+  isRejected_in: [Boolean!]
+  isRejected_not_in: [Boolean!]
+  rejectedTime: BigInt
+  rejectedTime_not: BigInt
+  rejectedTime_gt: BigInt
+  rejectedTime_lt: BigInt
+  rejectedTime_gte: BigInt
+  rejectedTime_lte: BigInt
+  rejectedTime_in: [BigInt!]
+  rejectedTime_not_in: [BigInt!]
   applicationReviewReason: String
   applicationReviewReason_not: String
   applicationReviewReason_gt: String
@@ -524,8 +561,13 @@ enum GrantShip_orderBy {
   alloProfileMembers
   alloProfileMembers__id
   shipApplicationBytesData
+  applicationSubmittedTime
+  isAwaitingApproval
   hasSubmittedApplication
   isApproved
+  approvedTime
+  isRejected
+  rejectedTime
   applicationReviewReason
   applicationReviewReason__id
   applicationReviewReason__protocol

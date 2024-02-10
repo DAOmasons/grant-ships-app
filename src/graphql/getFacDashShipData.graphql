@@ -1,0 +1,32 @@
+fragment FacShipData on GrantShip {
+  id
+  name
+  status
+  applicationSubmittedTime
+  shipApplicationBytesData
+  profileMetadata {
+    pointer
+  }
+}
+
+query facDashShipData {
+  shipApplicants: grantShips(where: { isAwaitingApproval: true }) {
+    ...FacShipData
+  }
+  approvedShips: grantShips(
+    where: { isApproved: null, hasSubmittedApplication: true }
+  ) {
+    ...FacShipData
+    approvedTime
+    applicationReviewReason {
+      pointer
+    }
+  }
+  rejectedShips: grantShips(where: { isRejected: true }) {
+    ...FacShipData
+    rejectedTime
+    applicationReviewReason {
+      pointer
+    }
+  }
+}

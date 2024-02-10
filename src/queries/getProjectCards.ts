@@ -19,11 +19,6 @@ export type ProjectCard = ProjectCardFromQuery & {
 };
 
 const projectMetadataResolver = async (project: ProjectCardFromQuery) => {
-  if (!project.metadata?.pointer) {
-    // TODO: Delete this once subgraph syncs
-    return;
-  }
-
   const metadata = await getIpfsJson(project.metadata.pointer);
 
   const validate = ProjectProfileMetadata.safeParse(metadata);

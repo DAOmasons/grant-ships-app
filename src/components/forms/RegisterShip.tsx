@@ -35,6 +35,7 @@ import { useMediaQuery } from '@mantine/hooks';
 import { ProfileData } from '../../pages/CreateShip';
 import { useEffect } from 'react';
 import { CacheKeys } from './cacheKeys';
+import { ShipProfileMetadata } from '../../utils/ipfs/metadataValidation';
 
 type FormValues = z.infer<typeof registerShipSchema>;
 
@@ -125,6 +126,18 @@ export const RegisterShip = ({
         telegram: values.telegram,
         website: values.website,
       };
+
+      const validate = ShipProfileMetadata.safeParse(projectMetadata);
+
+      if (!validate.success) {
+        console.error('Invalid metadata', validate.error);
+        notifications.show({
+          title: 'Invalid Metadata',
+          message: "Metadata didn't match validation schema",
+          color: 'red',
+        });
+        return;
+      }
 
       const pinRes = await pinJSONToIPFS(projectMetadata);
 
