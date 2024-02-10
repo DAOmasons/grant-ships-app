@@ -712,7 +712,7 @@ export type Project = {
   profileId: Scalars['Bytes'];
   nonce: Scalars['BigInt'];
   name: Scalars['String'];
-  metadata?: Maybe<RawMetadata>;
+  metadata: RawMetadata;
   owner: Scalars['Bytes'];
   anchor: Scalars['Bytes'];
   blockNumber: Scalars['BigInt'];

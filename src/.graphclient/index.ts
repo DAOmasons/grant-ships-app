@@ -734,7 +734,7 @@ export type Project = {
   profileId: Scalars['Bytes'];
   nonce: Scalars['BigInt'];
   name: Scalars['String'];
-  metadata?: Maybe<RawMetadata>;
+  metadata: RawMetadata;
   owner: Scalars['Bytes'];
   anchor: Scalars['Bytes'];
   blockNumber: Scalars['BigInt'];
@@ -1745,7 +1745,7 @@ export type ProjectResolvers<ContextType = MeshContext, ParentType extends Resol
   profileId?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
   nonce?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  metadata?: Resolver<Maybe<ResolversTypes['RawMetadata']>, ParentType, ContextType>;
+  metadata?: Resolver<ResolversTypes['RawMetadata'], ParentType, ContextType>;
   owner?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
   anchor?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
   blockNumber?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
@@ -1995,7 +1995,7 @@ export type GetProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GetProjectsQuery = { projects: Array<(
     Pick<Project, 'id' | 'name' | 'profileId' | 'nonce' | 'anchor' | 'owner'>
-    & { metadata?: Maybe<Pick<RawMetadata, 'protocol' | 'pointer'>> }
+    & { metadata: Pick<RawMetadata, 'protocol' | 'pointer'> }
   )> };
 
 export type getRecentTransactionQueryVariables = Exact<{

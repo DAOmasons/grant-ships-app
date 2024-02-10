@@ -713,7 +713,7 @@ type Project {
   profileId: Bytes!
   nonce: BigInt!
   name: String!
-  metadata: RawMetadata
+  metadata: RawMetadata!
   owner: Bytes!
   anchor: Bytes!
   blockNumber: BigInt!

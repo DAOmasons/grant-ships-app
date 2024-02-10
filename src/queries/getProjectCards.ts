@@ -1,34 +1,43 @@
+import { z } from 'zod';
 import {
-  MetadataDetailsFragment,
   ProjectDetailsFragment,
+  RawMetadataFragment,
   getBuiltGraphSDK,
 } from '../.graphclient';
-import { PINATA_GATEWAY } from '../utils/ipfs/get';
+import { PINATA_GATEWAY, getIpfsJson } from '../utils/ipfs/get';
+import { ProjectProfileMetadata } from '../utils/ipfs/metadataValidation';
+
+type ProjectMetadataType = z.infer<typeof ProjectProfileMetadata>;
 
 export type ProjectCardFromQuery = ProjectDetailsFragment & {
-  metadata?: MetadataDetailsFragment | null;
+  metadata: RawMetadataFragment;
 };
 
 export type ProjectCard = ProjectCardFromQuery & {
   imgUrl: string;
+  metadata: ProjectMetadataType;
 };
 
-export const metadataRedunantCheck = async (project: ProjectCardFromQuery) => {
-  if (!project.metadata) {
-    console.log('Pin not found');
-    const res = await fetch(`${PINATA_GATEWAY}/${project.metadata_pointer}`);
-    const metadata = await res.json();
-    return {
-      ...project,
-      metadata,
-      imgUrl: `${PINATA_GATEWAY}/${metadata.avatarHash_IPFS}`,
-    };
-  } else {
-    return {
-      ...project,
-      imgUrl: `${PINATA_GATEWAY}/${project.metadata.avatarHash_IPFS}`,
-    };
+const projectMetadataResolver = async (project: ProjectCardFromQuery) => {
+  if (!project.metadata?.pointer) {
+    // TODO: Delete this once subgraph syncs
+    return;
   }
+
+  const metadata = await getIpfsJson(project.metadata.pointer);
+
+  const validate = ProjectProfileMetadata.safeParse(metadata);
+
+  if (!validate.success) {
+    console.error('Invalid metadata', validate.error);
+    throw new Error('Invalid metadata');
+  }
+
+  return {
+    ...project,
+    imgUrl: `${PINATA_GATEWAY}/${metadata.avatarHash_IPFS}`,
+    metadata: metadata as ProjectMetadataType,
+  };
 };
 
 export const getProjectCards = async () => {
@@ -38,7 +47,7 @@ export const getProjectCards = async () => {
     const { projects } = await GetProjects();
 
     const resolvedProjects = await Promise.all(
-      projects?.map((project) => metadataRedunantCheck(project))
+      projects?.map((project) => projectMetadataResolver(project))
     );
 
     return resolvedProjects as ProjectCard[];
