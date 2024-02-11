@@ -15,7 +15,7 @@ export const FacilitatorDashboard = () => {
   return (
     <MainSection>
       <PageTitle title="Facilitator Dashboard" />
-      <Tabs defaultValue="game-manager">
+      <Tabs defaultValue="ships">
         <Tabs.List mb="xl" grow>
           <Tabs.Tab value="game-manager">Game</Tabs.Tab>
           <Tabs.Tab value="ships">Ships</Tabs.Tab>

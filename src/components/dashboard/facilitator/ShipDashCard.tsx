@@ -17,16 +17,20 @@ import { PINATA_GATEWAY } from '../../../utils/ipfs/get';
 
 type ShipDashCardProps = {
   name: string;
+  id: string;
   lastUpdate?: string;
   avatarUrl?: string;
   shipStatus: GameStatus;
+  onReview?: (id: string) => void;
 };
 
 export const ShipDashCard = ({
   name,
+  id,
   lastUpdate,
   avatarUrl,
   shipStatus,
+  onReview,
 }: ShipDashCardProps) => {
   const theme = useMantineTheme();
 
@@ -77,7 +81,12 @@ export const ShipDashCard = ({
           <Flex className={classes.statusBox}>
             {reviewIcon}
             <Text size="sm">Application</Text>
-            <Button size="xs" mt="auto" variant="default">
+            <Button
+              size="xs"
+              mt="auto"
+              variant="default"
+              onClick={() => onReview?.(id)}
+            >
               {shipStatus === GameStatus.Pending ? 'Review' : 'See Ship'}
             </Button>
           </Flex>
