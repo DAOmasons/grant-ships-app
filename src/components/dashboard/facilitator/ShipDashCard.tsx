@@ -10,9 +10,10 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import { IconCheck, IconEye, IconFlag, IconX } from '@tabler/icons-react';
-import classes from './dashboard.module.css';
-import { GameStatus } from '../../types/common';
+import classes from '../../timeline.module.css';
+import { GameStatus } from '../../../types/common';
 import { useMemo } from 'react';
+import { PINATA_GATEWAY } from '../../../utils/ipfs/get';
 
 type ShipDashCardProps = {
   name: string;
@@ -59,7 +60,7 @@ export const ShipDashCard = ({
     <Paper mih={144} w="100%" bg={theme.colors.dark[6]}>
       <Flex m="lg" align="start" wrap="wrap">
         <Group align="flex-start" w={200}>
-          <Avatar size={65} src={avatarUrl} />
+          <Avatar size={65} src={`${PINATA_GATEWAY}/${avatarUrl}`} />
           <Box>
             <Text fw={600} mb={4} size="sm" truncate maw={115}>
               {name}

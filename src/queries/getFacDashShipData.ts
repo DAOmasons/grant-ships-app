@@ -18,16 +18,25 @@ type QueryRejected = FacShipDataFragment & {
   applicationReviewReason?: RawReason | null;
 };
 
-type CompressedShipApplicant = Omit<QueryApplicant, 'profileMetadata'> & {
+export type CompressedShipApplicant = Omit<
+  QueryApplicant,
+  'profileMetadata'
+> & {
   profileMetadata: ShipMetadataType;
 };
 
-type CompressedApprovedShip = Omit<QueryApproved, 'profileMetadata'> & {
+export type CompressedApprovedShip = Omit<QueryApproved, 'profileMetadata'> & {
   profileMetadata: ShipMetadataType;
 };
 
-type CompressedRejectedShip = Omit<QueryRejected, 'profileMetadata'> & {
+export type CompressedRejectedShip = Omit<QueryRejected, 'profileMetadata'> & {
   profileMetadata: ShipMetadataType;
+};
+
+export type FacShipData = {
+  shipApplicants: CompressedShipApplicant[];
+  rejectedShips: CompressedRejectedShip[];
+  approvedShips: CompressedApprovedShip[];
 };
 
 const resolveProfileMetadata = async (
@@ -70,11 +79,7 @@ const rejectedMetadataResolver = async (applicant: QueryRejected) => {
   return withProfileData as CompressedRejectedShip;
 };
 
-export const getFacDashShipData = async (): Promise<{
-  shipApplicants: CompressedShipApplicant[];
-  rejectedShips: CompressedRejectedShip[];
-  approvedShips: CompressedApprovedShip[];
-}> => {
+export const getFacDashShipData = async (): Promise<FacShipData> => {
   try {
     const { facDashShipData } = getBuiltGraphSDK();
 
