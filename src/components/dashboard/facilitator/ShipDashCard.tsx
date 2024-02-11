@@ -12,7 +12,7 @@ import {
 import { IconCheck, IconEye, IconFlag, IconX } from '@tabler/icons-react';
 import classes from '../../timeline.module.css';
 import { GameStatus } from '../../../types/common';
-import { useMemo } from 'react';
+import { Dispatch, SetStateAction, useMemo, useState } from 'react';
 import { PINATA_GATEWAY } from '../../../utils/ipfs/get';
 
 type ShipDashCardProps = {
@@ -21,7 +21,10 @@ type ShipDashCardProps = {
   lastUpdate?: string;
   avatarUrl?: string;
   shipStatus: GameStatus;
-  onReview?: (id: string) => void;
+  onReview?: (
+    id: string,
+    buttonLoading: Dispatch<SetStateAction<boolean>>
+  ) => void;
 };
 
 export const ShipDashCard = ({
@@ -32,6 +35,7 @@ export const ShipDashCard = ({
   shipStatus,
   onReview,
 }: ShipDashCardProps) => {
+  const [reviewLoading, setReviewLoading] = useState(false);
   const theme = useMantineTheme();
 
   const reviewIcon = useMemo(() => {
@@ -85,7 +89,8 @@ export const ShipDashCard = ({
               size="xs"
               mt="auto"
               variant="default"
-              onClick={() => onReview?.(id)}
+              onClick={() => onReview?.(id, setReviewLoading)}
+              loading={reviewLoading}
             >
               {shipStatus === GameStatus.Pending ? 'Review' : 'See Ship'}
             </Button>

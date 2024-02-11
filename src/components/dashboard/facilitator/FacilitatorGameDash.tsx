@@ -8,11 +8,15 @@ import {
   TextInput,
 } from '@mantine/core';
 import { FacShipData } from '../../../queries/getFacDashShipData';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { PINATA_GATEWAY } from '../../../utils/ipfs/get';
 import { DateTimePicker } from '@mantine/dates';
 import { Timeline, TimelineContent } from '../../Timeline';
 import { SHIP_AMOUNT } from '../../../constants/gameSetup';
+import GameManagerAbi from '../../../abi/GameManager.json';
+import { parseEther } from 'viem';
+import { useTx } from '../../../hooks/useTx';
+import { ADDR } from '../../../constants/addresses';
 
 export const FacilitatorGameDash = ({
   shipsLoading,
@@ -21,7 +25,7 @@ export const FacilitatorGameDash = ({
   shipData?: FacShipData;
   shipsLoading: boolean;
 }) => {
-  const gameStatusNumber = 3;
+  const gameStatusNumber = 0;
 
   const steps = useMemo((): TimelineContent[] | null => {
     if (shipsLoading || !shipData) {
@@ -30,6 +34,11 @@ export const FacilitatorGameDash = ({
 
     return [
       {
+        title: 'Create Game Round',
+        description: 'Not Yet Started',
+        content: <CreateGamePanel />,
+      },
+      {
         title: 'Applications',
         description: `${shipData.approvedShips.length}/${SHIP_AMOUNT} Ships Approved`,
         content: (
@@ -37,7 +46,7 @@ export const FacilitatorGameDash = ({
             <Stack>
               {shipData.approvedShips.map((ship) => (
                 <Button
-                  variant="default"
+                  variant="subtle"
                   size="sm"
                   style={{ display: 'flex', justifyItems: 'center' }}
                   leftSection={
@@ -53,11 +62,6 @@ export const FacilitatorGameDash = ({
             </Stack>
           </Box>
         ),
-      },
-      {
-        title: 'Create Game Round',
-        description: 'Not Yet Started',
-        content: <Button>Create Game Round</Button>,
       },
       {
         title: 'Allocate',
@@ -114,3 +118,45 @@ export const FacilitatorGameDash = ({
 };
 
 const ApplicationsPanel = ({ shipData }: { shipData: FacShipData }) => {};
+
+const CreateGamePanel = () => {
+  const [amount, setAmount] = useState(0);
+  const { tx } = useTx();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const amountInWei = useMemo(() => {
+    return parseEther(amount.toString());
+  }, [amount]);
+
+  const handleCreateRound = () => {
+    try {
+      console.log(amountInWei);
+      tx({
+        writeContractParams: {
+          functionName: 'createRound',
+          abi: GameManagerAbi,
+          address: ADDR.GAME_MANAGER,
+          args: [amountInWei],
+        },
+      });
+    } catch (error) {
+      console.error('Error creating game round:', error);
+    }
+  };
+
+  return (
+    <Box>
+      <TextInput
+        label="Game Funding Amount"
+        placeholder="22.5 ETH"
+        w={350}
+        mb="lg"
+        onChange={(e) => setAmount(Number(e.target.value))}
+        type="number"
+      />
+      <Button onClick={handleCreateRound} disabled={isLoading}>
+        Create Game Round
+      </Button>
+    </Box>
+  );
+};

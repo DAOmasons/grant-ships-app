@@ -23,3 +23,11 @@ export const ShipProfileMetadata = z.object({
   telegram: z.string(),
   website: z.string(),
 });
+
+export const ShipApplicationMetadata = z.object({
+  thesis: z.string(),
+  guidelines: z.string(),
+  fee: z.string(),
+  extraLink: z.string(),
+  extraInfo: z.string(),
+});

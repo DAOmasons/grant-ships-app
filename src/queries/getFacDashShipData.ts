@@ -23,14 +23,17 @@ export type CompressedShipApplicant = Omit<
   'profileMetadata'
 > & {
   profileMetadata: ShipMetadataType;
+  profilePointer: string;
 };
 
 export type CompressedApprovedShip = Omit<QueryApproved, 'profileMetadata'> & {
   profileMetadata: ShipMetadataType;
+  profilePointer: string;
 };
 
 export type CompressedRejectedShip = Omit<QueryRejected, 'profileMetadata'> & {
   profileMetadata: ShipMetadataType;
+  profilePointer: string;
 };
 
 export type FacShipData = {
@@ -58,6 +61,7 @@ const resolveProfileMetadata = async (
   return {
     ...applicant,
     profileMetadata: metadata as ShipMetadataType,
+    profilePointer: applicant.profileMetadata.pointer,
   };
 };
 
