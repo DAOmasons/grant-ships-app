@@ -45,7 +45,7 @@ export const ShipCard = ({ title }: ShipCardProps) => {
                 />
               </Group>
             </Box>
-            <FundingIndicator amounts={[30, 50, 20]} />
+            <FundingIndicator amounts={[30, 20, 50]} />
           </Flex>
           <Text size="sm" mb="md">
             Lorem Ipsum is simply dummy text of the printing and typesetting

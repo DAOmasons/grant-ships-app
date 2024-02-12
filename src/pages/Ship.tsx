@@ -1,6 +1,7 @@
 import {
   Avatar,
   Box,
+  Button,
   Flex,
   Group,
   Paper,
@@ -11,6 +12,7 @@ import {
 } from '@mantine/core';
 import { MainSection, PageTitle } from '../layout/Sections';
 import { IconExternalLink } from '@tabler/icons-react';
+import { FundingIndicator } from '../components/shipItems/FundingIndicator';
 
 export const Ship = () => {
   const theme = useMantineTheme();
@@ -30,12 +32,15 @@ export const Ship = () => {
           since the 1500s, when an unknown printer took a galley of type and
           scrambled it to make a type specimen book.
         </Text>
-        <Avatar.Group mb={'xl'}>
-          <Avatar size={36} src="https://i.pravatar.cc/300" />
-          <Avatar size={36} src="https://i.pravatar.cc/301" />
-          <Avatar size={36} src="https://i.pravatar.cc/302" />
-          <Avatar size={36} src="https://i.pravatar.cc/302" />
-        </Avatar.Group>
+        <Group mb="xl" justify="space-between">
+          <Avatar.Group>
+            <Avatar size={36} src="https://i.pravatar.cc/300" />
+            <Avatar size={36} src="https://i.pravatar.cc/301" />
+            <Avatar size={36} src="https://i.pravatar.cc/302" />
+            <Avatar size={36} src="https://i.pravatar.cc/302" />
+          </Avatar.Group>
+          <Button size="md">Apply for Funding</Button>
+        </Group>
         <Tabs defaultValue="feed">
           <Tabs.List mb={'xl'}>
             <Tabs.Tab value="feed" w="20%">
@@ -84,9 +89,9 @@ export const Ship = () => {
         </Paper>
         <Paper p="md" bg={theme.colors.dark[6]}>
           <Text size="sm" mb="lg">
-            Funding Received
+            Funding Available
           </Text>
-          <Text size="xl">0 ARB</Text>
+          <FundingIndicator amounts={[30, 20, 50]} />
         </Paper>
       </Stack>
     </Flex>

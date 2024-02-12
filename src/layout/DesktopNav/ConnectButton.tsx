@@ -15,6 +15,7 @@ import {
 import { Address } from 'viem';
 import classes from './DesktoNavStyles.module.css';
 import { Avatar, Button, Modal, Stack } from '@mantine/core';
+import { ensConfig } from '../../utils/config';
 
 export const ConnectButton = () => {
   const { address, isConnected } = useAccount();
@@ -63,13 +64,6 @@ const IsNotConnected = ({ open }: { open: () => void }) => {
     </>
   );
 };
-
-const ensConfig = createConfig({
-  chains: [mainnet],
-  transports: {
-    [mainnet.id]: http(import.meta.env.VITE_RPC_URL_ENS_MAINNET),
-  },
-});
 
 const IsConnected = ({ address }: { address: Address }) => {
   const { data: ensName } = useEnsName({

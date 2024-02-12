@@ -1,5 +1,5 @@
 import { http, createConfig } from 'wagmi';
-import { arbitrumSepolia, arbitrum } from 'wagmi/chains';
+import { arbitrumSepolia, arbitrum, mainnet } from 'wagmi/chains';
 import { safe, walletConnect } from 'wagmi/connectors';
 
 export const config = createConfig({
@@ -11,5 +11,12 @@ export const config = createConfig({
   transports: {
     [arbitrumSepolia.id]: http(import.meta.env.VITE_RPC_URL_TESTNET),
     [arbitrum.id]: http(import.meta.env.VITE_RPC_URL_MAINNET),
+  },
+});
+
+export const ensConfig = createConfig({
+  chains: [mainnet],
+  transports: {
+    [mainnet.id]: http(import.meta.env.VITE_RPC_URL_ENS_MAINNET),
   },
 });
