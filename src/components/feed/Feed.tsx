@@ -1,14 +1,16 @@
 import React from 'react';
 import { FeedCardUI } from '../../types/ui';
 import { FeedCard } from './FeedCard';
-import { Paper, Text, useMantineTheme } from '@mantine/core';
+import { Box, Paper, Text, useMantineTheme } from '@mantine/core';
 
 export const Feed = ({ feed }: { feed: FeedCardUI[] }) => {
   const theme = useMantineTheme();
   return feed?.length ? (
-    feed.map((feedCard, i) => (
-      <FeedCard key={`${i}-${feedCard.subject.id}`} {...feedCard} />
-    ))
+    <Box>
+      {feed.map((feedCard, i) => (
+        <FeedCard key={`${i}-${feedCard.subject.id}`} {...feedCard} />
+      ))}
+    </Box>
   ) : (
     <Paper p="lg" bg={theme.colors.dark[6]}>
       <Text size="lg" mb="sm">

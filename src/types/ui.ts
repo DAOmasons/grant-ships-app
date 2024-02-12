@@ -11,7 +11,7 @@ export type FeedCardUI = {
     entityType: 'ship' | 'project' | 'facilitator';
   };
   message: string;
-  timestamp: string;
+  timestamp: number;
   embedText?: string;
   embed?: {
     text: string;

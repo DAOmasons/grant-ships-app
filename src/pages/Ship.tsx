@@ -13,6 +13,8 @@ import {
 import { MainSection, PageTitle } from '../layout/Sections';
 import { IconExternalLink } from '@tabler/icons-react';
 import { FundingIndicator } from '../components/shipItems/FundingIndicator';
+import { FeedCardUI } from '../types/ui';
+import { Feed } from '../components/feed/Feed';
 
 export const Ship = () => {
   const theme = useMantineTheme();
@@ -98,8 +100,79 @@ export const Ship = () => {
   );
 };
 
+const DummyFeed: FeedCardUI[] = [
+  {
+    subject: {
+      name: 'Project X',
+      id: '0x123',
+      entityType: 'project',
+      imgUrl: 'https://i.pravatar.cc/300',
+    },
+    object: {
+      name: 'Devrel Gallactica',
+      id: '0x123',
+      entityType: 'ship',
+    },
+    message:
+      'Project X has submitted Milestone 1 for Devrel Gallactica for approval',
+    timestamp: 1630000000,
+    sender: '0x57abda4ee50Bb3079A556C878b2c345310057569',
+  },
+  {
+    subject: {
+      name: 'Project X',
+      id: '0x123',
+      entityType: 'project',
+      imgUrl: 'https://i.pravatar.cc/300',
+    },
+    object: {
+      name: 'Devrel Gallactica',
+      id: '0x123',
+      entityType: 'ship',
+    },
+    message:
+      'Project X has submitted Milestone 1 for Devrel Gallactica for approval',
+    timestamp: 1630000000,
+    sender: '0x57abda4ee50Bb3079A556C878b2c345310057569',
+  },
+  {
+    subject: {
+      name: 'Project X',
+      id: '0x123',
+      entityType: 'project',
+      imgUrl: 'https://i.pravatar.cc/300',
+    },
+    object: {
+      name: 'Devrel Gallactica',
+      id: '0x123',
+      entityType: 'ship',
+    },
+    message:
+      'Project X has submitted Milestone 1 for Devrel Gallactica for approval',
+    timestamp: 1630000000,
+    sender: '0x57abda4ee50Bb3079A556C878b2c345310057569',
+  },
+  {
+    subject: {
+      name: 'Project X',
+      id: '0x123',
+      entityType: 'project',
+      imgUrl: 'https://i.pravatar.cc/300',
+    },
+    object: {
+      name: 'Devrel Gallactica',
+      id: '0x123',
+      entityType: 'ship',
+    },
+    message:
+      'Project X has submitted Milestone 1 for Devrel Gallactica for approval',
+    timestamp: 1630000000,
+    sender: '0x57abda4ee50Bb3079A556C878b2c345310057569',
+  },
+];
+
 const FeedPanel = () => {
-  return <div>Feed</div>;
+  return <Feed feed={DummyFeed} />;
 };
 
 const DetailsPanel = () => {

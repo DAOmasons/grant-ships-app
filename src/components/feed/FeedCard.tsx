@@ -1,10 +1,19 @@
-import { Avatar, Box, Flex, Group, Text } from '@mantine/core';
+import {
+  Avatar,
+  Box,
+  Divider,
+  Flex,
+  Group,
+  Text,
+  useMantineTheme,
+} from '@mantine/core';
 import { useMemo } from 'react';
 import { Address } from 'viem';
 import { useEnsName } from 'wagmi';
 import { ensConfig } from '../../utils/config';
 import { mainnet } from 'viem/chains';
 import { FeedCardUI } from '../../types/ui';
+import { IconAward, IconRocket } from '@tabler/icons-react';
 
 export const FeedCard = ({
   subject,
@@ -14,13 +23,20 @@ export const FeedCard = ({
   timestamp,
   sender,
 }: FeedCardUI) => {
-  const icon = null;
-
+  const theme = useMantineTheme();
   const { data: ensName } = useEnsName({
     address: sender as Address,
     config: ensConfig,
     chainId: mainnet.id,
   });
+  const icon = useMemo(() => {
+    if (subject.entityType === 'project') {
+      return <IconAward size={14} color={theme.colors.blue[5]} />;
+    }
+    if (subject.entityType === 'ship') {
+      return <IconRocket size={14} />;
+    }
+  }, [subject.entityType]);
 
   const time = useMemo(() => {
     return '2d';
@@ -31,26 +47,32 @@ export const FeedCard = ({
   }, [message]);
 
   return (
-    <Flex>
-      <Box mr="xs">
-        <Avatar size={32} src={subject.imgUrl} />
-      </Box>
-      <Box>
-        <Group mb="xs">
-          <Text size="sm">{subject.name}</Text>
-          {icon} ·{' '}
-          <Text size="sm" opacity={0.8}>
-            {time}
+    <Box mb="lg">
+      <Flex mb="lg">
+        <Box mr="xs">
+          <Avatar size={32} src={subject.imgUrl} />
+        </Box>
+        <Box>
+          <Group gap={8} mb={8}>
+            <Text size="sm">{subject.name}</Text>
+            {icon}
+            <Text size="sm" opacity={0.8}>
+              ·
+            </Text>
+            <Text size="sm" opacity={0.8}>
+              {time}
+            </Text>
+          </Group>
+          <Text size="sm" mb={10}>
+            {messageWithLinks}
           </Text>
-        </Group>
-        <Text size="sm" mb="xs">
-          {messageWithLinks}
-        </Text>
-        <Text size="xs">
-          Posted by{' '}
-          {ensName ? ensName : sender.slice(0, 6) + '...' + sender.slice(-4)}
-        </Text>
-      </Box>
-    </Flex>
+          <Text size="xs">
+            Posted by{' '}
+            {ensName ? ensName : sender.slice(0, 6) + '...' + sender.slice(-4)}
+          </Text>
+        </Box>
+      </Flex>
+      <Divider />
+    </Box>
   );
 };
