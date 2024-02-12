@@ -16,45 +16,35 @@
 
 .leftBar {
   border-radius: rem(5) 0 0 rem(5);
-  background-color: var(--mantine-color-blue-6);
+  background-color: var(--mantine-color-pink-5);
 }
 
 .middleBar {
   border-radius: 0;
-  background-color: var(--mantine-color-gray-4);
+  background-color: var(--mantine-color-violet-5);
 }
 
 .rightBar {
   border-radius: 0 rem(5) rem(5) 0;
-  background-color: var(--mantine-color-green-6);
+  background-color: var(--mantine-color-blue-5);
 }
 
 .indicatorRulerAllocated {
   width: 100%;
   height: rem(2);
-  background-color: var(--mantine-color-blue-6);
+  background-color: var(--mantine-color-violet-5);
   border-radius: rem(20);
 }
 
 .indicatorRulerDistributed {
   width: 100%;
   height: rem(2);
-  background-color: var(--mantine-color-gray-3);
+  background-color: var(--mantine-color-pink-5);
   border-radius: rem(20);
 }
 .indicatorRulerAvailable {
   width: 100%;
   height: rem(2);
-  background-color: var(--mantine-color-green-6);
+  background-color: var(--mantine-color-blue-5);
   border-radius: rem(20);
-}
-
-.indicatorTextAllocated {
-  color: var(--mantine-color-blue-6);
-}
-.indicatorTextDistributed {
-  color: var(--mantine-color-gray-3);
-}
-.indicatorTextAvailable {
-  color: var(--mantine-color-green-6);
 }

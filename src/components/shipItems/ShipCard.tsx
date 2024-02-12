@@ -11,6 +11,7 @@ import {
 import { Link } from 'react-router-dom';
 import classes from './ShipItemStyles.module.css';
 import { IconInfoCircle } from '@tabler/icons-react';
+import { FundingIndicator } from './FundingIndicator';
 
 type ShipCardProps = { title?: string };
 
@@ -20,7 +21,7 @@ export const ShipCard = ({ title }: ShipCardProps) => {
   return (
     <Paper
       component={Link}
-      to={`/`}
+      to={`/ship/test`}
       w="100%"
       mih={235}
       className={classes.cardLink}
@@ -44,54 +45,7 @@ export const ShipCard = ({ title }: ShipCardProps) => {
                 />
               </Group>
             </Box>
-            <Box w={238}>
-              <Flex mb="sm">
-                <Box
-                  w={`${30}%`}
-                  className={`${classes.barSegment} ${classes.leftBar}`}
-                />
-                <Box
-                  w={`${20}%`}
-                  className={`${classes.barSegment} ${classes.middleBar}`}
-                />
-                <Box
-                  w={`${50}%`}
-                  className={`${classes.barSegment} ${classes.rightBar}`}
-                />
-              </Flex>
-              <Flex gap={'xs'}>
-                <Box w="30%">
-                  <Text
-                    fz={10}
-                    mb={2}
-                    className={classes.indicatorTextAllocated}
-                  >
-                    Allocated
-                  </Text>
-                  <Box className={classes.indicatorRulerAllocated} />
-                </Box>
-                <Box w="30%">
-                  <Text
-                    fz={10}
-                    mb={2}
-                    className={classes.indicatorTextDistributed}
-                  >
-                    Distributed
-                  </Text>
-                  <Box className={classes.indicatorRulerDistributed} />
-                </Box>
-                <Box w="30%">
-                  <Text
-                    fz={10}
-                    mb={2}
-                    className={classes.indicatorTextAvailable}
-                  >
-                    Available
-                  </Text>
-                  <Box className={classes.indicatorRulerAvailable} />
-                </Box>
-              </Flex>
-            </Box>
+            <FundingIndicator amounts={[30, 50, 20]} />
           </Flex>
           <Text size="sm" mb="md">
             Lorem Ipsum is simply dummy text of the printing and typesetting

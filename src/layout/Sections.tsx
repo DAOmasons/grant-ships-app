@@ -5,11 +5,13 @@ import { useNavigate } from 'react-router-dom';
 
 export const MainSection = ({
   children,
+  maw = 600,
 }: {
   children: ReactNode | ReactNode[];
+  maw?: number;
 }) => {
   return (
-    <Box maw={600} miw={350} w={'100%'} m="xl">
+    <Box maw={maw} miw={350} w={'100%'} m="xl">
       {children}
     </Box>
   );
