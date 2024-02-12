@@ -216,6 +216,7 @@ export const TxProvider = ({ children }: { children: ReactNode }) => {
     }
   }, [
     isConfirmed,
+    waitError,
     isConfirming,
     isAwaitingSignature,
     isError,

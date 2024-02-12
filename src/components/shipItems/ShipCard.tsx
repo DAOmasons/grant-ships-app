@@ -16,8 +16,6 @@ import { FundingIndicator } from './FundingIndicator';
 type ShipCardProps = { title?: string };
 
 export const ShipCard = ({ title }: ShipCardProps) => {
-  const theme = useMantineTheme();
-
   return (
     <Paper
       component={Link}
