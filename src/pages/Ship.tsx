@@ -117,7 +117,10 @@ const DummyFeed: FeedCardUI[] = [
       'Project X has submitted Milestone 1 for Devrel Gallactica for approval',
     timestamp: 1630000000,
     sender: '0x57abda4ee50Bb3079A556C878b2c345310057569',
+    embedText:
+      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen...",
   },
+
   {
     subject: {
       name: 'Project X',

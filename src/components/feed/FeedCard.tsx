@@ -4,6 +4,7 @@ import {
   Divider,
   Flex,
   Group,
+  Spoiler,
   Text,
   useMantineTheme,
 } from '@mantine/core';
@@ -13,7 +14,13 @@ import { useEnsName } from 'wagmi';
 import { ensConfig } from '../../utils/config';
 import { mainnet } from 'viem/chains';
 import { FeedCardUI } from '../../types/ui';
-import { IconAward, IconRocket } from '@tabler/icons-react';
+import {
+  IconAward,
+  IconChevronCompactDown,
+  IconChevronCompactUp,
+  IconRocket,
+} from '@tabler/icons-react';
+import classes from './FeedStyles.module.css';
 
 export const FeedCard = ({
   subject,
@@ -66,6 +73,19 @@ export const FeedCard = ({
           <Text size="sm" mb={10}>
             {messageWithLinks}
           </Text>
+          {embedText && (
+            <Spoiler
+              hideLabel={<IconChevronCompactUp />}
+              showLabel={<IconChevronCompactDown />}
+              classNames={{
+                root: classes.embedTextBox,
+                control: classes.embedTextControl,
+              }}
+              maxHeight={48}
+            >
+              <Text fz="sm">{embedText}</Text>
+            </Spoiler>
+          )}
           <Text size="xs">
             Posted by{' '}
             {ensName ? ensName : sender.slice(0, 6) + '...' + sender.slice(-4)}
