@@ -1,4 +1,5 @@
 import {
+  ActionIcon,
   Avatar,
   Box,
   Button,
@@ -13,6 +14,7 @@ import {
 import { MainSection, PageTitle } from '../layout/Sections';
 import {
   IconBrandDiscord,
+  IconBrandGithub,
   IconBrandTelegram,
   IconBrandX,
   IconExternalLink,
@@ -22,7 +24,7 @@ import {
 import { FundingIndicator } from '../components/shipItems/FundingIndicator';
 import { FeedCardUI } from '../types/ui';
 import { Feed } from '../components/feed/Feed';
-import { Link } from 'react-router-dom';
+import { AddressAvatar } from '../components/AddressAvatar';
 
 export const Ship = () => {
   const theme = useMantineTheme();
@@ -49,7 +51,7 @@ export const Ship = () => {
             <Avatar size={36} src="https://i.pravatar.cc/302" />
             <Avatar size={36} src="https://i.pravatar.cc/302" />
           </Avatar.Group>
-          <Button size="md">Apply for Funding</Button>
+          <Button>Apply for Funding</Button>
         </Group>
         <Tabs defaultValue="details">
           <Tabs.List mb={'xl'}>
@@ -230,16 +232,30 @@ const DetailsPanel = () => {
       <Text fw={700} fz="lg" mb={'md'} mt="xl">
         Contact
       </Text>
-      <Group gap={28} mb="xl">
-        <IconWorld size={22} />
-        <IconMail size={22} />
-        <IconBrandX size={22} />
-        <IconBrandDiscord size={22} />
-        <IconBrandTelegram size={22} />
+      <Group gap={20} mb="xl">
+        <ActionIcon variant="subtle">
+          <IconWorld size={22} />
+        </ActionIcon>
+        <ActionIcon variant="subtle">
+          <IconMail size={22} />
+        </ActionIcon>
+        <ActionIcon variant="subtle">
+          <IconBrandGithub size={22} />
+        </ActionIcon>
+        <ActionIcon variant="subtle">
+          <IconBrandX size={22} />
+        </ActionIcon>
+        <ActionIcon variant="subtle">
+          <IconBrandDiscord size={22} />
+        </ActionIcon>
+        <ActionIcon variant="subtle">
+          <IconBrandTelegram size={22} />
+        </ActionIcon>
       </Group>
       <Text fw={700} fz="lg" mb={'md'}>
         Members
       </Text>
+      <AddressAvatar address={'0x57abda4ee50Bb3079A556C878b2c345310057569'} />
     </Box>
   );
 };
