@@ -1,0 +1,60 @@
+.cardLink {
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  background-color: var(--mantine-color-dark-6);
+  transition: background-color 0.1s ease-in-out;
+  &:hover {
+    background-color: white;
+    background-color: var(--mantine-color-dark-5);
+  }
+}
+
+.barSegment {
+  height: rem(8);
+}
+
+.leftBar {
+  border-radius: rem(5) 0 0 rem(5);
+  background-color: var(--mantine-color-blue-6);
+}
+
+.middleBar {
+  border-radius: 0;
+  background-color: var(--mantine-color-gray-4);
+}
+
+.rightBar {
+  border-radius: 0 rem(5) rem(5) 0;
+  background-color: var(--mantine-color-green-6);
+}
+
+.indicatorRulerAllocated {
+  width: 100%;
+  height: rem(2);
+  background-color: var(--mantine-color-blue-6);
+  border-radius: rem(20);
+}
+
+.indicatorRulerDistributed {
+  width: 100%;
+  height: rem(2);
+  background-color: var(--mantine-color-gray-3);
+  border-radius: rem(20);
+}
+.indicatorRulerAvailable {
+  width: 100%;
+  height: rem(2);
+  background-color: var(--mantine-color-green-6);
+  border-radius: rem(20);
+}
+
+.indicatorTextAllocated {
+  color: var(--mantine-color-blue-6);
+}
+.indicatorTextDistributed {
+  color: var(--mantine-color-gray-3);
+}
+.indicatorTextAvailable {
+  color: var(--mantine-color-green-6);
+}

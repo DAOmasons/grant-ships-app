@@ -24,7 +24,6 @@ export const Projects = () => {
         <Button
           component={Link}
           to="/create-project"
-          size="md"
           mb="xl"
           leftSection={<IconPlus />}
         >
