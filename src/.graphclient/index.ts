@@ -2111,7 +2111,7 @@ export const facDashShipDataDocument = gql`
     ...FacShipData
   }
   approvedShips: grantShips(
-    where: {isApproved: null, hasSubmittedApplication: true}
+    where: {isApproved: true, hasSubmittedApplication: true}
   ) {
     ...FacShipData
     approvedTime

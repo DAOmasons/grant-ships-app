@@ -90,6 +90,7 @@ export const TxProvider = ({ children }: { children: ReactNode }) => {
     isSuccess: isConfirmed,
     isLoading: isConfirming,
     error: txError,
+    isError: waitError,
     data: txData,
   } = useWaitForTransactionReceipt({
     hash: hash,
@@ -200,7 +201,7 @@ export const TxProvider = ({ children }: { children: ReactNode }) => {
       );
     }
 
-    if (isError) {
+    if (isError || waitError) {
       return (
         <ErrorState
           title={viewParams?.error?.title || 'Something went wrong.'}

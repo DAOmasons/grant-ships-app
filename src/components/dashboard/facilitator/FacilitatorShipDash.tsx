@@ -8,14 +8,11 @@ import { useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { decodeAbiParameters, parseAbiParameters } from 'viem';
 import { getIpfsJson } from '../../../utils/ipfs/get';
-import { z } from 'zod';
 import GameManagerAbi from '../../../abi/GameManager.json';
 import { ShipApplicationMetadata } from '../../../utils/ipfs/metadataValidation';
-import { createMetadata } from '../../../utils/metadata';
 import { HATS } from '../../../constants/gameSetup';
 import { ADDR } from '../../../constants/addresses';
 import { pinJSONToIPFS } from '../../../utils/ipfs/pin';
-import { create } from '@mui/material/styles/createTransitions';
 import { useTx } from '../../../hooks/useTx';
 
 export type ShipReviewData = {
@@ -176,19 +173,19 @@ export const FacilitatorShipDash = ({
       return;
     }
 
-    const shipInitData = [
-      true,
-      true,
-      true,
-      ship.name,
-      createMetadata({
-        protocol: '1',
-        ipfsHash: ship.profilePointer,
-      }),
-      ship.id,
-      HATS.SHIP_OP_1,
-      HATS.FACILITATOR,
-    ];
+    const shipInitData = {
+      registryGating: true,
+      metadataRequired: true,
+      grantAmountRequired: true,
+      shipName: ship.name,
+      shipMetadata: {
+        protocol: 1n,
+        pointer: ship.profilePointer,
+      },
+      recipientId: ship.id,
+      operatorHatId: HATS.SHIP_OP_1,
+      facilitatorHatId: HATS.FACILITATOR,
+    };
 
     tx({
       writeContractParams: {
@@ -200,25 +197,23 @@ export const FacilitatorShipDash = ({
           isApproved ? GameStatus.Accepted : GameStatus.Rejected,
           shipInitData,
           ADDR.FACTORY,
-          createMetadata({
-            protocol: '1',
-            ipfsHash: pinRes.IpfsHash,
-          }),
+          { protocol: 1n, pointer: pinRes.IpfsHash },
         ],
       },
       viewParams: {
         loading: {
-          title: 'Creating Your Ship Profile',
-          description:
-            'Submitting your Grant Ship profile to the Allo Registry.',
+          title: 'Reviewing Application',
+          description: 'Submitting your review to the Game Manager contract.',
         },
         success: {
-          title: 'Grant Ship Profile Created',
-          description: 'Your ship profile has been created.',
+          title: isApproved ? 'Application Approved' : 'Application Rejected',
+          description: isApproved
+            ? 'You have successfully approved this grant ship application.'
+            : 'You have successfully rejected this grant ship application.',
         },
         error: {
           title: 'Something went wrong.',
-          fallback: 'There was an unknown error creating your Ship profile.',
+          fallback: 'There was an unknown error submitting your review.',
         },
         successButton: {
           label: 'Finish',
@@ -295,7 +290,7 @@ export const FacilitatorShipDash = ({
             <Text fw={500}>
               Rejected Applications ({shipData.rejectedShips.length})
             </Text>
-            {shipData.approvedShips.map((ship) => (
+            {shipData.rejectedShips.map((ship) => (
               <ShipDashCard
                 key={ship.id}
                 id={ship.id}

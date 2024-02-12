@@ -1,4 +1,5 @@
 import {
+  Alert,
   Avatar,
   Box,
   Button,
@@ -25,7 +26,7 @@ export const FacilitatorGameDash = ({
   shipData?: FacShipData;
   shipsLoading: boolean;
 }) => {
-  const gameStatusNumber = 0;
+  const gameStatusNumber = 1;
 
   const steps = useMemo((): TimelineContent[] | null => {
     if (shipsLoading || !shipData) {
@@ -43,23 +44,37 @@ export const FacilitatorGameDash = ({
         description: `${shipData.approvedShips.length}/${SHIP_AMOUNT} Ships Approved`,
         content: (
           <Box>
-            <Stack>
-              {shipData.approvedShips.map((ship) => (
-                <Button
-                  variant="subtle"
-                  size="sm"
-                  style={{ display: 'flex', justifyItems: 'center' }}
-                  leftSection={
-                    <Avatar
-                      size={32}
-                      src={`${PINATA_GATEWAY}/${ship.profileMetadata.avatarHash_IPFS}`}
-                    />
-                  }
-                >
-                  <Text fz="sm">{ship.name}</Text>
-                </Button>
-              ))}
-            </Stack>
+            {shipData.approvedShips.length ? (
+              <Stack>
+                {shipData.approvedShips.map((ship) => (
+                  <Button
+                    key={ship.id}
+                    variant="subtle"
+                    size="sm"
+                    style={{ display: 'flex', justifyItems: 'center' }}
+                    leftSection={
+                      <Avatar
+                        size={32}
+                        src={`${PINATA_GATEWAY}/${ship.profileMetadata.avatarHash_IPFS}`}
+                      />
+                    }
+                  >
+                    <Text fz="sm">{ship.name}</Text>
+                  </Button>
+                ))}
+              </Stack>
+            ) : (
+              <Alert w={350}>
+                <Text size="md" mb="sm">
+                  No ships approved yet
+                </Text>
+                <Text size="sm" opacity={0.7}>
+                  This game requires {SHIP_AMOUNT} ships to play. The next step
+                  will be complete once you approve three Grant Ship
+                  applications
+                </Text>
+              </Alert>
+            )}
           </Box>
         ),
       },

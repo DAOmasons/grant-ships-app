@@ -87,7 +87,7 @@ export const ApplicationReview = ({
           </Button>
           <Button
             disabled={!reasonText}
-            onClick={() => handleApprove(false, reasonText)}
+            onClick={() => handleApprove(true, reasonText)}
           >
             Approve
           </Button>

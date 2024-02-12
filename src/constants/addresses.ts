@@ -5,8 +5,9 @@ export const ADDR_TESTNET: Record<string, Address> = {
   REGISTRY: '0x4AAcca72145e1dF2aeC137E1f3C5E3D75DB8b5f3',
   HATS: '0x3bc1A0Ad72417f2d411118085256fC53CBdDd137',
   GAME_MANAGER: '0x2D484ee4395C5ec4c5F1dB5f5CdD7BB9DFeef9Ef',
-  FACTORY: '0xB6f1d31D7e9f980c080b4d40FA36d90791275A9f',
-};
+  FACTORY: '0x3F531911cC855D3804b05b9CB080aB2d4DDB7c57',
+  FACTORY_NEW: '0xB6f1d31D7e9f980c080b4d40FA36d90791275A9f',
+} as const;
 
 export const ADDR_PROD: Record<string, Address> = {
   ALLO: '0x00000000',
@@ -14,7 +15,7 @@ export const ADDR_PROD: Record<string, Address> = {
   HATS: '0x00000000',
   GAME_MANAGER: '0x00000000',
   FACTORY: '0x00000000',
-};
+} as const;
 
 export const ADDR: Record<string, Address> =
   import.meta.env.VITE_RUNTIME_ENV === 'dev' ? ADDR_TESTNET : ADDR_PROD;
