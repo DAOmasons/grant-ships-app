@@ -3,8 +3,6 @@ import { notifications } from '@mantine/notifications';
 import { IconLogout, IconUserCircle } from '@tabler/icons-react';
 import { mainnet } from 'viem/chains';
 import {
-  createConfig,
-  http,
   useAccount,
   useConnect,
   useDisconnect,
@@ -14,8 +12,9 @@ import {
 
 import { Address } from 'viem';
 import classes from './DesktoNavStyles.module.css';
-import { Avatar, Button, Modal, Stack } from '@mantine/core';
+import { Button, Modal, Stack } from '@mantine/core';
 import { ensConfig } from '../../utils/config';
+import { AddressAvatar } from '../../components/AddressAvatar';
 
 export const ConnectButton = () => {
   const { address, isConnected } = useAccount();
@@ -66,13 +65,6 @@ const IsNotConnected = ({ open }: { open: () => void }) => {
 };
 
 const IsConnected = ({ address }: { address: Address }) => {
-  const { data: ensName } = useEnsName({
-    address,
-    config: ensConfig,
-    chainId: mainnet.id,
-  });
-
-  const { data: ensAvatar } = useEnsAvatar({ name: ensName! });
   const { disconnect } = useDisconnect();
   const { copy } = useClipboard();
 
@@ -88,14 +80,7 @@ const IsConnected = ({ address }: { address: Address }) => {
           });
         }}
       >
-        <Avatar
-          className={classes.avatar}
-          src={ensAvatar || `https://effigy.im/a/${address}.svg`}
-          size={28}
-        />
-        <span>
-          {ensName ? ensName : address.slice(0, 6) + '...' + address.slice(-4)}
-        </span>
+        <AddressAvatar address={address} />
       </button>
       <button
         className={classes.button}

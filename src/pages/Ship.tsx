@@ -1,7 +1,5 @@
 import {
-  ActionIcon,
   Avatar,
-  Box,
   Button,
   Flex,
   Group,
@@ -12,19 +10,11 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import { MainSection, PageTitle } from '../layout/Sections';
-import {
-  IconBrandDiscord,
-  IconBrandGithub,
-  IconBrandTelegram,
-  IconBrandX,
-  IconExternalLink,
-  IconMail,
-  IconWorld,
-} from '@tabler/icons-react';
+import { IconExternalLink } from '@tabler/icons-react';
 import { FundingIndicator } from '../components/shipItems/FundingIndicator';
-import { FeedCardUI } from '../types/ui';
-import { Feed } from '../components/feed/Feed';
-import { AddressAvatar } from '../components/AddressAvatar';
+import { FeedPanel } from '../components/shipItems/FeedPanel';
+import { PortfolioPanel } from '../components/shipItems/PortfolioPanel';
+import { DetailsPanel } from '../components/shipItems/DetailsPanel';
 
 export const Ship = () => {
   const theme = useMantineTheme();
@@ -72,7 +62,7 @@ export const Ship = () => {
             <DetailsPanel />
           </Tabs.Panel>
           <Tabs.Panel value="portfolio">
-            <Portfolio />
+            <PortfolioPanel />
           </Tabs.Panel>
         </Tabs>
       </MainSection>
@@ -108,158 +98,4 @@ export const Ship = () => {
       </Stack>
     </Flex>
   );
-};
-
-const DummyFeed: FeedCardUI[] = [
-  {
-    subject: {
-      name: 'Project X',
-      id: '0x123',
-      entityType: 'project',
-      imgUrl: 'https://i.pravatar.cc/300',
-    },
-    object: {
-      name: 'Devrel Gallactica',
-      id: '0x123',
-      entityType: 'ship',
-    },
-    message:
-      'Project X has submitted Milestone 1 for Devrel Gallactica for approval',
-    timestamp: 1630000000,
-    sender: '0x57abda4ee50Bb3079A556C878b2c345310057569',
-    embedText:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen...",
-  },
-
-  {
-    subject: {
-      name: 'Project X',
-      id: '0x123',
-      entityType: 'project',
-      imgUrl: 'https://i.pravatar.cc/300',
-    },
-    object: {
-      name: 'Devrel Gallactica',
-      id: '0x123',
-      entityType: 'ship',
-    },
-    message:
-      'Project X has submitted Milestone 1 for Devrel Gallactica for approval',
-    timestamp: 1630000000,
-    sender: '0x57abda4ee50Bb3079A556C878b2c345310057569',
-  },
-  {
-    subject: {
-      name: 'Project X',
-      id: '0x123',
-      entityType: 'project',
-      imgUrl: 'https://i.pravatar.cc/300',
-    },
-    object: {
-      name: 'Devrel Gallactica',
-      id: '0x123',
-      entityType: 'ship',
-    },
-    message:
-      'Project X has submitted Milestone 1 for Devrel Gallactica for approval',
-    timestamp: 1630000000,
-    sender: '0x57abda4ee50Bb3079A556C878b2c345310057569',
-  },
-  {
-    subject: {
-      name: 'Project X',
-      id: '0x123',
-      entityType: 'project',
-      imgUrl: 'https://i.pravatar.cc/300',
-    },
-    object: {
-      name: 'Devrel Gallactica',
-      id: '0x123',
-      entityType: 'ship',
-    },
-    message:
-      'Project X has submitted Milestone 1 for Devrel Gallactica for approval',
-    timestamp: 1630000000,
-    sender: '0x57abda4ee50Bb3079A556C878b2c345310057569',
-  },
-];
-
-const FeedPanel = () => {
-  return <Feed feed={DummyFeed} />;
-};
-
-const DetailsPanel = () => {
-  return (
-    <Box>
-      <Text fw={700} mb={'md'} fz="lg">
-        Funding Vision
-      </Text>
-      <Text size="sm" fw={600} mb="xs">
-        Impact Thesis
-      </Text>
-      <Text size="sm" mb="xl">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut dignissim
-        velit porta elit placerat, sit amet efficitur est elementum. Praesent
-        semper, quam vel convallis tincidunt, nisi arcu lacinia leo, at bibendum
-        lorem orci et arcu. Etiam tincidunt accumsan tellus et pretium. Ut
-        tempor tempor libero ac molestie. Cras lacinia, orci id posuere
-        consequat, sapien nunc commodo velit, ut laoreet felis orci sollicitudin
-        lacus.
-      </Text>
-      <Text size="sm" fw={600} mb="xs">
-        How to Apply
-      </Text>
-      <Text size="sm" mb="xl">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut dignissim
-        velit porta elit placerat, sit amet efficitur est elementum. Praesent
-        semper, quam vel convallis tincidunt, nisi arcu
-      </Text>
-      <Text size="sm" fw={600} mb="xs">
-        Additional Information
-      </Text>
-      <Text size="sm" mb="xl">
-        Lorem Ipsum is simply dummy text of the printing and typesetting
-        industry. Lorem Ipsum has been the industry's standard dummy text ever
-        since the 1500s, when an unknown printer took a galley of type and
-        scrambled it to make a type specimen book.
-      </Text>
-      <Text size="sm" fw={600} mb="xs">
-        Read More Here
-      </Text>
-      <Text component={'a'} href="#" size="sm" mb="xl">
-        https://www.grantshipalpha.com
-      </Text>
-      <Text fw={700} fz="lg" mb={'md'} mt="xl">
-        Contact
-      </Text>
-      <Group gap={20} mb="xl">
-        <ActionIcon variant="subtle">
-          <IconWorld size={22} />
-        </ActionIcon>
-        <ActionIcon variant="subtle">
-          <IconMail size={22} />
-        </ActionIcon>
-        <ActionIcon variant="subtle">
-          <IconBrandGithub size={22} />
-        </ActionIcon>
-        <ActionIcon variant="subtle">
-          <IconBrandX size={22} />
-        </ActionIcon>
-        <ActionIcon variant="subtle">
-          <IconBrandDiscord size={22} />
-        </ActionIcon>
-        <ActionIcon variant="subtle">
-          <IconBrandTelegram size={22} />
-        </ActionIcon>
-      </Group>
-      <Text fw={700} fz="lg" mb={'md'}>
-        Members
-      </Text>
-      <AddressAvatar address={'0x57abda4ee50Bb3079A556C878b2c345310057569'} />
-    </Box>
-  );
-};
-
-const Portfolio = () => {
-  return <div>Contact</div>;
 };

@@ -1,27 +1,19 @@
 import React from 'react';
 import { MainSection, PageTitle } from '../layout/Sections';
-import { Alert, Box, Button, Group, Text } from '@mantine/core';
-import { IconBell } from '@tabler/icons-react';
+import { Box, Button, Text } from '@mantine/core';
 import { Link } from 'react-router-dom';
+
+import { AppAlert } from '../components/UnderContruction';
 
 export const Apply = () => {
   return (
     <MainSection>
       <PageTitle title="Applications" />
       <Box w="100%">
-        <Alert mt="xl" mb={56}>
-          <Group>
-            <IconBell size={24} />
-            <Box>
-              <Text mb={2}>
-                It looks like you haven't started any projects yet
-              </Text>
-              <Text size="xs" opacity={0.8}>
-                Don't worry, getting started is easy!
-              </Text>
-            </Box>
-          </Group>
-        </Alert>
+        <AppAlert
+          title="It looks like you haven't started any projects yet"
+          description="Don't worry, getting started is easy!"
+        />
         <Text fw={600} mb="xs">
           Seeking Funding for your project?
         </Text>

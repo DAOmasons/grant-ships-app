@@ -41,9 +41,12 @@ export const FeedCard = ({
       return <IconAward size={14} color={theme.colors.blue[5]} />;
     }
     if (subject.entityType === 'ship') {
-      return <IconRocket size={14} />;
+      return <IconRocket size={14} color={theme.colors.violet[5]} />;
     }
-  }, [subject.entityType]);
+    if (subject.entityType === 'facilitator') {
+      return <IconAward size={14} color={theme.colors.pink[5]} />;
+    }
+  }, [subject.entityType, theme]);
 
   const time = useMemo(() => {
     return '2d';
