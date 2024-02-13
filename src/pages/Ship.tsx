@@ -15,6 +15,7 @@ import { FundingIndicator } from '../components/shipItems/FundingIndicator';
 import { FeedPanel } from '../components/shipItems/FeedPanel';
 import { PortfolioPanel } from '../components/shipItems/PortfolioPanel';
 import { DetailsPanel } from '../components/shipItems/DetailsPanel';
+import { Link } from 'react-router-dom';
 
 export const Ship = () => {
   const theme = useMantineTheme();
@@ -41,9 +42,11 @@ export const Ship = () => {
             <Avatar size={36} src="https://i.pravatar.cc/302" />
             <Avatar size={36} src="https://i.pravatar.cc/302" />
           </Avatar.Group>
-          <Button>Apply for Funding</Button>
+          <Button component={Link} to="/apply-funding/not-ready">
+            Apply for Funding
+          </Button>
         </Group>
-        <Tabs defaultValue="details">
+        <Tabs defaultValue="feed">
           <Tabs.List mb={'xl'}>
             <Tabs.Tab value="feed" w="20%">
               Feed

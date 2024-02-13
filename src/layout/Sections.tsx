@@ -1,4 +1,13 @@
-import { ActionIcon, Box, Group, Text, useMantineTheme } from '@mantine/core';
+import {
+  ActionIcon,
+  Box,
+  DefaultMantineColor,
+  Group,
+  MantineStyleProp,
+  StyleProp,
+  Text,
+  useMantineTheme,
+} from '@mantine/core';
 import { IconArrowNarrowLeft } from '@tabler/icons-react';
 import { ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -6,12 +15,14 @@ import { useNavigate } from 'react-router-dom';
 export const MainSection = ({
   children,
   maw = 600,
+  bg,
 }: {
   children: ReactNode | ReactNode[];
   maw?: number;
+  bg?: StyleProp<DefaultMantineColor | undefined>;
 }) => {
   return (
-    <Box maw={maw} miw={350} w={'100%'} m="xl">
+    <Box maw={maw} miw={350} w={'100%'} m="xl" bg={bg}>
       {children}
     </Box>
   );

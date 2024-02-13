@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getFacDashShipData } from '../queries/getFacDashShipData';
 import { FacilitatorShipDash } from '../components/dashboard/facilitator/FacilitatorShipDash';
 import { FacilitatorGameDash } from '../components/dashboard/facilitator/FacilitatorGameDash';
+import { AppAlert } from '../components/UnderContruction';
 
 export const FacilitatorDashboard = () => {
   const { data: shipData, isLoading: shipsLoading } = useQuery({
@@ -19,7 +20,7 @@ export const FacilitatorDashboard = () => {
         <Tabs.List mb="xl" grow>
           <Tabs.Tab value="game-manager">Game</Tabs.Tab>
           <Tabs.Tab value="ships">Ships</Tabs.Tab>
-          <Tabs.Tab value="hats">Hats</Tabs.Tab>
+          <Tabs.Tab value="hats">Post</Tabs.Tab>
         </Tabs.List>
         <Tabs.Panel value="ships">
           <FacilitatorShipDash shipData={shipData} isLoading={shipsLoading} />
@@ -28,6 +29,12 @@ export const FacilitatorDashboard = () => {
           <FacilitatorGameDash
             shipsLoading={shipsLoading}
             shipData={shipData}
+          />
+        </Tabs.Panel>
+        <Tabs.Panel value="hats">
+          <AppAlert
+            title="This Feature is under construction."
+            description="Check back soon to try it out!"
           />
         </Tabs.Panel>
       </Tabs>

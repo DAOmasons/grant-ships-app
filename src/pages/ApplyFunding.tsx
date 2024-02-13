@@ -1,7 +1,8 @@
+import React from 'react';
 import { AppAlert } from '../components/UnderContruction';
 import { MainSection, PageTitle } from '../layout/Sections';
 
-export const Project = () => {
+export const ApplyFunding = () => {
   return (
     <MainSection>
       <PageTitle title="Apply for Funding" />

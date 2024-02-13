@@ -16,10 +16,6 @@ type PortfolioGrant = {
   grants: Grant[];
 };
 
-type PortfolioProps = {
-  grants: PortfolioGrant[];
-};
-
 const grants: PortfolioGrant[] = [];
 
 export const PortfolioPanel = () => {
