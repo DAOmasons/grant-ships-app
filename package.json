@@ -1,7 +1,7 @@
 {
-  "name": "vite-min-template",
+  "name": "grant-ship-app",
   "private": true,
-  "version": "0.0.5",
+  "version": "0.0.11",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",

@@ -1,0 +1,39 @@
+.banner {
+  background-image: url('/BgSvg.svg');
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-color: var(--mantine-color-dark-8);
+  overflow: hidden; /* Ensure gradients don't extend outside the banner */
+}
+
+.banner::after {
+  content: ''; /* Horizontal fade */
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 20%; /* Adjust the width of the fade effect as needed */
+  background: linear-gradient(
+    to right,
+    rgba(0, 0, 0, 0),
+    var(--mantine-color-dark-7)
+  );
+  z-index: 2; /* Adjust if necessary */
+}
+
+.banner::before {
+  content: ''; /* Vertical fade */
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 20%; /* Adjust the height of the fade effect as needed */
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0),
+    var(--mantine-color-dark-7) 100%
+  );
+  z-index: 1; /* Adjust if necessary */
+}

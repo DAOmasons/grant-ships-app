@@ -10672,6 +10672,51 @@ __metadata:
   languageName: node
   linkType: hard
 
+"grant-ship-app@workspace:.":
+  version: 0.0.0-use.local
+  resolution: "grant-ship-app@workspace:."
+  dependencies:
+    "@graphprotocol/client-cli": "npm:^3.0.0"
+    "@mantine/core": "npm:^7.4.2"
+    "@mantine/dates": "npm:^7.5.2"
+    "@mantine/form": "npm:^7.4.2"
+    "@mantine/hooks": "npm:^7.4.2"
+    "@mantine/notifications": "npm:^7.4.2"
+    "@tabler/icons-react": "npm:^2.46.0"
+    "@tanstack/react-query": "npm:^5.17.19"
+    "@thirdweb-dev/react": "npm:^4.4.3"
+    "@types/node": "npm:^20.11.5"
+    "@types/react": "npm:^18.2.36"
+    "@types/react-dom": "npm:^18.2.14"
+    "@typescript-eslint/eslint-plugin": "npm:^6.9.1"
+    "@typescript-eslint/parser": "npm:^6.9.1"
+    "@vitejs/plugin-react": "npm:^4.2.1"
+    api: "npm:^6.1.1"
+    axios: "npm:^1.6.5"
+    crypto: "npm:^1.0.1"
+    eslint: "npm:^8.53.0"
+    eslint-plugin-react-hooks: "npm:^4.6.0"
+    eslint-plugin-react-refresh: "npm:^0.4.4"
+    form-data: "npm:^4.0.0"
+    graphql: "npm:^16.8.1"
+    localforage: "npm:^1.10.0"
+    mantine-form-zod-resolver: "npm:^1.1.0"
+    postcss: "npm:^8.4.32"
+    postcss-preset-mantine: "npm:1.12.3"
+    postcss-simple-vars: "npm:^7.0.1"
+    react: "npm:^18.2.0"
+    react-dom: "npm:^18.2.0"
+    react-router-dom: "npm:^6.21.3"
+    typescript: "npm:^5.3.3"
+    viem: "npm:^2.4.0"
+    vite: "npm:^5.0.10"
+    vite-plugin-node-polyfills: "npm:^0.19.0"
+    vite-plugin-svgr: "npm:^4.2.0"
+    wagmi: "npm:^2.5.0"
+    zod: "npm:^3.22.4"
+  languageName: unknown
+  linkType: soft
+
 "grapheme-splitter@npm:^1.0.4":
   version: 1.0.4
   resolution: "grapheme-splitter@npm:1.0.4"
@@ -16941,51 +16986,6 @@ __metadata:
   checksum: 536145310fd978f036554d5ae324a99c1ef2eb983512478d1a67a9694489341a9a8b5881d3584221d0ea96727368d824a38bc7f45dc7419a5ed08e81715be568
   languageName: node
   linkType: hard
-
-"vite-min-template@workspace:.":
-  version: 0.0.0-use.local
-  resolution: "vite-min-template@workspace:."
-  dependencies:
-    "@graphprotocol/client-cli": "npm:^3.0.0"
-    "@mantine/core": "npm:^7.4.2"
-    "@mantine/dates": "npm:^7.5.2"
-    "@mantine/form": "npm:^7.4.2"
-    "@mantine/hooks": "npm:^7.4.2"
-    "@mantine/notifications": "npm:^7.4.2"
-    "@tabler/icons-react": "npm:^2.46.0"
-    "@tanstack/react-query": "npm:^5.17.19"
-    "@thirdweb-dev/react": "npm:^4.4.3"
-    "@types/node": "npm:^20.11.5"
-    "@types/react": "npm:^18.2.36"
-    "@types/react-dom": "npm:^18.2.14"
-    "@typescript-eslint/eslint-plugin": "npm:^6.9.1"
-    "@typescript-eslint/parser": "npm:^6.9.1"
-    "@vitejs/plugin-react": "npm:^4.2.1"
-    api: "npm:^6.1.1"
-    axios: "npm:^1.6.5"
-    crypto: "npm:^1.0.1"
-    eslint: "npm:^8.53.0"
-    eslint-plugin-react-hooks: "npm:^4.6.0"
-    eslint-plugin-react-refresh: "npm:^0.4.4"
-    form-data: "npm:^4.0.0"
-    graphql: "npm:^16.8.1"
-    localforage: "npm:^1.10.0"
-    mantine-form-zod-resolver: "npm:^1.1.0"
-    postcss: "npm:^8.4.32"
-    postcss-preset-mantine: "npm:1.12.3"
-    postcss-simple-vars: "npm:^7.0.1"
-    react: "npm:^18.2.0"
-    react-dom: "npm:^18.2.0"
-    react-router-dom: "npm:^6.21.3"
-    typescript: "npm:^5.3.3"
-    viem: "npm:^2.4.0"
-    vite: "npm:^5.0.10"
-    vite-plugin-node-polyfills: "npm:^0.19.0"
-    vite-plugin-svgr: "npm:^4.2.0"
-    wagmi: "npm:^2.5.0"
-    zod: "npm:^3.22.4"
-  languageName: unknown
-  linkType: soft
 
 "vite-plugin-node-polyfills@npm:^0.19.0":
   version: 0.19.0

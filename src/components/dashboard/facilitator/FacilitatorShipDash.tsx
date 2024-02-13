@@ -281,6 +281,7 @@ export const FacilitatorShipDash = ({
                 name={ship.name}
                 avatarUrl={ship.profileMetadata.avatarHash_IPFS}
                 shipStatus={GameStatus.Accepted}
+                onReview={handleReviewApplicant}
               />
             ))}
           </>

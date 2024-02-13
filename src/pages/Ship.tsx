@@ -10,12 +10,13 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import { MainSection, PageTitle } from '../layout/Sections';
-import { IconExternalLink } from '@tabler/icons-react';
+import { IconExternalLink, IconInfoCircle } from '@tabler/icons-react';
 import { FundingIndicator } from '../components/shipItems/FundingIndicator';
 import { FeedPanel } from '../components/shipItems/FeedPanel';
 import { PortfolioPanel } from '../components/shipItems/PortfolioPanel';
 import { DetailsPanel } from '../components/shipItems/DetailsPanel';
 import { Link } from 'react-router-dom';
+import { GAME_TOKEN } from '../constants/gameSetup';
 
 export const Ship = () => {
   const theme = useMantineTheme();
@@ -28,7 +29,10 @@ export const Ship = () => {
         <Text fz="lg" fw={600}>
           Ship 1
         </Text>
-        <Text mb="xs">Approved</Text>
+        <Group>
+          <Text mb="xs">Approved</Text>
+          <IconInfoCircle />
+        </Group>
         <Text fz="sm" mb={'md'}>
           Lorem Ipsum is simply dummy text of the printing and typesetting
           industry. Lorem Ipsum has been the industry's standard dummy text ever
@@ -90,7 +94,7 @@ export const Ship = () => {
           <Text size="sm" mb="lg">
             Funding Received
           </Text>
-          <Text size="xl">0 ARB</Text>
+          <Text size="xl">0 {GAME_TOKEN.SYMBOL}</Text>
         </Paper>
         <Paper p="md" bg={theme.colors.dark[6]}>
           <Text size="sm" mb="lg">

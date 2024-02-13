@@ -136,7 +136,9 @@ export const DetailsPanel = ({
       </Text>
       <Stack>
         {members.map((address) =>
-          isAddress(address) ? <AddressAvatar address={address} /> : null
+          isAddress(address) ? (
+            <AddressAvatar key={address} address={address} />
+          ) : null
         )}
       </Stack>
     </Box>

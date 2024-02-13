@@ -1,4 +1,4 @@
-import { Avatar, Group, Text } from '@mantine/core';
+import { Avatar, Group, MantineSize, Text } from '@mantine/core';
 import React from 'react';
 import { Address } from 'viem';
 import { useEnsAvatar, useEnsName } from 'wagmi';
@@ -6,7 +6,15 @@ import { ensConfig } from '../utils/config';
 import { mainnet } from 'viem/chains';
 import { normalize } from 'path';
 
-export const AddressAvatar = ({ address }: { address: Address }) => {
+export const AddressAvatar = ({
+  address,
+  size = 28,
+  displayText = true,
+}: {
+  address: Address;
+  size?: MantineSize | number;
+  displayText?: boolean;
+}) => {
   const { data: ensName } = useEnsName({
     address,
     config: ensConfig,
@@ -24,8 +32,8 @@ export const AddressAvatar = ({ address }: { address: Address }) => {
 
   return (
     <Group>
-      <Avatar src={imgUrl} size={28} />
-      <Text fz="sm">{name}</Text>
+      <Avatar src={imgUrl} size={size} />
+      {displayText && <Text fz="sm">{name}</Text>}
     </Group>
   );
 };

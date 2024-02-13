@@ -1,18 +1,10 @@
-import {
-  BackgroundImage,
-  Box,
-  Button,
-  Group,
-  Paper,
-  Tabs,
-  Text,
-  useMantineTheme,
-} from '@mantine/core';
+import { Box, Button, Group, Paper, Tabs, Text } from '@mantine/core';
 import { Feed } from '../components/feed/Feed';
 import { MainSection } from '../layout/Sections';
-import bgSvg from '../assets/BgSvg.svg';
 import { FeedCardUI } from '../types/ui';
 import { AppAlert } from '../components/UnderContruction';
+import classes from './PageStyles.module.css';
+import { Link } from 'react-router-dom';
 
 const DummyFeed: FeedCardUI[] = [
   {
@@ -148,15 +140,28 @@ export const Home = () => {
 };
 
 const Banner = () => {
-  const theme = useMantineTheme();
   return (
-    <Paper h={150} w="100%" bg={theme.colors.dark[8]} p="xl">
-      <Text fz={24} fw={700} c="white" mb="md">
-        Now Accepting Grant Ships! Submit your application today!
+    <Paper h={180} w="100%" p="xl" classNames={{ root: classes.banner }}>
+      <Text fz={22} fw={700} c="white" mb="lg">
+        Now Accepting Grant Ships!{' '}
+        <Text fz={22} fw={700} component="span" opacity={0.7}>
+          Submit your application today.{' '}
+        </Text>
       </Text>
       <Group>
-        <Button>Submit Grant Ship Application</Button>
-        <Button variant="transparent"> What is a Grant Ship? </Button>
+        <Button component={Link} to="create-ship">
+          Submit Grant Ship Application
+        </Button>
+        <Button
+          component="a"
+          href="https://rules.grantships.fun/"
+          variant="transparent"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          {' '}
+          What is a Grant Ship?{' '}
+        </Button>
       </Group>
     </Paper>
   );

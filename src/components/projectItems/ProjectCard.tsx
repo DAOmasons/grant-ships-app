@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { Avatar, Box, Flex, Paper, Skeleton, Text } from '@mantine/core';
 
 import { ProjectCard as ProjectCardType } from '../../queries/getProjectCards';
-import classes from './ProjectCard.module.css';
+import classes from './ProjectItems.module.css';
 
 export const ProjectCard = ({ project }: { project: ProjectCardType }) => {
   return (

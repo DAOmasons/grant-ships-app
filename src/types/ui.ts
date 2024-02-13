@@ -19,3 +19,15 @@ export type FeedCardUI = {
   };
   sender: string;
 };
+
+export enum MilestoneStatus {
+  Idle,
+  InReview,
+  Approved,
+  Rejected,
+}
+
+export type MilestoneStep = {
+  status: MilestoneStatus;
+  amount: bigint;
+};
