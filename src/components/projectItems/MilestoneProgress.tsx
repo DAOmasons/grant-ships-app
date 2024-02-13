@@ -1,7 +1,7 @@
 import { Box, Flex, Group, Text, useMantineTheme } from '@mantine/core';
 import { MilestoneStatus, MilestoneStep } from '../../types/ui';
 import classes from './ProjectItems.module.css';
-import { useMemo } from 'react';
+import { Fragment, useMemo } from 'react';
 import { IconEye, IconX } from '@tabler/icons-react';
 import { IconCheck } from '@tabler/icons-react';
 import { formatEther, isAddress } from 'viem';
@@ -50,7 +50,7 @@ export const MilestoneProgress = ({
   ).length;
   return (
     <Box>
-      <Group gap={5} mb={6}>
+      <Group gap={5} mb={10}>
         <Text fz="sm">
           <Text fz="sm" component="span" fw={600}>
             {totalAmount} {GAME_TOKEN.SYMBOL}
@@ -62,7 +62,7 @@ export const MilestoneProgress = ({
         )}
       </Group>
       <MilestoneProgressSteps steps={steps} />
-      <Text fz="xs" mt={6} opacity={0.8}>
+      <Text fz="xs" mt={8} opacity={0.8}>
         {amtAccepted.toString()}/{steps.length} Milestones distributed
       </Text>
     </Box>
@@ -93,17 +93,12 @@ export const MilestoneProgressSteps = ({
   return (
     <Flex w={237} className={classes.milestoneBox}>
       {steps.map((step, index) => (
-        <>
-          {index !== 0 && (
-            <Box key={`milestone-bar-${index}`} className={getBarStyle(step)} />
-          )}
-          <Flex
-            key={`milestone-step-${index}`}
-            className={getCircleStyle(step)}
-          >
+        <Fragment key={`milestone-circle-${index}`}>
+          {index !== 0 && <Box className={getBarStyle(step)} />}
+          <Flex className={getCircleStyle(step)}>
             {getCircleContent(step, index)}
           </Flex>
-        </>
+        </Fragment>
       ))}
     </Flex>
   );

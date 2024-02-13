@@ -91,7 +91,14 @@ export const DetailsPanel = ({
           <Text size="sm" fw={600} mb="xs">
             Read More Here
           </Text>
-          <Text component={'a'} href="#" size="sm" mb="xl">
+          <Text
+            component={'a'}
+            href="#"
+            size="sm"
+            mb="xl"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
             {extraLink}
           </Text>
         </>

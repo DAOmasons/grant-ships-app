@@ -14,10 +14,8 @@ import { IconInfoCircle } from '@tabler/icons-react';
 import { FeedPanel } from '../components/shipItems/FeedPanel';
 import { GAME_TOKEN } from '../constants/gameSetup';
 import { MilestoneStatus, MilestoneStep } from '../types/ui';
-import {
-  MilestoneProgress,
-  MilestoneProgressSteps,
-} from '../components/projectItems/MilestoneProgress';
+import { MilestoneProgress } from '../components/projectItems/MilestoneProgress';
+import { GrantsPanel } from '../components/projectItems/GrantsPanel';
 
 const dummyMilestoneSteps1: MilestoneStep[] = [
   { status: MilestoneStatus.Approved, amount: 2000000000000000000n },
@@ -27,21 +25,64 @@ const dummyMilestoneSteps1: MilestoneStep[] = [
 ];
 
 const dummyMilestoneSteps2: MilestoneStep[] = [
-  { status: MilestoneStatus.Approved, amount: 200030000000000000n },
-  { status: MilestoneStatus.Approved, amount: 543000000000000000n },
   { status: MilestoneStatus.Approved, amount: 2000000000000000000n },
+  { status: MilestoneStatus.Approved, amount: 5000000000000000000n },
   { status: MilestoneStatus.InReview, amount: 4000000000000000000n },
 ];
 
-const dummyMilestones1 = {
+const grant1 = {
   steps: dummyMilestoneSteps1,
-  fundedBy: '0x1234567890123456789012345678901234567890',
+  shipName: 'Devrel Gallactica',
+  shipAddress: '0x1234567890123456789012345678901234567890',
+  reason: 'I like it',
+  grantApplication: {
+    expectedDelivery: 1713035658,
+    grantAmount: 13000000000000000000n,
+    receiverAddress: '0x1234567890123456789034345678901234567890',
+    grantObjectives:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut dignissim velit porta elit placerat, sit amet efficitur est elementum. Praesent semper, quam vel convallis tincidunt, nisi arcu lacinia leo, at bibendum lorem orci et arcu.',
+    proposalLink: 'https://www.google.com',
+    additionalLink: 'https://www.google.com',
+    extraInfo:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut dignissim velit porta elit placerat, sit amet efficitur est elementum. Praesent semper, quam vel convallis tincidunt, nisi arcu lacinia leo, at bibendum lorem orci et arcu. Etiam tincidunt accumsan tellus et pretium. Ut tempor tempor libero ac molestie',
+  },
 };
 
-const dummyMilestones2 = {
+const grant2 = {
   steps: dummyMilestoneSteps2,
-  fundedBy: '0x1234567890123456789034345678901234567890',
+  shipName: 'Public Goods Deathstar',
+  shipAddress: '0x1234567890123456789034345678901234567890',
+  reason: 'I like it',
+  grantApplication: {
+    expectedDelivery: 1713035658,
+    grantAmount: 11000000000000000000n,
+    receiverAddress: '0x1234567890123456789034345678901234567890',
+    grantObjectives:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut dignissim velit porta elit placerat, sit amet efficitur est elementum. Praesent semper, quam vel convallis tincidunt, nisi arcu lacinia leo, at bibendum lorem orci et arcu.',
+    proposalLink: 'https://www.google.com',
+    additionalLink: 'https://www.google.com',
+    extraInfo:
+      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut dignissim velit porta elit placerat, sit amet efficitur est elementum. Praesent semper, quam vel convallis tincidunt, nisi arcu lacinia leo, at bibendum lorem orci et arcu. Etiam tincidunt accumsan tellus et pretium. Ut tempor tempor libero ac molestie',
+  },
 };
+
+export type GrantUI = {
+  steps: MilestoneStep[];
+  shipName: string;
+  shipAddress: string;
+  reason: string;
+  grantApplication: {
+    expectedDelivery: number;
+    grantAmount: bigint;
+    receiverAddress: string;
+    grantObjectives: string;
+    proposalLink: string;
+    additionalLink: string;
+    extraInfo: string;
+  };
+};
+
+const grants = [grant1, grant2];
 
 export const Project = () => {
   const theme = useMantineTheme();
@@ -74,7 +115,7 @@ export const Project = () => {
             <Tabs.Tab value="feed" w="20%">
               Feed
             </Tabs.Tab>
-            <Tabs.Tab w="20%" value="portfolio">
+            <Tabs.Tab w="20%" value="grants">
               Grants
             </Tabs.Tab>
             <Tabs.Tab w="20%" value="details">
@@ -83,6 +124,9 @@ export const Project = () => {
           </Tabs.List>
           <TabsPanel value="feed">
             <FeedPanel />
+          </TabsPanel>
+          <TabsPanel value="grants">
+            <GrantsPanel grants={grants} />
           </TabsPanel>
         </Tabs>
       </MainSection>
@@ -99,8 +143,14 @@ export const Project = () => {
         <Paper p="md" bg={theme.colors.dark[6]}>
           <Stack gap="lg">
             <Text>Grants</Text>
-            <MilestoneProgress {...dummyMilestones1} />
-            <MilestoneProgress {...dummyMilestones2} />
+            <MilestoneProgress
+              steps={grant1.steps}
+              fundedBy={grant1.shipAddress}
+            />
+            <MilestoneProgress
+              steps={grant2.steps}
+              fundedBy={grant2.shipAddress}
+            />
           </Stack>
         </Paper>
       </Stack>
