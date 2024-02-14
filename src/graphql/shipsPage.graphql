@@ -2,7 +2,6 @@ fragment ShipCardQuery on GrantShip {
   id
   name
   status
-  shipApplicationBytesData
   profileMetadata {
     pointer
   }

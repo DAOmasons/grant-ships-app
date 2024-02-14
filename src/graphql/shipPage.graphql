@@ -1,0 +1,13 @@
+query shipPageQuery($id: ID!) {
+  grantShip(id: $id) {
+    id
+    name
+    status
+    shipApplicationBytesData
+    profileMetadata {
+      pointer
+    }
+    allocatedAmount
+    distributedAmount
+  }
+}

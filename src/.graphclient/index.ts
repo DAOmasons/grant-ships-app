@@ -2002,6 +2002,12 @@ const merger = new(BareMerger as any)({
         },
         location: 'GetRecentTransactionDocument.graphql'
       },{
+        document: ShipPageQueryDocument,
+        get rawSDL() {
+          return printWithCache(ShipPageQueryDocument);
+        },
+        location: 'ShipPageQueryDocument.graphql'
+      },{
         document: ShipsPageQueryDocument,
         get rawSDL() {
           return printWithCache(ShipsPageQueryDocument);
@@ -2083,8 +2089,18 @@ export type getRecentTransactionQueryVariables = Exact<{
 
 export type getRecentTransactionQuery = { transaction?: Maybe<Pick<Transaction, 'id'>> };
 
+export type shipPageQueryQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type shipPageQueryQuery = { grantShip?: Maybe<(
+    Pick<GrantShip, 'id' | 'name' | 'status' | 'shipApplicationBytesData' | 'allocatedAmount' | 'distributedAmount'>
+    & { profileMetadata: Pick<RawMetadata, 'pointer'> }
+  )> };
+
 export type ShipCardQueryFragment = (
-  Pick<GrantShip, 'id' | 'name' | 'status' | 'shipApplicationBytesData'>
+  Pick<GrantShip, 'id' | 'name' | 'status'>
   & { profileMetadata: Pick<RawMetadata, 'pointer'> }
 );
 
@@ -2092,7 +2108,7 @@ export type ShipsPageQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type ShipsPageQueryQuery = { grantShips: Array<(
-    Pick<GrantShip, 'id' | 'name' | 'status' | 'shipApplicationBytesData'>
+    Pick<GrantShip, 'id' | 'name' | 'status'>
     & { profileMetadata: Pick<RawMetadata, 'pointer'> }
   )> };
 
@@ -2129,7 +2145,6 @@ export const ShipCardQueryFragmentDoc = gql`
   id
   name
   status
-  shipApplicationBytesData
   profileMetadata {
     pointer
   }
@@ -2176,6 +2191,21 @@ export const getRecentTransactionDocument = gql`
   }
 }
     ` as unknown as DocumentNode<getRecentTransactionQuery, getRecentTransactionQueryVariables>;
+export const shipPageQueryDocument = gql`
+    query shipPageQuery($id: ID!) {
+  grantShip(id: $id) {
+    id
+    name
+    status
+    shipApplicationBytesData
+    profileMetadata {
+      pointer
+    }
+    allocatedAmount
+    distributedAmount
+  }
+}
+    ` as unknown as DocumentNode<shipPageQueryQuery, shipPageQueryQueryVariables>;
 export const ShipsPageQueryDocument = gql`
     query ShipsPageQuery {
   grantShips(where: {isApproved: true}) {
@@ -2183,6 +2213,7 @@ export const ShipsPageQueryDocument = gql`
   }
 }
     ${ShipCardQueryFragmentDoc}` as unknown as DocumentNode<ShipsPageQueryQuery, ShipsPageQueryQueryVariables>;
+
 
 
 
@@ -2199,6 +2230,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     getRecentTransaction(variables: getRecentTransactionQueryVariables, options?: C): Promise<getRecentTransactionQuery> {
       return requester<getRecentTransactionQuery, getRecentTransactionQueryVariables>(getRecentTransactionDocument, variables, options) as Promise<getRecentTransactionQuery>;
+    },
+    shipPageQuery(variables: shipPageQueryQueryVariables, options?: C): Promise<shipPageQueryQuery> {
+      return requester<shipPageQueryQuery, shipPageQueryQueryVariables>(shipPageQueryDocument, variables, options) as Promise<shipPageQueryQuery>;
     },
     ShipsPageQuery(variables?: ShipsPageQueryQueryVariables, options?: C): Promise<ShipsPageQueryQuery> {
       return requester<ShipsPageQueryQuery, ShipsPageQueryQueryVariables>(ShipsPageQueryDocument, variables, options) as Promise<ShipsPageQueryQuery>;
