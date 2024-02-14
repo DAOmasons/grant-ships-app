@@ -21,6 +21,7 @@ import {
   IconRocket,
 } from '@tabler/icons-react';
 import classes from './FeedStyles.module.css';
+import { secondsToShortRelativeTime } from '../../utils/time';
 
 export const FeedCard = ({
   subject,
@@ -49,7 +50,7 @@ export const FeedCard = ({
   }, [subject.entityType, theme]);
 
   const time = useMemo(() => {
-    return '2d';
+    return secondsToShortRelativeTime(timestamp);
   }, [timestamp]);
 
   const messageWithLinks = useMemo(() => {

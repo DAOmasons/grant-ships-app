@@ -30,4 +30,5 @@ export enum MilestoneStatus {
 export type MilestoneStep = {
   status: MilestoneStatus;
   amount: bigint;
+  description: string;
 };

@@ -29,9 +29,9 @@ export const Ship = () => {
         <Text fz="lg" fw={600}>
           Ship 1
         </Text>
-        <Group>
-          <Text mb="xs">Approved</Text>
-          <IconInfoCircle />
+        <Group mb="xs" gap={6}>
+          <Text>Approved</Text>
+          <IconInfoCircle size={18} color={theme.colors.violet[6]} />
         </Group>
         <Text fz="sm" mb={'md'}>
           Lorem Ipsum is simply dummy text of the printing and typesetting

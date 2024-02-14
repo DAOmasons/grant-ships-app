@@ -9,6 +9,7 @@ import {
 } from '@tabler/icons-react';
 import { AddressAvatar } from '../AddressAvatar';
 import { isAddress } from 'viem';
+import { Contact } from '../Contact';
 
 type DetailsPanelProps = {
   details?: {
@@ -103,51 +104,15 @@ export const DetailsPanel = ({
           </Text>
         </>
       )}
-      <Text fw={700} fz="lg" mb={'md'} mt="xl">
-        Contact
-      </Text>
-      <Group gap={20} mb="xl">
-        {website && (
-          <ActionIcon variant="subtle">
-            <IconWorld size={22} />
-          </ActionIcon>
-        )}
-        {email && (
-          <ActionIcon variant="subtle">
-            <IconMail size={22} />
-          </ActionIcon>
-        )}
-        {github && (
-          <ActionIcon variant="subtle">
-            <IconBrandGithub size={22} />
-          </ActionIcon>
-        )}
-        {x && (
-          <ActionIcon variant="subtle">
-            <IconBrandX size={22} />
-          </ActionIcon>
-        )}
-        {discord && (
-          <ActionIcon variant="subtle">
-            <IconBrandDiscord size={22} />
-          </ActionIcon>
-        )}
-        {telegram && (
-          <ActionIcon variant="subtle">
-            <IconBrandTelegram size={22} />
-          </ActionIcon>
-        )}
-      </Group>
-      <Text fw={700} fz="lg" mb={'md'}>
-        Members
-      </Text>
-      <Stack>
-        {members.map((address) =>
-          isAddress(address) ? (
-            <AddressAvatar key={address} address={address} />
-          ) : null
-        )}
-      </Stack>
+      <Contact
+        members={members}
+        website={website}
+        email={email}
+        x={x}
+        discord={discord}
+        telegram={telegram}
+        github={github}
+      />
     </Box>
   );
 };

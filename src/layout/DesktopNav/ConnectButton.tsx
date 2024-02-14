@@ -1,19 +1,11 @@
 import { useClipboard, useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { IconLogout, IconUserCircle } from '@tabler/icons-react';
-import { mainnet } from 'viem/chains';
-import {
-  useAccount,
-  useConnect,
-  useDisconnect,
-  useEnsAvatar,
-  useEnsName,
-} from 'wagmi';
+import { useAccount, useConnect, useDisconnect } from 'wagmi';
 
 import { Address } from 'viem';
 import classes from './DesktoNavStyles.module.css';
 import { Button, Modal, Stack } from '@mantine/core';
-import { ensConfig } from '../../utils/config';
 import { AddressAvatar } from '../../components/AddressAvatar';
 
 export const ConnectButton = () => {

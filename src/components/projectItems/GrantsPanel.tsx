@@ -1,8 +1,27 @@
 import { Box, Select, Text } from '@mantine/core';
 import { GrantUI } from '../../pages/Project';
 import { useState } from 'react';
+import { AppAlert } from '../UnderContruction';
+import { secondsToLongDate } from '../../utils/time';
 
 export const GrantsPanel = ({ grants }: { grants: GrantUI[] }) => {
+  if (grants.length === 0) {
+    return <NoGrants />;
+  }
+
+  return <HasGrants grants={grants} />;
+};
+
+const NoGrants = () => {
+  return (
+    <AppAlert
+      title="No Grants Approved Yet"
+      description="You don't have any grants approved yet. Apply for a grant from a Grant Ship and wait for approval."
+    />
+  );
+};
+
+const HasGrants = ({ grants }: { grants: GrantUI[] }) => {
   const [value, setValue] = useState<string | null>(null);
 
   const selectedGrant = grants.find(
@@ -46,7 +65,7 @@ const GrantDetails = ({
         Expected Delivery
       </Text>
       <Text fz="sm" mb="xl">
-        {grantApplication.expectedDelivery}
+        {secondsToLongDate(grantApplication.expectedDelivery)}
       </Text>
       <Text fz="sm" fw={600}>
         Proposal Link
