@@ -1,5 +1,5 @@
 import { Avatar, Group, MantineSize, StyleProp, Text } from '@mantine/core';
-import React from 'react';
+import React, { ComponentProps } from 'react';
 import { Address } from 'viem';
 import { useEnsAvatar, useEnsName } from 'wagmi';
 import { ensConfig } from '../utils/config';
@@ -38,4 +38,48 @@ export const AddressAvatar = ({
       {displayText && <Text fz={fz}>{name}</Text>}
     </Group>
   );
+};
+
+export const AddressAvatarGroup = ({
+  avatarProps,
+  addresses,
+}: {
+  avatarProps: ComponentProps<typeof Avatar>;
+  addresses: string[];
+}) => {
+  return (
+    <Avatar.Group>
+      {addresses.map((address) => (
+        <AvatarGroupItem
+          key={address}
+          address={address}
+          avatarProps={avatarProps}
+        />
+      ))}
+    </Avatar.Group>
+  );
+};
+
+export const AvatarGroupItem = ({
+  address,
+  avatarProps,
+}: {
+  address: string;
+  avatarProps: ComponentProps<typeof Avatar>;
+}) => {
+  const { data: ensName } = useEnsName({
+    address: address as Address,
+    config: ensConfig,
+    chainId: mainnet.id,
+  });
+
+  const { data: ensAvatar } = useEnsAvatar({
+    name: ensName ? normalize(ensName) : undefined,
+    config: ensConfig,
+    chainId: mainnet.id,
+  });
+
+  const imgUrl = ensAvatar || `https://effigy.im/a/${address}.svg`;
+
+  return <Avatar src={imgUrl} {...avatarProps} />;
 };
