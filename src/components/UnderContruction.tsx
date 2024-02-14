@@ -6,6 +6,7 @@ import {
   StyleProp,
   DefaultMantineColor,
 } from '@mantine/core';
+
 import { IconBell } from '@tabler/icons-react';
 import React from 'react';
 
@@ -14,6 +15,8 @@ type AppAlertProps = {
   description?: string;
   icon?: React.ReactNode;
   color?: StyleProp<DefaultMantineColor>;
+  bg?: StyleProp<DefaultMantineColor>;
+  opacity?: number;
 };
 
 export const AppAlert = ({
@@ -21,9 +24,11 @@ export const AppAlert = ({
   description,
   icon = <IconBell size={24} />,
   color,
+  bg,
+  opacity,
 }: AppAlertProps) => {
   return (
-    <Alert mt="xl" mb={56} c={color}>
+    <Alert mt="xl" mb={56} c={color} bg={bg} opacity={opacity}>
       <Group>
         {icon}
         <Box>

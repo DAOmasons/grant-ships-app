@@ -2001,6 +2001,12 @@ const merger = new(BareMerger as any)({
           return printWithCache(GetRecentTransactionDocument);
         },
         location: 'GetRecentTransactionDocument.graphql'
+      },{
+        document: ShipsPageQueryDocument,
+        get rawSDL() {
+          return printWithCache(ShipsPageQueryDocument);
+        },
+        location: 'ShipsPageQueryDocument.graphql'
       }
     ];
     },
@@ -2077,6 +2083,19 @@ export type getRecentTransactionQueryVariables = Exact<{
 
 export type getRecentTransactionQuery = { transaction?: Maybe<Pick<Transaction, 'id'>> };
 
+export type ShipCardQueryFragment = (
+  Pick<GrantShip, 'id' | 'name' | 'status' | 'shipApplicationBytesData'>
+  & { profileMetadata: Pick<RawMetadata, 'pointer'> }
+);
+
+export type ShipsPageQueryQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ShipsPageQueryQuery = { grantShips: Array<(
+    Pick<GrantShip, 'id' | 'name' | 'status' | 'shipApplicationBytesData'>
+    & { profileMetadata: Pick<RawMetadata, 'pointer'> }
+  )> };
+
 export const FacShipDataFragmentDoc = gql`
     fragment FacShipData on GrantShip {
   id
@@ -2105,6 +2124,17 @@ export const RawMetadataFragmentDoc = gql`
   pointer
 }
     ` as unknown as DocumentNode<RawMetadataFragment, unknown>;
+export const ShipCardQueryFragmentDoc = gql`
+    fragment ShipCardQuery on GrantShip {
+  id
+  name
+  status
+  shipApplicationBytesData
+  profileMetadata {
+    pointer
+  }
+}
+    ` as unknown as DocumentNode<ShipCardQueryFragment, unknown>;
 export const facDashShipDataDocument = gql`
     query facDashShipData {
   shipApplicants: grantShips(where: {isAwaitingApproval: true}) {
@@ -2146,6 +2176,14 @@ export const getRecentTransactionDocument = gql`
   }
 }
     ` as unknown as DocumentNode<getRecentTransactionQuery, getRecentTransactionQueryVariables>;
+export const ShipsPageQueryDocument = gql`
+    query ShipsPageQuery {
+  grantShips(where: {isApproved: true}) {
+    ...ShipCardQuery
+  }
+}
+    ${ShipCardQueryFragmentDoc}` as unknown as DocumentNode<ShipsPageQueryQuery, ShipsPageQueryQueryVariables>;
+
 
 
 
@@ -2161,6 +2199,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     getRecentTransaction(variables: getRecentTransactionQueryVariables, options?: C): Promise<getRecentTransactionQuery> {
       return requester<getRecentTransactionQuery, getRecentTransactionQueryVariables>(getRecentTransactionDocument, variables, options) as Promise<getRecentTransactionQuery>;
+    },
+    ShipsPageQuery(variables?: ShipsPageQueryQueryVariables, options?: C): Promise<ShipsPageQueryQuery> {
+      return requester<ShipsPageQueryQuery, ShipsPageQueryQueryVariables>(ShipsPageQueryDocument, variables, options) as Promise<ShipsPageQueryQuery>;
     }
   };
 }

@@ -1,3 +1,5 @@
+import { GameStatus } from './common';
+
 export type FeedCardUI = {
   subject: {
     name: string;
@@ -31,4 +33,15 @@ export type MilestoneStep = {
   status: MilestoneStatus;
   amount: bigint;
   description: string;
+};
+
+export type ShipsCardUI = {
+  id: string;
+  name: string;
+  status: GameStatus;
+  imgUrl: string;
+  description: string;
+  amtAllocated: string;
+  amtDistributed: string;
+  amtAvailable: string;
 };

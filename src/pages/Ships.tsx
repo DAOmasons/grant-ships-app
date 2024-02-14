@@ -1,60 +1,63 @@
-import { Box, Button } from '@mantine/core';
+import { Box, Button, Skeleton, Stack, useMantineTheme } from '@mantine/core';
 import { MainSection, PageDescription, PageTitle } from '../layout/Sections';
 import { Link } from 'react-router-dom';
 import { ShipCard } from '../components/shipItems/ShipCard';
-import { IconPlus } from '@tabler/icons-react';
-import { GameStatus } from '../types/common';
+import { IconExclamationMark, IconPlus } from '@tabler/icons-react';
 
-const NUM_SHIPS = 3;
-
-export type ShipCardProps = {
-  id: string;
-  name: string;
-  status: GameStatus;
-  imgUrl: string;
-  description: string;
-  amtAllocated: string;
-  amtDistributed: string;
-  amtAvailable: string;
-};
-
-const DummyShips: ShipCardProps[] = [
-  {
-    id: '0xDE6bcde54CF040088607199FC541f013bA53C21E',
-    name: 'Grant Ship 1',
-    status: GameStatus.Pending,
-    imgUrl: 'https://i.pravatar.cc/300',
-    description:
-      'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s. Lorem Ipsum has been the industry standard dummy text ever since the 1500s.',
-    amtAllocated: '5000000000000000000',
-    amtDistributed: '5000000000000000000',
-    amtAvailable: '20000000000000000000',
-  },
-  {
-    id: '0xDE6bcde54CF040088607199FC541f013bA53C21E',
-    name: 'Grant Ship 1',
-    status: GameStatus.Pending,
-    imgUrl: 'https://i.pravatar.cc/300',
-    description:
-      'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s. Lorem Ipsum has been the industry standard dummy text ever since the 1500s.',
-    amtAllocated: '5000000000000000000',
-    amtDistributed: '5000000000000000000',
-    amtAvailable: '20000000000000000000',
-  },
-  {
-    id: '0xDE6bcde54CF040088607199FC541f013bA53C21E',
-    name: 'Grant Ship 1',
-    status: GameStatus.Pending,
-    imgUrl: 'https://i.pravatar.cc/300',
-    description:
-      'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry standard dummy text ever since the 1500s.',
-    amtAllocated: '5000000000000000000',
-    amtDistributed: '5000000000000000000',
-    amtAvailable: '20000000000000000000',
-  },
-];
+import { getShipsPageData } from '../queries/getShipsPage';
+import { useQuery } from '@tanstack/react-query';
+import { AppAlert } from '../components/UnderContruction';
+import { ReactNode } from 'react';
 
 export const Ships = () => {
+  const {
+    data: ships,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ['ships-page'],
+    queryFn: getShipsPageData,
+  });
+  const theme = useMantineTheme();
+
+  if (isLoading) {
+    return <PageLayout>{<LoadingState />}</PageLayout>;
+  }
+
+  if (error) {
+    return (
+      <PageLayout>
+        <AppAlert
+          title="Ships Page 404"
+          description={error?.message || 'Error fetching ships'}
+          bg={theme.colors.pink[8]}
+          icon={<IconExclamationMark size={24} />}
+        />
+      </PageLayout>
+    );
+  }
+
+  if (!ships || ships.length === 0) {
+    return (
+      <PageLayout>
+        <AppAlert
+          title="No Ships Yet"
+          description={"There aren't any ships approved for this round yet"}
+        />
+      </PageLayout>
+    );
+  }
+
+  return (
+    <PageLayout>
+      {ships.map((ship, i) => (
+        <ShipCard key={`shipcard-${i}`} {...ship} />
+      ))}
+    </PageLayout>
+  );
+};
+
+const PageLayout = ({ children }: { children: ReactNode }) => {
   return (
     <MainSection>
       <PageTitle title="Grant Ships" />
@@ -68,10 +71,18 @@ export const Ships = () => {
         >
           Start a Grant Ship
         </Button>
-        {DummyShips.map((ship, i) => (
-          <ShipCard key={`shipcard-${i}`} {...ship} />
-        ))}
+        {children}
       </Box>
     </MainSection>
+  );
+};
+
+const LoadingState = () => {
+  return (
+    <Stack>
+      <Skeleton mih={235} w="100%" />
+      <Skeleton mih={235} w="100%" />
+      <Skeleton mih={235} w="100%" />
+    </Stack>
   );
 };

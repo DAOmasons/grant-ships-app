@@ -1,4 +1,4 @@
-import { Box, Flex, Text } from '@mantine/core';
+import { Box, Flex, Overlay, Text } from '@mantine/core';
 import classes from './ShipItemStyles.module.css';
 import React from 'react';
 
@@ -8,7 +8,7 @@ export const FundingIndicator = ({
   amounts: [number, number, number];
 }) => {
   return (
-    <Box w={238}>
+    <Box w={238} pos="relative">
       <Flex mb="sm" opacity={0.7}>
         <Box
           w={`${amounts[0]}%`}
