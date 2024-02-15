@@ -1,0 +1,14 @@
+query projectPageQuery($id: ID!) {
+  project(id: $id) {
+    id
+    name
+    status
+    owner
+    metadata {
+      pointer
+    }
+    members {
+      addresses
+    }
+  }
+}

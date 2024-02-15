@@ -13,6 +13,10 @@ export const getShipPageData = async (id: string): Promise<ShipPageUI> => {
 
     const { grantShip } = await shipPageQuery({ id });
 
+    if (!grantShip) {
+      throw new Error('No ship found');
+    }
+
     const pointer = grantShip?.profileMetadata?.pointer;
     if (!pointer) {
       console.error('No metadata pointer', grantShip);
@@ -48,7 +52,9 @@ export const getShipPageData = async (id: string): Promise<ShipPageUI> => {
 
     const members = [
       grantShip.owner,
-      ...(grantShip.alloProfileMembers?.addresses || []),
+      ...(Array.isArray(grantShip.alloProfileMembers?.addresses)
+        ? (grantShip.alloProfileMembers?.addresses as string[])
+        : []),
     ];
 
     console.log('validatedApplicationData', validatedApplicationData);

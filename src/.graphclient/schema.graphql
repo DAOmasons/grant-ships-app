@@ -753,6 +753,7 @@ enum ProfileMemberGroup_orderBy {
 type Project {
   id: Bytes!
   profileId: Bytes!
+  status: Int!
   nonce: BigInt!
   name: String!
   metadata: RawMetadata!
@@ -785,6 +786,14 @@ input Project_filter {
   profileId_not_in: [Bytes!]
   profileId_contains: Bytes
   profileId_not_contains: Bytes
+  status: Int
+  status_not: Int
+  status_gt: Int
+  status_lt: Int
+  status_gte: Int
+  status_lte: Int
+  status_in: [Int!]
+  status_not_in: [Int!]
   nonce: BigInt
   nonce_not: BigInt
   nonce_gt: BigInt
@@ -910,6 +919,7 @@ input Project_filter {
 enum Project_orderBy {
   id
   profileId
+  status
   nonce
   name
   metadata

@@ -752,6 +752,7 @@ export type ProfileMemberGroup_orderBy =
 export type Project = {
   id: Scalars['Bytes'];
   profileId: Scalars['Bytes'];
+  status: Scalars['Int'];
   nonce: Scalars['BigInt'];
   name: Scalars['String'];
   metadata: RawMetadata;
@@ -784,6 +785,14 @@ export type Project_filter = {
   profileId_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   profileId_contains?: InputMaybe<Scalars['Bytes']>;
   profileId_not_contains?: InputMaybe<Scalars['Bytes']>;
+  status?: InputMaybe<Scalars['Int']>;
+  status_not?: InputMaybe<Scalars['Int']>;
+  status_gt?: InputMaybe<Scalars['Int']>;
+  status_lt?: InputMaybe<Scalars['Int']>;
+  status_gte?: InputMaybe<Scalars['Int']>;
+  status_lte?: InputMaybe<Scalars['Int']>;
+  status_in?: InputMaybe<Array<Scalars['Int']>>;
+  status_not_in?: InputMaybe<Array<Scalars['Int']>>;
   nonce?: InputMaybe<Scalars['BigInt']>;
   nonce_not?: InputMaybe<Scalars['BigInt']>;
   nonce_gt?: InputMaybe<Scalars['BigInt']>;
@@ -909,6 +918,7 @@ export type Project_filter = {
 export type Project_orderBy =
   | 'id'
   | 'profileId'
+  | 'status'
   | 'nonce'
   | 'name'
   | 'metadata'

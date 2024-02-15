@@ -12,13 +12,13 @@ import { MainSection, PageTitle } from '../layout/Sections';
 import { IconInfoCircle } from '@tabler/icons-react';
 import { FeedPanel } from '../components/shipItems/FeedPanel';
 import { GAME_TOKEN } from '../constants/gameSetup';
-import { MilestoneStatus, MilestoneStep } from '../types/ui';
+import { GrantUI, MilestoneStatus, MilestoneStep } from '../types/ui';
 import { MilestoneProgress } from '../components/projectItems/MilestoneProgress';
 import { GrantsPanel } from '../components/projectItems/GrantsPanel';
 import { MilestonePanel } from '../components/projectItems/MilestonePanel';
 import { Contact } from '../components/Contact';
 import { useMemo } from 'react';
-import { toEther } from '@thirdweb-dev/react';
+
 import { formatEther } from 'viem';
 
 const milestoneDescription = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut dignissim velit porta elit placerat, sit amet efficitur est elementum. Praesent semper, quam vel convallis tincidunt, nisi arcu lacinia leo, at bibendum lorem orci et arcu.`;
@@ -102,23 +102,6 @@ const grant2: GrantUI = {
   },
 };
 
-export type GrantUI = {
-  milestones: MilestoneStep[];
-  shipName: string;
-  shipAddress: string;
-  reason: string;
-  milestonesStatus: MilestoneStatus;
-  grantApplication: {
-    expectedDelivery: number;
-    grantAmount: bigint;
-    receiverAddress: string;
-    grantObjectives: string;
-    proposalLink: string;
-    additionalLink: string;
-    extraInfo: string;
-  };
-};
-
 const grants = [grant1, grant2];
 
 const DummyProject = {
@@ -141,10 +124,14 @@ const DummyProject = {
   ],
 };
 
-export const Project = ({ project = DummyProject }: { project: any }) => {
+export const Project = () => {
+  const project = DummyProject;
+
   const theme = useMantineTheme();
 
   const totalFunds = useMemo(() => {
+    if (!project.grants) return formatEther(0n);
+
     return formatEther(
       project.grants.reduce((acc: bigint, grant: GrantUI) => {
         return acc + grant.grantApplication.grantAmount;
@@ -220,11 +207,11 @@ export const Project = ({ project = DummyProject }: { project: any }) => {
           </Text>
           <Text size="sm">Funds received this round</Text>
         </Paper>
-        {project.grants.length !== 0 && (
+        {project?.grants?.length !== 0 && (
           <Paper p="md" bg={theme.colors.dark[6]}>
             <Stack gap="lg">
               <Text>Grants</Text>
-              {project.grants.map((grant: GrantUI, i: number) => (
+              {project?.grants?.map((grant: GrantUI, i: number) => (
                 <MilestoneProgress
                   key={`milestone-progress-bar-${i}`}
                   steps={grant.milestones}

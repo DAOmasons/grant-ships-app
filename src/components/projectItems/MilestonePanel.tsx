@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { GrantUI } from '../../pages/Project';
+
 import { AppAlert } from '../UnderContruction';
 import { Box, Select, Text, Timeline, useMantineTheme } from '@mantine/core';
 import { IconCheck, IconEye, IconX } from '@tabler/icons-react';
-import { MilestoneStatus } from '../../types/ui';
+import { GrantUI, MilestoneStatus } from '../../types/ui';
 import { toEther } from '@thirdweb-dev/react';
 import { GAME_TOKEN } from '../../constants/gameSetup';
 

@@ -774,6 +774,7 @@ export type ProfileMemberGroup_orderBy =
 export type Project = {
   id: Scalars['Bytes'];
   profileId: Scalars['Bytes'];
+  status: Scalars['Int'];
   nonce: Scalars['BigInt'];
   name: Scalars['String'];
   metadata: RawMetadata;
@@ -806,6 +807,14 @@ export type Project_filter = {
   profileId_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   profileId_contains?: InputMaybe<Scalars['Bytes']>;
   profileId_not_contains?: InputMaybe<Scalars['Bytes']>;
+  status?: InputMaybe<Scalars['Int']>;
+  status_not?: InputMaybe<Scalars['Int']>;
+  status_gt?: InputMaybe<Scalars['Int']>;
+  status_lt?: InputMaybe<Scalars['Int']>;
+  status_gte?: InputMaybe<Scalars['Int']>;
+  status_lte?: InputMaybe<Scalars['Int']>;
+  status_in?: InputMaybe<Array<Scalars['Int']>>;
+  status_not_in?: InputMaybe<Array<Scalars['Int']>>;
   nonce?: InputMaybe<Scalars['BigInt']>;
   nonce_not?: InputMaybe<Scalars['BigInt']>;
   nonce_gt?: InputMaybe<Scalars['BigInt']>;
@@ -931,6 +940,7 @@ export type Project_filter = {
 export type Project_orderBy =
   | 'id'
   | 'profileId'
+  | 'status'
   | 'nonce'
   | 'name'
   | 'metadata'
@@ -1790,6 +1800,7 @@ export type ProfileMemberGroupResolvers<ContextType = MeshContext, ParentType ex
 export type ProjectResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Project'] = ResolversParentTypes['Project']> = ResolversObject<{
   id?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
   profileId?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
+  status?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   nonce?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   metadata?: Resolver<ResolversTypes['RawMetadata'], ParentType, ContextType>;
@@ -2002,6 +2013,12 @@ const merger = new(BareMerger as any)({
         },
         location: 'GetRecentTransactionDocument.graphql'
       },{
+        document: ProjectPageQueryDocument,
+        get rawSDL() {
+          return printWithCache(ProjectPageQueryDocument);
+        },
+        location: 'ProjectPageQueryDocument.graphql'
+      },{
         document: ShipPageQueryDocument,
         get rawSDL() {
           return printWithCache(ShipPageQueryDocument);
@@ -2088,6 +2105,16 @@ export type getRecentTransactionQueryVariables = Exact<{
 
 
 export type getRecentTransactionQuery = { transaction?: Maybe<Pick<Transaction, 'id'>> };
+
+export type projectPageQueryQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type projectPageQueryQuery = { project?: Maybe<(
+    Pick<Project, 'id' | 'name' | 'status' | 'owner'>
+    & { metadata: Pick<RawMetadata, 'pointer'>, members?: Maybe<Pick<ProfileMemberGroup, 'addresses'>> }
+  )> };
 
 export type shipPageQueryQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -2191,6 +2218,22 @@ export const getRecentTransactionDocument = gql`
   }
 }
     ` as unknown as DocumentNode<getRecentTransactionQuery, getRecentTransactionQueryVariables>;
+export const projectPageQueryDocument = gql`
+    query projectPageQuery($id: ID!) {
+  project(id: $id) {
+    id
+    name
+    status
+    owner
+    metadata {
+      pointer
+    }
+    members {
+      addresses
+    }
+  }
+}
+    ` as unknown as DocumentNode<projectPageQueryQuery, projectPageQueryQueryVariables>;
 export const shipPageQueryDocument = gql`
     query shipPageQuery($id: ID!) {
   grantShip(id: $id) {
@@ -2224,6 +2267,7 @@ export const ShipsPageQueryDocument = gql`
 
 
 
+
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
@@ -2235,6 +2279,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     getRecentTransaction(variables: getRecentTransactionQueryVariables, options?: C): Promise<getRecentTransactionQuery> {
       return requester<getRecentTransactionQuery, getRecentTransactionQueryVariables>(getRecentTransactionDocument, variables, options) as Promise<getRecentTransactionQuery>;
+    },
+    projectPageQuery(variables: projectPageQueryQueryVariables, options?: C): Promise<projectPageQueryQuery> {
+      return requester<projectPageQueryQuery, projectPageQueryQueryVariables>(projectPageQueryDocument, variables, options) as Promise<projectPageQueryQuery>;
     },
     shipPageQuery(variables: shipPageQueryQueryVariables, options?: C): Promise<shipPageQueryQuery> {
       return requester<shipPageQueryQuery, shipPageQueryQueryVariables>(shipPageQueryDocument, variables, options) as Promise<shipPageQueryQuery>;

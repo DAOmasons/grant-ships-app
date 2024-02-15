@@ -69,3 +69,36 @@ export type ShipPageUI = {
     github: string;
   };
 };
+
+export type GrantUI = {
+  milestones: MilestoneStep[];
+  shipName: string;
+  shipAddress: string;
+  reason: string;
+  milestonesStatus: MilestoneStatus;
+  grantApplication: {
+    expectedDelivery: number;
+    grantAmount: bigint;
+    receiverAddress: string;
+    grantObjectives: string;
+    proposalLink: string;
+    additionalLink: string;
+    extraInfo: string;
+  };
+};
+
+export type ProjectPageUI = {
+  id: string;
+  name: string;
+  imgUrl: string;
+  status: GameStatus;
+  description: string;
+  grants: GrantUI[] | null;
+  website: string;
+  email: string;
+  github: string;
+  x: string;
+  discord: string;
+  telegram: string;
+  members: string[];
+};
