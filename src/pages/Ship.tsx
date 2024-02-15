@@ -1,9 +1,11 @@
 import {
   Avatar,
+  Box,
   Button,
   Flex,
   Group,
   Paper,
+  Skeleton,
   Stack,
   Tabs,
   Text,
@@ -15,91 +17,75 @@ import { FundingIndicator } from '../components/shipItems/FundingIndicator';
 import { FeedPanel } from '../components/shipItems/FeedPanel';
 import { PortfolioPanel } from '../components/shipItems/PortfolioPanel';
 import { DetailsPanel } from '../components/shipItems/DetailsPanel';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { GAME_TOKEN } from '../constants/gameSetup';
 import { AddressAvatarGroup } from '../components/AddressAvatar';
 import { GameStatus } from '../types/common';
-import { useMemo } from 'react';
-import { formatEther } from 'viem';
+import { ReactNode } from 'react';
 
-const DummyShip = {
-  name: 'Ship 1',
-  description:
-    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-  status: GameStatus.Accepted,
-  imgUrl: 'https://i.pravatar.cc/300',
-  amtAllocated: '5000000000000000000',
-  amtDistributed: '5000000000000000000',
-  amtAvailable: '20000000000000000000',
-  members: [
-    '0x756ee8B8E898D497043c2320d9909f1DD5a7077F',
-    '0xD800B05c70A2071BC1E5Eac5B3390Da1Eb67bC9D',
-    '0x57abda4ee50Bb3079A556C878b2c345310057569',
-    '0xDE6bcde54CF040088607199FC541f013bA53C21E',
-  ],
-  details: {
-    thesis:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut dignissim velit porta elit placerat, sit amet efficitur est elementum. Praesent semper, quam vel convallis tincidunt, nisi arcu lacinia leo, at bibendum lorem orci et arcu. Etiam tincidunt accumsan tellus et pretium. Ut tempor tempor libero ac molestie. Cras lacinia, orci id posuere consequat, sapien nunc commodo velit, ut laoreet felis orci sollicitudin lacus.',
-    apply:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut dignissim velit porta elit placerat, sit amet efficitur est elementum. Praesent semper, quam vel convallis tincidunt, nisi arcu',
-    extraInfo:
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.",
-    extraLink: 'https://www.google.com',
-    website: 'https://www.google.com',
-    email: 'email@email.email',
-    x: 'https://www.google.com',
-    discord: 'https://www.google.com',
-    telegram: 'https://www.google.com',
-    github: 'https://www.google.com',
-  },
-};
-
-type ShipPageUI = {
-  name: string;
-  description: string;
-  imgUrl: string;
-  status: GameStatus;
-  amtAllocated: string;
-  amtDistributed: string;
-  amtAvailable: string;
-  members: string[];
-  details: {
-    thesis: string;
-    apply: string;
-    extraInfo: string;
-    extraLink: string;
-    website: string;
-    email: string;
-    x: string;
-    discord: string;
-    telegram: string;
-    github: string;
-  };
-};
+import { getShipPageData } from '../queries/getShipPage';
+import { useQuery } from '@tanstack/react-query';
+import { SCAN_URL } from '../constants/enpoints';
+import { AppAlert } from '../components/UnderContruction';
 
 export const Ship = () => {
   const theme = useMantineTheme();
+  const { id } = useParams<{ id: string }>();
 
-  const ship = DummyShip as ShipPageUI;
+  const {
+    data: ship,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: [`ship-page-${id}`],
+    queryFn: () => getShipPageData(id as string),
+    enabled: !!id,
+  });
 
-  const fundingStats = useMemo(() => {
-    const amtAllocated = Number(ship.amtAllocated);
-    const amtDistributed = Number(ship.amtDistributed);
-    const amtAvailable = Number(ship.amtAvailable);
-    const total = amtAllocated + amtDistributed + amtAvailable;
+  if (!ship) return null;
 
-    return {
-      amounts: [amtAllocated, amtDistributed, amtAvailable].map((amt) => {
-        return (Number(amt) / total) * 100;
-      }) as [number, number, number],
-      totalFunding: formatEther(BigInt(total)),
-    };
-  }, [ship]);
+  if (isLoading) {
+    return <LoadingState />;
+  }
+
+  if (error) {
+    return (
+      <MainSection>
+        <PageTitle title="Ship Not Found" />
+        <AppAlert
+          title="Error: Ship Page 404"
+          description={error.message}
+          bg={theme.colors.pink[8]}
+        />
+      </MainSection>
+    );
+  }
+
+  if (!ship) {
+    return (
+      <MainSection>
+        <PageTitle title="Ship Not Found" />
+        <AppAlert
+          title="Error: Ship Page 404"
+          description={'Ship not found, check the URL and try again.'}
+          bg={theme.colors.pink[8]}
+        />
+      </MainSection>
+    );
+  }
+
+  const totalFunding = [
+    BigInt(ship.amtDistributed ? ship.amtDistributed : 0),
+    BigInt(ship.amtAvailable ? ship.amtAvailable : 0),
+    BigInt(ship.amtAvailable ? ship.amtAvailable : 0),
+  ]
+    .reduce((acc, amt) => acc + amt, 0n)
+    .toString();
 
   return (
     <Flex>
       <MainSection maw={534}>
-        <PageTitle title="Ship 1" />
+        <PageTitle title={ship.name} />
         <Avatar size={160} mt={'xl'} mb="md" src={ship.imgUrl} />
         <Text fz="lg" fw={600}>
           {ship.name}
@@ -145,9 +131,9 @@ export const Ship = () => {
       </MainSection>
       <Stack mt={72} w={270}>
         <Paper p="md" bg={theme.colors.dark[6]}>
-          <Group>
-            <Text size="sm">Ship Model: </Text>
-            <a href="#">
+          <Group gap={4}>
+            <Text size="sm">Ship Model:</Text>
+            <a href={`${SCAN_URL}/${ship.shipContractAddress}`}>
               <Group>
                 <Text fz="sm" mr={-10}>
                   Grant Ship Alpha
@@ -165,15 +151,64 @@ export const Ship = () => {
             Funding Received
           </Text>
           <Text size="xl">
-            {fundingStats.totalFunding} {GAME_TOKEN.SYMBOL}
+            {totalFunding} {GAME_TOKEN.SYMBOL}
           </Text>
         </Paper>
         <Paper p="md" bg={theme.colors.dark[6]}>
           <Text size="sm" mb="lg">
             Funding Available
           </Text>
-          <FundingIndicator amounts={fundingStats.amounts} />
+          <FundingIndicator
+            available={ship.amtAvailable}
+            distributed={ship.amtDistributed}
+            allocated={ship.amtDistributed}
+          />
         </Paper>
+      </Stack>
+    </Flex>
+  );
+};
+const LoadingState = () => {
+  return (
+    <PageLayout
+      mainSection={
+        <Box w={'100%'}>
+          <Skeleton h={160} w="100%" maw={160} radius="50%" mt="xl" mb="md" />
+          <Skeleton h={22} w="100%" maw={150} mb="xs" />
+          <Skeleton h={18} w="100%" maw={100} mb="xs" />
+          <Skeleton h={80} mb="md" w={537} />
+          <Skeleton h={32} w={150} mb="xl" />
+          <Skeleton h={1} w="100%" mb="xl" />
+          <Skeleton h={140} w="100%" mb="xl" />
+          <Skeleton h={140} w="100%" mb="xl" />
+          <Skeleton h={140} w="100%" mb="xl" />
+        </Box>
+      }
+      sideSection={
+        <>
+          <Skeleton h={70} w="100%" mt="xl" />
+          <Skeleton h={140} w="100%" />
+        </>
+      }
+    />
+  );
+};
+
+const PageLayout = ({
+  mainSection,
+  sideSection,
+}: {
+  mainSection: ReactNode;
+  sideSection: ReactNode;
+}) => {
+  return (
+    <Flex>
+      <MainSection maw={534}>
+        <PageTitle title="   " />
+        {mainSection}
+      </MainSection>
+      <Stack mt={72} w={270}>
+        {sideSection}
       </Stack>
     </Flex>
   );

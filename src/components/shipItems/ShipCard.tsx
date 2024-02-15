@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import classes from './ShipItemStyles.module.css';
 import { IconInfoCircle } from '@tabler/icons-react';
 import { FundingIndicator } from './FundingIndicator';
-import { useMemo } from 'react';
+
 import { GameStatus } from '../../types/common';
 import { ShipsCardUI } from '../../types/ui';
 
@@ -28,19 +28,6 @@ export const ShipCard = ({
 }: ShipsCardUI) => {
   const navigate = useNavigate();
   const theme = useMantineTheme();
-
-  const amounts = useMemo(() => {
-    if (amtAllocated && amtDistributed && amtAvailable) {
-      return null;
-    }
-
-    const total =
-      Number(amtAllocated) + Number(amtDistributed) + Number(amtAvailable);
-
-    return [amtAllocated, amtDistributed, amtAvailable].map((amt) => {
-      return (Number(amt) / total) * 100;
-    }) as [number, number, number];
-  }, [amtAllocated, amtDistributed, amtAvailable]);
 
   return (
     <Paper
@@ -71,17 +58,11 @@ export const ShipCard = ({
                 />
               </Group>
             </Box>
-            {amounts ? (
-              <FundingIndicator amounts={amounts} />
-            ) : (
-              <Box>
-                <Group mb="xs" gap="4">
-                  <Text size="xs">Funding round not active</Text>
-                  <IconInfoCircle size={14} color={theme.colors?.violet[6]} />
-                </Group>
-                <FundingIndicator amounts={[34, 33, 33]} />
-              </Box>
-            )}
+            <FundingIndicator
+              allocated={amtAllocated}
+              distributed={amtDistributed}
+              available={amtAvailable}
+            />
           </Flex>
           <Text size="sm" mb="md" h={60} lineClamp={3}>
             {description}

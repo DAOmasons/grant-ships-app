@@ -2095,8 +2095,8 @@ export type shipPageQueryQueryVariables = Exact<{
 
 
 export type shipPageQueryQuery = { grantShip?: Maybe<(
-    Pick<GrantShip, 'id' | 'name' | 'status' | 'shipApplicationBytesData' | 'allocatedAmount' | 'distributedAmount'>
-    & { profileMetadata: Pick<RawMetadata, 'pointer'> }
+    Pick<GrantShip, 'id' | 'name' | 'status' | 'shipContractAddress' | 'shipApplicationBytesData' | 'owner' | 'allocatedAmount' | 'distributedAmount'>
+    & { profileMetadata: Pick<RawMetadata, 'pointer'>, alloProfileMembers?: Maybe<Pick<ProfileMemberGroup, 'addresses'>> }
   )> };
 
 export type ShipCardQueryFragment = (
@@ -2197,9 +2197,14 @@ export const shipPageQueryDocument = gql`
     id
     name
     status
+    shipContractAddress
     shipApplicationBytesData
     profileMetadata {
       pointer
+    }
+    owner
+    alloProfileMembers {
+      addresses
     }
     allocatedAmount
     distributedAmount

@@ -1,12 +1,38 @@
 import { Box, Flex, Overlay, Text } from '@mantine/core';
 import classes from './ShipItemStyles.module.css';
-import React from 'react';
+import React, { useMemo } from 'react';
+
+type IndicatorProps = {
+  allocated: string;
+  distributed: string;
+  available: string;
+};
 
 export const FundingIndicator = ({
-  amounts,
+  allocated,
+  distributed,
+  available,
 }: {
-  amounts: [number, number, number];
+  allocated: string;
+  distributed: string;
+  available: string;
 }) => {
+  const amounts = useMemo(() => {
+    if (allocated && distributed && available) {
+      return [34, 33, 33];
+    }
+
+    if (allocated === '0' && distributed === '0' && available === '0') {
+      return [34, 33, 33];
+    }
+
+    const total = Number(allocated) + Number(distributed) + Number(available);
+
+    return [allocated, distributed, available].map((amt) => {
+      return (Number(amt) / total) * 100;
+    }) as [number, number, number];
+  }, [allocated, distributed, available]);
+
   return (
     <Box w={238} pos="relative">
       <Flex mb="sm" opacity={0.7}>

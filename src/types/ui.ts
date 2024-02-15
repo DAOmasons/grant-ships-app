@@ -45,3 +45,27 @@ export type ShipsCardUI = {
   amtDistributed: string;
   amtAvailable: string;
 };
+
+export type ShipPageUI = {
+  name: string;
+  description: string;
+  imgUrl: string;
+  status: GameStatus;
+  amtAllocated: string;
+  amtDistributed: string;
+  amtAvailable: string;
+  shipContractAddress: string;
+  members: string[];
+  details: {
+    thesis: string;
+    apply: string;
+    extraInfo: string;
+    extraLink: string;
+    website: string;
+    email: string;
+    x: string;
+    discord: string;
+    telegram: string;
+    github: string;
+  };
+};

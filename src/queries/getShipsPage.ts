@@ -1,17 +1,16 @@
-import { z } from 'zod';
 import { ShipProfileMetadata } from '../utils/ipfs/metadataValidation';
 import { ShipCardQueryFragment, getBuiltGraphSDK } from '../.graphclient';
 import { PINATA_GATEWAY, getIpfsJson } from '../utils/ipfs/get';
 import { ShipsCardUI } from '../types/ui';
 
 const resolveProfileMetadata = async (
-  applicant: ShipCardQueryFragment
+  shipCard: ShipCardQueryFragment
 ): Promise<ShipsCardUI> => {
-  if (!applicant?.profileMetadata?.pointer) {
-    console.error('No metadata pointer', applicant);
+  if (!shipCard?.profileMetadata?.pointer) {
+    console.error('No metadata pointer', shipCard);
     throw new Error('No metadata pointer');
   }
-  const metadata = await getIpfsJson(applicant.profileMetadata.pointer);
+  const metadata = await getIpfsJson(shipCard.profileMetadata.pointer);
 
   const validate = ShipProfileMetadata.safeParse(metadata);
 
@@ -20,9 +19,9 @@ const resolveProfileMetadata = async (
     throw new Error('Invalid metadata');
   }
   return {
-    id: applicant.id,
-    name: applicant.name,
-    status: applicant.status,
+    id: shipCard.id,
+    name: shipCard.name,
+    status: shipCard.status,
     imgUrl: `${PINATA_GATEWAY}/${metadata.avatarHash_IPFS}`,
     description: metadata.mission,
     amtAllocated: '0',
