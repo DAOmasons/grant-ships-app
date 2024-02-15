@@ -44,6 +44,7 @@ export const Ship = () => {
 
   if (!ship) return null;
 
+  // TODO: Get SkeletonLoader working
   if (isLoading) {
     return <LoadingState />;
   }
@@ -65,11 +66,7 @@ export const Ship = () => {
     return (
       <MainSection>
         <PageTitle title="Ship Not Found" />
-        <AppAlert
-          title="Error: Ship Page 404"
-          description={'Ship not found, check the URL and try again.'}
-          bg={theme.colors.pink[8]}
-        />
+        <AppAlert title="Error: Ship Page 404" bg={theme.colors.pink[8]} />
       </MainSection>
     );
   }

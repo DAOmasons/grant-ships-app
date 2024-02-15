@@ -5,6 +5,7 @@ import { ProjectProfileMetadata } from '../utils/ipfs/metadataValidation';
 
 export const getProjectPage = async (id: string): Promise<ProjectPageUI> => {
   try {
+    console.log('id', id);
     const { projectPageQuery } = getBuiltGraphSDK();
 
     const { project } = await projectPageQuery({ id });

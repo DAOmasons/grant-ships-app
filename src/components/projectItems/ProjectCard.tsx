@@ -8,7 +8,7 @@ export const ProjectCard = ({ project }: { project: ProjectCardType }) => {
   return (
     <Paper
       component={Link}
-      to={`/project/${project.anchor}`}
+      to={`/project/${project.id}`}
       w="100%"
       className={classes.cardLink}
       h={140}

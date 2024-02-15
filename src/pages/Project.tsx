@@ -12,132 +12,69 @@ import { MainSection, PageTitle } from '../layout/Sections';
 import { IconInfoCircle } from '@tabler/icons-react';
 import { FeedPanel } from '../components/shipItems/FeedPanel';
 import { GAME_TOKEN } from '../constants/gameSetup';
-import { GrantUI, MilestoneStatus, MilestoneStep } from '../types/ui';
+import { GrantUI } from '../types/ui';
 import { MilestoneProgress } from '../components/projectItems/MilestoneProgress';
 import { GrantsPanel } from '../components/projectItems/GrantsPanel';
 import { MilestonePanel } from '../components/projectItems/MilestonePanel';
 import { Contact } from '../components/Contact';
-import { useMemo } from 'react';
 
 import { formatEther } from 'viem';
-
-const milestoneDescription = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut dignissim velit porta elit placerat, sit amet efficitur est elementum. Praesent semper, quam vel convallis tincidunt, nisi arcu lacinia leo, at bibendum lorem orci et arcu.`;
-
-const dummyMilestoneSteps1: MilestoneStep[] = [
-  {
-    status: MilestoneStatus.Approved,
-    amount: 2000000000000000000n,
-    description: milestoneDescription,
-  },
-  {
-    status: MilestoneStatus.InReview,
-    amount: 5000000000000000000n,
-    description: milestoneDescription,
-  },
-  {
-    status: MilestoneStatus.Idle,
-    amount: 2000000000000000000n,
-    description: milestoneDescription,
-  },
-  {
-    status: MilestoneStatus.Idle,
-    amount: 4000000000000000000n,
-    description: milestoneDescription,
-  },
-];
-
-const dummyMilestoneSteps2: MilestoneStep[] = [
-  {
-    status: MilestoneStatus.Approved,
-    amount: 2000000000000000000n,
-    description: milestoneDescription,
-  },
-  {
-    status: MilestoneStatus.Approved,
-    amount: 5000000000000000000n,
-    description: milestoneDescription,
-  },
-  {
-    status: MilestoneStatus.InReview,
-    amount: 4000000000000000000n,
-    description: milestoneDescription,
-  },
-];
-
-const grant1: GrantUI = {
-  milestones: dummyMilestoneSteps1,
-  shipName: 'Devrel Gallactica',
-  shipAddress: '0x1234567890123456789012345678901234567890',
-  reason: 'I like it',
-  milestonesStatus: MilestoneStatus.Approved,
-  grantApplication: {
-    expectedDelivery: 1713035658,
-    grantAmount: 13000000000000000000n,
-    receiverAddress: '0x1234567890123456789034345678901234567890',
-    grantObjectives:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut dignissim velit porta elit placerat, sit amet efficitur est elementum. Praesent semper, quam vel convallis tincidunt, nisi arcu lacinia leo, at bibendum lorem orci et arcu.',
-    proposalLink: 'https://www.google.com',
-    additionalLink: 'https://www.google.com',
-    extraInfo:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut dignissim velit porta elit placerat, sit amet efficitur est elementum. Praesent semper, quam vel convallis tincidunt, nisi arcu lacinia leo, at bibendum lorem orci et arcu. Etiam tincidunt accumsan tellus et pretium. Ut tempor tempor libero ac molestie',
-  },
-};
-
-const grant2: GrantUI = {
-  milestones: dummyMilestoneSteps2,
-  shipName: 'Public Goods Deathstar',
-  shipAddress: '0x1234567890123456789034345678901234567890',
-  reason: 'I like it',
-  milestonesStatus: MilestoneStatus.InReview,
-  grantApplication: {
-    expectedDelivery: 1713035658,
-    grantAmount: 11000000000000000000n,
-    receiverAddress: '0x1234567890123456789034345678901234567890',
-    grantObjectives:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut dignissim velit porta elit placerat, sit amet efficitur est elementum. Praesent semper, quam vel convallis tincidunt, nisi arcu lacinia leo, at bibendum lorem orci et arcu.',
-    proposalLink: 'https://www.google.com',
-    additionalLink: 'https://www.google.com',
-    extraInfo:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut dignissim velit porta elit placerat, sit amet efficitur est elementum. Praesent semper, quam vel convallis tincidunt, nisi arcu lacinia leo, at bibendum lorem orci et arcu. Etiam tincidunt accumsan tellus et pretium. Ut tempor tempor libero ac molestie',
-  },
-};
-
-const grants = [grant1, grant2];
-
-const DummyProject = {
-  name: 'Project X',
-  status: 'Accepted',
-  imgUrl: 'https://i.pravatar.cc/300',
-  description: `Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.`,
-  grants: grants,
-  website: 'https://www.google.com',
-  email: 'email@email.email',
-  github: 'https://www.google.com',
-  x: 'https://www.google.com',
-  discord: 'https://www.google.com',
-  telegram: 'https://www.google.com',
-  members: [
-    '0x756ee8B8E898D497043c2320d9909f1DD5a7077F',
-    '0xD800B05c70A2071BC1E5Eac5B3390Da1Eb67bC9D',
-    '0x57abda4ee50Bb3079A556C878b2c345310057569',
-    '0xDE6bcde54CF040088607199FC541f013bA53C21E',
-  ],
-};
+import { useParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { getProjectPage } from '../queries/getProjectPage';
+import { AddressAvatarGroup } from '../components/AddressAvatar';
+import { AppAlert } from '../components/UnderContruction';
 
 export const Project = () => {
-  const project = DummyProject;
+  const { id } = useParams();
+
+  const {
+    data: project,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: [`project-page-${id}`],
+    queryFn: () => getProjectPage(id as string),
+    enabled: !!id,
+  });
 
   const theme = useMantineTheme();
 
-  const totalFunds = useMemo(() => {
-    if (!project.grants) return formatEther(0n);
+  // I tried building a nice SkeletonLoader for the ship page,
+  // However, it struggled with state changes. So I'm using
+  // null for now
 
-    return formatEther(
-      project.grants.reduce((acc: bigint, grant: GrantUI) => {
-        return acc + grant.grantApplication.grantAmount;
-      }, 0n)
+  // TODO: Get SkeletonLoader working
+
+  if (isLoading) return null;
+
+  if (error) {
+    return (
+      <MainSection>
+        <PageTitle title="Project Not Found" />
+        <AppAlert
+          title="Error: Project Page 404"
+          description={error.message}
+          bg={theme.colors.pink[8]}
+        />
+      </MainSection>
     );
-  }, [project.grants]);
+  }
+  if (!project)
+    return (
+      <MainSection>
+        <PageTitle title="Project Not Found" />
+        <AppAlert title="Error: Project Page 404" bg={theme.colors.pink[8]} />
+      </MainSection>
+    );
+
+  const totalFunds = !project.grants
+    ? formatEther(0n)
+    : formatEther(
+        project.grants.reduce((acc: bigint, grant: GrantUI) => {
+          return acc + grant.grantApplication.grantAmount;
+        }, 0n)
+      );
 
   return (
     <Flex>
@@ -154,12 +91,10 @@ export const Project = () => {
         <Text fz="sm" mb={'md'}>
           {project.description}
         </Text>
-        <Avatar.Group mb="xl">
-          <Avatar size={36} src="https://i.pravatar.cc/300" />
-          <Avatar size={36} src="https://i.pravatar.cc/301" />
-          <Avatar size={36} src="https://i.pravatar.cc/302" />
-          <Avatar size={36} src="https://i.pravatar.cc/302" />
-        </Avatar.Group>
+        <AddressAvatarGroup
+          addresses={project.members}
+          avatarProps={{ size: 32 }}
+        />
         <Tabs defaultValue="feed">
           <Tabs.List mb={'xl'}>
             <Tabs.Tab value="feed" w="20%">

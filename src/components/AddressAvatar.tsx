@@ -44,7 +44,7 @@ export const AddressAvatarGroup = ({
   avatarProps,
   addresses,
 }: {
-  avatarProps: ComponentProps<typeof Avatar>;
+  avatarProps?: ComponentProps<typeof Avatar>;
   addresses: string[];
 }) => {
   return (
@@ -65,7 +65,7 @@ export const AvatarGroupItem = ({
   avatarProps,
 }: {
   address: string;
-  avatarProps: ComponentProps<typeof Avatar>;
+  avatarProps?: ComponentProps<typeof Avatar>;
 }) => {
   const { data: ensName } = useEnsName({
     address: address as Address,
@@ -81,5 +81,5 @@ export const AvatarGroupItem = ({
 
   const imgUrl = ensAvatar || `https://effigy.im/a/${address}.svg`;
 
-  return <Avatar src={imgUrl} {...avatarProps} />;
+  return <Avatar src={imgUrl} {...(avatarProps || {})} />;
 };
