@@ -1,6 +1,9 @@
-import { Box, Flex, Overlay, Text } from '@mantine/core';
+import { Box, Flex, Text } from '@mantine/core';
 import classes from './ShipItemStyles.module.css';
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
+
+// TODO -  This component sucks.
+// Once the data model is more refined, we can make this a lot better.
 
 type IndicatorProps = {
   allocated: string;
@@ -12,17 +15,12 @@ export const FundingIndicator = ({
   allocated,
   distributed,
   available,
-}: {
-  allocated: string;
-  distributed: string;
-  available: string;
-}) => {
+}: IndicatorProps) => {
   const amounts = useMemo(() => {
-    if (allocated && distributed && available) {
-      return [34, 33, 33];
-    }
-
-    if (allocated === '0' && distributed === '0' && available === '0') {
+    if (
+      (!allocated && !distributed && !available) ||
+      (allocated === '0' && distributed === '0' && available === '0')
+    ) {
       return [34, 33, 33];
     }
 

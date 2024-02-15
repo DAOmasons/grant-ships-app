@@ -1,13 +1,4 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  Flex,
-  Group,
-  Paper,
-  Text,
-  useMantineTheme,
-} from '@mantine/core';
+import { Avatar, Box, Button, Flex, Group, Paper, Text } from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
 import classes from './ShipItemStyles.module.css';
 import { IconInfoCircle } from '@tabler/icons-react';
@@ -27,7 +18,6 @@ export const ShipCard = ({
   amtAvailable,
 }: ShipsCardUI) => {
   const navigate = useNavigate();
-  const theme = useMantineTheme();
 
   return (
     <Paper
@@ -45,7 +35,7 @@ export const ShipCard = ({
           <Avatar size={65} src={imgUrl} />
         </Box>
         <Box w="100%">
-          <Flex w="100%" mb="md" justify="space-between">
+          <Flex w="100%" mb="md" justify="space-between" align={'center'}>
             <Box>
               <Text fw={600}>{name}</Text>
               <Group>
