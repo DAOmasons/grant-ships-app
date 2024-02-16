@@ -1,4 +1,4 @@
-import { FeedCardUI } from '../../types/ui';
+import { FeedCardUI, Player } from '../../types/ui';
 import { Feed } from '../feed/Feed';
 
 const DummyFeed: FeedCardUI[] = [
@@ -6,13 +6,13 @@ const DummyFeed: FeedCardUI[] = [
     subject: {
       name: 'Project X',
       id: '0x123',
-      entityType: 'project',
+      entityType: 'project' as Player,
       imgUrl: 'https://i.pravatar.cc/300',
     },
     object: {
       name: 'Devrel Gallactica',
       id: '0x123',
-      entityType: 'ship',
+      entityType: 'ship' as Player,
     },
     content:
       'Project X has submitted Milestone 1 for Devrel Gallactica for approval',
@@ -26,13 +26,13 @@ const DummyFeed: FeedCardUI[] = [
     subject: {
       name: 'Project X',
       id: '0x123',
-      entityType: 'project',
+      entityType: 'project' as Player,
       imgUrl: 'https://i.pravatar.cc/300',
     },
     object: {
       name: 'Devrel Gallactica',
       id: '0x123',
-      entityType: 'ship',
+      entityType: 'ship' as Player,
     },
     content:
       'Project X has submitted Milestone 1 for Devrel Gallactica for approval',
@@ -43,13 +43,13 @@ const DummyFeed: FeedCardUI[] = [
     subject: {
       name: 'Project X',
       id: '0x123',
-      entityType: 'project',
+      entityType: 'project' as Player,
       imgUrl: 'https://i.pravatar.cc/300',
     },
     object: {
       name: 'Devrel Gallactica',
       id: '0x123',
-      entityType: 'ship',
+      entityType: 'ship' as Player,
     },
     content:
       'Project X has submitted Milestone 1 for Devrel Gallactica for approval',
@@ -60,13 +60,13 @@ const DummyFeed: FeedCardUI[] = [
     subject: {
       name: 'Project X',
       id: '0x123',
-      entityType: 'project',
+      entityType: 'project' as Player,
       imgUrl: 'https://i.pravatar.cc/300',
     },
     object: {
       name: 'Devrel Gallactica',
       id: '0x123',
-      entityType: 'ship',
+      entityType: 'ship' as Player,
     },
     content:
       'Project X has submitted Milestone 1 for Devrel Gallactica for approval',
