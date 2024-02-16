@@ -22,7 +22,6 @@ import {
 } from '@tabler/icons-react';
 import classes from './FeedStyles.module.css';
 import { secondsToShortRelativeTime } from '../../utils/time';
-import { PINATA_GATEWAY } from '../../utils/ipfs/get';
 
 export const FeedCard = ({
   subject,
@@ -62,10 +61,7 @@ export const FeedCard = ({
     <Box mb="lg">
       <Flex mb="lg">
         <Box mr="xs">
-          <Avatar
-            size={32}
-            src={subject.imgUrl && `${PINATA_GATEWAY}/${subject.imgUrl}`}
-          />
+          <Avatar size={32} src={subject.imgUrl && subject.imgUrl} />
         </Box>
         <Box>
           <Group gap={8} mb={8}>

@@ -1,6 +1,6 @@
 import { decodeAbiParameters, parseAbiParameters } from 'viem';
 import { getBuiltGraphSDK } from '../.graphclient';
-import { PINATA_GATEWAY, getIpfsJson } from '../utils/ipfs/get';
+import { getGatewayUrl, getIpfsJson } from '../utils/ipfs/get';
 import {
   ShipApplicationMetadata,
   ShipProfileMetadata,
@@ -57,12 +57,10 @@ export const getShipPageData = async (id: string): Promise<ShipPageUI> => {
         : []),
     ];
 
-    console.log('validatedApplicationData', validatedApplicationData);
-
     return {
       name: grantShip.name,
       description: profileMetadata.mission,
-      imgUrl: `${PINATA_GATEWAY}/${profileMetadata.avatarHash_IPFS}`,
+      imgUrl: getGatewayUrl(profileMetadata.avatarHash_IPFS),
       status: grantShip.status,
       amtAllocated: grantShip.allocatedAmount || '0',
       amtDistributed: grantShip.distributedAmount || '0',

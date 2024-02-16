@@ -2,7 +2,7 @@ import { ActionIcon, Avatar, Box, FileButton, Text } from '@mantine/core';
 import { IconPencil, IconUser } from '@tabler/icons-react';
 import { pinFileToIPFS } from '../utils/ipfs/pin';
 import { ReactNode, useEffect, useState } from 'react';
-import { PINATA_GATEWAY } from '../utils/ipfs/get';
+import { getGatewayUrl } from '../utils/ipfs/get';
 
 type PickerProps = {
   onUploadSuccess?: (metadata: string) => void;
@@ -50,7 +50,7 @@ export const AvatarPickerIPFS = ({
     setIpfsHash(defaultValue);
   }, [defaultValue]);
 
-  const avatarPreview = pfpIpfsHash ? `${PINATA_GATEWAY}/${pfpIpfsHash}` : null;
+  const avatarPreview = pfpIpfsHash ? getGatewayUrl(pfpIpfsHash) : null;
   const canPreview = avatarPreview && !isLoading;
 
   return (

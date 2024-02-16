@@ -7,7 +7,7 @@ import { ApplicationReview } from './ApplicationReview';
 import { useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { decodeAbiParameters, parseAbiParameters } from 'viem';
-import { getIpfsJson } from '../../../utils/ipfs/get';
+import { getGatewayUrl, getIpfsJson } from '../../../utils/ipfs/get';
 import GameManagerAbi from '../../../abi/GameManager.json';
 import { ShipApplicationMetadata } from '../../../utils/ipfs/metadataValidation';
 import { HATS } from '../../../constants/gameSetup';
@@ -262,7 +262,7 @@ export const FacilitatorShipDash = ({
                 key={ship.id}
                 id={ship.id}
                 name={ship.name}
-                avatarUrl={ship.profileMetadata.avatarHash_IPFS}
+                avatarUrl={getGatewayUrl(ship.profileMetadata.avatarHash_IPFS)}
                 shipStatus={GameStatus.Pending}
                 onReview={handleReviewApplicant}
               />

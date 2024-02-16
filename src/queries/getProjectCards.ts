@@ -4,7 +4,7 @@ import {
   RawMetadataFragment,
   getBuiltGraphSDK,
 } from '../.graphclient';
-import { PINATA_GATEWAY, getIpfsJson } from '../utils/ipfs/get';
+import { getGatewayUrl, getIpfsJson } from '../utils/ipfs/get';
 import { ProjectProfileMetadata } from '../utils/ipfs/metadataValidation';
 
 type ProjectMetadataType = z.infer<typeof ProjectProfileMetadata>;
@@ -30,7 +30,7 @@ const projectMetadataResolver = async (project: ProjectCardFromQuery) => {
 
   return {
     ...project,
-    imgUrl: `${PINATA_GATEWAY}/${metadata.avatarHash_IPFS}`,
+    imgUrl: getGatewayUrl(metadata.avatarHash_IPFS),
     metadata: metadata as ProjectMetadataType,
   };
 };

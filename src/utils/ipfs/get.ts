@@ -4,18 +4,20 @@ export const PINATA_GATEWAY = 'https://gateway.pinata.cloud/ipfs';
 export const PRIVATE_GATEWAY =
   'https://plum-genetic-marlin-657.mypinata.cloud/ipfs/';
 export const getIpfsImage = async (cid: string) => {
-  const res = await fetch(`${PINATA_GATEWAY}${cid}`);
+  const res = await fetch(getGatewayUrl(cid));
 
   const data = await res.blob();
   return data;
 };
 
 export const getJsonFromGateway = async (cid: string) => {
-  const res = await fetch(
-    `https://plum-genetic-marlin-657.mypinata.cloud/ipfs/${cid}?pinataGatewayToken=${import.meta.env.VITE_GATEWAY_KEY}`
-  );
+  const res = await fetch(getGatewayUrl(cid));
   const data = await res.json();
   return data;
+};
+
+export const getGatewayUrl = (cid: string) => {
+  return `${PRIVATE_GATEWAY}${cid}?pinataGatewayToken=${import.meta.env.VITE_GATEWAY_KEY}`;
 };
 
 export const getIpfsJson = async (cid: string) => {

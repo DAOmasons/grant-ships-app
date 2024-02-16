@@ -10,7 +10,7 @@ import {
 } from '@mantine/core';
 import { FacShipData } from '../../../queries/getFacDashShipData';
 import { useMemo, useState } from 'react';
-import { PINATA_GATEWAY } from '../../../utils/ipfs/get';
+import { getGatewayUrl } from '../../../utils/ipfs/get';
 import { DateTimePicker } from '@mantine/dates';
 import { Timeline, TimelineContent } from '../../Timeline';
 import { SHIP_AMOUNT } from '../../../constants/gameSetup';
@@ -55,7 +55,10 @@ export const FacilitatorGameDash = ({
                     leftSection={
                       <Avatar
                         size={32}
-                        src={`${PINATA_GATEWAY}/${ship.profileMetadata.avatarHash_IPFS}`}
+                        src={
+                          ship.profileMetadata.avatarHash_IPFS &&
+                          getGatewayUrl(ship.profileMetadata.avatarHash_IPFS)
+                        }
                       />
                     }
                   >

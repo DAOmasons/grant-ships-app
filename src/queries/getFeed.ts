@@ -1,13 +1,13 @@
 import { FeedDataFragment, getBuiltGraphSDK } from '../.graphclient';
 import { DAO_MASONS } from '../constants/gameSetup';
 import { FeedCardUI, Player } from '../types/ui';
-import { getIpfsJson } from '../utils/ipfs/get';
+import { getGatewayUrl, getIpfsJson } from '../utils/ipfs/get';
 
 const isPlayerType = (type: string): type is Player => {
   return Object.values(Player).includes(type as any);
 };
 
-export const handleSubjectImgUrl = async (
+export const handleSubjectImgCID = async (
   entityType: string,
   metadataPointer: string
 ) => {
@@ -37,7 +37,7 @@ export const resolveFeedItem = async (
 ): Promise<FeedCardUI> => {
   //check entity type
 
-  const imgUrl = await handleSubjectImgUrl(
+  const imgCID = await handleSubjectImgCID(
     item.subject.type,
     item.subjectMetadataPointer
   );
@@ -56,7 +56,7 @@ export const resolveFeedItem = async (
       name: item.subject.name,
       id: item.subject.id,
       entityType: item.subject.type as Player,
-      imgUrl,
+      imgUrl: imgCID ? getGatewayUrl(imgCID) : undefined,
     },
     object: hasObject
       ? {

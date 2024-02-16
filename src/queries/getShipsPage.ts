@@ -1,6 +1,6 @@
 import { ShipProfileMetadata } from '../utils/ipfs/metadataValidation';
 import { ShipCardQueryFragment, getBuiltGraphSDK } from '../.graphclient';
-import { PINATA_GATEWAY, getIpfsJson } from '../utils/ipfs/get';
+import { getGatewayUrl, getIpfsJson } from '../utils/ipfs/get';
 import { ShipsCardUI } from '../types/ui';
 
 const resolveProfileMetadata = async (
@@ -22,7 +22,7 @@ const resolveProfileMetadata = async (
     id: shipCard.id,
     name: shipCard.name,
     status: shipCard.status,
-    imgUrl: `${PINATA_GATEWAY}/${metadata.avatarHash_IPFS}`,
+    imgUrl: getGatewayUrl(metadata.avatarHash_IPFS),
     description: metadata.mission,
     amtAllocated: '0',
     amtDistributed: '0',

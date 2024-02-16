@@ -1,4 +1,3 @@
-import React from 'react';
 import { FeedCardUI } from '../../types/ui';
 import { FeedCard } from './FeedCard';
 import { Box, Paper, Text, useMantineTheme } from '@mantine/core';

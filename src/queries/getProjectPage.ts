@@ -1,6 +1,6 @@
 import { getBuiltGraphSDK } from '../.graphclient';
 import { ProjectPageUI } from '../types/ui';
-import { PINATA_GATEWAY, getIpfsJson } from '../utils/ipfs/get';
+import { getGatewayUrl, getIpfsJson } from '../utils/ipfs/get';
 import { ProjectProfileMetadata } from '../utils/ipfs/metadataValidation';
 
 export const getProjectPage = async (id: string): Promise<ProjectPageUI> => {
@@ -36,7 +36,7 @@ export const getProjectPage = async (id: string): Promise<ProjectPageUI> => {
       id: project.id,
       name: project.name,
       description: profileData.description,
-      imgUrl: `${PINATA_GATEWAY}/${profileData.avatarHash_IPFS}`,
+      imgUrl: getGatewayUrl(profileData.avatarHash_IPFS),
       status: project.status,
       members: [project.owner, ...(project.members?.addresses || [])],
       grants: [],
