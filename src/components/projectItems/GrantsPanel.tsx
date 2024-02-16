@@ -1,8 +1,8 @@
 import { Box, Select, Text } from '@mantine/core';
-import { GrantUI } from '../../pages/Project';
 import { useState } from 'react';
 import { AppAlert } from '../UnderContruction';
 import { secondsToLongDate } from '../../utils/time';
+import { GrantUI } from '../../types/ui';
 
 export const GrantsPanel = ({ grants }: { grants: GrantUI[] }) => {
   if (grants.length === 0) {

@@ -1,0 +1,39 @@
+query getFeed(
+  $first: Int
+  $skip: Int
+  $orderBy: String
+  $orderDirection: String
+  $where: FeedItem_filter
+) {
+  feedItems(
+    first: $first
+    skip: $skip
+    orderBy: timestamp
+    orderDirection: desc
+    where: $where
+  ) {
+    id
+    content
+    timestamp
+    content
+    sender
+    tag
+    details
+    subject {
+      id
+      name
+      type
+    }
+    object {
+      id
+      name
+      type
+    }
+    embed {
+      key
+      pointer
+      protocol
+      content
+    }
+  }
+}

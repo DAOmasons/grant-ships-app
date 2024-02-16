@@ -22,6 +22,10 @@ export type Scalars = {
   Int8: any;
 };
 
+export type Aggregation_interval =
+  | 'hour'
+  | 'day';
+
 export type BlockChangedFilter = {
   number_gte: Scalars['Int'];
 };
@@ -31,6 +35,360 @@ export type Block_height = {
   number?: InputMaybe<Scalars['Int']>;
   number_gte?: InputMaybe<Scalars['Int']>;
 };
+
+export type FeedItem = {
+  id: Scalars['ID'];
+  timestamp?: Maybe<Scalars['BigInt']>;
+  content: Scalars['String'];
+  sender: Scalars['Bytes'];
+  tag: Scalars['String'];
+  subject: FeedItemEntity;
+  object?: Maybe<FeedItemEntity>;
+  embed?: Maybe<FeedItemEmbed>;
+  details?: Maybe<Scalars['String']>;
+};
+
+export type FeedItemEmbed = {
+  id: Scalars['ID'];
+  key?: Maybe<Scalars['String']>;
+  pointer?: Maybe<Scalars['String']>;
+  protocol?: Maybe<Scalars['BigInt']>;
+  content?: Maybe<Scalars['String']>;
+};
+
+export type FeedItemEmbed_filter = {
+  id?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']>;
+  id_gt?: InputMaybe<Scalars['ID']>;
+  id_lt?: InputMaybe<Scalars['ID']>;
+  id_gte?: InputMaybe<Scalars['ID']>;
+  id_lte?: InputMaybe<Scalars['ID']>;
+  id_in?: InputMaybe<Array<Scalars['ID']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']>>;
+  key?: InputMaybe<Scalars['String']>;
+  key_not?: InputMaybe<Scalars['String']>;
+  key_gt?: InputMaybe<Scalars['String']>;
+  key_lt?: InputMaybe<Scalars['String']>;
+  key_gte?: InputMaybe<Scalars['String']>;
+  key_lte?: InputMaybe<Scalars['String']>;
+  key_in?: InputMaybe<Array<Scalars['String']>>;
+  key_not_in?: InputMaybe<Array<Scalars['String']>>;
+  key_contains?: InputMaybe<Scalars['String']>;
+  key_contains_nocase?: InputMaybe<Scalars['String']>;
+  key_not_contains?: InputMaybe<Scalars['String']>;
+  key_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  key_starts_with?: InputMaybe<Scalars['String']>;
+  key_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  key_not_starts_with?: InputMaybe<Scalars['String']>;
+  key_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  key_ends_with?: InputMaybe<Scalars['String']>;
+  key_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  key_not_ends_with?: InputMaybe<Scalars['String']>;
+  key_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  pointer?: InputMaybe<Scalars['String']>;
+  pointer_not?: InputMaybe<Scalars['String']>;
+  pointer_gt?: InputMaybe<Scalars['String']>;
+  pointer_lt?: InputMaybe<Scalars['String']>;
+  pointer_gte?: InputMaybe<Scalars['String']>;
+  pointer_lte?: InputMaybe<Scalars['String']>;
+  pointer_in?: InputMaybe<Array<Scalars['String']>>;
+  pointer_not_in?: InputMaybe<Array<Scalars['String']>>;
+  pointer_contains?: InputMaybe<Scalars['String']>;
+  pointer_contains_nocase?: InputMaybe<Scalars['String']>;
+  pointer_not_contains?: InputMaybe<Scalars['String']>;
+  pointer_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  pointer_starts_with?: InputMaybe<Scalars['String']>;
+  pointer_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  pointer_not_starts_with?: InputMaybe<Scalars['String']>;
+  pointer_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  pointer_ends_with?: InputMaybe<Scalars['String']>;
+  pointer_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  pointer_not_ends_with?: InputMaybe<Scalars['String']>;
+  pointer_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  protocol?: InputMaybe<Scalars['BigInt']>;
+  protocol_not?: InputMaybe<Scalars['BigInt']>;
+  protocol_gt?: InputMaybe<Scalars['BigInt']>;
+  protocol_lt?: InputMaybe<Scalars['BigInt']>;
+  protocol_gte?: InputMaybe<Scalars['BigInt']>;
+  protocol_lte?: InputMaybe<Scalars['BigInt']>;
+  protocol_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  protocol_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  content?: InputMaybe<Scalars['String']>;
+  content_not?: InputMaybe<Scalars['String']>;
+  content_gt?: InputMaybe<Scalars['String']>;
+  content_lt?: InputMaybe<Scalars['String']>;
+  content_gte?: InputMaybe<Scalars['String']>;
+  content_lte?: InputMaybe<Scalars['String']>;
+  content_in?: InputMaybe<Array<Scalars['String']>>;
+  content_not_in?: InputMaybe<Array<Scalars['String']>>;
+  content_contains?: InputMaybe<Scalars['String']>;
+  content_contains_nocase?: InputMaybe<Scalars['String']>;
+  content_not_contains?: InputMaybe<Scalars['String']>;
+  content_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  content_starts_with?: InputMaybe<Scalars['String']>;
+  content_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  content_not_starts_with?: InputMaybe<Scalars['String']>;
+  content_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  content_ends_with?: InputMaybe<Scalars['String']>;
+  content_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  content_not_ends_with?: InputMaybe<Scalars['String']>;
+  content_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<FeedItemEmbed_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<FeedItemEmbed_filter>>>;
+};
+
+export type FeedItemEmbed_orderBy =
+  | 'id'
+  | 'key'
+  | 'pointer'
+  | 'protocol'
+  | 'content';
+
+export type FeedItemEntity = {
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  type: Scalars['String'];
+};
+
+export type FeedItemEntity_filter = {
+  id?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']>;
+  id_gt?: InputMaybe<Scalars['ID']>;
+  id_lt?: InputMaybe<Scalars['ID']>;
+  id_gte?: InputMaybe<Scalars['ID']>;
+  id_lte?: InputMaybe<Scalars['ID']>;
+  id_in?: InputMaybe<Array<Scalars['ID']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']>>;
+  name?: InputMaybe<Scalars['String']>;
+  name_not?: InputMaybe<Scalars['String']>;
+  name_gt?: InputMaybe<Scalars['String']>;
+  name_lt?: InputMaybe<Scalars['String']>;
+  name_gte?: InputMaybe<Scalars['String']>;
+  name_lte?: InputMaybe<Scalars['String']>;
+  name_in?: InputMaybe<Array<Scalars['String']>>;
+  name_not_in?: InputMaybe<Array<Scalars['String']>>;
+  name_contains?: InputMaybe<Scalars['String']>;
+  name_contains_nocase?: InputMaybe<Scalars['String']>;
+  name_not_contains?: InputMaybe<Scalars['String']>;
+  name_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  name_starts_with?: InputMaybe<Scalars['String']>;
+  name_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  name_not_starts_with?: InputMaybe<Scalars['String']>;
+  name_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  name_ends_with?: InputMaybe<Scalars['String']>;
+  name_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  name_not_ends_with?: InputMaybe<Scalars['String']>;
+  name_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  type?: InputMaybe<Scalars['String']>;
+  type_not?: InputMaybe<Scalars['String']>;
+  type_gt?: InputMaybe<Scalars['String']>;
+  type_lt?: InputMaybe<Scalars['String']>;
+  type_gte?: InputMaybe<Scalars['String']>;
+  type_lte?: InputMaybe<Scalars['String']>;
+  type_in?: InputMaybe<Array<Scalars['String']>>;
+  type_not_in?: InputMaybe<Array<Scalars['String']>>;
+  type_contains?: InputMaybe<Scalars['String']>;
+  type_contains_nocase?: InputMaybe<Scalars['String']>;
+  type_not_contains?: InputMaybe<Scalars['String']>;
+  type_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  type_starts_with?: InputMaybe<Scalars['String']>;
+  type_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  type_not_starts_with?: InputMaybe<Scalars['String']>;
+  type_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  type_ends_with?: InputMaybe<Scalars['String']>;
+  type_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  type_not_ends_with?: InputMaybe<Scalars['String']>;
+  type_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<FeedItemEntity_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<FeedItemEntity_filter>>>;
+};
+
+export type FeedItemEntity_orderBy =
+  | 'id'
+  | 'name'
+  | 'type';
+
+export type FeedItem_filter = {
+  id?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']>;
+  id_gt?: InputMaybe<Scalars['ID']>;
+  id_lt?: InputMaybe<Scalars['ID']>;
+  id_gte?: InputMaybe<Scalars['ID']>;
+  id_lte?: InputMaybe<Scalars['ID']>;
+  id_in?: InputMaybe<Array<Scalars['ID']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']>>;
+  timestamp?: InputMaybe<Scalars['BigInt']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  content?: InputMaybe<Scalars['String']>;
+  content_not?: InputMaybe<Scalars['String']>;
+  content_gt?: InputMaybe<Scalars['String']>;
+  content_lt?: InputMaybe<Scalars['String']>;
+  content_gte?: InputMaybe<Scalars['String']>;
+  content_lte?: InputMaybe<Scalars['String']>;
+  content_in?: InputMaybe<Array<Scalars['String']>>;
+  content_not_in?: InputMaybe<Array<Scalars['String']>>;
+  content_contains?: InputMaybe<Scalars['String']>;
+  content_contains_nocase?: InputMaybe<Scalars['String']>;
+  content_not_contains?: InputMaybe<Scalars['String']>;
+  content_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  content_starts_with?: InputMaybe<Scalars['String']>;
+  content_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  content_not_starts_with?: InputMaybe<Scalars['String']>;
+  content_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  content_ends_with?: InputMaybe<Scalars['String']>;
+  content_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  content_not_ends_with?: InputMaybe<Scalars['String']>;
+  content_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  sender?: InputMaybe<Scalars['Bytes']>;
+  sender_not?: InputMaybe<Scalars['Bytes']>;
+  sender_gt?: InputMaybe<Scalars['Bytes']>;
+  sender_lt?: InputMaybe<Scalars['Bytes']>;
+  sender_gte?: InputMaybe<Scalars['Bytes']>;
+  sender_lte?: InputMaybe<Scalars['Bytes']>;
+  sender_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  sender_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  sender_contains?: InputMaybe<Scalars['Bytes']>;
+  sender_not_contains?: InputMaybe<Scalars['Bytes']>;
+  tag?: InputMaybe<Scalars['String']>;
+  tag_not?: InputMaybe<Scalars['String']>;
+  tag_gt?: InputMaybe<Scalars['String']>;
+  tag_lt?: InputMaybe<Scalars['String']>;
+  tag_gte?: InputMaybe<Scalars['String']>;
+  tag_lte?: InputMaybe<Scalars['String']>;
+  tag_in?: InputMaybe<Array<Scalars['String']>>;
+  tag_not_in?: InputMaybe<Array<Scalars['String']>>;
+  tag_contains?: InputMaybe<Scalars['String']>;
+  tag_contains_nocase?: InputMaybe<Scalars['String']>;
+  tag_not_contains?: InputMaybe<Scalars['String']>;
+  tag_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  tag_starts_with?: InputMaybe<Scalars['String']>;
+  tag_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  tag_not_starts_with?: InputMaybe<Scalars['String']>;
+  tag_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  tag_ends_with?: InputMaybe<Scalars['String']>;
+  tag_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  tag_not_ends_with?: InputMaybe<Scalars['String']>;
+  tag_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  subject?: InputMaybe<Scalars['String']>;
+  subject_not?: InputMaybe<Scalars['String']>;
+  subject_gt?: InputMaybe<Scalars['String']>;
+  subject_lt?: InputMaybe<Scalars['String']>;
+  subject_gte?: InputMaybe<Scalars['String']>;
+  subject_lte?: InputMaybe<Scalars['String']>;
+  subject_in?: InputMaybe<Array<Scalars['String']>>;
+  subject_not_in?: InputMaybe<Array<Scalars['String']>>;
+  subject_contains?: InputMaybe<Scalars['String']>;
+  subject_contains_nocase?: InputMaybe<Scalars['String']>;
+  subject_not_contains?: InputMaybe<Scalars['String']>;
+  subject_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  subject_starts_with?: InputMaybe<Scalars['String']>;
+  subject_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  subject_not_starts_with?: InputMaybe<Scalars['String']>;
+  subject_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  subject_ends_with?: InputMaybe<Scalars['String']>;
+  subject_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  subject_not_ends_with?: InputMaybe<Scalars['String']>;
+  subject_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  subject_?: InputMaybe<FeedItemEntity_filter>;
+  object?: InputMaybe<Scalars['String']>;
+  object_not?: InputMaybe<Scalars['String']>;
+  object_gt?: InputMaybe<Scalars['String']>;
+  object_lt?: InputMaybe<Scalars['String']>;
+  object_gte?: InputMaybe<Scalars['String']>;
+  object_lte?: InputMaybe<Scalars['String']>;
+  object_in?: InputMaybe<Array<Scalars['String']>>;
+  object_not_in?: InputMaybe<Array<Scalars['String']>>;
+  object_contains?: InputMaybe<Scalars['String']>;
+  object_contains_nocase?: InputMaybe<Scalars['String']>;
+  object_not_contains?: InputMaybe<Scalars['String']>;
+  object_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  object_starts_with?: InputMaybe<Scalars['String']>;
+  object_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  object_not_starts_with?: InputMaybe<Scalars['String']>;
+  object_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  object_ends_with?: InputMaybe<Scalars['String']>;
+  object_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  object_not_ends_with?: InputMaybe<Scalars['String']>;
+  object_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  object_?: InputMaybe<FeedItemEntity_filter>;
+  embed?: InputMaybe<Scalars['String']>;
+  embed_not?: InputMaybe<Scalars['String']>;
+  embed_gt?: InputMaybe<Scalars['String']>;
+  embed_lt?: InputMaybe<Scalars['String']>;
+  embed_gte?: InputMaybe<Scalars['String']>;
+  embed_lte?: InputMaybe<Scalars['String']>;
+  embed_in?: InputMaybe<Array<Scalars['String']>>;
+  embed_not_in?: InputMaybe<Array<Scalars['String']>>;
+  embed_contains?: InputMaybe<Scalars['String']>;
+  embed_contains_nocase?: InputMaybe<Scalars['String']>;
+  embed_not_contains?: InputMaybe<Scalars['String']>;
+  embed_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  embed_starts_with?: InputMaybe<Scalars['String']>;
+  embed_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  embed_not_starts_with?: InputMaybe<Scalars['String']>;
+  embed_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  embed_ends_with?: InputMaybe<Scalars['String']>;
+  embed_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  embed_not_ends_with?: InputMaybe<Scalars['String']>;
+  embed_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  embed_?: InputMaybe<FeedItemEmbed_filter>;
+  details?: InputMaybe<Scalars['String']>;
+  details_not?: InputMaybe<Scalars['String']>;
+  details_gt?: InputMaybe<Scalars['String']>;
+  details_lt?: InputMaybe<Scalars['String']>;
+  details_gte?: InputMaybe<Scalars['String']>;
+  details_lte?: InputMaybe<Scalars['String']>;
+  details_in?: InputMaybe<Array<Scalars['String']>>;
+  details_not_in?: InputMaybe<Array<Scalars['String']>>;
+  details_contains?: InputMaybe<Scalars['String']>;
+  details_contains_nocase?: InputMaybe<Scalars['String']>;
+  details_not_contains?: InputMaybe<Scalars['String']>;
+  details_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  details_starts_with?: InputMaybe<Scalars['String']>;
+  details_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  details_not_starts_with?: InputMaybe<Scalars['String']>;
+  details_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  details_ends_with?: InputMaybe<Scalars['String']>;
+  details_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  details_not_ends_with?: InputMaybe<Scalars['String']>;
+  details_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<FeedItem_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<FeedItem_filter>>>;
+};
+
+export type FeedItem_orderBy =
+  | 'id'
+  | 'timestamp'
+  | 'content'
+  | 'sender'
+  | 'tag'
+  | 'subject'
+  | 'subject__id'
+  | 'subject__name'
+  | 'subject__type'
+  | 'object'
+  | 'object__id'
+  | 'object__name'
+  | 'object__type'
+  | 'embed'
+  | 'embed__id'
+  | 'embed__key'
+  | 'embed__pointer'
+  | 'embed__protocol'
+  | 'embed__content'
+  | 'details';
 
 export type GameManager = {
   id: Scalars['Bytes'];
@@ -936,6 +1294,12 @@ export type Project_orderBy =
 export type Query = {
   project?: Maybe<Project>;
   projects: Array<Project>;
+  feedItem?: Maybe<FeedItem>;
+  feedItems: Array<FeedItem>;
+  feedItemEntity?: Maybe<FeedItemEntity>;
+  feedItemEntities: Array<FeedItemEntity>;
+  feedItemEmbed?: Maybe<FeedItemEmbed>;
+  feedItemEmbeds: Array<FeedItemEmbed>;
   grantShip?: Maybe<GrantShip>;
   grantShips: Array<GrantShip>;
   grantShipLookup?: Maybe<GrantShipLookup>;
@@ -950,7 +1314,8 @@ export type Query = {
   profileMemberGroups: Array<ProfileMemberGroup>;
   transaction?: Maybe<Transaction>;
   transactions: Array<Transaction>;
-  rawMetadata: Array<RawMetadata>;
+  rawMetadata?: Maybe<RawMetadata>;
+  rawMetadata_collection: Array<RawMetadata>;
   log?: Maybe<Log>;
   logs: Array<Log>;
   /** Access to subgraph metadata */
@@ -971,6 +1336,60 @@ export type QueryprojectsArgs = {
   orderBy?: InputMaybe<Project_orderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
   where?: InputMaybe<Project_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryfeedItemArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryfeedItemsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<FeedItem_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<FeedItem_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryfeedItemEntityArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryfeedItemEntitiesArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<FeedItemEntity_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<FeedItemEntity_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryfeedItemEmbedArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryfeedItemEmbedsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<FeedItemEmbed_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<FeedItemEmbed_filter>;
   block?: InputMaybe<Block_height>;
   subgraphError?: _SubgraphErrorPolicy_;
 };
@@ -1103,6 +1522,13 @@ export type QuerytransactionsArgs = {
 
 
 export type QueryrawMetadataArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryrawMetadata_collectionArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   first?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<RawMetadata_orderBy>;
@@ -1204,6 +1630,12 @@ export type RawMetadata_orderBy =
 export type Subscription = {
   project?: Maybe<Project>;
   projects: Array<Project>;
+  feedItem?: Maybe<FeedItem>;
+  feedItems: Array<FeedItem>;
+  feedItemEntity?: Maybe<FeedItemEntity>;
+  feedItemEntities: Array<FeedItemEntity>;
+  feedItemEmbed?: Maybe<FeedItemEmbed>;
+  feedItemEmbeds: Array<FeedItemEmbed>;
   grantShip?: Maybe<GrantShip>;
   grantShips: Array<GrantShip>;
   grantShipLookup?: Maybe<GrantShipLookup>;
@@ -1218,7 +1650,8 @@ export type Subscription = {
   profileMemberGroups: Array<ProfileMemberGroup>;
   transaction?: Maybe<Transaction>;
   transactions: Array<Transaction>;
-  rawMetadata: Array<RawMetadata>;
+  rawMetadata?: Maybe<RawMetadata>;
+  rawMetadata_collection: Array<RawMetadata>;
   log?: Maybe<Log>;
   logs: Array<Log>;
   /** Access to subgraph metadata */
@@ -1239,6 +1672,60 @@ export type SubscriptionprojectsArgs = {
   orderBy?: InputMaybe<Project_orderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
   where?: InputMaybe<Project_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionfeedItemArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionfeedItemsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<FeedItem_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<FeedItem_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionfeedItemEntityArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionfeedItemEntitiesArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<FeedItemEntity_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<FeedItemEntity_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionfeedItemEmbedArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionfeedItemEmbedsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<FeedItemEmbed_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<FeedItemEmbed_filter>;
   block?: InputMaybe<Block_height>;
   subgraphError?: _SubgraphErrorPolicy_;
 };
@@ -1371,6 +1858,13 @@ export type SubscriptiontransactionsArgs = {
 
 
 export type SubscriptionrawMetadataArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionrawMetadata_collectionArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   first?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<RawMetadata_orderBy>;
@@ -1496,6 +1990,18 @@ export type _SubgraphErrorPolicy_ =
   /** null **/
   projects: InContextSdkMethod<Query['projects'], QueryprojectsArgs, MeshContext>,
   /** null **/
+  feedItem: InContextSdkMethod<Query['feedItem'], QueryfeedItemArgs, MeshContext>,
+  /** null **/
+  feedItems: InContextSdkMethod<Query['feedItems'], QueryfeedItemsArgs, MeshContext>,
+  /** null **/
+  feedItemEntity: InContextSdkMethod<Query['feedItemEntity'], QueryfeedItemEntityArgs, MeshContext>,
+  /** null **/
+  feedItemEntities: InContextSdkMethod<Query['feedItemEntities'], QueryfeedItemEntitiesArgs, MeshContext>,
+  /** null **/
+  feedItemEmbed: InContextSdkMethod<Query['feedItemEmbed'], QueryfeedItemEmbedArgs, MeshContext>,
+  /** null **/
+  feedItemEmbeds: InContextSdkMethod<Query['feedItemEmbeds'], QueryfeedItemEmbedsArgs, MeshContext>,
+  /** null **/
   grantShip: InContextSdkMethod<Query['grantShip'], QuerygrantShipArgs, MeshContext>,
   /** null **/
   grantShips: InContextSdkMethod<Query['grantShips'], QuerygrantShipsArgs, MeshContext>,
@@ -1526,6 +2032,8 @@ export type _SubgraphErrorPolicy_ =
   /** null **/
   rawMetadata: InContextSdkMethod<Query['rawMetadata'], QueryrawMetadataArgs, MeshContext>,
   /** null **/
+  rawMetadata_collection: InContextSdkMethod<Query['rawMetadata_collection'], QueryrawMetadata_collectionArgs, MeshContext>,
+  /** null **/
   log: InContextSdkMethod<Query['log'], QuerylogArgs, MeshContext>,
   /** null **/
   logs: InContextSdkMethod<Query['logs'], QuerylogsArgs, MeshContext>,
@@ -1542,6 +2050,18 @@ export type _SubgraphErrorPolicy_ =
   project: InContextSdkMethod<Subscription['project'], SubscriptionprojectArgs, MeshContext>,
   /** null **/
   projects: InContextSdkMethod<Subscription['projects'], SubscriptionprojectsArgs, MeshContext>,
+  /** null **/
+  feedItem: InContextSdkMethod<Subscription['feedItem'], SubscriptionfeedItemArgs, MeshContext>,
+  /** null **/
+  feedItems: InContextSdkMethod<Subscription['feedItems'], SubscriptionfeedItemsArgs, MeshContext>,
+  /** null **/
+  feedItemEntity: InContextSdkMethod<Subscription['feedItemEntity'], SubscriptionfeedItemEntityArgs, MeshContext>,
+  /** null **/
+  feedItemEntities: InContextSdkMethod<Subscription['feedItemEntities'], SubscriptionfeedItemEntitiesArgs, MeshContext>,
+  /** null **/
+  feedItemEmbed: InContextSdkMethod<Subscription['feedItemEmbed'], SubscriptionfeedItemEmbedArgs, MeshContext>,
+  /** null **/
+  feedItemEmbeds: InContextSdkMethod<Subscription['feedItemEmbeds'], SubscriptionfeedItemEmbedsArgs, MeshContext>,
   /** null **/
   grantShip: InContextSdkMethod<Subscription['grantShip'], SubscriptiongrantShipArgs, MeshContext>,
   /** null **/
@@ -1572,6 +2092,8 @@ export type _SubgraphErrorPolicy_ =
   transactions: InContextSdkMethod<Subscription['transactions'], SubscriptiontransactionsArgs, MeshContext>,
   /** null **/
   rawMetadata: InContextSdkMethod<Subscription['rawMetadata'], SubscriptionrawMetadataArgs, MeshContext>,
+  /** null **/
+  rawMetadata_collection: InContextSdkMethod<Subscription['rawMetadata_collection'], SubscriptionrawMetadata_collectionArgs, MeshContext>,
   /** null **/
   log: InContextSdkMethod<Subscription['log'], SubscriptionlogArgs, MeshContext>,
   /** null **/
