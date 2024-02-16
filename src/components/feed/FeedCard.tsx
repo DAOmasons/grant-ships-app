@@ -79,6 +79,7 @@ export const FeedCard = ({
           </Text>
           {embedText && (
             <Spoiler
+              mb={'xs'}
               hideLabel={<IconChevronCompactUp />}
               showLabel={<IconChevronCompactDown />}
               classNames={{
@@ -90,7 +91,7 @@ export const FeedCard = ({
               <Text fz="sm">{embedText}</Text>
             </Spoiler>
           )}
-          <Text size="xs">
+          <Text size="xs" opacity={0.85}>
             Posted by{' '}
             {ensName ? ensName : sender.slice(0, 6) + '...' + sender.slice(-4)}
           </Text>

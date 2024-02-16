@@ -1,7 +1,6 @@
 import { Box, Button, Group, Paper, Tabs, Text } from '@mantine/core';
 import { Feed } from '../components/feed/Feed';
 import { MainSection } from '../layout/Sections';
-import { FeedCardUI } from '../types/ui';
 import { AppAlert } from '../components/UnderContruction';
 import classes from './PageStyles.module.css';
 import { Link } from 'react-router-dom';
@@ -9,13 +8,6 @@ import { useQuery } from '@tanstack/react-query';
 import { getFeed } from '../queries/getFeed';
 
 export const Home = () => {
-  const { data: feedItems, isLoading } = useQuery({
-    queryKey: ['main-feed'],
-    queryFn: () => getFeed({ first: 10, skip: 0 }),
-  });
-
-  if (!feedItems) return null;
-
   return (
     <Box w="100%">
       <Banner />
@@ -30,7 +22,7 @@ export const Home = () => {
             </Tabs.Tab>
           </Tabs.List>
           <Tabs.Panel value="feed">
-            <Feed feed={feedItems} />
+            <FeedPanel />
           </Tabs.Panel>
           <Tabs.Panel value="stats">
             <AppAlert
@@ -70,4 +62,16 @@ const Banner = () => {
       </Group>
     </Paper>
   );
+};
+
+const FeedPanel = () => {
+  const { data: feedItems, isLoading } = useQuery({
+    queryKey: ['main-feed'],
+    queryFn: () => getFeed({ first: 10, skip: 0 }),
+  });
+
+  if (isLoading) return <div>Loading...</div>;
+  if (!feedItems) return null;
+
+  return <Feed feed={feedItems} />;
 };

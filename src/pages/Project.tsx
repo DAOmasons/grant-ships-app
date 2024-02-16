@@ -24,6 +24,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getProjectPage } from '../queries/getProjectPage';
 import { AddressAvatarGroup } from '../components/AddressAvatar';
 import { AppAlert } from '../components/UnderContruction';
+import { GameStatus } from '../types/common';
 
 export const Project = () => {
   const { id } = useParams();
@@ -85,7 +86,11 @@ export const Project = () => {
           {project.name}
         </Text>
         <Group mb="xs" gap={6}>
-          <Text>{project.status}</Text>
+          <Text>
+            {project.status === 0
+              ? 'No Grants Recieved'
+              : GameStatus[project.status]}
+          </Text>
           <IconInfoCircle size={18} color={theme.colors.violet[8]} />
         </Group>
         <Text fz="sm" mb={'md'}>

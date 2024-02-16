@@ -13,3 +13,26 @@ export const generateRandomUint256 = (): bigint => {
 
   return randomBigInt;
 };
+
+export function findValueByKey(obj: any, key: string): any {
+  console.log({ obj, key });
+  let result: any;
+
+  function search(obj: any) {
+    if (result !== undefined) return; // Stop searching if we've found a result
+    for (const k in obj) {
+      if (obj[k]) {
+        if (k === key && obj[k]) {
+          result = obj[k];
+          return;
+        }
+        if (typeof obj[k] === 'object' && obj[k] !== null) {
+          search(obj[k]);
+        }
+      }
+    }
+  }
+
+  search(obj);
+  return result;
+}
