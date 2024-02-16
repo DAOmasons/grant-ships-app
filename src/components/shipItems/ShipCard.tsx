@@ -22,7 +22,7 @@ export const ShipCard = ({
   return (
     <Paper
       w="100%"
-      mih={235}
+      mih={220}
       className={classes.cardLink}
       mb={'md'}
       onClick={(e) => {

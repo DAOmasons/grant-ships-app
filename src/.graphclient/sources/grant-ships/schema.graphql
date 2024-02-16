@@ -39,6 +39,7 @@ type FeedItem {
   content: String!
   sender: Bytes!
   tag: String!
+  subjectMetadataPointer: String!
   subject: FeedItemEntity!
   object: FeedItemEntity
   embed: FeedItemEmbed
@@ -278,6 +279,26 @@ input FeedItem_filter {
   tag_ends_with_nocase: String
   tag_not_ends_with: String
   tag_not_ends_with_nocase: String
+  subjectMetadataPointer: String
+  subjectMetadataPointer_not: String
+  subjectMetadataPointer_gt: String
+  subjectMetadataPointer_lt: String
+  subjectMetadataPointer_gte: String
+  subjectMetadataPointer_lte: String
+  subjectMetadataPointer_in: [String!]
+  subjectMetadataPointer_not_in: [String!]
+  subjectMetadataPointer_contains: String
+  subjectMetadataPointer_contains_nocase: String
+  subjectMetadataPointer_not_contains: String
+  subjectMetadataPointer_not_contains_nocase: String
+  subjectMetadataPointer_starts_with: String
+  subjectMetadataPointer_starts_with_nocase: String
+  subjectMetadataPointer_not_starts_with: String
+  subjectMetadataPointer_not_starts_with_nocase: String
+  subjectMetadataPointer_ends_with: String
+  subjectMetadataPointer_ends_with_nocase: String
+  subjectMetadataPointer_not_ends_with: String
+  subjectMetadataPointer_not_ends_with_nocase: String
   subject: String
   subject_not: String
   subject_gt: String
@@ -373,6 +394,7 @@ enum FeedItem_orderBy {
   content
   sender
   tag
+  subjectMetadataPointer
   subject
   subject__id
   subject__name

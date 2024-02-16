@@ -64,6 +64,7 @@ export type FeedItem = {
   content: Scalars['String'];
   sender: Scalars['Bytes'];
   tag: Scalars['String'];
+  subjectMetadataPointer: Scalars['String'];
   subject: FeedItemEntity;
   object?: Maybe<FeedItemEntity>;
   embed?: Maybe<FeedItemEmbed>;
@@ -301,6 +302,26 @@ export type FeedItem_filter = {
   tag_ends_with_nocase?: InputMaybe<Scalars['String']>;
   tag_not_ends_with?: InputMaybe<Scalars['String']>;
   tag_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  subjectMetadataPointer?: InputMaybe<Scalars['String']>;
+  subjectMetadataPointer_not?: InputMaybe<Scalars['String']>;
+  subjectMetadataPointer_gt?: InputMaybe<Scalars['String']>;
+  subjectMetadataPointer_lt?: InputMaybe<Scalars['String']>;
+  subjectMetadataPointer_gte?: InputMaybe<Scalars['String']>;
+  subjectMetadataPointer_lte?: InputMaybe<Scalars['String']>;
+  subjectMetadataPointer_in?: InputMaybe<Array<Scalars['String']>>;
+  subjectMetadataPointer_not_in?: InputMaybe<Array<Scalars['String']>>;
+  subjectMetadataPointer_contains?: InputMaybe<Scalars['String']>;
+  subjectMetadataPointer_contains_nocase?: InputMaybe<Scalars['String']>;
+  subjectMetadataPointer_not_contains?: InputMaybe<Scalars['String']>;
+  subjectMetadataPointer_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  subjectMetadataPointer_starts_with?: InputMaybe<Scalars['String']>;
+  subjectMetadataPointer_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  subjectMetadataPointer_not_starts_with?: InputMaybe<Scalars['String']>;
+  subjectMetadataPointer_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  subjectMetadataPointer_ends_with?: InputMaybe<Scalars['String']>;
+  subjectMetadataPointer_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  subjectMetadataPointer_not_ends_with?: InputMaybe<Scalars['String']>;
+  subjectMetadataPointer_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
   subject?: InputMaybe<Scalars['String']>;
   subject_not?: InputMaybe<Scalars['String']>;
   subject_gt?: InputMaybe<Scalars['String']>;
@@ -396,6 +417,7 @@ export type FeedItem_orderBy =
   | 'content'
   | 'sender'
   | 'tag'
+  | 'subjectMetadataPointer'
   | 'subject'
   | 'subject__id'
   | 'subject__name'
@@ -2230,6 +2252,7 @@ export type FeedItemResolvers<ContextType = MeshContext, ParentType extends Reso
   content?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   sender?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
   tag?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  subjectMetadataPointer?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   subject?: Resolver<ResolversTypes['FeedItemEntity'], ParentType, ContextType>;
   object?: Resolver<Maybe<ResolversTypes['FeedItemEntity']>, ParentType, ContextType>;
   embed?: Resolver<Maybe<ResolversTypes['FeedItemEmbed']>, ParentType, ContextType>;
@@ -2649,17 +2672,21 @@ export type facDashShipDataQuery = { shipApplicants: Array<(
     & { applicationReviewReason?: Maybe<Pick<RawMetadata, 'pointer'>>, profileMetadata: Pick<RawMetadata, 'pointer'> }
   )> };
 
+export type FeedDataFragment = (
+  Pick<FeedItem, 'id' | 'content' | 'timestamp' | 'sender' | 'tag' | 'details' | 'subjectMetadataPointer'>
+  & { subject: Pick<FeedItemEntity, 'id' | 'name' | 'type'>, object?: Maybe<Pick<FeedItemEntity, 'id' | 'name' | 'type'>>, embed?: Maybe<Pick<FeedItemEmbed, 'key' | 'pointer' | 'protocol' | 'content'>> }
+);
+
 export type getFeedQueryVariables = Exact<{
   first?: InputMaybe<Scalars['Int']>;
   skip?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Scalars['String']>;
-  orderDirection?: InputMaybe<Scalars['String']>;
-  where?: InputMaybe<FeedItem_filter>;
+  orderBy?: InputMaybe<FeedItem_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
 }>;
 
 
 export type getFeedQuery = { feedItems: Array<(
-    Pick<FeedItem, 'id' | 'content' | 'timestamp' | 'sender' | 'tag' | 'details'>
+    Pick<FeedItem, 'id' | 'content' | 'timestamp' | 'sender' | 'tag' | 'details' | 'subjectMetadataPointer'>
     & { subject: Pick<FeedItemEntity, 'id' | 'name' | 'type'>, object?: Maybe<Pick<FeedItemEntity, 'id' | 'name' | 'type'>>, embed?: Maybe<Pick<FeedItemEmbed, 'key' | 'pointer' | 'protocol' | 'content'>> }
   )> };
 
@@ -2727,6 +2754,34 @@ export const FacShipDataFragmentDoc = gql`
   }
 }
     ` as unknown as DocumentNode<FacShipDataFragment, unknown>;
+export const FeedDataFragmentDoc = gql`
+    fragment FeedData on FeedItem {
+  id
+  content
+  timestamp
+  content
+  sender
+  tag
+  details
+  subjectMetadataPointer
+  subject {
+    id
+    name
+    type
+  }
+  object {
+    id
+    name
+    type
+  }
+  embed {
+    key
+    pointer
+    protocol
+    content
+  }
+}
+    ` as unknown as DocumentNode<FeedDataFragment, unknown>;
 export const ProjectDetailsFragmentDoc = gql`
     fragment ProjectDetails on Project {
   id
@@ -2777,34 +2832,17 @@ export const facDashShipDataDocument = gql`
 }
     ${FacShipDataFragmentDoc}` as unknown as DocumentNode<facDashShipDataQuery, facDashShipDataQueryVariables>;
 export const getFeedDocument = gql`
-    query getFeed($first: Int, $skip: Int, $orderBy: String, $orderDirection: String, $where: FeedItem_filter) {
-  feedItems(first: 20, orderBy: timestamp, orderDirection: desc) {
-    id
-    content
-    timestamp
-    content
-    sender
-    tag
-    details
-    subject {
-      id
-      name
-      type
-    }
-    object {
-      id
-      name
-      type
-    }
-    embed {
-      key
-      pointer
-      protocol
-      content
-    }
+    query getFeed($first: Int, $skip: Int, $orderBy: FeedItem_orderBy, $orderDirection: OrderDirection) {
+  feedItems(
+    first: $first
+    skip: $skip
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+  ) {
+    ...FeedData
   }
 }
-    ` as unknown as DocumentNode<getFeedQuery, getFeedQueryVariables>;
+    ${FeedDataFragmentDoc}` as unknown as DocumentNode<getFeedQuery, getFeedQueryVariables>;
 export const GetProjectsDocument = gql`
     query GetProjects {
   projects {

@@ -14,7 +14,7 @@ const DummyFeed: FeedCardUI[] = [
       id: '0x123',
       entityType: 'ship',
     },
-    message:
+    content:
       'Project X has submitted Milestone 1 for Devrel Gallactica for approval',
     timestamp: 1707884766,
     sender: '0x57abda4ee50Bb3079A556C878b2c345310057569',
@@ -34,7 +34,7 @@ const DummyFeed: FeedCardUI[] = [
       id: '0x123',
       entityType: 'ship',
     },
-    message:
+    content:
       'Project X has submitted Milestone 1 for Devrel Gallactica for approval',
     timestamp: 1707884766,
     sender: '0x57abda4ee50Bb3079A556C878b2c345310057569',
@@ -51,7 +51,7 @@ const DummyFeed: FeedCardUI[] = [
       id: '0x123',
       entityType: 'ship',
     },
-    message:
+    content:
       'Project X has submitted Milestone 1 for Devrel Gallactica for approval',
     timestamp: 1707884766,
     sender: '0x57abda4ee50Bb3079A556C878b2c345310057569',
@@ -68,7 +68,7 @@ const DummyFeed: FeedCardUI[] = [
       id: '0x123',
       entityType: 'ship',
     },
-    message:
+    content:
       'Project X has submitted Milestone 1 for Devrel Gallactica for approval',
     timestamp: 1707884766,
     sender: '0x57abda4ee50Bb3079A556C878b2c345310057569',

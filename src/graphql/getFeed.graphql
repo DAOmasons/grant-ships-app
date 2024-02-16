@@ -1,39 +1,42 @@
+fragment FeedData on FeedItem {
+  id
+  content
+  timestamp
+  content
+  sender
+  tag
+  details
+  subjectMetadataPointer
+  subject {
+    id
+    name
+    type
+  }
+  object {
+    id
+    name
+    type
+  }
+  embed {
+    key
+    pointer
+    protocol
+    content
+  }
+}
+
 query getFeed(
   $first: Int
   $skip: Int
-  $orderBy: String
-  $orderDirection: String
-  $where: FeedItem_filter
+  $orderBy: FeedItem_orderBy
+  $orderDirection: OrderDirection
 ) {
   feedItems(
     first: $first
     skip: $skip
-    orderBy: timestamp
-    orderDirection: desc
-    where: $where
+    orderBy: $orderBy
+    orderDirection: $orderDirection
   ) {
-    id
-    content
-    timestamp
-    content
-    sender
-    tag
-    details
-    subject {
-      id
-      name
-      type
-    }
-    object {
-      id
-      name
-      type
-    }
-    embed {
-      key
-      pointer
-      protocol
-      content
-    }
+    ...FeedData
   }
 }

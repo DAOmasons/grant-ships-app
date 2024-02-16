@@ -1,18 +1,24 @@
 import { GameStatus } from './common';
 
+export enum Player {
+  Facilitators = 'facilitators',
+  Ship = 'ship',
+  Project = 'project',
+}
+
 export type FeedCardUI = {
   subject: {
     name: string;
     id: string;
-    imgUrl: string;
-    entityType: 'ship' | 'project' | 'facilitator';
+    imgUrl?: string;
+    entityType: Player;
   };
   object?: {
     name: string;
     id: string;
-    entityType: 'ship' | 'project' | 'facilitator';
+    entityType: Player;
   };
-  message: string;
+  content: string;
   timestamp: number;
   embedText?: string;
   embed?: {

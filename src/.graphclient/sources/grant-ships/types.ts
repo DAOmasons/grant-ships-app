@@ -42,6 +42,7 @@ export type FeedItem = {
   content: Scalars['String'];
   sender: Scalars['Bytes'];
   tag: Scalars['String'];
+  subjectMetadataPointer: Scalars['String'];
   subject: FeedItemEntity;
   object?: Maybe<FeedItemEntity>;
   embed?: Maybe<FeedItemEmbed>;
@@ -279,6 +280,26 @@ export type FeedItem_filter = {
   tag_ends_with_nocase?: InputMaybe<Scalars['String']>;
   tag_not_ends_with?: InputMaybe<Scalars['String']>;
   tag_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  subjectMetadataPointer?: InputMaybe<Scalars['String']>;
+  subjectMetadataPointer_not?: InputMaybe<Scalars['String']>;
+  subjectMetadataPointer_gt?: InputMaybe<Scalars['String']>;
+  subjectMetadataPointer_lt?: InputMaybe<Scalars['String']>;
+  subjectMetadataPointer_gte?: InputMaybe<Scalars['String']>;
+  subjectMetadataPointer_lte?: InputMaybe<Scalars['String']>;
+  subjectMetadataPointer_in?: InputMaybe<Array<Scalars['String']>>;
+  subjectMetadataPointer_not_in?: InputMaybe<Array<Scalars['String']>>;
+  subjectMetadataPointer_contains?: InputMaybe<Scalars['String']>;
+  subjectMetadataPointer_contains_nocase?: InputMaybe<Scalars['String']>;
+  subjectMetadataPointer_not_contains?: InputMaybe<Scalars['String']>;
+  subjectMetadataPointer_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  subjectMetadataPointer_starts_with?: InputMaybe<Scalars['String']>;
+  subjectMetadataPointer_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  subjectMetadataPointer_not_starts_with?: InputMaybe<Scalars['String']>;
+  subjectMetadataPointer_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  subjectMetadataPointer_ends_with?: InputMaybe<Scalars['String']>;
+  subjectMetadataPointer_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  subjectMetadataPointer_not_ends_with?: InputMaybe<Scalars['String']>;
+  subjectMetadataPointer_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
   subject?: InputMaybe<Scalars['String']>;
   subject_not?: InputMaybe<Scalars['String']>;
   subject_gt?: InputMaybe<Scalars['String']>;
@@ -374,6 +395,7 @@ export type FeedItem_orderBy =
   | 'content'
   | 'sender'
   | 'tag'
+  | 'subjectMetadataPointer'
   | 'subject'
   | 'subject__id'
   | 'subject__name'

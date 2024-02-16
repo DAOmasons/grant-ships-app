@@ -22,11 +22,12 @@ import {
 } from '@tabler/icons-react';
 import classes from './FeedStyles.module.css';
 import { secondsToShortRelativeTime } from '../../utils/time';
+import { PINATA_GATEWAY } from '../../utils/ipfs/get';
 
 export const FeedCard = ({
   subject,
   object,
-  message,
+  content,
   embedText,
   timestamp,
   sender,
@@ -39,13 +40,13 @@ export const FeedCard = ({
   });
   const icon = useMemo(() => {
     if (subject.entityType === 'project') {
-      return <IconAward size={14} color={theme.colors.blue[5]} />;
+      return <IconAward size={16} color={theme.colors.blue[5]} />;
     }
     if (subject.entityType === 'ship') {
-      return <IconRocket size={14} color={theme.colors.violet[5]} />;
+      return <IconRocket size={16} color={theme.colors.violet[5]} />;
     }
-    if (subject.entityType === 'facilitator') {
-      return <IconAward size={14} color={theme.colors.pink[5]} />;
+    if (subject.entityType === 'facilitators') {
+      return <IconAward size={16} color={theme.colors.pink[5]} />;
     }
   }, [subject.entityType, theme]);
 
@@ -54,14 +55,17 @@ export const FeedCard = ({
   }, [timestamp]);
 
   const messageWithLinks = useMemo(() => {
-    return message;
-  }, [message]);
+    return content;
+  }, [content]);
 
   return (
     <Box mb="lg">
       <Flex mb="lg">
         <Box mr="xs">
-          <Avatar size={32} src={subject.imgUrl} />
+          <Avatar
+            size={32}
+            src={subject.imgUrl && `${PINATA_GATEWAY}/${subject.imgUrl}`}
+          />
         </Box>
         <Box>
           <Group gap={8} mb={8}>

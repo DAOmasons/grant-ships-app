@@ -29,6 +29,10 @@ export const GAME_MANAGER_PROD = {
   },
 };
 
+export const DAO_MASONS = {
+  AVATAR_IMG: 'Qme57CWY6BcvJ3VDBCFXoCphG13BLvAvmbKZavMvZDRnFf',
+};
+
 export const GAME_TOKEN_DEV = {
   NAME: 'Chromatic fake ETH',
   SYMBOL: 'cETH',
