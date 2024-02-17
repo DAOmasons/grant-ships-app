@@ -1,11 +1,9 @@
 import {
   Avatar,
-  Box,
   Button,
   Flex,
   Group,
   Paper,
-  Skeleton,
   Stack,
   Tabs,
   Text,
@@ -21,12 +19,12 @@ import { Link, useParams } from 'react-router-dom';
 import { GAME_TOKEN } from '../constants/gameSetup';
 import { AddressAvatarGroup } from '../components/AddressAvatar';
 import { GameStatus } from '../types/common';
-import { ReactNode } from 'react';
 
 import { getShipPageData } from '../queries/getShipPage';
 import { useQuery } from '@tanstack/react-query';
 import { SCAN_URL } from '../constants/enpoints';
 import { AppAlert } from '../components/UnderContruction';
+import { SingleItemPageSkeleton } from '../components/skeletons';
 
 export const Ship = () => {
   const theme = useMantineTheme();
@@ -42,11 +40,8 @@ export const Ship = () => {
     enabled: !!id,
   });
 
-  if (!ship) return null;
-
-  // TODO: Get SkeletonLoader working
   if (isLoading) {
-    return <LoadingState />;
+    return <SingleItemPageSkeleton />;
   }
 
   if (error) {
@@ -66,7 +61,11 @@ export const Ship = () => {
     return (
       <MainSection>
         <PageTitle title="Ship Not Found" />
-        <AppAlert title="Error: Ship Page 404" bg={theme.colors.pink[8]} />
+        <AppAlert
+          title="Error: Ship Page 404"
+          description={'Ship not found, check the URL and try again.'}
+          bg={theme.colors.pink[8]}
+        />
       </MainSection>
     );
   }
@@ -155,7 +154,7 @@ export const Ship = () => {
           <Text size="sm" mb="lg">
             {ship.status == GameStatus.Active
               ? 'Funding Available'
-              : 'Funding Not Yet Available'}
+              : 'Not Funded'}
           </Text>
           <FundingIndicator
             available={ship.amtAvailable}
@@ -163,51 +162,6 @@ export const Ship = () => {
             allocated={ship.amtDistributed}
           />
         </Paper>
-      </Stack>
-    </Flex>
-  );
-};
-const LoadingState = () => {
-  return (
-    <PageLayout
-      mainSection={
-        <Box w={'100%'}>
-          <Skeleton h={160} w="100%" maw={160} radius="50%" mt="xl" mb="md" />
-          <Skeleton h={22} w="100%" maw={150} mb="xs" />
-          <Skeleton h={18} w="100%" maw={100} mb="xs" />
-          <Skeleton h={80} mb="md" w={537} />
-          <Skeleton h={32} w={150} mb="xl" />
-          <Skeleton h={1} w="100%" mb="xl" />
-          <Skeleton h={140} w="100%" mb="xl" />
-          <Skeleton h={140} w="100%" mb="xl" />
-          <Skeleton h={140} w="100%" mb="xl" />
-        </Box>
-      }
-      sideSection={
-        <>
-          <Skeleton h={70} w="100%" mt="xl" />
-          <Skeleton h={140} w="100%" />
-        </>
-      }
-    />
-  );
-};
-
-const PageLayout = ({
-  mainSection,
-  sideSection,
-}: {
-  mainSection: ReactNode;
-  sideSection: ReactNode;
-}) => {
-  return (
-    <Flex>
-      <MainSection maw={534}>
-        <PageTitle title="   " />
-        {mainSection}
-      </MainSection>
-      <Stack mt={72} w={270}>
-        {sideSection}
       </Stack>
     </Flex>
   );

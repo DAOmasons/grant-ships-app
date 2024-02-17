@@ -38,5 +38,5 @@ export const getIpfsJson = async (cid: string) => {
 };
 
 export const isCID = (value: any) => {
-  return typeof value === 'string' && value.slice(0, 1) === 'Qm';
+  return typeof value === 'string' && value.slice(0, 2) === 'Qm';
 };

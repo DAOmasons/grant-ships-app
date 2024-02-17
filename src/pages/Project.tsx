@@ -25,6 +25,7 @@ import { getProjectPage } from '../queries/getProjectPage';
 import { AddressAvatarGroup } from '../components/AddressAvatar';
 import { AppAlert } from '../components/UnderContruction';
 import { GameStatus } from '../types/common';
+import { SingleItemPageSkeleton } from '../components/skeletons';
 
 export const Project = () => {
   const { id } = useParams();
@@ -41,13 +42,7 @@ export const Project = () => {
 
   const theme = useMantineTheme();
 
-  // I tried building a nice SkeletonLoader for the ship page,
-  // However, it struggled with state changes. So I'm using
-  // null for now
-
-  // TODO: Get SkeletonLoader working
-
-  if (isLoading) return null;
+  if (isLoading) return <SingleItemPageSkeleton />;
 
   if (error) {
     return (

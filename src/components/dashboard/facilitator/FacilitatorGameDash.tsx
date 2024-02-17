@@ -135,8 +135,6 @@ export const FacilitatorGameDash = ({
   );
 };
 
-const ApplicationsPanel = ({ shipData }: { shipData: FacShipData }) => {};
-
 const CreateGamePanel = () => {
   const [amount, setAmount] = useState(0);
   const { tx } = useTx();

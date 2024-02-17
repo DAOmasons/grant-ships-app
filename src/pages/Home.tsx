@@ -1,4 +1,4 @@
-import { Box, Button, Group, Paper, Tabs, Text } from '@mantine/core';
+import { Box, Button, Group, Paper, Skeleton, Tabs, Text } from '@mantine/core';
 import { Feed } from '../components/feed/Feed';
 import { MainSection } from '../layout/Sections';
 import { AppAlert } from '../components/UnderContruction';
@@ -70,8 +70,23 @@ const FeedPanel = () => {
     queryFn: () => getFeed({ first: 10, skip: 0 }),
   });
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <>
+        <FeedSkeletonCard />
+        <FeedSkeletonCard />
+        <FeedSkeletonCard />
+        <FeedSkeletonCard />
+        <FeedSkeletonCard />
+        <FeedSkeletonCard />
+        <FeedSkeletonCard />
+      </>
+    );
   if (!feedItems) return null;
 
   return <Feed feed={feedItems} />;
+};
+
+const FeedSkeletonCard = () => {
+  return <Skeleton w={'100%'} h="2" mt={130} />;
 };

@@ -14,13 +14,13 @@ const handleEmbedText = async (
       }
     | undefined
 ) => {
+  if (!embed) return undefined;
   const isRawMessage = embed?.content && typeof embed?.content === 'string';
-
-  const isPointer = isCID(embed?.pointer) && embed?.key;
 
   if (isRawMessage) {
     return embed?.content as string;
   }
+  const isPointer = isCID(embed?.pointer) && embed?.key;
 
   if (isPointer) {
     const data = await getIpfsJson(embed.pointer as string);
@@ -48,18 +48,14 @@ export const handleSubjectImgCID = async (
   if (entityType === 'ship' || entityType === 'project') {
     const data = await getIpfsJson(metadataPointer);
 
-    const imgUrl = data?.avatarHash_IPFS;
+    const cid = data?.avatarHash_IPFS;
 
-    if (isCID(imgUrl)) {
-      console.log(
-        'No image found in metadata for project: ',
-        data.name,
-        imgUrl
-      );
+    if (!isCID(cid)) {
+      console.log('No image found in metadata for project: ', data.name, cid);
       return undefined;
     }
 
-    return imgUrl;
+    return cid;
   }
 
   console.warn('No image found for entity type', entityType);
