@@ -14,6 +14,7 @@ import { HATS } from '../../../constants/gameSetup';
 import { ADDR } from '../../../constants/addresses';
 import { pinJSONToIPFS } from '../../../utils/ipfs/pin';
 import { useTx } from '../../../hooks/useTx';
+import { GameManager } from '../../../.graphclient';
 
 export type ShipReviewData = {
   id: string;
@@ -27,8 +28,10 @@ export type ShipReviewData = {
 
 export const FacilitatorShipDash = ({
   shipData,
+  gm,
   isLoading,
 }: {
+  gm?: GameManager;
   shipData?: FacShipData;
   isLoading: boolean;
 }) => {

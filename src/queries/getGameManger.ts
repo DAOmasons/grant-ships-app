@@ -1,7 +1,6 @@
-import { getBuiltGraphSDK, getGameManagerQuery } from '../.graphclient';
+import { GameManager, getBuiltGraphSDK } from '../.graphclient';
 import { GAME_MANAGER } from '../constants/gameSetup';
 
-export type GameManager = getGameManagerQuery['gameManager'];
 export const getGameManger = async (): Promise<GameManager> => {
   try {
     const { getGameManager } = getBuiltGraphSDK();

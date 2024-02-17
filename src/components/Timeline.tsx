@@ -101,13 +101,17 @@ export const TimelineBox = ({
         <Flex className={leftBorderClasses} mb={'sm'} px={'xl'} pt="md" pb={0}>
           <Spoiler
             maxHeight={0}
-            showLabel={<Text fz="sm">Expand</Text>}
-            hideLabel={<Text fz="sm">Collapse</Text>}
+            showLabel={
+              isStepActive || isStepCompleted ? '' : <Text fz="sm">Expand</Text>
+            }
+            hideLabel={
+              isStepActive || isStepCompleted ? '' : <Text fz="sm">Expand</Text>
+            }
             pb={'md'}
-            initialState={isStepActive}
+            initialState={isStepActive || isStepCompleted}
           >
             <Box
-              opacity={isUpcoming || isStepCompleted ? 0.5 : 1}
+              opacity={isUpcoming ? 0.5 : isStepCompleted ? 0.7 : 1}
               style={{ cursor: isUpcoming ? 'not-allowed' : 'default' }}
             >
               {content}
