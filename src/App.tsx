@@ -9,6 +9,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { BrowserRouter } from 'react-router-dom';
 import { TxProvider } from './contexts/TxContext';
 import { ClientRoutes } from './routes';
+import { GlobalStateProvider } from './contexts/GlobalState';
 
 const queryClient = new QueryClient();
 export default function App() {
@@ -17,9 +18,11 @@ export default function App() {
       <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
           <Layout>
-            <TxProvider>
-              <ClientRoutes />
-            </TxProvider>
+            <GlobalStateProvider>
+              <TxProvider>
+                <ClientRoutes />
+              </TxProvider>
+            </GlobalStateProvider>
           </Layout>
         </QueryClientProvider>
       </WagmiProvider>

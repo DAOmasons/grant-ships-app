@@ -8,7 +8,7 @@ import {
   Text,
   useMantineTheme,
 } from '@mantine/core';
-import { useMemo } from 'react';
+import { ReactNode, useMemo } from 'react';
 import { Address } from 'viem';
 import { useEnsName } from 'wagmi';
 import { ensConfig } from '../../utils/config';
@@ -22,6 +22,63 @@ import {
 } from '@tabler/icons-react';
 import classes from './FeedStyles.module.css';
 import { secondsToShortRelativeTime } from '../../utils/time';
+import { Link } from 'react-router-dom';
+
+const getUrlByEntityType = (entityType: string, entityId: string) => {
+  if (entityType === 'project') {
+    return `/project/${entityId}`;
+  }
+  if (entityType === 'ship') {
+    return `/ship/${entityId}`;
+  }
+  if (entityType === 'facilitators') {
+    return `/facilitators`;
+  }
+  return '';
+};
+
+function replaceTextWithComponents(
+  content: string,
+  entities: {
+    name: string;
+    id: string;
+    entityType: string;
+  }[]
+) {
+  let elements: ReactNode[] = [content];
+
+  entities.forEach((entity) => {
+    const newElements: ReactNode[] = [];
+    elements.forEach((element) => {
+      if (typeof element === 'string') {
+        // Split the string by the entity name to get an array of strings.
+        // For each part, insert the Link component before adding the next part.
+        const parts = element.split(entity.name);
+        parts.forEach((part, index) => {
+          newElements.push(part);
+          if (index < parts.length - 1) {
+            // Don't add a Link after the last part
+            newElements.push(
+              <Link
+                key={`${entity.id}-${index}`}
+                to={getUrlByEntityType(entity.entityType, entity.id)}
+                style={{ color: 'inherit' }}
+              >
+                {entity.name}
+              </Link>
+            );
+          }
+        });
+      } else {
+        // If the element is not a string (e.g., already a JSX element), just keep it.
+        newElements.push(element);
+      }
+    });
+    elements = newElements;
+  });
+
+  return elements;
+}
 
 export const FeedCard = ({
   subject,
@@ -37,6 +94,14 @@ export const FeedCard = ({
     config: ensConfig,
     chainId: mainnet.id,
   });
+
+  const formattedFeedContent = useMemo(() => {
+    return replaceTextWithComponents(
+      content,
+      object ? [subject, object] : [subject]
+    );
+  }, [content, subject, object]);
+
   const icon = useMemo(() => {
     if (subject.entityType === 'project') {
       return <IconAward size={16} color={theme.colors.blue[5]} />;
@@ -52,10 +117,6 @@ export const FeedCard = ({
   const time = useMemo(() => {
     return secondsToShortRelativeTime(timestamp);
   }, [timestamp]);
-
-  const messageWithLinks = useMemo(() => {
-    return content;
-  }, [content]);
 
   return (
     <Box mb="lg">
@@ -75,7 +136,7 @@ export const FeedCard = ({
             </Text>
           </Group>
           <Text size="sm" mb={10}>
-            {messageWithLinks}
+            {formattedFeedContent}
           </Text>
           {embedText && (
             <Spoiler

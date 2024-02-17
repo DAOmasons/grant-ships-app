@@ -2591,6 +2591,12 @@ const merger = new(BareMerger as any)({
         },
         location: 'GetEntityFeedDocument.graphql'
       },{
+        document: GetGameManagerDocument,
+        get rawSDL() {
+          return printWithCache(GetGameManagerDocument);
+        },
+        location: 'GetGameManagerDocument.graphql'
+      },{
         document: GetProjectsDocument,
         get rawSDL() {
           return printWithCache(GetProjectsDocument);
@@ -2710,6 +2716,19 @@ export type getEntityFeedQuery = { subjectItems: Array<(
   )>, objectItems: Array<(
     Pick<FeedItem, 'id' | 'content' | 'timestamp' | 'sender' | 'tag' | 'details' | 'subjectMetadataPointer'>
     & { subject: Pick<FeedItemEntity, 'id' | 'name' | 'type'>, object?: Maybe<Pick<FeedItemEntity, 'id' | 'name' | 'type'>>, embed?: Maybe<Pick<FeedItemEmbed, 'key' | 'pointer' | 'protocol' | 'content'>> }
+  )> };
+
+export type getGameManagerQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type getGameManagerQuery = { gameManager?: Maybe<(
+    Pick<GameManager, 'id' | 'gameFacilitatorId' | 'rootAccount' | 'tokenAddress' | 'currentRoundId' | 'poolFunds'>
+    & { currentRound?: Maybe<(
+      Pick<GameRound, 'id' | 'startTime' | 'endTime' | 'gameStatus'>
+      & { ships: Array<Pick<GrantShip, 'anchor'>> }
+    )> }
   )> };
 
 export type ProjectDetailsFragment = Pick<Project, 'id' | 'name' | 'profileId' | 'nonce' | 'anchor' | 'owner'>;
@@ -2886,6 +2905,27 @@ export const getEntityFeedDocument = gql`
   }
 }
     ${FeedDataFragmentDoc}` as unknown as DocumentNode<getEntityFeedQuery, getEntityFeedQueryVariables>;
+export const getGameManagerDocument = gql`
+    query getGameManager($id: ID!) {
+  gameManager(id: $id) {
+    id
+    gameFacilitatorId
+    rootAccount
+    tokenAddress
+    currentRoundId
+    poolFunds
+    currentRound {
+      id
+      startTime
+      endTime
+      gameStatus
+      ships {
+        anchor
+      }
+    }
+  }
+}
+    ` as unknown as DocumentNode<getGameManagerQuery, getGameManagerQueryVariables>;
 export const GetProjectsDocument = gql`
     query GetProjects {
   projects {
@@ -2956,6 +2996,7 @@ export const ShipsPageQueryDocument = gql`
 
 
 
+
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
@@ -2967,6 +3008,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     getEntityFeed(variables: getEntityFeedQueryVariables, options?: C): Promise<getEntityFeedQuery> {
       return requester<getEntityFeedQuery, getEntityFeedQueryVariables>(getEntityFeedDocument, variables, options) as Promise<getEntityFeedQuery>;
+    },
+    getGameManager(variables: getGameManagerQueryVariables, options?: C): Promise<getGameManagerQuery> {
+      return requester<getGameManagerQuery, getGameManagerQueryVariables>(getGameManagerDocument, variables, options) as Promise<getGameManagerQuery>;
     },
     GetProjects(variables?: GetProjectsQueryVariables, options?: C): Promise<GetProjectsQuery> {
       return requester<GetProjectsQuery, GetProjectsQueryVariables>(GetProjectsDocument, variables, options) as Promise<GetProjectsQuery>;

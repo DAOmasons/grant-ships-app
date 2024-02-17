@@ -1,0 +1,19 @@
+query getGameManager($id: ID!) {
+  gameManager(id: $id) {
+    id
+    gameFacilitatorId
+    rootAccount
+    tokenAddress
+    currentRoundId
+    poolFunds
+    currentRound {
+      id
+      startTime
+      endTime
+      gameStatus
+      ships {
+        anchor
+      }
+    }
+  }
+}

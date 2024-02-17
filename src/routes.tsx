@@ -10,6 +10,7 @@ import { CreateShip } from './pages/CreateShip';
 import { FacilitatorDashboard } from './pages/FacilitatorDashboard';
 import { Ship } from './pages/Ship';
 import { ApplyFunding } from './pages/ApplyFunding';
+import { Facilitators } from './pages/Faciltiators';
 
 export const ClientRoutes = () => {
   return (
@@ -24,6 +25,7 @@ export const ClientRoutes = () => {
       <Route path="apply-funding/:id" element={<ApplyFunding />} />
       <Route path="ship/:id" element={<Ship />} />
       <Route path="project/:id" element={<Project />} />
+      <Route path="facilitators" element={<Facilitators />} />
       <Route path="facilitator-dashboard" element={<FacilitatorDashboard />} />
     </Routes>
   );
