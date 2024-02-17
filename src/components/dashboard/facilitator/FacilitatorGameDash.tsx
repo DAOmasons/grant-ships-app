@@ -146,7 +146,6 @@ const CreateGamePanel = () => {
 
   const handleCreateRound = () => {
     try {
-      console.log(amountInWei);
       tx({
         writeContractParams: {
           functionName: 'createRound',

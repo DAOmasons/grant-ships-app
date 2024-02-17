@@ -41,7 +41,6 @@ export const RegisterProject = () => {
     initialValues: {
       avatarHash: '',
       name: '',
-      projectOwner: address || '',
       teamMembers: [''],
       description: '',
       email: '',
@@ -106,13 +105,7 @@ export const RegisterProject = () => {
           abi: Registry,
           address: ADDR.REGISTRY,
           functionName: 'createProfile',
-          args: [
-            nonce,
-            values.name,
-            metadataStruct,
-            values.projectOwner,
-            teamMembers,
-          ],
+          args: [nonce, values.name, metadataStruct, address, teamMembers],
         },
         viewParams: {
           loading: {
@@ -192,14 +185,6 @@ export const RegisterProject = () => {
         maw={292}
         placeholder="Project Name"
         {...form.getInputProps('name')}
-      />
-      <TextInput
-        w="100%"
-        label="Project Owner"
-        description="Project owner has permissions to edit metadata, team members, apply for grants, and transfer ownership."
-        required
-        placeholder="0x000"
-        {...form.getInputProps('projectOwner')}
       />
       <AddressBox
         w="100%"

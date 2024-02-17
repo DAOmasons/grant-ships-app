@@ -22,10 +22,6 @@ export type Scalars = {
   Int8: any;
 };
 
-export type Aggregation_interval =
-  | 'hour'
-  | 'day';
-
 export type BlockChangedFilter = {
   number_gte: Scalars['Int'];
 };
@@ -43,6 +39,8 @@ export type FeedItem = {
   sender: Scalars['Bytes'];
   tag: Scalars['String'];
   subjectMetadataPointer: Scalars['String'];
+  subjectId: Scalars['ID'];
+  objectId?: Maybe<Scalars['ID']>;
   subject: FeedItemEntity;
   object?: Maybe<FeedItemEntity>;
   embed?: Maybe<FeedItemEmbed>;
@@ -300,6 +298,22 @@ export type FeedItem_filter = {
   subjectMetadataPointer_ends_with_nocase?: InputMaybe<Scalars['String']>;
   subjectMetadataPointer_not_ends_with?: InputMaybe<Scalars['String']>;
   subjectMetadataPointer_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  subjectId?: InputMaybe<Scalars['ID']>;
+  subjectId_not?: InputMaybe<Scalars['ID']>;
+  subjectId_gt?: InputMaybe<Scalars['ID']>;
+  subjectId_lt?: InputMaybe<Scalars['ID']>;
+  subjectId_gte?: InputMaybe<Scalars['ID']>;
+  subjectId_lte?: InputMaybe<Scalars['ID']>;
+  subjectId_in?: InputMaybe<Array<Scalars['ID']>>;
+  subjectId_not_in?: InputMaybe<Array<Scalars['ID']>>;
+  objectId?: InputMaybe<Scalars['ID']>;
+  objectId_not?: InputMaybe<Scalars['ID']>;
+  objectId_gt?: InputMaybe<Scalars['ID']>;
+  objectId_lt?: InputMaybe<Scalars['ID']>;
+  objectId_gte?: InputMaybe<Scalars['ID']>;
+  objectId_lte?: InputMaybe<Scalars['ID']>;
+  objectId_in?: InputMaybe<Array<Scalars['ID']>>;
+  objectId_not_in?: InputMaybe<Array<Scalars['ID']>>;
   subject?: InputMaybe<Scalars['String']>;
   subject_not?: InputMaybe<Scalars['String']>;
   subject_gt?: InputMaybe<Scalars['String']>;
@@ -396,6 +410,8 @@ export type FeedItem_orderBy =
   | 'sender'
   | 'tag'
   | 'subjectMetadataPointer'
+  | 'subjectId'
+  | 'objectId'
   | 'subject'
   | 'subject__id'
   | 'subject__name'
@@ -1336,8 +1352,7 @@ export type Query = {
   profileMemberGroups: Array<ProfileMemberGroup>;
   transaction?: Maybe<Transaction>;
   transactions: Array<Transaction>;
-  rawMetadata?: Maybe<RawMetadata>;
-  rawMetadata_collection: Array<RawMetadata>;
+  rawMetadata: Array<RawMetadata>;
   log?: Maybe<Log>;
   logs: Array<Log>;
   /** Access to subgraph metadata */
@@ -1544,13 +1559,6 @@ export type QuerytransactionsArgs = {
 
 
 export type QueryrawMetadataArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QueryrawMetadata_collectionArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   first?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<RawMetadata_orderBy>;
@@ -1672,8 +1680,7 @@ export type Subscription = {
   profileMemberGroups: Array<ProfileMemberGroup>;
   transaction?: Maybe<Transaction>;
   transactions: Array<Transaction>;
-  rawMetadata?: Maybe<RawMetadata>;
-  rawMetadata_collection: Array<RawMetadata>;
+  rawMetadata: Array<RawMetadata>;
   log?: Maybe<Log>;
   logs: Array<Log>;
   /** Access to subgraph metadata */
@@ -1880,13 +1887,6 @@ export type SubscriptiontransactionsArgs = {
 
 
 export type SubscriptionrawMetadataArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionrawMetadata_collectionArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   first?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<RawMetadata_orderBy>;
@@ -2054,8 +2054,6 @@ export type _SubgraphErrorPolicy_ =
   /** null **/
   rawMetadata: InContextSdkMethod<Query['rawMetadata'], QueryrawMetadataArgs, MeshContext>,
   /** null **/
-  rawMetadata_collection: InContextSdkMethod<Query['rawMetadata_collection'], QueryrawMetadata_collectionArgs, MeshContext>,
-  /** null **/
   log: InContextSdkMethod<Query['log'], QuerylogArgs, MeshContext>,
   /** null **/
   logs: InContextSdkMethod<Query['logs'], QuerylogsArgs, MeshContext>,
@@ -2114,8 +2112,6 @@ export type _SubgraphErrorPolicy_ =
   transactions: InContextSdkMethod<Subscription['transactions'], SubscriptiontransactionsArgs, MeshContext>,
   /** null **/
   rawMetadata: InContextSdkMethod<Subscription['rawMetadata'], SubscriptionrawMetadataArgs, MeshContext>,
-  /** null **/
-  rawMetadata_collection: InContextSdkMethod<Subscription['rawMetadata_collection'], SubscriptionrawMetadata_collectionArgs, MeshContext>,
   /** null **/
   log: InContextSdkMethod<Subscription['log'], SubscriptionlogArgs, MeshContext>,
   /** null **/
