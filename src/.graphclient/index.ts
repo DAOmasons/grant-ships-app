@@ -2718,6 +2718,14 @@ export type getEntityFeedQuery = { subjectItems: Array<(
     & { subject: Pick<FeedItemEntity, 'id' | 'name' | 'type'>, object?: Maybe<Pick<FeedItemEntity, 'id' | 'name' | 'type'>>, embed?: Maybe<Pick<FeedItemEmbed, 'key' | 'pointer' | 'protocol' | 'content'>> }
   )> };
 
+export type GameManagerDataFragment = (
+  Pick<GameManager, 'id' | 'gameFacilitatorId' | 'rootAccount' | 'tokenAddress' | 'currentRoundId' | 'poolFunds'>
+  & { currentRound?: Maybe<(
+    Pick<GameRound, 'id' | 'startTime' | 'endTime' | 'totalRoundAmount' | 'gameStatus'>
+    & { ships: Array<Pick<GrantShip, 'anchor'>> }
+  )> }
+);
+
 export type getGameManagerQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
@@ -2726,7 +2734,7 @@ export type getGameManagerQueryVariables = Exact<{
 export type getGameManagerQuery = { gameManager?: Maybe<(
     Pick<GameManager, 'id' | 'gameFacilitatorId' | 'rootAccount' | 'tokenAddress' | 'currentRoundId' | 'poolFunds'>
     & { currentRound?: Maybe<(
-      Pick<GameRound, 'id' | 'startTime' | 'endTime' | 'gameStatus'>
+      Pick<GameRound, 'id' | 'startTime' | 'endTime' | 'totalRoundAmount' | 'gameStatus'>
       & { ships: Array<Pick<GrantShip, 'anchor'>> }
     )> }
   )> };
@@ -2823,6 +2831,26 @@ export const FeedDataFragmentDoc = gql`
   }
 }
     ` as unknown as DocumentNode<FeedDataFragment, unknown>;
+export const GameManagerDataFragmentDoc = gql`
+    fragment GameManagerData on GameManager {
+  id
+  gameFacilitatorId
+  rootAccount
+  tokenAddress
+  currentRoundId
+  poolFunds
+  currentRound {
+    id
+    startTime
+    endTime
+    totalRoundAmount
+    gameStatus
+    ships {
+      anchor
+    }
+  }
+}
+    ` as unknown as DocumentNode<GameManagerDataFragment, unknown>;
 export const ProjectDetailsFragmentDoc = gql`
     fragment ProjectDetails on Project {
   id
@@ -2908,24 +2936,10 @@ export const getEntityFeedDocument = gql`
 export const getGameManagerDocument = gql`
     query getGameManager($id: ID!) {
   gameManager(id: $id) {
-    id
-    gameFacilitatorId
-    rootAccount
-    tokenAddress
-    currentRoundId
-    poolFunds
-    currentRound {
-      id
-      startTime
-      endTime
-      gameStatus
-      ships {
-        anchor
-      }
-    }
+    ...GameManagerData
   }
 }
-    ` as unknown as DocumentNode<getGameManagerQuery, getGameManagerQueryVariables>;
+    ${GameManagerDataFragmentDoc}` as unknown as DocumentNode<getGameManagerQuery, getGameManagerQueryVariables>;
 export const GetProjectsDocument = gql`
     query GetProjects {
   projects {

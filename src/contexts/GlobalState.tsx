@@ -1,16 +1,18 @@
 import { useQuery } from '@tanstack/react-query';
 import { createContext } from 'react';
+import { getGameManger } from '../queries/getGameManger';
+import { GameManager } from '../.graphclient';
 
 type GlobalStateContext = {
-  gameState?: any;
-  isLoadingGameState: boolean;
-  gameStateError: Error | null;
+  gameManager?: GameManager;
+  isLoadingGameManager: boolean;
+  gameManagerError: Error | null;
 };
 
 export const GlobalContext = createContext<GlobalStateContext>({
-  gameState: undefined,
-  isLoadingGameState: false,
-  gameStateError: null,
+  gameManager: undefined,
+  isLoadingGameManager: false,
+  gameManagerError: null,
 });
 
 export const GlobalStateProvider = ({
@@ -19,17 +21,17 @@ export const GlobalStateProvider = ({
   children: React.ReactNode;
 }) => {
   const {
-    data: gameState,
-    isLoading: isLoadingGameState,
-    error: gameStateError,
-  } = useQuery({ queryKey: ['game-manager-state'], queryFn: () => {} });
+    data: gameManager,
+    isLoading: isLoadingGameManager,
+    error: gameManagerError,
+  } = useQuery({ queryKey: ['game-manager-state'], queryFn: getGameManger });
 
   return (
     <GlobalContext.Provider
       value={{
-        gameState,
-        isLoadingGameState,
-        gameStateError,
+        gameManager: (gameManager as GameManager) || null,
+        isLoadingGameManager,
+        gameManagerError,
       }}
     >
       {children}

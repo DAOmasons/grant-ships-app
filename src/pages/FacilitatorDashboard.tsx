@@ -6,12 +6,17 @@ import { getFacDashShipData } from '../queries/getFacDashShipData';
 import { FacilitatorShipDash } from '../components/dashboard/facilitator/FacilitatorShipDash';
 import { FacilitatorGameDash } from '../components/dashboard/facilitator/FacilitatorGameDash';
 import { AppAlert } from '../components/UnderContruction';
+import { useGameManager } from '../hooks/useGameMangers';
 
 export const FacilitatorDashboard = () => {
   const { data: shipData, isLoading: shipsLoading } = useQuery({
     queryKey: ['facShipData'],
     queryFn: getFacDashShipData,
   });
+
+  const { gm } = useGameManager();
+
+  console.log('gm', gm);
 
   return (
     <MainSection>
