@@ -44,10 +44,6 @@ export type Scalars = {
   Int8: any;
 };
 
-export type Aggregation_interval =
-  | 'hour'
-  | 'day';
-
 export type BlockChangedFilter = {
   number_gte: Scalars['Int'];
 };
@@ -65,6 +61,8 @@ export type FeedItem = {
   sender: Scalars['Bytes'];
   tag: Scalars['String'];
   subjectMetadataPointer: Scalars['String'];
+  subjectId: Scalars['ID'];
+  objectId?: Maybe<Scalars['ID']>;
   subject: FeedItemEntity;
   object?: Maybe<FeedItemEntity>;
   embed?: Maybe<FeedItemEmbed>;
@@ -322,6 +320,22 @@ export type FeedItem_filter = {
   subjectMetadataPointer_ends_with_nocase?: InputMaybe<Scalars['String']>;
   subjectMetadataPointer_not_ends_with?: InputMaybe<Scalars['String']>;
   subjectMetadataPointer_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  subjectId?: InputMaybe<Scalars['ID']>;
+  subjectId_not?: InputMaybe<Scalars['ID']>;
+  subjectId_gt?: InputMaybe<Scalars['ID']>;
+  subjectId_lt?: InputMaybe<Scalars['ID']>;
+  subjectId_gte?: InputMaybe<Scalars['ID']>;
+  subjectId_lte?: InputMaybe<Scalars['ID']>;
+  subjectId_in?: InputMaybe<Array<Scalars['ID']>>;
+  subjectId_not_in?: InputMaybe<Array<Scalars['ID']>>;
+  objectId?: InputMaybe<Scalars['ID']>;
+  objectId_not?: InputMaybe<Scalars['ID']>;
+  objectId_gt?: InputMaybe<Scalars['ID']>;
+  objectId_lt?: InputMaybe<Scalars['ID']>;
+  objectId_gte?: InputMaybe<Scalars['ID']>;
+  objectId_lte?: InputMaybe<Scalars['ID']>;
+  objectId_in?: InputMaybe<Array<Scalars['ID']>>;
+  objectId_not_in?: InputMaybe<Array<Scalars['ID']>>;
   subject?: InputMaybe<Scalars['String']>;
   subject_not?: InputMaybe<Scalars['String']>;
   subject_gt?: InputMaybe<Scalars['String']>;
@@ -418,6 +432,8 @@ export type FeedItem_orderBy =
   | 'sender'
   | 'tag'
   | 'subjectMetadataPointer'
+  | 'subjectId'
+  | 'objectId'
   | 'subject'
   | 'subject__id'
   | 'subject__name'
@@ -1358,8 +1374,7 @@ export type Query = {
   profileMemberGroups: Array<ProfileMemberGroup>;
   transaction?: Maybe<Transaction>;
   transactions: Array<Transaction>;
-  rawMetadata?: Maybe<RawMetadata>;
-  rawMetadata_collection: Array<RawMetadata>;
+  rawMetadata: Array<RawMetadata>;
   log?: Maybe<Log>;
   logs: Array<Log>;
   /** Access to subgraph metadata */
@@ -1566,13 +1581,6 @@ export type QuerytransactionsArgs = {
 
 
 export type QueryrawMetadataArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QueryrawMetadata_collectionArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   first?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<RawMetadata_orderBy>;
@@ -1694,8 +1702,7 @@ export type Subscription = {
   profileMemberGroups: Array<ProfileMemberGroup>;
   transaction?: Maybe<Transaction>;
   transactions: Array<Transaction>;
-  rawMetadata?: Maybe<RawMetadata>;
-  rawMetadata_collection: Array<RawMetadata>;
+  rawMetadata: Array<RawMetadata>;
   log?: Maybe<Log>;
   logs: Array<Log>;
   /** Access to subgraph metadata */
@@ -1902,13 +1909,6 @@ export type SubscriptiontransactionsArgs = {
 
 
 export type SubscriptionrawMetadataArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionrawMetadata_collectionArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   first?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<RawMetadata_orderBy>;
@@ -2114,7 +2114,6 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
-  Aggregation_interval: Aggregation_interval;
   BigDecimal: ResolverTypeWrapper<Scalars['BigDecimal']>;
   BigInt: ResolverTypeWrapper<Scalars['BigInt']>;
   BlockChangedFilter: BlockChangedFilter;
@@ -2253,6 +2252,8 @@ export type FeedItemResolvers<ContextType = MeshContext, ParentType extends Reso
   sender?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
   tag?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   subjectMetadataPointer?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  subjectId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  objectId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   subject?: Resolver<ResolversTypes['FeedItemEntity'], ParentType, ContextType>;
   object?: Resolver<Maybe<ResolversTypes['FeedItemEntity']>, ParentType, ContextType>;
   embed?: Resolver<Maybe<ResolversTypes['FeedItemEmbed']>, ParentType, ContextType>;
@@ -2398,8 +2399,7 @@ export type QueryResolvers<ContextType = MeshContext, ParentType extends Resolve
   profileMemberGroups?: Resolver<Array<ResolversTypes['ProfileMemberGroup']>, ParentType, ContextType, RequireFields<QueryprofileMemberGroupsArgs, 'skip' | 'first' | 'subgraphError'>>;
   transaction?: Resolver<Maybe<ResolversTypes['Transaction']>, ParentType, ContextType, RequireFields<QuerytransactionArgs, 'id' | 'subgraphError'>>;
   transactions?: Resolver<Array<ResolversTypes['Transaction']>, ParentType, ContextType, RequireFields<QuerytransactionsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  rawMetadata?: Resolver<Maybe<ResolversTypes['RawMetadata']>, ParentType, ContextType, RequireFields<QueryrawMetadataArgs, 'id' | 'subgraphError'>>;
-  rawMetadata_collection?: Resolver<Array<ResolversTypes['RawMetadata']>, ParentType, ContextType, RequireFields<QueryrawMetadata_collectionArgs, 'skip' | 'first' | 'subgraphError'>>;
+  rawMetadata?: Resolver<Array<ResolversTypes['RawMetadata']>, ParentType, ContextType, RequireFields<QueryrawMetadataArgs, 'skip' | 'first' | 'subgraphError'>>;
   log?: Resolver<Maybe<ResolversTypes['Log']>, ParentType, ContextType, RequireFields<QuerylogArgs, 'id' | 'subgraphError'>>;
   logs?: Resolver<Array<ResolversTypes['Log']>, ParentType, ContextType, RequireFields<QuerylogsArgs, 'skip' | 'first' | 'subgraphError'>>;
   _meta?: Resolver<Maybe<ResolversTypes['_Meta_']>, ParentType, ContextType, Partial<Query_metaArgs>>;
@@ -2435,8 +2435,7 @@ export type SubscriptionResolvers<ContextType = MeshContext, ParentType extends 
   profileMemberGroups?: SubscriptionResolver<Array<ResolversTypes['ProfileMemberGroup']>, "profileMemberGroups", ParentType, ContextType, RequireFields<SubscriptionprofileMemberGroupsArgs, 'skip' | 'first' | 'subgraphError'>>;
   transaction?: SubscriptionResolver<Maybe<ResolversTypes['Transaction']>, "transaction", ParentType, ContextType, RequireFields<SubscriptiontransactionArgs, 'id' | 'subgraphError'>>;
   transactions?: SubscriptionResolver<Array<ResolversTypes['Transaction']>, "transactions", ParentType, ContextType, RequireFields<SubscriptiontransactionsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  rawMetadata?: SubscriptionResolver<Maybe<ResolversTypes['RawMetadata']>, "rawMetadata", ParentType, ContextType, RequireFields<SubscriptionrawMetadataArgs, 'id' | 'subgraphError'>>;
-  rawMetadata_collection?: SubscriptionResolver<Array<ResolversTypes['RawMetadata']>, "rawMetadata_collection", ParentType, ContextType, RequireFields<SubscriptionrawMetadata_collectionArgs, 'skip' | 'first' | 'subgraphError'>>;
+  rawMetadata?: SubscriptionResolver<Array<ResolversTypes['RawMetadata']>, "rawMetadata", ParentType, ContextType, RequireFields<SubscriptionrawMetadataArgs, 'skip' | 'first' | 'subgraphError'>>;
   log?: SubscriptionResolver<Maybe<ResolversTypes['Log']>, "log", ParentType, ContextType, RequireFields<SubscriptionlogArgs, 'id' | 'subgraphError'>>;
   logs?: SubscriptionResolver<Array<ResolversTypes['Log']>, "logs", ParentType, ContextType, RequireFields<SubscriptionlogsArgs, 'skip' | 'first' | 'subgraphError'>>;
   _meta?: SubscriptionResolver<Maybe<ResolversTypes['_Meta_']>, "_meta", ParentType, ContextType, Partial<Subscription_metaArgs>>;
@@ -2586,6 +2585,12 @@ const merger = new(BareMerger as any)({
         },
         location: 'GetFeedDocument.graphql'
       },{
+        document: GetEntityFeedDocument,
+        get rawSDL() {
+          return printWithCache(GetEntityFeedDocument);
+        },
+        location: 'GetEntityFeedDocument.graphql'
+      },{
         document: GetProjectsDocument,
         get rawSDL() {
           return printWithCache(GetProjectsDocument);
@@ -2686,6 +2691,23 @@ export type getFeedQueryVariables = Exact<{
 
 
 export type getFeedQuery = { feedItems: Array<(
+    Pick<FeedItem, 'id' | 'content' | 'timestamp' | 'sender' | 'tag' | 'details' | 'subjectMetadataPointer'>
+    & { subject: Pick<FeedItemEntity, 'id' | 'name' | 'type'>, object?: Maybe<Pick<FeedItemEntity, 'id' | 'name' | 'type'>>, embed?: Maybe<Pick<FeedItemEmbed, 'key' | 'pointer' | 'protocol' | 'content'>> }
+  )> };
+
+export type getEntityFeedQueryVariables = Exact<{
+  first?: InputMaybe<Scalars['Int']>;
+  skip?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<FeedItem_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  entityId: Scalars['String'];
+}>;
+
+
+export type getEntityFeedQuery = { subjectItems: Array<(
+    Pick<FeedItem, 'id' | 'content' | 'timestamp' | 'sender' | 'tag' | 'details' | 'subjectMetadataPointer'>
+    & { subject: Pick<FeedItemEntity, 'id' | 'name' | 'type'>, object?: Maybe<Pick<FeedItemEntity, 'id' | 'name' | 'type'>>, embed?: Maybe<Pick<FeedItemEmbed, 'key' | 'pointer' | 'protocol' | 'content'>> }
+  )>, objectItems: Array<(
     Pick<FeedItem, 'id' | 'content' | 'timestamp' | 'sender' | 'tag' | 'details' | 'subjectMetadataPointer'>
     & { subject: Pick<FeedItemEntity, 'id' | 'name' | 'type'>, object?: Maybe<Pick<FeedItemEntity, 'id' | 'name' | 'type'>>, embed?: Maybe<Pick<FeedItemEmbed, 'key' | 'pointer' | 'protocol' | 'content'>> }
   )> };
@@ -2843,6 +2865,20 @@ export const getFeedDocument = gql`
   }
 }
     ${FeedDataFragmentDoc}` as unknown as DocumentNode<getFeedQuery, getFeedQueryVariables>;
+export const getEntityFeedDocument = gql`
+    query getEntityFeed($first: Int, $skip: Int, $orderBy: FeedItem_orderBy, $orderDirection: OrderDirection, $entityId: String!) {
+  subjectItems: feedItems(
+    where: {subjectId: "0x404149e541159dca1192f5f3a9083be5c7c468c05ff32d24872e3617cd2e27cc"}
+  ) {
+    ...FeedData
+  }
+  objectItems: feedItems(
+    where: {objectId: "0x404149e541159dca1192f5f3a9083be5c7c468c05ff32d24872e3617cd2e27cc"}
+  ) {
+    ...FeedData
+  }
+}
+    ${FeedDataFragmentDoc}` as unknown as DocumentNode<getEntityFeedQuery, getEntityFeedQueryVariables>;
 export const GetProjectsDocument = gql`
     query GetProjects {
   projects {
@@ -2912,6 +2948,7 @@ export const ShipsPageQueryDocument = gql`
 
 
 
+
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
@@ -2920,6 +2957,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     getFeed(variables?: getFeedQueryVariables, options?: C): Promise<getFeedQuery> {
       return requester<getFeedQuery, getFeedQueryVariables>(getFeedDocument, variables, options) as Promise<getFeedQuery>;
+    },
+    getEntityFeed(variables: getEntityFeedQueryVariables, options?: C): Promise<getEntityFeedQuery> {
+      return requester<getEntityFeedQuery, getEntityFeedQueryVariables>(getEntityFeedDocument, variables, options) as Promise<getEntityFeedQuery>;
     },
     GetProjects(variables?: GetProjectsQueryVariables, options?: C): Promise<GetProjectsQuery> {
       return requester<GetProjectsQuery, GetProjectsQueryVariables>(GetProjectsDocument, variables, options) as Promise<GetProjectsQuery>;

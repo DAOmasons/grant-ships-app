@@ -12,11 +12,6 @@ directive @subgraphId(id: String!) on OBJECT
 "creates a virtual field on the entity that may be queried but cannot be set manually through the mappings API."
 directive @derivedFrom(field: String!) on FIELD_DEFINITION
 
-enum Aggregation_interval {
-  hour
-  day
-}
-
 scalar BigDecimal
 
 scalar BigInt
@@ -40,6 +35,8 @@ type FeedItem {
   sender: Bytes!
   tag: String!
   subjectMetadataPointer: String!
+  subjectId: ID!
+  objectId: ID
   subject: FeedItemEntity!
   object: FeedItemEntity
   embed: FeedItemEmbed
@@ -299,6 +296,22 @@ input FeedItem_filter {
   subjectMetadataPointer_ends_with_nocase: String
   subjectMetadataPointer_not_ends_with: String
   subjectMetadataPointer_not_ends_with_nocase: String
+  subjectId: ID
+  subjectId_not: ID
+  subjectId_gt: ID
+  subjectId_lt: ID
+  subjectId_gte: ID
+  subjectId_lte: ID
+  subjectId_in: [ID!]
+  subjectId_not_in: [ID!]
+  objectId: ID
+  objectId_not: ID
+  objectId_gt: ID
+  objectId_lt: ID
+  objectId_gte: ID
+  objectId_lte: ID
+  objectId_in: [ID!]
+  objectId_not_in: [ID!]
   subject: String
   subject_not: String
   subject_gt: String
@@ -395,6 +408,8 @@ enum FeedItem_orderBy {
   sender
   tag
   subjectMetadataPointer
+  subjectId
+  objectId
   subject
   subject__id
   subject__name
@@ -1607,17 +1622,6 @@ type Query {
     subgraphError: _SubgraphErrorPolicy_! = deny
   ): [Transaction!]!
   rawMetadata(
-    id: ID!
-    """
-    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-    """
-    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
-    """
-    subgraphError: _SubgraphErrorPolicy_! = deny
-  ): RawMetadata
-  rawMetadata_collection(
     skip: Int = 0
     first: Int = 100
     orderBy: RawMetadata_orderBy
@@ -2017,17 +2021,6 @@ type Subscription {
     subgraphError: _SubgraphErrorPolicy_! = deny
   ): [Transaction!]!
   rawMetadata(
-    id: ID!
-    """
-    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-    """
-    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
-    """
-    subgraphError: _SubgraphErrorPolicy_! = deny
-  ): RawMetadata
-  rawMetadata_collection(
     skip: Int = 0
     first: Int = 100
     orderBy: RawMetadata_orderBy

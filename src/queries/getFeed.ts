@@ -130,13 +130,48 @@ export const getFeed = async ({
       orderBy: 'timestamp',
       orderDirection: 'desc',
     });
-    console.log('feedItems', feedItems);
+
     const resolved = await Promise.all(
       feedItems.map(async (item) => await resolveFeedItem(item))
     );
     return resolved;
   } catch (error) {
     console.error('Error in getFeed', error);
+    throw error;
+  }
+};
+
+const getEntityFeed = async ({
+  entityId,
+  first,
+  skip,
+}: {
+  entityId: string;
+  first: number;
+  skip: number;
+}) => {
+  try {
+    const { getEntityFeed } = getBuiltGraphSDK();
+
+    const { subjectItems, objectItems } = await getEntityFeed({
+      first: first,
+      skip: skip,
+      entityId: entityId,
+      orderBy: 'timestamp',
+      orderDirection: 'desc',
+    });
+
+    const sorted = [...subjectItems, ...objectItems].sort(
+      (a, b) => b.timestamp - a.timestamp
+    );
+
+    const resolved = await Promise.all(
+      sorted.map(async (item) => await resolveFeedItem(item))
+    );
+
+    return resolved;
+  } catch (error) {
+    console.error('Error in getEntityFeed', error);
     throw error;
   }
 };
