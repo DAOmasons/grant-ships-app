@@ -25,10 +25,22 @@ import { useQuery } from '@tanstack/react-query';
 import { SCAN_URL } from '../constants/enpoints';
 import { AppAlert } from '../components/UnderContruction';
 import { SingleItemPageSkeleton } from '../components/skeletons';
+import { getEntityFeed } from '../queries/getFeed';
 
 export const Ship = () => {
   const theme = useMantineTheme();
   const { id } = useParams<{ id: string }>();
+
+  const {
+    data: feedCards,
+    isLoading: feedLoading,
+    error: feedError,
+  } = useQuery({
+    queryKey: [`entity-feed-${id}`],
+    queryFn: () =>
+      getEntityFeed({ first: 10, skip: 0, entityId: id as string }),
+    enabled: !!id,
+  });
 
   const {
     data: ship,
@@ -115,7 +127,11 @@ export const Ship = () => {
             </Tabs.Tab>
           </Tabs.List>
           <Tabs.Panel value="feed">
-            <FeedPanel />
+            <FeedPanel
+              feedItems={feedCards}
+              isLoading={feedLoading}
+              error={feedError}
+            />
           </Tabs.Panel>
           <Tabs.Panel value="details">
             <DetailsPanel details={ship.details} members={ship.members} />
