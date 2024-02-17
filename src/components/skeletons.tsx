@@ -26,3 +26,7 @@ export const SingleItemPageSkeleton = () => {
     />
   );
 };
+
+export const FeedSkeletonCard = () => {
+  return <Skeleton w={'100%'} h="2" mt={130} />;
+};

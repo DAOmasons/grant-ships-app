@@ -2700,7 +2700,7 @@ export type getEntityFeedQueryVariables = Exact<{
   skip?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<FeedItem_orderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
-  entityId: Scalars['String'];
+  entityId: Scalars['ID'];
 }>;
 
 
@@ -2866,14 +2866,21 @@ export const getFeedDocument = gql`
 }
     ${FeedDataFragmentDoc}` as unknown as DocumentNode<getFeedQuery, getFeedQueryVariables>;
 export const getEntityFeedDocument = gql`
-    query getEntityFeed($first: Int, $skip: Int, $orderBy: FeedItem_orderBy, $orderDirection: OrderDirection, $entityId: String!) {
+    query getEntityFeed($first: Int, $skip: Int, $orderBy: FeedItem_orderBy, $orderDirection: OrderDirection, $entityId: ID!) {
   subjectItems: feedItems(
-    where: {subjectId: "0x404149e541159dca1192f5f3a9083be5c7c468c05ff32d24872e3617cd2e27cc"}
+    first: $first
+    skip: $skip
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: {subjectId: $entityId}
   ) {
     ...FeedData
   }
   objectItems: feedItems(
-    where: {objectId: "0x404149e541159dca1192f5f3a9083be5c7c468c05ff32d24872e3617cd2e27cc"}
+    skip: $skip
+    orderBy: $orderBy
+    orderDirection: $orderDirection
+    where: {objectId: $entityId}
   ) {
     ...FeedData
   }

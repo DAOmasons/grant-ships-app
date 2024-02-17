@@ -6,6 +6,7 @@ import classes from './PageStyles.module.css';
 import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { getFeed } from '../queries/getFeed';
+import { FeedSkeletonCard } from '../components/skeletons';
 
 export const Home = () => {
   return (
@@ -85,8 +86,4 @@ const FeedPanel = () => {
   if (!feedItems) return null;
 
   return <Feed feed={feedItems} />;
-};
-
-const FeedSkeletonCard = () => {
-  return <Skeleton w={'100%'} h="2" mt={130} />;
 };

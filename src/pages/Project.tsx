@@ -26,6 +26,7 @@ import { AddressAvatarGroup } from '../components/AddressAvatar';
 import { AppAlert } from '../components/UnderContruction';
 import { GameStatus } from '../types/common';
 import { SingleItemPageSkeleton } from '../components/skeletons';
+import { getEntityFeed } from '../queries/getFeed';
 
 export const Project = () => {
   const { id } = useParams();
@@ -37,6 +38,17 @@ export const Project = () => {
   } = useQuery({
     queryKey: [`project-page-${id}`],
     queryFn: () => getProjectPage(id as string),
+    enabled: !!id,
+  });
+
+  const {
+    data: feedCards,
+    isLoading: feedLoading,
+    error: feedError,
+  } = useQuery({
+    queryKey: [`entity-feed-${id}`],
+    queryFn: () =>
+      getEntityFeed({ first: 10, skip: 0, entityId: id as string }),
     enabled: !!id,
   });
 
@@ -111,7 +123,11 @@ export const Project = () => {
             </Tabs.Tab>
           </Tabs.List>
           <Tabs.Panel value="feed">
-            <FeedPanel />
+            <FeedPanel
+              feedItems={feedCards}
+              isLoading={feedLoading}
+              error={feedError}
+            />
           </Tabs.Panel>
           <Tabs.Panel value="grants">
             {project.grants && <GrantsPanel grants={project.grants} />}

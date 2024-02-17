@@ -141,7 +141,7 @@ export const getFeed = async ({
   }
 };
 
-const getEntityFeed = async ({
+export const getEntityFeed = async ({
   entityId,
   first,
   skip,
