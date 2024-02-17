@@ -36,6 +36,7 @@ import { ProfileData } from '../../pages/CreateShip';
 import { useEffect } from 'react';
 import { CacheKeys } from './cacheKeys';
 import { ShipProfileMetadata } from '../../utils/ipfs/metadataValidation';
+import { GAME_MANAGER } from '../../constants/gameSetup';
 
 type FormValues = z.infer<typeof registerShipSchema>;
 
@@ -149,7 +150,13 @@ export const RegisterShip = ({
         });
         return;
       }
-      const teamMembers = values.teamMembers.filter(Boolean);
+      const teamMembers = [
+        ...values.teamMembers.filter(Boolean),
+        // This is necessary for the game manager to be able to deploy
+        // the funding pool for this ship once the application is approved
+        // It will not be necessary once the game manager is updated to v1.1
+        GAME_MANAGER.ADDRESS,
+      ];
       const schemaCode = shipProfileHash();
 
       const metadataStruct = createMetadata({
