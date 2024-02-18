@@ -65,7 +65,7 @@ export const CreateGamePanel = ({
         onChange={(e) => setAmount(Number(e.target.value))}
         type="number"
       />
-      <Button onClick={handleCreateRound} disabled={isLoading}>
+      <Button onClick={handleCreateRound} disabled={isLoading} w="100%">
         Create Game Round
       </Button>
     </Box>
