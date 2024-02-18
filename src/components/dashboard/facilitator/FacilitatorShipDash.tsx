@@ -15,6 +15,8 @@ import { ADDR } from '../../../constants/addresses';
 import { pinJSONToIPFS } from '../../../utils/ipfs/pin';
 import { useTx } from '../../../hooks/useTx';
 import { GameManager } from '../../../.graphclient';
+import { useReadContract } from 'wagmi';
+import { arbitrumSepolia } from 'viem/chains';
 
 export type ShipReviewData = {
   id: string;
@@ -37,6 +39,7 @@ export const FacilitatorShipDash = ({
 }) => {
   const [opened, { open, close }] = useDisclosure(false);
   const { tx } = useTx();
+
   const [shipReviewData, setShipReviewData] = useState<ShipReviewData | null>(
     null
   );

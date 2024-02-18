@@ -17,25 +17,35 @@ import { DateTimePicker } from '@mantine/dates';
 import { Timeline, TimelineContent } from '../../Timeline';
 import { GAME_TOKEN, SHIP_AMOUNT } from '../../../constants/gameSetup';
 import GameManagerAbi from '../../../abi/GameManager.json';
-import { formatEther, parseEther } from 'viem';
+import { Address, erc20Abi, formatEther, parseEther } from 'viem';
 import { useTx } from '../../../hooks/useTx';
 import { ADDR } from '../../../constants/addresses';
 import { GameManager } from '../../../.graphclient';
 import { Link } from 'react-router-dom';
+import { useAccount, useReadContract, useReadContracts } from 'wagmi';
+import { arbitrumSepolia } from 'viem/chains';
 
 export const FacilitatorGameDash = ({
-  shipsLoading,
+  isLoading,
   shipData,
   gameStatusNumber,
+  poolBalance,
   gm,
 }: {
   gm?: GameManager;
   shipData?: FacShipData;
   gameStatusNumber?: number;
-  shipsLoading: boolean;
+  isLoading: boolean;
+  poolBalance?: bigint;
 }) => {
   const steps = useMemo((): TimelineContent[] | null => {
-    if (shipsLoading || !shipData || !gm || gameStatusNumber === undefined) {
+    if (
+      isLoading ||
+      !shipData ||
+      !gm ||
+      gameStatusNumber === undefined ||
+      poolBalance == null
+    ) {
       return null;
     }
 
@@ -48,6 +58,17 @@ export const FacilitatorGameDash = ({
             : 'Game Round Not Created',
         content: (
           <CreateGamePanel gameStatusNumber={gameStatusNumber} gm={gm} />
+        ),
+      },
+      {
+        title: 'Fund Pool',
+        description: poolBalance ? `Pool Funded` : 'Pool Not Funded',
+        content: (
+          <FundPoolPanel
+            roundAmount={gm.currentRound?.totalRoundAmount as string}
+            poolBalance={poolBalance}
+            gameStatusNumber={gameStatusNumber}
+          />
         ),
       },
       {
@@ -86,9 +107,15 @@ export const FacilitatorGameDash = ({
           gameStatusNumber > 6 ? 'Game is not yet complete' : 'Game Complete',
       },
     ];
-  }, [shipData, shipsLoading, gameStatusNumber, gm]);
+  }, [shipData, isLoading, gameStatusNumber, gm, poolBalance]);
 
-  if (!gameStatusNumber) {
+  if (
+    !gameStatusNumber ||
+    poolBalance === undefined ||
+    isLoading ||
+    !gm ||
+    !shipData
+  ) {
     return (
       <Stack>
         <Skeleton w="100%" h={120} />
@@ -180,6 +207,104 @@ const CreateGamePanel = ({
   );
 };
 
+const FundPoolPanel = ({
+  poolBalance,
+  roundAmount,
+  gameStatusNumber,
+}: {
+  poolBalance: bigint;
+  roundAmount: string;
+  gameStatusNumber: number;
+}) => {
+  const STATUS_NUMBER = 1;
+
+  const { address } = useAccount();
+  const { tx } = useTx();
+  const { data: queries, isLoading } = useReadContracts({
+    contracts: [
+      {
+        abi: erc20Abi,
+        chainId: arbitrumSepolia.id,
+        address: GAME_TOKEN.ADDRESS as Address,
+        functionName: 'allowance',
+        args: [address as Address, ADDR.GAME_MANAGER as Address],
+      },
+      {
+        abi: erc20Abi,
+        chainId: arbitrumSepolia.id,
+        address: GAME_TOKEN.ADDRESS as Address,
+        functionName: 'balanceOf',
+        args: [address as Address],
+      },
+    ],
+  });
+
+  if (!queries) {
+    return null;
+  }
+
+  if (isLoading) {
+    return <Skeleton w={350} h={120} />;
+  }
+
+  if (queries[0].status !== 'success' || queries[1].status !== 'success') {
+    return <Text>Something went wrong</Text>;
+  }
+
+  const allowance = queries[0].result as bigint;
+  const balance = queries[1].result as bigint;
+
+  const approveGameManager = () => {
+    tx({
+      writeContractParams: {
+        functionName: 'approve',
+        abi: erc20Abi,
+        address: GAME_TOKEN.ADDRESS as Address,
+        args: [ADDR.GAME_MANAGER as Address, parseEther(roundAmount)],
+      },
+    });
+  };
+
+  if (gameStatusNumber > STATUS_NUMBER) {
+    return (
+      <Box>
+        <Text size="sm" mb="sm">
+          Pool Funded: {formatEther(poolBalance)} {GAME_TOKEN.SYMBOL}
+        </Text>
+      </Box>
+    );
+  }
+  if (allowance < BigInt(roundAmount)) {
+    return (
+      <Box>
+        <Text size="sm" mb="sm">
+          Proposed Round Amount: {formatEther(BigInt(roundAmount))}{' '}
+          {GAME_TOKEN.SYMBOL}
+        </Text>
+        <Text size="sm" mb="sm">
+          You need to approve the game manager to spend your funds
+        </Text>
+        <Button onClick={approveGameManager}>
+          Approve {formatEther(BigInt(roundAmount))} {GAME_TOKEN.SYMBOL}
+        </Button>
+      </Box>
+    );
+  }
+
+  return (
+    <Box>
+      <Text size="sm" mb="sm">
+        Proposed Round Amount: {formatEther(BigInt(roundAmount))}{' '}
+        {GAME_TOKEN.SYMBOL}
+      </Text>
+      <Text size="sm" mb="sm">
+        Pool Funded: {formatEther(poolBalance)} {GAME_TOKEN.SYMBOL}
+      </Text>
+      <Button>Fund Pool</Button>
+    </Box>
+  );
+};
+
 const ShipApplicationPanel = ({ shipData }: { shipData: FacShipData }) => {
   return (
     <Box>
@@ -189,15 +314,15 @@ const ShipApplicationPanel = ({ shipData }: { shipData: FacShipData }) => {
       {shipData.approvedShips.length ? (
         <Stack>
           {shipData.approvedShips.map((ship, index) => (
-            <Group gap="0" key={ship.id}>
-              <Text>{index + 1}</Text>
-              <Button
-                variant="subtle"
-                size="sm"
-                component={Link}
-                to={`/ship/${ship.id}`}
-                style={{ display: 'flex', justifyItems: 'center' }}
-                leftSection={
+            <Button
+              variant="subtle"
+              size="sm"
+              component={Link}
+              to={`/ship/${ship.id}`}
+              style={{ display: 'flex', justifyItems: 'center' }}
+              leftSection={
+                <Group gap={'xs'} key={ship.id}>
+                  <Text>{index + 1}</Text>
                   <Avatar
                     size={32}
                     src={
@@ -205,11 +330,11 @@ const ShipApplicationPanel = ({ shipData }: { shipData: FacShipData }) => {
                       getGatewayUrl(ship.profileMetadata.avatarHash_IPFS)
                     }
                   />
-                }
-              >
-                <Text fz="sm">{ship.name}</Text>
-              </Button>
-            </Group>
+                </Group>
+              }
+            >
+              <Text fz="sm">{ship.name}</Text>
+            </Button>
           ))}
         </Stack>
       ) : (
