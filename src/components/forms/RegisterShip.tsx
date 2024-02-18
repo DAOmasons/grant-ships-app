@@ -43,7 +43,6 @@ type FormValues = z.infer<typeof registerShipSchema>;
 const defaultFormValues: FormValues = {
   avatarHash: '',
   name: '',
-  projectOwner: '',
   teamMembers: [],
   mission: '',
   email: '',
@@ -105,6 +104,16 @@ export const RegisterShip = ({
   };
 
   const handleFormSubmit = async (values: FormValues) => {
+    const results = form.validate();
+
+    if (results.hasErrors) {
+      notifications.show({
+        title: 'Uncaught validation error',
+        message: Object.values(results.errors).join(' || '),
+        color: 'red',
+      });
+      return;
+    }
     if (!address) {
       notifications.show({
         title: 'Account Error',
@@ -212,8 +221,8 @@ export const RegisterShip = ({
 
   return (
     <form
-      id="ship-register"
-      onSubmit={form.onSubmit((values) => handleFormSubmit(values))}
+    // id="ship-register"
+    // onSubmit={form.onSubmit((values) => handleFormSubmit(values))}
     >
       <Stack maw={600} miw={300} w={'100%'}>
         <AvatarPickerIPFS

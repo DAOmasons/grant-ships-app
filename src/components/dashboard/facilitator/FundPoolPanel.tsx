@@ -92,9 +92,18 @@ export const FundPoolPanel = ({
   if (gameStatusNumber > STATUS_NUMBER) {
     return (
       <Box>
-        <Text size="sm" mb="sm">
-          Pool Funded: {formatEther(poolBalance)} {GAME_TOKEN.SYMBOL}
-        </Text>
+        <Alert w={350} mb="sm">
+          <Text fw={600} mb="sm">
+            Pool Funded
+          </Text>
+          <Text size="sm" mb="sm">
+            Proposed Round Amount: {formatEther(BigInt(roundAmount))}{' '}
+            {GAME_TOKEN.SYMBOL}
+          </Text>
+          <Text size="sm">
+            Pool Funded: {formatEther(poolBalance)} {GAME_TOKEN.SYMBOL}
+          </Text>
+        </Alert>
       </Box>
     );
   }

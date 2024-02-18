@@ -101,14 +101,10 @@ export const TimelineBox = ({
         <Flex className={leftBorderClasses} mb={'sm'} px={'xl'} pt="md" pb={0}>
           <Spoiler
             maxHeight={0}
-            showLabel={
-              isStepActive || isStepCompleted ? '' : <Text fz="sm">Expand</Text>
-            }
-            hideLabel={
-              isStepActive || isStepCompleted ? '' : <Text fz="sm">Expand</Text>
-            }
+            showLabel={<Text fz="sm">Expand</Text>}
+            hideLabel={<Text fz="sm">Hide</Text>}
             pb={'md'}
-            initialState={isStepActive || isStepCompleted}
+            initialState={isStepActive}
           >
             <Box
               opacity={isUpcoming ? 0.5 : isStepCompleted ? 0.7 : 1}

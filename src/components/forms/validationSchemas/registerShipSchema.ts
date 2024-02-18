@@ -7,9 +7,7 @@ export const registerShipSchema = z.object({
     .string()
     .min(3, { message: 'Name should have at least 3 characters' })
     .max(50, { message: 'Name should not have more than 50 characters' }),
-  projectOwner: z
-    .string()
-    .refine((val) => isAddress(val), { message: 'Invalid address' }),
+
   teamMembers: z.array(z.string()).refine(
     (val) => {
       return val.every((address) => isAddress(address));
