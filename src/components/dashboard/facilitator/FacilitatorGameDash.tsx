@@ -67,7 +67,12 @@ export const FacilitatorGameDash = ({
         title: 'Allocate',
         description:
           gameStatusNumber > 2 ? 'Funds Allocated' : 'Not yet allocated',
-        content: <AllocationPanel />,
+        content: (
+          <AllocationPanel
+            poolBalance={poolBalance}
+            approvedShips={shipData.approvedShips}
+          />
+        ),
       },
       {
         title: 'Distribute',
