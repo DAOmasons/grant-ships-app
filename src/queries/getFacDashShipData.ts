@@ -12,6 +12,7 @@ type QueryApplicant = FacShipDataFragment;
 type QueryApproved = FacShipDataFragment & {
   approvedTime?: string | null;
   applicationReviewReason?: RawReason | null;
+  allocatedAmount?: string | null;
 };
 type QueryRejected = FacShipDataFragment & {
   rejectedTime?: string | null;
@@ -71,7 +72,7 @@ const applicantMetadataResolver = async (applicant: QueryApplicant) => {
   return withProfileData as CompressedShipApplicant;
 };
 
-const approvedMetadataResolver = async (applicant: QueryRejected) => {
+const approvedMetadataResolver = async (applicant: QueryApproved) => {
   const withProfileData = await resolveProfileMetadata(applicant);
 
   return withProfileData as CompressedApprovedShip;

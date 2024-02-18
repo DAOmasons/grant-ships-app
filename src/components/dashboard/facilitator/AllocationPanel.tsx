@@ -11,7 +11,6 @@ import {
   Address,
   encodeAbiParameters,
   formatEther,
-  parseAbi,
   parseAbiParameters,
   parseEther,
 } from 'viem';
@@ -25,10 +24,14 @@ import { ADDR } from '../../../constants/addresses';
 export const AllocationPanel = ({
   poolBalance,
   approvedShips,
+  gameStatusNumber,
 }: {
+  gameStatusNumber: number;
   poolBalance: bigint;
   approvedShips: CompressedApprovedShip[];
 }) => {
+  const STATUS_NUMBER = 3;
+
   const theme = useMantineTheme();
   const { tx } = useTx();
 
@@ -67,6 +70,27 @@ export const AllocationPanel = ({
       },
     });
   };
+
+  if (gameStatusNumber > STATUS_NUMBER) {
+    return (
+      <Box>
+        <Alert w={350}>
+          <Text fw={600} mb="sm">
+            Allocation Complete
+          </Text>
+          {approvedShips.map((ship) => (
+            <Text fz={'sm'} key={`allocation-input-${ship.id}`} mb="xs">
+              {ship.name}:{' '}
+              {ship.allocatedAmount
+                ? formatEther(BigInt(ship.allocatedAmount))
+                : 'Error'}{' '}
+              {GAME_TOKEN.SYMBOL}
+            </Text>
+          ))}
+        </Alert>
+      </Box>
+    );
+  }
 
   return (
     <Box>

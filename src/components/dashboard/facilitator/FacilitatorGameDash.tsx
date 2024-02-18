@@ -71,6 +71,7 @@ export const FacilitatorGameDash = ({
           <AllocationPanel
             poolBalance={poolBalance}
             approvedShips={shipData.approvedShips}
+            gameStatusNumber={gameStatusNumber}
           />
         ),
       },

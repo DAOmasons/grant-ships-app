@@ -44,18 +44,27 @@ export const FacilitatorDashboard = () => {
       return 0;
     }
 
-    if (poolBalance < BigInt(gm.currentRound?.totalRoundAmount)) {
+    if (
+      gm.currentRound.gameStatus === GameStatus.Pending &&
+      poolBalance < BigInt(gm.currentRound?.totalRoundAmount)
+    ) {
       return 1;
     }
     // Application Phase Ready
     // if there is is not enough ships, then we are in the application stage, stage === 1
-    if (shipData.approvedShips.length < SHIP_AMOUNT) {
+    if (
+      gm.currentRound.gameStatus === GameStatus.Pending &&
+      shipData.approvedShips.length < SHIP_AMOUNT
+    ) {
       return 2;
     }
 
     // Allocation Ready
     // if there are enough ships, then we are in the game, stage === 2
-    if (shipData.approvedShips.length >= SHIP_AMOUNT) {
+    if (
+      gm.currentRound.gameStatus === GameStatus.Pending &&
+      shipData.approvedShips.length >= SHIP_AMOUNT
+    ) {
       return 3;
     }
 

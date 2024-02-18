@@ -530,6 +530,7 @@ enum GameManager_orderBy {
   currentRound__startTime
   currentRound__endTime
   currentRound__totalRoundAmount
+  currentRound__totalAllocatedAmount
   currentRound__gameStatus
   poolFunds
 }
@@ -539,6 +540,7 @@ type GameRound {
   startTime: BigInt!
   endTime: BigInt!
   totalRoundAmount: BigInt!
+  totalAllocatedAmount: BigInt!
   gameStatus: Int!
   ships(skip: Int = 0, first: Int = 100, orderBy: GrantShip_orderBy, orderDirection: OrderDirection, where: GrantShip_filter): [GrantShip!]!
 }
@@ -576,6 +578,14 @@ input GameRound_filter {
   totalRoundAmount_lte: BigInt
   totalRoundAmount_in: [BigInt!]
   totalRoundAmount_not_in: [BigInt!]
+  totalAllocatedAmount: BigInt
+  totalAllocatedAmount_not: BigInt
+  totalAllocatedAmount_gt: BigInt
+  totalAllocatedAmount_lt: BigInt
+  totalAllocatedAmount_gte: BigInt
+  totalAllocatedAmount_lte: BigInt
+  totalAllocatedAmount_in: [BigInt!]
+  totalAllocatedAmount_not_in: [BigInt!]
   gameStatus: Int
   gameStatus_not: Int
   gameStatus_gt: Int
@@ -602,6 +612,7 @@ enum GameRound_orderBy {
   startTime
   endTime
   totalRoundAmount
+  totalAllocatedAmount
   gameStatus
   ships
 }

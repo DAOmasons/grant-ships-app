@@ -9,7 +9,7 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import { ReactNode, useMemo } from 'react';
-import { Address } from 'viem';
+import { Address, formatEther } from 'viem';
 import { useEnsName } from 'wagmi';
 import { ensConfig } from '../../utils/config';
 import { mainnet } from 'viem/chains';
@@ -23,6 +23,7 @@ import {
 import classes from './FeedStyles.module.css';
 import { secondsToShortRelativeTime } from '../../utils/time';
 import { Link } from 'react-router-dom';
+import { GAME_TOKEN } from '../../constants/gameSetup';
 
 const getUrlByEntityType = (entityType: string, entityId: string) => {
   if (entityType === 'project') {
@@ -80,6 +81,20 @@ function replaceTextWithComponents(
   return elements;
 }
 
+const replaceWei = (content: string) => {
+  const regex = /##IN-WEI(\d+)##/g;
+
+  const matches = content.matchAll(regex);
+
+  if (!matches) {
+    return content;
+  }
+
+  return content.replace(regex, (match, amount) => {
+    return `${formatEther(BigInt(amount))} ${GAME_TOKEN.SYMBOL}`;
+  });
+};
+
 export const FeedCard = ({
   subject,
   object,
@@ -97,7 +112,7 @@ export const FeedCard = ({
 
   const formattedFeedContent = useMemo(() => {
     return replaceTextWithComponents(
-      content,
+      replaceWei(content),
       object ? [subject, object] : [subject]
     );
   }, [content, subject, object]);

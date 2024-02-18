@@ -531,6 +531,7 @@ export type GameManager_orderBy =
   | 'currentRound__startTime'
   | 'currentRound__endTime'
   | 'currentRound__totalRoundAmount'
+  | 'currentRound__totalAllocatedAmount'
   | 'currentRound__gameStatus'
   | 'poolFunds';
 
@@ -539,6 +540,7 @@ export type GameRound = {
   startTime: Scalars['BigInt'];
   endTime: Scalars['BigInt'];
   totalRoundAmount: Scalars['BigInt'];
+  totalAllocatedAmount: Scalars['BigInt'];
   gameStatus: Scalars['Int'];
   ships: Array<GrantShip>;
 };
@@ -585,6 +587,14 @@ export type GameRound_filter = {
   totalRoundAmount_lte?: InputMaybe<Scalars['BigInt']>;
   totalRoundAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
   totalRoundAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalAllocatedAmount?: InputMaybe<Scalars['BigInt']>;
+  totalAllocatedAmount_not?: InputMaybe<Scalars['BigInt']>;
+  totalAllocatedAmount_gt?: InputMaybe<Scalars['BigInt']>;
+  totalAllocatedAmount_lt?: InputMaybe<Scalars['BigInt']>;
+  totalAllocatedAmount_gte?: InputMaybe<Scalars['BigInt']>;
+  totalAllocatedAmount_lte?: InputMaybe<Scalars['BigInt']>;
+  totalAllocatedAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalAllocatedAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   gameStatus?: InputMaybe<Scalars['Int']>;
   gameStatus_not?: InputMaybe<Scalars['Int']>;
   gameStatus_gt?: InputMaybe<Scalars['Int']>;
@@ -611,6 +621,7 @@ export type GameRound_orderBy =
   | 'startTime'
   | 'endTime'
   | 'totalRoundAmount'
+  | 'totalAllocatedAmount'
   | 'gameStatus'
   | 'ships';
 

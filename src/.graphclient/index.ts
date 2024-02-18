@@ -553,6 +553,7 @@ export type GameManager_orderBy =
   | 'currentRound__startTime'
   | 'currentRound__endTime'
   | 'currentRound__totalRoundAmount'
+  | 'currentRound__totalAllocatedAmount'
   | 'currentRound__gameStatus'
   | 'poolFunds';
 
@@ -561,6 +562,7 @@ export type GameRound = {
   startTime: Scalars['BigInt'];
   endTime: Scalars['BigInt'];
   totalRoundAmount: Scalars['BigInt'];
+  totalAllocatedAmount: Scalars['BigInt'];
   gameStatus: Scalars['Int'];
   ships: Array<GrantShip>;
 };
@@ -607,6 +609,14 @@ export type GameRound_filter = {
   totalRoundAmount_lte?: InputMaybe<Scalars['BigInt']>;
   totalRoundAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
   totalRoundAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalAllocatedAmount?: InputMaybe<Scalars['BigInt']>;
+  totalAllocatedAmount_not?: InputMaybe<Scalars['BigInt']>;
+  totalAllocatedAmount_gt?: InputMaybe<Scalars['BigInt']>;
+  totalAllocatedAmount_lt?: InputMaybe<Scalars['BigInt']>;
+  totalAllocatedAmount_gte?: InputMaybe<Scalars['BigInt']>;
+  totalAllocatedAmount_lte?: InputMaybe<Scalars['BigInt']>;
+  totalAllocatedAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalAllocatedAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   gameStatus?: InputMaybe<Scalars['Int']>;
   gameStatus_not?: InputMaybe<Scalars['Int']>;
   gameStatus_gt?: InputMaybe<Scalars['Int']>;
@@ -633,6 +643,7 @@ export type GameRound_orderBy =
   | 'startTime'
   | 'endTime'
   | 'totalRoundAmount'
+  | 'totalAllocatedAmount'
   | 'gameStatus'
   | 'ships';
 
@@ -2293,6 +2304,7 @@ export type GameRoundResolvers<ContextType = MeshContext, ParentType extends Res
   startTime?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   endTime?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   totalRoundAmount?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  totalAllocatedAmount?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   gameStatus?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   ships?: Resolver<Array<ResolversTypes['GrantShip']>, ParentType, ContextType, RequireFields<GameRoundshipsArgs, 'skip' | 'first'>>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -2676,7 +2688,7 @@ export type facDashShipDataQuery = { shipApplicants: Array<(
     Pick<GrantShip, 'id' | 'name' | 'status' | 'applicationSubmittedTime' | 'shipApplicationBytesData'>
     & { profileMetadata: Pick<RawMetadata, 'pointer'> }
   )>, approvedShips: Array<(
-    Pick<GrantShip, 'approvedTime' | 'id' | 'name' | 'status' | 'applicationSubmittedTime' | 'shipApplicationBytesData'>
+    Pick<GrantShip, 'approvedTime' | 'allocatedAmount' | 'id' | 'name' | 'status' | 'applicationSubmittedTime' | 'shipApplicationBytesData'>
     & { applicationReviewReason?: Maybe<Pick<RawMetadata, 'pointer'>>, profileMetadata: Pick<RawMetadata, 'pointer'> }
   )>, rejectedShips: Array<(
     Pick<GrantShip, 'rejectedTime' | 'id' | 'name' | 'status' | 'applicationSubmittedTime' | 'shipApplicationBytesData'>
@@ -2887,6 +2899,7 @@ export const facDashShipDataDocument = gql`
   ) {
     ...FacShipData
     approvedTime
+    allocatedAmount
     applicationReviewReason {
       pointer
     }
