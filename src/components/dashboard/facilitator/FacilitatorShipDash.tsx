@@ -15,8 +15,6 @@ import { ADDR } from '../../../constants/addresses';
 import { pinJSONToIPFS } from '../../../utils/ipfs/pin';
 import { useTx } from '../../../hooks/useTx';
 import { GameManager } from '../../../.graphclient';
-import { useReadContract } from 'wagmi';
-import { arbitrumSepolia } from 'viem/chains';
 
 export type ShipReviewData = {
   id: string;

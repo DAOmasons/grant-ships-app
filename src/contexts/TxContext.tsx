@@ -116,7 +116,6 @@ export const TxProvider = ({ children }: { children: ReactNode }) => {
     writeContractOptions?: WriteContractOptions;
     viewParams?: ViewParams;
   }) => {
-    console.log('fired');
     open();
     writeContract(writeContractParams, {
       ...writeContractOptions,
