@@ -121,8 +121,6 @@ export const TxProvider = ({ children }: { children: ReactNode }) => {
     writeContract(writeContractParams, {
       ...writeContractOptions,
       onSuccess: (data, variables, context) => {
-        console.log('data', data);
-        console.log('viewParams?.awaitGraphPoll', viewParams?.awaitGraphPoll);
         writeContractOptions?.onSuccess?.(data, variables, context);
         if (viewParams?.awaitGraphPoll !== false && data) {
           setPollStatus(PollStatus.Idle);

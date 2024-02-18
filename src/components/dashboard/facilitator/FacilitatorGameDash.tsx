@@ -262,6 +262,9 @@ const FundPoolPanel = ({
         address: GAME_TOKEN.ADDRESS as Address,
         args: [ADDR.GAME_MANAGER as Address, parseEther(roundAmount)],
       },
+      viewParams: {
+        awaitGraphPoll: false,
+      },
     });
   };
 
@@ -291,6 +294,22 @@ const FundPoolPanel = ({
     );
   }
 
+  if (balance < BigInt(roundAmount) + 1n) {
+    return (
+      <Box>
+        <Text size="sm" mb="sm">
+          Proposed Round Amount: {formatEther(BigInt(roundAmount))}{' '}
+          {GAME_TOKEN.SYMBOL}
+        </Text>
+        <Text size="sm" mb="sm">
+          Insufficient Balance: You need {formatEther(BigInt(roundAmount))}{' '}
+          {GAME_TOKEN.SYMBOL} to fund this pool
+        </Text>
+        <Button>Fund Account</Button>
+      </Box>
+    );
+  }
+
   return (
     <Box>
       <Text size="sm" mb="sm">
@@ -316,12 +335,13 @@ const ShipApplicationPanel = ({ shipData }: { shipData: FacShipData }) => {
           {shipData.approvedShips.map((ship, index) => (
             <Button
               variant="subtle"
+              key={ship.id}
               size="sm"
               component={Link}
               to={`/ship/${ship.id}`}
               style={{ display: 'flex', justifyItems: 'center' }}
               leftSection={
-                <Group gap={'xs'} key={ship.id}>
+                <Group gap={'xs'}>
                   <Text>{index + 1}</Text>
                   <Avatar
                     size={32}
