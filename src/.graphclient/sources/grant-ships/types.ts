@@ -532,7 +532,11 @@ export type GameManager_orderBy =
   | 'currentRound__endTime'
   | 'currentRound__totalRoundAmount'
   | 'currentRound__totalAllocatedAmount'
+  | 'currentRound__totalDistributedAmount'
   | 'currentRound__gameStatus'
+  | 'currentRound__isGameActive'
+  | 'currentRound__realStartTime'
+  | 'currentRound__realEndTime'
   | 'poolFunds';
 
 export type GameRound = {
@@ -541,8 +545,12 @@ export type GameRound = {
   endTime: Scalars['BigInt'];
   totalRoundAmount: Scalars['BigInt'];
   totalAllocatedAmount: Scalars['BigInt'];
+  totalDistributedAmount: Scalars['BigInt'];
   gameStatus: Scalars['Int'];
   ships: Array<GrantShip>;
+  isGameActive: Scalars['Boolean'];
+  realStartTime?: Maybe<Scalars['BigInt']>;
+  realEndTime?: Maybe<Scalars['BigInt']>;
 };
 
 
@@ -595,6 +603,14 @@ export type GameRound_filter = {
   totalAllocatedAmount_lte?: InputMaybe<Scalars['BigInt']>;
   totalAllocatedAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
   totalAllocatedAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalDistributedAmount?: InputMaybe<Scalars['BigInt']>;
+  totalDistributedAmount_not?: InputMaybe<Scalars['BigInt']>;
+  totalDistributedAmount_gt?: InputMaybe<Scalars['BigInt']>;
+  totalDistributedAmount_lt?: InputMaybe<Scalars['BigInt']>;
+  totalDistributedAmount_gte?: InputMaybe<Scalars['BigInt']>;
+  totalDistributedAmount_lte?: InputMaybe<Scalars['BigInt']>;
+  totalDistributedAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalDistributedAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   gameStatus?: InputMaybe<Scalars['Int']>;
   gameStatus_not?: InputMaybe<Scalars['Int']>;
   gameStatus_gt?: InputMaybe<Scalars['Int']>;
@@ -610,6 +626,26 @@ export type GameRound_filter = {
   ships_not_contains?: InputMaybe<Array<Scalars['String']>>;
   ships_not_contains_nocase?: InputMaybe<Array<Scalars['String']>>;
   ships_?: InputMaybe<GrantShip_filter>;
+  isGameActive?: InputMaybe<Scalars['Boolean']>;
+  isGameActive_not?: InputMaybe<Scalars['Boolean']>;
+  isGameActive_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  isGameActive_not_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  realStartTime?: InputMaybe<Scalars['BigInt']>;
+  realStartTime_not?: InputMaybe<Scalars['BigInt']>;
+  realStartTime_gt?: InputMaybe<Scalars['BigInt']>;
+  realStartTime_lt?: InputMaybe<Scalars['BigInt']>;
+  realStartTime_gte?: InputMaybe<Scalars['BigInt']>;
+  realStartTime_lte?: InputMaybe<Scalars['BigInt']>;
+  realStartTime_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  realStartTime_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  realEndTime?: InputMaybe<Scalars['BigInt']>;
+  realEndTime_not?: InputMaybe<Scalars['BigInt']>;
+  realEndTime_gt?: InputMaybe<Scalars['BigInt']>;
+  realEndTime_lt?: InputMaybe<Scalars['BigInt']>;
+  realEndTime_gte?: InputMaybe<Scalars['BigInt']>;
+  realEndTime_lte?: InputMaybe<Scalars['BigInt']>;
+  realEndTime_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  realEndTime_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
   and?: InputMaybe<Array<InputMaybe<GameRound_filter>>>;
@@ -622,8 +658,33 @@ export type GameRound_orderBy =
   | 'endTime'
   | 'totalRoundAmount'
   | 'totalAllocatedAmount'
+  | 'totalDistributedAmount'
   | 'gameStatus'
-  | 'ships';
+  | 'ships'
+  | 'isGameActive'
+  | 'realStartTime'
+  | 'realEndTime';
+
+export type Grant = {
+  id: Scalars['ID'];
+  projectId: Scalars['Bytes'];
+  shipId: Scalars['Bytes'];
+  lastUpdated: Scalars['BigInt'];
+  grantStatus: Scalars['Int'];
+  milestoneReviewStatus: Scalars['Int'];
+  upcomingMilestone?: Maybe<Scalars['BigInt']>;
+  milestonesAmount?: Maybe<Scalars['BigInt']>;
+  milestones?: Maybe<Array<Milestone>>;
+};
+
+
+export type GrantmilestonesArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Milestone_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<Milestone_filter>;
+};
 
 export type GrantShip = {
   id: Scalars['Bytes'];
@@ -637,6 +698,8 @@ export type GrantShip = {
   blockTimestamp: Scalars['BigInt'];
   transactionHash: Scalars['Bytes'];
   status: Scalars['Int'];
+  poolFunded: Scalars['Boolean'];
+  balance: Scalars['BigInt'];
   alloProfileMembers?: Maybe<ProfileMemberGroup>;
   shipApplicationBytesData?: Maybe<Scalars['Bytes']>;
   applicationSubmittedTime?: Maybe<Scalars['BigInt']>;
@@ -816,6 +879,18 @@ export type GrantShip_filter = {
   status_lte?: InputMaybe<Scalars['Int']>;
   status_in?: InputMaybe<Array<Scalars['Int']>>;
   status_not_in?: InputMaybe<Array<Scalars['Int']>>;
+  poolFunded?: InputMaybe<Scalars['Boolean']>;
+  poolFunded_not?: InputMaybe<Scalars['Boolean']>;
+  poolFunded_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  poolFunded_not_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  balance?: InputMaybe<Scalars['BigInt']>;
+  balance_not?: InputMaybe<Scalars['BigInt']>;
+  balance_gt?: InputMaybe<Scalars['BigInt']>;
+  balance_lt?: InputMaybe<Scalars['BigInt']>;
+  balance_gte?: InputMaybe<Scalars['BigInt']>;
+  balance_lte?: InputMaybe<Scalars['BigInt']>;
+  balance_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  balance_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   alloProfileMembers?: InputMaybe<Scalars['String']>;
   alloProfileMembers_not?: InputMaybe<Scalars['String']>;
   alloProfileMembers_gt?: InputMaybe<Scalars['String']>;
@@ -975,6 +1050,8 @@ export type GrantShip_orderBy =
   | 'blockTimestamp'
   | 'transactionHash'
   | 'status'
+  | 'poolFunded'
+  | 'balance'
   | 'alloProfileMembers'
   | 'alloProfileMembers__id'
   | 'shipApplicationBytesData'
@@ -996,6 +1073,99 @@ export type GrantShip_orderBy =
   | 'allocatedAmount'
   | 'isDistributed'
   | 'distributedAmount';
+
+export type Grant_filter = {
+  id?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']>;
+  id_gt?: InputMaybe<Scalars['ID']>;
+  id_lt?: InputMaybe<Scalars['ID']>;
+  id_gte?: InputMaybe<Scalars['ID']>;
+  id_lte?: InputMaybe<Scalars['ID']>;
+  id_in?: InputMaybe<Array<Scalars['ID']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']>>;
+  projectId?: InputMaybe<Scalars['Bytes']>;
+  projectId_not?: InputMaybe<Scalars['Bytes']>;
+  projectId_gt?: InputMaybe<Scalars['Bytes']>;
+  projectId_lt?: InputMaybe<Scalars['Bytes']>;
+  projectId_gte?: InputMaybe<Scalars['Bytes']>;
+  projectId_lte?: InputMaybe<Scalars['Bytes']>;
+  projectId_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  projectId_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  projectId_contains?: InputMaybe<Scalars['Bytes']>;
+  projectId_not_contains?: InputMaybe<Scalars['Bytes']>;
+  shipId?: InputMaybe<Scalars['Bytes']>;
+  shipId_not?: InputMaybe<Scalars['Bytes']>;
+  shipId_gt?: InputMaybe<Scalars['Bytes']>;
+  shipId_lt?: InputMaybe<Scalars['Bytes']>;
+  shipId_gte?: InputMaybe<Scalars['Bytes']>;
+  shipId_lte?: InputMaybe<Scalars['Bytes']>;
+  shipId_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  shipId_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  shipId_contains?: InputMaybe<Scalars['Bytes']>;
+  shipId_not_contains?: InputMaybe<Scalars['Bytes']>;
+  lastUpdated?: InputMaybe<Scalars['BigInt']>;
+  lastUpdated_not?: InputMaybe<Scalars['BigInt']>;
+  lastUpdated_gt?: InputMaybe<Scalars['BigInt']>;
+  lastUpdated_lt?: InputMaybe<Scalars['BigInt']>;
+  lastUpdated_gte?: InputMaybe<Scalars['BigInt']>;
+  lastUpdated_lte?: InputMaybe<Scalars['BigInt']>;
+  lastUpdated_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  lastUpdated_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  grantStatus?: InputMaybe<Scalars['Int']>;
+  grantStatus_not?: InputMaybe<Scalars['Int']>;
+  grantStatus_gt?: InputMaybe<Scalars['Int']>;
+  grantStatus_lt?: InputMaybe<Scalars['Int']>;
+  grantStatus_gte?: InputMaybe<Scalars['Int']>;
+  grantStatus_lte?: InputMaybe<Scalars['Int']>;
+  grantStatus_in?: InputMaybe<Array<Scalars['Int']>>;
+  grantStatus_not_in?: InputMaybe<Array<Scalars['Int']>>;
+  milestoneReviewStatus?: InputMaybe<Scalars['Int']>;
+  milestoneReviewStatus_not?: InputMaybe<Scalars['Int']>;
+  milestoneReviewStatus_gt?: InputMaybe<Scalars['Int']>;
+  milestoneReviewStatus_lt?: InputMaybe<Scalars['Int']>;
+  milestoneReviewStatus_gte?: InputMaybe<Scalars['Int']>;
+  milestoneReviewStatus_lte?: InputMaybe<Scalars['Int']>;
+  milestoneReviewStatus_in?: InputMaybe<Array<Scalars['Int']>>;
+  milestoneReviewStatus_not_in?: InputMaybe<Array<Scalars['Int']>>;
+  upcomingMilestone?: InputMaybe<Scalars['BigInt']>;
+  upcomingMilestone_not?: InputMaybe<Scalars['BigInt']>;
+  upcomingMilestone_gt?: InputMaybe<Scalars['BigInt']>;
+  upcomingMilestone_lt?: InputMaybe<Scalars['BigInt']>;
+  upcomingMilestone_gte?: InputMaybe<Scalars['BigInt']>;
+  upcomingMilestone_lte?: InputMaybe<Scalars['BigInt']>;
+  upcomingMilestone_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  upcomingMilestone_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  milestonesAmount?: InputMaybe<Scalars['BigInt']>;
+  milestonesAmount_not?: InputMaybe<Scalars['BigInt']>;
+  milestonesAmount_gt?: InputMaybe<Scalars['BigInt']>;
+  milestonesAmount_lt?: InputMaybe<Scalars['BigInt']>;
+  milestonesAmount_gte?: InputMaybe<Scalars['BigInt']>;
+  milestonesAmount_lte?: InputMaybe<Scalars['BigInt']>;
+  milestonesAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  milestonesAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  milestones?: InputMaybe<Array<Scalars['String']>>;
+  milestones_not?: InputMaybe<Array<Scalars['String']>>;
+  milestones_contains?: InputMaybe<Array<Scalars['String']>>;
+  milestones_contains_nocase?: InputMaybe<Array<Scalars['String']>>;
+  milestones_not_contains?: InputMaybe<Array<Scalars['String']>>;
+  milestones_not_contains_nocase?: InputMaybe<Array<Scalars['String']>>;
+  milestones_?: InputMaybe<Milestone_filter>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Grant_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Grant_filter>>>;
+};
+
+export type Grant_orderBy =
+  | 'id'
+  | 'projectId'
+  | 'shipId'
+  | 'lastUpdated'
+  | 'grantStatus'
+  | 'milestoneReviewStatus'
+  | 'upcomingMilestone'
+  | 'milestonesAmount'
+  | 'milestones';
 
 export type Log = {
   id: Scalars['ID'];
@@ -1084,6 +1254,80 @@ export type Log_orderBy =
   | 'message'
   | 'description'
   | 'type';
+
+export type Milestone = {
+  id: Scalars['ID'];
+  amountPercentage: Scalars['Bytes'];
+  mmetadata: Scalars['BigInt'];
+  amount: Scalars['BigInt'];
+  status: Scalars['Int'];
+  lastUpdated: Scalars['BigInt'];
+};
+
+export type Milestone_filter = {
+  id?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']>;
+  id_gt?: InputMaybe<Scalars['ID']>;
+  id_lt?: InputMaybe<Scalars['ID']>;
+  id_gte?: InputMaybe<Scalars['ID']>;
+  id_lte?: InputMaybe<Scalars['ID']>;
+  id_in?: InputMaybe<Array<Scalars['ID']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']>>;
+  amountPercentage?: InputMaybe<Scalars['Bytes']>;
+  amountPercentage_not?: InputMaybe<Scalars['Bytes']>;
+  amountPercentage_gt?: InputMaybe<Scalars['Bytes']>;
+  amountPercentage_lt?: InputMaybe<Scalars['Bytes']>;
+  amountPercentage_gte?: InputMaybe<Scalars['Bytes']>;
+  amountPercentage_lte?: InputMaybe<Scalars['Bytes']>;
+  amountPercentage_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  amountPercentage_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  amountPercentage_contains?: InputMaybe<Scalars['Bytes']>;
+  amountPercentage_not_contains?: InputMaybe<Scalars['Bytes']>;
+  mmetadata?: InputMaybe<Scalars['BigInt']>;
+  mmetadata_not?: InputMaybe<Scalars['BigInt']>;
+  mmetadata_gt?: InputMaybe<Scalars['BigInt']>;
+  mmetadata_lt?: InputMaybe<Scalars['BigInt']>;
+  mmetadata_gte?: InputMaybe<Scalars['BigInt']>;
+  mmetadata_lte?: InputMaybe<Scalars['BigInt']>;
+  mmetadata_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  mmetadata_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  amount?: InputMaybe<Scalars['BigInt']>;
+  amount_not?: InputMaybe<Scalars['BigInt']>;
+  amount_gt?: InputMaybe<Scalars['BigInt']>;
+  amount_lt?: InputMaybe<Scalars['BigInt']>;
+  amount_gte?: InputMaybe<Scalars['BigInt']>;
+  amount_lte?: InputMaybe<Scalars['BigInt']>;
+  amount_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  amount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  status?: InputMaybe<Scalars['Int']>;
+  status_not?: InputMaybe<Scalars['Int']>;
+  status_gt?: InputMaybe<Scalars['Int']>;
+  status_lt?: InputMaybe<Scalars['Int']>;
+  status_gte?: InputMaybe<Scalars['Int']>;
+  status_lte?: InputMaybe<Scalars['Int']>;
+  status_in?: InputMaybe<Array<Scalars['Int']>>;
+  status_not_in?: InputMaybe<Array<Scalars['Int']>>;
+  lastUpdated?: InputMaybe<Scalars['BigInt']>;
+  lastUpdated_not?: InputMaybe<Scalars['BigInt']>;
+  lastUpdated_gt?: InputMaybe<Scalars['BigInt']>;
+  lastUpdated_lt?: InputMaybe<Scalars['BigInt']>;
+  lastUpdated_gte?: InputMaybe<Scalars['BigInt']>;
+  lastUpdated_lte?: InputMaybe<Scalars['BigInt']>;
+  lastUpdated_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  lastUpdated_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Milestone_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Milestone_filter>>>;
+};
+
+export type Milestone_orderBy =
+  | 'id'
+  | 'amountPercentage'
+  | 'mmetadata'
+  | 'amount'
+  | 'status'
+  | 'lastUpdated';
 
 /** Defines the order direction, either ascending or descending */
 export type OrderDirection =
@@ -1359,6 +1603,10 @@ export type Query = {
   gameManagers: Array<GameManager>;
   gameRound?: Maybe<GameRound>;
   gameRounds: Array<GameRound>;
+  grant?: Maybe<Grant>;
+  grants: Array<Grant>;
+  milestone?: Maybe<Milestone>;
+  milestones: Array<Milestone>;
   profileMemberGroup?: Maybe<ProfileMemberGroup>;
   profileMemberGroups: Array<ProfileMemberGroup>;
   transaction?: Maybe<Transaction>;
@@ -1533,6 +1781,42 @@ export type QuerygameRoundsArgs = {
 };
 
 
+export type QuerygrantArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QuerygrantsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Grant_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<Grant_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QuerymilestoneArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QuerymilestonesArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Milestone_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<Milestone_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
 export type QueryprofileMemberGroupArgs = {
   id: Scalars['ID'];
   block?: InputMaybe<Block_height>;
@@ -1687,6 +1971,10 @@ export type Subscription = {
   gameManagers: Array<GameManager>;
   gameRound?: Maybe<GameRound>;
   gameRounds: Array<GameRound>;
+  grant?: Maybe<Grant>;
+  grants: Array<Grant>;
+  milestone?: Maybe<Milestone>;
+  milestones: Array<Milestone>;
   profileMemberGroup?: Maybe<ProfileMemberGroup>;
   profileMemberGroups: Array<ProfileMemberGroup>;
   transaction?: Maybe<Transaction>;
@@ -1856,6 +2144,42 @@ export type SubscriptiongameRoundsArgs = {
   orderBy?: InputMaybe<GameRound_orderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
   where?: InputMaybe<GameRound_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptiongrantArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptiongrantsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Grant_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<Grant_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionmilestoneArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionmilestonesArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Milestone_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<Milestone_filter>;
   block?: InputMaybe<Block_height>;
   subgraphError?: _SubgraphErrorPolicy_;
 };
@@ -2055,6 +2379,14 @@ export type _SubgraphErrorPolicy_ =
   /** null **/
   gameRounds: InContextSdkMethod<Query['gameRounds'], QuerygameRoundsArgs, MeshContext>,
   /** null **/
+  grant: InContextSdkMethod<Query['grant'], QuerygrantArgs, MeshContext>,
+  /** null **/
+  grants: InContextSdkMethod<Query['grants'], QuerygrantsArgs, MeshContext>,
+  /** null **/
+  milestone: InContextSdkMethod<Query['milestone'], QuerymilestoneArgs, MeshContext>,
+  /** null **/
+  milestones: InContextSdkMethod<Query['milestones'], QuerymilestonesArgs, MeshContext>,
+  /** null **/
   profileMemberGroup: InContextSdkMethod<Query['profileMemberGroup'], QueryprofileMemberGroupArgs, MeshContext>,
   /** null **/
   profileMemberGroups: InContextSdkMethod<Query['profileMemberGroups'], QueryprofileMemberGroupsArgs, MeshContext>,
@@ -2113,6 +2445,14 @@ export type _SubgraphErrorPolicy_ =
   gameRound: InContextSdkMethod<Subscription['gameRound'], SubscriptiongameRoundArgs, MeshContext>,
   /** null **/
   gameRounds: InContextSdkMethod<Subscription['gameRounds'], SubscriptiongameRoundsArgs, MeshContext>,
+  /** null **/
+  grant: InContextSdkMethod<Subscription['grant'], SubscriptiongrantArgs, MeshContext>,
+  /** null **/
+  grants: InContextSdkMethod<Subscription['grants'], SubscriptiongrantsArgs, MeshContext>,
+  /** null **/
+  milestone: InContextSdkMethod<Subscription['milestone'], SubscriptionmilestoneArgs, MeshContext>,
+  /** null **/
+  milestones: InContextSdkMethod<Subscription['milestones'], SubscriptionmilestonesArgs, MeshContext>,
   /** null **/
   profileMemberGroup: InContextSdkMethod<Subscription['profileMemberGroup'], SubscriptionprofileMemberGroupArgs, MeshContext>,
   /** null **/
