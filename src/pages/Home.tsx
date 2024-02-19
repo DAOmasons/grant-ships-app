@@ -39,14 +39,14 @@ export const Home = () => {
 
 const Banner = () => {
   return (
-    <Paper h={180} w="100%" p="xl" classNames={{ root: classes.banner }}>
-      <Text fz={22} fw={700} c="white" mb="lg">
+    <Paper h={200} w="100%" p="xl" classNames={{ root: classes.banner }}>
+      <Text fz={22} fw={700} c="white">
         Now Accepting Grant Ships!{' '}
-        <Text fz={22} fw={700} component="span" opacity={0.7}>
-          Submit your application today.{' '}
-        </Text>
       </Text>
-      <Group>
+      <Text fz={16} fw={400} component="span">
+        Submit your application today.{' '}
+      </Text>
+      <Group mt="md">
         <Button component={Link} to="create-ship">
           Submit Grant Ship Application
         </Button>

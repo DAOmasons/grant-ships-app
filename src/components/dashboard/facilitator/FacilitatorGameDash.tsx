@@ -79,7 +79,12 @@ export const FacilitatorGameDash = ({
         title: 'Distribute',
         description:
           gameStatusNumber > 3 ? 'Funds Distributed' : 'Not yet Distributed',
-        content: <DistributePanel />,
+        content: (
+          <DistributePanel
+            approvedShips={shipData.approvedShips}
+            gameStatusNumber={gameStatusNumber}
+          />
+        ),
       },
       {
         title: 'Start Game',
