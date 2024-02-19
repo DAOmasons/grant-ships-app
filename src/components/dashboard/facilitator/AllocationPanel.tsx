@@ -30,7 +30,7 @@ export const AllocationPanel = ({
   poolBalance: bigint;
   approvedShips: CompressedApprovedShip[];
 }) => {
-  const STATUS_NUMBER = 4;
+  const STATUS_NUMBER = 3;
 
   const theme = useMantineTheme();
   const { tx } = useTx();

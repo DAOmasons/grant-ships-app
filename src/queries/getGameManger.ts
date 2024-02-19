@@ -25,8 +25,8 @@ export const getRoundTimes = async (gameRound: string) => {
     !data ||
     data?.startTime === undefined ||
     data?.endTime === undefined ||
-    typeof data?.startTime === 'bigint' ||
-    typeof data?.startTime === 'bigint'
+    typeof data?.startTime !== 'bigint' ||
+    typeof data?.startTime !== 'bigint'
   ) {
     console.log('Error getting round times:', data);
   }

@@ -28,6 +28,7 @@ export const DistributePanel = ({
   const [startTime, setStartTime] = useState<DateValue>(null);
   const [endTime, setEndTime] = useState<DateValue>(null);
   const { tx } = useTx();
+
   const theme = useMantineTheme();
 
   const allocatedShips = useMemo(() => {

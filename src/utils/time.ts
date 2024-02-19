@@ -4,6 +4,9 @@ import relativeTime from 'dayjs/plugin/relativeTime';
 export const secondsToLongDate = (seconds: number) =>
   dayjs(seconds * 1000).format('MMMM D, YYYY');
 
+export const secondsToLongDateTime = (seconds: number) =>
+  dayjs(seconds * 1000).format('MMMM D, YYYY h:mm A');
+
 dayjs.extend(relativeTime);
 
 function abbreviateTimeAgo(timeAgo: string) {

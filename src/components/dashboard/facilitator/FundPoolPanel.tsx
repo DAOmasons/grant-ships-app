@@ -59,8 +59,6 @@ export const FundPoolPanel = ({
   const allowance = queries[0].result as bigint;
   const balance = queries[1].result as bigint;
 
-  console.log('allowance', allowance);
-
   const approveGameManager = () => {
     tx({
       writeContractParams: {
