@@ -15,7 +15,6 @@ export const generateRandomUint256 = (): bigint => {
 };
 
 export function findValueByKey(obj: any, key: string): any {
-  console.log({ obj, key });
   let result: any;
 
   function search(obj: any) {
