@@ -1,15 +1,26 @@
 import { useState } from 'react';
-import { Box, Button, Divider, Flex, Text, Textarea } from '@mantine/core';
+import {
+  Alert,
+  Box,
+  Button,
+  Divider,
+  Flex,
+  Text,
+  TextInput,
+  Textarea,
+} from '@mantine/core';
 import { ShipReviewData } from './FacilitatorShipDash';
+import { AppAlert } from '../../UnderContruction';
 
 export const ApplicationReview = ({
   shipReviewData,
   handleApprove,
 }: {
   shipReviewData: ShipReviewData | null;
-  handleApprove: (isApproved: boolean, reason: string) => void;
+  handleApprove: (isApproved: boolean, reason: string, hatId: string) => void;
 }) => {
   const [reasonText, setReasonText] = useState('');
+  const [hatId, setHatId] = useState('');
 
   return (
     <Flex justify={'center'} w="100%" h={'90vh'}>
@@ -45,21 +56,15 @@ export const ApplicationReview = ({
           Additional Link
         </Text>
         {shipReviewData?.extraLink ? (
-          <Text
-            fz="md"
-            mb="xl"
-            component="a"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
+          <Text fz="md" component="a" rel="noopener noreferrer" target="_blank">
             {shipReviewData?.extraLink}
           </Text>
         ) : (
-          <Text fz="md" mb="xl" fs="italic" opacity={0.7}>
+          <Text fz="md" fs="italic" opacity={0.7}>
             No additional link provided
           </Text>
         )}
-        <Text fz="lg" fw={700} mb="md">
+        <Text fz="lg" fw={700} mb="md" mt="xl">
           Additional Information
         </Text>
         <Text fz="md" mb="xl">
@@ -77,17 +82,28 @@ export const ApplicationReview = ({
           maxRows={8}
           mb="xl"
         />
+        <TextInput
+          value={hatId}
+          label="Ship Operator Hat ID"
+          description="Only required if approving"
+          onChange={(e) => setHatId(e.currentTarget.value)}
+          mb="lg"
+        />
+        <AppAlert
+          title="Hat Id Required to Approve"
+          description="A hat ID is required to operate a ship. Make sure that that you enter a correct, live Hat ID before approving. If you are rejecting, you can leave this field empty."
+        />
         <Flex justify="space-between" pb="xl">
           <Button
             variant="outline"
             disabled={!reasonText}
-            onClick={() => handleApprove(false, reasonText)}
+            onClick={() => handleApprove(false, reasonText, '')}
           >
             Reject
           </Button>
           <Button
-            disabled={!reasonText}
-            onClick={() => handleApprove(true, reasonText)}
+            disabled={!reasonText || !hatId}
+            onClick={() => handleApprove(true, reasonText, hatId)}
           >
             Approve
           </Button>

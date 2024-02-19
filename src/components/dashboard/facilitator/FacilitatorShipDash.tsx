@@ -133,7 +133,11 @@ export const FacilitatorShipDash = ({
     open();
   };
 
-  const handleApprove = async (isApproved: boolean, reason: string) => {
+  const handleApprove = async (
+    isApproved: boolean,
+    reason: string,
+    hatId: string
+  ) => {
     close();
 
     if (!shipReviewData) {
@@ -177,6 +181,16 @@ export const FacilitatorShipDash = ({
       return;
     }
 
+    if ((isApproved && hatId === '') || (isApproved && hatId.length !== 70)) {
+      notifications.show({
+        title: 'Error',
+        message: 'A valid Operator Hat ID is required for approval',
+        color: 'red',
+        icon: null,
+      });
+      return;
+    }
+
     const shipInitData = {
       registryGating: true,
       metadataRequired: true,
@@ -187,7 +201,7 @@ export const FacilitatorShipDash = ({
         pointer: ship.profilePointer,
       },
       recipientId: ship.id,
-      operatorHatId: HATS.SHIP_OP_1,
+      operatorHatId: hatId,
       facilitatorHatId: HATS.FACILITATOR,
     };
 
