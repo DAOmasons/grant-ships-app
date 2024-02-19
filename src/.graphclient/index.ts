@@ -2688,7 +2688,7 @@ export type facDashShipDataQuery = { shipApplicants: Array<(
     Pick<GrantShip, 'id' | 'name' | 'status' | 'applicationSubmittedTime' | 'shipApplicationBytesData'>
     & { profileMetadata: Pick<RawMetadata, 'pointer'> }
   )>, approvedShips: Array<(
-    Pick<GrantShip, 'approvedTime' | 'allocatedAmount' | 'id' | 'name' | 'status' | 'applicationSubmittedTime' | 'shipApplicationBytesData'>
+    Pick<GrantShip, 'approvedTime' | 'allocatedAmount' | 'distributedAmount' | 'id' | 'name' | 'status' | 'applicationSubmittedTime' | 'shipApplicationBytesData'>
     & { applicationReviewReason?: Maybe<Pick<RawMetadata, 'pointer'>>, profileMetadata: Pick<RawMetadata, 'pointer'> }
   )>, rejectedShips: Array<(
     Pick<GrantShip, 'rejectedTime' | 'id' | 'name' | 'status' | 'applicationSubmittedTime' | 'shipApplicationBytesData'>
@@ -2900,6 +2900,7 @@ export const facDashShipDataDocument = gql`
     ...FacShipData
     approvedTime
     allocatedAmount
+    distributedAmount
     applicationReviewReason {
       pointer
     }

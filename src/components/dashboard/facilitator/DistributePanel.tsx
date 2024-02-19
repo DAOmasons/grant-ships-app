@@ -23,6 +23,8 @@ export const DistributePanel = ({
   gameStatusNumber: number;
   approvedShips: CompressedApprovedShip[];
 }) => {
+  const STATUS_NUMBER = 4;
+
   const [startTime, setStartTime] = useState<DateValue>(null);
   const [endTime, setEndTime] = useState<DateValue>(null);
   const { tx } = useTx();
@@ -63,6 +65,27 @@ export const DistributePanel = ({
       },
     });
   };
+
+  if (gameStatusNumber > STATUS_NUMBER) {
+    return (
+      <Box>
+        <Alert w={350}>
+          <Text fw={600} mb="sm">
+            Distribution Complete
+          </Text>
+          {approvedShips.map((ship) => (
+            <Text fz={'sm'} key={`distro-txt-${ship.id}`} mb="xs">
+              {ship.name}:{' '}
+              {ship.distributedAmount
+                ? formatEther(BigInt(ship.distributedAmount))
+                : 'Error'}{' '}
+              {GAME_TOKEN.SYMBOL}
+            </Text>
+          ))}
+        </Alert>
+      </Box>
+    );
+  }
 
   return (
     <Box>

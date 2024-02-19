@@ -1,32 +1,16 @@
-import {
-  Address,
-  createPublicClient,
-  createWalletClient,
-  custom,
-  encodeAbiParameters,
-  http,
-} from 'viem';
+import { createWalletClient, custom, encodeAbiParameters } from 'viem';
 import { arbitrumSepolia } from 'viem/chains';
 import { ADDR } from '../constants/addresses';
 import RegistryAbi from '../abi/Registry.json';
 import AlloAbi from '../abi/Allo.json';
 
 import { generateRandomUint256 } from '../utils/helpers';
-import {
-  GAME_MANAGER,
-  GAME_MANAGER_TESTNET,
-  GAME_TOKEN,
-  HATS,
-} from '../constants/gameSetup';
+import { GAME_MANAGER, GAME_TOKEN, HATS } from '../constants/gameSetup';
+import { publicClient } from '../utils/config';
 
 const client = createWalletClient({
   chain: arbitrumSepolia,
   transport: custom(window.ethereum),
-});
-
-export const publicClient = createPublicClient({
-  chain: arbitrumSepolia,
-  transport: http(import.meta.env.VITE_RPC_URL_TESTNET),
 });
 
 export const createPoolProfile = async () => {

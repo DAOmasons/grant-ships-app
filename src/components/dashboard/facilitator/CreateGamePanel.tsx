@@ -1,11 +1,12 @@
 import { useMemo, useState } from 'react';
-import { GameManager } from '../../../.graphclient';
+
 import { useTx } from '../../../hooks/useTx';
 import { formatEther, parseEther } from 'viem';
 import GameManagerAbi from '../../../abi/GameManager.json';
 import { ADDR } from '../../../constants/addresses';
 import { Box, Button, Text, TextInput } from '@mantine/core';
 import { GAME_TOKEN } from '../../../constants/gameSetup';
+import { GameManager } from '../../../queries/getGameManger';
 
 export const CreateGamePanel = ({
   gameStatusNumber,

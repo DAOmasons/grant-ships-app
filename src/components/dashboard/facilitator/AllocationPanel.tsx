@@ -30,7 +30,7 @@ export const AllocationPanel = ({
   poolBalance: bigint;
   approvedShips: CompressedApprovedShip[];
 }) => {
-  const STATUS_NUMBER = 3;
+  const STATUS_NUMBER = 4;
 
   const theme = useMantineTheme();
   const { tx } = useTx();
@@ -79,7 +79,7 @@ export const AllocationPanel = ({
             Allocation Complete
           </Text>
           {approvedShips.map((ship) => (
-            <Text fz={'sm'} key={`allocation-input-${ship.id}`} mb="xs">
+            <Text fz={'sm'} key={`allocation-txt-${ship.id}`} mb="xs">
               {ship.name}:{' '}
               {ship.allocatedAmount
                 ? formatEther(BigInt(ship.allocatedAmount))

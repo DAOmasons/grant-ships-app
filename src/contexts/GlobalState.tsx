@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { createContext } from 'react';
-import { getGameManger } from '../queries/getGameManger';
-import { GameManager } from '../.graphclient';
+import { GameManager, getGameManger } from '../queries/getGameManger';
 
 type GlobalStateContext = {
   gameManager?: GameManager;

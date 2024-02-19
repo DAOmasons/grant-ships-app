@@ -30,9 +30,6 @@ export const FacilitatorDashboard = () => {
     address: ADDR.GAME_MANAGER,
   });
 
-  console.log('isLoadingGm', isLoadingGm);
-  console.log('poolLoading', poolLoading);
-  console.log('shipsLoading', shipsLoading);
   const gameOperationStage = useMemo(() => {
     if (!gm || !shipData || typeof poolBalance !== 'bigint') {
       return undefined;
@@ -92,8 +89,6 @@ export const FacilitatorDashboard = () => {
       return 7;
     }
   }, [shipData, gm, poolBalance]);
-
-  console.log('gameOperationStage', gameOperationStage);
 
   return (
     <MainSection>
