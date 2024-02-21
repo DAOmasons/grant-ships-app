@@ -13,41 +13,11 @@ const client = createWalletClient({
   transport: custom(window.ethereum),
 });
 
-export const createPoolProfile = async () => {
-  const [account] = await client.getAddresses();
-
-  const unwatchProfileCreate = publicClient.watchContractEvent({
-    address: ADDR.REGISTRY,
-    abi: RegistryAbi,
-    eventName: 'ProfileCreated',
-    onLogs: (logs: any) => {
-      console.log('Profile Created => Event Logs: ', logs);
-
-      console.log('Profile ID:', logs[0]?.args?.profileId);
-      unwatchProfileCreate?.();
-    },
-  });
-
-  await client.writeContract({
-    account,
-    address: ADDR.REGISTRY,
-    abi: RegistryAbi,
-    functionName: 'createProfile',
-    args: [
-      generateRandomUint256(),
-      'GameManagerProfile',
-      { protocol: 1, pointer: '0' },
-      account,
-      [],
-    ],
-  });
-};
-
 export const createGameManagerPoolProfile = async () => {
   const [account] = await client.getAddresses();
 
   const unwatchProfileCreate = publicClient.watchContractEvent({
-    address: ADDR.GAME_MANAGER,
+    address: ADDR.REGISTRY,
     abi: RegistryAbi,
     eventName: 'ProfileCreated',
     onLogs: (logs: any) => {
@@ -65,7 +35,7 @@ export const createGameManagerPoolProfile = async () => {
     functionName: 'createProfile',
     args: [
       generateRandomUint256(),
-      'GameManagerPool',
+      'GameManagerPoolProfile',
       { protocol: 1, pointer: '0' },
       account,
       [],
