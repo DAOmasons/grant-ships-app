@@ -91,6 +91,8 @@ export const Ship = () => {
     .reduce((acc, amt) => acc + amt, 0n)
     .toString();
 
+  const isShipActive = ship.status === GameStatus.Active;
+
   return (
     <Flex>
       <MainSection maw={534}>
@@ -111,7 +113,11 @@ export const Ship = () => {
             addresses={ship.members}
             avatarProps={{ size: 32 }}
           />
-          <Button component={Link} to={`/apply-funding/${id}`}>
+          <Button
+            component={Link}
+            to={`/apply-funding/${id}`}
+            disabled={!isShipActive}
+          >
             Apply for Funding
           </Button>
         </Group>
