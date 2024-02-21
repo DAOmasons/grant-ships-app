@@ -2,7 +2,7 @@ import { isAddress } from 'viem';
 import { z } from 'zod';
 
 export const applyFundingSchema = z.object({
-  projectId: z.string().min(66, { message: 'Project Id is required' }),
+  projectId: z.string().min(1, { message: 'Project Id is required' }),
   dueDate: z.date().nullable(),
   totalAmount: z.string().min(1).regex(/^\d+$/, 'Must be a number'),
   sendAddress: z

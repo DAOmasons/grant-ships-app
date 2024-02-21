@@ -30,6 +30,8 @@ import {
 import { useTx } from '../hooks/useTx';
 import AlloAbi from '../abi/Allo.json';
 import { ADDR } from '../constants/addresses';
+import { getShipPoolId } from '../queries/getShipPoolId';
+import { useParams } from 'react-router-dom';
 
 const defaultValues = {
   projectId: '',
@@ -60,6 +62,7 @@ type FormValues = z.infer<typeof applyFundingSchema>;
 export const ApplyFunding = () => {
   const { userData, userLoading } = useUserData();
   const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
+  const { id } = useParams();
 
   const { address } = useAccount();
   const { tx } = useTx();
@@ -78,6 +81,14 @@ export const ApplyFunding = () => {
       notifications.show({
         title: 'Not connected',
         message: 'Please connect your wallet',
+        color: 'red',
+      });
+    }
+
+    if (!id) {
+      notifications.show({
+        title: 'Error',
+        message: 'Invalid project anchor in url',
         color: 'red',
       });
     }
@@ -168,12 +179,17 @@ export const ApplyFunding = () => {
         [anchor, sendAddress as Address, parsedUnits, [1n, pinRes.IpfsHash]]
       );
 
+      const shipPoolId = await getShipPoolId(id as string);
+      console.log('encoded', encoded);
+
+      console.log('shipPoolId', shipPoolId);
+
       tx({
         writeContractParams: {
           abi: AlloAbi,
           address: ADDR.ALLO,
           functionName: 'registerRecipient',
-          args: [GAME_MANAGER.POOL.ID, encoded],
+          args: [shipPoolId, encoded],
         },
       });
     } catch (error) {
