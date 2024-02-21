@@ -31,6 +31,7 @@ export const AllocationPanel = ({
   approvedShips: CompressedApprovedShip[];
 }) => {
   const STATUS_NUMBER = 3;
+  const isNotReady = gameStatusNumber < STATUS_NUMBER;
 
   const theme = useMantineTheme();
   const { tx } = useTx();
@@ -135,7 +136,9 @@ export const AllocationPanel = ({
         />
       ))}
 
-      <Button onClick={handleAllocate}>Allocate</Button>
+      <Button onClick={handleAllocate} disabled={isNotReady}>
+        Allocate
+      </Button>
     </Box>
   );
 };

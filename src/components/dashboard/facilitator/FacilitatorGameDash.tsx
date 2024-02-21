@@ -26,7 +26,6 @@ export const FacilitatorGameDash = ({
   isLoading: boolean;
   poolBalance?: bigint;
 }) => {
-  gm;
   const steps = useMemo((): TimelineContent[] | null => {
     if (
       isLoading ||
@@ -110,7 +109,7 @@ export const FacilitatorGameDash = ({
   }, [shipData, isLoading, gameStatusNumber, gm, poolBalance]);
 
   if (
-    !gameStatusNumber ||
+    // !gameStatusNumber ||
     poolBalance === undefined ||
     isLoading ||
     !gm ||
@@ -133,7 +132,7 @@ export const FacilitatorGameDash = ({
         <Timeline
           subKey="game-manager"
           steps={steps}
-          currentNumber={gameStatusNumber}
+          currentNumber={gameStatusNumber || 0}
           containerProps={{ w: '100%' }}
         />
       )}

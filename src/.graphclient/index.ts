@@ -2994,11 +2994,11 @@ const merger = new(BareMerger as any)({
         },
         location: 'GetRecentTransactionDocument.graphql'
       },{
-        document: GetPoolIdDocument,
+        document: GetShipPoolIdDocument,
         get rawSDL() {
-          return printWithCache(GetPoolIdDocument);
+          return printWithCache(GetShipPoolIdDocument);
         },
-        location: 'GetPoolIdDocument.graphql'
+        location: 'GetShipPoolIdDocument.graphql'
       },{
         document: GetUserDataDocument,
         get rawSDL() {
@@ -3155,12 +3155,12 @@ export type getRecentTransactionQueryVariables = Exact<{
 
 export type getRecentTransactionQuery = { transaction?: Maybe<Pick<Transaction, 'id'>> };
 
-export type getPoolIdQueryVariables = Exact<{
+export type getShipPoolIdQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
-export type getPoolIdQuery = { grantShip?: Maybe<Pick<GrantShip, 'poolId'>> };
+export type getShipPoolIdQuery = { grantShip?: Maybe<Pick<GrantShip, 'poolId'>> };
 
 export type UserProjectDataFragment = Pick<Project, 'id' | 'name' | 'anchor'>;
 
@@ -3380,13 +3380,13 @@ export const getRecentTransactionDocument = gql`
   }
 }
     ` as unknown as DocumentNode<getRecentTransactionQuery, getRecentTransactionQueryVariables>;
-export const getPoolIdDocument = gql`
-    query getPoolId($id: ID!) {
+export const getShipPoolIdDocument = gql`
+    query getShipPoolId($id: ID!) {
   grantShip(id: $id) {
     poolId
   }
 }
-    ` as unknown as DocumentNode<getPoolIdQuery, getPoolIdQueryVariables>;
+    ` as unknown as DocumentNode<getShipPoolIdQuery, getShipPoolIdQueryVariables>;
 export const getUserDataDocument = gql`
     query getUserData($id: Bytes) {
   projects(where: {owner: $id}) {
@@ -3470,8 +3470,8 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     getRecentTransaction(variables: getRecentTransactionQueryVariables, options?: C): Promise<getRecentTransactionQuery> {
       return requester<getRecentTransactionQuery, getRecentTransactionQueryVariables>(getRecentTransactionDocument, variables, options) as Promise<getRecentTransactionQuery>;
     },
-    getPoolId(variables: getPoolIdQueryVariables, options?: C): Promise<getPoolIdQuery> {
-      return requester<getPoolIdQuery, getPoolIdQueryVariables>(getPoolIdDocument, variables, options) as Promise<getPoolIdQuery>;
+    getShipPoolId(variables: getShipPoolIdQueryVariables, options?: C): Promise<getShipPoolIdQuery> {
+      return requester<getShipPoolIdQuery, getShipPoolIdQueryVariables>(getShipPoolIdDocument, variables, options) as Promise<getShipPoolIdQuery>;
     },
     getUserData(variables?: getUserDataQueryVariables, options?: C): Promise<getUserDataQuery> {
       return requester<getUserDataQuery, getUserDataQueryVariables>(getUserDataDocument, variables, options) as Promise<getUserDataQuery>;

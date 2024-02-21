@@ -24,6 +24,7 @@ export const DistributePanel = ({
   approvedShips: CompressedApprovedShip[];
 }) => {
   const STATUS_NUMBER = 4;
+  const isNotReady = gameStatusNumber < STATUS_NUMBER;
 
   const [startTime, setStartTime] = useState<DateValue>(null);
   const [endTime, setEndTime] = useState<DateValue>(null);
@@ -124,6 +125,7 @@ export const DistributePanel = ({
         mb={'md'}
         onChange={setStartTime}
         placeholder="Select a date and time"
+        disabled={isNotReady}
       />
       <DateTimePicker
         clearable
@@ -132,8 +134,11 @@ export const DistributePanel = ({
         mb="md"
         onChange={setEndTime}
         placeholder="Select a date and time"
+        disabled={isNotReady}
       />
-      <Button onClick={handleDistribute}>Distribute Allocations</Button>
+      <Button onClick={handleDistribute} disabled={isNotReady}>
+        Distribute Allocations
+      </Button>
     </Box>
   );
 };
