@@ -1,11 +1,12 @@
-import { Group, Code, Title } from '@mantine/core';
+import { Group, Code, Title, useMantineTheme } from '@mantine/core';
 import {
   IconHome,
   IconRocket,
   IconPacman,
   IconAward,
-  IconList,
   IconFileDescription,
+  IconShieldHalf,
+  IconClock,
 } from '@tabler/icons-react';
 import classes from './DesktoNavStyles.module.css';
 import Logo from '../../assets/Logo.svg';
@@ -13,6 +14,8 @@ import { ConnectButton } from './ConnectButton';
 import { Link, useLocation } from 'react-router-dom';
 import { useAccount } from 'wagmi';
 import { FACILITATORS } from '../../constants/gameSetup';
+import { useMemo } from 'react';
+import { useUserData } from '../../hooks/useUserState';
 
 const data = [
   { link: '/', label: 'Home', icon: IconHome },
@@ -25,6 +28,9 @@ const data = [
 export function DesktopNav() {
   const location = useLocation();
   const { address } = useAccount();
+  const { userData } = useUserData();
+
+  const theme = useMantineTheme();
 
   const links = data.map((item) => {
     return (
@@ -40,6 +46,53 @@ export function DesktopNav() {
     );
   });
 
+  const dashboardLink = useMemo(() => {
+    if (!userData)
+      return (
+        <Link to="#" className={classes.link}>
+          <IconClock className={classes.linkIcon} stroke={1.5} />
+          <span>Loading...</span>
+        </Link>
+      );
+
+    if (userData.isFacilitator) {
+      return (
+        <Link to="/facilitator-dashboard" className={classes.link}>
+          <IconShieldHalf
+            className={classes.linkIcon}
+            stroke={1.5}
+            color={theme.colors.pink[5]}
+          />
+          <span>Facilitator Dashboard</span>
+        </Link>
+      );
+    }
+
+    if (userData.isShipOperator) {
+      return (
+        <Link to="/ship-operator-dashboard" className={classes.link}>
+          <IconRocket
+            className={classes.linkIcon}
+            stroke={1.5}
+            color={theme.colors.violet[5]}
+          />
+          <span>Ship Dashboard</span>
+        </Link>
+      );
+    } else {
+      return (
+        <Link to="/my-projects" className={classes.link}>
+          <IconAward
+            className={classes.linkIcon}
+            stroke={1.5}
+            color={theme.colors.blue[5]}
+          />
+          <span>My Projects</span>
+        </Link>
+      );
+    }
+  }, [userData, theme]);
+
   const isFacilitator = address && FACILITATORS.includes(address);
 
   return (
@@ -54,19 +107,7 @@ export function DesktopNav() {
         {links}
       </div>
 
-      <div className={classes.footer}>
-        {isFacilitator ? (
-          <Link to="/facilitator-dashboard" className={classes.link}>
-            <IconList className={classes.linkIcon} stroke={1.5} />
-            <span>Dashboard</span>
-          </Link>
-        ) : (
-          <Link to="/my-projects" className={classes.link}>
-            <IconList className={classes.linkIcon} stroke={1.5} />
-            <span>My Projects</span>
-          </Link>
-        )}
-      </div>
+      <div className={classes.footer}>{dashboardLink}</div>
       <ConnectButton />
 
       <Code w="fit-content" ml={'sm'} mt={'lg'}>

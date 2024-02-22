@@ -17,13 +17,13 @@ export default function App() {
     <BrowserRouter>
       <WagmiProvider config={config}>
         <QueryClientProvider client={queryClient}>
-          <Layout>
-            <GlobalStateProvider>
+          <GlobalStateProvider>
+            <Layout>
               <TxProvider>
                 <ClientRoutes />
               </TxProvider>
-            </GlobalStateProvider>
-          </Layout>
+            </Layout>
+          </GlobalStateProvider>
         </QueryClientProvider>
       </WagmiProvider>
     </BrowserRouter>

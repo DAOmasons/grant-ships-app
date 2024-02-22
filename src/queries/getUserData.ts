@@ -52,8 +52,6 @@ const checkIsShipOperator = async (address: string) => {
   }
 };
 
-// const isShipOperator = async (address: string) => {};
-
 export const getUserData = async (address: string): Promise<UserData> => {
   try {
     const { getUserData } = getBuiltGraphSDK();
