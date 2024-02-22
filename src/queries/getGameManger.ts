@@ -3,13 +3,8 @@ import {
   getBuiltGraphSDK,
 } from '../.graphclient';
 import { GAME_MANAGER } from '../constants/gameSetup';
-import { publicClient } from '../utils/config';
-import GameManagerAbi from '../abi/GameManager.json';
 
-export type GameManager = ClientGameManger & {
-  endTime?: bigint;
-  startTime?: bigint;
-};
+export type GameManager = ClientGameManger;
 
 export const getGameManger = async (): Promise<GameManager> => {
   try {

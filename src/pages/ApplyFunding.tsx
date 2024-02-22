@@ -180,9 +180,6 @@ export const ApplyFunding = () => {
       );
 
       const shipPoolId = await getShipPoolId(id as string);
-      console.log('encoded', encoded);
-
-      console.log('shipPoolId', shipPoolId);
 
       tx({
         writeContractParams: {

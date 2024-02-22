@@ -31,11 +31,10 @@ export const getShipPageData = async (id: string): Promise<ShipPageUI> => {
       throw new Error('Invalid metadata');
     }
 
-    let decodedApplicationData;
     let applyData;
 
-    if (grantShip.shipApplicationBytesData === undefined) {
-      decodedApplicationData = decodeAbiParameters(
+    if (grantShip.shipApplicationBytesData) {
+      const decodedApplicationData = decodeAbiParameters(
         parseAbiParameters('address, string, (uint256, string)'),
         grantShip.shipApplicationBytesData
       );
@@ -43,6 +42,7 @@ export const getShipPageData = async (id: string): Promise<ShipPageUI> => {
       const applicationData = await getIpfsJson(CID);
       const validatedApplicationData =
         ShipApplicationMetadata.safeParse(applicationData);
+
       if (!validatedApplicationData.success) {
         console.error('Invalid metadata', validatedApplicationData.error);
         throw new Error('Invalid metadata');
@@ -73,6 +73,7 @@ export const getShipPageData = async (id: string): Promise<ShipPageUI> => {
       details: {
         thesis: applyData?.thesis,
         apply: applyData?.guidelines,
+        fee: applyData?.fee,
         extraInfo: applyData?.extraInfo,
         extraLink: applyData?.extraLink,
         website: profileData.website,

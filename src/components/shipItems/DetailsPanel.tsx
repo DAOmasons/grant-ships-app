@@ -52,6 +52,16 @@ export const DetailsPanel = ({
           </Text>
         </>
       )}
+      {fee && (
+        <>
+          <Text size="sm" fw={600} mb="xs">
+            Management Fee
+          </Text>
+          <Text size="sm" mb="xl">
+            {fee}%
+          </Text>
+        </>
+      )}
       {extraInfo && (
         <>
           <Text size="sm" fw={600} mb="xs">

@@ -159,13 +159,7 @@ export const RegisterShip = ({
         });
         return;
       }
-      const teamMembers = [
-        ...values.teamMembers.filter(Boolean),
-        // This is necessary for the game manager to be able to deploy
-        // the funding pool for this ship once the application is approved
-        // It will not be necessary once the game manager is updated to v1.1
-        GAME_MANAGER.ADDRESS,
-      ];
+      const teamMembers = values.teamMembers.filter(Boolean);
       const schemaCode = shipProfileHash();
 
       const metadataStruct = createMetadata({

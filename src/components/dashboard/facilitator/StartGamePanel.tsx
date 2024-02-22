@@ -15,9 +15,13 @@ export const StartGamePanel = ({
   const STATUS_NUMBER = 5;
   const { tx } = useTx();
 
+  console.log('gm', gm);
+
   const nowInSeconds = Math.floor(Date.now() / 1000);
 
-  const isReadyToStart = gm?.startTime && Number(gm.startTime) < nowInSeconds;
+  const isReadyToStart =
+    gm?.currentRound?.startTime &&
+    Number(gm.currentRound.startTime) < nowInSeconds;
 
   const handleStartGame = () => {
     tx({
@@ -48,8 +52,8 @@ export const StartGamePanel = ({
         Game Start Time
       </Text>
       <Text fz="sm" mb="md">
-        {gm?.startTime
-          ? secondsToLongDateTime(Number(gm.startTime))
+        {gm?.currentRound?.startTime
+          ? secondsToLongDateTime(Number(gm.currentRound?.startTime))
           : 'Start time not yet set'}
       </Text>
       {!isReadyToStart && (

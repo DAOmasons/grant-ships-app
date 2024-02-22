@@ -17,7 +17,9 @@ export const StopGamePanel = ({
 
   const nowInSeconds = Math.floor(Date.now() / 1000);
 
-  const isReadyToStop = gm?.endTime && Number(gm.endTime) < nowInSeconds;
+  const isReadyToStop =
+    gm?.currentRound?.endTime &&
+    Number(gm?.currentRound?.endTime) < nowInSeconds;
 
   const handleStopGame = () => {
     tx({
@@ -48,8 +50,8 @@ export const StopGamePanel = ({
         Game Stop Time
       </Text>
       <Text fz="sm" mb="md">
-        {gm?.endTime
-          ? secondsToLongDateTime(Number(gm.endTime))
+        {gm?.currentRound?.endTime
+          ? secondsToLongDateTime(Number(gm.currentRound?.endTime))
           : 'Stop time not yet set'}
       </Text>
       {!isReadyToStop && (
