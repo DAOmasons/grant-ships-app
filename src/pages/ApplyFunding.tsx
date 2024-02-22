@@ -12,7 +12,7 @@ import {
 import { useForm, zodResolver } from '@mantine/form';
 import { IconCalendar, IconExternalLink } from '@tabler/icons-react';
 import { DatePickerInput } from '@mantine/dates';
-import { GAME_MANAGER, GAME_TOKEN } from '../constants/gameSetup';
+import { GAME_TOKEN } from '../constants/gameSetup';
 import { useUserData } from '../hooks/useUserState';
 import { z } from 'zod';
 import { applyFundingSchema } from '../components/forms/validationSchemas/applyFundingSchema';
@@ -44,19 +44,6 @@ const defaultValues = {
   extraInfo: '',
 };
 
-const defaultValuesFilled = {
-  projectId: '',
-  dueDate: null,
-  totalAmount: '12',
-  sendAddress: '0x511449dD36e5dB31980AA0452aAAB95b9a68ae99',
-  objectives: `1. Use existing ZK tools to create a new verifiable, private voting protocol
-2. Create a small proof of concept app to demonstrate`,
-  proposalLink: 'https://google.com',
-  extraLink: 'https://google.com',
-  extraInfo:
-    'We are a team of 3 developers with experience in ZK and voting protocols. We are excited to work on this project and believe we can deliver a working prototype in 2 months.',
-};
-
 type FormValues = z.infer<typeof applyFundingSchema>;
 
 export const ApplyFunding = () => {
@@ -68,7 +55,7 @@ export const ApplyFunding = () => {
   const { tx } = useTx();
 
   const form = useForm({
-    initialValues: defaultValuesFilled,
+    initialValues: defaultValues,
     validate: zodResolver(applyFundingSchema),
   });
 

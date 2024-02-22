@@ -63,7 +63,7 @@ export const HATS_PROD = {
   ADDRESS: ADDR_PROD.HATS,
   TOP: 0n,
   FACILITATOR: 0n,
-  SHIP_OP: [0n],
+  SHIP_OP: [0n, 0n, 0n],
 };
 
 // TODO: Hardcoding is for testing only. We will fetch for Hats/isWearer later on
