@@ -3054,6 +3054,12 @@ const merger = new(BareMerger as any)({
         },
         location: 'GetRecentTransactionDocument.graphql'
       },{
+        document: GetShipIdByHatIdDocument,
+        get rawSDL() {
+          return printWithCache(GetShipIdByHatIdDocument);
+        },
+        location: 'GetShipIdByHatIdDocument.graphql'
+      },{
         document: GetShipDashDocument,
         get rawSDL() {
           return printWithCache(GetShipDashDocument);
@@ -3220,6 +3226,13 @@ export type getRecentTransactionQueryVariables = Exact<{
 
 
 export type getRecentTransactionQuery = { transaction?: Maybe<Pick<Transaction, 'id'>> };
+
+export type getShipIdByHatIdQueryVariables = Exact<{
+  hatId: Scalars['BigInt'];
+}>;
+
+
+export type getShipIdByHatIdQuery = { grantShips: Array<Pick<GrantShip, 'id'>> };
 
 export type getShipDashQueryVariables = Exact<{
   hatId: Scalars['BigInt'];
@@ -3459,6 +3472,13 @@ export const getRecentTransactionDocument = gql`
   }
 }
     ` as unknown as DocumentNode<getRecentTransactionQuery, getRecentTransactionQueryVariables>;
+export const getShipIdByHatIdDocument = gql`
+    query getShipIdByHatId($hatId: BigInt!) {
+  grantShips(where: {hatId: $hatId}) {
+    id
+  }
+}
+    ` as unknown as DocumentNode<getShipIdByHatIdQuery, getShipIdByHatIdQueryVariables>;
 export const getShipDashDocument = gql`
     query getShipDash($hatId: BigInt!) {
   grantShips(where: {hatId: $hatId}) {
@@ -3556,6 +3576,7 @@ export const ShipsPageQueryDocument = gql`
 
 
 
+
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
@@ -3576,6 +3597,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     getRecentTransaction(variables: getRecentTransactionQueryVariables, options?: C): Promise<getRecentTransactionQuery> {
       return requester<getRecentTransactionQuery, getRecentTransactionQueryVariables>(getRecentTransactionDocument, variables, options) as Promise<getRecentTransactionQuery>;
+    },
+    getShipIdByHatId(variables: getShipIdByHatIdQueryVariables, options?: C): Promise<getShipIdByHatIdQuery> {
+      return requester<getShipIdByHatIdQuery, getShipIdByHatIdQueryVariables>(getShipIdByHatIdDocument, variables, options) as Promise<getShipIdByHatIdQuery>;
     },
     getShipDash(variables: getShipDashQueryVariables, options?: C): Promise<getShipDashQuery> {
       return requester<getShipDashQuery, getShipDashQueryVariables>(getShipDashDocument, variables, options) as Promise<getShipDashQuery>;

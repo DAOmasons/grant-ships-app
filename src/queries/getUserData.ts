@@ -6,6 +6,8 @@ import { publicClient } from '../utils/config';
 export type UserData = {
   isFacilitator: boolean;
   isShipOperator: boolean;
+  shipAddress?: string;
+  shipHatId?: bigint;
   projects: {
     name: string;
     id: string;
@@ -45,7 +47,27 @@ const checkIsShipOperator = async (address: string) => {
       })
     );
 
-    return results.some((result) => result.isOperator);
+    const isOperator = results.find((result) => result.isOperator);
+
+    if (isOperator) {
+      const { getShipIdByHatId } = getBuiltGraphSDK();
+      const result = await getShipIdByHatId({
+        hatId: isOperator.hatId.toString(),
+      });
+
+      const shipAddress = result?.grantShips?.[0]?.id;
+
+      if (!shipAddress) {
+        return false;
+      }
+      return {
+        isOperator,
+        shipAddress,
+        shipHatId: isOperator.hatId,
+      };
+    }
+
+    return false;
   } catch (error) {
     console.error('Error in isFacilitator', error);
     throw error;
@@ -58,6 +80,17 @@ export const getUserData = async (address: string): Promise<UserData> => {
     const data = await getUserData({ id: address });
     const isFacilitator = await checkIsFacilitator(address);
     const isShipOperator = await checkIsShipOperator(address);
+
+    if (isShipOperator) {
+      return {
+        ...data,
+        isFacilitator,
+        isShipOperator: true,
+        shipAddress: isShipOperator.shipAddress,
+        shipHatId: isShipOperator.shipHatId,
+      };
+    }
+
     return { ...data, isFacilitator, isShipOperator };
   } catch (error) {
     console.error('Error in getUserData', error);
