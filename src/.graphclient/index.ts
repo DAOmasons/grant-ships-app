@@ -3234,17 +3234,33 @@ export type getShipIdByHatIdQueryVariables = Exact<{
 
 export type getShipIdByHatIdQuery = { grantShips: Array<Pick<GrantShip, 'id'>> };
 
+export type ShipDashGrantFragment = (
+  Pick<Grant, 'id' | 'grantApplicationBytes'>
+  & { projectId: (
+    Pick<Project, 'name'>
+    & { metadata: Pick<RawMetadata, 'pointer'> }
+  ) }
+);
+
+export type ShipDashFragment = (
+  Pick<GrantShip, 'id' | 'name' | 'status' | 'hatId' | 'shipContractAddress' | 'shipApplicationBytesData' | 'owner' | 'balance'>
+  & { profileMetadata: Pick<RawMetadata, 'pointer'> }
+);
+
 export type getShipDashQueryVariables = Exact<{
-  hatId: Scalars['BigInt'];
+  id: Scalars['ID'];
 }>;
 
 
-export type getShipDashQuery = { grantShips: Array<(
+export type getShipDashQuery = { grantShip?: Maybe<(
     Pick<GrantShip, 'id' | 'name' | 'status' | 'hatId' | 'shipContractAddress' | 'shipApplicationBytesData' | 'owner' | 'balance'>
-    & { profileMetadata: Pick<RawMetadata, 'pointer'>, grants: Array<(
+    & { grants: Array<(
       Pick<Grant, 'id' | 'grantApplicationBytes'>
-      & { shipId: Pick<GrantShip, 'name'>, projectId: Pick<Project, 'name'> }
-    )> }
+      & { projectId: (
+        Pick<Project, 'name'>
+        & { metadata: Pick<RawMetadata, 'pointer'> }
+      ) }
+    )>, profileMetadata: Pick<RawMetadata, 'pointer'> }
   )> };
 
 export type getShipPoolIdQueryVariables = Exact<{
@@ -3372,6 +3388,33 @@ export const RawMetadataFragmentDoc = gql`
   pointer
 }
     ` as unknown as DocumentNode<RawMetadataFragment, unknown>;
+export const ShipDashGrantFragmentDoc = gql`
+    fragment ShipDashGrant on Grant {
+  id
+  grantApplicationBytes
+  projectId {
+    name
+    metadata {
+      pointer
+    }
+  }
+}
+    ` as unknown as DocumentNode<ShipDashGrantFragment, unknown>;
+export const ShipDashFragmentDoc = gql`
+    fragment ShipDash on GrantShip {
+  id
+  name
+  status
+  hatId
+  shipContractAddress
+  shipApplicationBytesData
+  profileMetadata {
+    pointer
+  }
+  owner
+  balance
+}
+    ` as unknown as DocumentNode<ShipDashFragment, unknown>;
 export const UserProjectDataFragmentDoc = gql`
     fragment UserProjectData on Project {
   id
@@ -3480,32 +3523,16 @@ export const getShipIdByHatIdDocument = gql`
 }
     ` as unknown as DocumentNode<getShipIdByHatIdQuery, getShipIdByHatIdQueryVariables>;
 export const getShipDashDocument = gql`
-    query getShipDash($hatId: BigInt!) {
-  grantShips(where: {hatId: $hatId}) {
-    id
-    name
-    status
-    hatId
-    shipContractAddress
-    shipApplicationBytesData
-    profileMetadata {
-      pointer
-    }
-    owner
-    balance
+    query getShipDash($id: ID!) {
+  grantShip(id: $id) {
+    ...ShipDash
     grants {
-      id
-      grantApplicationBytes
-      shipId {
-        name
-      }
-      projectId {
-        name
-      }
+      ...ShipDashGrant
     }
   }
 }
-    ` as unknown as DocumentNode<getShipDashQuery, getShipDashQueryVariables>;
+    ${ShipDashFragmentDoc}
+${ShipDashGrantFragmentDoc}` as unknown as DocumentNode<getShipDashQuery, getShipDashQueryVariables>;
 export const getShipPoolIdDocument = gql`
     query getShipPoolId($id: ID!) {
   grantShip(id: $id) {

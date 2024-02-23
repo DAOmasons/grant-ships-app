@@ -66,12 +66,6 @@ export const HATS_PROD = {
   SHIP_OP: [0n, 0n, 0n],
 };
 
-// TODO: Hardcoding is for testing only. We will fetch for Hats/isWearer later on
-export const FACILITATORS = ['0x57abda4ee50Bb3079A556C878b2c345310057569'];
-export const SHIP_OPS = [
-  ['0xD800B05c70A2071BC1E5Eac5B3390Da1Eb67bC9D'],
-  ['0x57ffb33cC9D786da4087d970b0B0053017f26afc'],
-];
 export const GAME_MANAGER =
   import.meta.env.VITE_RUNTIME_ENV === 'dev'
     ? GAME_MANAGER_TESTNET

@@ -45,8 +45,6 @@ export const GlobalStateProvider = ({
     enabled: !!address,
   });
 
-  console.log('userState', userState);
-
   return (
     <GlobalContext.Provider
       value={{

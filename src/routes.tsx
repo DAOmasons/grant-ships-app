@@ -28,7 +28,7 @@ export const ClientRoutes = () => {
       <Route path="project/:id" element={<Project />} />
       <Route path="facilitators" element={<Facilitators />} />
       <Route path="facilitator-dashboard" element={<FacilitatorDashboard />} />
-      <Route path="ship-operator-dashboard" element={<ShipOpDashboard />} />
+      <Route path="ship-operator-dashboard/:id" element={<ShipOpDashboard />} />
     </Routes>
   );
 };

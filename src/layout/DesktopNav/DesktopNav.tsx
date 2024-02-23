@@ -13,7 +13,6 @@ import Logo from '../../assets/Logo.svg';
 import { ConnectButton } from './ConnectButton';
 import { Link, useLocation } from 'react-router-dom';
 import { useAccount } from 'wagmi';
-import { FACILITATORS } from '../../constants/gameSetup';
 import { useMemo } from 'react';
 import { useUserData } from '../../hooks/useUserState';
 
@@ -27,7 +26,6 @@ const data = [
 
 export function DesktopNav() {
   const location = useLocation();
-  const { address } = useAccount();
   const { userData } = useUserData();
 
   const theme = useMantineTheme();
@@ -68,9 +66,12 @@ export function DesktopNav() {
       );
     }
 
-    if (userData.isShipOperator) {
+    if (userData.isShipOperator && userData.shipAddress) {
       return (
-        <Link to="/ship-operator-dashboard" className={classes.link}>
+        <Link
+          to={`/ship-operator-dashboard/${userData.shipAddress}`}
+          className={classes.link}
+        >
           <IconRocket
             className={classes.linkIcon}
             stroke={1.5}
@@ -92,8 +93,6 @@ export function DesktopNav() {
       );
     }
   }, [userData, theme]);
-
-  const isFacilitator = address && FACILITATORS.includes(address);
 
   return (
     <nav className={classes.navbar}>

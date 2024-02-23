@@ -14,8 +14,25 @@ import {
 } from '@mantine/core';
 import { MainSection, PageTitle } from '../layout/Sections';
 import { IconCheck, IconEye, IconX } from '@tabler/icons-react';
+import { useParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import { getShipDash } from '../queries/getShipDash';
 
 export const ShipOpDashboard = () => {
+  const { id } = useParams();
+
+  const {
+    data: shipData,
+    error: shipError,
+    isLoading: shipLoading,
+  } = useQuery({
+    queryKey: [`ship-dash-${id}`],
+    queryFn: () => getShipDash(id as string),
+    enabled: !!id,
+  });
+
+  console.log('shipData', shipData);
+
   return (
     <MainSection>
       <PageTitle title="Ship Dashboard" />
