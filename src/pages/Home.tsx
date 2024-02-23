@@ -1,4 +1,4 @@
-import { Box, Button, Group, Paper, Skeleton, Tabs, Text } from '@mantine/core';
+import { Box, Button, Group, Paper, Tabs, Text } from '@mantine/core';
 import { Feed } from '../components/feed/Feed';
 import { MainSection } from '../layout/Sections';
 import { AppAlert } from '../components/UnderContruction';
@@ -57,8 +57,7 @@ const Banner = () => {
           rel="noopener noreferrer"
           target="_blank"
         >
-          {' '}
-          What is a Grant Ship?{' '}
+          What is a Grant Ship?
         </Button>
       </Group>
     </Paper>
