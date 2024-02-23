@@ -1,0 +1,25 @@
+query getShipDash($hatId: BigInt!) {
+  grantShips(where: { hatId: $hatId }) {
+    id
+    name
+    status
+    hatId
+    shipContractAddress
+    shipApplicationBytesData
+    profileMetadata {
+      pointer
+    }
+    owner
+    balance
+    grants {
+      id
+      grantApplicationBytes
+      shipId {
+        name
+      }
+      projectId {
+        name
+      }
+    }
+  }
+}
