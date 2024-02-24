@@ -17,7 +17,7 @@ export const ReviewPage = ({
 }) => {
   return (
     <Flex justify={'center'} w="100%" h={'90vh'}>
-      <Box maw={600} miw={300} p="xl">
+      <Box maw={600} miw={300} p="xl" fw={700}>
         <Text fz={20} fw={500} mb="lg">
           {title}
         </Text>

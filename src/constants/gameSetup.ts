@@ -59,6 +59,8 @@ export const HATS_DEV = {
   ],
 };
 
+export const ZER0_ADDRESS = '0x0000000000000000000000000000000000000000';
+
 export const HATS_PROD = {
   ADDRESS: ADDR_PROD.HATS,
   TOP: 0n,

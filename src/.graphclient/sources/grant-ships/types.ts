@@ -690,6 +690,7 @@ export type Grant = {
   upcomingMilestone?: Maybe<Scalars['BigInt']>;
   milestonesAmount?: Maybe<Scalars['BigInt']>;
   milestones?: Maybe<Array<Milestone>>;
+  shipApprovalReason?: Maybe<RawMetadata>;
 };
 
 
@@ -1189,6 +1190,27 @@ export type Grant_filter = {
   milestones_not_contains?: InputMaybe<Array<Scalars['String']>>;
   milestones_not_contains_nocase?: InputMaybe<Array<Scalars['String']>>;
   milestones_?: InputMaybe<Milestone_filter>;
+  shipApprovalReason?: InputMaybe<Scalars['String']>;
+  shipApprovalReason_not?: InputMaybe<Scalars['String']>;
+  shipApprovalReason_gt?: InputMaybe<Scalars['String']>;
+  shipApprovalReason_lt?: InputMaybe<Scalars['String']>;
+  shipApprovalReason_gte?: InputMaybe<Scalars['String']>;
+  shipApprovalReason_lte?: InputMaybe<Scalars['String']>;
+  shipApprovalReason_in?: InputMaybe<Array<Scalars['String']>>;
+  shipApprovalReason_not_in?: InputMaybe<Array<Scalars['String']>>;
+  shipApprovalReason_contains?: InputMaybe<Scalars['String']>;
+  shipApprovalReason_contains_nocase?: InputMaybe<Scalars['String']>;
+  shipApprovalReason_not_contains?: InputMaybe<Scalars['String']>;
+  shipApprovalReason_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  shipApprovalReason_starts_with?: InputMaybe<Scalars['String']>;
+  shipApprovalReason_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  shipApprovalReason_not_starts_with?: InputMaybe<Scalars['String']>;
+  shipApprovalReason_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  shipApprovalReason_ends_with?: InputMaybe<Scalars['String']>;
+  shipApprovalReason_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  shipApprovalReason_not_ends_with?: InputMaybe<Scalars['String']>;
+  shipApprovalReason_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  shipApprovalReason_?: InputMaybe<RawMetadata_filter>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
   and?: InputMaybe<Array<InputMaybe<Grant_filter>>>;
@@ -1244,7 +1266,11 @@ export type Grant_orderBy =
   | 'milestoneReviewStatus'
   | 'upcomingMilestone'
   | 'milestonesAmount'
-  | 'milestones';
+  | 'milestones'
+  | 'shipApprovalReason'
+  | 'shipApprovalReason__id'
+  | 'shipApprovalReason__protocol'
+  | 'shipApprovalReason__pointer';
 
 export type Log = {
   id: Scalars['ID'];

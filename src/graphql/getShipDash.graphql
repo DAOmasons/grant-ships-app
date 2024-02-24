@@ -9,6 +9,9 @@ fragment ShipDashGrant on Grant {
       pointer
     }
   }
+  shipApprovalReason {
+    pointer
+  }
 }
 
 fragment ShipDash on GrantShip {

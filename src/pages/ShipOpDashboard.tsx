@@ -1,33 +1,26 @@
 import {
   Avatar,
   Box,
-  Button,
   Flex,
   Group,
   MantineTheme,
-  Modal,
   Paper,
   Skeleton,
   Stack,
   Tabs,
   Text,
-  Textarea,
   Timeline,
   useMantineTheme,
 } from '@mantine/core';
 import { MainSection, PageTitle } from '../layout/Sections';
-import { IconCheck, IconEye, IconX } from '@tabler/icons-react';
+import { IconCheck, IconClock, IconEye, IconX } from '@tabler/icons-react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { DashShip, DashShipGrant, getShipDash } from '../queries/getShipDash';
 import { GrantStatus } from '../types/common';
 import { AppAlert } from '../components/UnderContruction';
-import { secondsToLongDateTime, secondsToRelativeTime } from '../utils/time';
-import { useDisclosure } from '@mantine/hooks';
-import { ReactNode, useState } from 'react';
-import { ReviewPage } from '../layout/ReviewPage';
-import { formatEther } from 'viem';
-import { GAME_TOKEN } from '../constants/gameSetup';
+import { secondsToRelativeTime } from '../utils/time';
+import { ReviewApplication } from '../components/dashboard/ReviewApplication';
 
 export const ShipOpDashboard = () => {
   const { id } = useParams();
@@ -41,8 +34,6 @@ export const ShipOpDashboard = () => {
     queryFn: () => getShipDash(id as string),
     enabled: !!id,
   });
-
-  console.log('shipData', shipData);
 
   return (
     <MainSection>
@@ -168,6 +159,7 @@ export const GrantManager = ({
           key={grant.id}
           currentStage={grant.grantStatus}
           grant={grant}
+          ship={shipData}
         />
       ))}
     </Stack>
@@ -177,11 +169,14 @@ export const GrantManager = ({
 const GrantCard = ({
   currentStage,
   grant,
+  ship,
 }: {
   currentStage: GrantStatus;
   grant: DashShipGrant;
+  ship: DashShip;
 }) => {
   const theme = useMantineTheme();
+
   return (
     <Paper bg={theme.colors.dark[6]} mih={220} w="100%" p="lg">
       <Flex>
@@ -210,9 +205,24 @@ const GrantCard = ({
                 theme,
                 {
                   onNotStarted: <Text fz="sm">Application Not Submitted </Text>,
-                  onPending: <ReviewApplication grant={grant} />,
-                  onRejected: <Text fz="sm">Rejected Application</Text>,
-                  onCompleted: <Text fz="sm">Approved Application</Text>,
+                  onPending: (
+                    <ReviewApplication
+                      grant={grant}
+                      shipAddress={ship.shipContractAddress}
+                    />
+                  ),
+                  onRejected: (
+                    <ReviewApplication
+                      grant={grant}
+                      shipAddress={ship.shipContractAddress}
+                    />
+                  ),
+                  onCompleted: (
+                    <ReviewApplication
+                      grant={grant}
+                      shipAddress={ship.shipContractAddress}
+                    />
+                  ),
                 }
               ) || {})}
             />
@@ -228,7 +238,12 @@ const GrantCard = ({
                 theme,
                 {
                   onNotStarted: <Text fz="sm">Facilitator Review</Text>,
-                  onPending: <Text fz="sm">Awaiting Facilitator Review</Text>,
+                  onPending: (
+                    <Group justify="space-between" mr="sm">
+                      <Text fz="sm">Awaiting Facilitator Review</Text>
+                      <IconClock size={16} />
+                    </Group>
+                  ),
                   onRejected: <Text fz="sm">Facilitator Rejected</Text>,
                   onCompleted: <Text fz="sm">Facilitator Approved</Text>,
                 }
@@ -294,115 +309,5 @@ const GrantCard = ({
         </Box>
       </Flex>
     </Paper>
-  );
-};
-
-const ReviewApplication = ({ grant }: { grant: DashShipGrant }) => {
-  const [reasonText, setReasonText] = useState('');
-  const [opened, { open, close }] = useDisclosure(false);
-
-  const handleApprove = (isApproved: boolean) => {};
-
-  return (
-    <>
-      <Group align="start" justify="space-between">
-        <Text fz="sm">Review Application </Text>
-        <Button
-          size="xs"
-          style={{
-            transform: 'translateY(-2px)',
-          }}
-          onClick={open}
-        >
-          Review
-        </Button>
-      </Group>
-      <Modal
-        opened={opened}
-        onClose={close}
-        fullScreen
-        transitionProps={{ transition: 'fade', duration: 200 }}
-      >
-        <ReviewPage
-          title={`Application from ${grant.projectId.name}`}
-          sections={[
-            {
-              subtitle: 'Project Description',
-              content: grant.projectMetadata.description,
-            },
-            'DIVIDER',
-            {
-              subtitle: 'The Ask',
-              content: `${formatEther(grant.applicationData.grantAmount)} ${GAME_TOKEN.SYMBOL}`,
-            },
-            {
-              subtitle: 'Expected Delivery',
-              content: secondsToLongDateTime(
-                Number(grant.applicationData.dueDate)
-              ),
-            },
-            {
-              subtitle: 'Receiving Address',
-              content: grant.applicationData.receivingAddress,
-            },
-            {
-              subtitle: 'Proposal Link',
-              content: grant.applicationData.proposalLink,
-            },
-            {
-              subtitle: 'Objectives',
-              content: grant.applicationData.objectives,
-            },
-            grant.applicationData.extraInfo
-              ? {
-                  subtitle: 'Additional Information',
-                  content: grant.applicationData.extraInfo,
-                }
-              : null,
-            grant.applicationData.extraLink
-              ? {
-                  subtitle: 'Additional Link',
-                  content: (
-                    <Text component="a">grant.applicationData.extraLink </Text>
-                  ),
-                }
-              : null,
-          ]}
-          footerSection={
-            <>
-              <Text mb="md" fw={600}>
-                Approve or Reject Applicant
-              </Text>
-              <Textarea
-                label="Reasoning"
-                description="Why are you approving or rejecting this application?"
-                value={reasonText}
-                onChange={(e) => setReasonText(e.currentTarget.value)}
-                autosize
-                required
-                minRows={4}
-                maxRows={8}
-                mb="xl"
-              />
-              <Flex justify="space-between">
-                <Button
-                  variant="outline"
-                  disabled={!reasonText}
-                  onClick={() => handleApprove(false)}
-                >
-                  Reject
-                </Button>
-                <Button
-                  disabled={!reasonText}
-                  onClick={() => handleApprove(true)}
-                >
-                  Approve
-                </Button>
-              </Flex>
-            </>
-          }
-        />
-      </Modal>
-    </>
   );
 };

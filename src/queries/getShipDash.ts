@@ -8,6 +8,7 @@ import { getGatewayUrl, getIpfsJson } from '../utils/ipfs/get';
 import {
   ProjectProfileMetadata,
   grantApplicationMetadata,
+  reasonSchema,
 } from '../utils/ipfs/metadataValidation';
 import { z } from 'zod';
 
@@ -23,6 +24,7 @@ type ApplicationMetadata = z.infer<typeof grantApplicationMetadata> & {
 export type DashShipGrant = ShipDashGrantFragment & {
   projectMetadata: ProjectMetadata;
   applicationData: ApplicationMetadata;
+  shipApprovalReason: string | null;
 };
 
 export type DashShip = ShipDashFragment & {
@@ -83,18 +85,40 @@ const resolveGrantApplicationData = async (bytes: string) => {
   return { ...validated.data, projectId, receivingAddress, grantAmount };
 };
 
+const resolveShipApprovalReason = async (pointer?: string) => {
+  if (!pointer) {
+    return null;
+  }
+
+  const json = await getIpfsJson(pointer);
+
+  const validated = reasonSchema.safeParse(json);
+
+  if (!validated.success) {
+    console.error('Invalid metadata', validated.error);
+    throw new Error('Invalid metadata: Data does not match the schema');
+  }
+
+  return validated.data;
+};
+
 const resolveGrants = async (grants: ShipDashGrantFragment[]) => {
   const resolvedGrants = await Promise.all(
     grants.map(async (grant) => {
-      const [profileMetadata, applicationData] = await Promise.all([
-        resolveProjectMetadata(grant?.projectId?.metadata?.pointer),
-        resolveGrantApplicationData(grant.grantApplicationBytes),
-      ]);
+      const [profileMetadata, applicationData, shipApprovalReason] =
+        await Promise.all([
+          resolveProjectMetadata(grant?.projectId?.metadata?.pointer),
+          resolveGrantApplicationData(grant.grantApplicationBytes),
+          resolveShipApprovalReason(grant.shipApprovalReason?.pointer),
+        ]);
 
       return {
         ...grant,
         projectMetadata: profileMetadata,
         applicationData,
+        shipApprovalReason: shipApprovalReason
+          ? (shipApprovalReason.reason as string)
+          : null,
       };
     })
   );

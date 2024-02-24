@@ -40,3 +40,7 @@ export const grantApplicationMetadata = z.object({
   extraLink: z.string(),
   extraInfo: z.string(),
 });
+
+export const reasonSchema = z.object({
+  reason: z.string(),
+});
