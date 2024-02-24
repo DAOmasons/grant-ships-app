@@ -14,15 +14,19 @@ import { z } from 'zod';
 type ProjectMetadata = z.infer<typeof ProjectProfileMetadata> & {
   imgUrl: string;
 };
-type ApplicationMetadata = z.infer<typeof grantApplicationMetadata>;
-
-type Grant = ShipDashGrantFragment & {
-  projectMetadata: ProjectMetadata;
-  applicationMetadata: ApplicationMetadata;
+type ApplicationMetadata = z.infer<typeof grantApplicationMetadata> & {
+  projectId: string;
+  receivingAddress: string;
+  grantAmount: bigint;
 };
 
-type DashShip = ShipDashFragment & {
-  grants: Grant[];
+export type DashShipGrant = ShipDashGrantFragment & {
+  projectMetadata: ProjectMetadata;
+  applicationData: ApplicationMetadata;
+};
+
+export type DashShip = ShipDashFragment & {
+  grants: DashShipGrant[];
 };
 
 const resolveProjectMetadata = async (pointer?: string) => {
@@ -57,6 +61,9 @@ const resolveGrantApplicationData = async (bytes: string) => {
     bytes as Hex
   );
 
+  const projectId = decodedApplicationData[0];
+  const receivingAddress = decodedApplicationData[1];
+  const grantAmount = decodedApplicationData[2];
   const CID = decodedApplicationData[3][1];
 
   if (!CID) {
@@ -73,13 +80,13 @@ const resolveGrantApplicationData = async (bytes: string) => {
     throw new Error('Invalid metadata: Data does not match the schema');
   }
 
-  return validated.data;
+  return { ...validated.data, projectId, receivingAddress, grantAmount };
 };
 
 const resolveGrants = async (grants: ShipDashGrantFragment[]) => {
   const resolvedGrants = await Promise.all(
     grants.map(async (grant) => {
-      const [profileMetadata, applicationMetadata] = await Promise.all([
+      const [profileMetadata, applicationData] = await Promise.all([
         resolveProjectMetadata(grant?.projectId?.metadata?.pointer),
         resolveGrantApplicationData(grant.grantApplicationBytes),
       ]);
@@ -87,7 +94,7 @@ const resolveGrants = async (grants: ShipDashGrantFragment[]) => {
       return {
         ...grant,
         projectMetadata: profileMetadata,
-        applicationMetadata,
+        applicationData,
       };
     })
   );

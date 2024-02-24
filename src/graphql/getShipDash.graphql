@@ -1,6 +1,8 @@
 fragment ShipDashGrant on Grant {
   id
   grantApplicationBytes
+  lastUpdated
+  grantStatus
   projectId {
     name
     metadata {
