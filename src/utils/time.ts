@@ -42,3 +42,11 @@ export const secondsToShortRelativeTime = (seconds: number) => {
 
   return abbreviateTimeAgo(timeAgo);
 };
+export const secondsToRelativeTime = (seconds: number) => {
+  const ms = seconds * 1000;
+  const now = dayjs();
+
+  const pastTime = dayjs(ms);
+
+  return pastTime.from(now);
+};

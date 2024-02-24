@@ -3235,7 +3235,7 @@ export type getShipIdByHatIdQueryVariables = Exact<{
 export type getShipIdByHatIdQuery = { grantShips: Array<Pick<GrantShip, 'id'>> };
 
 export type ShipDashGrantFragment = (
-  Pick<Grant, 'id' | 'grantApplicationBytes'>
+  Pick<Grant, 'id' | 'grantApplicationBytes' | 'lastUpdated' | 'grantStatus'>
   & { projectId: (
     Pick<Project, 'name'>
     & { metadata: Pick<RawMetadata, 'pointer'> }
@@ -3255,7 +3255,7 @@ export type getShipDashQueryVariables = Exact<{
 export type getShipDashQuery = { grantShip?: Maybe<(
     Pick<GrantShip, 'id' | 'name' | 'status' | 'hatId' | 'shipContractAddress' | 'shipApplicationBytesData' | 'owner' | 'balance'>
     & { grants: Array<(
-      Pick<Grant, 'id' | 'grantApplicationBytes'>
+      Pick<Grant, 'id' | 'grantApplicationBytes' | 'lastUpdated' | 'grantStatus'>
       & { projectId: (
         Pick<Project, 'name'>
         & { metadata: Pick<RawMetadata, 'pointer'> }
@@ -3392,6 +3392,8 @@ export const ShipDashGrantFragmentDoc = gql`
     fragment ShipDashGrant on Grant {
   id
   grantApplicationBytes
+  lastUpdated
+  grantStatus
   projectId {
     name
     metadata {

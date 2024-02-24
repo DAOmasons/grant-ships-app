@@ -12,7 +12,7 @@ import classes from './DesktoNavStyles.module.css';
 import Logo from '../../assets/Logo.svg';
 import { ConnectButton } from './ConnectButton';
 import { Link, useLocation } from 'react-router-dom';
-import { useAccount } from 'wagmi';
+
 import { useMemo } from 'react';
 import { useUserData } from '../../hooks/useUserState';
 
@@ -61,7 +61,7 @@ export function DesktopNav() {
             stroke={1.5}
             color={theme.colors.pink[5]}
           />
-          <span>Facilitator Dashboard</span>
+          <span>Dashboard</span>
         </Link>
       );
     }
@@ -77,7 +77,7 @@ export function DesktopNav() {
             stroke={1.5}
             color={theme.colors.violet[5]}
           />
-          <span>Ship Dashboard</span>
+          <span>Dashboard</span>
         </Link>
       );
     } else {

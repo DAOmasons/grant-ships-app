@@ -34,6 +34,22 @@ export enum TxStates {
   SyncError,
 }
 
+export enum GrantStatus {
+  None,
+  Applied,
+  ShipRejected,
+  ShipApproved,
+  FacilitatorRejected,
+  FacilitatorApproved,
+  MilestonesProposed,
+  MilestonesRejected,
+  MilestonesApproved,
+  MilestoneSubmitted,
+  MilestoneRejected,
+  MilestoneApproved,
+  Completed,
+}
+
 // export const GameStatus = {
 //   None: 0,
 //   Pending: 1,
