@@ -28,7 +28,6 @@ import { ADDR } from '../constants/addresses';
 import { GameStatus, GrantStatus } from '../types/common';
 import { getFacilitatorGrants } from '../queries/getFacilitatorGrants';
 import { DashGrant } from '../resolvers/grantResolvers';
-import { DashShip } from '../queries/getShipDash';
 import { secondsToRelativeTime } from '../utils/time';
 import { getTimelineContents } from '../components/dashboard/grantCardUtils';
 import { ReviewApplication } from '../components/dashboard/ReviewApplication';
@@ -121,7 +120,6 @@ export const FacilitatorDashboard = () => {
         </Tabs.List>
         <Tabs.Panel value="ships">
           <FacilitatorShipDash
-            gm={gm}
             shipData={shipData}
             isLoading={shipsLoading || isLoadingGm}
           />

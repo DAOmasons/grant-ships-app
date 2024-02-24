@@ -62,9 +62,9 @@ export const ApplicationReview = ({
       footerSection={
         <>
           <Textarea
-            value={reasonText}
             label="Reasoning"
             description="Why are you approving or rejecting this application?"
+            value={reasonText}
             onChange={(e) => setReasonText(e.currentTarget.value)}
             autosize
             required
