@@ -3,7 +3,6 @@ import {
   Box,
   Flex,
   Group,
-  MantineTheme,
   Paper,
   Skeleton,
   Stack,
@@ -13,14 +12,16 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import { MainSection, PageTitle } from '../layout/Sections';
-import { IconCheck, IconClock, IconEye, IconX } from '@tabler/icons-react';
+import { IconCheck, IconClock } from '@tabler/icons-react';
 import { useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
-import { DashShip, DashShipGrant, getShipDash } from '../queries/getShipDash';
+import { DashShip, getShipDash } from '../queries/getShipDash';
 import { GrantStatus } from '../types/common';
 import { AppAlert } from '../components/UnderContruction';
 import { secondsToRelativeTime } from '../utils/time';
 import { ReviewApplication } from '../components/dashboard/ReviewApplication';
+import { DashGrant } from '../resolvers/grantResolvers';
+import { getTimelineContents } from '../components/dashboard/grantCardUtils';
 
 export const ShipOpDashboard = () => {
   const { id } = useParams();
@@ -56,54 +57,6 @@ export const ShipOpDashboard = () => {
       </Tabs>
     </MainSection>
   );
-};
-
-const getTimelineContents = (
-  currentStage: GrantStatus,
-  isPendingAt: GrantStatus,
-  isRejected: GrantStatus,
-  isCompletedAt: GrantStatus,
-  uiStage: number,
-  theme: MantineTheme,
-  content: {
-    onNotStarted?: React.ReactNode;
-    onPending?: React.ReactNode;
-    onRejected?: React.ReactNode;
-    onCompleted?: React.ReactNode;
-  }
-) => {
-  if (currentStage < isPendingAt) {
-    return {
-      bullet: (
-        <Text fz="xs" opacity={0.7}>
-          {uiStage}
-        </Text>
-      ),
-      color: theme.colors.dark[5],
-      children: content.onNotStarted,
-    };
-  }
-  if (currentStage === isPendingAt) {
-    return {
-      bullet: <IconEye />,
-      color: theme.colors.violet[6],
-      children: content.onPending,
-    };
-  }
-  if (currentStage === isRejected) {
-    return {
-      bullet: <IconX />,
-      color: theme.colors.pink[6],
-      children: content.onRejected,
-    };
-  }
-  if (currentStage >= isCompletedAt) {
-    return {
-      bullet: <IconCheck />,
-      color: theme.colors.blue[6],
-      children: content.onCompleted,
-    };
-  }
 };
 
 export const GrantManager = ({
@@ -172,7 +125,7 @@ const GrantCard = ({
   ship,
 }: {
   currentStage: GrantStatus;
-  grant: DashShipGrant;
+  grant: DashGrant;
   ship: DashShip;
 }) => {
   const theme = useMantineTheme();

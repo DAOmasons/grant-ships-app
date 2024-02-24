@@ -1,22 +1,12 @@
+import { GrantDashFragment, getBuiltGraphSDK } from '../.graphclient';
 import {
-  GrantDashFragment,
-  ShipDashFragment,
-  getBuiltGraphSDK,
-} from '../.graphclient';
-import {
-  ApplicationMetadata,
   DashGrant,
-  ProjectMetadata,
   resolveGrantApplicationData,
   resolveProjectMetadata,
   resolveShipApprovalReason,
 } from '../resolvers/grantResolvers';
 
-export type DashShip = ShipDashFragment & {
-  grants: DashGrant[];
-};
-
-const resolveGrants = async (grants: GrantDashFragment[]) => {
+export const resolveGrants = async (grants: GrantDashFragment[]) => {
   const resolvedGrants = await Promise.all(
     grants.map(async (grant) => {
       const [profileMetadata, applicationData, shipApprovalReason] =
@@ -40,16 +30,16 @@ const resolveGrants = async (grants: GrantDashFragment[]) => {
   return resolvedGrants;
 };
 
-export const getShipDash = async (shipId: string): Promise<DashShip> => {
-  const { getShipDash } = getBuiltGraphSDK();
+export const getFacilitatorGrants = async () => {
+  const { getFacilitatorGrants } = getBuiltGraphSDK();
 
-  const res = await getShipDash({ id: shipId });
+  const res = await getFacilitatorGrants();
 
-  if (!res.grantShip) {
+  if (!res.grants) {
     throw new Error('No grant ship found');
   }
 
-  const unpackedGrantData = await resolveGrants(res.grantShip.grants);
+  const unpackedGrantData = await resolveGrants(res.grants);
 
-  return { ...res.grantShip, grants: unpackedGrantData } as DashShip;
+  return unpackedGrantData as DashGrant[];
 };

@@ -1,11 +1,19 @@
-fragment ShipDashGrant on Grant {
+fragment GrantDash on Grant {
   id
   grantApplicationBytes
   lastUpdated
   grantStatus
   projectId {
+    id
     name
     metadata {
+      pointer
+    }
+  }
+  shipId {
+    id
+    name
+    profileMetadata {
       pointer
     }
   }
@@ -32,7 +40,7 @@ query getShipDash($id: ID!) {
   grantShip(id: $id) {
     ...ShipDash
     grants {
-      ...ShipDashGrant
+      ...GrantDash
     }
   }
 }

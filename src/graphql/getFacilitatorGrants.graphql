@@ -1,0 +1,5 @@
+query getFacilitatorGrants {
+  grants(where: { grantStatus_gte: 2 }) {
+    ...GrantDash
+  }
+}

@@ -15,8 +15,6 @@ export const StartGamePanel = ({
   const STATUS_NUMBER = 5;
   const { tx } = useTx();
 
-  console.log('gm', gm);
-
   const nowInSeconds = Math.floor(Date.now() / 1000);
 
   const isReadyToStart =

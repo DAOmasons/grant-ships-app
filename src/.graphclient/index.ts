@@ -3051,6 +3051,12 @@ const merger = new(BareMerger as any)({
         },
         location: 'FacDashShipDataDocument.graphql'
       },{
+        document: GetFacilitatorGrantsDocument,
+        get rawSDL() {
+          return printWithCache(GetFacilitatorGrantsDocument);
+        },
+        location: 'GetFacilitatorGrantsDocument.graphql'
+      },{
         document: GetFeedDocument,
         get rawSDL() {
           return printWithCache(GetFeedDocument);
@@ -3179,6 +3185,20 @@ export type facDashShipDataQuery = { shipApplicants: Array<(
     & { applicationReviewReason?: Maybe<Pick<RawMetadata, 'pointer'>>, profileMetadata: Pick<RawMetadata, 'pointer'> }
   )> };
 
+export type getFacilitatorGrantsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type getFacilitatorGrantsQuery = { grants: Array<(
+    Pick<Grant, 'id' | 'grantApplicationBytes' | 'lastUpdated' | 'grantStatus'>
+    & { projectId: (
+      Pick<Project, 'id' | 'name'>
+      & { metadata: Pick<RawMetadata, 'pointer'> }
+    ), shipId: (
+      Pick<GrantShip, 'id' | 'name'>
+      & { profileMetadata: Pick<RawMetadata, 'pointer'> }
+    ), shipApprovalReason?: Maybe<Pick<RawMetadata, 'pointer'>> }
+  )> };
+
 export type FeedDataFragment = (
   Pick<FeedItem, 'id' | 'content' | 'timestamp' | 'sender' | 'tag' | 'details' | 'subjectMetadataPointer'>
   & { subject: Pick<FeedItemEntity, 'id' | 'name' | 'type'>, object?: Maybe<Pick<FeedItemEntity, 'id' | 'name' | 'type'>>, embed?: Maybe<Pick<FeedItemEmbed, 'key' | 'pointer' | 'protocol' | 'content'>> }
@@ -3261,11 +3281,14 @@ export type getShipIdByHatIdQueryVariables = Exact<{
 
 export type getShipIdByHatIdQuery = { grantShips: Array<Pick<GrantShip, 'id'>> };
 
-export type ShipDashGrantFragment = (
+export type GrantDashFragment = (
   Pick<Grant, 'id' | 'grantApplicationBytes' | 'lastUpdated' | 'grantStatus'>
   & { projectId: (
-    Pick<Project, 'name'>
+    Pick<Project, 'id' | 'name'>
     & { metadata: Pick<RawMetadata, 'pointer'> }
+  ), shipId: (
+    Pick<GrantShip, 'id' | 'name'>
+    & { profileMetadata: Pick<RawMetadata, 'pointer'> }
   ), shipApprovalReason?: Maybe<Pick<RawMetadata, 'pointer'>> }
 );
 
@@ -3284,8 +3307,11 @@ export type getShipDashQuery = { grantShip?: Maybe<(
     & { grants: Array<(
       Pick<Grant, 'id' | 'grantApplicationBytes' | 'lastUpdated' | 'grantStatus'>
       & { projectId: (
-        Pick<Project, 'name'>
+        Pick<Project, 'id' | 'name'>
         & { metadata: Pick<RawMetadata, 'pointer'> }
+      ), shipId: (
+        Pick<GrantShip, 'id' | 'name'>
+        & { profileMetadata: Pick<RawMetadata, 'pointer'> }
       ), shipApprovalReason?: Maybe<Pick<RawMetadata, 'pointer'>> }
     )>, profileMetadata: Pick<RawMetadata, 'pointer'> }
   )> };
@@ -3415,15 +3441,23 @@ export const RawMetadataFragmentDoc = gql`
   pointer
 }
     ` as unknown as DocumentNode<RawMetadataFragment, unknown>;
-export const ShipDashGrantFragmentDoc = gql`
-    fragment ShipDashGrant on Grant {
+export const GrantDashFragmentDoc = gql`
+    fragment GrantDash on Grant {
   id
   grantApplicationBytes
   lastUpdated
   grantStatus
   projectId {
+    id
     name
     metadata {
+      pointer
+    }
+  }
+  shipId {
+    id
+    name
+    profileMetadata {
       pointer
     }
   }
@@ -3431,7 +3465,7 @@ export const ShipDashGrantFragmentDoc = gql`
     pointer
   }
 }
-    ` as unknown as DocumentNode<ShipDashGrantFragment, unknown>;
+    ` as unknown as DocumentNode<GrantDashFragment, unknown>;
 export const ShipDashFragmentDoc = gql`
     fragment ShipDash on GrantShip {
   id
@@ -3489,6 +3523,13 @@ export const facDashShipDataDocument = gql`
   }
 }
     ${FacShipDataFragmentDoc}` as unknown as DocumentNode<facDashShipDataQuery, facDashShipDataQueryVariables>;
+export const getFacilitatorGrantsDocument = gql`
+    query getFacilitatorGrants {
+  grants(where: {grantStatus_gte: 2}) {
+    ...GrantDash
+  }
+}
+    ${GrantDashFragmentDoc}` as unknown as DocumentNode<getFacilitatorGrantsQuery, getFacilitatorGrantsQueryVariables>;
 export const getFeedDocument = gql`
     query getFeed($first: Int, $skip: Int, $orderBy: FeedItem_orderBy, $orderDirection: OrderDirection) {
   feedItems(
@@ -3559,12 +3600,12 @@ export const getShipDashDocument = gql`
   grantShip(id: $id) {
     ...ShipDash
     grants {
-      ...ShipDashGrant
+      ...GrantDash
     }
   }
 }
     ${ShipDashFragmentDoc}
-${ShipDashGrantFragmentDoc}` as unknown as DocumentNode<getShipDashQuery, getShipDashQueryVariables>;
+${GrantDashFragmentDoc}` as unknown as DocumentNode<getShipDashQuery, getShipDashQueryVariables>;
 export const getShipPoolIdDocument = gql`
     query getShipPoolId($id: ID!) {
   grantShip(id: $id) {
@@ -3636,11 +3677,15 @@ export const ShipsPageQueryDocument = gql`
 
 
 
+
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
     facDashShipData(variables?: facDashShipDataQueryVariables, options?: C): Promise<facDashShipDataQuery> {
       return requester<facDashShipDataQuery, facDashShipDataQueryVariables>(facDashShipDataDocument, variables, options) as Promise<facDashShipDataQuery>;
+    },
+    getFacilitatorGrants(variables?: getFacilitatorGrantsQueryVariables, options?: C): Promise<getFacilitatorGrantsQuery> {
+      return requester<getFacilitatorGrantsQuery, getFacilitatorGrantsQueryVariables>(getFacilitatorGrantsDocument, variables, options) as Promise<getFacilitatorGrantsQuery>;
     },
     getFeed(variables?: getFeedQueryVariables, options?: C): Promise<getFeedQuery> {
       return requester<getFeedQuery, getFeedQueryVariables>(getFeedDocument, variables, options) as Promise<getFeedQuery>;

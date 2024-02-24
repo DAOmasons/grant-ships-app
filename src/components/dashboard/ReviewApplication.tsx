@@ -5,7 +5,7 @@ import { formatEther, isAddress } from 'viem';
 import GrantShipAbi from '../../abi/GrantShip.json';
 import { notifications } from '@mantine/notifications';
 import { useAccount } from 'wagmi';
-import { DashShipGrant } from '../../queries/getShipDash';
+
 import {
   Alert,
   Button,
@@ -20,12 +20,13 @@ import { useTx } from '../../hooks/useTx';
 import { pinJSONToIPFS } from '../../utils/ipfs/pin';
 import { GAME_TOKEN, ZER0_ADDRESS } from '../../constants/gameSetup';
 import { secondsToLongDateTime } from '../../utils/time';
+import { DashGrant } from '../../resolvers/grantResolvers';
 
 export const ReviewApplication = ({
   grant,
   shipAddress,
 }: {
-  grant: DashShipGrant;
+  grant: DashGrant;
   shipAddress: string;
 }) => {
   const [reasonText, setReasonText] = useState('');
