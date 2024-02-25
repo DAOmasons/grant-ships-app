@@ -103,7 +103,7 @@ export const GrantCard = ({ grant }: { grant: DashGrant }) => {
                 3,
                 theme,
                 {
-                  onNotStarted: <Text fz="sm">Milestones Planning</Text>,
+                  onNotStarted: <Text fz="sm">Milestones Not Submitted</Text>,
                   onPending: <Text fz="sm">Milestones Pending</Text>,
                   onRejected: <Text fz="sm">Milestones Rejected</Text>,
                   onCompleted: <Text fz="sm">Milestones Approved</Text>,

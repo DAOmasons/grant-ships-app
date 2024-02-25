@@ -1,0 +1,7 @@
+query getProjectGrants($id: ID!) {
+  project(id: $id) {
+    grants {
+      ...GrantDash
+    }
+  }
+}

@@ -7,7 +7,6 @@ import { notifications } from '@mantine/notifications';
 import { useAccount } from 'wagmi';
 
 import {
-  Alert,
   Button,
   Flex,
   Group,

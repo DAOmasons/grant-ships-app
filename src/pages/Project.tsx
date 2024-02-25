@@ -191,15 +191,7 @@ export const Project = () => {
             />
           </Tabs.Panel>
           <Tabs.Panel value="grants">
-            {withDummyGrants.grants && (
-              <GrantsPanel
-                grants={
-                  id && DummyGrants?.[id]
-                    ? DummyGrants[id]
-                    : withDummyGrants.grants
-                }
-              />
-            )}
+            {withDummyGrants.grants && <GrantsPanel />}
           </Tabs.Panel>
           <Tabs.Panel value="milestones">
             {withDummyGrants.grants && (

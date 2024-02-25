@@ -713,10 +713,12 @@ export type Grant = {
   milestonesAmount?: Maybe<Scalars['BigInt']>;
   milestones?: Maybe<Array<Milestone>>;
   shipApprovalReason?: Maybe<RawMetadata>;
+  hasShipApproved?: Maybe<Scalars['Boolean']>;
   amtAllocated?: Maybe<Scalars['BigInt']>;
   amtDistributed?: Maybe<Scalars['BigInt']>;
   allocatedBy?: Maybe<Scalars['Bytes']>;
   facilitatorReason?: Maybe<RawMetadata>;
+  hasFacilitatorApproved?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -1237,6 +1239,10 @@ export type Grant_filter = {
   shipApprovalReason_not_ends_with?: InputMaybe<Scalars['String']>;
   shipApprovalReason_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
   shipApprovalReason_?: InputMaybe<RawMetadata_filter>;
+  hasShipApproved?: InputMaybe<Scalars['Boolean']>;
+  hasShipApproved_not?: InputMaybe<Scalars['Boolean']>;
+  hasShipApproved_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  hasShipApproved_not_in?: InputMaybe<Array<Scalars['Boolean']>>;
   amtAllocated?: InputMaybe<Scalars['BigInt']>;
   amtAllocated_not?: InputMaybe<Scalars['BigInt']>;
   amtAllocated_gt?: InputMaybe<Scalars['BigInt']>;
@@ -1284,6 +1290,10 @@ export type Grant_filter = {
   facilitatorReason_not_ends_with?: InputMaybe<Scalars['String']>;
   facilitatorReason_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
   facilitatorReason_?: InputMaybe<RawMetadata_filter>;
+  hasFacilitatorApproved?: InputMaybe<Scalars['Boolean']>;
+  hasFacilitatorApproved_not?: InputMaybe<Scalars['Boolean']>;
+  hasFacilitatorApproved_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  hasFacilitatorApproved_not_in?: InputMaybe<Array<Scalars['Boolean']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
   and?: InputMaybe<Array<InputMaybe<Grant_filter>>>;
@@ -1344,13 +1354,15 @@ export type Grant_orderBy =
   | 'shipApprovalReason__id'
   | 'shipApprovalReason__protocol'
   | 'shipApprovalReason__pointer'
+  | 'hasShipApproved'
   | 'amtAllocated'
   | 'amtDistributed'
   | 'allocatedBy'
   | 'facilitatorReason'
   | 'facilitatorReason__id'
   | 'facilitatorReason__protocol'
-  | 'facilitatorReason__pointer';
+  | 'facilitatorReason__pointer'
+  | 'hasFacilitatorApproved';
 
 export type Log = {
   id: Scalars['ID'];
@@ -2808,10 +2820,12 @@ export type GrantResolvers<ContextType = MeshContext, ParentType extends Resolve
   milestonesAmount?: Resolver<Maybe<ResolversTypes['BigInt']>, ParentType, ContextType>;
   milestones?: Resolver<Maybe<Array<ResolversTypes['Milestone']>>, ParentType, ContextType, RequireFields<GrantmilestonesArgs, 'skip' | 'first'>>;
   shipApprovalReason?: Resolver<Maybe<ResolversTypes['RawMetadata']>, ParentType, ContextType>;
+  hasShipApproved?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   amtAllocated?: Resolver<Maybe<ResolversTypes['BigInt']>, ParentType, ContextType>;
   amtDistributed?: Resolver<Maybe<ResolversTypes['BigInt']>, ParentType, ContextType>;
   allocatedBy?: Resolver<Maybe<ResolversTypes['Bytes']>, ParentType, ContextType>;
   facilitatorReason?: Resolver<Maybe<ResolversTypes['RawMetadata']>, ParentType, ContextType>;
+  hasFacilitatorApproved?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -3137,6 +3151,12 @@ const merger = new(BareMerger as any)({
         },
         location: 'GetGameManagerDocument.graphql'
       },{
+        document: GetProjectGrantsDocument,
+        get rawSDL() {
+          return printWithCache(GetProjectGrantsDocument);
+        },
+        location: 'GetProjectGrantsDocument.graphql'
+      },{
         document: GetProjectsDocument,
         get rawSDL() {
           return printWithCache(GetProjectsDocument);
@@ -3316,6 +3336,22 @@ export type getGameManagerQuery = { gameManager?: Maybe<(
       & { ships: Array<Pick<GrantShip, 'anchor'>> }
     )> }
   )> };
+
+export type getProjectGrantsQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type getProjectGrantsQuery = { project?: Maybe<{ grants: Array<(
+      Pick<Grant, 'id' | 'grantApplicationBytes' | 'lastUpdated' | 'grantStatus'>
+      & { projectId: (
+        Pick<Project, 'id' | 'name'>
+        & { metadata: Pick<RawMetadata, 'pointer'> }
+      ), shipId: (
+        Pick<GrantShip, 'id' | 'name' | 'shipContractAddress' | 'poolId'>
+        & { profileMetadata: Pick<RawMetadata, 'pointer'> }
+      ), facilitatorReason?: Maybe<Pick<RawMetadata, 'pointer'>>, shipApprovalReason?: Maybe<Pick<RawMetadata, 'pointer'>> }
+    )> }> };
 
 export type ProjectDetailsFragment = Pick<Project, 'id' | 'name' | 'profileId' | 'nonce' | 'anchor' | 'owner'>;
 
@@ -3637,6 +3673,15 @@ export const getGameManagerDocument = gql`
   }
 }
     ${GameManagerDataFragmentDoc}` as unknown as DocumentNode<getGameManagerQuery, getGameManagerQueryVariables>;
+export const getProjectGrantsDocument = gql`
+    query getProjectGrants($id: ID!) {
+  project(id: $id) {
+    grants {
+      ...GrantDash
+    }
+  }
+}
+    ${GrantDashFragmentDoc}` as unknown as DocumentNode<getProjectGrantsQuery, getProjectGrantsQueryVariables>;
 export const GetProjectsDocument = gql`
     query GetProjects {
   projects {
@@ -3745,6 +3790,7 @@ export const ShipsPageQueryDocument = gql`
 
 
 
+
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
@@ -3762,6 +3808,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     getGameManager(variables: getGameManagerQueryVariables, options?: C): Promise<getGameManagerQuery> {
       return requester<getGameManagerQuery, getGameManagerQueryVariables>(getGameManagerDocument, variables, options) as Promise<getGameManagerQuery>;
+    },
+    getProjectGrants(variables: getProjectGrantsQueryVariables, options?: C): Promise<getProjectGrantsQuery> {
+      return requester<getProjectGrantsQuery, getProjectGrantsQueryVariables>(getProjectGrantsDocument, variables, options) as Promise<getProjectGrantsQuery>;
     },
     GetProjects(variables?: GetProjectsQueryVariables, options?: C): Promise<GetProjectsQuery> {
       return requester<GetProjectsQuery, GetProjectsQueryVariables>(GetProjectsDocument, variables, options) as Promise<GetProjectsQuery>;

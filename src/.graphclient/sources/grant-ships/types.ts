@@ -691,10 +691,12 @@ export type Grant = {
   milestonesAmount?: Maybe<Scalars['BigInt']>;
   milestones?: Maybe<Array<Milestone>>;
   shipApprovalReason?: Maybe<RawMetadata>;
+  hasShipApproved?: Maybe<Scalars['Boolean']>;
   amtAllocated?: Maybe<Scalars['BigInt']>;
   amtDistributed?: Maybe<Scalars['BigInt']>;
   allocatedBy?: Maybe<Scalars['Bytes']>;
   facilitatorReason?: Maybe<RawMetadata>;
+  hasFacilitatorApproved?: Maybe<Scalars['Boolean']>;
 };
 
 
@@ -1215,6 +1217,10 @@ export type Grant_filter = {
   shipApprovalReason_not_ends_with?: InputMaybe<Scalars['String']>;
   shipApprovalReason_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
   shipApprovalReason_?: InputMaybe<RawMetadata_filter>;
+  hasShipApproved?: InputMaybe<Scalars['Boolean']>;
+  hasShipApproved_not?: InputMaybe<Scalars['Boolean']>;
+  hasShipApproved_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  hasShipApproved_not_in?: InputMaybe<Array<Scalars['Boolean']>>;
   amtAllocated?: InputMaybe<Scalars['BigInt']>;
   amtAllocated_not?: InputMaybe<Scalars['BigInt']>;
   amtAllocated_gt?: InputMaybe<Scalars['BigInt']>;
@@ -1262,6 +1268,10 @@ export type Grant_filter = {
   facilitatorReason_not_ends_with?: InputMaybe<Scalars['String']>;
   facilitatorReason_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
   facilitatorReason_?: InputMaybe<RawMetadata_filter>;
+  hasFacilitatorApproved?: InputMaybe<Scalars['Boolean']>;
+  hasFacilitatorApproved_not?: InputMaybe<Scalars['Boolean']>;
+  hasFacilitatorApproved_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  hasFacilitatorApproved_not_in?: InputMaybe<Array<Scalars['Boolean']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
   and?: InputMaybe<Array<InputMaybe<Grant_filter>>>;
@@ -1322,13 +1332,15 @@ export type Grant_orderBy =
   | 'shipApprovalReason__id'
   | 'shipApprovalReason__protocol'
   | 'shipApprovalReason__pointer'
+  | 'hasShipApproved'
   | 'amtAllocated'
   | 'amtDistributed'
   | 'allocatedBy'
   | 'facilitatorReason'
   | 'facilitatorReason__id'
   | 'facilitatorReason__protocol'
-  | 'facilitatorReason__pointer';
+  | 'facilitatorReason__pointer'
+  | 'hasFacilitatorApproved';
 
 export type Log = {
   id: Scalars['ID'];

@@ -4,12 +4,8 @@ import { AppAlert } from '../UnderContruction';
 import { secondsToLongDate } from '../../utils/time';
 import { GrantUI } from '../../types/ui';
 
-export const GrantsPanel = ({ grants }: { grants: GrantUI[] }) => {
-  if (grants.length === 0) {
-    return <NoGrants />;
-  }
-
-  return <HasGrants grants={grants} />;
+export const GrantsPanel = () => {
+  return null;
 };
 
 const NoGrants = () => {
