@@ -13,6 +13,8 @@ fragment GrantDash on Grant {
   shipId {
     id
     name
+    shipContractAddress
+    poolId
     profileMetadata {
       pointer
     }

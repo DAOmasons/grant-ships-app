@@ -71,3 +71,13 @@ export enum GameStatus {
   Active = 6,
   Completed = 7,
 }
+
+export enum AlloStatus {
+  None,
+  Pending,
+  Accepted,
+  Rejected,
+  Appealed,
+  InReview,
+  Canceled,
+}

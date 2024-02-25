@@ -1,14 +1,17 @@
 import {
+  Alert,
   Avatar,
   Box,
+  Button,
   Flex,
   Group,
+  Modal,
   Paper,
   Skeleton,
   Stack,
   Tabs,
   Text,
-  Timeline,
+  Textarea,
   useMantineTheme,
 } from '@mantine/core';
 import { MainSection, PageTitle } from '../layout/Sections';
@@ -20,18 +23,23 @@ import { FacilitatorGameDash } from '../components/dashboard/facilitator/Facilit
 import { AppAlert } from '../components/UnderContruction';
 import { useGameManager } from '../hooks/useGameMangers';
 import GameManagerAbi from '../abi/GameManager.json';
-import { useMemo } from 'react';
-import { SHIP_AMOUNT } from '../constants/gameSetup';
+import { useMemo, useState } from 'react';
+import { GAME_TOKEN, SHIP_AMOUNT } from '../constants/gameSetup';
 import { useReadContract } from 'wagmi';
 import { arbitrumSepolia } from 'viem/chains';
 import { ADDR } from '../constants/addresses';
-import { GameStatus, GrantStatus } from '../types/common';
+import { AlloStatus, GameStatus, GrantStatus } from '../types/common';
 import { getFacilitatorGrants } from '../queries/getFacilitatorGrants';
 import { DashGrant } from '../resolvers/grantResolvers';
-import { secondsToRelativeTime } from '../utils/time';
-import { getTimelineContents } from '../components/dashboard/grantCardUtils';
-import { ReviewApplication } from '../components/dashboard/ReviewApplication';
-import { IconCheck, IconClock } from '@tabler/icons-react';
+import { secondsToLongDateTime, secondsToRelativeTime } from '../utils/time';
+import AlloAbi from '../abi/Allo.json';
+import { Link } from 'react-router-dom';
+import { useDisclosure } from '@mantine/hooks';
+import { ReviewPage } from '../layout/ReviewPage';
+import { encodeAbiParameters, formatEther, parseAbiParameters } from 'viem';
+import { useTx } from '../hooks/useTx';
+import { pinJSONToIPFS } from '../utils/ipfs/pin';
+import { notifications } from '@mantine/notifications';
 
 export const FacilitatorDashboard = () => {
   const { data: shipData, isLoading: shipsLoading } = useQuery({
@@ -198,147 +206,226 @@ const ProjectApproval = () => {
   return (
     <Stack gap={'lg'}>
       {grants.map((grant) => (
-        <GrantCard grant={grant} />
+        <GrantApprovalCard key={grant.id} grant={grant} />
       ))}
     </Stack>
   );
 };
 
-const GrantCard = ({ grant }: { grant: DashGrant }) => {
-  const currentStage = grant.grantStatus;
+const GrantApprovalCard = ({ grant }: { grant: DashGrant }) => {
   const theme = useMantineTheme();
-
   return (
-    <Paper bg={theme.colors.dark[6]} mih={220} w="100%" p="lg">
+    <Paper bg={theme.colors.dark[6]} mih={100} w="100%" p="lg">
       <Flex>
-        <Box w="100%">
-          <Group>
-            <Avatar size={66} src={grant.projectMetadata.imgUrl} />
-            <Box>
-              <Text fw={600}>{grant.projectId.name}</Text>
-              <Text fz="sm">
-                Last Updated {secondsToRelativeTime(grant.lastUpdated)}
-              </Text>
-            </Box>
-          </Group>
-        </Box>
-        <Box w="100%">
-          <Timeline bulletSize={20} lineWidth={2} active={4}>
-            <Timeline.Item
-              h={12}
-              w="100%"
-              {...(getTimelineContents(
-                currentStage,
-                GrantStatus.Applied,
-                GrantStatus.ShipRejected,
-                GrantStatus.ShipApproved,
-                1,
-                theme,
-                {
-                  onNotStarted: <Text fz="sm">Application Not Submitted </Text>,
-                  onPending: (
-                    <ReviewApplication
-                      grant={grant}
-                      shipAddress={grant.shipId.id}
-                    />
-                  ),
-                  onRejected: (
-                    <ReviewApplication
-                      grant={grant}
-                      shipAddress={grant.shipId.id}
-                    />
-                  ),
-                  onCompleted: (
-                    <ReviewApplication
-                      grant={grant}
-                      shipAddress={grant.shipId.id}
-                    />
-                  ),
-                }
-              ) || {})}
-            />
-            <Timeline.Item
-              h={12}
-              w="100%"
-              {...(getTimelineContents(
-                currentStage,
-                GrantStatus.ShipApproved,
-                GrantStatus.FacilitatorRejected,
-                GrantStatus.FacilitatorApproved,
-                2,
-                theme,
-                {
-                  onNotStarted: <Text fz="sm">Facilitator Review</Text>,
-                  onPending: (
-                    <Group justify="space-between" mr="sm">
-                      <Text fz="sm">Awaiting Facilitator Review</Text>
-                      <IconClock size={16} />
-                    </Group>
-                  ),
-                  onRejected: <Text fz="sm">Facilitator Rejected</Text>,
-                  onCompleted: <Text fz="sm">Facilitator Approved</Text>,
-                }
-              ) || {})}
-            />
-            <Timeline.Item
-              h={12}
-              w="100%"
-              {...(getTimelineContents(
-                currentStage,
-                GrantStatus.MilestonesProposed,
-                GrantStatus.MilestonesRejected,
-                GrantStatus.MilestonesApproved,
-                3,
-                theme,
-                {
-                  onNotStarted: <Text fz="sm">Milestones Planning</Text>,
-                  onPending: <Text fz="sm">Milestones Pending</Text>,
-                  onRejected: <Text fz="sm">Milestones Rejected</Text>,
-                  onCompleted: <Text fz="sm">Milestones Approved</Text>,
-                }
-              ) || {})}
-            />
-            <Timeline.Item
-              h={12}
-              w="100%"
-              {...(getTimelineContents(
-                currentStage,
-                GrantStatus.MilestoneSubmitted,
-                GrantStatus.MilestoneRejected,
-                GrantStatus.MilestoneApproved,
-                4,
-                theme,
-                {
-                  onNotStarted: <Text fz="sm">Milestone Process</Text>,
-                  onPending: <Text fz="sm">Milestone Pending</Text>,
-                  onRejected: <Text fz="sm">Milestone Rejected</Text>,
-                  onCompleted: <Text fz="sm">Milestone Approved</Text>,
-                }
-              ) || {})}
-            />
-            <Timeline.Item
-              h={12}
-              w="100%"
-              bullet={
-                currentStage === GrantStatus.Completed ? (
-                  <IconCheck />
-                ) : (
-                  <Text fz="xs" opacity={0.75}>
-                    5
-                  </Text>
-                )
-              }
-              color={
-                currentStage === GrantStatus.Completed
-                  ? theme.colors.blue[6]
-                  : theme.colors.dark[5]
-              }
+        <Group align="start">
+          <Avatar
+            size={66}
+            component={Link}
+            to={`/project/${grant.projectId.id}`}
+            src={grant.projectMetadata.imgUrl}
+          />
+          <Box>
+            <Text
+              fw={600}
+              component={Link}
+              to={`/project/${grant.projectId.id}`}
             >
-              <Text fz="sm">Grant Complete</Text>
-            </Timeline.Item>
-          </Timeline>
-        </Box>
+              {grant.projectId.name}
+            </Text>
+            <Text fz="xs">
+              {' '}
+              Approved by:{' '}
+              <Link
+                to={`/ship/${grant.shipId.id}`}
+                style={{ color: theme.colors.dark[0] }}
+              >
+                {grant.shipId.name}
+              </Link>
+            </Text>
+            <Text fz="xs">
+              Last Updated: {secondsToRelativeTime(grant.lastUpdated)}
+            </Text>
+          </Box>
+        </Group>
+        <FacilitatorReview grant={grant} />
       </Flex>
     </Paper>
+  );
+};
+
+const FacilitatorReview = ({ grant }: { grant: DashGrant }) => {
+  const [opened, { open, close }] = useDisclosure(false);
+  const { tx } = useTx();
+  const [reasonText, setReasonText] = useState('');
+
+  const handleApprove = async (isApproved: boolean) => {
+    if (grant.grantStatus !== GrantStatus.ShipApproved) {
+      return;
+    }
+
+    const poolId = grant.shipId.poolId;
+    const grantAmount = grant.applicationData.grantAmount;
+
+    if (
+      isApproved === undefined ||
+      !reasonText ||
+      !poolId ||
+      !grant.shipId.id ||
+      !grantAmount
+    ) {
+      console.error(
+        `Invalid Data for review ${isApproved} ${reasonText} ${poolId} ${isApproved} ${grantAmount}`
+      );
+      notifications.show({
+        title: 'Error',
+        message: 'Invalid Data for review',
+        color: 'red',
+      });
+
+      return;
+    }
+
+    close();
+
+    const pinRes = await pinJSONToIPFS({
+      reason: reasonText,
+      reviewer: grant.shipId.id,
+    });
+
+    if (typeof pinRes.IpfsHash !== 'string' && pinRes.IpfsHash[0] !== 'Q') {
+      notifications.show({
+        title: 'IPFS Upload Error',
+        message: pinRes.IpfsHash[1],
+        color: 'red',
+      });
+      return;
+    }
+
+    // (address recipientId, Status recipientStatus, uint256 grantAmount, Metadata memory _reason)
+
+    const encoded = encodeAbiParameters(
+      parseAbiParameters('address, uint8, uint256, (uint256, string)'),
+      [
+        grant.projectId.id,
+        AlloStatus.Accepted,
+        grantAmount,
+        [1n, pinRes.IpfsHash],
+      ]
+    );
+
+    tx({
+      writeContractParams: {
+        address: ADDR.ALLO,
+        abi: AlloAbi,
+        functionName: 'allocate',
+        args: [poolId, encoded],
+      },
+    });
+  };
+
+  return (
+    <>
+      <Button size="xs" ml="auto" onClick={open}>
+        Review
+      </Button>
+      <Modal
+        opened={opened}
+        onClose={close}
+        fullScreen
+        transitionProps={{ transition: 'fade', duration: 200 }}
+      >
+        <ReviewPage
+          title={`Application from ${grant.projectId.name}`}
+          sections={[
+            {
+              subtitle: 'Project Description',
+              content: grant.projectMetadata.description,
+            },
+            'DIVIDER',
+            {
+              subtitle: 'The Ask',
+              content: `${formatEther(grant.applicationData.grantAmount)} ${GAME_TOKEN.SYMBOL}`,
+            },
+            {
+              subtitle: 'Expected Delivery',
+              content: secondsToLongDateTime(
+                Number(grant.applicationData.dueDate)
+              ),
+            },
+            {
+              subtitle: 'Receiving Address',
+              content: grant.applicationData.receivingAddress,
+            },
+            {
+              subtitle: 'Proposal Link',
+              content: grant.applicationData.proposalLink,
+            },
+            {
+              subtitle: 'Objectives',
+              content: grant.applicationData.objectives,
+            },
+            grant.applicationData.extraInfo
+              ? {
+                  subtitle: 'Additional Information',
+                  content: grant.applicationData.extraInfo,
+                }
+              : null,
+            grant.applicationData.extraLink
+              ? {
+                  subtitle: 'Additional Link',
+                  content: (
+                    <Text component="a">grant.applicationData.extraLink </Text>
+                  ),
+                }
+              : null,
+          ]}
+          footerSection={
+            <>
+              {grant.shipApprovalReason && (
+                <Alert mb="xl">
+                  <Text mb="sm">Approval from Grant Ship</Text>
+                  <Text fz="sm" opacity={0.75} fs={'italic'}>
+                    "{grant.shipApprovalReason}"
+                  </Text>
+                </Alert>
+              )}
+              {grant.grantStatus === GrantStatus.ShipApproved && (
+                <>
+                  <Text mb="md" fw={600}>
+                    Approve or Reject Applicant
+                  </Text>
+                  <Textarea
+                    label="Reasoning"
+                    description="Why are you approving or rejecting this application?"
+                    value={reasonText}
+                    onChange={(e) => setReasonText(e.currentTarget.value)}
+                    autosize
+                    required
+                    minRows={4}
+                    maxRows={8}
+                    mb="xl"
+                  />
+                  <Flex justify="space-between">
+                    <Button
+                      variant="outline"
+                      disabled={!reasonText}
+                      onClick={() => handleApprove(false)}
+                    >
+                      Reject
+                    </Button>
+                    <Button
+                      disabled={!reasonText}
+                      onClick={() => handleApprove(true)}
+                    >
+                      Approve
+                    </Button>
+                  </Flex>
+                </>
+              )}
+            </>
+          }
+        />
+      </Modal>
+    </>
   );
 };
