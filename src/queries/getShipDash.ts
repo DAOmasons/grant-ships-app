@@ -4,9 +4,8 @@ import {
   getBuiltGraphSDK,
 } from '../.graphclient';
 import {
-  ApplicationMetadata,
   DashGrant,
-  ProjectMetadata,
+  resolveFacilitatorReason,
   resolveGrantApplicationData,
   resolveProjectMetadata,
   resolveShipApprovalReason,
@@ -19,12 +18,17 @@ export type DashShip = ShipDashFragment & {
 const resolveGrants = async (grants: GrantDashFragment[]) => {
   const resolvedGrants = await Promise.all(
     grants.map(async (grant) => {
-      const [profileMetadata, applicationData, shipApprovalReason] =
-        await Promise.all([
-          resolveProjectMetadata(grant?.projectId?.metadata?.pointer),
-          resolveGrantApplicationData(grant.grantApplicationBytes),
-          resolveShipApprovalReason(grant.shipApprovalReason?.pointer),
-        ]);
+      const [
+        profileMetadata,
+        applicationData,
+        shipApprovalReason,
+        facilitatorReason,
+      ] = await Promise.all([
+        resolveProjectMetadata(grant?.projectId?.metadata?.pointer),
+        resolveGrantApplicationData(grant.grantApplicationBytes),
+        resolveShipApprovalReason(grant.shipApprovalReason?.pointer),
+        resolveFacilitatorReason(grant.facilitatorReason?.pointer),
+      ]);
 
       return {
         ...grant,
@@ -32,6 +36,9 @@ const resolveGrants = async (grants: GrantDashFragment[]) => {
         applicationData,
         shipApprovalReason: shipApprovalReason
           ? (shipApprovalReason.reason as string)
+          : null,
+        facilitatorReason: facilitatorReason
+          ? (facilitatorReason.reason as string)
           : null,
       };
     })

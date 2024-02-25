@@ -307,7 +307,7 @@ const FacilitatorReview = ({ grant }: { grant: DashGrant }) => {
       parseAbiParameters('address, uint8, uint256, (uint256, string)'),
       [
         grant.projectId.id,
-        AlloStatus.Accepted,
+        isApproved ? AlloStatus.Accepted : AlloStatus.Rejected,
         grantAmount,
         [1n, pinRes.IpfsHash],
       ]

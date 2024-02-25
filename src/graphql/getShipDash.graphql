@@ -19,6 +19,9 @@ fragment GrantDash on Grant {
       pointer
     }
   }
+  facilitatorReason {
+    pointer
+  }
   shipApprovalReason {
     pointer
   }

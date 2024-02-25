@@ -22,6 +22,7 @@ export type DashGrant = GrantDashFragment & {
   projectMetadata: ProjectMetadata;
   applicationData: ApplicationMetadata;
   shipApprovalReason: string | null;
+  facilitatorReason: string | null;
 };
 
 export const resolveGrantApplicationData = async (bytes: string) => {
@@ -58,6 +59,23 @@ export const resolveGrantApplicationData = async (bytes: string) => {
 };
 
 export const resolveShipApprovalReason = async (pointer?: string) => {
+  if (!pointer) {
+    return null;
+  }
+
+  const json = await getIpfsJson(pointer);
+
+  const validated = reasonSchema.safeParse(json);
+
+  if (!validated.success) {
+    console.error('Invalid metadata', validated.error);
+    throw new Error('Invalid metadata: Data does not match the schema');
+  }
+
+  return validated.data;
+};
+
+export const resolveFacilitatorReason = async (pointer?: string) => {
   if (!pointer) {
     return null;
   }

@@ -713,6 +713,10 @@ export type Grant = {
   milestonesAmount?: Maybe<Scalars['BigInt']>;
   milestones?: Maybe<Array<Milestone>>;
   shipApprovalReason?: Maybe<RawMetadata>;
+  amtAllocated?: Maybe<Scalars['BigInt']>;
+  amtDistributed?: Maybe<Scalars['BigInt']>;
+  allocatedBy?: Maybe<Scalars['Bytes']>;
+  facilitatorReason?: Maybe<RawMetadata>;
 };
 
 
@@ -1233,6 +1237,53 @@ export type Grant_filter = {
   shipApprovalReason_not_ends_with?: InputMaybe<Scalars['String']>;
   shipApprovalReason_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
   shipApprovalReason_?: InputMaybe<RawMetadata_filter>;
+  amtAllocated?: InputMaybe<Scalars['BigInt']>;
+  amtAllocated_not?: InputMaybe<Scalars['BigInt']>;
+  amtAllocated_gt?: InputMaybe<Scalars['BigInt']>;
+  amtAllocated_lt?: InputMaybe<Scalars['BigInt']>;
+  amtAllocated_gte?: InputMaybe<Scalars['BigInt']>;
+  amtAllocated_lte?: InputMaybe<Scalars['BigInt']>;
+  amtAllocated_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  amtAllocated_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  amtDistributed?: InputMaybe<Scalars['BigInt']>;
+  amtDistributed_not?: InputMaybe<Scalars['BigInt']>;
+  amtDistributed_gt?: InputMaybe<Scalars['BigInt']>;
+  amtDistributed_lt?: InputMaybe<Scalars['BigInt']>;
+  amtDistributed_gte?: InputMaybe<Scalars['BigInt']>;
+  amtDistributed_lte?: InputMaybe<Scalars['BigInt']>;
+  amtDistributed_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  amtDistributed_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  allocatedBy?: InputMaybe<Scalars['Bytes']>;
+  allocatedBy_not?: InputMaybe<Scalars['Bytes']>;
+  allocatedBy_gt?: InputMaybe<Scalars['Bytes']>;
+  allocatedBy_lt?: InputMaybe<Scalars['Bytes']>;
+  allocatedBy_gte?: InputMaybe<Scalars['Bytes']>;
+  allocatedBy_lte?: InputMaybe<Scalars['Bytes']>;
+  allocatedBy_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  allocatedBy_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  allocatedBy_contains?: InputMaybe<Scalars['Bytes']>;
+  allocatedBy_not_contains?: InputMaybe<Scalars['Bytes']>;
+  facilitatorReason?: InputMaybe<Scalars['String']>;
+  facilitatorReason_not?: InputMaybe<Scalars['String']>;
+  facilitatorReason_gt?: InputMaybe<Scalars['String']>;
+  facilitatorReason_lt?: InputMaybe<Scalars['String']>;
+  facilitatorReason_gte?: InputMaybe<Scalars['String']>;
+  facilitatorReason_lte?: InputMaybe<Scalars['String']>;
+  facilitatorReason_in?: InputMaybe<Array<Scalars['String']>>;
+  facilitatorReason_not_in?: InputMaybe<Array<Scalars['String']>>;
+  facilitatorReason_contains?: InputMaybe<Scalars['String']>;
+  facilitatorReason_contains_nocase?: InputMaybe<Scalars['String']>;
+  facilitatorReason_not_contains?: InputMaybe<Scalars['String']>;
+  facilitatorReason_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  facilitatorReason_starts_with?: InputMaybe<Scalars['String']>;
+  facilitatorReason_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  facilitatorReason_not_starts_with?: InputMaybe<Scalars['String']>;
+  facilitatorReason_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  facilitatorReason_ends_with?: InputMaybe<Scalars['String']>;
+  facilitatorReason_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  facilitatorReason_not_ends_with?: InputMaybe<Scalars['String']>;
+  facilitatorReason_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  facilitatorReason_?: InputMaybe<RawMetadata_filter>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
   and?: InputMaybe<Array<InputMaybe<Grant_filter>>>;
@@ -1292,7 +1343,14 @@ export type Grant_orderBy =
   | 'shipApprovalReason'
   | 'shipApprovalReason__id'
   | 'shipApprovalReason__protocol'
-  | 'shipApprovalReason__pointer';
+  | 'shipApprovalReason__pointer'
+  | 'amtAllocated'
+  | 'amtDistributed'
+  | 'allocatedBy'
+  | 'facilitatorReason'
+  | 'facilitatorReason__id'
+  | 'facilitatorReason__protocol'
+  | 'facilitatorReason__pointer';
 
 export type Log = {
   id: Scalars['ID'];
@@ -2750,6 +2808,10 @@ export type GrantResolvers<ContextType = MeshContext, ParentType extends Resolve
   milestonesAmount?: Resolver<Maybe<ResolversTypes['BigInt']>, ParentType, ContextType>;
   milestones?: Resolver<Maybe<Array<ResolversTypes['Milestone']>>, ParentType, ContextType, RequireFields<GrantmilestonesArgs, 'skip' | 'first'>>;
   shipApprovalReason?: Resolver<Maybe<ResolversTypes['RawMetadata']>, ParentType, ContextType>;
+  amtAllocated?: Resolver<Maybe<ResolversTypes['BigInt']>, ParentType, ContextType>;
+  amtDistributed?: Resolver<Maybe<ResolversTypes['BigInt']>, ParentType, ContextType>;
+  allocatedBy?: Resolver<Maybe<ResolversTypes['Bytes']>, ParentType, ContextType>;
+  facilitatorReason?: Resolver<Maybe<ResolversTypes['RawMetadata']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -3196,7 +3258,7 @@ export type getFacilitatorGrantsQuery = { grants: Array<(
     ), shipId: (
       Pick<GrantShip, 'id' | 'name' | 'shipContractAddress' | 'poolId'>
       & { profileMetadata: Pick<RawMetadata, 'pointer'> }
-    ), shipApprovalReason?: Maybe<Pick<RawMetadata, 'pointer'>> }
+    ), facilitatorReason?: Maybe<Pick<RawMetadata, 'pointer'>>, shipApprovalReason?: Maybe<Pick<RawMetadata, 'pointer'>> }
   )> };
 
 export type FeedDataFragment = (
@@ -3289,7 +3351,7 @@ export type GrantDashFragment = (
   ), shipId: (
     Pick<GrantShip, 'id' | 'name' | 'shipContractAddress' | 'poolId'>
     & { profileMetadata: Pick<RawMetadata, 'pointer'> }
-  ), shipApprovalReason?: Maybe<Pick<RawMetadata, 'pointer'>> }
+  ), facilitatorReason?: Maybe<Pick<RawMetadata, 'pointer'>>, shipApprovalReason?: Maybe<Pick<RawMetadata, 'pointer'>> }
 );
 
 export type ShipDashFragment = (
@@ -3312,7 +3374,7 @@ export type getShipDashQuery = { grantShip?: Maybe<(
       ), shipId: (
         Pick<GrantShip, 'id' | 'name' | 'shipContractAddress' | 'poolId'>
         & { profileMetadata: Pick<RawMetadata, 'pointer'> }
-      ), shipApprovalReason?: Maybe<Pick<RawMetadata, 'pointer'>> }
+      ), facilitatorReason?: Maybe<Pick<RawMetadata, 'pointer'>>, shipApprovalReason?: Maybe<Pick<RawMetadata, 'pointer'>> }
     )>, profileMetadata: Pick<RawMetadata, 'pointer'> }
   )> };
 
@@ -3462,6 +3524,9 @@ export const GrantDashFragmentDoc = gql`
     profileMetadata {
       pointer
     }
+  }
+  facilitatorReason {
+    pointer
   }
   shipApprovalReason {
     pointer

@@ -14,6 +14,7 @@ import {
   Modal,
   Text,
   Textarea,
+  useMantineTheme,
 } from '@mantine/core';
 import { GrantStatus } from '../../types/common';
 import { useTx } from '../../hooks/useTx';
@@ -21,6 +22,8 @@ import { pinJSONToIPFS } from '../../utils/ipfs/pin';
 import { GAME_TOKEN, ZER0_ADDRESS } from '../../constants/gameSetup';
 import { secondsToLongDateTime } from '../../utils/time';
 import { DashGrant } from '../../resolvers/grantResolvers';
+import { AppAlert } from '../UnderContruction';
+import { IconCheck, IconX } from '@tabler/icons-react';
 
 export const ReviewApplication = ({
   grant,
@@ -29,6 +32,7 @@ export const ReviewApplication = ({
   grant: DashGrant;
   shipAddress: string;
 }) => {
+  const theme = useMantineTheme();
   const [reasonText, setReasonText] = useState('');
   const [opened, { open, close }] = useDisclosure(false);
   const { address } = useAccount();
@@ -68,6 +72,10 @@ export const ReviewApplication = ({
       },
     });
   };
+
+  const hasShipApproved = grant.grantStatus >= GrantStatus.ShipApproved;
+  const hasFacilitatorApproved =
+    grant.grantStatus >= GrantStatus.FacilitatorApproved;
 
   return (
     <>
@@ -144,12 +152,32 @@ export const ReviewApplication = ({
           footerSection={
             <>
               {grant.shipApprovalReason && (
-                <Alert>
-                  <Text mb="sm">Approval from Grant Ship</Text>
-                  <Text fz="sm" opacity={0.75} fs={'italic'}>
-                    "{grant.shipApprovalReason}"
-                  </Text>
-                </Alert>
+                <AppAlert
+                  mt={0}
+                  mb={'xl'}
+                  icon={hasShipApproved ? <IconCheck /> : <IconX />}
+                  title={`${hasShipApproved ? 'Approval' : 'Rejection'} from
+                    Grant Ship`}
+                  description={`"${grant.shipApprovalReason}"`}
+                  bg={
+                    hasShipApproved ? theme.colors.blue[8] : theme.colors.red[6]
+                  }
+                />
+              )}
+              {grant.facilitatorReason && (
+                <AppAlert
+                  mt={0}
+                  mb={'xl'}
+                  icon={hasFacilitatorApproved ? <IconCheck /> : <IconX />}
+                  title={`${hasFacilitatorApproved ? 'Approval' : 'Rejection'} from
+                    Facilitators`}
+                  description={`"${grant.facilitatorReason}"`}
+                  bg={
+                    hasFacilitatorApproved
+                      ? theme.colors.blue[8]
+                      : theme.colors.red[6]
+                  }
+                />
               )}
               {grant.grantStatus === GrantStatus.Applied && (
                 <>
