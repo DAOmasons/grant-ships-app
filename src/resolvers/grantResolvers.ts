@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import {
   ProjectProfileMetadata,
+  ShipProfileMetadata,
   grantApplicationMetadata,
   reasonSchema,
 } from '../utils/ipfs/metadataValidation';
@@ -18,9 +19,14 @@ export type ProjectMetadata = z.infer<typeof ProjectProfileMetadata> & {
   imgUrl: string;
 };
 
+export type ShipProfileMetadata = z.infer<typeof ShipProfileMetadata> & {
+  imgUrl: string;
+};
+
 export type DashGrant = GrantDashFragment & {
   projectMetadata: ProjectMetadata;
   applicationData: ApplicationMetadata;
+  shipMetadata: ShipProfileMetadata;
   shipApprovalReason: string | null;
   facilitatorReason: string | null;
 };
@@ -113,16 +119,39 @@ export const resolveProjectMetadata = async (pointer?: string) => {
   };
 };
 
+export const resolveShipMetadata = async (pointer?: string) => {
+  if (!pointer) {
+    console.error('No metadata pointer', pointer);
+    throw new Error('No metadata pointer');
+  }
+
+  const json = await getIpfsJson(pointer);
+
+  const validated = ShipProfileMetadata.safeParse(json);
+
+  if (!validated.success) {
+    console.error('Invalid metadata', validated.error);
+    throw new Error('Invalid metadata: Data does not match the schema');
+  }
+
+  return {
+    ...validated.data,
+    imgUrl: getGatewayUrl(validated.data.avatarHash_IPFS),
+  };
+};
+
 export const resolveGrants = async (grants: GrantDashFragment[]) => {
   const resolvedGrants = await Promise.all(
     grants.map(async (grant) => {
       const [
         profileMetadata,
+        shipMetadata,
         applicationData,
         shipApprovalReason,
         facilitatorReason,
       ] = await Promise.all([
         resolveProjectMetadata(grant?.projectId?.metadata?.pointer),
+        resolveShipMetadata(grant?.shipId?.profileMetadata?.pointer),
         resolveGrantApplicationData(grant.grantApplicationBytes),
         resolveShipApprovalReason(grant.shipApprovalReason?.pointer),
         resolveFacilitatorReason(grant.facilitatorReason?.pointer),
@@ -131,6 +160,7 @@ export const resolveGrants = async (grants: GrantDashFragment[]) => {
       return {
         ...grant,
         projectMetadata: profileMetadata,
+        shipMetadata: shipMetadata,
         applicationData,
         shipApprovalReason: shipApprovalReason
           ? (shipApprovalReason.reason as string)

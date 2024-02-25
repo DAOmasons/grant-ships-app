@@ -23,6 +23,7 @@ import { secondsToLongDateTime } from '../../utils/time';
 import { DashGrant } from '../../resolvers/grantResolvers';
 import { AppAlert } from '../UnderContruction';
 import { IconCheck, IconX } from '@tabler/icons-react';
+import { useUserData } from '../../hooks/useUserState';
 
 export const ReviewApplication = ({
   grant,
@@ -32,6 +33,7 @@ export const ReviewApplication = ({
   shipAddress: string;
 }) => {
   const theme = useMantineTheme();
+  const { userData } = useUserData();
   const [reasonText, setReasonText] = useState('');
   const [opened, { open, close }] = useDisclosure(false);
   const { address } = useAccount();
@@ -75,6 +77,9 @@ export const ReviewApplication = ({
   const hasShipApproved = grant.grantStatus >= GrantStatus.ShipApproved;
   const hasFacilitatorApproved =
     grant.grantStatus >= GrantStatus.FacilitatorApproved;
+
+  const isShipOperator =
+    userData?.isShipOperator && userData?.shipAddress === shipAddress;
 
   return (
     <>
@@ -178,7 +183,7 @@ export const ReviewApplication = ({
                   }
                 />
               )}
-              {grant.grantStatus === GrantStatus.Applied && (
+              {grant.grantStatus === GrantStatus.Applied && isShipOperator && (
                 <>
                   <Text mb="md" fw={600}>
                     Approve or Reject Applicant

@@ -15,24 +15,50 @@ import { getTimelineContents } from './grantCardUtils';
 import { ReviewApplication } from './ReviewApplication';
 import { IconCheck, IconClock } from '@tabler/icons-react';
 
-export const GrantCard = ({ grant }: { grant: DashGrant }) => {
+export const GrantCard = ({
+  grant,
+  view,
+}: {
+  grant: DashGrant;
+  view: 'project-page' | 'ship-dash';
+}) => {
   const currentStage = grant.grantStatus;
   const shipAddress = grant.shipId.id;
   const theme = useMantineTheme();
+
+  const isShipDash = view === 'ship-dash';
+  const isProjectPage = view === 'project-page';
 
   return (
     <Paper bg={theme.colors.dark[6]} mih={220} w="100%" p="lg">
       <Flex>
         <Box w="100%">
-          <Group>
-            <Avatar size={66} src={grant.projectMetadata.imgUrl} />
-            <Box>
-              <Text fw={600}>{grant.projectId.name}</Text>
-              <Text fz="sm">
-                Last Updated {secondsToRelativeTime(grant.lastUpdated)}
-              </Text>
-            </Box>
-          </Group>
+          {isShipDash && (
+            <Group wrap="nowrap" mr="sm">
+              <Avatar size={66} src={grant?.projectMetadata?.imgUrl} />
+              <Box>
+                <Text fw={600} lineClamp={1}>
+                  {grant.projectId.name}
+                </Text>
+                <Text fz="sm">
+                  Last Updated {secondsToRelativeTime(grant.lastUpdated)}
+                </Text>
+              </Box>
+            </Group>
+          )}
+          {isProjectPage && (
+            <Group wrap="nowrap" mr="sm">
+              <Avatar size={44} src={grant?.shipMetadata?.imgUrl} />
+              <Box>
+                <Text fw={600} lineClamp={1}>
+                  {grant.shipId.name}
+                </Text>
+                <Text fz="sm">
+                  Last Updated {secondsToRelativeTime(grant.lastUpdated)}
+                </Text>
+              </Box>
+            </Group>
+          )}
         </Box>
         <Box w="100%">
           <Timeline bulletSize={20} lineWidth={2} active={4}>

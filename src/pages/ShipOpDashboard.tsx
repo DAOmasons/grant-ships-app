@@ -91,7 +91,7 @@ export const GrantManager = ({
   return (
     <Stack gap={'lg'}>
       {shipData?.grants.map((grant) => (
-        <GrantCard key={grant.id} grant={grant} />
+        <GrantCard key={grant.id} grant={grant} view="ship-dash" />
       ))}
     </Stack>
   );

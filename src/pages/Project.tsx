@@ -28,6 +28,7 @@ import { GameStatus } from '../types/common';
 import { SingleItemPageSkeleton } from '../components/skeletons';
 import { getEntityFeed } from '../queries/getFeed';
 import { useMemo } from 'react';
+import { getProjectGrants } from '../queries/getProjectGrants';
 
 const ClearVote: GrantUI = {
   shipName: 'Creative Commons Catalyst',
@@ -99,6 +100,16 @@ export const Project = () => {
     queryKey: [`entity-feed-${id}`],
     queryFn: () =>
       getEntityFeed({ first: 10, skip: 0, entityId: id as string }),
+    enabled: !!id,
+  });
+
+  const {
+    data: grants,
+    isLoading: grantsLoading,
+    error: grantsError,
+  } = useQuery({
+    queryKey: [`project-grants-${id}`],
+    queryFn: () => getProjectGrants(id as string),
     enabled: !!id,
   });
 
@@ -191,7 +202,13 @@ export const Project = () => {
             />
           </Tabs.Panel>
           <Tabs.Panel value="grants">
-            {withDummyGrants.grants && <GrantsPanel />}
+            {withDummyGrants.grants && (
+              <GrantsPanel
+                grants={grants}
+                isLoading={grantsLoading}
+                error={grantsError}
+              />
+            )}
           </Tabs.Panel>
           <Tabs.Panel value="milestones">
             {withDummyGrants.grants && (

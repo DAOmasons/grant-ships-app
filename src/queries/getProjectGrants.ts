@@ -1,8 +1,9 @@
 import { getBuiltGraphSDK } from '../.graphclient';
-import { DashGrant } from '../resolvers/grantResolvers';
-import { resolveGrants } from './getFacilitatorGrants';
+import { DashGrant, resolveGrants } from '../resolvers/grantResolvers';
 
-export const getShipDash = async (projectId: string): Promise<DashGrant[]> => {
+export const getProjectGrants = async (
+  projectId: string
+): Promise<DashGrant[]> => {
   try {
     const { getProjectGrants } = getBuiltGraphSDK();
 

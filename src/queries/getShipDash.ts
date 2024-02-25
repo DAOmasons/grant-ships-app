@@ -1,6 +1,5 @@
 import { ShipDashFragment, getBuiltGraphSDK } from '../.graphclient';
-import { DashGrant } from '../resolvers/grantResolvers';
-import { resolveGrants } from './getFacilitatorGrants';
+import { DashGrant, resolveGrants } from '../resolvers/grantResolvers';
 
 export type DashShip = ShipDashFragment & {
   grants: DashGrant[];
