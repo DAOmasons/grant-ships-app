@@ -6,6 +6,7 @@ import {
   Group,
   Modal,
   Paper,
+  Skeleton,
   Stack,
   Text,
   Textarea,
@@ -24,13 +25,14 @@ import { useQuery } from '@tanstack/react-query';
 import { getIpfsJson } from '../../utils/ipfs/get';
 import { ReviewPage } from '../../layout/ReviewPage';
 import { useDisclosure } from '@mantine/hooks';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useTx } from '../../hooks/useTx';
 import { isAddress } from 'viem';
 import { useAccount } from 'wagmi';
 import { pinJSONToIPFS } from '../../utils/ipfs/pin';
 import GrantShipAbi from '../../abi/GrantShip.json';
 import { notifications } from '@mantine/notifications';
+import { AppAlert } from '../UnderContruction';
 
 export const GrantCard = ({
   grant,
@@ -165,7 +167,7 @@ export const GrantCard = ({
                       isShipOperator={isShipOperator}
                     />
                   ),
-                  onPending: <MilestonesReview grant={grant} />,
+                  onPending: <MilestonesReview grant={grant} view={view} />,
                   onRejected: <Text fz="sm">Milestones Rejected</Text>,
                   onCompleted: <Text fz="sm">Milestones Approved</Text>,
                 }
@@ -233,13 +235,85 @@ const unpackMilestones = async (milestones: PackedMilestoneData[]) => {
   return unpackedMilestones;
 };
 
-export const MilestonesReview = ({ grant }: { grant: DashGrant }) => {
+export const MilestonesReview = ({
+  grant,
+  view,
+}: {
+  grant: DashGrant;
+  view: 'project-page' | 'ship-dash';
+}) => {
   const [opened, { open, close }] = useDisclosure(false);
-  const { address } = useAccount();
-  const [reasonText, setReasonText] = useState('');
+  const { userData } = useUserData();
 
-  const { tx } = useTx();
+  const isShipOperator =
+    userData?.isShipOperator && userData.shipAddress === grant.shipId.id;
 
+  const handleClose = () => {
+    close();
+  };
+  return (
+    <>
+      <Group justify="space-between" align="start">
+        {view === 'ship-dash' && isShipOperator ? (
+          <>
+            <Text fz="sm">Review Milestones</Text>
+            <Button
+              size="xs"
+              style={{
+                transform: 'translateY(-2px)',
+              }}
+              onClick={open}
+            >
+              Review
+            </Button>{' '}
+          </>
+        ) : (
+          <>
+            <Text fz="sm">Reviewing Milestones</Text>
+            <Button
+              size="xs"
+              style={{
+                transform: 'translateY(-2px)',
+              }}
+              onClick={open}
+              variant="subtle"
+            >
+              View
+            </Button>{' '}
+          </>
+        )}
+      </Group>
+      <Modal
+        opened={opened}
+        onClose={close}
+        fullScreen
+        transitionProps={{ transition: 'fade', duration: 200 }}
+      >
+        <MilestoneReviewPage
+          view={view}
+          grant={grant}
+          opened={opened}
+          isShipOperator={isShipOperator}
+          handleClose={handleClose}
+        />
+      </Modal>
+    </>
+  );
+};
+
+const MilestoneReviewPage = ({
+  grant,
+  opened,
+  isShipOperator,
+  handleClose,
+  view,
+}: {
+  view: 'project-page' | 'ship-dash';
+  grant: DashGrant;
+  opened: boolean;
+  isShipOperator?: boolean;
+  handleClose: () => void;
+}) => {
   const {
     data: milestones,
     isLoading,
@@ -250,54 +324,96 @@ export const MilestonesReview = ({ grant }: { grant: DashGrant }) => {
     enabled: !!grant.milestones && opened,
   });
 
+  const { address } = useAccount();
+  const { tx } = useTx();
+
+  const [reasonText, setReasonText] = useState('');
+  const [isPinning, setIsPinning] = useState(false);
+
   const reviewMilestones = async (isApproved: boolean) => {
-    if (!isAddress(grant.shipId.shipContractAddress)) {
-      console.error('Invalid Ship Address');
-      return;
-    }
+    try {
+      setIsPinning(true);
+      if (!isAddress(grant.shipId.shipContractAddress)) {
+        console.error('Invalid Ship Address');
+        return;
+      }
 
-    const pinRes = await pinJSONToIPFS({
-      reason: reasonText,
-      reviewer: address as string,
-    });
+      const pinRes = await pinJSONToIPFS({
+        reason: reasonText,
+        reviewer: address as string,
+      });
 
-    if (typeof pinRes.IpfsHash !== 'string' && pinRes.IpfsHash[0] !== 'Q') {
+      if (typeof pinRes.IpfsHash !== 'string' && pinRes.IpfsHash[0] !== 'Q') {
+        notifications.show({
+          title: 'IPFS Upload Error',
+          message: pinRes.IpfsHash[1],
+          color: 'red',
+        });
+        return;
+      }
+      setIsPinning(true);
+      handleClose();
+      // reviewSetMilestones(address _recipientId, Status _status, Metadata calldata _reason)
+      tx({
+        writeContractParams: {
+          abi: GrantShipAbi,
+          address: grant.shipId.shipContractAddress,
+          functionName: 'reviewSetMilestones',
+          args: [
+            grant.projectId.id,
+            isApproved ? AlloStatus.Accepted : AlloStatus.Rejected,
+            [1n, pinRes.IpfsHash],
+          ],
+        },
+      });
+    } catch (error) {
+      console.error(error);
       notifications.show({
-        title: 'IPFS Upload Error',
-        message: pinRes.IpfsHash[1],
+        title: 'Error',
+        message: 'Error submitting application',
         color: 'red',
       });
-      return;
     }
-
-    // reviewSetMilestones(address _recipientId, Status _status, Metadata calldata _reason)
-    tx({
-      writeContractParams: {
-        abi: GrantShipAbi,
-        address: grant.shipId.shipContractAddress,
-        functionName: 'reviewSetMilestones',
-        args: [
-          grant.projectId.id,
-          isApproved ? AlloStatus.Accepted : AlloStatus.Rejected,
-          [1n, pinRes.IpfsHash],
-        ],
-      },
-    });
   };
 
-  const pageUI = useMemo(() => {
-    if (isLoading) {
-      return <Text>Loading...</Text>;
-    }
+  if (isLoading) {
+    return (
+      <Stack>
+        <Skeleton height={200} w="100%" />
+        <Skeleton height={200} w="100%" />
+        <Skeleton height={200} w="100%" />
+        <Skeleton height={200} w="100%" />
+      </Stack>
+    );
+  }
 
-    if (error) {
-      return <Text>Error</Text>;
-    }
+  if (error) {
+    return (
+      <AppAlert
+        title="Error"
+        description={
+          error?.message || 'An error occurred while fetching milestones'
+        }
+      />
+    );
+  }
 
-    if (!milestones) {
-      return <Text>No milestones</Text>;
-    }
+  if (!milestones) {
+    return (
+      <AppAlert
+        title="Error"
+        description={
+          "No milestones found. This is likely an error with the grant's data. Please contact support."
+        }
+      />
+    );
+  }
 
+  if (
+    view === 'ship-dash' &&
+    isShipOperator &&
+    grant.grantStatus === GrantStatus.MilestonesProposed
+  ) {
     return (
       <ReviewPage
         title="Grant Milestones"
@@ -338,11 +454,16 @@ export const MilestonesReview = ({ grant }: { grant: DashGrant }) => {
               <Button
                 size="sm"
                 variant="light"
+                loading={isPinning}
                 onClick={() => reviewMilestones(false)}
               >
                 Reject
               </Button>
-              <Button size="sm" onClick={() => reviewMilestones(true)}>
+              <Button
+                size="sm"
+                onClick={() => reviewMilestones(true)}
+                loading={isPinning}
+              >
                 Approve
               </Button>
             </Flex>
@@ -350,30 +471,26 @@ export const MilestonesReview = ({ grant }: { grant: DashGrant }) => {
         }
       />
     );
-  }, [milestones, isLoading, error, reasonText, close]);
-
+  }
   return (
-    <>
-      <Group justify="space-between" align="start">
-        <Text fz="sm">Awaiting Milestones</Text>
-        <Button
-          size="xs"
-          style={{
-            transform: 'translateY(-2px)',
-          }}
-          onClick={open}
-        >
-          Review
-        </Button>
-      </Group>
-      <Modal
-        opened={opened}
-        onClose={close}
-        fullScreen
-        transitionProps={{ transition: 'fade', duration: 200 }}
-      >
-        {pageUI}
-      </Modal>
-    </>
+    <ReviewPage
+      title="Grant Milestones"
+      sections={[
+        'DIVIDER',
+        ...milestones.map((milestone, index) => {
+          return {
+            subtitle: `Milestone ${index + 1}`,
+            content: (
+              <Stack gap="xs">
+                <Text>{milestone.milestoneDetails}</Text>
+                {milestone.date && (
+                  <Text>{secondsToLongDate(milestone.date)}</Text>
+                )}
+              </Stack>
+            ),
+          };
+        }),
+      ]}
+    />
   );
 };

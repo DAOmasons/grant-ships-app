@@ -20,6 +20,10 @@ fragment GrantDash on Grant {
       pointer
     }
   }
+  milestonesApproved
+  milestonesApprovedReason {
+    pointer
+  }
   facilitatorReason {
     pointer
   }

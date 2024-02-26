@@ -20,7 +20,11 @@ const data = [
   { link: '/', label: 'Home', icon: IconHome },
   { link: '/ships', label: 'Ships', icon: IconRocket },
   { link: '/projects', label: 'Projects', icon: IconAward },
-  { link: '/game-rules', label: 'Game Rules', icon: IconPacman },
+  {
+    href: 'https://rules.grantships.fun',
+    label: 'Game Rules',
+    icon: IconPacman,
+  },
   { link: '/apply', label: 'Apply', icon: IconFileDescription },
 ];
 
@@ -31,17 +35,32 @@ export function DesktopNav() {
   const theme = useMantineTheme();
 
   const links = data.map((item) => {
-    return (
-      <Link
-        className={classes.link}
-        data-active={location.pathname === item.link ? item.link : undefined}
-        to={item.link}
-        key={item.label}
-      >
-        <item.icon className={classes.linkIcon} stroke={1.5} />
-        <span>{item.label}</span>
-      </Link>
-    );
+    if (item.href)
+      return (
+        <a
+          className={classes.link}
+          href={item.href}
+          target="_blank"
+          rel="noreferrer"
+          key={item.label}
+        >
+          <item.icon className={classes.linkIcon} stroke={1.5} />
+          <span>{item.label}</span>
+        </a>
+      );
+
+    if (item.link)
+      return (
+        <Link
+          className={classes.link}
+          data-active={location.pathname === item.link ? item.link : undefined}
+          to={item.link}
+          key={item.label}
+        >
+          <item.icon className={classes.linkIcon} stroke={1.5} />
+          <span>{item.label}</span>
+        </Link>
+      );
   });
 
   const dashboardLink = useMemo(() => {
