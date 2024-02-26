@@ -1,69 +1,23 @@
-import {
-  Address,
-  createPublicClient,
-  createWalletClient,
-  custom,
-  encodeAbiParameters,
-  http,
-} from 'viem';
+import { createWalletClient, custom, encodeAbiParameters } from 'viem';
 import { arbitrumSepolia } from 'viem/chains';
 import { ADDR } from '../constants/addresses';
 import RegistryAbi from '../abi/Registry.json';
 import AlloAbi from '../abi/Allo.json';
 
 import { generateRandomUint256 } from '../utils/helpers';
-import {
-  GAME_MANAGER,
-  GAME_MANAGER_TESTNET,
-  GAME_TOKEN,
-  HATS,
-} from '../constants/gameSetup';
+import { GAME_MANAGER, GAME_TOKEN, HATS } from '../constants/gameSetup';
+import { publicClient } from '../utils/config';
 
 const client = createWalletClient({
   chain: arbitrumSepolia,
   transport: custom(window.ethereum),
 });
 
-export const publicClient = createPublicClient({
-  chain: arbitrumSepolia,
-  transport: http(import.meta.env.VITE_RPC_URL_TESTNET),
-});
-
-export const createPoolProfile = async () => {
-  const [account] = await client.getAddresses();
-
-  const unwatchProfileCreate = publicClient.watchContractEvent({
-    address: ADDR.REGISTRY,
-    abi: RegistryAbi,
-    eventName: 'ProfileCreated',
-    onLogs: (logs: any) => {
-      console.log('Profile Created => Event Logs: ', logs);
-
-      console.log('Profile ID:', logs[0]?.args?.profileId);
-      unwatchProfileCreate?.();
-    },
-  });
-
-  await client.writeContract({
-    account,
-    address: ADDR.REGISTRY,
-    abi: RegistryAbi,
-    functionName: 'createProfile',
-    args: [
-      generateRandomUint256(),
-      'GameManagerProfile',
-      { protocol: 1, pointer: '0' },
-      account,
-      [],
-    ],
-  });
-};
-
 export const createGameManagerPoolProfile = async () => {
   const [account] = await client.getAddresses();
 
   const unwatchProfileCreate = publicClient.watchContractEvent({
-    address: ADDR.GAME_MANAGER,
+    address: ADDR.REGISTRY,
     abi: RegistryAbi,
     eventName: 'ProfileCreated',
     onLogs: (logs: any) => {
@@ -81,7 +35,7 @@ export const createGameManagerPoolProfile = async () => {
     functionName: 'createProfile',
     args: [
       generateRandomUint256(),
-      'GameManagerPool',
+      'GameManagerPoolProfile',
       { protocol: 1, pointer: '0' },
       account,
       [],

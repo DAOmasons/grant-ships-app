@@ -14,7 +14,7 @@ import classes from './timeline.module.css';
 export type TimelineProps = {
   steps: TimelineContent[];
   subKey: string;
-  currentNumber: number;
+  currentNumber: number | null;
   containerProps?: ComponentProps<typeof Flex>;
 };
 
@@ -46,7 +46,7 @@ export const Timeline = ({
           key={`${subKey}-${index}`}
           {...step}
           stepNumber={index}
-          currentNumber={currentNumber}
+          currentNumber={currentNumber || 0}
           last={index === steps.length - 1}
         />
       ))}

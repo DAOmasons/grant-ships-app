@@ -1,5 +1,10 @@
-import { GameManager, getBuiltGraphSDK } from '../.graphclient';
+import {
+  GameManager as ClientGameManger,
+  getBuiltGraphSDK,
+} from '../.graphclient';
 import { GAME_MANAGER } from '../constants/gameSetup';
+
+export type GameManager = ClientGameManger;
 
 export const getGameManger = async (): Promise<GameManager> => {
   try {
@@ -7,7 +12,7 @@ export const getGameManger = async (): Promise<GameManager> => {
 
     const gameManager = await getGameManager({ id: GAME_MANAGER.ADDRESS });
 
-    return gameManager.gameManager as GameManager;
+    return { ...gameManager.gameManager } as GameManager;
   } catch (error) {
     console.error('Error getting game manager:', error);
     throw error;

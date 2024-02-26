@@ -31,23 +31,26 @@ export const getShipPageData = async (id: string): Promise<ShipPageUI> => {
       throw new Error('Invalid metadata');
     }
 
-    const decodedApplicationData = decodeAbiParameters(
-      parseAbiParameters('address, string, (uint256, string)'),
-      grantShip.shipApplicationBytesData
-    );
+    let applyData;
 
-    const CID = decodedApplicationData[2][1];
-    const applicationData = await getIpfsJson(CID);
+    if (grantShip.shipApplicationBytesData) {
+      const decodedApplicationData = decodeAbiParameters(
+        parseAbiParameters('address, string, (uint256, string)'),
+        grantShip.shipApplicationBytesData
+      );
+      const CID = decodedApplicationData[2][1];
+      const applicationData = await getIpfsJson(CID);
+      const validatedApplicationData =
+        ShipApplicationMetadata.safeParse(applicationData);
 
-    const validatedApplicationData =
-      ShipApplicationMetadata.safeParse(applicationData);
+      if (!validatedApplicationData.success) {
+        console.error('Invalid metadata', validatedApplicationData.error);
+        throw new Error('Invalid metadata');
+      }
 
-    if (!validatedApplicationData.success) {
-      console.error('Invalid metadata', validatedApplicationData.error);
-      throw new Error('Invalid metadata');
+      applyData = validatedApplicationData.data;
     }
 
-    const applyData = validatedApplicationData.data;
     const profileData = validated.data;
 
     const members = [
@@ -68,10 +71,11 @@ export const getShipPageData = async (id: string): Promise<ShipPageUI> => {
       shipContractAddress: grantShip.shipContractAddress,
       members,
       details: {
-        thesis: applyData.thesis,
-        apply: applyData.guidelines,
-        extraInfo: applyData.extraInfo,
-        extraLink: applyData.extraLink,
+        thesis: applyData?.thesis,
+        apply: applyData?.guidelines,
+        fee: applyData?.fee,
+        extraInfo: applyData?.extraInfo,
+        extraLink: applyData?.extraLink,
         website: profileData.website,
         email: profileData.email,
         x: profileData.x,

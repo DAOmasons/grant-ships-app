@@ -31,3 +31,16 @@ export const ShipApplicationMetadata = z.object({
   extraLink: z.string(),
   extraInfo: z.string(),
 });
+
+export const grantApplicationMetadata = z.object({
+  projectId: z.string(),
+  dueDate: z.string(),
+  objectives: z.string(),
+  proposalLink: z.string(),
+  extraLink: z.string(),
+  extraInfo: z.string(),
+});
+
+export const reasonSchema = z.object({
+  reason: z.string(),
+});

@@ -1,20 +1,10 @@
 import { Box, Text } from '@mantine/core';
 
 import { Contact } from '../Contact';
+import { ShipPageUI } from '../../types/ui';
 
 type DetailsPanelProps = {
-  details: {
-    thesis: string;
-    apply: string;
-    extraInfo: string;
-    extraLink: string;
-    website: string;
-    email: string;
-    x: string;
-    discord: string;
-    telegram: string;
-    github: string;
-  };
+  details: ShipPageUI['details'];
   members: string[];
 };
 
@@ -22,6 +12,7 @@ export const DetailsPanel = ({
   details: {
     thesis,
     apply,
+    fee,
     extraInfo,
     extraLink,
     website,
@@ -35,27 +26,52 @@ export const DetailsPanel = ({
 }: DetailsPanelProps) => {
   return (
     <Box>
-      <Text fw={700} mb={'md'} fz="lg">
-        Funding Vision
-      </Text>
-      <Text size="sm" fw={600} mb="xs">
-        Impact Thesis
-      </Text>
-      <Text size="sm" mb="xl">
-        {thesis}
-      </Text>
-      <Text size="sm" fw={600} mb="xs">
-        How to Apply
-      </Text>
-      <Text size="sm" mb="xl">
-        {apply}
-      </Text>
-      <Text size="sm" fw={600} mb="xs">
-        Additional Information
-      </Text>
-      <Text size="sm" mb="xl">
-        {extraInfo}
-      </Text>
+      {(!thesis && !apply && !fee) || (
+        <Text fw={700} mb={'md'} fz="lg">
+          Funding Vision
+        </Text>
+      )}
+
+      {thesis && (
+        <>
+          <Text size="sm" fw={600} mb="xs">
+            Impact Thesis
+          </Text>
+          <Text size="sm" mb="xl">
+            {thesis}
+          </Text>
+        </>
+      )}
+      {apply && (
+        <>
+          <Text size="sm" fw={600} mb="xs">
+            How to Apply
+          </Text>
+          <Text size="sm" mb="xl">
+            {apply}
+          </Text>
+        </>
+      )}
+      {fee && (
+        <>
+          <Text size="sm" fw={600} mb="xs">
+            Management Fee
+          </Text>
+          <Text size="sm" mb="xl">
+            {fee}%
+          </Text>
+        </>
+      )}
+      {extraInfo && (
+        <>
+          <Text size="sm" fw={600} mb="xs">
+            Additional Information
+          </Text>
+          <Text size="sm" mb="xl">
+            {extraInfo}
+          </Text>
+        </>
+      )}
       {extraLink && (
         <>
           <Text size="sm" fw={600} mb="xs">

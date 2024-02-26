@@ -19,6 +19,7 @@ import {
   IconChevronCompactDown,
   IconChevronCompactUp,
   IconRocket,
+  IconShieldHalf,
 } from '@tabler/icons-react';
 import classes from './FeedStyles.module.css';
 import { secondsToShortRelativeTime } from '../../utils/time';
@@ -125,7 +126,7 @@ export const FeedCard = ({
       return <IconRocket size={16} color={theme.colors.violet[5]} />;
     }
     if (subject.entityType === 'facilitators') {
-      return <IconAward size={16} color={theme.colors.pink[5]} />;
+      return <IconShieldHalf size={16} color={theme.colors.pink[5]} />;
     }
   }, [subject.entityType, theme]);
 

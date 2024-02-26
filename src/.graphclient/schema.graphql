@@ -12,6 +12,11 @@ directive @subgraphId(id: String!) on OBJECT
 "creates a virtual field on the entity that may be queried but cannot be set manually through the mappings API."
 directive @derivedFrom(field: String!) on FIELD_DEFINITION
 
+enum Aggregation_interval {
+  hour
+  day
+}
+
 scalar BigDecimal
 
 scalar BigInt
@@ -429,6 +434,7 @@ enum FeedItem_orderBy {
 
 type GameManager {
   id: Bytes!
+  poolId: BigInt!
   gameFacilitatorId: BigInt!
   rootAccount: Bytes!
   tokenAddress: Bytes!
@@ -448,6 +454,14 @@ input GameManager_filter {
   id_not_in: [Bytes!]
   id_contains: Bytes
   id_not_contains: Bytes
+  poolId: BigInt
+  poolId_not: BigInt
+  poolId_gt: BigInt
+  poolId_lt: BigInt
+  poolId_gte: BigInt
+  poolId_lte: BigInt
+  poolId_in: [BigInt!]
+  poolId_not_in: [BigInt!]
   gameFacilitatorId: BigInt
   gameFacilitatorId_not: BigInt
   gameFacilitatorId_gt: BigInt
@@ -521,6 +535,7 @@ input GameManager_filter {
 
 enum GameManager_orderBy {
   id
+  poolId
   gameFacilitatorId
   rootAccount
   tokenAddress
@@ -531,7 +546,11 @@ enum GameManager_orderBy {
   currentRound__endTime
   currentRound__totalRoundAmount
   currentRound__totalAllocatedAmount
+  currentRound__totalDistributedAmount
   currentRound__gameStatus
+  currentRound__isGameActive
+  currentRound__realStartTime
+  currentRound__realEndTime
   poolFunds
 }
 
@@ -541,8 +560,12 @@ type GameRound {
   endTime: BigInt!
   totalRoundAmount: BigInt!
   totalAllocatedAmount: BigInt!
+  totalDistributedAmount: BigInt!
   gameStatus: Int!
   ships(skip: Int = 0, first: Int = 100, orderBy: GrantShip_orderBy, orderDirection: OrderDirection, where: GrantShip_filter): [GrantShip!]!
+  isGameActive: Boolean!
+  realStartTime: BigInt
+  realEndTime: BigInt
 }
 
 input GameRound_filter {
@@ -586,6 +609,14 @@ input GameRound_filter {
   totalAllocatedAmount_lte: BigInt
   totalAllocatedAmount_in: [BigInt!]
   totalAllocatedAmount_not_in: [BigInt!]
+  totalDistributedAmount: BigInt
+  totalDistributedAmount_not: BigInt
+  totalDistributedAmount_gt: BigInt
+  totalDistributedAmount_lt: BigInt
+  totalDistributedAmount_gte: BigInt
+  totalDistributedAmount_lte: BigInt
+  totalDistributedAmount_in: [BigInt!]
+  totalDistributedAmount_not_in: [BigInt!]
   gameStatus: Int
   gameStatus_not: Int
   gameStatus_gt: Int
@@ -601,6 +632,26 @@ input GameRound_filter {
   ships_not_contains: [String!]
   ships_not_contains_nocase: [String!]
   ships_: GrantShip_filter
+  isGameActive: Boolean
+  isGameActive_not: Boolean
+  isGameActive_in: [Boolean!]
+  isGameActive_not_in: [Boolean!]
+  realStartTime: BigInt
+  realStartTime_not: BigInt
+  realStartTime_gt: BigInt
+  realStartTime_lt: BigInt
+  realStartTime_gte: BigInt
+  realStartTime_lte: BigInt
+  realStartTime_in: [BigInt!]
+  realStartTime_not_in: [BigInt!]
+  realEndTime: BigInt
+  realEndTime_not: BigInt
+  realEndTime_gt: BigInt
+  realEndTime_lt: BigInt
+  realEndTime_gte: BigInt
+  realEndTime_lte: BigInt
+  realEndTime_in: [BigInt!]
+  realEndTime_not_in: [BigInt!]
   """Filter for the block changed event."""
   _change_block: BlockChangedFilter
   and: [GameRound_filter]
@@ -613,8 +664,32 @@ enum GameRound_orderBy {
   endTime
   totalRoundAmount
   totalAllocatedAmount
+  totalDistributedAmount
   gameStatus
   ships
+  isGameActive
+  realStartTime
+  realEndTime
+}
+
+type Grant {
+  id: ID!
+  projectId: Project!
+  shipId: GrantShip!
+  lastUpdated: BigInt!
+  grantStatus: Int!
+  grantApplicationBytes: Bytes!
+  milestoneReviewStatus: Int!
+  upcomingMilestone: BigInt
+  milestonesAmount: BigInt
+  milestones(skip: Int = 0, first: Int = 100, orderBy: Milestone_orderBy, orderDirection: OrderDirection, where: Milestone_filter): [Milestone!]
+  shipApprovalReason: RawMetadata
+  hasShipApproved: Boolean
+  amtAllocated: BigInt
+  amtDistributed: BigInt
+  allocatedBy: Bytes
+  facilitatorReason: RawMetadata
+  hasFacilitatorApproved: Boolean
 }
 
 type GrantShip {
@@ -629,6 +704,9 @@ type GrantShip {
   blockTimestamp: BigInt!
   transactionHash: Bytes!
   status: Int!
+  poolFunded: Boolean!
+  balance: BigInt!
+  grants(skip: Int = 0, first: Int = 100, orderBy: Grant_orderBy, orderDirection: OrderDirection, where: Grant_filter): [Grant!]!
   alloProfileMembers: ProfileMemberGroup
   shipApplicationBytesData: Bytes
   applicationSubmittedTime: BigInt
@@ -640,49 +718,14 @@ type GrantShip {
   rejectedTime: BigInt
   applicationReviewReason: RawMetadata
   poolId: BigInt
+  hatId: BigInt
   shipContractAddress: Bytes
   shipLaunched: Boolean
+  poolActive: Boolean
   isAllocated: Boolean
   allocatedAmount: BigInt
   isDistributed: Boolean
   distributedAmount: BigInt
-}
-
-type GrantShipLookup {
-  id: Bytes!
-  anchorAddress: Bytes!
-}
-
-input GrantShipLookup_filter {
-  id: Bytes
-  id_not: Bytes
-  id_gt: Bytes
-  id_lt: Bytes
-  id_gte: Bytes
-  id_lte: Bytes
-  id_in: [Bytes!]
-  id_not_in: [Bytes!]
-  id_contains: Bytes
-  id_not_contains: Bytes
-  anchorAddress: Bytes
-  anchorAddress_not: Bytes
-  anchorAddress_gt: Bytes
-  anchorAddress_lt: Bytes
-  anchorAddress_gte: Bytes
-  anchorAddress_lte: Bytes
-  anchorAddress_in: [Bytes!]
-  anchorAddress_not_in: [Bytes!]
-  anchorAddress_contains: Bytes
-  anchorAddress_not_contains: Bytes
-  """Filter for the block changed event."""
-  _change_block: BlockChangedFilter
-  and: [GrantShipLookup_filter]
-  or: [GrantShipLookup_filter]
-}
-
-enum GrantShipLookup_orderBy {
-  id
-  anchorAddress
 }
 
 input GrantShip_filter {
@@ -809,6 +852,19 @@ input GrantShip_filter {
   status_lte: Int
   status_in: [Int!]
   status_not_in: [Int!]
+  poolFunded: Boolean
+  poolFunded_not: Boolean
+  poolFunded_in: [Boolean!]
+  poolFunded_not_in: [Boolean!]
+  balance: BigInt
+  balance_not: BigInt
+  balance_gt: BigInt
+  balance_lt: BigInt
+  balance_gte: BigInt
+  balance_lte: BigInt
+  balance_in: [BigInt!]
+  balance_not_in: [BigInt!]
+  grants_: Grant_filter
   alloProfileMembers: String
   alloProfileMembers_not: String
   alloProfileMembers_gt: String
@@ -909,6 +965,14 @@ input GrantShip_filter {
   poolId_lte: BigInt
   poolId_in: [BigInt!]
   poolId_not_in: [BigInt!]
+  hatId: BigInt
+  hatId_not: BigInt
+  hatId_gt: BigInt
+  hatId_lt: BigInt
+  hatId_gte: BigInt
+  hatId_lte: BigInt
+  hatId_in: [BigInt!]
+  hatId_not_in: [BigInt!]
   shipContractAddress: Bytes
   shipContractAddress_not: Bytes
   shipContractAddress_gt: Bytes
@@ -923,6 +987,10 @@ input GrantShip_filter {
   shipLaunched_not: Boolean
   shipLaunched_in: [Boolean!]
   shipLaunched_not_in: [Boolean!]
+  poolActive: Boolean
+  poolActive_not: Boolean
+  poolActive_in: [Boolean!]
+  poolActive_not_in: [Boolean!]
   isAllocated: Boolean
   isAllocated_not: Boolean
   isAllocated_in: [Boolean!]
@@ -968,6 +1036,9 @@ enum GrantShip_orderBy {
   blockTimestamp
   transactionHash
   status
+  poolFunded
+  balance
+  grants
   alloProfileMembers
   alloProfileMembers__id
   shipApplicationBytesData
@@ -983,12 +1054,269 @@ enum GrantShip_orderBy {
   applicationReviewReason__protocol
   applicationReviewReason__pointer
   poolId
+  hatId
   shipContractAddress
   shipLaunched
+  poolActive
   isAllocated
   allocatedAmount
   isDistributed
   distributedAmount
+}
+
+input Grant_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  projectId: String
+  projectId_not: String
+  projectId_gt: String
+  projectId_lt: String
+  projectId_gte: String
+  projectId_lte: String
+  projectId_in: [String!]
+  projectId_not_in: [String!]
+  projectId_contains: String
+  projectId_contains_nocase: String
+  projectId_not_contains: String
+  projectId_not_contains_nocase: String
+  projectId_starts_with: String
+  projectId_starts_with_nocase: String
+  projectId_not_starts_with: String
+  projectId_not_starts_with_nocase: String
+  projectId_ends_with: String
+  projectId_ends_with_nocase: String
+  projectId_not_ends_with: String
+  projectId_not_ends_with_nocase: String
+  projectId_: Project_filter
+  shipId: String
+  shipId_not: String
+  shipId_gt: String
+  shipId_lt: String
+  shipId_gte: String
+  shipId_lte: String
+  shipId_in: [String!]
+  shipId_not_in: [String!]
+  shipId_contains: String
+  shipId_contains_nocase: String
+  shipId_not_contains: String
+  shipId_not_contains_nocase: String
+  shipId_starts_with: String
+  shipId_starts_with_nocase: String
+  shipId_not_starts_with: String
+  shipId_not_starts_with_nocase: String
+  shipId_ends_with: String
+  shipId_ends_with_nocase: String
+  shipId_not_ends_with: String
+  shipId_not_ends_with_nocase: String
+  shipId_: GrantShip_filter
+  lastUpdated: BigInt
+  lastUpdated_not: BigInt
+  lastUpdated_gt: BigInt
+  lastUpdated_lt: BigInt
+  lastUpdated_gte: BigInt
+  lastUpdated_lte: BigInt
+  lastUpdated_in: [BigInt!]
+  lastUpdated_not_in: [BigInt!]
+  grantStatus: Int
+  grantStatus_not: Int
+  grantStatus_gt: Int
+  grantStatus_lt: Int
+  grantStatus_gte: Int
+  grantStatus_lte: Int
+  grantStatus_in: [Int!]
+  grantStatus_not_in: [Int!]
+  grantApplicationBytes: Bytes
+  grantApplicationBytes_not: Bytes
+  grantApplicationBytes_gt: Bytes
+  grantApplicationBytes_lt: Bytes
+  grantApplicationBytes_gte: Bytes
+  grantApplicationBytes_lte: Bytes
+  grantApplicationBytes_in: [Bytes!]
+  grantApplicationBytes_not_in: [Bytes!]
+  grantApplicationBytes_contains: Bytes
+  grantApplicationBytes_not_contains: Bytes
+  milestoneReviewStatus: Int
+  milestoneReviewStatus_not: Int
+  milestoneReviewStatus_gt: Int
+  milestoneReviewStatus_lt: Int
+  milestoneReviewStatus_gte: Int
+  milestoneReviewStatus_lte: Int
+  milestoneReviewStatus_in: [Int!]
+  milestoneReviewStatus_not_in: [Int!]
+  upcomingMilestone: BigInt
+  upcomingMilestone_not: BigInt
+  upcomingMilestone_gt: BigInt
+  upcomingMilestone_lt: BigInt
+  upcomingMilestone_gte: BigInt
+  upcomingMilestone_lte: BigInt
+  upcomingMilestone_in: [BigInt!]
+  upcomingMilestone_not_in: [BigInt!]
+  milestonesAmount: BigInt
+  milestonesAmount_not: BigInt
+  milestonesAmount_gt: BigInt
+  milestonesAmount_lt: BigInt
+  milestonesAmount_gte: BigInt
+  milestonesAmount_lte: BigInt
+  milestonesAmount_in: [BigInt!]
+  milestonesAmount_not_in: [BigInt!]
+  milestones: [String!]
+  milestones_not: [String!]
+  milestones_contains: [String!]
+  milestones_contains_nocase: [String!]
+  milestones_not_contains: [String!]
+  milestones_not_contains_nocase: [String!]
+  milestones_: Milestone_filter
+  shipApprovalReason: String
+  shipApprovalReason_not: String
+  shipApprovalReason_gt: String
+  shipApprovalReason_lt: String
+  shipApprovalReason_gte: String
+  shipApprovalReason_lte: String
+  shipApprovalReason_in: [String!]
+  shipApprovalReason_not_in: [String!]
+  shipApprovalReason_contains: String
+  shipApprovalReason_contains_nocase: String
+  shipApprovalReason_not_contains: String
+  shipApprovalReason_not_contains_nocase: String
+  shipApprovalReason_starts_with: String
+  shipApprovalReason_starts_with_nocase: String
+  shipApprovalReason_not_starts_with: String
+  shipApprovalReason_not_starts_with_nocase: String
+  shipApprovalReason_ends_with: String
+  shipApprovalReason_ends_with_nocase: String
+  shipApprovalReason_not_ends_with: String
+  shipApprovalReason_not_ends_with_nocase: String
+  shipApprovalReason_: RawMetadata_filter
+  hasShipApproved: Boolean
+  hasShipApproved_not: Boolean
+  hasShipApproved_in: [Boolean!]
+  hasShipApproved_not_in: [Boolean!]
+  amtAllocated: BigInt
+  amtAllocated_not: BigInt
+  amtAllocated_gt: BigInt
+  amtAllocated_lt: BigInt
+  amtAllocated_gte: BigInt
+  amtAllocated_lte: BigInt
+  amtAllocated_in: [BigInt!]
+  amtAllocated_not_in: [BigInt!]
+  amtDistributed: BigInt
+  amtDistributed_not: BigInt
+  amtDistributed_gt: BigInt
+  amtDistributed_lt: BigInt
+  amtDistributed_gte: BigInt
+  amtDistributed_lte: BigInt
+  amtDistributed_in: [BigInt!]
+  amtDistributed_not_in: [BigInt!]
+  allocatedBy: Bytes
+  allocatedBy_not: Bytes
+  allocatedBy_gt: Bytes
+  allocatedBy_lt: Bytes
+  allocatedBy_gte: Bytes
+  allocatedBy_lte: Bytes
+  allocatedBy_in: [Bytes!]
+  allocatedBy_not_in: [Bytes!]
+  allocatedBy_contains: Bytes
+  allocatedBy_not_contains: Bytes
+  facilitatorReason: String
+  facilitatorReason_not: String
+  facilitatorReason_gt: String
+  facilitatorReason_lt: String
+  facilitatorReason_gte: String
+  facilitatorReason_lte: String
+  facilitatorReason_in: [String!]
+  facilitatorReason_not_in: [String!]
+  facilitatorReason_contains: String
+  facilitatorReason_contains_nocase: String
+  facilitatorReason_not_contains: String
+  facilitatorReason_not_contains_nocase: String
+  facilitatorReason_starts_with: String
+  facilitatorReason_starts_with_nocase: String
+  facilitatorReason_not_starts_with: String
+  facilitatorReason_not_starts_with_nocase: String
+  facilitatorReason_ends_with: String
+  facilitatorReason_ends_with_nocase: String
+  facilitatorReason_not_ends_with: String
+  facilitatorReason_not_ends_with_nocase: String
+  facilitatorReason_: RawMetadata_filter
+  hasFacilitatorApproved: Boolean
+  hasFacilitatorApproved_not: Boolean
+  hasFacilitatorApproved_in: [Boolean!]
+  hasFacilitatorApproved_not_in: [Boolean!]
+  """Filter for the block changed event."""
+  _change_block: BlockChangedFilter
+  and: [Grant_filter]
+  or: [Grant_filter]
+}
+
+enum Grant_orderBy {
+  id
+  projectId
+  projectId__id
+  projectId__profileId
+  projectId__status
+  projectId__nonce
+  projectId__name
+  projectId__owner
+  projectId__anchor
+  projectId__blockNumber
+  projectId__blockTimestamp
+  projectId__transactionHash
+  shipId
+  shipId__id
+  shipId__profileId
+  shipId__nonce
+  shipId__name
+  shipId__owner
+  shipId__anchor
+  shipId__blockNumber
+  shipId__blockTimestamp
+  shipId__transactionHash
+  shipId__status
+  shipId__poolFunded
+  shipId__balance
+  shipId__shipApplicationBytesData
+  shipId__applicationSubmittedTime
+  shipId__isAwaitingApproval
+  shipId__hasSubmittedApplication
+  shipId__isApproved
+  shipId__approvedTime
+  shipId__isRejected
+  shipId__rejectedTime
+  shipId__poolId
+  shipId__hatId
+  shipId__shipContractAddress
+  shipId__shipLaunched
+  shipId__poolActive
+  shipId__isAllocated
+  shipId__allocatedAmount
+  shipId__isDistributed
+  shipId__distributedAmount
+  lastUpdated
+  grantStatus
+  grantApplicationBytes
+  milestoneReviewStatus
+  upcomingMilestone
+  milestonesAmount
+  milestones
+  shipApprovalReason
+  shipApprovalReason__id
+  shipApprovalReason__protocol
+  shipApprovalReason__pointer
+  hasShipApproved
+  amtAllocated
+  amtDistributed
+  allocatedBy
+  facilitatorReason
+  facilitatorReason__id
+  facilitatorReason__protocol
+  facilitatorReason__pointer
+  hasFacilitatorApproved
 }
 
 """
@@ -1086,6 +1414,81 @@ enum Log_orderBy {
   type
 }
 
+type Milestone {
+  id: ID!
+  amountPercentage: Bytes!
+  mmetadata: BigInt!
+  amount: BigInt!
+  status: Int!
+  lastUpdated: BigInt!
+}
+
+input Milestone_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  amountPercentage: Bytes
+  amountPercentage_not: Bytes
+  amountPercentage_gt: Bytes
+  amountPercentage_lt: Bytes
+  amountPercentage_gte: Bytes
+  amountPercentage_lte: Bytes
+  amountPercentage_in: [Bytes!]
+  amountPercentage_not_in: [Bytes!]
+  amountPercentage_contains: Bytes
+  amountPercentage_not_contains: Bytes
+  mmetadata: BigInt
+  mmetadata_not: BigInt
+  mmetadata_gt: BigInt
+  mmetadata_lt: BigInt
+  mmetadata_gte: BigInt
+  mmetadata_lte: BigInt
+  mmetadata_in: [BigInt!]
+  mmetadata_not_in: [BigInt!]
+  amount: BigInt
+  amount_not: BigInt
+  amount_gt: BigInt
+  amount_lt: BigInt
+  amount_gte: BigInt
+  amount_lte: BigInt
+  amount_in: [BigInt!]
+  amount_not_in: [BigInt!]
+  status: Int
+  status_not: Int
+  status_gt: Int
+  status_lt: Int
+  status_gte: Int
+  status_lte: Int
+  status_in: [Int!]
+  status_not_in: [Int!]
+  lastUpdated: BigInt
+  lastUpdated_not: BigInt
+  lastUpdated_gt: BigInt
+  lastUpdated_lt: BigInt
+  lastUpdated_gte: BigInt
+  lastUpdated_lte: BigInt
+  lastUpdated_in: [BigInt!]
+  lastUpdated_not_in: [BigInt!]
+  """Filter for the block changed event."""
+  _change_block: BlockChangedFilter
+  and: [Milestone_filter]
+  or: [Milestone_filter]
+}
+
+enum Milestone_orderBy {
+  id
+  amountPercentage
+  mmetadata
+  amount
+  status
+  lastUpdated
+}
+
 """Defines the order direction, either ascending or descending"""
 enum OrderDirection {
   asc
@@ -1172,6 +1575,7 @@ type Project {
   blockNumber: BigInt!
   blockTimestamp: BigInt!
   transactionHash: Bytes!
+  grants(skip: Int = 0, first: Int = 100, orderBy: Grant_orderBy, orderDirection: OrderDirection, where: Grant_filter): [Grant!]!
   members: ProfileMemberGroup
 }
 
@@ -1299,6 +1703,7 @@ input Project_filter {
   transactionHash_not_in: [Bytes!]
   transactionHash_contains: Bytes
   transactionHash_not_contains: Bytes
+  grants_: Grant_filter
   members: String
   members_not: String
   members_gt: String
@@ -1341,6 +1746,7 @@ enum Project_orderBy {
   blockNumber
   blockTimestamp
   transactionHash
+  grants
   members
   members__id
 }
@@ -1476,32 +1882,6 @@ type Query {
     """
     subgraphError: _SubgraphErrorPolicy_! = deny
   ): [GrantShip!]!
-  grantShipLookup(
-    id: ID!
-    """
-    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-    """
-    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
-    """
-    subgraphError: _SubgraphErrorPolicy_! = deny
-  ): GrantShipLookup
-  grantShipLookups(
-    skip: Int = 0
-    first: Int = 100
-    orderBy: GrantShipLookup_orderBy
-    orderDirection: OrderDirection
-    where: GrantShipLookup_filter
-    """
-    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-    """
-    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
-    """
-    subgraphError: _SubgraphErrorPolicy_! = deny
-  ): [GrantShipLookup!]!
   poolIdLookup(
     id: ID!
     """
@@ -1580,6 +1960,58 @@ type Query {
     """
     subgraphError: _SubgraphErrorPolicy_! = deny
   ): [GameRound!]!
+  grant(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): Grant
+  grants(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Grant_orderBy
+    orderDirection: OrderDirection
+    where: Grant_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): [Grant!]!
+  milestone(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): Milestone
+  milestones(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Milestone_orderBy
+    orderDirection: OrderDirection
+    where: Milestone_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): [Milestone!]!
   profileMemberGroup(
     id: ID!
     """
@@ -1633,6 +2065,17 @@ type Query {
     subgraphError: _SubgraphErrorPolicy_! = deny
   ): [Transaction!]!
   rawMetadata(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): RawMetadata
+  rawMetadata_collection(
     skip: Int = 0
     first: Int = 100
     orderBy: RawMetadata_orderBy
@@ -1875,32 +2318,6 @@ type Subscription {
     """
     subgraphError: _SubgraphErrorPolicy_! = deny
   ): [GrantShip!]!
-  grantShipLookup(
-    id: ID!
-    """
-    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-    """
-    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
-    """
-    subgraphError: _SubgraphErrorPolicy_! = deny
-  ): GrantShipLookup
-  grantShipLookups(
-    skip: Int = 0
-    first: Int = 100
-    orderBy: GrantShipLookup_orderBy
-    orderDirection: OrderDirection
-    where: GrantShipLookup_filter
-    """
-    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
-    """
-    block: Block_height
-    """
-    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
-    """
-    subgraphError: _SubgraphErrorPolicy_! = deny
-  ): [GrantShipLookup!]!
   poolIdLookup(
     id: ID!
     """
@@ -1979,6 +2396,58 @@ type Subscription {
     """
     subgraphError: _SubgraphErrorPolicy_! = deny
   ): [GameRound!]!
+  grant(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): Grant
+  grants(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Grant_orderBy
+    orderDirection: OrderDirection
+    where: Grant_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): [Grant!]!
+  milestone(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): Milestone
+  milestones(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Milestone_orderBy
+    orderDirection: OrderDirection
+    where: Milestone_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): [Milestone!]!
   profileMemberGroup(
     id: ID!
     """
@@ -2032,6 +2501,17 @@ type Subscription {
     subgraphError: _SubgraphErrorPolicy_! = deny
   ): [Transaction!]!
   rawMetadata(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): RawMetadata
+  rawMetadata_collection(
     skip: Int = 0
     first: Int = 100
     orderBy: RawMetadata_orderBy

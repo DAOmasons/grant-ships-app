@@ -26,6 +26,7 @@ import { SCAN_URL } from '../constants/enpoints';
 import { AppAlert } from '../components/UnderContruction';
 import { SingleItemPageSkeleton } from '../components/skeletons';
 import { getEntityFeed } from '../queries/getFeed';
+import { formatEther } from 'viem';
 
 export const Ship = () => {
   const theme = useMantineTheme();
@@ -90,6 +91,8 @@ export const Ship = () => {
     .reduce((acc, amt) => acc + amt, 0n)
     .toString();
 
+  const isShipActive = ship.status === GameStatus.Active;
+
   return (
     <Flex>
       <MainSection maw={534}>
@@ -110,7 +113,11 @@ export const Ship = () => {
             addresses={ship.members}
             avatarProps={{ size: 32 }}
           />
-          <Button component={Link} to="/apply-funding/not-ready">
+          <Button
+            component={Link}
+            to={`/apply-funding/${id}`}
+            disabled={!isShipActive}
+          >
             Apply for Funding
           </Button>
         </Group>
@@ -163,7 +170,10 @@ export const Ship = () => {
             Funding Received
           </Text>
           <Text size="xl">
-            {totalFunding} {GAME_TOKEN.SYMBOL}
+            {totalFunding && BigInt(totalFunding) > 0n
+              ? formatEther(BigInt(totalFunding))
+              : 0}
+            {GAME_TOKEN.SYMBOL}
           </Text>
         </Paper>
         <Paper p="md" bg={theme.colors.dark[6]}>

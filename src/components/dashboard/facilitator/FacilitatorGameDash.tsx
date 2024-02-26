@@ -3,7 +3,7 @@ import { FacShipData } from '../../../queries/getFacDashShipData';
 import { useMemo } from 'react';
 import { Timeline, TimelineContent } from '../../Timeline';
 import { SHIP_AMOUNT } from '../../../constants/gameSetup';
-import { GameManager } from '../../../.graphclient';
+
 import { FundPoolPanel } from './FundPoolPanel';
 import { CreateGamePanel } from './CreateGamePanel';
 import { ShipApplicationPanel } from './ShipApplicationPanel';
@@ -11,6 +11,7 @@ import { DistributePanel } from './DistributePanel';
 import { AllocationPanel } from './AllocationPanel';
 import { StartGamePanel } from './StartGamePanel';
 import { StopGamePanel } from './StopGamePanel';
+import { GameManager } from '../../../queries/getGameManger';
 
 export const FacilitatorGameDash = ({
   isLoading,
@@ -79,7 +80,12 @@ export const FacilitatorGameDash = ({
         title: 'Distribute',
         description:
           gameStatusNumber > 3 ? 'Funds Distributed' : 'Not yet Distributed',
-        content: <DistributePanel />,
+        content: (
+          <DistributePanel
+            approvedShips={shipData.approvedShips}
+            gameStatusNumber={gameStatusNumber}
+          />
+        ),
       },
       {
         title: 'Start Game',
@@ -87,12 +93,12 @@ export const FacilitatorGameDash = ({
           gameStatusNumber > 3
             ? 'Game round started'
             : 'Game Round has not started',
-        content: <StartGamePanel />,
+        content: <StartGamePanel gm={gm} gameStatusNumber={gameStatusNumber} />,
       },
       {
         title: 'End Game',
         description: gameStatusNumber > 5 ? 'Game Ended' : 'Game Not Finished',
-        content: <StopGamePanel />,
+        content: <StopGamePanel gm={gm} gameStatusNumber={gameStatusNumber} />,
       },
       {
         title: 'Game Complete',
@@ -103,7 +109,7 @@ export const FacilitatorGameDash = ({
   }, [shipData, isLoading, gameStatusNumber, gm, poolBalance]);
 
   if (
-    !gameStatusNumber ||
+    // !gameStatusNumber ||
     poolBalance === undefined ||
     isLoading ||
     !gm ||
@@ -126,7 +132,7 @@ export const FacilitatorGameDash = ({
         <Timeline
           subKey="game-manager"
           steps={steps}
-          currentNumber={gameStatusNumber}
+          currentNumber={gameStatusNumber || 0}
           containerProps={{ w: '100%' }}
         />
       )}

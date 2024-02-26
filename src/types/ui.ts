@@ -63,16 +63,17 @@ export type ShipPageUI = {
   shipContractAddress: string;
   members: string[];
   details: {
-    thesis: string;
-    apply: string;
-    extraInfo: string;
-    extraLink: string;
-    website: string;
-    email: string;
-    x: string;
-    discord: string;
-    telegram: string;
-    github: string;
+    thesis?: string;
+    apply?: string;
+    fee?: string;
+    extraInfo?: string;
+    extraLink?: string;
+    website?: string;
+    email?: string;
+    x?: string;
+    discord?: string;
+    telegram?: string;
+    github?: string;
   };
 };
 

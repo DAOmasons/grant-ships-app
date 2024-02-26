@@ -1,0 +1,5 @@
+query getShipIdByHatId($hatId: BigInt!) {
+  grantShips(where: { hatId: $hatId }) {
+    id
+  }
+}

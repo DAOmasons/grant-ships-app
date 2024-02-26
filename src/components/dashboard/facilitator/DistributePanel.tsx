@@ -1,12 +1,144 @@
-import { Box, Button } from '@mantine/core';
-import { DateTimePicker } from '@mantine/dates';
+import {
+  Alert,
+  Box,
+  Button,
+  Divider,
+  Text,
+  useMantineTheme,
+} from '@mantine/core';
+import { DateTimePicker, DateValue } from '@mantine/dates';
+import { notifications } from '@mantine/notifications';
+import { useMemo, useState } from 'react';
+import { encodeAbiParameters, formatEther, parseAbiParameters } from 'viem';
+import AlloAbi from '../../../abi/Allo.json';
+import { ADDR } from '../../../constants/addresses';
+import { GAME_MANAGER, GAME_TOKEN } from '../../../constants/gameSetup';
+import { useTx } from '../../../hooks/useTx';
+import { CompressedApprovedShip } from '../../../queries/getFacDashShipData';
 
-export const DistributePanel = () => {
+export const DistributePanel = ({
+  approvedShips,
+  gameStatusNumber,
+}: {
+  gameStatusNumber: number;
+  approvedShips: CompressedApprovedShip[];
+}) => {
+  const STATUS_NUMBER = 4;
+  const isNotReady = gameStatusNumber < STATUS_NUMBER;
+
+  const [startTime, setStartTime] = useState<DateValue>(null);
+  const [endTime, setEndTime] = useState<DateValue>(null);
+  const { tx } = useTx();
+
+  const theme = useMantineTheme();
+
+  const allocatedShips = useMemo(() => {
+    return approvedShips.filter(
+      (ship) => ship.allocatedAmount && BigInt(ship.allocatedAmount) > 0
+    );
+  }, [approvedShips]);
+
+  const handleDistribute = () => {
+    if (!startTime || !endTime) {
+      notifications.show({
+        title: 'Error',
+        message: 'Please select a start and end time',
+        color: 'red',
+      });
+      return;
+    }
+
+    const startTimeSeconds = BigInt(Math.round(startTime.getTime() / 1000));
+    const endTimeSeconds = BigInt(Math.round(endTime.getTime() / 1000));
+
+    const encoded = encodeAbiParameters(
+      parseAbiParameters('uint256, uint256'),
+      [startTimeSeconds, endTimeSeconds]
+    );
+
+    const shipIds = allocatedShips.map((ship) => ship.id);
+
+    tx({
+      writeContractParams: {
+        functionName: 'distribute',
+        abi: AlloAbi,
+        address: ADDR.ALLO,
+        args: [GAME_MANAGER.POOL.ID, shipIds, encoded],
+      },
+    });
+  };
+
+  if (gameStatusNumber > STATUS_NUMBER) {
+    return (
+      <Box>
+        <Alert w={350}>
+          <Text fw={600} mb="sm">
+            Distribution Complete
+          </Text>
+          {approvedShips.map((ship) => (
+            <Text fz={'sm'} key={`distro-txt-${ship.id}`} mb="xs">
+              {ship.name}:{' '}
+              {ship.distributedAmount
+                ? formatEther(BigInt(ship.distributedAmount))
+                : 'Error'}{' '}
+              {GAME_TOKEN.SYMBOL}
+            </Text>
+          ))}
+        </Alert>
+      </Box>
+    );
+  }
+
   return (
     <Box>
-      <DateTimePicker label="Start Time" w={350} mb={'md'} />
-      <DateTimePicker label="End Time" w={350} mb="md" />
-      <Button>Distribute Allocations</Button>
+      <Text mb="sm" fw={600}>
+        Distribute Funds to Grant Ships
+      </Text>
+      <Alert mb="sm" bg={theme.colors.yellow[9]} w={350}>
+        <Text fz="sm" mb="sm" fw={600}>
+          Warning!
+        </Text>
+        <Text fz="sm">
+          Make sure that the dates are correct before submitting. This function
+          can only be called once
+        </Text>
+      </Alert>
+
+      <Text fz="sm" mb="sm" fw={600}>
+        Preview:
+      </Text>
+      {allocatedShips.map((ship) => (
+        <Text fz={'sm'} key={`allocated-ship-${ship.id}`} mb="xs">
+          {ship.name}:{' '}
+          {ship.allocatedAmount
+            ? formatEther(BigInt(ship.allocatedAmount))
+            : 'Error'}{' '}
+          {GAME_TOKEN.SYMBOL}
+        </Text>
+      ))}
+      <Divider mb="md" mt="md" />
+
+      <DateTimePicker
+        clearable
+        label="Start Time"
+        w={350}
+        mb={'md'}
+        onChange={setStartTime}
+        placeholder="Select a date and time"
+        disabled={isNotReady}
+      />
+      <DateTimePicker
+        clearable
+        label="End Time"
+        w={350}
+        mb="md"
+        onChange={setEndTime}
+        placeholder="Select a date and time"
+        disabled={isNotReady}
+      />
+      <Button onClick={handleDistribute} disabled={isNotReady}>
+        Distribute Allocations
+      </Button>
     </Box>
   );
 };

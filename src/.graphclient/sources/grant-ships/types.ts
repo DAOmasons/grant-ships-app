@@ -22,6 +22,10 @@ export type Scalars = {
   Int8: any;
 };
 
+export type Aggregation_interval =
+  | 'hour'
+  | 'day';
+
 export type BlockChangedFilter = {
   number_gte: Scalars['Int'];
 };
@@ -430,6 +434,7 @@ export type FeedItem_orderBy =
 
 export type GameManager = {
   id: Scalars['Bytes'];
+  poolId: Scalars['BigInt'];
   gameFacilitatorId: Scalars['BigInt'];
   rootAccount: Scalars['Bytes'];
   tokenAddress: Scalars['Bytes'];
@@ -449,6 +454,14 @@ export type GameManager_filter = {
   id_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   id_contains?: InputMaybe<Scalars['Bytes']>;
   id_not_contains?: InputMaybe<Scalars['Bytes']>;
+  poolId?: InputMaybe<Scalars['BigInt']>;
+  poolId_not?: InputMaybe<Scalars['BigInt']>;
+  poolId_gt?: InputMaybe<Scalars['BigInt']>;
+  poolId_lt?: InputMaybe<Scalars['BigInt']>;
+  poolId_gte?: InputMaybe<Scalars['BigInt']>;
+  poolId_lte?: InputMaybe<Scalars['BigInt']>;
+  poolId_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  poolId_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   gameFacilitatorId?: InputMaybe<Scalars['BigInt']>;
   gameFacilitatorId_not?: InputMaybe<Scalars['BigInt']>;
   gameFacilitatorId_gt?: InputMaybe<Scalars['BigInt']>;
@@ -522,6 +535,7 @@ export type GameManager_filter = {
 
 export type GameManager_orderBy =
   | 'id'
+  | 'poolId'
   | 'gameFacilitatorId'
   | 'rootAccount'
   | 'tokenAddress'
@@ -532,7 +546,11 @@ export type GameManager_orderBy =
   | 'currentRound__endTime'
   | 'currentRound__totalRoundAmount'
   | 'currentRound__totalAllocatedAmount'
+  | 'currentRound__totalDistributedAmount'
   | 'currentRound__gameStatus'
+  | 'currentRound__isGameActive'
+  | 'currentRound__realStartTime'
+  | 'currentRound__realEndTime'
   | 'poolFunds';
 
 export type GameRound = {
@@ -541,8 +559,12 @@ export type GameRound = {
   endTime: Scalars['BigInt'];
   totalRoundAmount: Scalars['BigInt'];
   totalAllocatedAmount: Scalars['BigInt'];
+  totalDistributedAmount: Scalars['BigInt'];
   gameStatus: Scalars['Int'];
   ships: Array<GrantShip>;
+  isGameActive: Scalars['Boolean'];
+  realStartTime?: Maybe<Scalars['BigInt']>;
+  realEndTime?: Maybe<Scalars['BigInt']>;
 };
 
 
@@ -595,6 +617,14 @@ export type GameRound_filter = {
   totalAllocatedAmount_lte?: InputMaybe<Scalars['BigInt']>;
   totalAllocatedAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
   totalAllocatedAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalDistributedAmount?: InputMaybe<Scalars['BigInt']>;
+  totalDistributedAmount_not?: InputMaybe<Scalars['BigInt']>;
+  totalDistributedAmount_gt?: InputMaybe<Scalars['BigInt']>;
+  totalDistributedAmount_lt?: InputMaybe<Scalars['BigInt']>;
+  totalDistributedAmount_gte?: InputMaybe<Scalars['BigInt']>;
+  totalDistributedAmount_lte?: InputMaybe<Scalars['BigInt']>;
+  totalDistributedAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalDistributedAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   gameStatus?: InputMaybe<Scalars['Int']>;
   gameStatus_not?: InputMaybe<Scalars['Int']>;
   gameStatus_gt?: InputMaybe<Scalars['Int']>;
@@ -610,6 +640,26 @@ export type GameRound_filter = {
   ships_not_contains?: InputMaybe<Array<Scalars['String']>>;
   ships_not_contains_nocase?: InputMaybe<Array<Scalars['String']>>;
   ships_?: InputMaybe<GrantShip_filter>;
+  isGameActive?: InputMaybe<Scalars['Boolean']>;
+  isGameActive_not?: InputMaybe<Scalars['Boolean']>;
+  isGameActive_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  isGameActive_not_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  realStartTime?: InputMaybe<Scalars['BigInt']>;
+  realStartTime_not?: InputMaybe<Scalars['BigInt']>;
+  realStartTime_gt?: InputMaybe<Scalars['BigInt']>;
+  realStartTime_lt?: InputMaybe<Scalars['BigInt']>;
+  realStartTime_gte?: InputMaybe<Scalars['BigInt']>;
+  realStartTime_lte?: InputMaybe<Scalars['BigInt']>;
+  realStartTime_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  realStartTime_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  realEndTime?: InputMaybe<Scalars['BigInt']>;
+  realEndTime_not?: InputMaybe<Scalars['BigInt']>;
+  realEndTime_gt?: InputMaybe<Scalars['BigInt']>;
+  realEndTime_lt?: InputMaybe<Scalars['BigInt']>;
+  realEndTime_gte?: InputMaybe<Scalars['BigInt']>;
+  realEndTime_lte?: InputMaybe<Scalars['BigInt']>;
+  realEndTime_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  realEndTime_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
   and?: InputMaybe<Array<InputMaybe<GameRound_filter>>>;
@@ -622,8 +672,41 @@ export type GameRound_orderBy =
   | 'endTime'
   | 'totalRoundAmount'
   | 'totalAllocatedAmount'
+  | 'totalDistributedAmount'
   | 'gameStatus'
-  | 'ships';
+  | 'ships'
+  | 'isGameActive'
+  | 'realStartTime'
+  | 'realEndTime';
+
+export type Grant = {
+  id: Scalars['ID'];
+  projectId: Project;
+  shipId: GrantShip;
+  lastUpdated: Scalars['BigInt'];
+  grantStatus: Scalars['Int'];
+  grantApplicationBytes: Scalars['Bytes'];
+  milestoneReviewStatus: Scalars['Int'];
+  upcomingMilestone?: Maybe<Scalars['BigInt']>;
+  milestonesAmount?: Maybe<Scalars['BigInt']>;
+  milestones?: Maybe<Array<Milestone>>;
+  shipApprovalReason?: Maybe<RawMetadata>;
+  hasShipApproved?: Maybe<Scalars['Boolean']>;
+  amtAllocated?: Maybe<Scalars['BigInt']>;
+  amtDistributed?: Maybe<Scalars['BigInt']>;
+  allocatedBy?: Maybe<Scalars['Bytes']>;
+  facilitatorReason?: Maybe<RawMetadata>;
+  hasFacilitatorApproved?: Maybe<Scalars['Boolean']>;
+};
+
+
+export type GrantmilestonesArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Milestone_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<Milestone_filter>;
+};
 
 export type GrantShip = {
   id: Scalars['Bytes'];
@@ -637,6 +720,9 @@ export type GrantShip = {
   blockTimestamp: Scalars['BigInt'];
   transactionHash: Scalars['Bytes'];
   status: Scalars['Int'];
+  poolFunded: Scalars['Boolean'];
+  balance: Scalars['BigInt'];
+  grants: Array<Grant>;
   alloProfileMembers?: Maybe<ProfileMemberGroup>;
   shipApplicationBytesData?: Maybe<Scalars['Bytes']>;
   applicationSubmittedTime?: Maybe<Scalars['BigInt']>;
@@ -648,49 +734,24 @@ export type GrantShip = {
   rejectedTime?: Maybe<Scalars['BigInt']>;
   applicationReviewReason?: Maybe<RawMetadata>;
   poolId?: Maybe<Scalars['BigInt']>;
+  hatId?: Maybe<Scalars['BigInt']>;
   shipContractAddress?: Maybe<Scalars['Bytes']>;
   shipLaunched?: Maybe<Scalars['Boolean']>;
+  poolActive?: Maybe<Scalars['Boolean']>;
   isAllocated?: Maybe<Scalars['Boolean']>;
   allocatedAmount?: Maybe<Scalars['BigInt']>;
   isDistributed?: Maybe<Scalars['Boolean']>;
   distributedAmount?: Maybe<Scalars['BigInt']>;
 };
 
-export type GrantShipLookup = {
-  id: Scalars['Bytes'];
-  anchorAddress: Scalars['Bytes'];
-};
 
-export type GrantShipLookup_filter = {
-  id?: InputMaybe<Scalars['Bytes']>;
-  id_not?: InputMaybe<Scalars['Bytes']>;
-  id_gt?: InputMaybe<Scalars['Bytes']>;
-  id_lt?: InputMaybe<Scalars['Bytes']>;
-  id_gte?: InputMaybe<Scalars['Bytes']>;
-  id_lte?: InputMaybe<Scalars['Bytes']>;
-  id_in?: InputMaybe<Array<Scalars['Bytes']>>;
-  id_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
-  id_contains?: InputMaybe<Scalars['Bytes']>;
-  id_not_contains?: InputMaybe<Scalars['Bytes']>;
-  anchorAddress?: InputMaybe<Scalars['Bytes']>;
-  anchorAddress_not?: InputMaybe<Scalars['Bytes']>;
-  anchorAddress_gt?: InputMaybe<Scalars['Bytes']>;
-  anchorAddress_lt?: InputMaybe<Scalars['Bytes']>;
-  anchorAddress_gte?: InputMaybe<Scalars['Bytes']>;
-  anchorAddress_lte?: InputMaybe<Scalars['Bytes']>;
-  anchorAddress_in?: InputMaybe<Array<Scalars['Bytes']>>;
-  anchorAddress_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
-  anchorAddress_contains?: InputMaybe<Scalars['Bytes']>;
-  anchorAddress_not_contains?: InputMaybe<Scalars['Bytes']>;
-  /** Filter for the block changed event. */
-  _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<GrantShipLookup_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<GrantShipLookup_filter>>>;
+export type GrantShipgrantsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Grant_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<Grant_filter>;
 };
-
-export type GrantShipLookup_orderBy =
-  | 'id'
-  | 'anchorAddress';
 
 export type GrantShip_filter = {
   id?: InputMaybe<Scalars['Bytes']>;
@@ -816,6 +877,19 @@ export type GrantShip_filter = {
   status_lte?: InputMaybe<Scalars['Int']>;
   status_in?: InputMaybe<Array<Scalars['Int']>>;
   status_not_in?: InputMaybe<Array<Scalars['Int']>>;
+  poolFunded?: InputMaybe<Scalars['Boolean']>;
+  poolFunded_not?: InputMaybe<Scalars['Boolean']>;
+  poolFunded_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  poolFunded_not_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  balance?: InputMaybe<Scalars['BigInt']>;
+  balance_not?: InputMaybe<Scalars['BigInt']>;
+  balance_gt?: InputMaybe<Scalars['BigInt']>;
+  balance_lt?: InputMaybe<Scalars['BigInt']>;
+  balance_gte?: InputMaybe<Scalars['BigInt']>;
+  balance_lte?: InputMaybe<Scalars['BigInt']>;
+  balance_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  balance_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  grants_?: InputMaybe<Grant_filter>;
   alloProfileMembers?: InputMaybe<Scalars['String']>;
   alloProfileMembers_not?: InputMaybe<Scalars['String']>;
   alloProfileMembers_gt?: InputMaybe<Scalars['String']>;
@@ -916,6 +990,14 @@ export type GrantShip_filter = {
   poolId_lte?: InputMaybe<Scalars['BigInt']>;
   poolId_in?: InputMaybe<Array<Scalars['BigInt']>>;
   poolId_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  hatId?: InputMaybe<Scalars['BigInt']>;
+  hatId_not?: InputMaybe<Scalars['BigInt']>;
+  hatId_gt?: InputMaybe<Scalars['BigInt']>;
+  hatId_lt?: InputMaybe<Scalars['BigInt']>;
+  hatId_gte?: InputMaybe<Scalars['BigInt']>;
+  hatId_lte?: InputMaybe<Scalars['BigInt']>;
+  hatId_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  hatId_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   shipContractAddress?: InputMaybe<Scalars['Bytes']>;
   shipContractAddress_not?: InputMaybe<Scalars['Bytes']>;
   shipContractAddress_gt?: InputMaybe<Scalars['Bytes']>;
@@ -930,6 +1012,10 @@ export type GrantShip_filter = {
   shipLaunched_not?: InputMaybe<Scalars['Boolean']>;
   shipLaunched_in?: InputMaybe<Array<Scalars['Boolean']>>;
   shipLaunched_not_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  poolActive?: InputMaybe<Scalars['Boolean']>;
+  poolActive_not?: InputMaybe<Scalars['Boolean']>;
+  poolActive_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  poolActive_not_in?: InputMaybe<Array<Scalars['Boolean']>>;
   isAllocated?: InputMaybe<Scalars['Boolean']>;
   isAllocated_not?: InputMaybe<Scalars['Boolean']>;
   isAllocated_in?: InputMaybe<Array<Scalars['Boolean']>>;
@@ -975,6 +1061,9 @@ export type GrantShip_orderBy =
   | 'blockTimestamp'
   | 'transactionHash'
   | 'status'
+  | 'poolFunded'
+  | 'balance'
+  | 'grants'
   | 'alloProfileMembers'
   | 'alloProfileMembers__id'
   | 'shipApplicationBytesData'
@@ -990,12 +1079,268 @@ export type GrantShip_orderBy =
   | 'applicationReviewReason__protocol'
   | 'applicationReviewReason__pointer'
   | 'poolId'
+  | 'hatId'
   | 'shipContractAddress'
   | 'shipLaunched'
+  | 'poolActive'
   | 'isAllocated'
   | 'allocatedAmount'
   | 'isDistributed'
   | 'distributedAmount';
+
+export type Grant_filter = {
+  id?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']>;
+  id_gt?: InputMaybe<Scalars['ID']>;
+  id_lt?: InputMaybe<Scalars['ID']>;
+  id_gte?: InputMaybe<Scalars['ID']>;
+  id_lte?: InputMaybe<Scalars['ID']>;
+  id_in?: InputMaybe<Array<Scalars['ID']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']>>;
+  projectId?: InputMaybe<Scalars['String']>;
+  projectId_not?: InputMaybe<Scalars['String']>;
+  projectId_gt?: InputMaybe<Scalars['String']>;
+  projectId_lt?: InputMaybe<Scalars['String']>;
+  projectId_gte?: InputMaybe<Scalars['String']>;
+  projectId_lte?: InputMaybe<Scalars['String']>;
+  projectId_in?: InputMaybe<Array<Scalars['String']>>;
+  projectId_not_in?: InputMaybe<Array<Scalars['String']>>;
+  projectId_contains?: InputMaybe<Scalars['String']>;
+  projectId_contains_nocase?: InputMaybe<Scalars['String']>;
+  projectId_not_contains?: InputMaybe<Scalars['String']>;
+  projectId_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  projectId_starts_with?: InputMaybe<Scalars['String']>;
+  projectId_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  projectId_not_starts_with?: InputMaybe<Scalars['String']>;
+  projectId_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  projectId_ends_with?: InputMaybe<Scalars['String']>;
+  projectId_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  projectId_not_ends_with?: InputMaybe<Scalars['String']>;
+  projectId_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  projectId_?: InputMaybe<Project_filter>;
+  shipId?: InputMaybe<Scalars['String']>;
+  shipId_not?: InputMaybe<Scalars['String']>;
+  shipId_gt?: InputMaybe<Scalars['String']>;
+  shipId_lt?: InputMaybe<Scalars['String']>;
+  shipId_gte?: InputMaybe<Scalars['String']>;
+  shipId_lte?: InputMaybe<Scalars['String']>;
+  shipId_in?: InputMaybe<Array<Scalars['String']>>;
+  shipId_not_in?: InputMaybe<Array<Scalars['String']>>;
+  shipId_contains?: InputMaybe<Scalars['String']>;
+  shipId_contains_nocase?: InputMaybe<Scalars['String']>;
+  shipId_not_contains?: InputMaybe<Scalars['String']>;
+  shipId_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  shipId_starts_with?: InputMaybe<Scalars['String']>;
+  shipId_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  shipId_not_starts_with?: InputMaybe<Scalars['String']>;
+  shipId_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  shipId_ends_with?: InputMaybe<Scalars['String']>;
+  shipId_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  shipId_not_ends_with?: InputMaybe<Scalars['String']>;
+  shipId_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  shipId_?: InputMaybe<GrantShip_filter>;
+  lastUpdated?: InputMaybe<Scalars['BigInt']>;
+  lastUpdated_not?: InputMaybe<Scalars['BigInt']>;
+  lastUpdated_gt?: InputMaybe<Scalars['BigInt']>;
+  lastUpdated_lt?: InputMaybe<Scalars['BigInt']>;
+  lastUpdated_gte?: InputMaybe<Scalars['BigInt']>;
+  lastUpdated_lte?: InputMaybe<Scalars['BigInt']>;
+  lastUpdated_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  lastUpdated_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  grantStatus?: InputMaybe<Scalars['Int']>;
+  grantStatus_not?: InputMaybe<Scalars['Int']>;
+  grantStatus_gt?: InputMaybe<Scalars['Int']>;
+  grantStatus_lt?: InputMaybe<Scalars['Int']>;
+  grantStatus_gte?: InputMaybe<Scalars['Int']>;
+  grantStatus_lte?: InputMaybe<Scalars['Int']>;
+  grantStatus_in?: InputMaybe<Array<Scalars['Int']>>;
+  grantStatus_not_in?: InputMaybe<Array<Scalars['Int']>>;
+  grantApplicationBytes?: InputMaybe<Scalars['Bytes']>;
+  grantApplicationBytes_not?: InputMaybe<Scalars['Bytes']>;
+  grantApplicationBytes_gt?: InputMaybe<Scalars['Bytes']>;
+  grantApplicationBytes_lt?: InputMaybe<Scalars['Bytes']>;
+  grantApplicationBytes_gte?: InputMaybe<Scalars['Bytes']>;
+  grantApplicationBytes_lte?: InputMaybe<Scalars['Bytes']>;
+  grantApplicationBytes_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  grantApplicationBytes_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  grantApplicationBytes_contains?: InputMaybe<Scalars['Bytes']>;
+  grantApplicationBytes_not_contains?: InputMaybe<Scalars['Bytes']>;
+  milestoneReviewStatus?: InputMaybe<Scalars['Int']>;
+  milestoneReviewStatus_not?: InputMaybe<Scalars['Int']>;
+  milestoneReviewStatus_gt?: InputMaybe<Scalars['Int']>;
+  milestoneReviewStatus_lt?: InputMaybe<Scalars['Int']>;
+  milestoneReviewStatus_gte?: InputMaybe<Scalars['Int']>;
+  milestoneReviewStatus_lte?: InputMaybe<Scalars['Int']>;
+  milestoneReviewStatus_in?: InputMaybe<Array<Scalars['Int']>>;
+  milestoneReviewStatus_not_in?: InputMaybe<Array<Scalars['Int']>>;
+  upcomingMilestone?: InputMaybe<Scalars['BigInt']>;
+  upcomingMilestone_not?: InputMaybe<Scalars['BigInt']>;
+  upcomingMilestone_gt?: InputMaybe<Scalars['BigInt']>;
+  upcomingMilestone_lt?: InputMaybe<Scalars['BigInt']>;
+  upcomingMilestone_gte?: InputMaybe<Scalars['BigInt']>;
+  upcomingMilestone_lte?: InputMaybe<Scalars['BigInt']>;
+  upcomingMilestone_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  upcomingMilestone_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  milestonesAmount?: InputMaybe<Scalars['BigInt']>;
+  milestonesAmount_not?: InputMaybe<Scalars['BigInt']>;
+  milestonesAmount_gt?: InputMaybe<Scalars['BigInt']>;
+  milestonesAmount_lt?: InputMaybe<Scalars['BigInt']>;
+  milestonesAmount_gte?: InputMaybe<Scalars['BigInt']>;
+  milestonesAmount_lte?: InputMaybe<Scalars['BigInt']>;
+  milestonesAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  milestonesAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  milestones?: InputMaybe<Array<Scalars['String']>>;
+  milestones_not?: InputMaybe<Array<Scalars['String']>>;
+  milestones_contains?: InputMaybe<Array<Scalars['String']>>;
+  milestones_contains_nocase?: InputMaybe<Array<Scalars['String']>>;
+  milestones_not_contains?: InputMaybe<Array<Scalars['String']>>;
+  milestones_not_contains_nocase?: InputMaybe<Array<Scalars['String']>>;
+  milestones_?: InputMaybe<Milestone_filter>;
+  shipApprovalReason?: InputMaybe<Scalars['String']>;
+  shipApprovalReason_not?: InputMaybe<Scalars['String']>;
+  shipApprovalReason_gt?: InputMaybe<Scalars['String']>;
+  shipApprovalReason_lt?: InputMaybe<Scalars['String']>;
+  shipApprovalReason_gte?: InputMaybe<Scalars['String']>;
+  shipApprovalReason_lte?: InputMaybe<Scalars['String']>;
+  shipApprovalReason_in?: InputMaybe<Array<Scalars['String']>>;
+  shipApprovalReason_not_in?: InputMaybe<Array<Scalars['String']>>;
+  shipApprovalReason_contains?: InputMaybe<Scalars['String']>;
+  shipApprovalReason_contains_nocase?: InputMaybe<Scalars['String']>;
+  shipApprovalReason_not_contains?: InputMaybe<Scalars['String']>;
+  shipApprovalReason_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  shipApprovalReason_starts_with?: InputMaybe<Scalars['String']>;
+  shipApprovalReason_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  shipApprovalReason_not_starts_with?: InputMaybe<Scalars['String']>;
+  shipApprovalReason_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  shipApprovalReason_ends_with?: InputMaybe<Scalars['String']>;
+  shipApprovalReason_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  shipApprovalReason_not_ends_with?: InputMaybe<Scalars['String']>;
+  shipApprovalReason_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  shipApprovalReason_?: InputMaybe<RawMetadata_filter>;
+  hasShipApproved?: InputMaybe<Scalars['Boolean']>;
+  hasShipApproved_not?: InputMaybe<Scalars['Boolean']>;
+  hasShipApproved_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  hasShipApproved_not_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  amtAllocated?: InputMaybe<Scalars['BigInt']>;
+  amtAllocated_not?: InputMaybe<Scalars['BigInt']>;
+  amtAllocated_gt?: InputMaybe<Scalars['BigInt']>;
+  amtAllocated_lt?: InputMaybe<Scalars['BigInt']>;
+  amtAllocated_gte?: InputMaybe<Scalars['BigInt']>;
+  amtAllocated_lte?: InputMaybe<Scalars['BigInt']>;
+  amtAllocated_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  amtAllocated_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  amtDistributed?: InputMaybe<Scalars['BigInt']>;
+  amtDistributed_not?: InputMaybe<Scalars['BigInt']>;
+  amtDistributed_gt?: InputMaybe<Scalars['BigInt']>;
+  amtDistributed_lt?: InputMaybe<Scalars['BigInt']>;
+  amtDistributed_gte?: InputMaybe<Scalars['BigInt']>;
+  amtDistributed_lte?: InputMaybe<Scalars['BigInt']>;
+  amtDistributed_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  amtDistributed_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  allocatedBy?: InputMaybe<Scalars['Bytes']>;
+  allocatedBy_not?: InputMaybe<Scalars['Bytes']>;
+  allocatedBy_gt?: InputMaybe<Scalars['Bytes']>;
+  allocatedBy_lt?: InputMaybe<Scalars['Bytes']>;
+  allocatedBy_gte?: InputMaybe<Scalars['Bytes']>;
+  allocatedBy_lte?: InputMaybe<Scalars['Bytes']>;
+  allocatedBy_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  allocatedBy_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  allocatedBy_contains?: InputMaybe<Scalars['Bytes']>;
+  allocatedBy_not_contains?: InputMaybe<Scalars['Bytes']>;
+  facilitatorReason?: InputMaybe<Scalars['String']>;
+  facilitatorReason_not?: InputMaybe<Scalars['String']>;
+  facilitatorReason_gt?: InputMaybe<Scalars['String']>;
+  facilitatorReason_lt?: InputMaybe<Scalars['String']>;
+  facilitatorReason_gte?: InputMaybe<Scalars['String']>;
+  facilitatorReason_lte?: InputMaybe<Scalars['String']>;
+  facilitatorReason_in?: InputMaybe<Array<Scalars['String']>>;
+  facilitatorReason_not_in?: InputMaybe<Array<Scalars['String']>>;
+  facilitatorReason_contains?: InputMaybe<Scalars['String']>;
+  facilitatorReason_contains_nocase?: InputMaybe<Scalars['String']>;
+  facilitatorReason_not_contains?: InputMaybe<Scalars['String']>;
+  facilitatorReason_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  facilitatorReason_starts_with?: InputMaybe<Scalars['String']>;
+  facilitatorReason_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  facilitatorReason_not_starts_with?: InputMaybe<Scalars['String']>;
+  facilitatorReason_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  facilitatorReason_ends_with?: InputMaybe<Scalars['String']>;
+  facilitatorReason_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  facilitatorReason_not_ends_with?: InputMaybe<Scalars['String']>;
+  facilitatorReason_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  facilitatorReason_?: InputMaybe<RawMetadata_filter>;
+  hasFacilitatorApproved?: InputMaybe<Scalars['Boolean']>;
+  hasFacilitatorApproved_not?: InputMaybe<Scalars['Boolean']>;
+  hasFacilitatorApproved_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  hasFacilitatorApproved_not_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Grant_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Grant_filter>>>;
+};
+
+export type Grant_orderBy =
+  | 'id'
+  | 'projectId'
+  | 'projectId__id'
+  | 'projectId__profileId'
+  | 'projectId__status'
+  | 'projectId__nonce'
+  | 'projectId__name'
+  | 'projectId__owner'
+  | 'projectId__anchor'
+  | 'projectId__blockNumber'
+  | 'projectId__blockTimestamp'
+  | 'projectId__transactionHash'
+  | 'shipId'
+  | 'shipId__id'
+  | 'shipId__profileId'
+  | 'shipId__nonce'
+  | 'shipId__name'
+  | 'shipId__owner'
+  | 'shipId__anchor'
+  | 'shipId__blockNumber'
+  | 'shipId__blockTimestamp'
+  | 'shipId__transactionHash'
+  | 'shipId__status'
+  | 'shipId__poolFunded'
+  | 'shipId__balance'
+  | 'shipId__shipApplicationBytesData'
+  | 'shipId__applicationSubmittedTime'
+  | 'shipId__isAwaitingApproval'
+  | 'shipId__hasSubmittedApplication'
+  | 'shipId__isApproved'
+  | 'shipId__approvedTime'
+  | 'shipId__isRejected'
+  | 'shipId__rejectedTime'
+  | 'shipId__poolId'
+  | 'shipId__hatId'
+  | 'shipId__shipContractAddress'
+  | 'shipId__shipLaunched'
+  | 'shipId__poolActive'
+  | 'shipId__isAllocated'
+  | 'shipId__allocatedAmount'
+  | 'shipId__isDistributed'
+  | 'shipId__distributedAmount'
+  | 'lastUpdated'
+  | 'grantStatus'
+  | 'grantApplicationBytes'
+  | 'milestoneReviewStatus'
+  | 'upcomingMilestone'
+  | 'milestonesAmount'
+  | 'milestones'
+  | 'shipApprovalReason'
+  | 'shipApprovalReason__id'
+  | 'shipApprovalReason__protocol'
+  | 'shipApprovalReason__pointer'
+  | 'hasShipApproved'
+  | 'amtAllocated'
+  | 'amtDistributed'
+  | 'allocatedBy'
+  | 'facilitatorReason'
+  | 'facilitatorReason__id'
+  | 'facilitatorReason__protocol'
+  | 'facilitatorReason__pointer'
+  | 'hasFacilitatorApproved';
 
 export type Log = {
   id: Scalars['ID'];
@@ -1085,6 +1430,80 @@ export type Log_orderBy =
   | 'description'
   | 'type';
 
+export type Milestone = {
+  id: Scalars['ID'];
+  amountPercentage: Scalars['Bytes'];
+  mmetadata: Scalars['BigInt'];
+  amount: Scalars['BigInt'];
+  status: Scalars['Int'];
+  lastUpdated: Scalars['BigInt'];
+};
+
+export type Milestone_filter = {
+  id?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']>;
+  id_gt?: InputMaybe<Scalars['ID']>;
+  id_lt?: InputMaybe<Scalars['ID']>;
+  id_gte?: InputMaybe<Scalars['ID']>;
+  id_lte?: InputMaybe<Scalars['ID']>;
+  id_in?: InputMaybe<Array<Scalars['ID']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']>>;
+  amountPercentage?: InputMaybe<Scalars['Bytes']>;
+  amountPercentage_not?: InputMaybe<Scalars['Bytes']>;
+  amountPercentage_gt?: InputMaybe<Scalars['Bytes']>;
+  amountPercentage_lt?: InputMaybe<Scalars['Bytes']>;
+  amountPercentage_gte?: InputMaybe<Scalars['Bytes']>;
+  amountPercentage_lte?: InputMaybe<Scalars['Bytes']>;
+  amountPercentage_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  amountPercentage_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  amountPercentage_contains?: InputMaybe<Scalars['Bytes']>;
+  amountPercentage_not_contains?: InputMaybe<Scalars['Bytes']>;
+  mmetadata?: InputMaybe<Scalars['BigInt']>;
+  mmetadata_not?: InputMaybe<Scalars['BigInt']>;
+  mmetadata_gt?: InputMaybe<Scalars['BigInt']>;
+  mmetadata_lt?: InputMaybe<Scalars['BigInt']>;
+  mmetadata_gte?: InputMaybe<Scalars['BigInt']>;
+  mmetadata_lte?: InputMaybe<Scalars['BigInt']>;
+  mmetadata_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  mmetadata_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  amount?: InputMaybe<Scalars['BigInt']>;
+  amount_not?: InputMaybe<Scalars['BigInt']>;
+  amount_gt?: InputMaybe<Scalars['BigInt']>;
+  amount_lt?: InputMaybe<Scalars['BigInt']>;
+  amount_gte?: InputMaybe<Scalars['BigInt']>;
+  amount_lte?: InputMaybe<Scalars['BigInt']>;
+  amount_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  amount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  status?: InputMaybe<Scalars['Int']>;
+  status_not?: InputMaybe<Scalars['Int']>;
+  status_gt?: InputMaybe<Scalars['Int']>;
+  status_lt?: InputMaybe<Scalars['Int']>;
+  status_gte?: InputMaybe<Scalars['Int']>;
+  status_lte?: InputMaybe<Scalars['Int']>;
+  status_in?: InputMaybe<Array<Scalars['Int']>>;
+  status_not_in?: InputMaybe<Array<Scalars['Int']>>;
+  lastUpdated?: InputMaybe<Scalars['BigInt']>;
+  lastUpdated_not?: InputMaybe<Scalars['BigInt']>;
+  lastUpdated_gt?: InputMaybe<Scalars['BigInt']>;
+  lastUpdated_lt?: InputMaybe<Scalars['BigInt']>;
+  lastUpdated_gte?: InputMaybe<Scalars['BigInt']>;
+  lastUpdated_lte?: InputMaybe<Scalars['BigInt']>;
+  lastUpdated_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  lastUpdated_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Milestone_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Milestone_filter>>>;
+};
+
+export type Milestone_orderBy =
+  | 'id'
+  | 'amountPercentage'
+  | 'mmetadata'
+  | 'amount'
+  | 'status'
+  | 'lastUpdated';
+
 /** Defines the order direction, either ascending or descending */
 export type OrderDirection =
   | 'asc'
@@ -1168,7 +1587,17 @@ export type Project = {
   blockNumber: Scalars['BigInt'];
   blockTimestamp: Scalars['BigInt'];
   transactionHash: Scalars['Bytes'];
+  grants: Array<Grant>;
   members?: Maybe<ProfileMemberGroup>;
+};
+
+
+export type ProjectgrantsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Grant_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<Grant_filter>;
 };
 
 export type Project_filter = {
@@ -1295,6 +1724,7 @@ export type Project_filter = {
   transactionHash_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   transactionHash_contains?: InputMaybe<Scalars['Bytes']>;
   transactionHash_not_contains?: InputMaybe<Scalars['Bytes']>;
+  grants_?: InputMaybe<Grant_filter>;
   members?: InputMaybe<Scalars['String']>;
   members_not?: InputMaybe<Scalars['String']>;
   members_gt?: InputMaybe<Scalars['String']>;
@@ -1337,6 +1767,7 @@ export type Project_orderBy =
   | 'blockNumber'
   | 'blockTimestamp'
   | 'transactionHash'
+  | 'grants'
   | 'members'
   | 'members__id';
 
@@ -1351,19 +1782,22 @@ export type Query = {
   feedItemEmbeds: Array<FeedItemEmbed>;
   grantShip?: Maybe<GrantShip>;
   grantShips: Array<GrantShip>;
-  grantShipLookup?: Maybe<GrantShipLookup>;
-  grantShipLookups: Array<GrantShipLookup>;
   poolIdLookup?: Maybe<PoolIdLookup>;
   poolIdLookups: Array<PoolIdLookup>;
   gameManager?: Maybe<GameManager>;
   gameManagers: Array<GameManager>;
   gameRound?: Maybe<GameRound>;
   gameRounds: Array<GameRound>;
+  grant?: Maybe<Grant>;
+  grants: Array<Grant>;
+  milestone?: Maybe<Milestone>;
+  milestones: Array<Milestone>;
   profileMemberGroup?: Maybe<ProfileMemberGroup>;
   profileMemberGroups: Array<ProfileMemberGroup>;
   transaction?: Maybe<Transaction>;
   transactions: Array<Transaction>;
-  rawMetadata: Array<RawMetadata>;
+  rawMetadata?: Maybe<RawMetadata>;
+  rawMetadata_collection: Array<RawMetadata>;
   log?: Maybe<Log>;
   logs: Array<Log>;
   /** Access to subgraph metadata */
@@ -1461,24 +1895,6 @@ export type QuerygrantShipsArgs = {
 };
 
 
-export type QuerygrantShipLookupArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QuerygrantShipLookupsArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<GrantShipLookup_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<GrantShipLookup_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
 export type QuerypoolIdLookupArgs = {
   id: Scalars['ID'];
   block?: InputMaybe<Block_height>;
@@ -1533,6 +1949,42 @@ export type QuerygameRoundsArgs = {
 };
 
 
+export type QuerygrantArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QuerygrantsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Grant_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<Grant_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QuerymilestoneArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QuerymilestonesArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Milestone_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<Milestone_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
 export type QueryprofileMemberGroupArgs = {
   id: Scalars['ID'];
   block?: InputMaybe<Block_height>;
@@ -1570,6 +2022,13 @@ export type QuerytransactionsArgs = {
 
 
 export type QueryrawMetadataArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryrawMetadata_collectionArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   first?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<RawMetadata_orderBy>;
@@ -1679,19 +2138,22 @@ export type Subscription = {
   feedItemEmbeds: Array<FeedItemEmbed>;
   grantShip?: Maybe<GrantShip>;
   grantShips: Array<GrantShip>;
-  grantShipLookup?: Maybe<GrantShipLookup>;
-  grantShipLookups: Array<GrantShipLookup>;
   poolIdLookup?: Maybe<PoolIdLookup>;
   poolIdLookups: Array<PoolIdLookup>;
   gameManager?: Maybe<GameManager>;
   gameManagers: Array<GameManager>;
   gameRound?: Maybe<GameRound>;
   gameRounds: Array<GameRound>;
+  grant?: Maybe<Grant>;
+  grants: Array<Grant>;
+  milestone?: Maybe<Milestone>;
+  milestones: Array<Milestone>;
   profileMemberGroup?: Maybe<ProfileMemberGroup>;
   profileMemberGroups: Array<ProfileMemberGroup>;
   transaction?: Maybe<Transaction>;
   transactions: Array<Transaction>;
-  rawMetadata: Array<RawMetadata>;
+  rawMetadata?: Maybe<RawMetadata>;
+  rawMetadata_collection: Array<RawMetadata>;
   log?: Maybe<Log>;
   logs: Array<Log>;
   /** Access to subgraph metadata */
@@ -1789,24 +2251,6 @@ export type SubscriptiongrantShipsArgs = {
 };
 
 
-export type SubscriptiongrantShipLookupArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptiongrantShipLookupsArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<GrantShipLookup_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<GrantShipLookup_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
 export type SubscriptionpoolIdLookupArgs = {
   id: Scalars['ID'];
   block?: InputMaybe<Block_height>;
@@ -1861,6 +2305,42 @@ export type SubscriptiongameRoundsArgs = {
 };
 
 
+export type SubscriptiongrantArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptiongrantsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Grant_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<Grant_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionmilestoneArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionmilestonesArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Milestone_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<Milestone_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
 export type SubscriptionprofileMemberGroupArgs = {
   id: Scalars['ID'];
   block?: InputMaybe<Block_height>;
@@ -1898,6 +2378,13 @@ export type SubscriptiontransactionsArgs = {
 
 
 export type SubscriptionrawMetadataArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionrawMetadata_collectionArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   first?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<RawMetadata_orderBy>;
@@ -2039,10 +2526,6 @@ export type _SubgraphErrorPolicy_ =
   /** null **/
   grantShips: InContextSdkMethod<Query['grantShips'], QuerygrantShipsArgs, MeshContext>,
   /** null **/
-  grantShipLookup: InContextSdkMethod<Query['grantShipLookup'], QuerygrantShipLookupArgs, MeshContext>,
-  /** null **/
-  grantShipLookups: InContextSdkMethod<Query['grantShipLookups'], QuerygrantShipLookupsArgs, MeshContext>,
-  /** null **/
   poolIdLookup: InContextSdkMethod<Query['poolIdLookup'], QuerypoolIdLookupArgs, MeshContext>,
   /** null **/
   poolIdLookups: InContextSdkMethod<Query['poolIdLookups'], QuerypoolIdLookupsArgs, MeshContext>,
@@ -2055,6 +2538,14 @@ export type _SubgraphErrorPolicy_ =
   /** null **/
   gameRounds: InContextSdkMethod<Query['gameRounds'], QuerygameRoundsArgs, MeshContext>,
   /** null **/
+  grant: InContextSdkMethod<Query['grant'], QuerygrantArgs, MeshContext>,
+  /** null **/
+  grants: InContextSdkMethod<Query['grants'], QuerygrantsArgs, MeshContext>,
+  /** null **/
+  milestone: InContextSdkMethod<Query['milestone'], QuerymilestoneArgs, MeshContext>,
+  /** null **/
+  milestones: InContextSdkMethod<Query['milestones'], QuerymilestonesArgs, MeshContext>,
+  /** null **/
   profileMemberGroup: InContextSdkMethod<Query['profileMemberGroup'], QueryprofileMemberGroupArgs, MeshContext>,
   /** null **/
   profileMemberGroups: InContextSdkMethod<Query['profileMemberGroups'], QueryprofileMemberGroupsArgs, MeshContext>,
@@ -2064,6 +2555,8 @@ export type _SubgraphErrorPolicy_ =
   transactions: InContextSdkMethod<Query['transactions'], QuerytransactionsArgs, MeshContext>,
   /** null **/
   rawMetadata: InContextSdkMethod<Query['rawMetadata'], QueryrawMetadataArgs, MeshContext>,
+  /** null **/
+  rawMetadata_collection: InContextSdkMethod<Query['rawMetadata_collection'], QueryrawMetadata_collectionArgs, MeshContext>,
   /** null **/
   log: InContextSdkMethod<Query['log'], QuerylogArgs, MeshContext>,
   /** null **/
@@ -2098,10 +2591,6 @@ export type _SubgraphErrorPolicy_ =
   /** null **/
   grantShips: InContextSdkMethod<Subscription['grantShips'], SubscriptiongrantShipsArgs, MeshContext>,
   /** null **/
-  grantShipLookup: InContextSdkMethod<Subscription['grantShipLookup'], SubscriptiongrantShipLookupArgs, MeshContext>,
-  /** null **/
-  grantShipLookups: InContextSdkMethod<Subscription['grantShipLookups'], SubscriptiongrantShipLookupsArgs, MeshContext>,
-  /** null **/
   poolIdLookup: InContextSdkMethod<Subscription['poolIdLookup'], SubscriptionpoolIdLookupArgs, MeshContext>,
   /** null **/
   poolIdLookups: InContextSdkMethod<Subscription['poolIdLookups'], SubscriptionpoolIdLookupsArgs, MeshContext>,
@@ -2114,6 +2603,14 @@ export type _SubgraphErrorPolicy_ =
   /** null **/
   gameRounds: InContextSdkMethod<Subscription['gameRounds'], SubscriptiongameRoundsArgs, MeshContext>,
   /** null **/
+  grant: InContextSdkMethod<Subscription['grant'], SubscriptiongrantArgs, MeshContext>,
+  /** null **/
+  grants: InContextSdkMethod<Subscription['grants'], SubscriptiongrantsArgs, MeshContext>,
+  /** null **/
+  milestone: InContextSdkMethod<Subscription['milestone'], SubscriptionmilestoneArgs, MeshContext>,
+  /** null **/
+  milestones: InContextSdkMethod<Subscription['milestones'], SubscriptionmilestonesArgs, MeshContext>,
+  /** null **/
   profileMemberGroup: InContextSdkMethod<Subscription['profileMemberGroup'], SubscriptionprofileMemberGroupArgs, MeshContext>,
   /** null **/
   profileMemberGroups: InContextSdkMethod<Subscription['profileMemberGroups'], SubscriptionprofileMemberGroupsArgs, MeshContext>,
@@ -2123,6 +2620,8 @@ export type _SubgraphErrorPolicy_ =
   transactions: InContextSdkMethod<Subscription['transactions'], SubscriptiontransactionsArgs, MeshContext>,
   /** null **/
   rawMetadata: InContextSdkMethod<Subscription['rawMetadata'], SubscriptionrawMetadataArgs, MeshContext>,
+  /** null **/
+  rawMetadata_collection: InContextSdkMethod<Subscription['rawMetadata_collection'], SubscriptionrawMetadata_collectionArgs, MeshContext>,
   /** null **/
   log: InContextSdkMethod<Subscription['log'], SubscriptionlogArgs, MeshContext>,
   /** null **/

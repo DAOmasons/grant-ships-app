@@ -1,0 +1,5 @@
+query getShipPoolId($id: ID!) {
+  grantShip(id: $id) {
+    poolId
+  }
+}

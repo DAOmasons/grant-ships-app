@@ -1,4 +1,4 @@
-import { Box, Button, Group, Paper, Skeleton, Tabs, Text } from '@mantine/core';
+import { Box, Button, Group, Paper, Tabs, Text } from '@mantine/core';
 import { Feed } from '../components/feed/Feed';
 import { MainSection } from '../layout/Sections';
 import { AppAlert } from '../components/UnderContruction';
@@ -40,13 +40,13 @@ export const Home = () => {
 const Banner = () => {
   return (
     <Paper h={180} w="100%" p="xl" classNames={{ root: classes.banner }}>
-      <Text fz={22} fw={700} c="white" mb="lg">
-        Now Accepting Grant Ships!{' '}
-        <Text fz={22} fw={700} component="span" opacity={0.7}>
+      <Text fz={24} fw={700} c="white">
+        Now Accepting Grant Ships.{' '}
+        <Text fz={24} fw={700} component="span">
           Submit your application today.{' '}
         </Text>
       </Text>
-      <Group>
+      <Group mt="md">
         <Button component={Link} to="create-ship">
           Submit Grant Ship Application
         </Button>
@@ -57,8 +57,7 @@ const Banner = () => {
           rel="noopener noreferrer"
           target="_blank"
         >
-          {' '}
-          What is a Grant Ship?{' '}
+          What is a Grant Ship?
         </Button>
       </Group>
     </Paper>

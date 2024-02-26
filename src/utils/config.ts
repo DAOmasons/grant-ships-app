@@ -1,3 +1,4 @@
+import { createPublicClient } from 'viem';
 import { http, createConfig } from 'wagmi';
 import { arbitrumSepolia, arbitrum, mainnet } from 'wagmi/chains';
 import { safe, walletConnect } from 'wagmi/connectors';
@@ -19,4 +20,9 @@ export const ensConfig = createConfig({
   transports: {
     [mainnet.id]: http(import.meta.env.VITE_RPC_URL_ENS_MAINNET),
   },
+});
+
+export const publicClient = createPublicClient({
+  chain: arbitrumSepolia,
+  transport: http(import.meta.env.VITE_RPC_URL_TESTNET),
 });

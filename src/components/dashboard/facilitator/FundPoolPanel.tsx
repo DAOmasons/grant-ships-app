@@ -18,6 +18,7 @@ export const FundPoolPanel = ({
   gameStatusNumber: number;
 }) => {
   const STATUS_NUMBER = 1;
+  const isNotReady = gameStatusNumber < STATUS_NUMBER;
 
   const { address } = useAccount();
   const { tx } = useTx();
@@ -58,8 +59,6 @@ export const FundPoolPanel = ({
 
   const allowance = queries[0].result as bigint;
   const balance = queries[1].result as bigint;
-
-  console.log('allowance', allowance);
 
   const approveGameManager = () => {
     tx({
@@ -107,7 +106,7 @@ export const FundPoolPanel = ({
       </Box>
     );
   }
-  if (allowance < BigInt(roundAmount)) {
+  if (roundAmount && allowance < BigInt(roundAmount)) {
     return (
       <Box>
         <Alert w={350} mb="sm">
@@ -149,8 +148,11 @@ export const FundPoolPanel = ({
           Fund Pool
         </Text>
         <Text size="sm" mb="sm">
-          Proposed Round Amount: {formatEther(BigInt(roundAmount))}{' '}
-          {GAME_TOKEN.SYMBOL}
+          Proposed Round Amount:{' '}
+          {roundAmount
+            ? formatEther(BigInt(roundAmount))
+            : 'Round Not created yet'}{' '}
+          {roundAmount ? GAME_TOKEN.SYMBOL : ''}
         </Text>
         <Text size="sm">
           Pool Funded: {formatEther(poolBalance)} {GAME_TOKEN.SYMBOL}
@@ -167,11 +169,12 @@ export const FundPoolPanel = ({
         }}
         type="number"
         error={error}
+        disabled={isNotReady}
       />
       <Text size="sm" mb="sm">
         Your Balance: {formatEther(BigInt(balance))} {GAME_TOKEN.SYMBOL}
       </Text>
-      <Button w="100%" onClick={() => fundPool()}>
+      <Button w="100%" onClick={() => fundPool()} disabled={isNotReady}>
         Fund Pool
       </Button>
     </Box>

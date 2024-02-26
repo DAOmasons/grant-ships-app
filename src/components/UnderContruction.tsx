@@ -5,6 +5,7 @@ import {
   Alert,
   StyleProp,
   DefaultMantineColor,
+  MantineSpacing,
 } from '@mantine/core';
 
 import { IconBell } from '@tabler/icons-react';
@@ -17,6 +18,8 @@ type AppAlertProps = {
   color?: StyleProp<DefaultMantineColor>;
   bg?: StyleProp<DefaultMantineColor>;
   opacity?: number;
+  mt?: StyleProp<MantineSpacing>;
+  mb?: StyleProp<MantineSpacing>;
 };
 
 export const AppAlert = ({
@@ -26,11 +29,13 @@ export const AppAlert = ({
   color,
   bg,
   opacity,
+  mt = 'xl',
+  mb = 56,
 }: AppAlertProps) => {
   return (
-    <Alert mt="xl" mb={56} c={color} bg={bg} opacity={opacity}>
-      <Group>
-        {icon}
+    <Alert mt={mt} mb={mb} c={color} bg={bg} opacity={opacity}>
+      <Group wrap="nowrap">
+        <Box>{icon}</Box>
         <Box>
           <Text mb={2}>{title}</Text>
           {description && (
