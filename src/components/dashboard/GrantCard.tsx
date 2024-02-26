@@ -8,11 +8,12 @@ import {
   Paper,
   Stack,
   Text,
+  Textarea,
   Timeline,
   useMantineTheme,
 } from '@mantine/core';
 import { DashGrant, PackedMilestoneData } from '../../resolvers/grantResolvers';
-import { GrantStatus } from '../../types/common';
+import { AlloStatus, GrantStatus } from '../../types/common';
 import { secondsToLongDate, secondsToRelativeTime } from '../../utils/time';
 import { getTimelineContents } from './grantCardUtils';
 import { ReviewApplication } from './ReviewApplication';
@@ -23,7 +24,13 @@ import { useQuery } from '@tanstack/react-query';
 import { getIpfsJson } from '../../utils/ipfs/get';
 import { ReviewPage } from '../../layout/ReviewPage';
 import { useDisclosure } from '@mantine/hooks';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
+import { useTx } from '../../hooks/useTx';
+import { isAddress } from 'viem';
+import { useAccount } from 'wagmi';
+import { pinJSONToIPFS } from '../../utils/ipfs/pin';
+import GrantShipAbi from '../../abi/GrantShip.json';
+import { notifications } from '@mantine/notifications';
 
 export const GrantCard = ({
   grant,
@@ -210,7 +217,6 @@ export const GrantCard = ({
 };
 
 const resolveMilestone = async (milestone: PackedMilestoneData) => {
-  console.log('fired');
   const res = await getIpfsJson(milestone.metadata.pointer);
 
   return {
@@ -229,6 +235,11 @@ const unpackMilestones = async (milestones: PackedMilestoneData[]) => {
 
 export const MilestonesReview = ({ grant }: { grant: DashGrant }) => {
   const [opened, { open, close }] = useDisclosure(false);
+  const { address } = useAccount();
+  const [reasonText, setReasonText] = useState('');
+
+  const { tx } = useTx();
+
   const {
     data: milestones,
     isLoading,
@@ -238,6 +249,41 @@ export const MilestonesReview = ({ grant }: { grant: DashGrant }) => {
     queryFn: () => unpackMilestones(grant.milestones as PackedMilestoneData[]),
     enabled: !!grant.milestones && opened,
   });
+
+  const reviewMilestones = async (isApproved: boolean) => {
+    if (!isAddress(grant.shipId.shipContractAddress)) {
+      console.error('Invalid Ship Address');
+      return;
+    }
+
+    const pinRes = await pinJSONToIPFS({
+      reason: reasonText,
+      reviewer: address as string,
+    });
+
+    if (typeof pinRes.IpfsHash !== 'string' && pinRes.IpfsHash[0] !== 'Q') {
+      notifications.show({
+        title: 'IPFS Upload Error',
+        message: pinRes.IpfsHash[1],
+        color: 'red',
+      });
+      return;
+    }
+
+    // reviewSetMilestones(address _recipientId, Status _status, Metadata calldata _reason)
+    tx({
+      writeContractParams: {
+        abi: GrantShipAbi,
+        address: grant.shipId.shipContractAddress,
+        functionName: 'reviewSetMilestones',
+        args: [
+          grant.projectId.id,
+          isApproved ? AlloStatus.Accepted : AlloStatus.Rejected,
+          [1n, pinRes.IpfsHash],
+        ],
+      },
+    });
+  };
 
   const pageUI = useMemo(() => {
     if (isLoading) {
@@ -271,9 +317,40 @@ export const MilestonesReview = ({ grant }: { grant: DashGrant }) => {
             };
           }),
         ]}
+        footerSection={
+          <>
+            <Text mb="md" fw={600}>
+              Approve or Reject Milestones
+            </Text>
+            <Textarea
+              label="Reasoning"
+              description="Why are you approving or rejecting these Milestones?"
+              value={reasonText}
+              onChange={(e) => setReasonText(e.currentTarget.value)}
+              autosize
+              fw={400}
+              required
+              minRows={4}
+              maxRows={8}
+              mb="xl"
+            />
+            <Flex justify="space-between">
+              <Button
+                size="sm"
+                variant="light"
+                onClick={() => reviewMilestones(false)}
+              >
+                Reject
+              </Button>
+              <Button size="sm" onClick={() => reviewMilestones(true)}>
+                Approve
+              </Button>
+            </Flex>
+          </>
+        }
       />
     );
-  }, [milestones, isLoading, error]);
+  }, [milestones, isLoading, error, reasonText, close]);
 
   return (
     <>
