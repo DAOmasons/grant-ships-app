@@ -1,35 +1,22 @@
 import {
   Avatar,
   Box,
-  Button,
   Flex,
   Group,
-  Modal,
   Paper,
-  Stack,
   Text,
-  TextInput,
-  Textarea,
   Timeline,
   useMantineTheme,
 } from '@mantine/core';
+
 import { DashGrant } from '../../resolvers/grantResolvers';
-import { AlloStatus, GrantStatus } from '../../types/common';
+import { GrantStatus } from '../../types/common';
 import { secondsToRelativeTime } from '../../utils/time';
 import { getTimelineContents } from './grantCardUtils';
 import { ReviewApplication } from './ReviewApplication';
-import { IconCheck, IconClock, IconPlus } from '@tabler/icons-react';
-import { useMemo, useState } from 'react';
-import { useDisclosure } from '@mantine/hooks';
-import { ReviewPage } from '../../layout/ReviewPage';
+import { IconCheck, IconClock } from '@tabler/icons-react';
 import { useUserData } from '../../hooks/useUserState';
-import { AppAlert } from '../UnderContruction';
-import { notifications } from '@mantine/notifications';
-import { pinJSONToIPFS } from '../../utils/ipfs/pin';
-import { useTx } from '../../hooks/useTx';
-import GrantShipAbi from '../../abi/GrantShip.json';
-import { DatePickerInput } from '@mantine/dates';
-import { set } from 'zod';
+import { MilestonesSubmit } from './MilestonesSubmit';
 
 export const GrantCard = ({
   grant,
@@ -157,7 +144,7 @@ export const GrantCard = ({
                 theme,
                 {
                   onNotStarted: (
-                    <MilestonesReview
+                    <MilestonesSubmit
                       view={view}
                       isProjectMember={true}
                       grant={grant}
@@ -212,292 +199,5 @@ export const GrantCard = ({
         </Box>
       </Flex>
     </Paper>
-  );
-};
-
-const MilestonesReview = ({
-  isProjectMember,
-  isShipOperator,
-  view,
-  grant,
-}: {
-  grant: DashGrant;
-  isProjectMember: boolean;
-  isShipOperator?: boolean;
-  view: 'project-page' | 'ship-dash';
-}) => {
-  const [opened, { open, close }] = useDisclosure(false);
-
-  const currentStatus = grant.grantStatus;
-  const milestoneReviewSections = useMemo(() => {
-    if (!grant || !view) return [];
-
-    if (
-      isProjectMember &&
-      view === 'project-page' &&
-      currentStatus === GrantStatus.FacilitatorApproved
-    ) {
-      return [
-        {
-          subtitle: '',
-          content: (
-            <AppAlert
-              title="Awaiting Milestones"
-              description="Ship Operators are awaiting milestones for your grant"
-            />
-          ),
-        },
-        {
-          subtitle: 'Create your Milestones',
-          content: <MilestoneBuilder grant={grant} />,
-        },
-      ];
-    }
-    return [];
-  }, [grant, view, isProjectMember, isShipOperator, currentStatus]);
-
-  return (
-    <>
-      <Group justify="space-between" align="start">
-        <Text size="sm">Awaiting Milestones</Text>
-        {isProjectMember && view === 'project-page' ? (
-          <Button
-            size="xs"
-            style={{
-              transform: 'translateY(-2px)',
-            }}
-            onClick={open}
-          >
-            Submit
-          </Button>
-        ) : (
-          <Button
-            size="xs"
-            style={{
-              transform: 'translateY(-2px)',
-            }}
-            variant="subtle"
-            onClick={open}
-          >
-            View
-          </Button>
-        )}
-      </Group>
-      <Modal
-        opened={opened}
-        onClose={close}
-        fullScreen
-        transitionProps={{ transition: 'fade', duration: 200 }}
-      >
-        <ReviewPage
-          title={`Milestone Review for ${grant.projectId.name}`}
-          sections={milestoneReviewSections}
-        />
-      </Modal>
-    </>
-  );
-};
-
-const MilestoneBuilder = ({ grant }: { grant: DashGrant }) => {
-  const { tx } = useTx();
-
-  const [formData, setFormData] = useState<Record<string, string>>({
-    'milestone-description-1': '',
-    'milestone-perc-1': '0',
-  });
-  const [inputs, setInputs] = useState([true]);
-
-  const handleChanges = (
-    e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-  ) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
-  const handleDateChange = (dateObj: Date | null, key: string) => {
-    if (!dateObj) return;
-
-    setFormData({
-      ...formData,
-      [key]: Math.floor(dateObj.getTime() / 1000).toString(),
-    });
-  };
-
-  const handleAddInput = async () => {
-    setInputs([...inputs, true]);
-  };
-
-  const submitMilestones = async () => {
-    const percentTotal = inputs.reduce((acc, _, index) => {
-      const value = formData[`milestone-perc-${index + 1}`];
-      return acc + Number(value);
-    }, 0);
-
-    if (percentTotal !== 100) {
-      return notifications.show({
-        title: 'Error',
-        message: 'Milestone percentages must add up to 100',
-        color: 'red',
-      });
-    }
-
-    console.log('formData', formData);
-
-    if (Object.values(formData).some((value) => value === '')) {
-      return notifications.show({
-        title: 'Error',
-        message: 'Please fill out all fields',
-        color: 'red',
-      });
-    }
-
-    const percentagesInOrder = inputs
-      .map((_, index) => formData[`milestone-perc-${index + 1}`])
-      .filter(Boolean);
-
-    const descriptionsInOrder = inputs
-      .map((_, index) => formData[`milestone-description-${index + 1}`])
-      .filter(Boolean);
-
-    const datesInOrder = inputs
-      .map((_, index) => formData[`milestone-date-${index + 1}`])
-      .filter(Boolean);
-
-    if (
-      percentagesInOrder.length !== descriptionsInOrder.length ||
-      descriptionsInOrder.length !== datesInOrder.length
-    ) {
-      return notifications.show({
-        title: 'Error',
-        message: 'Data length mismatch: Please fill out all fields',
-        color: 'red',
-      });
-    }
-
-    const milestones = await Promise.all(
-      inputs.map(async (_, index) => {
-        const milestoneDetails = formData[`milestone-description-${index + 1}`];
-        const formPercentage = Number(formData[`milestone-perc-${index + 1}`]);
-
-        if (formPercentage === 0) {
-          notifications.show({
-            title: 'Error',
-            message: 'Milestone percentage cannot be 0',
-            color: 'red',
-          });
-          return false;
-        }
-
-        const solidityPercentage = BigInt(
-          formPercentage === 0 ? 0 : (formPercentage / 100) * 1e18
-        );
-
-        const pinRes = await pinJSONToIPFS({ milestoneDetails });
-
-        if (typeof pinRes.IpfsHash !== 'string' && pinRes.IpfsHash[0] !== 'Q') {
-          notifications.show({
-            title: 'IPFS Upload Error',
-            message: pinRes.IpfsHash[1],
-            color: 'red',
-          });
-
-          return false;
-        }
-
-        return {
-          amountPercentage: solidityPercentage,
-          metadata: { protocol: 1n, pointer: pinRes.IpfsHash },
-          milestoneStatus: AlloStatus.None,
-        };
-      })
-    );
-
-    console.log(milestones, 'milestones');
-
-    const hasPinError = milestones.some((milestone) => milestone === false);
-
-    if (hasPinError) {
-      return;
-    }
-
-    // _setMilestones(address _recipientId, Milestone[] memory _milestones)
-
-    tx({
-      writeContractParams: {
-        abi: GrantShipAbi,
-        address: grant.shipId.shipContractAddress,
-        functionName: 'setMilestones',
-        args: [grant.projectId.id, milestones, [1n, 'NULL']],
-      },
-    });
-  };
-  console.log(formData, 'formData');
-  return (
-    <Box>
-      <Text opacity={0.75} mb="xl">
-        Let’s break down tasks into milestone(s). Minimum 1 Milestone required.
-        Once each is done, submit to the ship operator for grant processing.
-        Your detailed input is key!
-      </Text>
-      <Stack align="center" mb="md">
-        {inputs.map((_, index) => (
-          <Box key={`milestone-${index}`} w="100%" mb="md">
-            <Text mb="sm" fw={600}>
-              Milestone {index + 1}
-            </Text>
-            <Group>
-              <TextInput
-                required
-                fw={400}
-                label={`Percentage`}
-                name={`milestone-perc-${index + 1}`}
-                type="number"
-                placeholder="33"
-                w={'48%'}
-                onChange={handleChanges}
-                mb="xs"
-              />
-              <DatePickerInput
-                required
-                fw={400}
-                label={`Estimated Delivery`}
-                name={`milestone-date-${index + 1}`}
-                placeholder="Date"
-                w={'48%'}
-                onChange={(date) =>
-                  handleDateChange(date, `milestone-date-${index + 1}`)
-                }
-                mb="xs"
-              />
-            </Group>
-            <Textarea
-              name={`milestone-description-${index + 1}`}
-              fw={400}
-              label={`Description`}
-              value={formData[`milestone-description-${index + 1}`]}
-              w="100%"
-              placeholder="Describe the task and the deliverable."
-              onChange={handleChanges}
-              autosize
-              required
-              minRows={4}
-              maxRows={8}
-            />
-          </Box>
-        ))}
-        <Button
-          leftSection={<IconPlus />}
-          w="fit-content"
-          variant="light"
-          onClick={handleAddInput}
-        >
-          Add Milestone
-        </Button>
-      </Stack>
-      <Flex w="100%">
-        <Button ml="auto" onClick={submitMilestones}>
-          Submit
-        </Button>
-      </Flex>
-    </Box>
   );
 };
