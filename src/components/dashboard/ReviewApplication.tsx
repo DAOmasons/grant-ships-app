@@ -23,23 +23,31 @@ import { secondsToLongDateTime } from '../../utils/time';
 import { DashGrant } from '../../resolvers/grantResolvers';
 import { AppAlert } from '../UnderContruction';
 import { IconCheck, IconX } from '@tabler/icons-react';
-import { useUserData } from '../../hooks/useUserState';
 
 export const ReviewApplication = ({
   grant,
   shipAddress,
+  isShipOperator,
+  view,
 }: {
   grant: DashGrant;
+  isShipOperator?: boolean;
   shipAddress: string;
+  view: 'project-page' | 'ship-dash';
 }) => {
   const theme = useMantineTheme();
-  const { userData } = useUserData();
+
   const [reasonText, setReasonText] = useState('');
   const [opened, { open, close }] = useDisclosure(false);
   const { address } = useAccount();
   const { tx } = useTx();
 
   const handleApprove = async (isApproved: boolean) => {
+    if (view === 'project-page') {
+      console.error('Invalid View');
+      return;
+    }
+
     close();
 
     if (!isAddress(shipAddress)) {
@@ -74,20 +82,28 @@ export const ReviewApplication = ({
     });
   };
 
+  const isProjectView = view === 'project-page';
+  const isShipView = view === 'ship-dash';
+
   const hasShipApproved = grant.grantStatus >= GrantStatus.ShipApproved;
   const hasFacilitatorApproved =
     grant.grantStatus >= GrantStatus.FacilitatorApproved;
 
-  const isShipOperator =
-    userData?.isShipOperator && userData?.shipAddress === shipAddress;
+  const projectPageIndicator =
+    grant.grantStatus === GrantStatus.Applied
+      ? 'Application Submitted'
+      : 'Application Reviewed';
+  const shipDashIndicator =
+    grant.grantStatus === GrantStatus.Applied
+      ? 'Review Application'
+      : 'Application Reviewed';
 
   return (
     <>
       <Group align="start" justify="space-between">
         <Text fz="sm">
-          {grant.grantStatus === GrantStatus.Applied
-            ? 'Review Application'
-            : 'Application Reviewed'}
+          {isShipView ? shipDashIndicator : null}
+          {isProjectView ? projectPageIndicator : null}
         </Text>
         <Button
           size="xs"
@@ -96,10 +112,14 @@ export const ReviewApplication = ({
           }}
           onClick={open}
           variant={
-            grant.grantStatus === GrantStatus.Applied ? undefined : 'subtle'
+            grant.grantStatus === GrantStatus.Applied && isShipView
+              ? undefined
+              : 'subtle'
           }
         >
-          {grant.grantStatus === GrantStatus.Applied ? 'Review' : 'View'}
+          {grant.grantStatus === GrantStatus.Applied && isShipView
+            ? 'Review'
+            : 'View'}
         </Button>
       </Group>
       <Modal
@@ -183,39 +203,41 @@ export const ReviewApplication = ({
                   }
                 />
               )}
-              {grant.grantStatus === GrantStatus.Applied && isShipOperator && (
-                <>
-                  <Text mb="md" fw={600}>
-                    Approve or Reject Applicant
-                  </Text>
-                  <Textarea
-                    label="Reasoning"
-                    description="Why are you approving or rejecting this application?"
-                    value={reasonText}
-                    onChange={(e) => setReasonText(e.currentTarget.value)}
-                    autosize
-                    required
-                    minRows={4}
-                    maxRows={8}
-                    mb="xl"
-                  />
-                  <Flex justify="space-between">
-                    <Button
-                      variant="outline"
-                      disabled={!reasonText}
-                      onClick={() => handleApprove(false)}
-                    >
-                      Reject
-                    </Button>
-                    <Button
-                      disabled={!reasonText}
-                      onClick={() => handleApprove(true)}
-                    >
-                      Approve
-                    </Button>
-                  </Flex>
-                </>
-              )}
+              {grant.grantStatus === GrantStatus.Applied &&
+                isShipOperator &&
+                isShipView && (
+                  <>
+                    <Text mb="md" fw={600}>
+                      Approve or Reject Applicant
+                    </Text>
+                    <Textarea
+                      label="Reasoning"
+                      description="Why are you approving or rejecting this application?"
+                      value={reasonText}
+                      onChange={(e) => setReasonText(e.currentTarget.value)}
+                      autosize
+                      required
+                      minRows={4}
+                      maxRows={8}
+                      mb="xl"
+                    />
+                    <Flex justify="space-between">
+                      <Button
+                        variant="outline"
+                        disabled={!reasonText}
+                        onClick={() => handleApprove(false)}
+                      >
+                        Reject
+                      </Button>
+                      <Button
+                        disabled={!reasonText}
+                        onClick={() => handleApprove(true)}
+                      >
+                        Approve
+                      </Button>
+                    </Flex>
+                  </>
+                )}
             </>
           }
         />
