@@ -5,9 +5,12 @@ import {
   grantApplicationMetadata,
   reasonSchema,
 } from '../utils/ipfs/metadataValidation';
-import { Hex, decodeAbiParameters, parseAbiParameters } from 'viem';
+import { Address, Hex, decodeAbiParameters, parseAbiParameters } from 'viem';
 import { getGatewayUrl, getIpfsJson } from '../utils/ipfs/get';
 import { GrantDashFragment } from '../.graphclient';
+import { publicClient } from '../utils/config';
+import GrantShipAbi from '../abi/GrantShip.json';
+import { GrantStatus } from '../types/common';
 
 export type ApplicationMetadata = z.infer<typeof grantApplicationMetadata> & {
   projectId: string;
@@ -21,6 +24,15 @@ export type ProjectMetadata = z.infer<typeof ProjectProfileMetadata> & {
 
 export type ShipProfileMetadata = z.infer<typeof ShipProfileMetadata> & {
   imgUrl: string;
+};
+
+type PackedMilestoneData = {
+  amountPercentage: bigint;
+  metadata: {
+    pointer: string;
+    protocol: number;
+  };
+  milestoneStatus: number;
 };
 
 export type DashGrant = GrantDashFragment & {
@@ -140,6 +152,29 @@ export const resolveShipMetadata = async (pointer?: string) => {
   };
 };
 
+export const resolveMilestones = async (
+  hasMilestones: boolean,
+  recipientAddress: string,
+  shipAddress: string
+) => {
+  if (!hasMilestones) {
+    return null;
+  }
+
+  const result = await publicClient.readContract({
+    address: shipAddress as Address,
+    abi: GrantShipAbi,
+    functionName: 'getMilestones',
+    args: [recipientAddress],
+  });
+
+  if (!result || (result as any)?.length === 0) {
+    return null;
+  }
+
+  return result as any as PackedMilestoneData[];
+};
+
 export const resolveGrants = async (grants: GrantDashFragment[]) => {
   const resolvedGrants = await Promise.all(
     grants.map(async (grant) => {
@@ -155,6 +190,12 @@ export const resolveGrants = async (grants: GrantDashFragment[]) => {
         resolveGrantApplicationData(grant.grantApplicationBytes),
         resolveShipApprovalReason(grant.shipApprovalReason?.pointer),
         resolveFacilitatorReason(grant.facilitatorReason?.pointer),
+        resolveMilestones(
+          grant.grantStatus >= GrantStatus.MilestonesProposed &&
+            grant.milestonesAmount,
+          grant.projectId.id,
+          grant.shipId.shipContractAddress
+        ),
       ]);
 
       return {

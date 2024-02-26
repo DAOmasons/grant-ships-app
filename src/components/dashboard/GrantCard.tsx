@@ -362,10 +362,6 @@ const MilestoneBuilder = ({ grant }: { grant: DashGrant }) => {
       .map((_, index) => formData[`milestone-date-${index + 1}`])
       .filter(Boolean);
 
-    console.log('percentagesInOrder', percentagesInOrder);
-    console.log('descriptionsInOrder', descriptionsInOrder);
-    console.log('datesInOrder', datesInOrder);
-
     if (
       percentagesInOrder.length !== descriptionsInOrder.length ||
       descriptionsInOrder.length !== datesInOrder.length

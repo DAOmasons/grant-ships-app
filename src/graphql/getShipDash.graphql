@@ -3,6 +3,7 @@ fragment GrantDash on Grant {
   grantApplicationBytes
   lastUpdated
   grantStatus
+  milestonesAmount
   projectId {
     id
     name
