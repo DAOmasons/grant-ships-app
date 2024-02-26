@@ -26,7 +26,7 @@ export type ShipProfileMetadata = z.infer<typeof ShipProfileMetadata> & {
   imgUrl: string;
 };
 
-type PackedMilestoneData = {
+export type PackedMilestoneData = {
   amountPercentage: bigint;
   metadata: {
     pointer: string;
@@ -41,6 +41,7 @@ export type DashGrant = GrantDashFragment & {
   shipMetadata: ShipProfileMetadata;
   shipApprovalReason: string | null;
   facilitatorReason: string | null;
+  milestones: PackedMilestoneData[] | null;
 };
 
 export const resolveGrantApplicationData = async (bytes: string) => {
@@ -184,6 +185,7 @@ export const resolveGrants = async (grants: GrantDashFragment[]) => {
         applicationData,
         shipApprovalReason,
         facilitatorReason,
+        milestones,
       ] = await Promise.all([
         resolveProjectMetadata(grant?.projectId?.metadata?.pointer),
         resolveShipMetadata(grant?.shipId?.profileMetadata?.pointer),
@@ -209,6 +211,7 @@ export const resolveGrants = async (grants: GrantDashFragment[]) => {
         facilitatorReason: facilitatorReason
           ? (facilitatorReason.reason as string)
           : null,
+        milestones: milestones ? milestones : null,
       };
     })
   );

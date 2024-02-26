@@ -1,22 +1,29 @@
 import {
   Avatar,
   Box,
+  Button,
   Flex,
   Group,
+  Modal,
   Paper,
+  Stack,
   Text,
   Timeline,
   useMantineTheme,
 } from '@mantine/core';
-
-import { DashGrant } from '../../resolvers/grantResolvers';
+import { DashGrant, PackedMilestoneData } from '../../resolvers/grantResolvers';
 import { GrantStatus } from '../../types/common';
-import { secondsToRelativeTime } from '../../utils/time';
+import { secondsToLongDate, secondsToRelativeTime } from '../../utils/time';
 import { getTimelineContents } from './grantCardUtils';
 import { ReviewApplication } from './ReviewApplication';
 import { IconCheck, IconClock } from '@tabler/icons-react';
 import { useUserData } from '../../hooks/useUserState';
 import { MilestonesSubmit } from './MilestonesSubmit';
+import { useQuery } from '@tanstack/react-query';
+import { getIpfsJson } from '../../utils/ipfs/get';
+import { ReviewPage } from '../../layout/ReviewPage';
+import { useDisclosure } from '@mantine/hooks';
+import { useMemo } from 'react';
 
 export const GrantCard = ({
   grant,
@@ -151,7 +158,7 @@ export const GrantCard = ({
                       isShipOperator={isShipOperator}
                     />
                   ),
-                  onPending: <Text fz="sm">Milestones Pending</Text>,
+                  onPending: <MilestonesReview grant={grant} />,
                   onRejected: <Text fz="sm">Milestones Rejected</Text>,
                   onCompleted: <Text fz="sm">Milestones Approved</Text>,
                 }
@@ -199,5 +206,97 @@ export const GrantCard = ({
         </Box>
       </Flex>
     </Paper>
+  );
+};
+
+const resolveMilestone = async (milestone: PackedMilestoneData) => {
+  console.log('fired');
+  const res = await getIpfsJson(milestone.metadata.pointer);
+
+  return {
+    ...res,
+    milestoneDetails: res?.milestoneDetails || null,
+    date: res?.date || null,
+  };
+};
+
+const unpackMilestones = async (milestones: PackedMilestoneData[]) => {
+  const unpackedMilestones = await Promise.all(
+    milestones.map((milestone) => resolveMilestone(milestone))
+  );
+  return unpackedMilestones;
+};
+
+export const MilestonesReview = ({ grant }: { grant: DashGrant }) => {
+  const [opened, { open, close }] = useDisclosure(false);
+  const {
+    data: milestones,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: [`grant-${grant.id}-milestones`],
+    queryFn: () => unpackMilestones(grant.milestones as PackedMilestoneData[]),
+    enabled: !!grant.milestones && opened,
+  });
+
+  const pageUI = useMemo(() => {
+    if (isLoading) {
+      return <Text>Loading...</Text>;
+    }
+
+    if (error) {
+      return <Text>Error</Text>;
+    }
+
+    if (!milestones) {
+      return <Text>No milestones</Text>;
+    }
+
+    return (
+      <ReviewPage
+        title="Grant Milestones"
+        sections={[
+          'DIVIDER',
+          ...milestones.map((milestone, index) => {
+            return {
+              subtitle: `Milestone ${index + 1}`,
+              content: (
+                <Stack gap="xs">
+                  <Text>{milestone.milestoneDetails}</Text>
+                  {milestone.date && (
+                    <Text>{secondsToLongDate(milestone.date)}</Text>
+                  )}
+                </Stack>
+              ),
+            };
+          }),
+        ]}
+      />
+    );
+  }, [milestones, isLoading, error]);
+
+  return (
+    <>
+      <Group justify="space-between" align="start">
+        <Text fz="sm">Awaiting Milestones</Text>
+        <Button
+          size="xs"
+          style={{
+            transform: 'translateY(-2px)',
+          }}
+          onClick={open}
+        >
+          Review
+        </Button>
+      </Group>
+      <Modal
+        opened={opened}
+        onClose={close}
+        fullScreen
+        transitionProps={{ transition: 'fade', duration: 200 }}
+      >
+        {pageUI}
+      </Modal>
+    </>
   );
 };

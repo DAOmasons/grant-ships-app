@@ -65,7 +65,7 @@ export const MilestonesSubmit = ({
   return (
     <>
       <Group justify="space-between" align="start">
-        <Text size="sm">Awaiting Milestones</Text>
+        <Text fz="sm">Awaiting Milestones</Text>
         {isProjectMember && view === 'project-page' ? (
           <Button
             size="xs"

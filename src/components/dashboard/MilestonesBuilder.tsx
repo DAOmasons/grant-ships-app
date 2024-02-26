@@ -97,7 +97,7 @@ export const MilestoneBuilder = ({ grant }: { grant: DashGrant }) => {
       inputs.map(async (_, index) => {
         const milestoneDetails = formData[`milestone-description-${index + 1}`];
         const formPercentage = Number(formData[`milestone-perc-${index + 1}`]);
-
+        const formDate = Number(formData[`milestone-date-${index + 1}`]);
         if (formPercentage === 0) {
           notifications.show({
             title: 'Error',
@@ -111,7 +111,7 @@ export const MilestoneBuilder = ({ grant }: { grant: DashGrant }) => {
           formPercentage === 0 ? 0 : (formPercentage / 100) * 1e18
         );
 
-        const pinRes = await pinJSONToIPFS({ milestoneDetails });
+        const pinRes = await pinJSONToIPFS({ milestoneDetails, formDate });
 
         if (typeof pinRes.IpfsHash !== 'string' && pinRes.IpfsHash[0] !== 'Q') {
           notifications.show({
