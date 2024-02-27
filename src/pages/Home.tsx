@@ -39,7 +39,13 @@ export const Home = () => {
 
 const Banner = () => {
   return (
-    <Paper h={180} w="100%" p="xl" classNames={{ root: classes.banner }}>
+    <Paper
+      h={180}
+      w="100%"
+      p="xl"
+      mb={-30}
+      classNames={{ root: classes.banner }}
+    >
       <Text fz={24} fw={700} c="white">
         Now Accepting Grant Ships.{' '}
         <Text fz={24} fw={700} component="span">

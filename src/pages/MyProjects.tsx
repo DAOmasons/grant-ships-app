@@ -117,7 +117,7 @@ export const MyProjects = () => {
 
   return (
     <ProjectPageLayout>
-      <PageDescription description="Start by creating a project profile to outline your goals, objectives, and team. Let's bring your ideas to life! Click below to register your project profile." />
+      <PageDescription description="Want to create another project? " />
       <Button
         component={Link}
         to="/create-project"

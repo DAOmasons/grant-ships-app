@@ -79,6 +79,7 @@
   transform: translateY(-2px);
   background: transparent;
 }
+
 .button {
   display: flex;
   align-items: center;

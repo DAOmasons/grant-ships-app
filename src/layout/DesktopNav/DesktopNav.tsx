@@ -1,4 +1,4 @@
-import { Group, Code, Title, useMantineTheme } from '@mantine/core';
+import { Group, Code, Title, useMantineTheme, Tooltip } from '@mantine/core';
 import {
   IconHome,
   IconRocket,
@@ -7,6 +7,7 @@ import {
   IconFileDescription,
   IconShieldHalf,
   IconClock,
+  IconInfoCircle,
 } from '@tabler/icons-react';
 import classes from './DesktoNavStyles.module.css';
 import Logo from '../../assets/Logo.svg';
@@ -102,6 +103,27 @@ export function DesktopNav() {
         </Link>
       );
     }
+
+    if (address && !userData?.projects?.length) {
+      return (
+        <Link to={`/my-projects/${address}`} className={classes.link}>
+          <IconAward
+            className={classes.linkIcon}
+            stroke={1.5}
+            color={theme.colors.blue[5]}
+          />
+          <span>My Projects</span>
+          <Tooltip ml="auto" label={"You don't have any projects yet"}>
+            <IconInfoCircle
+              size={20}
+              color={theme.colors.yellow[8]}
+              style={{ marginLeft: 'auto' }}
+            />
+          </Tooltip>
+        </Link>
+      );
+    }
+
     if (address) {
       return (
         <Link to={`/my-projects/${address}`} className={classes.link}>
