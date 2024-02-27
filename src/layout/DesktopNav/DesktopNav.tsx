@@ -15,6 +15,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 import { useMemo } from 'react';
 import { useUserData } from '../../hooks/useUserState';
+import { useAccount } from 'wagmi';
 
 const data = [
   { link: '/', label: 'Home', icon: IconHome },
@@ -30,7 +31,8 @@ const data = [
 
 export function DesktopNav() {
   const location = useLocation();
-  const { userData } = useUserData();
+  const { userData, userLoading } = useUserData();
+  const { address } = useAccount();
 
   const theme = useMantineTheme();
 
@@ -64,7 +66,7 @@ export function DesktopNav() {
   });
 
   const dashboardLink = useMemo(() => {
-    if (!userData)
+    if (userLoading)
       return (
         <Link to="#" className={classes.link}>
           <IconClock className={classes.linkIcon} stroke={1.5} />
@@ -72,7 +74,7 @@ export function DesktopNav() {
         </Link>
       );
 
-    if (userData.isFacilitator) {
+    if (userData?.isFacilitator) {
       return (
         <Link to="/facilitator-dashboard" className={classes.link}>
           <IconShieldHalf
@@ -85,10 +87,10 @@ export function DesktopNav() {
       );
     }
 
-    if (userData.isShipOperator && userData.shipAddress) {
+    if (userData?.isShipOperator && userData?.shipAddress) {
       return (
         <Link
-          to={`/ship-operator-dashboard/${userData.shipAddress}`}
+          to={`/ship-operator-dashboard/${userData?.shipAddress}`}
           className={classes.link}
         >
           <IconRocket
@@ -99,9 +101,10 @@ export function DesktopNav() {
           <span>Dashboard</span>
         </Link>
       );
-    } else {
+    }
+    if (address) {
       return (
-        <Link to="/my-projects" className={classes.link}>
+        <Link to={`/my-projects/${address}`} className={classes.link}>
           <IconAward
             className={classes.linkIcon}
             stroke={1.5}
@@ -111,7 +114,9 @@ export function DesktopNav() {
         </Link>
       );
     }
-  }, [userData, theme]);
+
+    return null;
+  }, [userData, theme, address, userLoading]);
 
   return (
     <nav className={classes.navbar}>

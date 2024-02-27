@@ -3471,14 +3471,15 @@ export type getShipPoolIdQueryVariables = Exact<{
 
 export type getShipPoolIdQuery = { grantShip?: Maybe<Pick<GrantShip, 'poolId'>> };
 
-export type UserProjectDataFragment = Pick<Project, 'id' | 'name' | 'anchor'>;
-
 export type getUserDataQueryVariables = Exact<{
   id?: InputMaybe<Scalars['Bytes']>;
 }>;
 
 
-export type getUserDataQuery = { projects: Array<Pick<Project, 'id' | 'name' | 'anchor'>> };
+export type getUserDataQuery = { projects: Array<(
+    Pick<Project, 'id' | 'name' | 'profileId' | 'nonce' | 'anchor' | 'owner'>
+    & { metadata: Pick<RawMetadata, 'protocol' | 'pointer'> }
+  )> };
 
 export type projectPageQueryQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -3639,13 +3640,6 @@ export const ShipDashFragmentDoc = gql`
   balance
 }
     ` as unknown as DocumentNode<ShipDashFragment, unknown>;
-export const UserProjectDataFragmentDoc = gql`
-    fragment UserProjectData on Project {
-  id
-  name
-  anchor
-}
-    ` as unknown as DocumentNode<UserProjectDataFragment, unknown>;
 export const ShipCardQueryFragmentDoc = gql`
     fragment ShipCardQuery on GrantShip {
   id
@@ -3794,10 +3788,14 @@ export const getShipPoolIdDocument = gql`
 export const getUserDataDocument = gql`
     query getUserData($id: Bytes) {
   projects(where: {owner: $id}) {
-    ...UserProjectData
+    ...ProjectDetails
+    metadata {
+      ...RawMetadata
+    }
   }
 }
-    ${UserProjectDataFragmentDoc}` as unknown as DocumentNode<getUserDataQuery, getUserDataQueryVariables>;
+    ${ProjectDetailsFragmentDoc}
+${RawMetadataFragmentDoc}` as unknown as DocumentNode<getUserDataQuery, getUserDataQueryVariables>;
 export const projectPageQueryDocument = gql`
     query projectPageQuery($id: ID!) {
   project(id: $id) {

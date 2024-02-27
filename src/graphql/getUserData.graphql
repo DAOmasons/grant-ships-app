@@ -1,11 +1,8 @@
-fragment UserProjectData on Project {
-  id
-  name
-  anchor
-}
-
 query getUserData($id: Bytes) {
   projects(where: { owner: $id }) {
-    ...UserProjectData
+    ...ProjectDetails
+    metadata {
+      ...RawMetadata
+    }
   }
 }
