@@ -13,7 +13,7 @@ import React from 'react';
 
 type AppAlertProps = {
   title: string;
-  description?: string;
+  description?: React.ReactNode;
   icon?: React.ReactNode;
   color?: StyleProp<DefaultMantineColor>;
   bg?: StyleProp<DefaultMantineColor>;
@@ -38,11 +38,12 @@ export const AppAlert = ({
         <Box>{icon}</Box>
         <Box>
           <Text mb={2}>{title}</Text>
-          {description && (
+          {description && typeof description === 'string' && (
             <Text size="xs" opacity={0.8}>
               {description}
             </Text>
           )}
+          {description && typeof description !== 'string' && description}
         </Box>
       </Group>
     </Alert>
