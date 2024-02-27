@@ -2,17 +2,14 @@ import { getBuiltGraphSDK } from '../.graphclient';
 import HatsAbi from '../abi/Hats.json';
 import { HATS } from '../constants/gameSetup';
 import { publicClient } from '../utils/config';
+import { ProjectCardFromQuery } from './getProjectCards';
 
 export type UserData = {
   isFacilitator: boolean;
   isShipOperator: boolean;
   shipAddress?: string;
   shipHatId?: bigint;
-  projects: {
-    name: string;
-    id: string;
-    anchor: string;
-  }[];
+  projects: ProjectCardFromQuery[];
 };
 
 // Todo: Use subgraph once we migrate to Arbitrum
@@ -81,9 +78,14 @@ export const getUserData = async (address: string): Promise<UserData> => {
     const isFacilitator = await checkIsFacilitator(address);
     const isShipOperator = await checkIsShipOperator(address);
 
+    if (!getUserData) {
+      throw new Error('No user data found');
+    }
+
     if (isShipOperator) {
       return {
         ...data,
+        projects: data.projects as ProjectCardFromQuery[],
         isFacilitator,
         isShipOperator: true,
         shipAddress: isShipOperator.shipAddress,
@@ -91,7 +93,12 @@ export const getUserData = async (address: string): Promise<UserData> => {
       };
     }
 
-    return { ...data, isFacilitator, isShipOperator };
+    return {
+      ...data,
+      projects: data.projects as ProjectCardFromQuery[],
+      isFacilitator,
+      isShipOperator,
+    };
   } catch (error) {
     console.error('Error in getUserData', error);
     throw error;

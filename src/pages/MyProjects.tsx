@@ -1,9 +1,7 @@
-import { useQuery } from '@tanstack/react-query';
 import { Link, useParams } from 'react-router-dom';
-import { Box, Button, Text, useMantineTheme } from '@mantine/core';
+import { Box, Button, Skeleton, Text, useMantineTheme } from '@mantine/core';
 import { IconExclamationCircle, IconPlus } from '@tabler/icons-react';
 
-import { getUserProjects } from '../queries/getProjectCards';
 import { ReactNode } from 'react';
 import { MainSection, PageDescription, PageTitle } from '../layout/Sections';
 import {
@@ -11,22 +9,54 @@ import {
   ProjectCardSkeleton,
 } from '../components/projectItems/ProjectCard';
 import { AppAlert } from '../components/UnderContruction';
+import { useUserData } from '../hooks/useUserState';
+import { useQuery } from '@tanstack/react-query';
+import { resolveProjectMetadata } from '../resolvers/projectResolvers';
+import {
+  ProjectCard as ProjectCardType,
+  ProjectCardFromQuery,
+} from '../queries/getProjectCards';
+
+const getUserProjects = async (projects: ProjectCardFromQuery[]) => {
+  const res = await Promise.all(
+    projects.map(async (project) => {
+      const metadata = await resolveProjectMetadata(project.metadata.pointer);
+      return {
+        ...project,
+        metadata: metadata,
+        imgUrl: metadata.imgUrl,
+      } as any as ProjectCardType;
+    })
+  );
+  return res;
+};
 
 export const MyProjects = () => {
   const { id } = useParams();
   const theme = useMantineTheme();
 
+  const { userData, userLoading, userError } = useUserData();
+
   const {
-    data: userProjects,
-    error,
-    isLoading,
+    data: projects,
+    isLoading: projectsLoading,
+    error: projectsError,
   } = useQuery({
     queryKey: [`user-projects-${id}`],
-    queryFn: () => getUserProjects(id as string),
-    enabled: !!id,
+    queryFn: () =>
+      getUserProjects(userData?.projects as ProjectCardFromQuery[]),
+    enabled: !!(userData?.projects?.length || 0 > 0),
   });
 
-  if (isLoading) {
+  if (userLoading) {
+    return (
+      <ProjectPageLayout>
+        <Skeleton w="100%" h={300} mt={80} />
+      </ProjectPageLayout>
+    );
+  }
+
+  if (projectsLoading) {
     return (
       <ProjectPageLayout>
         <ProjectCardSkeleton />
@@ -36,20 +66,33 @@ export const MyProjects = () => {
     );
   }
 
-  if (error || !userProjects) {
+  if (userError || !userData) {
     return (
       <ProjectPageLayout>
         <AppAlert
           icon={<IconExclamationCircle />}
           color={theme.colors.red[6]}
-          title="Error: No projects found for this user."
-          description={error?.message || 'Unknown error.'}
+          title="Error:"
+          description={userError?.message || 'Unknown error.'}
         />
       </ProjectPageLayout>
     );
   }
 
-  if (userProjects.length === 0) {
+  if (projectsError) {
+    return (
+      <ProjectPageLayout>
+        <AppAlert
+          icon={<IconExclamationCircle />}
+          color={theme.colors.red[6]}
+          title="Error:"
+          description={projectsError?.message || 'Unknown error.'}
+        />
+      </ProjectPageLayout>
+    );
+  }
+
+  if (userData.projects.length === 0 || !projects?.length) {
     return (
       <ProjectPageLayout>
         <Box mt={80} py={68} px={25}>
@@ -83,7 +126,7 @@ export const MyProjects = () => {
       >
         Create a Project
       </Button>
-      {userProjects.map((project) => (
+      {projects.map((project) => (
         <ProjectCard key={project.anchor} project={project} />
       ))}
     </ProjectPageLayout>

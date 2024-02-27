@@ -1,4 +1,3 @@
-import React from 'react';
 import { MainSection, PageTitle } from '../layout/Sections';
 import { Box, Button, Text } from '@mantine/core';
 import { Link } from 'react-router-dom';
@@ -10,6 +9,10 @@ export const Apply = () => {
     <MainSection>
       <PageTitle title="Applications" />
       <Box w="100%">
+        <AppAlert
+          title="It looks like you haven't started any projects yet"
+          description="Don't worry, getting started is easy!"
+        />
         <Text fw={600} mb="xs">
           Seeking Funding for your project?
         </Text>

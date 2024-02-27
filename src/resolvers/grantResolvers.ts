@@ -1,6 +1,5 @@
 import { z } from 'zod';
 import {
-  ProjectProfileMetadata,
   ShipProfileMetadata,
   grantApplicationMetadata,
   reasonSchema,
@@ -11,15 +10,12 @@ import { GrantDashFragment } from '../.graphclient';
 import { publicClient } from '../utils/config';
 import GrantShipAbi from '../abi/GrantShip.json';
 import { GrantStatus } from '../types/common';
+import { ProjectMetadata, resolveProjectMetadata } from './projectResolvers';
 
 export type ApplicationMetadata = z.infer<typeof grantApplicationMetadata> & {
   projectId: string;
   receivingAddress: string;
   grantAmount: bigint;
-};
-
-export type ProjectMetadata = z.infer<typeof ProjectProfileMetadata> & {
-  imgUrl: string;
 };
 
 export type ShipProfileMetadata = z.infer<typeof ShipProfileMetadata> & {
@@ -109,27 +105,6 @@ export const resolveFacilitatorReason = async (pointer?: string) => {
   }
 
   return validated.data;
-};
-
-export const resolveProjectMetadata = async (pointer?: string) => {
-  if (!pointer) {
-    console.error('No metadata pointer', pointer);
-    throw new Error('No metadata pointer');
-  }
-
-  const json = await getIpfsJson(pointer);
-
-  const validated = ProjectProfileMetadata.safeParse(json);
-
-  if (!validated.success) {
-    console.error('Invalid metadata', validated.error);
-    throw new Error('Invalid metadata: Data does not match the schema');
-  }
-
-  return {
-    ...validated.data,
-    imgUrl: getGatewayUrl(validated.data.avatarHash_IPFS),
-  };
 };
 
 export const resolveShipMetadata = async (pointer?: string) => {
