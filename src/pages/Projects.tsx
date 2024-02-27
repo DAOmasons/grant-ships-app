@@ -16,24 +16,6 @@ export const Projects = () => {
     queryFn: getProjectCards,
   });
 
-  const PageLayout = ({ children }: { children: ReactNode }) => {
-    return (
-      <MainSection>
-        <PageTitle title="Projects" />
-        <PageDescription description="Start by creating a project profile to outline your goals, objectives, and team. Let's bring your ideas to life! Click below to register your project profile." />
-        <Button
-          component={Link}
-          to="/create-project"
-          mb="xl"
-          leftSection={<IconPlus />}
-        >
-          Create a Project
-        </Button>
-        {children}
-      </MainSection>
-    );
-  };
-
   if (isLoading) {
     return (
       <PageLayout>
@@ -50,5 +32,23 @@ export const Projects = () => {
         <ProjectCard key={project.anchor} project={project} />
       ))}
     </PageLayout>
+  );
+};
+
+const PageLayout = ({ children }: { children: ReactNode }) => {
+  return (
+    <MainSection>
+      <PageTitle title="Projects" />
+      <PageDescription description="Start by creating a project profile to outline your goals, objectives, and team. Let's bring your ideas to life! Click below to register your project profile." />
+      <Button
+        component={Link}
+        to="/create-project"
+        mb="xl"
+        leftSection={<IconPlus />}
+      >
+        Create a Project
+      </Button>
+      {children}
+    </MainSection>
   );
 };

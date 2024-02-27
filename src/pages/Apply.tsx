@@ -1,4 +1,3 @@
-import React from 'react';
 import { MainSection, PageTitle } from '../layout/Sections';
 import { Box, Button, Text } from '@mantine/core';
 import { Link } from 'react-router-dom';

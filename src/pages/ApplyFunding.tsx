@@ -1,10 +1,11 @@
-import { MainSection, PageTitle } from '../layout/Sections';
 import { useMediaQuery } from '@mantine/hooks';
 import {
   Button,
   Flex,
+  Group,
   Loader,
   Select,
+  Text,
   TextInput,
   Textarea,
   em,
@@ -12,14 +13,9 @@ import {
 import { useForm, zodResolver } from '@mantine/form';
 import { IconCalendar, IconExternalLink } from '@tabler/icons-react';
 import { DatePickerInput } from '@mantine/dates';
-import { GAME_TOKEN } from '../constants/gameSetup';
-import { useUserData } from '../hooks/useUserState';
 import { z } from 'zod';
-import { applyFundingSchema } from '../components/forms/validationSchemas/applyFundingSchema';
 import { useAccount } from 'wagmi';
 import { notifications } from '@mantine/notifications';
-import { grantApplicationMetadata } from '../utils/ipfs/metadataValidation';
-import { pinJSONToIPFS } from '../utils/ipfs/pin';
 import {
   Address,
   encodeAbiParameters,
@@ -27,11 +23,19 @@ import {
   parseAbiParameters,
   parseEther,
 } from 'viem';
+import { useParams } from 'react-router-dom';
+
+import { MainSection, PageTitle } from '../layout/Sections';
+import { GAME_TOKEN } from '../constants/gameSetup';
+import { useUserData } from '../hooks/useUserState';
+import { applyFundingSchema } from '../components/forms/validationSchemas/applyFundingSchema';
+import { grantApplicationMetadata } from '../utils/ipfs/metadataValidation';
+import { pinJSONToIPFS } from '../utils/ipfs/pin';
 import { useTx } from '../hooks/useTx';
 import AlloAbi from '../abi/Allo.json';
 import { ADDR } from '../constants/addresses';
 import { getShipPoolId } from '../queries/getShipPoolId';
-import { useParams } from 'react-router-dom';
+import { AppAlert } from '../components/UnderContruction';
 
 const defaultValues = {
   projectId: '',
@@ -186,9 +190,27 @@ export const ApplyFunding = () => {
     }
   };
 
+  const noProjects = !userData?.projects.length && !userLoading;
+
   return (
     <MainSection>
       <PageTitle title="Grant Application" />
+      {noProjects && (
+        <AppAlert
+          mb="xl"
+          title="No Projects Profiles Found"
+          description={
+            <Group gap={0}>
+              <Button size="xs" p={0} h="fit-content" variant="subtle" mr={4}>
+                Create a Project Profile
+              </Button>
+              <Text size="xs" opacity={0.8}>
+                to apply for a grant.
+              </Text>
+            </Group>
+          }
+        />
+      )}
       <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
         <Flex direction={isMobile ? 'column' : 'row'} mb="md">
           <Select
@@ -210,6 +232,7 @@ export const ApplyFunding = () => {
             w="100%"
             label="Expected Delivery"
             required
+            disabled={noProjects}
             placeholder="Date"
             leftSection={<IconCalendar size={16} />}
             {...form.getInputProps('dueDate')}
@@ -221,6 +244,7 @@ export const ApplyFunding = () => {
             w="100%"
             label="Total Amount Requested"
             required
+            disabled={noProjects}
             mb={isMobile ? 'md' : undefined}
             placeholder={GAME_TOKEN.SYMBOL}
             {...form.getInputProps('totalAmount')}
@@ -230,6 +254,7 @@ export const ApplyFunding = () => {
           <TextInput
             w="100%"
             required
+            disabled={noProjects}
             label="Send Address"
             placeholder="0x234..."
             {...form.getInputProps('sendAddress')}
@@ -242,6 +267,7 @@ export const ApplyFunding = () => {
           mb="md"
           label="Grant Objectives"
           autosize
+          disabled={noProjects}
           minRows={4}
           maxRows={8}
           description="A few short, realistic, and preferably measurable objectives for the grant"
@@ -254,6 +280,7 @@ export const ApplyFunding = () => {
             w="100%"
             label="Proposal Link"
             required
+            disabled={noProjects}
             mb={isMobile ? 'md' : undefined}
             leftSection={<IconExternalLink />}
             placeholder={'https://your-proposal.com'}
@@ -264,6 +291,7 @@ export const ApplyFunding = () => {
           <TextInput
             w="100%"
             label="Additional Link"
+            disabled={noProjects}
             leftSection={<IconExternalLink />}
             placeholder="https://more-info.com"
             {...form.getInputProps('extraLink')}
@@ -275,6 +303,7 @@ export const ApplyFunding = () => {
           mb="md"
           label="Additional Information"
           autosize
+          disabled={noProjects}
           minRows={4}
           maxRows={8}
           placeholder="Anything else you would like to add?"
@@ -282,7 +311,7 @@ export const ApplyFunding = () => {
           onBlur={() => handleBlur('extraInfo')}
         />
         <Flex mt="md" justify="flex-end">
-          <Button ml="auto" type="submit">
+          <Button ml="auto" type="submit" disabled={noProjects}>
             Finish Application
           </Button>
         </Flex>

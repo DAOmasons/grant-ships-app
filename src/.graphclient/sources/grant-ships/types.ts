@@ -687,7 +687,7 @@ export type Grant = {
   grantStatus: Scalars['Int'];
   grantApplicationBytes: Scalars['Bytes'];
   milestoneReviewStatus: Scalars['Int'];
-  upcomingMilestone?: Maybe<Scalars['BigInt']>;
+  currentMilestoneIndex?: Maybe<Scalars['BigInt']>;
   milestonesAmount?: Maybe<Scalars['BigInt']>;
   milestones?: Maybe<Array<Milestone>>;
   shipApprovalReason?: Maybe<RawMetadata>;
@@ -697,6 +697,8 @@ export type Grant = {
   allocatedBy?: Maybe<Scalars['Bytes']>;
   facilitatorReason?: Maybe<RawMetadata>;
   hasFacilitatorApproved?: Maybe<Scalars['Boolean']>;
+  milestonesApproved?: Maybe<Scalars['Boolean']>;
+  milestonesApprovedReason?: Maybe<RawMetadata>;
 };
 
 
@@ -1173,14 +1175,14 @@ export type Grant_filter = {
   milestoneReviewStatus_lte?: InputMaybe<Scalars['Int']>;
   milestoneReviewStatus_in?: InputMaybe<Array<Scalars['Int']>>;
   milestoneReviewStatus_not_in?: InputMaybe<Array<Scalars['Int']>>;
-  upcomingMilestone?: InputMaybe<Scalars['BigInt']>;
-  upcomingMilestone_not?: InputMaybe<Scalars['BigInt']>;
-  upcomingMilestone_gt?: InputMaybe<Scalars['BigInt']>;
-  upcomingMilestone_lt?: InputMaybe<Scalars['BigInt']>;
-  upcomingMilestone_gte?: InputMaybe<Scalars['BigInt']>;
-  upcomingMilestone_lte?: InputMaybe<Scalars['BigInt']>;
-  upcomingMilestone_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  upcomingMilestone_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  currentMilestoneIndex?: InputMaybe<Scalars['BigInt']>;
+  currentMilestoneIndex_not?: InputMaybe<Scalars['BigInt']>;
+  currentMilestoneIndex_gt?: InputMaybe<Scalars['BigInt']>;
+  currentMilestoneIndex_lt?: InputMaybe<Scalars['BigInt']>;
+  currentMilestoneIndex_gte?: InputMaybe<Scalars['BigInt']>;
+  currentMilestoneIndex_lte?: InputMaybe<Scalars['BigInt']>;
+  currentMilestoneIndex_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  currentMilestoneIndex_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   milestonesAmount?: InputMaybe<Scalars['BigInt']>;
   milestonesAmount_not?: InputMaybe<Scalars['BigInt']>;
   milestonesAmount_gt?: InputMaybe<Scalars['BigInt']>;
@@ -1272,6 +1274,31 @@ export type Grant_filter = {
   hasFacilitatorApproved_not?: InputMaybe<Scalars['Boolean']>;
   hasFacilitatorApproved_in?: InputMaybe<Array<Scalars['Boolean']>>;
   hasFacilitatorApproved_not_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  milestonesApproved?: InputMaybe<Scalars['Boolean']>;
+  milestonesApproved_not?: InputMaybe<Scalars['Boolean']>;
+  milestonesApproved_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  milestonesApproved_not_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  milestonesApprovedReason?: InputMaybe<Scalars['String']>;
+  milestonesApprovedReason_not?: InputMaybe<Scalars['String']>;
+  milestonesApprovedReason_gt?: InputMaybe<Scalars['String']>;
+  milestonesApprovedReason_lt?: InputMaybe<Scalars['String']>;
+  milestonesApprovedReason_gte?: InputMaybe<Scalars['String']>;
+  milestonesApprovedReason_lte?: InputMaybe<Scalars['String']>;
+  milestonesApprovedReason_in?: InputMaybe<Array<Scalars['String']>>;
+  milestonesApprovedReason_not_in?: InputMaybe<Array<Scalars['String']>>;
+  milestonesApprovedReason_contains?: InputMaybe<Scalars['String']>;
+  milestonesApprovedReason_contains_nocase?: InputMaybe<Scalars['String']>;
+  milestonesApprovedReason_not_contains?: InputMaybe<Scalars['String']>;
+  milestonesApprovedReason_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  milestonesApprovedReason_starts_with?: InputMaybe<Scalars['String']>;
+  milestonesApprovedReason_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  milestonesApprovedReason_not_starts_with?: InputMaybe<Scalars['String']>;
+  milestonesApprovedReason_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  milestonesApprovedReason_ends_with?: InputMaybe<Scalars['String']>;
+  milestonesApprovedReason_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  milestonesApprovedReason_not_ends_with?: InputMaybe<Scalars['String']>;
+  milestonesApprovedReason_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  milestonesApprovedReason_?: InputMaybe<RawMetadata_filter>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
   and?: InputMaybe<Array<InputMaybe<Grant_filter>>>;
@@ -1325,7 +1352,7 @@ export type Grant_orderBy =
   | 'grantStatus'
   | 'grantApplicationBytes'
   | 'milestoneReviewStatus'
-  | 'upcomingMilestone'
+  | 'currentMilestoneIndex'
   | 'milestonesAmount'
   | 'milestones'
   | 'shipApprovalReason'
@@ -1340,7 +1367,12 @@ export type Grant_orderBy =
   | 'facilitatorReason__id'
   | 'facilitatorReason__protocol'
   | 'facilitatorReason__pointer'
-  | 'hasFacilitatorApproved';
+  | 'hasFacilitatorApproved'
+  | 'milestonesApproved'
+  | 'milestonesApprovedReason'
+  | 'milestonesApprovedReason__id'
+  | 'milestonesApprovedReason__protocol'
+  | 'milestonesApprovedReason__pointer';
 
 export type Log = {
   id: Scalars['ID'];

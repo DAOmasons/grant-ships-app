@@ -12,6 +12,7 @@ import { Ship } from './pages/Ship';
 import { ApplyFunding } from './pages/ApplyFunding';
 import { Facilitators } from './pages/Faciltiators';
 import { ShipOpDashboard } from './pages/ShipOpDashboard';
+import { MyProjects } from './pages/MyProjects';
 
 export const ClientRoutes = () => {
   return (
@@ -29,6 +30,7 @@ export const ClientRoutes = () => {
       <Route path="facilitators" element={<Facilitators />} />
       <Route path="facilitator-dashboard" element={<FacilitatorDashboard />} />
       <Route path="ship-operator-dashboard/:id" element={<ShipOpDashboard />} />
+      <Route path="my-projects/:id" element={<MyProjects />} />
     </Routes>
   );
 };

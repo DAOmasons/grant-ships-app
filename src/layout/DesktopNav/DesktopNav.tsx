@@ -1,4 +1,4 @@
-import { Group, Code, Title, useMantineTheme } from '@mantine/core';
+import { Group, Code, Title, useMantineTheme, Tooltip } from '@mantine/core';
 import {
   IconHome,
   IconRocket,
@@ -7,6 +7,7 @@ import {
   IconFileDescription,
   IconShieldHalf,
   IconClock,
+  IconInfoCircle,
 } from '@tabler/icons-react';
 import classes from './DesktoNavStyles.module.css';
 import Logo from '../../assets/Logo.svg';
@@ -15,6 +16,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 import { useMemo } from 'react';
 import { useUserData } from '../../hooks/useUserState';
+import { useAccount } from 'wagmi';
 
 const data = [
   { link: '/', label: 'Home', icon: IconHome },
@@ -30,7 +32,8 @@ const data = [
 
 export function DesktopNav() {
   const location = useLocation();
-  const { userData } = useUserData();
+  const { userData, userLoading } = useUserData();
+  const { address } = useAccount();
 
   const theme = useMantineTheme();
 
@@ -64,7 +67,7 @@ export function DesktopNav() {
   });
 
   const dashboardLink = useMemo(() => {
-    if (!userData)
+    if (userLoading)
       return (
         <Link to="#" className={classes.link}>
           <IconClock className={classes.linkIcon} stroke={1.5} />
@@ -72,7 +75,7 @@ export function DesktopNav() {
         </Link>
       );
 
-    if (userData.isFacilitator) {
+    if (userData?.isFacilitator) {
       return (
         <Link to="/facilitator-dashboard" className={classes.link}>
           <IconShieldHalf
@@ -85,10 +88,10 @@ export function DesktopNav() {
       );
     }
 
-    if (userData.isShipOperator && userData.shipAddress) {
+    if (userData?.isShipOperator && userData?.shipAddress) {
       return (
         <Link
-          to={`/ship-operator-dashboard/${userData.shipAddress}`}
+          to={`/ship-operator-dashboard/${userData?.shipAddress}`}
           className={classes.link}
         >
           <IconRocket
@@ -99,9 +102,31 @@ export function DesktopNav() {
           <span>Dashboard</span>
         </Link>
       );
-    } else {
+    }
+
+    if (address && !userData?.projects?.length) {
       return (
-        <Link to="/my-projects" className={classes.link}>
+        <Link to={`/my-projects/${address}`} className={classes.link}>
+          <IconAward
+            className={classes.linkIcon}
+            stroke={1.5}
+            color={theme.colors.blue[5]}
+          />
+          <span>My Projects</span>
+          <Tooltip ml="auto" label={"You don't have any projects yet"}>
+            <IconInfoCircle
+              size={20}
+              color={theme.colors.yellow[8]}
+              style={{ marginLeft: 'auto' }}
+            />
+          </Tooltip>
+        </Link>
+      );
+    }
+
+    if (address) {
+      return (
+        <Link to={`/my-projects/${address}`} className={classes.link}>
           <IconAward
             className={classes.linkIcon}
             stroke={1.5}
@@ -111,7 +136,9 @@ export function DesktopNav() {
         </Link>
       );
     }
-  }, [userData, theme]);
+
+    return null;
+  }, [userData, theme, address, userLoading]);
 
   return (
     <nav className={classes.navbar}>
