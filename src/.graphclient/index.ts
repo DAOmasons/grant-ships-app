@@ -709,7 +709,7 @@ export type Grant = {
   grantStatus: Scalars['Int'];
   grantApplicationBytes: Scalars['Bytes'];
   milestoneReviewStatus: Scalars['Int'];
-  upcomingMilestone?: Maybe<Scalars['BigInt']>;
+  currentMilestoneIndex?: Maybe<Scalars['BigInt']>;
   milestonesAmount?: Maybe<Scalars['BigInt']>;
   milestones?: Maybe<Array<Milestone>>;
   shipApprovalReason?: Maybe<RawMetadata>;
@@ -719,6 +719,8 @@ export type Grant = {
   allocatedBy?: Maybe<Scalars['Bytes']>;
   facilitatorReason?: Maybe<RawMetadata>;
   hasFacilitatorApproved?: Maybe<Scalars['Boolean']>;
+  milestonesApproved?: Maybe<Scalars['Boolean']>;
+  milestonesApprovedReason?: Maybe<RawMetadata>;
 };
 
 
@@ -1195,14 +1197,14 @@ export type Grant_filter = {
   milestoneReviewStatus_lte?: InputMaybe<Scalars['Int']>;
   milestoneReviewStatus_in?: InputMaybe<Array<Scalars['Int']>>;
   milestoneReviewStatus_not_in?: InputMaybe<Array<Scalars['Int']>>;
-  upcomingMilestone?: InputMaybe<Scalars['BigInt']>;
-  upcomingMilestone_not?: InputMaybe<Scalars['BigInt']>;
-  upcomingMilestone_gt?: InputMaybe<Scalars['BigInt']>;
-  upcomingMilestone_lt?: InputMaybe<Scalars['BigInt']>;
-  upcomingMilestone_gte?: InputMaybe<Scalars['BigInt']>;
-  upcomingMilestone_lte?: InputMaybe<Scalars['BigInt']>;
-  upcomingMilestone_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  upcomingMilestone_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  currentMilestoneIndex?: InputMaybe<Scalars['BigInt']>;
+  currentMilestoneIndex_not?: InputMaybe<Scalars['BigInt']>;
+  currentMilestoneIndex_gt?: InputMaybe<Scalars['BigInt']>;
+  currentMilestoneIndex_lt?: InputMaybe<Scalars['BigInt']>;
+  currentMilestoneIndex_gte?: InputMaybe<Scalars['BigInt']>;
+  currentMilestoneIndex_lte?: InputMaybe<Scalars['BigInt']>;
+  currentMilestoneIndex_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  currentMilestoneIndex_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   milestonesAmount?: InputMaybe<Scalars['BigInt']>;
   milestonesAmount_not?: InputMaybe<Scalars['BigInt']>;
   milestonesAmount_gt?: InputMaybe<Scalars['BigInt']>;
@@ -1294,6 +1296,31 @@ export type Grant_filter = {
   hasFacilitatorApproved_not?: InputMaybe<Scalars['Boolean']>;
   hasFacilitatorApproved_in?: InputMaybe<Array<Scalars['Boolean']>>;
   hasFacilitatorApproved_not_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  milestonesApproved?: InputMaybe<Scalars['Boolean']>;
+  milestonesApproved_not?: InputMaybe<Scalars['Boolean']>;
+  milestonesApproved_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  milestonesApproved_not_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  milestonesApprovedReason?: InputMaybe<Scalars['String']>;
+  milestonesApprovedReason_not?: InputMaybe<Scalars['String']>;
+  milestonesApprovedReason_gt?: InputMaybe<Scalars['String']>;
+  milestonesApprovedReason_lt?: InputMaybe<Scalars['String']>;
+  milestonesApprovedReason_gte?: InputMaybe<Scalars['String']>;
+  milestonesApprovedReason_lte?: InputMaybe<Scalars['String']>;
+  milestonesApprovedReason_in?: InputMaybe<Array<Scalars['String']>>;
+  milestonesApprovedReason_not_in?: InputMaybe<Array<Scalars['String']>>;
+  milestonesApprovedReason_contains?: InputMaybe<Scalars['String']>;
+  milestonesApprovedReason_contains_nocase?: InputMaybe<Scalars['String']>;
+  milestonesApprovedReason_not_contains?: InputMaybe<Scalars['String']>;
+  milestonesApprovedReason_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  milestonesApprovedReason_starts_with?: InputMaybe<Scalars['String']>;
+  milestonesApprovedReason_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  milestonesApprovedReason_not_starts_with?: InputMaybe<Scalars['String']>;
+  milestonesApprovedReason_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  milestonesApprovedReason_ends_with?: InputMaybe<Scalars['String']>;
+  milestonesApprovedReason_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  milestonesApprovedReason_not_ends_with?: InputMaybe<Scalars['String']>;
+  milestonesApprovedReason_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  milestonesApprovedReason_?: InputMaybe<RawMetadata_filter>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
   and?: InputMaybe<Array<InputMaybe<Grant_filter>>>;
@@ -1347,7 +1374,7 @@ export type Grant_orderBy =
   | 'grantStatus'
   | 'grantApplicationBytes'
   | 'milestoneReviewStatus'
-  | 'upcomingMilestone'
+  | 'currentMilestoneIndex'
   | 'milestonesAmount'
   | 'milestones'
   | 'shipApprovalReason'
@@ -1362,7 +1389,12 @@ export type Grant_orderBy =
   | 'facilitatorReason__id'
   | 'facilitatorReason__protocol'
   | 'facilitatorReason__pointer'
-  | 'hasFacilitatorApproved';
+  | 'hasFacilitatorApproved'
+  | 'milestonesApproved'
+  | 'milestonesApprovedReason'
+  | 'milestonesApprovedReason__id'
+  | 'milestonesApprovedReason__protocol'
+  | 'milestonesApprovedReason__pointer';
 
 export type Log = {
   id: Scalars['ID'];
@@ -2816,7 +2848,7 @@ export type GrantResolvers<ContextType = MeshContext, ParentType extends Resolve
   grantStatus?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   grantApplicationBytes?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
   milestoneReviewStatus?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  upcomingMilestone?: Resolver<Maybe<ResolversTypes['BigInt']>, ParentType, ContextType>;
+  currentMilestoneIndex?: Resolver<Maybe<ResolversTypes['BigInt']>, ParentType, ContextType>;
   milestonesAmount?: Resolver<Maybe<ResolversTypes['BigInt']>, ParentType, ContextType>;
   milestones?: Resolver<Maybe<Array<ResolversTypes['Milestone']>>, ParentType, ContextType, RequireFields<GrantmilestonesArgs, 'skip' | 'first'>>;
   shipApprovalReason?: Resolver<Maybe<ResolversTypes['RawMetadata']>, ParentType, ContextType>;
@@ -2826,6 +2858,8 @@ export type GrantResolvers<ContextType = MeshContext, ParentType extends Resolve
   allocatedBy?: Resolver<Maybe<ResolversTypes['Bytes']>, ParentType, ContextType>;
   facilitatorReason?: Resolver<Maybe<ResolversTypes['RawMetadata']>, ParentType, ContextType>;
   hasFacilitatorApproved?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  milestonesApproved?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  milestonesApprovedReason?: Resolver<Maybe<ResolversTypes['RawMetadata']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -3163,6 +3197,12 @@ const merger = new(BareMerger as any)({
         },
         location: 'GetProjectsDocument.graphql'
       },{
+        document: GetUserProjectsDocument,
+        get rawSDL() {
+          return printWithCache(GetUserProjectsDocument);
+        },
+        location: 'GetUserProjectsDocument.graphql'
+      },{
         document: GetRecentTransactionDocument,
         get rawSDL() {
           return printWithCache(GetRecentTransactionDocument);
@@ -3271,14 +3311,14 @@ export type getFacilitatorGrantsQueryVariables = Exact<{ [key: string]: never; }
 
 
 export type getFacilitatorGrantsQuery = { grants: Array<(
-    Pick<Grant, 'id' | 'grantApplicationBytes' | 'lastUpdated' | 'grantStatus' | 'milestonesAmount'>
+    Pick<Grant, 'id' | 'grantApplicationBytes' | 'lastUpdated' | 'grantStatus' | 'milestonesAmount' | 'milestonesApproved'>
     & { projectId: (
       Pick<Project, 'id' | 'name'>
       & { metadata: Pick<RawMetadata, 'pointer'> }
     ), shipId: (
       Pick<GrantShip, 'id' | 'name' | 'shipContractAddress' | 'poolId'>
       & { profileMetadata: Pick<RawMetadata, 'pointer'> }
-    ), facilitatorReason?: Maybe<Pick<RawMetadata, 'pointer'>>, shipApprovalReason?: Maybe<Pick<RawMetadata, 'pointer'>> }
+    ), milestonesApprovedReason?: Maybe<Pick<RawMetadata, 'pointer'>>, facilitatorReason?: Maybe<Pick<RawMetadata, 'pointer'>>, shipApprovalReason?: Maybe<Pick<RawMetadata, 'pointer'>> }
   )> };
 
 export type FeedDataFragment = (
@@ -3343,14 +3383,14 @@ export type getProjectGrantsQueryVariables = Exact<{
 
 
 export type getProjectGrantsQuery = { project?: Maybe<{ grants: Array<(
-      Pick<Grant, 'id' | 'grantApplicationBytes' | 'lastUpdated' | 'grantStatus' | 'milestonesAmount'>
+      Pick<Grant, 'id' | 'grantApplicationBytes' | 'lastUpdated' | 'grantStatus' | 'milestonesAmount' | 'milestonesApproved'>
       & { projectId: (
         Pick<Project, 'id' | 'name'>
         & { metadata: Pick<RawMetadata, 'pointer'> }
       ), shipId: (
         Pick<GrantShip, 'id' | 'name' | 'shipContractAddress' | 'poolId'>
         & { profileMetadata: Pick<RawMetadata, 'pointer'> }
-      ), facilitatorReason?: Maybe<Pick<RawMetadata, 'pointer'>>, shipApprovalReason?: Maybe<Pick<RawMetadata, 'pointer'>> }
+      ), milestonesApprovedReason?: Maybe<Pick<RawMetadata, 'pointer'>>, facilitatorReason?: Maybe<Pick<RawMetadata, 'pointer'>>, shipApprovalReason?: Maybe<Pick<RawMetadata, 'pointer'>> }
     )> }> };
 
 export type ProjectDetailsFragment = Pick<Project, 'id' | 'name' | 'profileId' | 'nonce' | 'anchor' | 'owner'>;
@@ -3361,6 +3401,16 @@ export type GetProjectsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetProjectsQuery = { projects: Array<(
+    Pick<Project, 'id' | 'name' | 'profileId' | 'nonce' | 'anchor' | 'owner'>
+    & { metadata: Pick<RawMetadata, 'protocol' | 'pointer'> }
+  )> };
+
+export type GetUserProjectsQueryVariables = Exact<{
+  id: Scalars['Bytes'];
+}>;
+
+
+export type GetUserProjectsQuery = { projects: Array<(
     Pick<Project, 'id' | 'name' | 'profileId' | 'nonce' | 'anchor' | 'owner'>
     & { metadata: Pick<RawMetadata, 'protocol' | 'pointer'> }
   )> };
@@ -3380,14 +3430,14 @@ export type getShipIdByHatIdQueryVariables = Exact<{
 export type getShipIdByHatIdQuery = { grantShips: Array<Pick<GrantShip, 'id'>> };
 
 export type GrantDashFragment = (
-  Pick<Grant, 'id' | 'grantApplicationBytes' | 'lastUpdated' | 'grantStatus' | 'milestonesAmount'>
+  Pick<Grant, 'id' | 'grantApplicationBytes' | 'lastUpdated' | 'grantStatus' | 'milestonesAmount' | 'milestonesApproved'>
   & { projectId: (
     Pick<Project, 'id' | 'name'>
     & { metadata: Pick<RawMetadata, 'pointer'> }
   ), shipId: (
     Pick<GrantShip, 'id' | 'name' | 'shipContractAddress' | 'poolId'>
     & { profileMetadata: Pick<RawMetadata, 'pointer'> }
-  ), facilitatorReason?: Maybe<Pick<RawMetadata, 'pointer'>>, shipApprovalReason?: Maybe<Pick<RawMetadata, 'pointer'>> }
+  ), milestonesApprovedReason?: Maybe<Pick<RawMetadata, 'pointer'>>, facilitatorReason?: Maybe<Pick<RawMetadata, 'pointer'>>, shipApprovalReason?: Maybe<Pick<RawMetadata, 'pointer'>> }
 );
 
 export type ShipDashFragment = (
@@ -3403,14 +3453,14 @@ export type getShipDashQueryVariables = Exact<{
 export type getShipDashQuery = { grantShip?: Maybe<(
     Pick<GrantShip, 'id' | 'name' | 'status' | 'hatId' | 'shipContractAddress' | 'shipApplicationBytesData' | 'owner' | 'balance'>
     & { grants: Array<(
-      Pick<Grant, 'id' | 'grantApplicationBytes' | 'lastUpdated' | 'grantStatus' | 'milestonesAmount'>
+      Pick<Grant, 'id' | 'grantApplicationBytes' | 'lastUpdated' | 'grantStatus' | 'milestonesAmount' | 'milestonesApproved'>
       & { projectId: (
         Pick<Project, 'id' | 'name'>
         & { metadata: Pick<RawMetadata, 'pointer'> }
       ), shipId: (
         Pick<GrantShip, 'id' | 'name' | 'shipContractAddress' | 'poolId'>
         & { profileMetadata: Pick<RawMetadata, 'pointer'> }
-      ), facilitatorReason?: Maybe<Pick<RawMetadata, 'pointer'>>, shipApprovalReason?: Maybe<Pick<RawMetadata, 'pointer'>> }
+      ), milestonesApprovedReason?: Maybe<Pick<RawMetadata, 'pointer'>>, facilitatorReason?: Maybe<Pick<RawMetadata, 'pointer'>>, shipApprovalReason?: Maybe<Pick<RawMetadata, 'pointer'>> }
     )>, profileMetadata: Pick<RawMetadata, 'pointer'> }
   )> };
 
@@ -3562,6 +3612,10 @@ export const GrantDashFragmentDoc = gql`
       pointer
     }
   }
+  milestonesApproved
+  milestonesApprovedReason {
+    pointer
+  }
   facilitatorReason {
     pointer
   }
@@ -3694,6 +3748,17 @@ export const GetProjectsDocument = gql`
 }
     ${ProjectDetailsFragmentDoc}
 ${RawMetadataFragmentDoc}` as unknown as DocumentNode<GetProjectsQuery, GetProjectsQueryVariables>;
+export const GetUserProjectsDocument = gql`
+    query GetUserProjects($id: Bytes!) {
+  projects(where: {owner: $id}) {
+    ...ProjectDetails
+    metadata {
+      ...RawMetadata
+    }
+  }
+}
+    ${ProjectDetailsFragmentDoc}
+${RawMetadataFragmentDoc}` as unknown as DocumentNode<GetUserProjectsQuery, GetUserProjectsQueryVariables>;
 export const getRecentTransactionDocument = gql`
     query getRecentTransaction($txHash: ID!) {
   transaction(id: $txHash) {
@@ -3792,6 +3857,7 @@ export const ShipsPageQueryDocument = gql`
 
 
 
+
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
@@ -3815,6 +3881,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetProjects(variables?: GetProjectsQueryVariables, options?: C): Promise<GetProjectsQuery> {
       return requester<GetProjectsQuery, GetProjectsQueryVariables>(GetProjectsDocument, variables, options) as Promise<GetProjectsQuery>;
+    },
+    GetUserProjects(variables: GetUserProjectsQueryVariables, options?: C): Promise<GetUserProjectsQuery> {
+      return requester<GetUserProjectsQuery, GetUserProjectsQueryVariables>(GetUserProjectsDocument, variables, options) as Promise<GetUserProjectsQuery>;
     },
     getRecentTransaction(variables: getRecentTransactionQueryVariables, options?: C): Promise<getRecentTransactionQuery> {
       return requester<getRecentTransactionQuery, getRecentTransactionQueryVariables>(getRecentTransactionDocument, variables, options) as Promise<getRecentTransactionQuery>;

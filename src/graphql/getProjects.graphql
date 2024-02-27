@@ -20,3 +20,12 @@ query GetProjects {
     }
   }
 }
+
+query GetUserProjects($id: Bytes!) {
+  projects(where: { owner: $id }) {
+    ...ProjectDetails
+    metadata {
+      ...RawMetadata
+    }
+  }
+}

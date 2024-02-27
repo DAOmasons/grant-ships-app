@@ -51,3 +51,20 @@ export const getProjectCards = async () => {
     throw new Error(error?.mesasge || 'Error fetching projects');
   }
 };
+
+export const getUserProjects = async (userId: string) => {
+  try {
+    const { GetUserProjects } = getBuiltGraphSDK();
+
+    const { projects } = await GetUserProjects({ id: userId });
+
+    const resolvedProjects = await Promise.all(
+      projects?.map((project) => projectMetadataResolver(project))
+    );
+
+    return resolvedProjects as ProjectCard[];
+  } catch (error: any) {
+    console.error(error);
+    throw new Error(error?.mesasge || 'Error fetching projects');
+  }
+};
