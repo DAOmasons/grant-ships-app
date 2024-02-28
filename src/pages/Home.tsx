@@ -47,14 +47,14 @@ const Banner = () => {
       classNames={{ root: classes.banner }}
     >
       <Text fz={24} fw={700} c="white">
-        Now Accepting Grant Ships.{' '}
+        Now Accepting Grantees.{' '}
         <Text fz={24} fw={700} component="span">
           Submit your application today.{' '}
         </Text>
       </Text>
       <Group mt="md">
-        <Button component={Link} to="create-ship">
-          Submit Grant Ship Application
+        <Button component={Link} to="create-project">
+          Create a Project
         </Button>
         <Button
           component="a"
