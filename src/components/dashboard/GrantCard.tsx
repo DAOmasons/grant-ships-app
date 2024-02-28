@@ -165,14 +165,14 @@ export const GrantCard = ({
                 currentStage,
                 GrantStatus.MilestoneSubmitted,
                 GrantStatus.MilestoneRejected,
-                GrantStatus.MilestoneApproved,
+                GrantStatus.Completed,
                 4,
                 theme,
                 {
-                  onNotStarted: <Text fz="sm">Milestone Process</Text>,
-                  onPending: <Text fz="sm">Milestone Pending</Text>,
-                  onRejected: <Text fz="sm">Milestone Rejected</Text>,
-                  onCompleted: <Text fz="sm">Milestone Approved</Text>,
+                  onNotStarted: <MilestoneSubmission grant={grant} />,
+                  onPending: <MilestoneSubmission grant={grant} />,
+                  onRejected: <MilestoneSubmission grant={grant} />,
+                  onCompleted: <MilestoneSubmission grant={grant} />,
                 }
               ) || {})}
             />
@@ -200,5 +200,62 @@ export const GrantCard = ({
         </Box>
       </Flex>
     </Paper>
+  );
+};
+
+const MilestoneSubmission = ({ grant }: { grant: DashGrant }) => {
+  if (
+    !grant.milestones ||
+    grant.milestones.length === 0 ||
+    !grant.currentMilestoneIndex
+  ) {
+    return <Text fz="sm">No Milestones Found</Text>;
+  }
+
+  const currentMilestone = grant.milestones[grant.currentMilestoneIndex];
+
+  console.log('currentMilestone', currentMilestone);
+
+  if (grant.grantStatus === GrantStatus.MilestonesApproved) {
+    return (
+      <Text fz="sm">
+        Awaiting Milestone ({Number(grant.currentMilestoneIndex) + 1}/
+        {grant.milestones?.length})
+      </Text>
+    );
+  }
+
+  if (grant.grantStatus === GrantStatus.MilestoneSubmitted) {
+    return (
+      <Text fz="sm">
+        Milestone ({Number(grant.currentMilestoneIndex) + 1}/
+        {grant.milestones?.length}) Submitted
+      </Text>
+    );
+  }
+
+  if (grant.grantStatus === GrantStatus.MilestoneRejected) {
+    return (
+      <Text fz="sm">
+        Milestone ({Number(grant.currentMilestoneIndex) + 1}/
+        {grant.milestones?.length}) Rejected
+      </Text>
+    );
+  }
+
+  if (grant.grantStatus === GrantStatus.MilestoneApproved) {
+    return (
+      <Text fz="sm">
+        Milestone ({Number(grant.currentMilestoneIndex) + 1}/
+        {grant.milestones?.length}) Approved
+      </Text>
+    );
+  }
+
+  return (
+    <Text fz="sm">
+      Milestone ({Number(grant.currentMilestoneIndex) + 1}/
+      {grant.milestones?.length})
+    </Text>
   );
 };

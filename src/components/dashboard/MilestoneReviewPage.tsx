@@ -1,5 +1,4 @@
 import {
-  Alert,
   Button,
   Flex,
   Skeleton,
@@ -15,7 +14,7 @@ import { useQuery } from '@tanstack/react-query';
 import { useAccount } from 'wagmi';
 import { useTx } from '../../hooks/useTx';
 import { useState } from 'react';
-import { isAddress } from 'viem';
+import { formatEther, isAddress } from 'viem';
 import { pinJSONToIPFS } from '../../utils/ipfs/pin';
 import { notifications } from '@mantine/notifications';
 import { AlloStatus, GrantStatus } from '../../types/common';
@@ -24,12 +23,13 @@ import GrantShipAbi from '../../abi/GrantShip.json';
 import { getIpfsJson } from '../../utils/ipfs/get';
 import { IconCheck } from '@tabler/icons-react';
 import { IconX } from '@tabler/icons-react';
+import { GAME_TOKEN } from '../../constants/gameSetup';
 
 const resolveMilestoneMetadata = async (milestone: PackedMilestoneData) => {
   const res = await getIpfsJson(milestone.metadata.pointer);
 
   return {
-    ...res,
+    ...milestone,
     milestoneDetails: res?.milestoneDetails || null,
     date: res?.date || null,
   };
@@ -64,6 +64,8 @@ export const MilestoneReviewPage = ({
     queryFn: () => unpackMilestones(grant.milestones as PackedMilestoneData[]),
     enabled: !!grant.milestones && opened,
   });
+
+  console.log('milestones', milestones);
 
   const { address } = useAccount();
   const { tx } = useTx();
@@ -182,9 +184,15 @@ export const MilestoneReviewPage = ({
           'DIVIDER',
           ...milestones.map((milestone, index) => {
             return {
-              subtitle: `Milestone ${index + 1}`,
+              subtitle: `Milestone ${index + 1} `,
               content: (
                 <Stack gap="xs">
+                  <Text fz="xs" opacity={0.8} mt={-8}>
+                    Percentage of total grant:{' '}
+                    {formatEther((milestone?.amountPercentage || 0n) * 100n)}% (
+                    {formatEther(grant.applicationData.grantAmount)}{' '}
+                    {GAME_TOKEN.SYMBOL})
+                  </Text>
                   <Text>{milestone.milestoneDetails}</Text>
                   {milestone.date && (
                     <Text>{secondsToLongDate(milestone.date)}</Text>

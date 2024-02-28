@@ -21,6 +21,7 @@ fragment GrantDash on Grant {
     }
   }
   milestonesApproved
+  currentMilestoneIndex
   milestonesApprovedReason {
     pointer
   }
