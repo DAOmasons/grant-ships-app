@@ -1,10 +1,13 @@
 import {
+  Box,
   Button,
+  Divider,
   Flex,
   Skeleton,
   Stack,
   Text,
   Textarea,
+  Timeline,
   useMantineTheme,
 } from '@mantine/core';
 import { secondsToLongDate } from '../../utils/time';
@@ -21,9 +24,14 @@ import { AlloStatus, GrantStatus } from '../../types/common';
 import { AppAlert } from '../UnderContruction';
 import GrantShipAbi from '../../abi/GrantShip.json';
 import { getIpfsJson } from '../../utils/ipfs/get';
-import { IconCheck } from '@tabler/icons-react';
+import { IconCheck, IconEye } from '@tabler/icons-react';
 import { IconX } from '@tabler/icons-react';
 import { GAME_TOKEN } from '../../constants/gameSetup';
+
+type UnpackedMilestoneData = PackedMilestoneData & {
+  milestoneDetails: string | null;
+  date: number | null;
+};
 
 const resolveMilestoneMetadata = async (milestone: PackedMilestoneData) => {
   const res = await getIpfsJson(milestone.metadata.pointer);
@@ -46,6 +54,7 @@ export const MilestoneReviewPage = ({
   grant,
   opened,
   isShipOperator,
+  isProjectMember,
   handleClose,
   view,
 }: {
@@ -53,6 +62,7 @@ export const MilestoneReviewPage = ({
   grant: DashGrant;
   opened: boolean;
   isShipOperator?: boolean;
+  isProjectMember?: boolean;
   handleClose: () => void;
 }) => {
   const {
@@ -64,8 +74,6 @@ export const MilestoneReviewPage = ({
     queryFn: () => unpackMilestones(grant.milestones as PackedMilestoneData[]),
     enabled: !!grant.milestones && opened,
   });
-
-  console.log('milestones', milestones);
 
   const { address } = useAccount();
   const { tx } = useTx();
@@ -182,30 +190,20 @@ export const MilestoneReviewPage = ({
         title="Grant Milestones"
         sections={[
           'DIVIDER',
-          ...milestones.map((milestone, index) => {
-            return {
-              subtitle: `Milestone ${index + 1} `,
-              content: (
-                <Stack gap="xs">
-                  <Text fz="xs" opacity={0.8} mt={-8}>
-                    Percentage of total grant:{' '}
-                    {formatEther((milestone?.amountPercentage || 0n) * 100n)}% (
-                    {formatEther(grant.applicationData.grantAmount)}{' '}
-                    {GAME_TOKEN.SYMBOL})
-                  </Text>
-                  <Text>{milestone.milestoneDetails}</Text>
-                  {milestone.date && (
-                    <Text>{secondsToLongDate(milestone.date)}</Text>
-                  )}
-                </Stack>
-              ),
-            };
-          }),
           {
-            subtitle: 'Milestone Approval',
-            content: reasonDisplay,
+            subtitle: ' ',
+            content: (
+              <MilestoneTimeline
+                milestones={milestones}
+                grant={grant}
+                view={view}
+                isShipOperator={isShipOperator}
+                isProjectMember={isProjectMember}
+              />
+            ),
           },
         ]}
+        footerSection={reasonDisplay}
       />
     );
   }
@@ -220,19 +218,18 @@ export const MilestoneReviewPage = ({
         title="Grant Milestones"
         sections={[
           'DIVIDER',
-          ...milestones.map((milestone, index) => {
-            return {
-              subtitle: `Milestone ${index + 1}`,
-              content: (
-                <Stack gap="xs">
-                  <Text>{milestone.milestoneDetails}</Text>
-                  {milestone.date && (
-                    <Text>{secondsToLongDate(milestone.date)}</Text>
-                  )}
-                </Stack>
-              ),
-            };
-          }),
+          {
+            subtitle: ' ',
+            content: (
+              <MilestoneTimeline
+                milestones={milestones}
+                grant={grant}
+                view={view}
+                isShipOperator={isShipOperator}
+                isProjectMember={isProjectMember}
+              />
+            ),
+          },
         ]}
         footerSection={
           <>
@@ -273,25 +270,182 @@ export const MilestoneReviewPage = ({
       />
     );
   }
+
   return (
     <ReviewPage
       title="Grant Milestones"
       sections={[
         'DIVIDER',
-        ...milestones.map((milestone, index) => {
-          return {
-            subtitle: `Milestone ${index + 1}`,
-            content: (
-              <Stack gap="xs">
-                <Text>{milestone.milestoneDetails}</Text>
-                {milestone.date && (
-                  <Text>{secondsToLongDate(milestone.date)}</Text>
-                )}
-              </Stack>
-            ),
-          };
-        }),
+        {
+          subtitle: ' ',
+          content: (
+            <MilestoneTimeline
+              milestones={milestones}
+              grant={grant}
+              view={view}
+              isShipOperator={isShipOperator}
+              isProjectMember={isProjectMember}
+            />
+          ),
+        },
       ]}
     />
   );
+};
+
+const MilestoneTimeline = ({
+  milestones,
+  grant,
+  view,
+  isShipOperator,
+  isProjectMember,
+}: {
+  isProjectMember?: boolean;
+  isShipOperator?: boolean;
+  view: 'project-page' | 'ship-dash';
+  milestones: UnpackedMilestoneData[];
+  grant: DashGrant;
+}) => {
+  const theme = useMantineTheme();
+  return (
+    <Timeline bulletSize={32} lineWidth={2} active={milestones?.length - 1}>
+      {milestones.map((milestone, index) => {
+        const milestoneStatus = milestone.milestoneStatus;
+        const isCurrentMilestone =
+          index === Number(grant.currentMilestoneIndex);
+
+        return (
+          <Timeline.Item
+            key={`milestone-${index}`}
+            bullet={
+              milestoneStatus === AlloStatus.Accepted ? (
+                <IconCheck />
+              ) : milestoneStatus === AlloStatus.Rejected ? (
+                <IconX />
+              ) : milestoneStatus === AlloStatus.Pending ? (
+                <IconEye />
+              ) : (
+                index + 1
+              )
+            }
+            color={
+              milestoneStatus === AlloStatus.Accepted
+                ? theme.colors.blue[6]
+                : milestoneStatus === AlloStatus.Pending
+                  ? theme.colors.violet[6]
+                  : milestoneStatus === AlloStatus.Rejected
+                    ? theme.colors.pink[6]
+                    : theme.colors.dark[5]
+            }
+          >
+            <Text mb={2}>
+              Milestone{' '}
+              {milestoneStatus === AlloStatus.Accepted
+                ? 'Approved'
+                : milestoneStatus === AlloStatus.Rejected
+                  ? 'Rejected'
+                  : milestoneStatus === AlloStatus.Pending
+                    ? 'In Review'
+                    : index + 1}
+            </Text>
+            <Text mb="xs" size="xs" opacity={0.8}>
+              Payment Percentage:{' '}
+              {formatEther((milestone.amountPercentage || 0n) * 100n)}% (
+              {formatEther(
+                (grant.applicationData.grantAmount *
+                  milestone.amountPercentage) /
+                  1000000000000000000n
+              )}{' '}
+              {GAME_TOKEN.SYMBOL})
+            </Text>
+            {milestone.date && (
+              <Text mb="xs" size="xs" opacity={0.8}>
+                {secondsToLongDate(milestone.date)}
+              </Text>
+            )}
+            <Text size="sm">{milestone.milestoneDetails}</Text>
+            {isCurrentMilestone && (
+              <MilestoneAction
+                grant={grant}
+                view={view}
+                isProjectMember={isProjectMember}
+                isShipOperator={isShipOperator}
+                milestone={milestone}
+              />
+            )}
+          </Timeline.Item>
+        );
+      })}
+    </Timeline>
+  );
+};
+
+const MilestoneAction = ({
+  grant,
+  milestone,
+  view,
+  isShipOperator,
+  isProjectMember,
+}: {
+  isProjectMember?: boolean;
+  isShipOperator?: boolean;
+  view: 'project-page' | 'ship-dash';
+  grant: DashGrant;
+  milestone: UnpackedMilestoneData;
+}) => {
+  const canSubmitMilestone =
+    isProjectMember &&
+    view === 'project-page' &&
+    milestone.milestoneStatus === AlloStatus.None;
+
+  const canReviewMilestone =
+    isShipOperator &&
+    view === 'ship-dash' &&
+    milestone.milestoneStatus === AlloStatus.Pending;
+
+  const canResubmitMilestone =
+    isProjectMember &&
+    view === 'project-page' &&
+    milestone.milestoneStatus === AlloStatus.Rejected;
+
+  if (canSubmitMilestone) {
+    return (
+      <Box mt="lg">
+        <Divider mb="md" />
+        <Flex>
+          <Button ml="auto" onClick={() => {}}>
+            Submit Milestone
+          </Button>
+        </Flex>
+      </Box>
+    );
+  }
+
+  if (canResubmitMilestone) {
+    return (
+      <Box mt="lg">
+        <Divider mb="md" />
+        <Flex>
+          <Button ml="auto" onClick={() => {}}>
+            Resubmit Milestone
+          </Button>
+        </Flex>
+      </Box>
+    );
+  }
+
+  if (canReviewMilestone) {
+    return (
+      <Box mt="lg">
+        <Divider mb="md" />
+        <Flex>
+          <Button ml="auto" onClick={() => {}}>
+            Review Milestone
+          </Button>
+        </Flex>
+      </Box>
+    );
+  }
+
+  return null;
 };

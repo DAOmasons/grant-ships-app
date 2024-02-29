@@ -13,7 +13,7 @@ export const MilestonesSubmit = ({
   grant,
 }: {
   grant: DashGrant;
-  isProjectMember: boolean;
+  isProjectMember?: boolean;
   isShipOperator?: boolean;
   view: 'project-page' | 'ship-dash';
 }) => {

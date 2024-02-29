@@ -1,6 +1,6 @@
 import { useDisclosure } from '@mantine/hooks';
 import { DashGrant } from '../../resolvers/grantResolvers';
-import { useUserData } from '../../hooks/useUserState';
+
 import { Button, Group, Modal, Text } from '@mantine/core';
 import { MilestoneReviewPage } from './MilestoneReviewPage';
 import { GrantStatus } from '../../types/common';
@@ -8,15 +8,15 @@ import { GrantStatus } from '../../types/common';
 export const MilestonesView = ({
   grant,
   view,
+  isShipOperator,
+  isProjectMember,
 }: {
   grant: DashGrant;
   view: 'project-page' | 'ship-dash';
+  isShipOperator?: boolean;
+  isProjectMember?: boolean;
 }) => {
   const [opened, { open, close }] = useDisclosure(false);
-  const { userData } = useUserData();
-
-  const isShipOperator =
-    userData?.isShipOperator && userData.shipAddress === grant.shipId.id;
 
   const handleClose = () => {
     close();
@@ -52,6 +52,7 @@ export const MilestonesView = ({
           grant={grant}
           opened={opened}
           isShipOperator={isShipOperator}
+          isProjectMember={isProjectMember}
           handleClose={handleClose}
         />
       </Modal>

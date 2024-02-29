@@ -18,6 +18,7 @@ import { useUserData } from '../../hooks/useUserState';
 import { MilestonesSubmit } from './MilestonesSubmit';
 import { MilestonesReview } from './MilestonesReview';
 import { MilestonesView } from './MilestonesView';
+import { useMemo } from 'react';
 
 export const GrantCard = ({
   grant,
@@ -37,6 +38,15 @@ export const GrantCard = ({
 
   const isShipOperator =
     userData && userData.isShipOperator && userData.shipAddress === shipAddress;
+
+  const isProjectMember = useMemo(() => {
+    return (
+      userData &&
+      !!userData.projects?.find(
+        (project) => project.anchor === grant.projectId.id
+      )
+    );
+  }, [userData, grant.projectId.id]);
 
   return (
     <Paper bg={theme.colors.dark[6]} mih={220} w="100%" p="lg">
@@ -147,14 +157,21 @@ export const GrantCard = ({
                   onNotStarted: (
                     <MilestonesSubmit
                       view={view}
-                      isProjectMember={true}
                       grant={grant}
+                      isProjectMember={isProjectMember}
                       isShipOperator={isShipOperator}
                     />
                   ),
                   onPending: <MilestonesReview grant={grant} view={view} />,
-                  onRejected: <MilestonesView grant={grant} view={view} />,
-                  onCompleted: <MilestonesView grant={grant} view={view} />,
+                  onRejected: <MilestonesReview grant={grant} view={view} />,
+                  onCompleted: (
+                    <MilestonesView
+                      grant={grant}
+                      view={view}
+                      isShipOperator={isShipOperator}
+                      isProjectMember={isProjectMember}
+                    />
+                  ),
                 }
               ) || {})}
             />
