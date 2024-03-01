@@ -72,10 +72,12 @@ export const ReviewApplication = ({
 
     const TAG = `TAG:SHIP_REVIEW_GRANT:${grant.id}:${isApproved ? 'APPROVED' : 'REJECTED'}`;
 
+    console.log('shipAddress', shipAddress);
+    console.log('pinRes', pinRes);
     tx({
       writeContractParams: {
         abi: GrantShipAbi,
-        address: shipAddress,
+        address: grant.shipId.shipContractAddress,
         functionName: 'postUpdate',
         args: [TAG, [1n, pinRes.IpfsHash], ZER0_ADDRESS],
       },
