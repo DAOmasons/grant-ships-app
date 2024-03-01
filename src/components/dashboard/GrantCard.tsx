@@ -188,10 +188,10 @@ export const GrantCard = ({
                 4,
                 theme,
                 {
-                  onNotStarted: <MilestoneSubmission grant={grant} />,
-                  onPending: <MilestoneSubmission grant={grant} />,
-                  onRejected: <MilestoneSubmission grant={grant} />,
-                  onCompleted: <MilestoneSubmission grant={grant} />,
+                  onNotStarted: <MilestoneSubmitText grant={grant} />,
+                  onPending: <MilestoneSubmitText grant={grant} />,
+                  onRejected: <MilestoneSubmitText grant={grant} />,
+                  onCompleted: <MilestoneSubmitText grant={grant} />,
                 }
               ) || {})}
             />
@@ -222,7 +222,7 @@ export const GrantCard = ({
   );
 };
 
-const MilestoneSubmission = ({ grant }: { grant: DashGrant }) => {
+const MilestoneSubmitText = ({ grant }: { grant: DashGrant }) => {
   if (
     !grant.milestones ||
     grant.milestones.length === 0 ||
@@ -265,6 +265,10 @@ const MilestoneSubmission = ({ grant }: { grant: DashGrant }) => {
         {grant.milestones?.length}) Approved
       </Text>
     );
+  }
+
+  if (grant.grantStatus === GrantStatus.Completed) {
+    return <Text fz="sm">Milestones Complete</Text>;
   }
 
   return (
