@@ -38,6 +38,7 @@ export type DashGrant = GrantDashFragment & {
   shipApprovalReason: string | null;
   facilitatorReason: string | null;
   milestones: PackedMilestoneData[] | null;
+  milestonesApprovedReason: string | null;
 };
 
 export const resolveGrantApplicationData = async (bytes: string) => {
@@ -151,6 +152,23 @@ export const resolveMilestones = async (
   return result as any as PackedMilestoneData[];
 };
 
+export const resolveMilestoneReviewReason = async (pointer?: string) => {
+  if (!pointer) {
+    return null;
+  }
+
+  const data = await getIpfsJson(pointer);
+
+  const validated = reasonSchema.safeParse(data);
+
+  if (!validated.success) {
+    console.error('Invalid metadata', validated.error);
+    return null;
+  }
+
+  return validated.data;
+};
+
 export const resolveGrants = async (grants: GrantDashFragment[]) => {
   const resolvedGrants = await Promise.all(
     grants.map(async (grant) => {
@@ -161,6 +179,7 @@ export const resolveGrants = async (grants: GrantDashFragment[]) => {
         shipApprovalReason,
         facilitatorReason,
         milestones,
+        milestonesApprovedReason,
       ] = await Promise.all([
         resolveProjectMetadata(grant?.projectId?.metadata?.pointer),
         resolveShipMetadata(grant?.shipId?.profileMetadata?.pointer),
@@ -173,6 +192,7 @@ export const resolveGrants = async (grants: GrantDashFragment[]) => {
           grant.projectId.id,
           grant.shipId.shipContractAddress
         ),
+        resolveMilestoneReviewReason(grant.milestonesApprovedReason?.pointer),
       ]);
 
       return {
@@ -187,6 +207,9 @@ export const resolveGrants = async (grants: GrantDashFragment[]) => {
           ? (facilitatorReason.reason as string)
           : null,
         milestones: milestones ? milestones : null,
+        milestonesApprovedReason: milestonesApprovedReason
+          ? milestonesApprovedReason.reason
+          : null,
       };
     })
   );

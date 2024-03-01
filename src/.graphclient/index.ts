@@ -3311,7 +3311,7 @@ export type getFacilitatorGrantsQueryVariables = Exact<{ [key: string]: never; }
 
 
 export type getFacilitatorGrantsQuery = { grants: Array<(
-    Pick<Grant, 'id' | 'grantApplicationBytes' | 'lastUpdated' | 'grantStatus' | 'milestonesAmount' | 'milestonesApproved'>
+    Pick<Grant, 'id' | 'grantApplicationBytes' | 'lastUpdated' | 'grantStatus' | 'milestonesAmount' | 'milestonesApproved' | 'currentMilestoneIndex'>
     & { projectId: (
       Pick<Project, 'id' | 'name'>
       & { metadata: Pick<RawMetadata, 'pointer'> }
@@ -3383,7 +3383,7 @@ export type getProjectGrantsQueryVariables = Exact<{
 
 
 export type getProjectGrantsQuery = { project?: Maybe<{ grants: Array<(
-      Pick<Grant, 'id' | 'grantApplicationBytes' | 'lastUpdated' | 'grantStatus' | 'milestonesAmount' | 'milestonesApproved'>
+      Pick<Grant, 'id' | 'grantApplicationBytes' | 'lastUpdated' | 'grantStatus' | 'milestonesAmount' | 'milestonesApproved' | 'currentMilestoneIndex'>
       & { projectId: (
         Pick<Project, 'id' | 'name'>
         & { metadata: Pick<RawMetadata, 'pointer'> }
@@ -3430,7 +3430,7 @@ export type getShipIdByHatIdQueryVariables = Exact<{
 export type getShipIdByHatIdQuery = { grantShips: Array<Pick<GrantShip, 'id'>> };
 
 export type GrantDashFragment = (
-  Pick<Grant, 'id' | 'grantApplicationBytes' | 'lastUpdated' | 'grantStatus' | 'milestonesAmount' | 'milestonesApproved'>
+  Pick<Grant, 'id' | 'grantApplicationBytes' | 'lastUpdated' | 'grantStatus' | 'milestonesAmount' | 'milestonesApproved' | 'currentMilestoneIndex'>
   & { projectId: (
     Pick<Project, 'id' | 'name'>
     & { metadata: Pick<RawMetadata, 'pointer'> }
@@ -3453,7 +3453,7 @@ export type getShipDashQueryVariables = Exact<{
 export type getShipDashQuery = { grantShip?: Maybe<(
     Pick<GrantShip, 'id' | 'name' | 'status' | 'hatId' | 'shipContractAddress' | 'shipApplicationBytesData' | 'owner' | 'balance'>
     & { grants: Array<(
-      Pick<Grant, 'id' | 'grantApplicationBytes' | 'lastUpdated' | 'grantStatus' | 'milestonesAmount' | 'milestonesApproved'>
+      Pick<Grant, 'id' | 'grantApplicationBytes' | 'lastUpdated' | 'grantStatus' | 'milestonesAmount' | 'milestonesApproved' | 'currentMilestoneIndex'>
       & { projectId: (
         Pick<Project, 'id' | 'name'>
         & { metadata: Pick<RawMetadata, 'pointer'> }
@@ -3614,6 +3614,7 @@ export const GrantDashFragmentDoc = gql`
     }
   }
   milestonesApproved
+  currentMilestoneIndex
   milestonesApprovedReason {
     pointer
   }
