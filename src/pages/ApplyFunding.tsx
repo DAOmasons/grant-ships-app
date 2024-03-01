@@ -23,7 +23,7 @@ import {
   parseAbiParameters,
   parseEther,
 } from 'viem';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 import { MainSection, PageTitle } from '../layout/Sections';
 import { GAME_TOKEN } from '../constants/gameSetup';
@@ -201,8 +201,16 @@ export const ApplyFunding = () => {
           title="No Projects Profiles Found"
           description={
             <Group gap={0}>
-              <Button size="xs" p={0} h="fit-content" variant="subtle" mr={4}>
-                Create a Project Profile
+              <Button
+                size="xs"
+                component={Link}
+                to="/create-project"
+                p={0}
+                h="fit-content"
+                variant="subtle"
+                mr={4}
+              >
+                Create a Project
               </Button>
               <Text size="xs" opacity={0.8}>
                 to apply for a grant.
