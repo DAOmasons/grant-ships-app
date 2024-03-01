@@ -1,34 +1,27 @@
 import {
-  Box,
   Button,
-  Divider,
   Flex,
   Skeleton,
   Stack,
   Text,
   Textarea,
-  Timeline,
   useMantineTheme,
 } from '@mantine/core';
-import { secondsToLongDate } from '../../utils/time';
 import { ReviewPage } from '../../layout/ReviewPage';
 import { DashGrant, PackedMilestoneData } from '../../resolvers/grantResolvers';
 import { useQuery } from '@tanstack/react-query';
 import { useAccount } from 'wagmi';
 import { useTx } from '../../hooks/useTx';
 import { useState } from 'react';
-import { formatEther, isAddress } from 'viem';
+import { isAddress } from 'viem';
 import { pinJSONToIPFS } from '../../utils/ipfs/pin';
 import { notifications } from '@mantine/notifications';
 import { AlloStatus, GrantStatus } from '../../types/common';
 import { AppAlert } from '../UnderContruction';
 import GrantShipAbi from '../../abi/GrantShip.json';
-import AlloAbi from '../../abi/Allo.json';
 import { getIpfsJson } from '../../utils/ipfs/get';
-import { IconCheck, IconEye } from '@tabler/icons-react';
+import { IconCheck } from '@tabler/icons-react';
 import { IconX } from '@tabler/icons-react';
-import { GAME_TOKEN } from '../../constants/gameSetup';
-import { ADDR } from '../../constants/addresses';
 import { MilestoneTimeline } from './MilestoneTimeline';
 
 export type UnpackedMilestoneData = PackedMilestoneData & {
