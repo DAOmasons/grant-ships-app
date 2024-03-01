@@ -48,6 +48,8 @@ export const GrantCard = ({
     );
   }, [userData, grant.projectId.id]);
 
+  console.log('grant.grantStatus', grant.grantStatus);
+
   return (
     <Paper bg={theme.colors.dark[6]} mih={220} w="100%" p="lg">
       <Flex>
@@ -182,7 +184,7 @@ export const GrantCard = ({
                 currentStage,
                 GrantStatus.MilestoneSubmitted,
                 GrantStatus.MilestoneRejected,
-                GrantStatus.Completed,
+                GrantStatus.MilestoneApproved,
                 4,
                 theme,
                 {
@@ -259,7 +261,7 @@ const MilestoneSubmission = ({ grant }: { grant: DashGrant }) => {
   if (grant.grantStatus === GrantStatus.MilestoneApproved) {
     return (
       <Text fz="sm">
-        Milestone ({Number(grant.currentMilestoneIndex) + 1}/
+        Milestone ({Number(grant.currentMilestoneIndex)}/
         {grant.milestones?.length}) Approved
       </Text>
     );

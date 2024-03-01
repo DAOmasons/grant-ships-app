@@ -23,10 +23,12 @@ import { notifications } from '@mantine/notifications';
 import { AlloStatus, GrantStatus } from '../../types/common';
 import { AppAlert } from '../UnderContruction';
 import GrantShipAbi from '../../abi/GrantShip.json';
+import AlloAbi from '../../abi/Allo.json';
 import { getIpfsJson } from '../../utils/ipfs/get';
 import { IconCheck, IconEye, IconThumbUp } from '@tabler/icons-react';
 import { IconX } from '@tabler/icons-react';
 import { GAME_TOKEN } from '../../constants/gameSetup';
+import { ADDR } from '../../constants/addresses';
 
 type UnpackedMilestoneData = PackedMilestoneData & {
   milestoneDetails: string | null;
@@ -451,6 +453,7 @@ const MilestoneAction = ({
         milestone={milestone}
         currentMilestone={currentMilestone}
         isShipOperator={isShipOperator}
+        close={close}
       />
     );
   }
@@ -463,22 +466,50 @@ const ReviewMilestone = ({
   milestone,
   currentMilestone,
   isShipOperator,
+  close,
 }: {
   isShipOperator?: boolean;
   grant: DashGrant;
   milestone: UnpackedMilestoneData;
   currentMilestone: number;
+  close: () => void;
 }) => {
   console.log('currentMilestone', currentMilestone);
   const [reasonText, setReasonText] = useState('');
+  const [isPinning, setIsPinning] = useState(false);
+
   const { tx } = useTx();
   const { address } = useAccount();
 
   const handleApprove = () => {
-    // function _distribute(address[] memory _recipientIds, bytes memory, address _sender)
+    if (
+      !grant.shipId.shipContractAddress ||
+      currentMilestone == null ||
+      !grant.projectId.id
+    ) {
+      notifications.show({
+        title: 'Error',
+        message: 'Function call arguments are missing',
+        color: 'red',
+      });
+      return;
+    }
+
+    close();
+
+    tx({
+      writeContractParams: {
+        abi: AlloAbi,
+        address: ADDR.ALLO,
+        functionName: 'distribute',
+        args: [grant.shipId.poolId, [grant.projectId.id], ''],
+      },
+    });
   };
   const handleReject = async () => {
     // rejectMilestone(address _recipientId, uint256 _milestoneId, Metadata calldata _reason)
+
+    setIsPinning(true);
 
     if (
       !grant.shipId.shipContractAddress ||
@@ -506,6 +537,9 @@ const ReviewMilestone = ({
       reason: reasonText,
       reviewer: address as string,
     });
+
+    close();
+    setIsPinning(false);
 
     if (ipfsRes.IpfsHash[0] !== 'Q') {
       notifications.show({
@@ -541,7 +575,12 @@ const ReviewMilestone = ({
         mb="lg"
       />
       <Flex>
-        <Button variant="light" onClick={handleReject} disabled={!reasonText}>
+        <Button
+          variant="light"
+          onClick={handleReject}
+          disabled={!reasonText}
+          loading={isPinning}
+        >
           Reject
         </Button>
         <Button ml="auto" onClick={handleApprove}>
@@ -564,6 +603,7 @@ const SubmitMilestone = ({
   isProjectMember?: boolean;
   currentMilestone: number;
   grant: DashGrant;
+  isResubmitting?: boolean;
   milestone: UnpackedMilestoneData;
 }) => {
   const { tx } = useTx();
