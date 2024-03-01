@@ -21,6 +21,7 @@ export const MilestonesView = ({
   const handleClose = () => {
     close();
   };
+
   return (
     <>
       <Group justify="space-between" align="start">

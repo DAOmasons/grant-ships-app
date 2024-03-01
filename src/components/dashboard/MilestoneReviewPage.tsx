@@ -24,7 +24,7 @@ import { AlloStatus, GrantStatus } from '../../types/common';
 import { AppAlert } from '../UnderContruction';
 import GrantShipAbi from '../../abi/GrantShip.json';
 import { getIpfsJson } from '../../utils/ipfs/get';
-import { IconCheck, IconEye } from '@tabler/icons-react';
+import { IconCheck, IconEye, IconThumbUp } from '@tabler/icons-react';
 import { IconX } from '@tabler/icons-react';
 import { GAME_TOKEN } from '../../constants/gameSetup';
 
@@ -130,7 +130,7 @@ export const MilestoneReviewPage = ({
 
   if (isLoading) {
     return (
-      <Stack>
+      <Stack w={600}>
         <Skeleton height={200} w="100%" />
         <Skeleton height={200} w="100%" />
         <Skeleton height={200} w="100%" />
@@ -194,6 +194,7 @@ export const MilestoneReviewPage = ({
             subtitle: ' ',
             content: (
               <MilestoneTimeline
+                close={handleClose}
                 milestones={milestones}
                 grant={grant}
                 view={view}
@@ -222,6 +223,7 @@ export const MilestoneReviewPage = ({
             subtitle: ' ',
             content: (
               <MilestoneTimeline
+                close={handleClose}
                 milestones={milestones}
                 grant={grant}
                 view={view}
@@ -280,6 +282,7 @@ export const MilestoneReviewPage = ({
           subtitle: ' ',
           content: (
             <MilestoneTimeline
+              close={handleClose}
               milestones={milestones}
               grant={grant}
               view={view}
@@ -295,11 +298,13 @@ export const MilestoneReviewPage = ({
 
 const MilestoneTimeline = ({
   milestones,
+  close,
   grant,
   view,
   isShipOperator,
   isProjectMember,
 }: {
+  close: () => void;
   isProjectMember?: boolean;
   isShipOperator?: boolean;
   view: 'project-page' | 'ship-dash';
@@ -366,8 +371,10 @@ const MilestoneTimeline = ({
             <Text size="sm">{milestone.milestoneDetails}</Text>
             {isCurrentMilestone && (
               <MilestoneAction
+                close={close}
                 grant={grant}
                 view={view}
+                currentMilestone={index}
                 isProjectMember={isProjectMember}
                 isShipOperator={isShipOperator}
                 milestone={milestone}
@@ -381,14 +388,18 @@ const MilestoneTimeline = ({
 };
 
 const MilestoneAction = ({
-  grant,
+  close,
   milestone,
   view,
   isShipOperator,
+  grant,
   isProjectMember,
+  currentMilestone,
 }: {
+  close: () => void;
   isProjectMember?: boolean;
   isShipOperator?: boolean;
+  currentMilestone: number;
   view: 'project-page' | 'ship-dash';
   grant: DashGrant;
   milestone: UnpackedMilestoneData;
@@ -410,42 +421,230 @@ const MilestoneAction = ({
 
   if (canSubmitMilestone) {
     return (
-      <Box mt="lg">
-        <Divider mb="md" />
-        <Flex>
-          <Button ml="auto" onClick={() => {}}>
-            Submit Milestone
-          </Button>
-        </Flex>
-      </Box>
+      <SubmitMilestone
+        grant={grant}
+        milestone={milestone}
+        currentMilestone={currentMilestone}
+        isProjectMember={isProjectMember}
+        close={close}
+      />
     );
   }
 
   if (canResubmitMilestone) {
     return (
-      <Box mt="lg">
-        <Divider mb="md" />
-        <Flex>
-          <Button ml="auto" onClick={() => {}}>
-            Resubmit Milestone
-          </Button>
-        </Flex>
-      </Box>
+      <SubmitMilestone
+        grant={grant}
+        isResubmitting
+        milestone={milestone}
+        currentMilestone={currentMilestone}
+        isProjectMember={isProjectMember}
+        close={close}
+      />
     );
   }
 
   if (canReviewMilestone) {
     return (
-      <Box mt="lg">
-        <Divider mb="md" />
-        <Flex>
-          <Button ml="auto" onClick={() => {}}>
-            Review Milestone
-          </Button>
-        </Flex>
-      </Box>
+      <ReviewMilestone
+        grant={grant}
+        milestone={milestone}
+        currentMilestone={currentMilestone}
+        isShipOperator={isShipOperator}
+      />
     );
   }
 
   return null;
+};
+
+const ReviewMilestone = ({
+  grant,
+  milestone,
+  currentMilestone,
+  isShipOperator,
+}: {
+  isShipOperator?: boolean;
+  grant: DashGrant;
+  milestone: UnpackedMilestoneData;
+  currentMilestone: number;
+}) => {
+  console.log('currentMilestone', currentMilestone);
+  const [reasonText, setReasonText] = useState('');
+  const { tx } = useTx();
+  const { address } = useAccount();
+
+  const handleApprove = () => {
+    // function _distribute(address[] memory _recipientIds, bytes memory, address _sender)
+  };
+  const handleReject = async () => {
+    // rejectMilestone(address _recipientId, uint256 _milestoneId, Metadata calldata _reason)
+
+    if (
+      !grant.shipId.shipContractAddress ||
+      currentMilestone == null ||
+      !grant.projectId.id
+    ) {
+      notifications.show({
+        title: 'Error',
+        message: 'Function call arguments are missing',
+        color: 'red',
+      });
+      return;
+    }
+
+    if (!isShipOperator) {
+      notifications.show({
+        title: 'Error',
+        message: 'You are not a ship operator',
+        color: 'red',
+      });
+      return;
+    }
+
+    const ipfsRes = await pinJSONToIPFS({
+      reason: reasonText,
+      reviewer: address as string,
+    });
+
+    if (ipfsRes.IpfsHash[0] !== 'Q') {
+      notifications.show({
+        title: 'IPFS Error',
+        message: ipfsRes.IpfsHash[1],
+        color: 'red',
+      });
+      return;
+    }
+
+    tx({
+      writeContractParams: {
+        abi: GrantShipAbi,
+        address: grant.shipId.shipContractAddress,
+        functionName: 'rejectMilestone',
+        args: [grant.projectId.id, currentMilestone, [1n, ipfsRes.IpfsHash]],
+      },
+    });
+  };
+
+  return (
+    <Box mt="lg">
+      <Divider mb="md" />
+      <Textarea
+        label="Rejection Reason"
+        description="Only needed if rejecting this milestone"
+        value={reasonText}
+        onChange={(e) => setReasonText(e.currentTarget.value)}
+        autosize
+        fw={400}
+        minRows={4}
+        maxRows={8}
+        mb="lg"
+      />
+      <Flex>
+        <Button variant="light" onClick={handleReject} disabled={!reasonText}>
+          Reject
+        </Button>
+        <Button ml="auto" onClick={handleApprove}>
+          Approve
+        </Button>
+      </Flex>
+    </Box>
+  );
+};
+
+const SubmitMilestone = ({
+  grant,
+  milestone,
+  currentMilestone,
+  isProjectMember,
+  isResubmitting,
+  close,
+}: {
+  close: () => void;
+  isProjectMember?: boolean;
+  currentMilestone: number;
+  grant: DashGrant;
+  milestone: UnpackedMilestoneData;
+}) => {
+  const { tx } = useTx();
+  const [isPinning, setPinning] = useState(false);
+
+  const handleSubmitMilestone = async () => {
+    const dateInSeconds = Date.now() / 1000;
+
+    setPinning(true);
+
+    if (!isProjectMember) {
+      notifications.show({
+        title: 'Error',
+        message: 'You are not a member of this project',
+        color: 'red',
+      });
+      return;
+    }
+
+    if (!milestone.milestoneDetails) {
+      notifications.show({
+        title: 'Error',
+        message: 'Data is missing',
+        color: 'red',
+      });
+      return;
+    }
+
+    if (
+      !grant.projectId.id ||
+      !grant.shipId.shipContractAddress ||
+      currentMilestone == null
+    ) {
+      notifications.show({
+        title: 'Error',
+        message: 'Function call arguments is missing',
+        color: 'red',
+      });
+      return;
+    }
+
+    const ipfsRes = await pinJSONToIPFS({
+      milestoneDetails: milestone.milestoneDetails,
+      date: milestone.date,
+      lastUpdated: dateInSeconds,
+    });
+
+    if (ipfsRes.IpfsHash[0] !== 'Q') {
+      notifications.show({
+        title: 'IPFS Error',
+        message: ipfsRes.IpfsHash[1],
+        color: 'red',
+      });
+      return;
+    }
+
+    setPinning(false);
+    close();
+
+    tx({
+      writeContractParams: {
+        abi: GrantShipAbi,
+        address: grant.shipId.shipContractAddress,
+        functionName: 'submitMilestone',
+        args: [grant.projectId.id, currentMilestone, [1n, ipfsRes.IpfsHash]],
+      },
+    });
+  };
+
+  return (
+    <Box mt="lg">
+      <Divider mb="md" />
+      <Flex>
+        <Button
+          ml="auto"
+          onClick={() => handleSubmitMilestone()}
+          loading={isPinning}
+        >
+          {isResubmitting ? 'Resubmit milestone' : 'Submit Milestone'}
+        </Button>
+      </Flex>
+    </Box>
+  );
 };

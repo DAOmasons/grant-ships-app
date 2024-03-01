@@ -226,12 +226,8 @@ const MilestoneSubmission = ({ grant }: { grant: DashGrant }) => {
     grant.milestones.length === 0 ||
     !grant.currentMilestoneIndex
   ) {
-    return <Text fz="sm">No Milestones Found</Text>;
+    return <Text fz="sm">Manage Milestones</Text>;
   }
-
-  const currentMilestone = grant.milestones[grant.currentMilestoneIndex];
-
-  console.log('currentMilestone', currentMilestone);
 
   if (grant.grantStatus === GrantStatus.MilestonesApproved) {
     return (
