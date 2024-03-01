@@ -7,7 +7,7 @@ import {
   IconMail,
   IconWorld,
 } from '@tabler/icons-react';
-import React from 'react';
+
 import { isAddress } from 'viem';
 import { AddressAvatar } from './AddressAvatar';
 
