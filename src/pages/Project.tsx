@@ -187,9 +187,6 @@ export const Project = () => {
             <Tabs.Tab w="20%" value="grants">
               Grants
             </Tabs.Tab>
-            <Tabs.Tab w="20%" value="milestones">
-              Milestones
-            </Tabs.Tab>
             <Tabs.Tab w="20%" value="details">
               Contact
             </Tabs.Tab>
@@ -208,11 +205,6 @@ export const Project = () => {
                 isLoading={grantsLoading}
                 error={grantsError}
               />
-            )}
-          </Tabs.Panel>
-          <Tabs.Panel value="milestones">
-            {withDummyGrants.grants && (
-              <MilestonePanel grants={withDummyGrants.grants} />
             )}
           </Tabs.Panel>
           <Tabs.Panel value="details">
