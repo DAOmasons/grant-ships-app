@@ -53,6 +53,8 @@ export const Ship = () => {
     enabled: !!id,
   });
 
+  console.log('ship', ship);
+
   if (isLoading) {
     return <SingleItemPageSkeleton />;
   }
@@ -185,7 +187,7 @@ export const Ship = () => {
           <FundingIndicator
             available={ship.amtAvailable}
             distributed={ship.amtDistributed}
-            allocated={ship.amtDistributed}
+            allocated={ship.amtAllocated}
           />
         </Paper>
       </Stack>

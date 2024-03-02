@@ -1,4 +1,4 @@
-import { Loader, Text, createTheme } from '@mantine/core';
+import { Loader, Text, Tooltip, createTheme } from '@mantine/core';
 import { RingLoader } from './components/loader/RingLoader';
 
 export const theme = createTheme({
@@ -19,6 +19,11 @@ export const theme = createTheme({
       defaultProps: {
         loaders: { ...Loader.defaultLoaders, ring: RingLoader },
         type: 'ring',
+      },
+    }),
+    Tooltip: Tooltip.extend({
+      defaultProps: {
+        color: 'dark.7',
       },
     }),
     // Text: Text.extend({
