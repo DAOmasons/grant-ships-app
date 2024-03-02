@@ -57,7 +57,7 @@ export const MilestoneProgress = ({
       <Group gap={5} mb={10}>
         <Text fz="sm">
           <Text fz="sm" component="span" fw={600}>
-            {grantAmount} {GAME_TOKEN.SYMBOL}
+            {grantAmount} {GAME_TOKEN.SYMBOL}{' '}
           </Text>
           funded by
         </Text>
