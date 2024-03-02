@@ -180,7 +180,7 @@ export const Project = () => {
         {grants?.length !== 0 && (
           <Paper p="md" bg={theme.colors.dark[6]}>
             <Stack gap="lg">
-              <Text>Grants</Text>
+              <Text>Active Grants</Text>
               {grants?.map((grant: DashGrant, i: number) => (
                 <MilestoneProgress
                   key={`milestone-progress-bar-${i}`}
