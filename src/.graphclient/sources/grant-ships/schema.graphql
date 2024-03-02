@@ -709,6 +709,7 @@ type GrantShip {
   poolFunded: Boolean!
   balance: BigInt!
   totalAvailableFunds: BigInt!
+  totalRoundAmount: BigInt!
   totalAllocated: BigInt!
   totalDistributed: BigInt!
   grants(skip: Int = 0, first: Int = 100, orderBy: Grant_orderBy, orderDirection: OrderDirection, where: Grant_filter): [Grant!]!
@@ -875,6 +876,14 @@ input GrantShip_filter {
   totalAvailableFunds_lte: BigInt
   totalAvailableFunds_in: [BigInt!]
   totalAvailableFunds_not_in: [BigInt!]
+  totalRoundAmount: BigInt
+  totalRoundAmount_not: BigInt
+  totalRoundAmount_gt: BigInt
+  totalRoundAmount_lt: BigInt
+  totalRoundAmount_gte: BigInt
+  totalRoundAmount_lte: BigInt
+  totalRoundAmount_in: [BigInt!]
+  totalRoundAmount_not_in: [BigInt!]
   totalAllocated: BigInt
   totalAllocated_not: BigInt
   totalAllocated_gt: BigInt
@@ -1050,6 +1059,7 @@ enum GrantShip_orderBy {
   poolFunded
   balance
   totalAvailableFunds
+  totalRoundAmount
   totalAllocated
   totalDistributed
   grants
@@ -1332,6 +1342,7 @@ enum Grant_orderBy {
   shipId__poolFunded
   shipId__balance
   shipId__totalAvailableFunds
+  shipId__totalRoundAmount
   shipId__totalAllocated
   shipId__totalDistributed
   shipId__shipApplicationBytesData

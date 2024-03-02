@@ -747,6 +747,7 @@ export type GrantShip = {
   poolFunded: Scalars['Boolean'];
   balance: Scalars['BigInt'];
   totalAvailableFunds: Scalars['BigInt'];
+  totalRoundAmount: Scalars['BigInt'];
   totalAllocated: Scalars['BigInt'];
   totalDistributed: Scalars['BigInt'];
   grants: Array<Grant>;
@@ -922,6 +923,14 @@ export type GrantShip_filter = {
   totalAvailableFunds_lte?: InputMaybe<Scalars['BigInt']>;
   totalAvailableFunds_in?: InputMaybe<Array<Scalars['BigInt']>>;
   totalAvailableFunds_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalRoundAmount?: InputMaybe<Scalars['BigInt']>;
+  totalRoundAmount_not?: InputMaybe<Scalars['BigInt']>;
+  totalRoundAmount_gt?: InputMaybe<Scalars['BigInt']>;
+  totalRoundAmount_lt?: InputMaybe<Scalars['BigInt']>;
+  totalRoundAmount_gte?: InputMaybe<Scalars['BigInt']>;
+  totalRoundAmount_lte?: InputMaybe<Scalars['BigInt']>;
+  totalRoundAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalRoundAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   totalAllocated?: InputMaybe<Scalars['BigInt']>;
   totalAllocated_not?: InputMaybe<Scalars['BigInt']>;
   totalAllocated_gt?: InputMaybe<Scalars['BigInt']>;
@@ -1097,6 +1106,7 @@ export type GrantShip_orderBy =
   | 'poolFunded'
   | 'balance'
   | 'totalAvailableFunds'
+  | 'totalRoundAmount'
   | 'totalAllocated'
   | 'totalDistributed'
   | 'grants'
@@ -1378,6 +1388,7 @@ export type Grant_orderBy =
   | 'shipId__poolFunded'
   | 'shipId__balance'
   | 'shipId__totalAvailableFunds'
+  | 'shipId__totalRoundAmount'
   | 'shipId__totalAllocated'
   | 'shipId__totalDistributed'
   | 'shipId__shipApplicationBytesData'
@@ -2916,6 +2927,7 @@ export type GrantShipResolvers<ContextType = MeshContext, ParentType extends Res
   poolFunded?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   balance?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   totalAvailableFunds?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  totalRoundAmount?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   totalAllocated?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   totalDistributed?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   grants?: Resolver<Array<ResolversTypes['Grant']>, ParentType, ContextType, RequireFields<GrantShipgrantsArgs, 'skip' | 'first'>>;
@@ -3329,7 +3341,7 @@ export function getBuiltGraphSDK<TGlobalContext = any, TOperationContext = any>(
   return getSdk<TOperationContext, TGlobalContext>((...args) => sdkRequester$.then(sdkRequester => sdkRequester(...args)));
 }
 export type BaseShipDataFragment = (
-  Pick<GrantShip, 'id' | 'name' | 'status' | 'shipContractAddress' | 'shipApplicationBytesData' | 'owner' | 'balance' | 'totalAvailableFunds' | 'totalAllocated' | 'totalDistributed'>
+  Pick<GrantShip, 'id' | 'name' | 'status' | 'shipContractAddress' | 'shipApplicationBytesData' | 'owner' | 'balance' | 'totalAvailableFunds' | 'totalAllocated' | 'totalDistributed' | 'totalRoundAmount'>
   & { profileMetadata: Pick<RawMetadata, 'pointer'>, alloProfileMembers?: Maybe<Pick<ProfileMemberGroup, 'addresses'>> }
 );
 
@@ -3545,7 +3557,7 @@ export type shipPageQueryQueryVariables = Exact<{
 
 
 export type shipPageQueryQuery = { grantShip?: Maybe<(
-    Pick<GrantShip, 'id' | 'name' | 'status' | 'shipContractAddress' | 'shipApplicationBytesData' | 'owner' | 'balance' | 'totalAvailableFunds' | 'totalAllocated' | 'totalDistributed'>
+    Pick<GrantShip, 'id' | 'name' | 'status' | 'shipContractAddress' | 'shipApplicationBytesData' | 'owner' | 'balance' | 'totalAvailableFunds' | 'totalAllocated' | 'totalDistributed' | 'totalRoundAmount'>
     & { profileMetadata: Pick<RawMetadata, 'pointer'>, alloProfileMembers?: Maybe<Pick<ProfileMemberGroup, 'addresses'>> }
   )> };
 
@@ -3553,7 +3565,7 @@ export type ShipsPageQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type ShipsPageQueryQuery = { grantShips: Array<(
-    Pick<GrantShip, 'id' | 'name' | 'status' | 'shipContractAddress' | 'shipApplicationBytesData' | 'owner' | 'balance' | 'totalAvailableFunds' | 'totalAllocated' | 'totalDistributed'>
+    Pick<GrantShip, 'id' | 'name' | 'status' | 'shipContractAddress' | 'shipApplicationBytesData' | 'owner' | 'balance' | 'totalAvailableFunds' | 'totalAllocated' | 'totalDistributed' | 'totalRoundAmount'>
     & { profileMetadata: Pick<RawMetadata, 'pointer'>, alloProfileMembers?: Maybe<Pick<ProfileMemberGroup, 'addresses'>> }
   )> };
 
@@ -3575,6 +3587,7 @@ export const BaseShipDataFragmentDoc = gql`
   totalAvailableFunds
   totalAllocated
   totalDistributed
+  totalRoundAmount
 }
     ` as unknown as DocumentNode<BaseShipDataFragment, unknown>;
 export const GrantDashFragmentDoc = gql`

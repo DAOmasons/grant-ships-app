@@ -15,4 +15,5 @@ fragment BaseShipData on GrantShip {
   totalAvailableFunds
   totalAllocated
   totalDistributed
+  totalRoundAmount
 }

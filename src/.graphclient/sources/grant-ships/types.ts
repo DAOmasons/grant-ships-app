@@ -725,6 +725,7 @@ export type GrantShip = {
   poolFunded: Scalars['Boolean'];
   balance: Scalars['BigInt'];
   totalAvailableFunds: Scalars['BigInt'];
+  totalRoundAmount: Scalars['BigInt'];
   totalAllocated: Scalars['BigInt'];
   totalDistributed: Scalars['BigInt'];
   grants: Array<Grant>;
@@ -900,6 +901,14 @@ export type GrantShip_filter = {
   totalAvailableFunds_lte?: InputMaybe<Scalars['BigInt']>;
   totalAvailableFunds_in?: InputMaybe<Array<Scalars['BigInt']>>;
   totalAvailableFunds_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalRoundAmount?: InputMaybe<Scalars['BigInt']>;
+  totalRoundAmount_not?: InputMaybe<Scalars['BigInt']>;
+  totalRoundAmount_gt?: InputMaybe<Scalars['BigInt']>;
+  totalRoundAmount_lt?: InputMaybe<Scalars['BigInt']>;
+  totalRoundAmount_gte?: InputMaybe<Scalars['BigInt']>;
+  totalRoundAmount_lte?: InputMaybe<Scalars['BigInt']>;
+  totalRoundAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalRoundAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   totalAllocated?: InputMaybe<Scalars['BigInt']>;
   totalAllocated_not?: InputMaybe<Scalars['BigInt']>;
   totalAllocated_gt?: InputMaybe<Scalars['BigInt']>;
@@ -1075,6 +1084,7 @@ export type GrantShip_orderBy =
   | 'poolFunded'
   | 'balance'
   | 'totalAvailableFunds'
+  | 'totalRoundAmount'
   | 'totalAllocated'
   | 'totalDistributed'
   | 'grants'
@@ -1356,6 +1366,7 @@ export type Grant_orderBy =
   | 'shipId__poolFunded'
   | 'shipId__balance'
   | 'shipId__totalAvailableFunds'
+  | 'shipId__totalRoundAmount'
   | 'shipId__totalAllocated'
   | 'shipId__totalDistributed'
   | 'shipId__shipApplicationBytesData'

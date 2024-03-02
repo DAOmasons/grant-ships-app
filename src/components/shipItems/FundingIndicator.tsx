@@ -52,19 +52,19 @@ export const FundingIndicator = ({
           <Text fz={10} mb={2} c="white">
             Distributed
           </Text>
-          <Box className={classes.indicatorRulerDistributed} opacity={0.7} />
+          <Box className={classes.indicatorRulerDistributed} />
         </Box>
         <Box w="30%" c="white">
           <Text fz={10} mb={2}>
             Allocated
           </Text>
-          <Box className={classes.indicatorRulerAllocated} opacity={0.7} />
+          <Box className={classes.indicatorRulerAllocated} />
         </Box>
         <Box w="30%" c="white">
           <Text fz={10} mb={2}>
             Available
           </Text>
-          <Box className={classes.indicatorRulerAvailable} opacity={0.7} />
+          <Box className={classes.indicatorRulerAvailable} />
         </Box>
       </Flex>
     </Box>

@@ -17,16 +17,25 @@
 .leftBar {
   border-radius: rem(5) 0 0 rem(5);
   background-color: var(--mantine-color-pink-5);
+  &:hover {
+    background-color: var(--mantine-color-pink-4);
+  }
 }
 
 .middleBar {
   border-radius: 0;
   background-color: var(--mantine-color-violet-5);
+  &:hover {
+    background-color: var(--mantine-color-violet-4);
+  }
 }
 
 .rightBar {
   border-radius: 0 rem(5) rem(5) 0;
   background-color: var(--mantine-color-blue-5);
+  &:hover {
+    background-color: var(--mantine-color-blue-4);
+  }
 }
 
 .indicatorRulerAllocated {

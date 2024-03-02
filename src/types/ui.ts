@@ -61,6 +61,8 @@ export type ShipPageUI = {
   amtAllocated: string;
   amtDistributed: string;
   amtAvailable: string;
+  totalRoundAmount: string;
+  balance: string;
   shipContractAddress: string;
   members: string[];
   details: {
