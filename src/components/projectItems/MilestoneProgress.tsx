@@ -1,69 +1,74 @@
 import { Box, Flex, Group, Text, useMantineTheme } from '@mantine/core';
-import { MilestoneStatus, MilestoneStep } from '../../types/ui';
 import classes from './ProjectItems.module.css';
-import { Fragment, useMemo } from 'react';
+import { Fragment } from 'react';
 import { IconEye, IconX } from '@tabler/icons-react';
 import { IconCheck } from '@tabler/icons-react';
 import { formatEther, isAddress } from 'viem';
 import { GAME_TOKEN } from '../../constants/gameSetup';
 import { AddressAvatar } from '../AddressAvatar';
+import { DashGrant, PackedMilestoneData } from '../../resolvers/grantResolvers';
+import { AlloStatus } from '../../types/common';
 
 type MilestoneProgressProps = {
-  steps: MilestoneStep[];
   fundedBy: string;
+  grant: DashGrant;
 };
 
-const getBarStyle = ({ status }: MilestoneStep) => {
-  if (status === MilestoneStatus.Idle)
+const getBarStyle = ({ milestoneStatus }: PackedMilestoneData) => {
+  if (milestoneStatus === AlloStatus.None)
     return `${classes.bar} ${classes.bgIdle}`;
-  if (status === MilestoneStatus.InReview)
+  if (milestoneStatus === AlloStatus.Pending)
     return `${classes.bar} ${classes.bgInReview}`;
-  if (status === MilestoneStatus.Approved)
+  if (milestoneStatus === AlloStatus.Accepted)
     return `${classes.bar} ${classes.bgApproved}`;
-  if (status === MilestoneStatus.Rejected)
+  if (milestoneStatus === AlloStatus.Rejected)
     return `${classes.bar} ${classes.bgRejected}`;
   return `${classes.bar}`;
 };
 
-const getCircleStyle = ({ status }: MilestoneStep) => {
-  if (status === MilestoneStatus.Idle)
+const getCircleStyle = ({ milestoneStatus }: PackedMilestoneData) => {
+  if (milestoneStatus === AlloStatus.None)
     return `${classes.statusIcon} ${classes.borderIdle}`;
-  if (status === MilestoneStatus.InReview)
+  if (milestoneStatus === AlloStatus.Pending)
     return `${classes.statusIcon} ${classes.borderInReview}`;
-  if (status === MilestoneStatus.Approved)
+  if (milestoneStatus === AlloStatus.Accepted)
     return `${classes.statusIcon} ${classes.borderApproved}`;
-  if (status === MilestoneStatus.Rejected)
+  if (milestoneStatus === AlloStatus.Rejected)
     return `${classes.statusIcon} ${classes.borderRejected}`;
   return `${classes.statusIcon}`;
 };
 
 export const MilestoneProgress = ({
-  steps,
   fundedBy,
+  grant,
 }: MilestoneProgressProps) => {
-  const totalAmount = useMemo(() => {
-    return formatEther(steps.reduce((acc, step) => acc + step.amount, 0n));
-  }, [steps]);
+  const grantAmount = grant.applicationData.grantAmount
+    ? formatEther(grant.applicationData.grantAmount)
+    : 0;
 
-  const amtAccepted = steps.filter(
-    (step) => step.status === MilestoneStatus.Approved
+  if (!grant.milestones) return;
+
+  const amtCompleted = grant.milestones?.filter(
+    (ms) => ms.milestoneStatus === AlloStatus.Accepted
   ).length;
+
   return (
     <Box>
       <Group gap={5} mb={10}>
         <Text fz="sm">
           <Text fz="sm" component="span" fw={600}>
-            {totalAmount} {GAME_TOKEN.SYMBOL}
-          </Text>{' '}
+            {grantAmount} {GAME_TOKEN.SYMBOL}
+          </Text>
           funded by
         </Text>
         {isAddress(fundedBy) && (
           <AddressAvatar address={fundedBy} size={18} displayText={false} />
         )}
       </Group>
-      <MilestoneProgressSteps steps={steps} />
+      <MilestoneProgressSteps steps={grant.milestones} />
       <Text fz="xs" mt={8} opacity={0.8}>
-        {amtAccepted.toString()}/{steps.length} Milestones distributed
+        {amtCompleted.toString()}/{grant.milestones.length} Milestones
+        distributed
       </Text>
     </Box>
   );
@@ -72,22 +77,25 @@ export const MilestoneProgress = ({
 export const MilestoneProgressSteps = ({
   steps,
 }: {
-  steps: MilestoneStep[];
+  steps: PackedMilestoneData[];
 }) => {
   const theme = useMantineTheme();
 
-  const getCircleContent = ({ status }: MilestoneStep, index: number) => {
-    if (status === MilestoneStatus.Idle)
+  const getCircleContent = (
+    { milestoneStatus }: PackedMilestoneData,
+    index: number
+  ) => {
+    if (milestoneStatus === AlloStatus.None)
       return (
         <Text c={theme.colors.dark[3]} style={{ transform: 'translateY(1px)' }}>
           {index + 1}
         </Text>
       );
-    if (status === MilestoneStatus.InReview)
+    if (milestoneStatus === AlloStatus.Pending)
       return <IconEye size={16} color={theme.colors.violet[6]} />;
-    if (status === MilestoneStatus.Approved)
+    if (milestoneStatus === AlloStatus.Accepted)
       return <IconCheck size={16} color={theme.colors.blue[6]} />;
-    if (status === MilestoneStatus.Rejected)
+    if (milestoneStatus === AlloStatus.Rejected)
       return <IconX size={16} color={theme.colors.red[6]} />;
   };
   return (

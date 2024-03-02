@@ -12,5 +12,6 @@ export const useUserData = () => {
     userData: context.userData,
     userLoading: context.isLoadingUserData,
     userError: context.userDataError,
+    refetchUser: context.refetchUserData,
   };
 };

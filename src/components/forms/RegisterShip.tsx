@@ -36,7 +36,6 @@ import { ProfileData } from '../../pages/CreateShip';
 import { useEffect } from 'react';
 import { CacheKeys } from './cacheKeys';
 import { ShipProfileMetadata } from '../../utils/ipfs/metadataValidation';
-import { GAME_MANAGER } from '../../constants/gameSetup';
 
 type FormValues = z.infer<typeof registerShipSchema>;
 
@@ -122,6 +121,7 @@ export const RegisterShip = ({
       });
       return;
     }
+
     try {
       const nonce = generateRandomUint256();
 
@@ -191,7 +191,6 @@ export const RegisterShip = ({
           successButton: {
             label: 'Next Step',
             onClick: () => {
-              console.log('Fired');
               nextStep();
             },
           },
@@ -215,10 +214,7 @@ export const RegisterShip = ({
   };
 
   return (
-    <form
-    // id="ship-register"
-    // onSubmit={form.onSubmit((values) => handleFormSubmit(values))}
-    >
+    <form>
       <Stack maw={600} miw={300} w={'100%'}>
         <AvatarPickerIPFS
           defaultValue={form.values.avatarHash || null}
@@ -266,7 +262,7 @@ export const RegisterShip = ({
         <AddressBox
           w="100%"
           label="Team Members"
-          description={`Team members can edit metadata and apply for grants.`}
+          description={`Must be comma separated. Team members can edit metadata and apply for grants. You do not need to enter your own address as you are already the profile owner`}
           placeholder="Paste addresses here. Must be comma separated."
           {...form.getInputProps('teamMembers')}
           onBlur={() => handleBlur('teamMembers')}
@@ -369,7 +365,7 @@ export const RegisterShip = ({
               <TextInput
                 w="50%"
                 mr={'md'}
-                placeholder="X"
+                placeholder="https://x.com/daomasons"
                 label="Social Media"
                 leftSection={<IconBrandX />}
                 {...form.getInputProps('x')}
@@ -379,7 +375,7 @@ export const RegisterShip = ({
               <TextInput
                 w="50%"
                 label=" "
-                placeholder="Github"
+                placeholder="https://github.com/DAOmasons"
                 leftSection={<IconBrandGithub />}
                 {...form.getInputProps('github')}
                 onBlur={() => handleBlur('github')}
@@ -391,7 +387,7 @@ export const RegisterShip = ({
                 w="50%"
                 label=" "
                 mr={'md'}
-                placeholder="Discord"
+                placeholder="https://discord.gg/your-server"
                 leftSection={<IconBrandDiscord />}
                 {...form.getInputProps('discord')}
                 onBlur={() => handleBlur('discord')}
@@ -400,7 +396,7 @@ export const RegisterShip = ({
               <TextInput
                 w="50%"
                 label=" "
-                placeholder="Telegram"
+                placeholder="https://t.me/your-telegram"
                 leftSection={<IconBrandTelegram />}
                 {...form.getInputProps('telegram')}
                 onBlur={() => handleBlur('telegram')}

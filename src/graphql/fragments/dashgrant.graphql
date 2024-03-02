@@ -1,0 +1,36 @@
+fragment GrantDash on Grant {
+  id
+  grantApplicationBytes
+  lastUpdated
+  grantStatus
+  milestonesAmount
+  projectId {
+    id
+    name
+    metadata {
+      pointer
+    }
+  }
+  shipId {
+    id
+    name
+    shipContractAddress
+    poolId
+    profileMetadata {
+      pointer
+    }
+  }
+  milestonesApproved
+  amtDistributed
+  amtAllocated
+  currentMilestoneIndex
+  milestonesApprovedReason {
+    pointer
+  }
+  facilitatorReason {
+    pointer
+  }
+  shipApprovalReason {
+    pointer
+  }
+}

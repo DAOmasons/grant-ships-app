@@ -82,6 +82,15 @@ export const RegisterProject = () => {
         return;
       }
 
+      if (!address) {
+        notifications.show({
+          title: 'Account Error',
+          message: 'No account found',
+          color: 'red',
+        });
+        return;
+      }
+
       const pinRes = await pinJSONToIPFS(projectMetadata);
 
       if (typeof pinRes.IpfsHash !== 'string' && pinRes.IpfsHash[0] !== 'Q') {
@@ -92,7 +101,9 @@ export const RegisterProject = () => {
         });
         return;
       }
+
       const teamMembers = values.teamMembers.filter(Boolean);
+
       const schemaCode = projectProfileHash();
 
       const metadataStruct = createMetadata({
@@ -189,7 +200,7 @@ export const RegisterProject = () => {
       <AddressBox
         w="100%"
         label="Team Members"
-        description={`Team members can edit metadata and apply for grants.`}
+        description={`Must be comma separated. Team members can edit metadata and apply for grants. You do not need to enter your own address as you are already the profile owner`}
         placeholder="Paste addresses here. Must be comma separated."
         {...form.getInputProps('teamMembers')}
         onBlur={() => handleBlur('teamMembers')}
@@ -283,7 +294,7 @@ export const RegisterProject = () => {
               w="50%"
               mr={'md'}
               placeholder="X"
-              label="Social Media"
+              label="https://x.com/daomasons"
               leftSection={<IconBrandX />}
               {...form.getInputProps('x')}
               onBlur={() => handleBlur('x')}
@@ -291,7 +302,7 @@ export const RegisterProject = () => {
             <TextInput
               w="50%"
               label=" "
-              placeholder="Github"
+              placeholder="https://github.com/DAOmasons"
               leftSection={<IconBrandGithub />}
               {...form.getInputProps('github')}
               onBlur={() => handleBlur('github')}
@@ -302,7 +313,7 @@ export const RegisterProject = () => {
               w="50%"
               label=" "
               mr={'md'}
-              placeholder="Discord"
+              placeholder="https://discord.gg/your-server"
               leftSection={<IconBrandDiscord />}
               {...form.getInputProps('discord')}
               onBlur={() => handleBlur('discord')}
@@ -310,7 +321,7 @@ export const RegisterProject = () => {
             <TextInput
               w="50%"
               label=" "
-              placeholder="Telegram"
+              placeholder="https://t.me/your-telegram"
               leftSection={<IconBrandTelegram />}
               {...form.getInputProps('telegram')}
               onBlur={() => handleBlur('telegram')}

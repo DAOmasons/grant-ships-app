@@ -23,7 +23,7 @@ import {
   parseAbiParameters,
   parseEther,
 } from 'viem';
-import { useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { MainSection, PageTitle } from '../layout/Sections';
 import { GAME_TOKEN } from '../constants/gameSetup';
@@ -36,6 +36,8 @@ import AlloAbi from '../abi/Allo.json';
 import { ADDR } from '../constants/addresses';
 import { getShipPoolId } from '../queries/getShipPoolId';
 import { AppAlert } from '../components/UnderContruction';
+import { useMemo } from 'react';
+import { GrantStatus } from '../types/common';
 
 const defaultValues = {
   projectId: '',
@@ -51,9 +53,10 @@ const defaultValues = {
 type FormValues = z.infer<typeof applyFundingSchema>;
 
 export const ApplyFunding = () => {
-  const { userData, userLoading } = useUserData();
+  const { userData, userLoading, refetchUser } = useUserData();
   const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const { address } = useAccount();
   const { tx } = useTx();
@@ -62,6 +65,23 @@ export const ApplyFunding = () => {
     initialValues: defaultValues,
     validate: zodResolver(applyFundingSchema),
   });
+
+  const alreadyHasGrantFromShip = useMemo(() => {
+    if (!userData?.projects) return false;
+
+    if (!isAddress(form.values.projectId)) return false;
+
+    const currentProject = userData?.projects?.find(
+      (project) => project.id === form.values.projectId
+    );
+
+    if (!currentProject || !currentProject.grants?.length) return false;
+
+    return currentProject.grants.some(
+      (grant) =>
+        grant.shipId.id === id && grant.grantStatus !== GrantStatus.Completed
+    );
+  }, [form.values.projectId, id, userData]);
 
   const handleBlur = (fieldName: string) => {
     form.validateField(fieldName);
@@ -179,6 +199,24 @@ export const ApplyFunding = () => {
           functionName: 'registerRecipient',
           args: [shipPoolId, encoded],
         },
+        writeContractOptions: {
+          onPollSuccess() {
+            refetchUser();
+          },
+        },
+        viewParams: {
+          success: {
+            title: 'Grant Application Created',
+            description:
+              'Your application has been submitted. Track your grant on your Project Page.',
+          },
+          successButton: {
+            label: 'Go to Project Page',
+            onClick: () => {
+              navigate(`/project/${anchor}`);
+            },
+          },
+        },
       });
     } catch (error) {
       console.error(error);
@@ -201,8 +239,16 @@ export const ApplyFunding = () => {
           title="No Projects Profiles Found"
           description={
             <Group gap={0}>
-              <Button size="xs" p={0} h="fit-content" variant="subtle" mr={4}>
-                Create a Project Profile
+              <Button
+                size="xs"
+                component={Link}
+                to="/create-project"
+                p={0}
+                h="fit-content"
+                variant="subtle"
+                mr={4}
+              >
+                Create a Project
               </Button>
               <Text size="xs" opacity={0.8}>
                 to apply for a grant.
@@ -226,6 +272,11 @@ export const ApplyFunding = () => {
               value: project.id,
               label: project.name,
             }))}
+            error={
+              alreadyHasGrantFromShip
+                ? 'You already have an active grant from this ship'
+                : undefined
+            }
             mr={'md'}
           />
           <DatePickerInput
@@ -311,7 +362,11 @@ export const ApplyFunding = () => {
           onBlur={() => handleBlur('extraInfo')}
         />
         <Flex mt="md" justify="flex-end">
-          <Button ml="auto" type="submit" disabled={noProjects}>
+          <Button
+            ml="auto"
+            type="submit"
+            disabled={noProjects || alreadyHasGrantFromShip}
+          >
             Finish Application
           </Button>
         </Flex>

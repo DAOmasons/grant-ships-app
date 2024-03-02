@@ -4,5 +4,11 @@ query getUserData($id: Bytes) {
     metadata {
       ...RawMetadata
     }
+    grants {
+      grantStatus
+      shipId {
+        id
+      }
+    }
   }
 }

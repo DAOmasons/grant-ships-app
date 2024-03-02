@@ -35,8 +35,18 @@ export const ShipOpDashboard = () => {
             shipLoading={shipLoading}
           />
         </Tabs.Panel>
-        <Tabs.Panel value="application"> </Tabs.Panel>
-        <Tabs.Panel value="postUpdate"> </Tabs.Panel>
+        <Tabs.Panel value="application">
+          <AppAlert
+            title={'Under Contruction'}
+            description={"This feature isn't built yet. Check back soon."}
+          />
+        </Tabs.Panel>
+        <Tabs.Panel value="postUpdate">
+          <AppAlert
+            title={'Under Contruction'}
+            description={"This feature isn't built yet. Check back soon."}
+          />
+        </Tabs.Panel>
       </Tabs>
     </MainSection>
   );

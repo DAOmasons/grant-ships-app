@@ -52,7 +52,6 @@ export const ShipDashCard = ({
         </Flex>
       );
     }
-
     return (
       <Flex className={`${classes.statusIcon} ${classes.statusIconSolid}`}>
         <IconCheck size={16} />

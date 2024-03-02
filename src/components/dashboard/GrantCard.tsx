@@ -48,8 +48,6 @@ export const GrantCard = ({
     );
   }, [userData, grant.projectId.id]);
 
-  console.log('grant.grantStatus', grant.grantStatus);
-
   return (
     <Paper bg={theme.colors.dark[6]} mih={220} w="100%" p="lg">
       <Flex>

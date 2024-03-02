@@ -62,6 +62,9 @@ export const MilestonesSubmit = ({
     return [];
   }, [grant, view, isProjectMember, currentStatus]);
 
+  if (currentStatus < GrantStatus.FacilitatorApproved)
+    return <Text fz="sm">Awaiting Milestones</Text>;
+
   return (
     <>
       <Group justify="space-between" align="start">
