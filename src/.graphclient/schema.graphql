@@ -684,8 +684,8 @@ type Grant {
   milestones(skip: Int = 0, first: Int = 100, orderBy: Milestone_orderBy, orderDirection: OrderDirection, where: Milestone_filter): [Milestone!]
   shipApprovalReason: RawMetadata
   hasShipApproved: Boolean
-  amtAllocated: BigInt
-  amtDistributed: BigInt
+  amtAllocated: BigInt!
+  amtDistributed: BigInt!
   allocatedBy: Bytes
   facilitatorReason: RawMetadata
   hasFacilitatorApproved: Boolean
@@ -708,6 +708,10 @@ type GrantShip {
   status: Int!
   poolFunded: Boolean!
   balance: BigInt!
+  totalAvailableFunds: BigInt!
+  totalRoundAmount: BigInt!
+  totalAllocated: BigInt!
+  totalDistributed: BigInt!
   grants(skip: Int = 0, first: Int = 100, orderBy: Grant_orderBy, orderDirection: OrderDirection, where: Grant_filter): [Grant!]!
   alloProfileMembers: ProfileMemberGroup
   shipApplicationBytesData: Bytes
@@ -725,9 +729,7 @@ type GrantShip {
   shipLaunched: Boolean
   poolActive: Boolean
   isAllocated: Boolean
-  allocatedAmount: BigInt
   isDistributed: Boolean
-  distributedAmount: BigInt
 }
 
 input GrantShip_filter {
@@ -866,6 +868,38 @@ input GrantShip_filter {
   balance_lte: BigInt
   balance_in: [BigInt!]
   balance_not_in: [BigInt!]
+  totalAvailableFunds: BigInt
+  totalAvailableFunds_not: BigInt
+  totalAvailableFunds_gt: BigInt
+  totalAvailableFunds_lt: BigInt
+  totalAvailableFunds_gte: BigInt
+  totalAvailableFunds_lte: BigInt
+  totalAvailableFunds_in: [BigInt!]
+  totalAvailableFunds_not_in: [BigInt!]
+  totalRoundAmount: BigInt
+  totalRoundAmount_not: BigInt
+  totalRoundAmount_gt: BigInt
+  totalRoundAmount_lt: BigInt
+  totalRoundAmount_gte: BigInt
+  totalRoundAmount_lte: BigInt
+  totalRoundAmount_in: [BigInt!]
+  totalRoundAmount_not_in: [BigInt!]
+  totalAllocated: BigInt
+  totalAllocated_not: BigInt
+  totalAllocated_gt: BigInt
+  totalAllocated_lt: BigInt
+  totalAllocated_gte: BigInt
+  totalAllocated_lte: BigInt
+  totalAllocated_in: [BigInt!]
+  totalAllocated_not_in: [BigInt!]
+  totalDistributed: BigInt
+  totalDistributed_not: BigInt
+  totalDistributed_gt: BigInt
+  totalDistributed_lt: BigInt
+  totalDistributed_gte: BigInt
+  totalDistributed_lte: BigInt
+  totalDistributed_in: [BigInt!]
+  totalDistributed_not_in: [BigInt!]
   grants_: Grant_filter
   alloProfileMembers: String
   alloProfileMembers_not: String
@@ -997,26 +1031,10 @@ input GrantShip_filter {
   isAllocated_not: Boolean
   isAllocated_in: [Boolean!]
   isAllocated_not_in: [Boolean!]
-  allocatedAmount: BigInt
-  allocatedAmount_not: BigInt
-  allocatedAmount_gt: BigInt
-  allocatedAmount_lt: BigInt
-  allocatedAmount_gte: BigInt
-  allocatedAmount_lte: BigInt
-  allocatedAmount_in: [BigInt!]
-  allocatedAmount_not_in: [BigInt!]
   isDistributed: Boolean
   isDistributed_not: Boolean
   isDistributed_in: [Boolean!]
   isDistributed_not_in: [Boolean!]
-  distributedAmount: BigInt
-  distributedAmount_not: BigInt
-  distributedAmount_gt: BigInt
-  distributedAmount_lt: BigInt
-  distributedAmount_gte: BigInt
-  distributedAmount_lte: BigInt
-  distributedAmount_in: [BigInt!]
-  distributedAmount_not_in: [BigInt!]
   """Filter for the block changed event."""
   _change_block: BlockChangedFilter
   and: [GrantShip_filter]
@@ -1040,6 +1058,10 @@ enum GrantShip_orderBy {
   status
   poolFunded
   balance
+  totalAvailableFunds
+  totalRoundAmount
+  totalAllocated
+  totalDistributed
   grants
   alloProfileMembers
   alloProfileMembers__id
@@ -1061,9 +1083,7 @@ enum GrantShip_orderBy {
   shipLaunched
   poolActive
   isAllocated
-  allocatedAmount
   isDistributed
-  distributedAmount
 }
 
 input Grant_filter {
@@ -1321,6 +1341,10 @@ enum Grant_orderBy {
   shipId__status
   shipId__poolFunded
   shipId__balance
+  shipId__totalAvailableFunds
+  shipId__totalRoundAmount
+  shipId__totalAllocated
+  shipId__totalDistributed
   shipId__shipApplicationBytesData
   shipId__applicationSubmittedTime
   shipId__isAwaitingApproval
@@ -1335,9 +1359,7 @@ enum Grant_orderBy {
   shipId__shipLaunched
   shipId__poolActive
   shipId__isAllocated
-  shipId__allocatedAmount
   shipId__isDistributed
-  shipId__distributedAmount
   lastUpdated
   grantStatus
   grantApplicationBytes

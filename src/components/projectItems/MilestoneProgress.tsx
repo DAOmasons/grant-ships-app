@@ -3,7 +3,7 @@ import classes from './ProjectItems.module.css';
 import { Fragment } from 'react';
 import { IconEye, IconX } from '@tabler/icons-react';
 import { IconCheck } from '@tabler/icons-react';
-import { formatEther, isAddress } from 'viem';
+import { Address, formatEther, isAddress } from 'viem';
 import { GAME_TOKEN } from '../../constants/gameSetup';
 import { AddressAvatar } from '../AddressAvatar';
 import { DashGrant, PackedMilestoneData } from '../../resolvers/grantResolvers';
@@ -46,11 +46,33 @@ export const MilestoneProgress = ({
     ? formatEther(grant.applicationData.grantAmount)
     : 0;
 
-  if (!grant.milestones) return;
+  if (!grant.milestones)
+    return (
+      <>
+        <Box>
+          <Group gap={5} mb={10}>
+            <Text fz="sm">
+              <Text fz="sm" component="span" fw={600}>
+                {grantAmount} {GAME_TOKEN.SYMBOL}{' '}
+              </Text>
+              funded by
+            </Text>
+            <AddressAvatar
+              address={fundedBy as Address}
+              size={18}
+              displayText={false}
+            />
+          </Group>
+          <Text fz="xs">Awaiting Milestones from team</Text>
+        </Box>
+      </>
+    );
 
-  const amtCompleted = grant.milestones?.filter(
-    (ms) => ms.milestoneStatus === AlloStatus.Accepted
-  ).length;
+  const amtCompleted = grant.milestones
+    ? grant.milestones.filter(
+        (ms) => ms.milestoneStatus === AlloStatus.Accepted
+      ).length
+    : [];
 
   return (
     <Box>

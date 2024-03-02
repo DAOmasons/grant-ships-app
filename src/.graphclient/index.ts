@@ -713,8 +713,8 @@ export type Grant = {
   milestones?: Maybe<Array<Milestone>>;
   shipApprovalReason?: Maybe<RawMetadata>;
   hasShipApproved?: Maybe<Scalars['Boolean']>;
-  amtAllocated?: Maybe<Scalars['BigInt']>;
-  amtDistributed?: Maybe<Scalars['BigInt']>;
+  amtAllocated: Scalars['BigInt'];
+  amtDistributed: Scalars['BigInt'];
   allocatedBy?: Maybe<Scalars['Bytes']>;
   facilitatorReason?: Maybe<RawMetadata>;
   hasFacilitatorApproved?: Maybe<Scalars['Boolean']>;
@@ -746,6 +746,10 @@ export type GrantShip = {
   status: Scalars['Int'];
   poolFunded: Scalars['Boolean'];
   balance: Scalars['BigInt'];
+  totalAvailableFunds: Scalars['BigInt'];
+  totalRoundAmount: Scalars['BigInt'];
+  totalAllocated: Scalars['BigInt'];
+  totalDistributed: Scalars['BigInt'];
   grants: Array<Grant>;
   alloProfileMembers?: Maybe<ProfileMemberGroup>;
   shipApplicationBytesData?: Maybe<Scalars['Bytes']>;
@@ -763,9 +767,7 @@ export type GrantShip = {
   shipLaunched?: Maybe<Scalars['Boolean']>;
   poolActive?: Maybe<Scalars['Boolean']>;
   isAllocated?: Maybe<Scalars['Boolean']>;
-  allocatedAmount?: Maybe<Scalars['BigInt']>;
   isDistributed?: Maybe<Scalars['Boolean']>;
-  distributedAmount?: Maybe<Scalars['BigInt']>;
 };
 
 
@@ -913,6 +915,38 @@ export type GrantShip_filter = {
   balance_lte?: InputMaybe<Scalars['BigInt']>;
   balance_in?: InputMaybe<Array<Scalars['BigInt']>>;
   balance_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalAvailableFunds?: InputMaybe<Scalars['BigInt']>;
+  totalAvailableFunds_not?: InputMaybe<Scalars['BigInt']>;
+  totalAvailableFunds_gt?: InputMaybe<Scalars['BigInt']>;
+  totalAvailableFunds_lt?: InputMaybe<Scalars['BigInt']>;
+  totalAvailableFunds_gte?: InputMaybe<Scalars['BigInt']>;
+  totalAvailableFunds_lte?: InputMaybe<Scalars['BigInt']>;
+  totalAvailableFunds_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalAvailableFunds_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalRoundAmount?: InputMaybe<Scalars['BigInt']>;
+  totalRoundAmount_not?: InputMaybe<Scalars['BigInt']>;
+  totalRoundAmount_gt?: InputMaybe<Scalars['BigInt']>;
+  totalRoundAmount_lt?: InputMaybe<Scalars['BigInt']>;
+  totalRoundAmount_gte?: InputMaybe<Scalars['BigInt']>;
+  totalRoundAmount_lte?: InputMaybe<Scalars['BigInt']>;
+  totalRoundAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalRoundAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalAllocated?: InputMaybe<Scalars['BigInt']>;
+  totalAllocated_not?: InputMaybe<Scalars['BigInt']>;
+  totalAllocated_gt?: InputMaybe<Scalars['BigInt']>;
+  totalAllocated_lt?: InputMaybe<Scalars['BigInt']>;
+  totalAllocated_gte?: InputMaybe<Scalars['BigInt']>;
+  totalAllocated_lte?: InputMaybe<Scalars['BigInt']>;
+  totalAllocated_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalAllocated_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalDistributed?: InputMaybe<Scalars['BigInt']>;
+  totalDistributed_not?: InputMaybe<Scalars['BigInt']>;
+  totalDistributed_gt?: InputMaybe<Scalars['BigInt']>;
+  totalDistributed_lt?: InputMaybe<Scalars['BigInt']>;
+  totalDistributed_gte?: InputMaybe<Scalars['BigInt']>;
+  totalDistributed_lte?: InputMaybe<Scalars['BigInt']>;
+  totalDistributed_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalDistributed_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   grants_?: InputMaybe<Grant_filter>;
   alloProfileMembers?: InputMaybe<Scalars['String']>;
   alloProfileMembers_not?: InputMaybe<Scalars['String']>;
@@ -1044,26 +1078,10 @@ export type GrantShip_filter = {
   isAllocated_not?: InputMaybe<Scalars['Boolean']>;
   isAllocated_in?: InputMaybe<Array<Scalars['Boolean']>>;
   isAllocated_not_in?: InputMaybe<Array<Scalars['Boolean']>>;
-  allocatedAmount?: InputMaybe<Scalars['BigInt']>;
-  allocatedAmount_not?: InputMaybe<Scalars['BigInt']>;
-  allocatedAmount_gt?: InputMaybe<Scalars['BigInt']>;
-  allocatedAmount_lt?: InputMaybe<Scalars['BigInt']>;
-  allocatedAmount_gte?: InputMaybe<Scalars['BigInt']>;
-  allocatedAmount_lte?: InputMaybe<Scalars['BigInt']>;
-  allocatedAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  allocatedAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   isDistributed?: InputMaybe<Scalars['Boolean']>;
   isDistributed_not?: InputMaybe<Scalars['Boolean']>;
   isDistributed_in?: InputMaybe<Array<Scalars['Boolean']>>;
   isDistributed_not_in?: InputMaybe<Array<Scalars['Boolean']>>;
-  distributedAmount?: InputMaybe<Scalars['BigInt']>;
-  distributedAmount_not?: InputMaybe<Scalars['BigInt']>;
-  distributedAmount_gt?: InputMaybe<Scalars['BigInt']>;
-  distributedAmount_lt?: InputMaybe<Scalars['BigInt']>;
-  distributedAmount_gte?: InputMaybe<Scalars['BigInt']>;
-  distributedAmount_lte?: InputMaybe<Scalars['BigInt']>;
-  distributedAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  distributedAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
   and?: InputMaybe<Array<InputMaybe<GrantShip_filter>>>;
@@ -1087,6 +1105,10 @@ export type GrantShip_orderBy =
   | 'status'
   | 'poolFunded'
   | 'balance'
+  | 'totalAvailableFunds'
+  | 'totalRoundAmount'
+  | 'totalAllocated'
+  | 'totalDistributed'
   | 'grants'
   | 'alloProfileMembers'
   | 'alloProfileMembers__id'
@@ -1108,9 +1130,7 @@ export type GrantShip_orderBy =
   | 'shipLaunched'
   | 'poolActive'
   | 'isAllocated'
-  | 'allocatedAmount'
-  | 'isDistributed'
-  | 'distributedAmount';
+  | 'isDistributed';
 
 export type Grant_filter = {
   id?: InputMaybe<Scalars['ID']>;
@@ -1367,6 +1387,10 @@ export type Grant_orderBy =
   | 'shipId__status'
   | 'shipId__poolFunded'
   | 'shipId__balance'
+  | 'shipId__totalAvailableFunds'
+  | 'shipId__totalRoundAmount'
+  | 'shipId__totalAllocated'
+  | 'shipId__totalDistributed'
   | 'shipId__shipApplicationBytesData'
   | 'shipId__applicationSubmittedTime'
   | 'shipId__isAwaitingApproval'
@@ -1381,9 +1405,7 @@ export type Grant_orderBy =
   | 'shipId__shipLaunched'
   | 'shipId__poolActive'
   | 'shipId__isAllocated'
-  | 'shipId__allocatedAmount'
   | 'shipId__isDistributed'
-  | 'shipId__distributedAmount'
   | 'lastUpdated'
   | 'grantStatus'
   | 'grantApplicationBytes'
@@ -2879,8 +2901,8 @@ export type GrantResolvers<ContextType = MeshContext, ParentType extends Resolve
   milestones?: Resolver<Maybe<Array<ResolversTypes['Milestone']>>, ParentType, ContextType, RequireFields<GrantmilestonesArgs, 'skip' | 'first'>>;
   shipApprovalReason?: Resolver<Maybe<ResolversTypes['RawMetadata']>, ParentType, ContextType>;
   hasShipApproved?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
-  amtAllocated?: Resolver<Maybe<ResolversTypes['BigInt']>, ParentType, ContextType>;
-  amtDistributed?: Resolver<Maybe<ResolversTypes['BigInt']>, ParentType, ContextType>;
+  amtAllocated?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  amtDistributed?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   allocatedBy?: Resolver<Maybe<ResolversTypes['Bytes']>, ParentType, ContextType>;
   facilitatorReason?: Resolver<Maybe<ResolversTypes['RawMetadata']>, ParentType, ContextType>;
   hasFacilitatorApproved?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
@@ -2904,6 +2926,10 @@ export type GrantShipResolvers<ContextType = MeshContext, ParentType extends Res
   status?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   poolFunded?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   balance?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  totalAvailableFunds?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  totalRoundAmount?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  totalAllocated?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  totalDistributed?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   grants?: Resolver<Array<ResolversTypes['Grant']>, ParentType, ContextType, RequireFields<GrantShipgrantsArgs, 'skip' | 'first'>>;
   alloProfileMembers?: Resolver<Maybe<ResolversTypes['ProfileMemberGroup']>, ParentType, ContextType>;
   shipApplicationBytesData?: Resolver<Maybe<ResolversTypes['Bytes']>, ParentType, ContextType>;
@@ -2921,9 +2947,7 @@ export type GrantShipResolvers<ContextType = MeshContext, ParentType extends Res
   shipLaunched?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   poolActive?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   isAllocated?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
-  allocatedAmount?: Resolver<Maybe<ResolversTypes['BigInt']>, ParentType, ContextType>;
   isDistributed?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
-  distributedAmount?: Resolver<Maybe<ResolversTypes['BigInt']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -3316,6 +3340,11 @@ export function getBuiltGraphSDK<TGlobalContext = any, TOperationContext = any>(
   const sdkRequester$ = getBuiltGraphClient().then(({ sdkRequesterFactory }) => sdkRequesterFactory(globalContext));
   return getSdk<TOperationContext, TGlobalContext>((...args) => sdkRequester$.then(sdkRequester => sdkRequester(...args)));
 }
+export type BaseShipDataFragment = (
+  Pick<GrantShip, 'id' | 'name' | 'status' | 'shipContractAddress' | 'shipApplicationBytesData' | 'owner' | 'balance' | 'totalAvailableFunds' | 'totalAllocated' | 'totalDistributed' | 'totalRoundAmount'>
+  & { profileMetadata: Pick<RawMetadata, 'pointer'>, alloProfileMembers?: Maybe<Pick<ProfileMemberGroup, 'addresses'>> }
+);
+
 export type GrantDashFragment = (
   Pick<Grant, 'id' | 'grantApplicationBytes' | 'lastUpdated' | 'grantStatus' | 'milestonesAmount' | 'milestonesApproved' | 'amtDistributed' | 'amtAllocated' | 'currentMilestoneIndex'>
   & { projectId: (
@@ -3339,7 +3368,7 @@ export type facDashShipDataQuery = { shipApplicants: Array<(
     Pick<GrantShip, 'id' | 'name' | 'status' | 'applicationSubmittedTime' | 'shipApplicationBytesData'>
     & { profileMetadata: Pick<RawMetadata, 'pointer'> }
   )>, approvedShips: Array<(
-    Pick<GrantShip, 'approvedTime' | 'allocatedAmount' | 'distributedAmount' | 'id' | 'name' | 'status' | 'applicationSubmittedTime' | 'shipApplicationBytesData'>
+    Pick<GrantShip, 'approvedTime' | 'totalAllocated' | 'totalDistributed' | 'id' | 'name' | 'status' | 'applicationSubmittedTime' | 'shipApplicationBytesData'>
     & { applicationReviewReason?: Maybe<Pick<RawMetadata, 'pointer'>>, profileMetadata: Pick<RawMetadata, 'pointer'> }
   )>, rejectedShips: Array<(
     Pick<GrantShip, 'rejectedTime' | 'id' | 'name' | 'status' | 'applicationSubmittedTime' | 'shipApplicationBytesData'>
@@ -3528,23 +3557,39 @@ export type shipPageQueryQueryVariables = Exact<{
 
 
 export type shipPageQueryQuery = { grantShip?: Maybe<(
-    Pick<GrantShip, 'id' | 'name' | 'status' | 'shipContractAddress' | 'shipApplicationBytesData' | 'owner' | 'allocatedAmount' | 'distributedAmount'>
+    Pick<GrantShip, 'id' | 'name' | 'status' | 'shipContractAddress' | 'shipApplicationBytesData' | 'owner' | 'balance' | 'totalAvailableFunds' | 'totalAllocated' | 'totalDistributed' | 'totalRoundAmount'>
     & { profileMetadata: Pick<RawMetadata, 'pointer'>, alloProfileMembers?: Maybe<Pick<ProfileMemberGroup, 'addresses'>> }
   )> };
-
-export type ShipCardQueryFragment = (
-  Pick<GrantShip, 'id' | 'name' | 'status'>
-  & { profileMetadata: Pick<RawMetadata, 'pointer'> }
-);
 
 export type ShipsPageQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type ShipsPageQueryQuery = { grantShips: Array<(
-    Pick<GrantShip, 'id' | 'name' | 'status'>
-    & { profileMetadata: Pick<RawMetadata, 'pointer'> }
+    Pick<GrantShip, 'id' | 'name' | 'status' | 'shipContractAddress' | 'shipApplicationBytesData' | 'owner' | 'balance' | 'totalAvailableFunds' | 'totalAllocated' | 'totalDistributed' | 'totalRoundAmount'>
+    & { profileMetadata: Pick<RawMetadata, 'pointer'>, alloProfileMembers?: Maybe<Pick<ProfileMemberGroup, 'addresses'>> }
   )> };
 
+export const BaseShipDataFragmentDoc = gql`
+    fragment BaseShipData on GrantShip {
+  id
+  name
+  status
+  shipContractAddress
+  shipApplicationBytesData
+  profileMetadata {
+    pointer
+  }
+  owner
+  alloProfileMembers {
+    addresses
+  }
+  balance
+  totalAvailableFunds
+  totalAllocated
+  totalDistributed
+  totalRoundAmount
+}
+    ` as unknown as DocumentNode<BaseShipDataFragment, unknown>;
 export const GrantDashFragmentDoc = gql`
     fragment GrantDash on Grant {
   id
@@ -3674,16 +3719,6 @@ export const ShipDashFragmentDoc = gql`
   balance
 }
     ` as unknown as DocumentNode<ShipDashFragment, unknown>;
-export const ShipCardQueryFragmentDoc = gql`
-    fragment ShipCardQuery on GrantShip {
-  id
-  name
-  status
-  profileMetadata {
-    pointer
-  }
-}
-    ` as unknown as DocumentNode<ShipCardQueryFragment, unknown>;
 export const facDashShipDataDocument = gql`
     query facDashShipData {
   shipApplicants: grantShips(where: {isAwaitingApproval: true}) {
@@ -3694,8 +3729,8 @@ export const facDashShipDataDocument = gql`
   ) {
     ...FacShipData
     approvedTime
-    allocatedAmount
-    distributedAmount
+    totalAllocated
+    totalDistributed
     applicationReviewReason {
       pointer
     }
@@ -3855,30 +3890,17 @@ export const projectPageQueryDocument = gql`
 export const shipPageQueryDocument = gql`
     query shipPageQuery($id: ID!) {
   grantShip(id: $id) {
-    id
-    name
-    status
-    shipContractAddress
-    shipApplicationBytesData
-    profileMetadata {
-      pointer
-    }
-    owner
-    alloProfileMembers {
-      addresses
-    }
-    allocatedAmount
-    distributedAmount
+    ...BaseShipData
   }
 }
-    ` as unknown as DocumentNode<shipPageQueryQuery, shipPageQueryQueryVariables>;
+    ${BaseShipDataFragmentDoc}` as unknown as DocumentNode<shipPageQueryQuery, shipPageQueryQueryVariables>;
 export const ShipsPageQueryDocument = gql`
     query ShipsPageQuery {
   grantShips(where: {isApproved: true}) {
-    ...ShipCardQuery
+    ...BaseShipData
   }
 }
-    ${ShipCardQueryFragmentDoc}` as unknown as DocumentNode<ShipsPageQueryQuery, ShipsPageQueryQueryVariables>;
+    ${BaseShipDataFragmentDoc}` as unknown as DocumentNode<ShipsPageQueryQuery, ShipsPageQueryQueryVariables>;
 
 
 

@@ -1,10 +1,10 @@
 import { ShipProfileMetadata } from '../utils/ipfs/metadataValidation';
-import { ShipCardQueryFragment, getBuiltGraphSDK } from '../.graphclient';
+import { BaseShipDataFragment, getBuiltGraphSDK } from '../.graphclient';
 import { getGatewayUrl, getIpfsJson } from '../utils/ipfs/get';
 import { ShipsCardUI } from '../types/ui';
 
 const resolveProfileMetadata = async (
-  shipCard: ShipCardQueryFragment
+  shipCard: BaseShipDataFragment
 ): Promise<ShipsCardUI> => {
   if (!shipCard?.profileMetadata?.pointer) {
     console.error('No metadata pointer', shipCard);
@@ -24,9 +24,10 @@ const resolveProfileMetadata = async (
     status: shipCard.status,
     imgUrl: getGatewayUrl(metadata.avatarHash_IPFS),
     description: metadata.mission,
-    amtAllocated: '0',
-    amtDistributed: '0',
-    amtAvailable: '0',
+    amtAllocated: shipCard.totalAllocated,
+    amtDistributed: shipCard.totalDistributed,
+    amtAvailable: shipCard.totalAvailableFunds,
+    balance: shipCard.balance,
   };
 };
 

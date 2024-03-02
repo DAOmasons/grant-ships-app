@@ -83,14 +83,6 @@ export const Ship = () => {
     );
   }
 
-  const totalFunding = [
-    BigInt(ship.amtDistributed ? ship.amtDistributed : 0),
-    BigInt(ship.amtAvailable ? ship.amtAvailable : 0),
-    BigInt(ship.amtAvailable ? ship.amtAvailable : 0),
-  ]
-    .reduce((acc, amt) => acc + amt, 0n)
-    .toString();
-
   const isShipActive = ship.status === GameStatus.Active;
 
   return (
@@ -166,15 +158,16 @@ export const Ship = () => {
           </Group>
         </Paper>
         <Paper p="md" bg={theme.colors.dark[6]}>
-          <Text size="sm" mb="lg">
-            Funding Received
+          <Text size="lg" mb={2}>
+            {formatEther(BigInt(ship.totalRoundAmount))} {GAME_TOKEN.SYMBOL}
           </Text>
-          <Text size="xl">
-            {totalFunding && BigInt(totalFunding) > 0n
-              ? formatEther(BigInt(totalFunding))
-              : 0}
-            {GAME_TOKEN.SYMBOL}
+          <Text size="sm" mb="md">
+            Total Round Amount
           </Text>
+          <Text size="lg" mb={2}>
+            {formatEther(BigInt(ship.amtAvailable))} {GAME_TOKEN.SYMBOL}
+          </Text>
+          <Text size="sm">Funding Available</Text>
         </Paper>
         <Paper p="md" bg={theme.colors.dark[6]}>
           <Text size="sm" mb="lg">
@@ -185,7 +178,7 @@ export const Ship = () => {
           <FundingIndicator
             available={ship.amtAvailable}
             distributed={ship.amtDistributed}
-            allocated={ship.amtDistributed}
+            allocated={ship.amtAllocated}
           />
         </Paper>
       </Stack>

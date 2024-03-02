@@ -1,14 +1,5 @@
-fragment ShipCardQuery on GrantShip {
-  id
-  name
-  status
-  profileMetadata {
-    pointer
-  }
-}
-
 query ShipsPageQuery {
   grantShips(where: { isApproved: true }) {
-    ...ShipCardQuery
+    ...BaseShipData
   }
 }

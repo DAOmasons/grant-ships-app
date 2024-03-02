@@ -6,13 +6,13 @@ import {
   Stack,
   Tabs,
   Text,
+  Tooltip,
   useMantineTheme,
 } from '@mantine/core';
 import { MainSection, PageTitle } from '../layout/Sections';
 import { IconInfoCircle } from '@tabler/icons-react';
 import { FeedPanel } from '../components/shipItems/FeedPanel';
 import { GAME_TOKEN } from '../constants/gameSetup';
-import { GrantUI } from '../types/ui';
 import { MilestoneProgress } from '../components/projectItems/MilestoneProgress';
 import { GrantsPanel } from '../components/projectItems/GrantsPanel';
 import { Contact } from '../components/Contact';
@@ -23,7 +23,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getProjectPage } from '../queries/getProjectPage';
 import { AddressAvatarGroup } from '../components/AddressAvatar';
 import { AppAlert } from '../components/UnderContruction';
-import { GameStatus } from '../types/common';
+import { GameStatus, GrantStatus } from '../types/common';
 import { SingleItemPageSkeleton } from '../components/skeletons';
 import { getEntityFeed } from '../queries/getFeed';
 import { getProjectGrants } from '../queries/getProjectGrants';
@@ -104,6 +104,9 @@ export const Project = () => {
           return acc + (grant.amtAllocated ? BigInt(grant.amtAllocated) : 0n);
         }, 0n)
       );
+  const activeGrants = grants?.filter(
+    (grant: DashGrant) => grant.grantStatus >= GrantStatus.FacilitatorApproved
+  );
 
   return (
     <Flex>
@@ -167,21 +170,31 @@ export const Project = () => {
       </MainSection>
       <Stack gap={'xs'} mt={72} w={270}>
         <Paper p="md" bg={theme.colors.dark[6]}>
-          <Text size="sm" mb="xs">
-            Funding Received
-          </Text>
-          <Text size="xl" mb={4}>
+          <Text size="lg" mb={2}>
             {totalFundsReceived} {GAME_TOKEN.SYMBOL}
           </Text>
-          <Text size="sm" c={theme.colors.blue[2]} opacity={0.8}>
-            {totalFundsAllocated} {GAME_TOKEN.SYMBOL} allocated
+          <Group mb="md" gap={'xs'}>
+            <Text size="sm">Funding Received</Text>
+            <Tooltip label="Total funding received for work completed">
+              <IconInfoCircle size={18} color={theme.colors.violet[8]} />
+            </Tooltip>
+          </Group>
+
+          <Text size="lg" mb={2}>
+            {totalFundsAllocated} {GAME_TOKEN.SYMBOL}
           </Text>
+          <Group gap={'xs'}>
+            <Text size="sm">Funding Allocated</Text>
+            <Tooltip label="Total funding allocated to this project">
+              <IconInfoCircle size={18} color={theme.colors.violet[8]} />
+            </Tooltip>
+          </Group>
         </Paper>
-        {grants?.length !== 0 && (
+        {activeGrants?.length !== 0 && (
           <Paper p="md" bg={theme.colors.dark[6]}>
             <Stack gap="lg">
-              <Text>Grants</Text>
-              {grants?.map((grant: DashGrant, i: number) => (
+              <Text>Active Grants</Text>
+              {activeGrants?.map((grant: DashGrant, i: number) => (
                 <MilestoneProgress
                   key={`milestone-progress-bar-${i}`}
                   grant={grant}
