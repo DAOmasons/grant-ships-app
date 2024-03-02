@@ -83,14 +83,6 @@ export const Ship = () => {
     );
   }
 
-  const totalFunding = [
-    BigInt(ship.amtDistributed ? ship.amtDistributed : 0),
-    BigInt(ship.amtAvailable ? ship.amtAvailable : 0),
-    BigInt(ship.amtAvailable ? ship.amtAvailable : 0),
-  ]
-    .reduce((acc, amt) => acc + amt, 0n)
-    .toString();
-
   const isShipActive = ship.status === GameStatus.Active;
 
   return (
