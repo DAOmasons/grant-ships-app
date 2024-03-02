@@ -3,7 +3,6 @@ import { DashGrant } from '../../resolvers/grantResolvers';
 
 import { Button, Group, Modal, Text } from '@mantine/core';
 import { MilestoneReviewPage } from './MilestoneReviewPage';
-import { GrantStatus } from '../../types/common';
 
 export const MilestonesView = ({
   grant,
@@ -25,12 +24,7 @@ export const MilestonesView = ({
   return (
     <>
       <Group justify="space-between" align="start">
-        {grant.grantStatus === GrantStatus.MilestonesApproved ? (
-          <Text fz="sm">Milestones Accepted</Text>
-        ) : (
-          <Text fz="sm">Milestones Rejected</Text>
-        )}
-
+        <Text fz="sm">Milestones Accepted</Text>
         <Button
           size="xs"
           style={{

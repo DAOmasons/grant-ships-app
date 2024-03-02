@@ -101,7 +101,7 @@ export const MilestoneReviewPage = ({
       }
       setIsPinning(true);
       handleClose();
-      // reviewSetMilestones(address _recipientId, Status _status, Metadata calldata _reason)
+
       tx({
         writeContractParams: {
           abi: GrantShipAbi,
