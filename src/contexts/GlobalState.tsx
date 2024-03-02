@@ -11,6 +11,7 @@ type GlobalStateContext = {
   userData?: UserData;
   isLoadingUserData: boolean;
   userDataError: Error | null;
+  refetchUserData: () => void;
 };
 
 export const GlobalContext = createContext<GlobalStateContext>({
@@ -20,6 +21,7 @@ export const GlobalContext = createContext<GlobalStateContext>({
   userData: undefined,
   isLoadingUserData: false,
   userDataError: null,
+  refetchUserData: () => {},
 });
 
 export const GlobalStateProvider = ({
@@ -39,6 +41,7 @@ export const GlobalStateProvider = ({
     data: userState,
     isLoading: isLoadingUserState,
     error: userStateError,
+    refetch: refetchUserState,
   } = useQuery({
     queryKey: [`user-state-${address}`],
     queryFn: () => getUserData(address as string),
@@ -54,6 +57,7 @@ export const GlobalStateProvider = ({
         userData: userState,
         isLoadingUserData: isLoadingUserState,
         userDataError: userStateError,
+        refetchUserData: refetchUserState,
       }}
     >
       {children}

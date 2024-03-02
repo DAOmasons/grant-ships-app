@@ -1,15 +1,23 @@
-import { getBuiltGraphSDK } from '../.graphclient';
+import {
+  ProjectDetailsFragment,
+  RawMetadataFragment,
+  getBuiltGraphSDK,
+} from '../.graphclient';
 import HatsAbi from '../abi/Hats.json';
 import { HATS } from '../constants/gameSetup';
 import { publicClient } from '../utils/config';
-import { ProjectCardFromQuery } from './getProjectCards';
+
+type UserProjectData = ProjectDetailsFragment & {
+  metadata: RawMetadataFragment;
+  grants: { grantStatus: number; shipId: { id: string } }[];
+};
 
 export type UserData = {
   isFacilitator: boolean;
   isShipOperator: boolean;
   shipAddress?: string;
   shipHatId?: bigint;
-  projects: ProjectCardFromQuery[];
+  projects: UserProjectData[];
 };
 
 // Todo: Use subgraph once we migrate to Arbitrum
@@ -85,7 +93,7 @@ export const getUserData = async (address: string): Promise<UserData> => {
     if (isShipOperator) {
       return {
         ...data,
-        projects: data.projects as ProjectCardFromQuery[],
+        projects: data.projects,
         isFacilitator,
         isShipOperator: true,
         shipAddress: isShipOperator.shipAddress,
@@ -95,7 +103,7 @@ export const getUserData = async (address: string): Promise<UserData> => {
 
     return {
       ...data,
-      projects: data.projects as ProjectCardFromQuery[],
+      projects: data.projects,
       isFacilitator,
       isShipOperator,
     };

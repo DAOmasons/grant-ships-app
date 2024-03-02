@@ -191,7 +191,6 @@ export const RegisterShip = ({
           successButton: {
             label: 'Next Step',
             onClick: () => {
-              console.log('Fired');
               nextStep();
             },
           },

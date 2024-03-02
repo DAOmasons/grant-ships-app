@@ -19,7 +19,11 @@ type WriteContractParams = Parameters<
 >[0];
 type WriteContractOptions = Parameters<
   ReturnType<typeof useWriteContract>['writeContract']
->[1];
+>[1] & {
+  onPollSuccess?: () => void;
+  onPollError?: () => void;
+  onPollTimeout?: () => void;
+};
 
 enum PollStatus {
   Idle,
@@ -126,12 +130,15 @@ export const TxProvider = ({ children }: { children: ReactNode }) => {
           pollSubgraph({
             txHash: data,
             onPollSuccess: () => {
+              writeContractOptions?.onPollSuccess?.();
               setPollStatus(PollStatus.Success);
             },
             onPollError: () => {
+              writeContractOptions?.onPollError?.();
               setPollStatus(PollStatus.Error);
             },
             onPollTimeout: () => {
+              writeContractOptions?.onPollTimeout?.();
               setPollStatus(PollStatus.Timeout);
             },
           });
