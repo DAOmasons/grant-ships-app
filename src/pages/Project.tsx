@@ -96,8 +96,6 @@ export const Project = () => {
           );
         }, 0n)
       );
-  console.log('grants', grants);
-  console.log('totalFundsReceived', totalFundsReceived);
 
   const totalFundsAllocated = !grants
     ? '0'
