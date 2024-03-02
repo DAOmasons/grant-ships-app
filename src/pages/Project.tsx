@@ -12,7 +12,6 @@ import { MainSection, PageTitle } from '../layout/Sections';
 import { IconInfoCircle } from '@tabler/icons-react';
 import { FeedPanel } from '../components/shipItems/FeedPanel';
 import { GAME_TOKEN } from '../constants/gameSetup';
-import { GrantUI } from '../types/ui';
 import { MilestoneProgress } from '../components/projectItems/MilestoneProgress';
 import { GrantsPanel } from '../components/projectItems/GrantsPanel';
 import { Contact } from '../components/Contact';
@@ -23,7 +22,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getProjectPage } from '../queries/getProjectPage';
 import { AddressAvatarGroup } from '../components/AddressAvatar';
 import { AppAlert } from '../components/UnderContruction';
-import { GameStatus } from '../types/common';
+import { GameStatus, GrantStatus } from '../types/common';
 import { SingleItemPageSkeleton } from '../components/skeletons';
 import { getEntityFeed } from '../queries/getFeed';
 import { getProjectGrants } from '../queries/getProjectGrants';
@@ -104,6 +103,9 @@ export const Project = () => {
           return acc + (grant.amtAllocated ? BigInt(grant.amtAllocated) : 0n);
         }, 0n)
       );
+  const activeGrants = grants?.filter(
+    (grant: DashGrant) => grant.grantStatus >= GrantStatus.FacilitatorApproved
+  );
 
   return (
     <Flex>
@@ -177,11 +179,11 @@ export const Project = () => {
             {totalFundsAllocated} {GAME_TOKEN.SYMBOL} allocated
           </Text>
         </Paper>
-        {grants?.length !== 0 && (
+        {activeGrants?.length !== 0 && (
           <Paper p="md" bg={theme.colors.dark[6]}>
             <Stack gap="lg">
               <Text>Active Grants</Text>
-              {grants?.map((grant: DashGrant, i: number) => (
+              {activeGrants?.map((grant: DashGrant, i: number) => (
                 <MilestoneProgress
                   key={`milestone-progress-bar-${i}`}
                   grant={grant}
