@@ -6,6 +6,7 @@ import {
   Stack,
   Tabs,
   Text,
+  Tooltip,
   useMantineTheme,
 } from '@mantine/core';
 import { MainSection, PageTitle } from '../layout/Sections';
@@ -172,13 +173,22 @@ export const Project = () => {
           <Text size="lg" mb={2}>
             {totalFundsReceived} {GAME_TOKEN.SYMBOL}
           </Text>
-          <Text size="sm" mb="md">
-            Total funding received
-          </Text>
+          <Group mb="md" gap={'xs'}>
+            <Text size="sm">Funding Received</Text>
+            <Tooltip label="Total funding received for work completed">
+              <IconInfoCircle size={18} color={theme.colors.violet[8]} />
+            </Tooltip>
+          </Group>
+
           <Text size="lg" mb={2}>
             {totalFundsAllocated} {GAME_TOKEN.SYMBOL}
           </Text>
-          <Text size="sm">Total funding allocated</Text>
+          <Group gap={'xs'}>
+            <Text size="sm">Funding Allocated</Text>
+            <Tooltip label="Total funding allocated to this project">
+              <IconInfoCircle size={18} color={theme.colors.violet[8]} />
+            </Tooltip>
+          </Group>
         </Paper>
         {activeGrants?.length !== 0 && (
           <Paper p="md" bg={theme.colors.dark[6]}>
