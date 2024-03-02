@@ -98,12 +98,22 @@ export const FundingIndicator = ({
             <Box className={classes.indicatorRulerAllocated} />
           </Box>
         </Tooltip>
-        <Box w="30%" c="white">
-          <Text fz={10} mb={2}>
-            Available
-          </Text>
-          <Box className={classes.indicatorRulerAvailable} />
-        </Box>
+        <Tooltip
+          label={
+            <Box p={'xs'}>
+              <Text fz="sm">Available</Text>
+              <Text fz="xs">Amount still available for funding projects</Text>
+            </Box>
+          }
+          position="bottom"
+        >
+          <Box w="30%" c="white">
+            <Text fz={10} mb={2}>
+              Available
+            </Text>
+            <Box className={classes.indicatorRulerAvailable} />
+          </Box>
+        </Tooltip>
       </Flex>
     </Box>
   );
