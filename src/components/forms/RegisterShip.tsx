@@ -121,6 +121,7 @@ export const RegisterShip = ({
       });
       return;
     }
+
     try {
       const nonce = generateRandomUint256();
 
@@ -262,7 +263,7 @@ export const RegisterShip = ({
         <AddressBox
           w="100%"
           label="Team Members"
-          description={`Team members can edit metadata and apply for grants.`}
+          description={`Must be comma separated. Team members can edit metadata and apply for grants. You do not need to enter your own address as you are already the profile owner`}
           placeholder="Paste addresses here. Must be comma separated."
           {...form.getInputProps('teamMembers')}
           onBlur={() => handleBlur('teamMembers')}

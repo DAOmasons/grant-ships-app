@@ -82,6 +82,15 @@ export const RegisterProject = () => {
         return;
       }
 
+      if (!address) {
+        notifications.show({
+          title: 'Account Error',
+          message: 'No account found',
+          color: 'red',
+        });
+        return;
+      }
+
       const pinRes = await pinJSONToIPFS(projectMetadata);
 
       if (typeof pinRes.IpfsHash !== 'string' && pinRes.IpfsHash[0] !== 'Q') {
@@ -92,7 +101,9 @@ export const RegisterProject = () => {
         });
         return;
       }
+
       const teamMembers = values.teamMembers.filter(Boolean);
+
       const schemaCode = projectProfileHash();
 
       const metadataStruct = createMetadata({
@@ -189,7 +200,7 @@ export const RegisterProject = () => {
       <AddressBox
         w="100%"
         label="Team Members"
-        description={`Team members can edit metadata and apply for grants.`}
+        description={`Must be comma separated. Team members can edit metadata and apply for grants. You do not need to enter your own address as you are already the profile owner`}
         placeholder="Paste addresses here. Must be comma separated."
         {...form.getInputProps('teamMembers')}
         onBlur={() => handleBlur('teamMembers')}
