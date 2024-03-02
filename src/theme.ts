@@ -1,4 +1,4 @@
-import { Loader, Text, Tooltip, createTheme } from '@mantine/core';
+import { Loader, Tooltip, createTheme } from '@mantine/core';
 import { RingLoader } from './components/loader/RingLoader';
 
 export const theme = createTheme({
@@ -26,14 +26,6 @@ export const theme = createTheme({
         color: 'dark.7',
       },
     }),
-    // Text: Text.extend({
-    //   defaultProps: {
-    //     style: {
-    //       wordBreak: 'break-word',
-    //       overflowWrap: 'break-word',
-    //     },
-    //   },
-    // }),
   },
   /* Put your mantine theme override here */
 });

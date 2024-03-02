@@ -53,8 +53,6 @@ export const Ship = () => {
     enabled: !!id,
   });
 
-  console.log('ship', ship);
-
   if (isLoading) {
     return <SingleItemPageSkeleton />;
   }
@@ -168,15 +166,16 @@ export const Ship = () => {
           </Group>
         </Paper>
         <Paper p="md" bg={theme.colors.dark[6]}>
-          <Text size="sm" mb="lg">
-            Funding Received
+          <Text size="lg" mb={2}>
+            {formatEther(BigInt(ship.totalRoundAmount))} {GAME_TOKEN.SYMBOL}
           </Text>
-          <Text size="xl">
-            {totalFunding && BigInt(totalFunding) > 0n
-              ? formatEther(BigInt(totalFunding))
-              : 0}
-            {GAME_TOKEN.SYMBOL}
+          <Text size="sm" mb="md">
+            Total Round Amount
           </Text>
+          <Text size="lg" mb={2}>
+            {formatEther(BigInt(ship.amtAvailable))} {GAME_TOKEN.SYMBOL}
+          </Text>
+          <Text size="sm">Funding Available</Text>
         </Paper>
         <Paper p="md" bg={theme.colors.dark[6]}>
           <Text size="sm" mb="lg">

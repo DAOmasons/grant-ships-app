@@ -1,9 +1,8 @@
-import { Box, Flex, Text, Tooltip, useMantineTheme } from '@mantine/core';
+import { Box, Flex, Text, Tooltip } from '@mantine/core';
 import classes from './ShipItemStyles.module.css';
-import { Fragment, useMemo } from 'react';
+import { useMemo } from 'react';
 import { formatEther } from 'viem';
 import { GAME_TOKEN } from '../../constants/gameSetup';
-import { theme } from '../../theme';
 
 // TODO -  This component sucks.
 // Once the data model is more refined, we can make this a lot better.
@@ -19,7 +18,6 @@ export const FundingIndicator = ({
   distributed,
   available,
 }: IndicatorProps) => {
-  const theme = useMantineTheme();
   const amounts = useMemo(() => {
     if (
       (!allocated && !distributed && !available) ||
