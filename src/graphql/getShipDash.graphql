@@ -1,38 +1,3 @@
-fragment GrantDash on Grant {
-  id
-  grantApplicationBytes
-  lastUpdated
-  grantStatus
-  milestonesAmount
-  projectId {
-    id
-    name
-    metadata {
-      pointer
-    }
-  }
-  shipId {
-    id
-    name
-    shipContractAddress
-    poolId
-    profileMetadata {
-      pointer
-    }
-  }
-  milestonesApproved
-  currentMilestoneIndex
-  milestonesApprovedReason {
-    pointer
-  }
-  facilitatorReason {
-    pointer
-  }
-  shipApprovalReason {
-    pointer
-  }
-}
-
 fragment ShipDash on GrantShip {
   id
   name
