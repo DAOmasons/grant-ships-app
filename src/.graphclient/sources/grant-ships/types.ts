@@ -691,8 +691,8 @@ export type Grant = {
   milestones?: Maybe<Array<Milestone>>;
   shipApprovalReason?: Maybe<RawMetadata>;
   hasShipApproved?: Maybe<Scalars['Boolean']>;
-  amtAllocated?: Maybe<Scalars['BigInt']>;
-  amtDistributed?: Maybe<Scalars['BigInt']>;
+  amtAllocated: Scalars['BigInt'];
+  amtDistributed: Scalars['BigInt'];
   allocatedBy?: Maybe<Scalars['Bytes']>;
   facilitatorReason?: Maybe<RawMetadata>;
   hasFacilitatorApproved?: Maybe<Scalars['Boolean']>;
@@ -724,6 +724,9 @@ export type GrantShip = {
   status: Scalars['Int'];
   poolFunded: Scalars['Boolean'];
   balance: Scalars['BigInt'];
+  totalAvailableFunds: Scalars['BigInt'];
+  totalAllocated: Scalars['BigInt'];
+  totalDistributed: Scalars['BigInt'];
   grants: Array<Grant>;
   alloProfileMembers?: Maybe<ProfileMemberGroup>;
   shipApplicationBytesData?: Maybe<Scalars['Bytes']>;
@@ -741,9 +744,7 @@ export type GrantShip = {
   shipLaunched?: Maybe<Scalars['Boolean']>;
   poolActive?: Maybe<Scalars['Boolean']>;
   isAllocated?: Maybe<Scalars['Boolean']>;
-  allocatedAmount?: Maybe<Scalars['BigInt']>;
   isDistributed?: Maybe<Scalars['Boolean']>;
-  distributedAmount?: Maybe<Scalars['BigInt']>;
 };
 
 
@@ -891,6 +892,30 @@ export type GrantShip_filter = {
   balance_lte?: InputMaybe<Scalars['BigInt']>;
   balance_in?: InputMaybe<Array<Scalars['BigInt']>>;
   balance_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalAvailableFunds?: InputMaybe<Scalars['BigInt']>;
+  totalAvailableFunds_not?: InputMaybe<Scalars['BigInt']>;
+  totalAvailableFunds_gt?: InputMaybe<Scalars['BigInt']>;
+  totalAvailableFunds_lt?: InputMaybe<Scalars['BigInt']>;
+  totalAvailableFunds_gte?: InputMaybe<Scalars['BigInt']>;
+  totalAvailableFunds_lte?: InputMaybe<Scalars['BigInt']>;
+  totalAvailableFunds_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalAvailableFunds_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalAllocated?: InputMaybe<Scalars['BigInt']>;
+  totalAllocated_not?: InputMaybe<Scalars['BigInt']>;
+  totalAllocated_gt?: InputMaybe<Scalars['BigInt']>;
+  totalAllocated_lt?: InputMaybe<Scalars['BigInt']>;
+  totalAllocated_gte?: InputMaybe<Scalars['BigInt']>;
+  totalAllocated_lte?: InputMaybe<Scalars['BigInt']>;
+  totalAllocated_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalAllocated_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalDistributed?: InputMaybe<Scalars['BigInt']>;
+  totalDistributed_not?: InputMaybe<Scalars['BigInt']>;
+  totalDistributed_gt?: InputMaybe<Scalars['BigInt']>;
+  totalDistributed_lt?: InputMaybe<Scalars['BigInt']>;
+  totalDistributed_gte?: InputMaybe<Scalars['BigInt']>;
+  totalDistributed_lte?: InputMaybe<Scalars['BigInt']>;
+  totalDistributed_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  totalDistributed_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   grants_?: InputMaybe<Grant_filter>;
   alloProfileMembers?: InputMaybe<Scalars['String']>;
   alloProfileMembers_not?: InputMaybe<Scalars['String']>;
@@ -1022,26 +1047,10 @@ export type GrantShip_filter = {
   isAllocated_not?: InputMaybe<Scalars['Boolean']>;
   isAllocated_in?: InputMaybe<Array<Scalars['Boolean']>>;
   isAllocated_not_in?: InputMaybe<Array<Scalars['Boolean']>>;
-  allocatedAmount?: InputMaybe<Scalars['BigInt']>;
-  allocatedAmount_not?: InputMaybe<Scalars['BigInt']>;
-  allocatedAmount_gt?: InputMaybe<Scalars['BigInt']>;
-  allocatedAmount_lt?: InputMaybe<Scalars['BigInt']>;
-  allocatedAmount_gte?: InputMaybe<Scalars['BigInt']>;
-  allocatedAmount_lte?: InputMaybe<Scalars['BigInt']>;
-  allocatedAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  allocatedAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   isDistributed?: InputMaybe<Scalars['Boolean']>;
   isDistributed_not?: InputMaybe<Scalars['Boolean']>;
   isDistributed_in?: InputMaybe<Array<Scalars['Boolean']>>;
   isDistributed_not_in?: InputMaybe<Array<Scalars['Boolean']>>;
-  distributedAmount?: InputMaybe<Scalars['BigInt']>;
-  distributedAmount_not?: InputMaybe<Scalars['BigInt']>;
-  distributedAmount_gt?: InputMaybe<Scalars['BigInt']>;
-  distributedAmount_lt?: InputMaybe<Scalars['BigInt']>;
-  distributedAmount_gte?: InputMaybe<Scalars['BigInt']>;
-  distributedAmount_lte?: InputMaybe<Scalars['BigInt']>;
-  distributedAmount_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  distributedAmount_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
   and?: InputMaybe<Array<InputMaybe<GrantShip_filter>>>;
@@ -1065,6 +1074,9 @@ export type GrantShip_orderBy =
   | 'status'
   | 'poolFunded'
   | 'balance'
+  | 'totalAvailableFunds'
+  | 'totalAllocated'
+  | 'totalDistributed'
   | 'grants'
   | 'alloProfileMembers'
   | 'alloProfileMembers__id'
@@ -1086,9 +1098,7 @@ export type GrantShip_orderBy =
   | 'shipLaunched'
   | 'poolActive'
   | 'isAllocated'
-  | 'allocatedAmount'
-  | 'isDistributed'
-  | 'distributedAmount';
+  | 'isDistributed';
 
 export type Grant_filter = {
   id?: InputMaybe<Scalars['ID']>;
@@ -1345,6 +1355,9 @@ export type Grant_orderBy =
   | 'shipId__status'
   | 'shipId__poolFunded'
   | 'shipId__balance'
+  | 'shipId__totalAvailableFunds'
+  | 'shipId__totalAllocated'
+  | 'shipId__totalDistributed'
   | 'shipId__shipApplicationBytesData'
   | 'shipId__applicationSubmittedTime'
   | 'shipId__isAwaitingApproval'
@@ -1359,9 +1372,7 @@ export type Grant_orderBy =
   | 'shipId__shipLaunched'
   | 'shipId__poolActive'
   | 'shipId__isAllocated'
-  | 'shipId__allocatedAmount'
   | 'shipId__isDistributed'
-  | 'shipId__distributedAmount'
   | 'lastUpdated'
   | 'grantStatus'
   | 'grantApplicationBytes'

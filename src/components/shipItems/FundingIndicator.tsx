@@ -26,7 +26,7 @@ export const FundingIndicator = ({
 
     const total = Number(allocated) + Number(distributed) + Number(available);
 
-    return [allocated, distributed, available].map((amt) => {
+    return [distributed, allocated, available].map((amt) => {
       return (Number(amt) / total) * 100;
     }) as [number, number, number];
   }, [allocated, distributed, available]);

@@ -1,0 +1,18 @@
+fragment BaseShipData on GrantShip {
+  id
+  name
+  status
+  shipContractAddress
+  shipApplicationBytesData
+  profileMetadata {
+    pointer
+  }
+  owner
+  alloProfileMembers {
+    addresses
+  }
+  balance
+  totalAvailableFunds
+  totalAllocated
+  totalDistributed
+}

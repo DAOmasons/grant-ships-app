@@ -50,6 +50,7 @@ export type ShipsCardUI = {
   amtAllocated: string;
   amtDistributed: string;
   amtAvailable: string;
+  balance: string;
 };
 
 export type ShipPageUI = {

@@ -1,18 +1,5 @@
 query shipPageQuery($id: ID!) {
   grantShip(id: $id) {
-    id
-    name
-    status
-    shipContractAddress
-    shipApplicationBytesData
-    profileMetadata {
-      pointer
-    }
-    owner
-    alloProfileMembers {
-      addresses
-    }
-    allocatedAmount
-    distributedAmount
+    ...BaseShipData
   }
 }
