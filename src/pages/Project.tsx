@@ -169,15 +169,16 @@ export const Project = () => {
       </MainSection>
       <Stack gap={'xs'} mt={72} w={270}>
         <Paper p="md" bg={theme.colors.dark[6]}>
-          <Text size="sm" mb="xs">
-            Funding Received
-          </Text>
-          <Text size="xl" mb={4}>
+          <Text size="lg" mb={2}>
             {totalFundsReceived} {GAME_TOKEN.SYMBOL}
           </Text>
-          <Text size="sm" c={theme.colors.blue[2]} opacity={0.8}>
-            {totalFundsAllocated} {GAME_TOKEN.SYMBOL} allocated
+          <Text size="sm" mb="md">
+            Total funding received
           </Text>
+          <Text size="lg" mb={2}>
+            {totalFundsAllocated} {GAME_TOKEN.SYMBOL}
+          </Text>
+          <Text size="sm">Total funding allocated</Text>
         </Paper>
         {activeGrants?.length !== 0 && (
           <Paper p="md" bg={theme.colors.dark[6]}>
