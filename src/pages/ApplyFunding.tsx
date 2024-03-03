@@ -14,7 +14,7 @@ import { useForm, zodResolver } from '@mantine/form';
 import { IconCalendar, IconExternalLink } from '@tabler/icons-react';
 import { DatePickerInput } from '@mantine/dates';
 import { z } from 'zod';
-import { useAccount } from 'wagmi';
+import { useAccount, useConnect, useSwitchChain } from 'wagmi';
 import { notifications } from '@mantine/notifications';
 import {
   Address,
@@ -58,7 +58,9 @@ export const ApplyFunding = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
-  const { address } = useAccount();
+  const { address, isConnected, chainId } = useAccount();
+  const { switchChainAsync } = useSwitchChain();
+  const { connect } = useConnect();
   const { tx } = useTx();
 
   const form = useForm({
@@ -88,6 +90,26 @@ export const ApplyFunding = () => {
   };
 
   const handleSubmit = async (values: FormValues) => {
+    if (!isConnected) {
+      if (window?.ethereum?.isMetaMask === true) {
+        connect({ connector: injected() });
+        return;
+      } else {
+        notifications.show({
+          title: 'Error',
+          message: 'Please connect your wallet',
+          color: 'red',
+        });
+        return;
+      }
+    }
+
+    const isCorrectChain = chainId === appNetwork.id;
+
+    if (!isCorrectChain) {
+      await switchChainAsync({ chainId: appNetwork.id });
+      return;
+    }
     if (!address) {
       notifications.show({
         title: 'Not connected',

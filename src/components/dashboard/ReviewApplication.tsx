@@ -100,6 +100,14 @@ export const ReviewApplication = ({
       ? 'Review Application'
       : 'Application Reviewed';
 
+  const test = () => {
+    notifications.show({
+      title: 'Error',
+      message: 'You are not a ship operator',
+      color: 'red',
+    });
+  };
+  console.log('fired');
   return (
     <>
       <Group align="start" justify="space-between">

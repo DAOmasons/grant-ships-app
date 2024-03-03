@@ -3,6 +3,7 @@ import { Button, Group, Stack } from '@mantine/core';
 import { ReactNode } from 'react';
 import { NestedButton } from '../types/common';
 import { PageTitle } from './Sections';
+import { TxButton } from '../components/TxButton';
 
 export const FormPageLayout = ({
   title,
