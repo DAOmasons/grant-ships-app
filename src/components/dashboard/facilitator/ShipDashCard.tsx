@@ -13,6 +13,7 @@ import { IconCheck, IconEye, IconFlag, IconX } from '@tabler/icons-react';
 import classes from '../../timeline.module.css';
 import { GameStatus } from '../../../types/common';
 import { Dispatch, SetStateAction, useMemo, useState } from 'react';
+import { TxButton } from '../../TxButton';
 
 type ShipDashCardProps = {
   name: string;
@@ -83,7 +84,7 @@ export const ShipDashCard = ({
           <Flex className={classes.statusBox}>
             {reviewIcon}
             <Text size="sm">Application</Text>
-            <Button
+            <TxButton
               size="xs"
               mt="auto"
               variant="default"
@@ -91,7 +92,7 @@ export const ShipDashCard = ({
               loading={reviewLoading}
             >
               {shipStatus === GameStatus.Pending ? 'Review' : 'See Ship'}
-            </Button>
+            </TxButton>
           </Flex>
           <Flex className={classes.statusBox}>
             <Flex

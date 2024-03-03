@@ -40,6 +40,7 @@ import { encodeAbiParameters, formatEther, parseAbiParameters } from 'viem';
 import { useTx } from '../hooks/useTx';
 import { pinJSONToIPFS } from '../utils/ipfs/pin';
 import { notifications } from '@mantine/notifications';
+import { TxButton } from '../components/TxButton';
 
 export const FacilitatorDashboard = () => {
   const { data: shipData, isLoading: shipsLoading } = useQuery({
@@ -406,19 +407,19 @@ const FacilitatorReview = ({ grant }: { grant: DashGrant }) => {
                     mb="xl"
                   />
                   <Flex justify="space-between">
-                    <Button
+                    <TxButton
                       variant="outline"
                       disabled={!reasonText}
                       onClick={() => handleApprove(false)}
                     >
                       Reject
-                    </Button>
-                    <Button
+                    </TxButton>
+                    <TxButton
                       disabled={!reasonText}
                       onClick={() => handleApprove(true)}
                     >
                       Approve
-                    </Button>
+                    </TxButton>
                   </Flex>
                 </>
               )}

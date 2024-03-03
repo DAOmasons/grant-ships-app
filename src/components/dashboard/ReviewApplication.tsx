@@ -23,6 +23,7 @@ import { secondsToLongDateTime } from '../../utils/time';
 import { DashGrant } from '../../resolvers/grantResolvers';
 import { AppAlert } from '../UnderContruction';
 import { IconCheck, IconX } from '@tabler/icons-react';
+import { TxButton } from '../TxButton';
 
 export const ReviewApplication = ({
   grant,
@@ -100,14 +101,6 @@ export const ReviewApplication = ({
       ? 'Review Application'
       : 'Application Reviewed';
 
-  const test = () => {
-    notifications.show({
-      title: 'Error',
-      message: 'You are not a ship operator',
-      color: 'red',
-    });
-  };
-  console.log('fired');
   return (
     <>
       <Group align="start" justify="space-between">
@@ -232,19 +225,19 @@ export const ReviewApplication = ({
                       mb="xl"
                     />
                     <Flex justify="space-between">
-                      <Button
+                      <TxButton
                         variant="outline"
                         disabled={!reasonText}
                         onClick={() => handleApprove(false)}
                       >
                         Reject
-                      </Button>
-                      <Button
+                      </TxButton>
+                      <TxButton
                         disabled={!reasonText}
                         onClick={() => handleApprove(true)}
                       >
                         Approve
-                      </Button>
+                      </TxButton>
                     </Flex>
                   </>
                 )}

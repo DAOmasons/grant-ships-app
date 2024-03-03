@@ -5,7 +5,8 @@ import { UnpackedMilestoneData } from './MilestoneReviewPage';
 import { notifications } from '@mantine/notifications';
 import { pinJSONToIPFS } from '../../utils/ipfs/pin';
 import GrantShipAbi from '../../abi/GrantShip.json';
-import { Box, Button, Divider, Flex } from '@mantine/core';
+import { Box, Divider, Flex } from '@mantine/core';
+import { TxButton } from '../TxButton';
 
 export const SubmitMilestone = ({
   grant,
@@ -93,13 +94,13 @@ export const SubmitMilestone = ({
     <Box mt="lg">
       <Divider mb="md" />
       <Flex>
-        <Button
+        <TxButton
           ml="auto"
           onClick={() => handleSubmitMilestone()}
           loading={isPinning}
         >
           {isResubmitting ? 'Resubmit milestone' : 'Submit Milestone'}
-        </Button>
+        </TxButton>
       </Flex>
     </Box>
   );
