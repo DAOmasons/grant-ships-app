@@ -1,12 +1,18 @@
 import { useClipboard, useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
-import { IconCopy, IconLogout, IconUserCircle } from '@tabler/icons-react';
+import {
+  IconCopy,
+  IconExclamationCircle,
+  IconLogout,
+  IconUserCircle,
+} from '@tabler/icons-react';
 import { useAccount, useConnect, useDisconnect } from 'wagmi';
 
 import { Address } from 'viem';
 import classes from './DesktoNavStyles.module.css';
-import { Button, Combobox, Menu, Modal, Stack } from '@mantine/core';
+import { Button, Menu, Modal, Stack, useMantineTheme } from '@mantine/core';
 import { AddressAvatar } from '../../components/AddressAvatar';
+import { ArbLogo } from '../../assets/Arbitrum';
 
 export const ConnectButton = () => {
   const { address, isConnected } = useAccount();
@@ -49,7 +55,7 @@ const IsNotConnected = ({ open }: { open: () => void }) => {
           open();
         }}
       >
-        <IconUserCircle className={classes.linkIcon} stroke={1.5} />
+        <IconUserCircle className={classes.linkIcon} stroke={1.5} size={26} />
         <span>Connect Wallet</span>
       </button>
     </>
@@ -59,26 +65,22 @@ const IsNotConnected = ({ open }: { open: () => void }) => {
 const IsConnected = ({ address }: { address: Address }) => {
   const { disconnect } = useDisconnect();
   const { copy } = useClipboard();
+  const theme = useMantineTheme();
 
   return (
     <Menu>
       <Menu.Target>
         <Button className={classes.button}>
-          <AddressAvatar address={address} />
+          <AddressAvatar address={address} size={26} />
         </Button>
       </Menu.Target>
       <Menu.Dropdown w={267}>
         <Menu.Item
-          value="1"
-          key="1"
-          leftSection={<IconLogout />}
-          onClick={() => disconnect()}
+          leftSection={<IconExclamationCircle color={theme.colors.yellow[7]} />}
         >
-          Disconnect
+          Wrong Network
         </Menu.Item>
         <Menu.Item
-          value="2"
-          key="2"
           leftSection={<IconCopy />}
           onClick={() => {
             copy(address);
@@ -89,6 +91,9 @@ const IsConnected = ({ address }: { address: Address }) => {
           }}
         >
           Copy Address
+        </Menu.Item>
+        <Menu.Item leftSection={<IconLogout />} onClick={() => disconnect()}>
+          Disconnect
         </Menu.Item>
       </Menu.Dropdown>
     </Menu>

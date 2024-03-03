@@ -1,4 +1,12 @@
-import { Group, Code, Title, useMantineTheme, Tooltip } from '@mantine/core';
+import {
+  Group,
+  Code,
+  Title,
+  useMantineTheme,
+  Tooltip,
+  Button,
+  Box,
+} from '@mantine/core';
 import {
   IconHome,
   IconRocket,
@@ -16,7 +24,8 @@ import { Link, useLocation } from 'react-router-dom';
 
 import { useMemo } from 'react';
 import { useUserData } from '../../hooks/useUserState';
-import { useAccount } from 'wagmi';
+import { useAccount, useSwitchChain } from 'wagmi';
+import { ArbLogo } from '../../assets/Arbitrum';
 
 const data = [
   { link: '/', label: 'Home', icon: IconHome },
