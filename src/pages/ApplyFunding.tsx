@@ -38,6 +38,8 @@ import { getShipPoolId } from '../queries/getShipPoolId';
 import { AppAlert } from '../components/UnderContruction';
 import { useMemo } from 'react';
 import { GrantStatus } from '../types/common';
+import { appNetwork } from '../utils/config';
+import { injected } from 'wagmi/connectors';
 
 const defaultValues = {
   projectId: '',
