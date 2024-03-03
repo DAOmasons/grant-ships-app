@@ -1,4 +1,12 @@
-import { Group, Code, Title, useMantineTheme, Tooltip } from '@mantine/core';
+import {
+  Group,
+  Code,
+  Title,
+  useMantineTheme,
+  Tooltip,
+  Button,
+  Box,
+} from '@mantine/core';
 import {
   IconHome,
   IconRocket,
@@ -16,7 +24,8 @@ import { Link, useLocation } from 'react-router-dom';
 
 import { useMemo } from 'react';
 import { useUserData } from '../../hooks/useUserState';
-import { useAccount } from 'wagmi';
+import { useAccount, useSwitchChain } from 'wagmi';
+import { ArbLogo } from '../../assets/Arbitrum';
 
 const data = [
   { link: '/', label: 'Home', icon: IconHome },
@@ -115,8 +124,8 @@ export function DesktopNav() {
           <span>My Projects</span>
           <Tooltip ml="auto" label={"You don't have any projects yet"}>
             <IconInfoCircle
-              size={20}
-              color={theme.colors.yellow[8]}
+              size={18}
+              color={theme.colors.yellow[6]}
               style={{ marginLeft: 'auto' }}
             />
           </Tooltip>

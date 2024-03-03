@@ -1,12 +1,29 @@
 import { useClipboard, useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
-import { IconLogout, IconUserCircle } from '@tabler/icons-react';
-import { useAccount, useConnect, useDisconnect } from 'wagmi';
+import {
+  IconChevronDown,
+  IconChevronUp,
+  IconCopy,
+  IconExclamationCircle,
+  IconLogout,
+  IconUserCircle,
+} from '@tabler/icons-react';
+import { useAccount, useConnect, useDisconnect, useSwitchChain } from 'wagmi';
 
 import { Address } from 'viem';
 import classes from './DesktoNavStyles.module.css';
-import { Button, Modal, Stack } from '@mantine/core';
+import {
+  Box,
+  Button,
+  Menu,
+  Modal,
+  Stack,
+  Tooltip,
+  useMantineTheme,
+} from '@mantine/core';
 import { AddressAvatar } from '../../components/AddressAvatar';
+import { appNetwork } from '../../utils/config';
+import { useState } from 'react';
 
 export const ConnectButton = () => {
   const { address, isConnected } = useAccount();
@@ -49,7 +66,7 @@ const IsNotConnected = ({ open }: { open: () => void }) => {
           open();
         }}
       >
-        <IconUserCircle className={classes.linkIcon} stroke={1.5} />
+        <IconUserCircle className={classes.linkIcon} stroke={1.5} size={26} />
         <span>Connect Wallet</span>
       </button>
     </>
@@ -59,30 +76,86 @@ const IsNotConnected = ({ open }: { open: () => void }) => {
 const IsConnected = ({ address }: { address: Address }) => {
   const { disconnect } = useDisconnect();
   const { copy } = useClipboard();
+  const theme = useMantineTheme();
+  const { chain } = useAccount();
+  const { switchChain } = useSwitchChain();
+
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const isCorrectNetwork = appNetwork.id === chain?.id;
 
   return (
-    <>
-      <button
-        className={classes.button}
-        onClick={() => {
-          copy(address);
-          notifications.show({
-            title: 'Address Copied',
-            message: `Address: ${address} has been copied to clipboard`,
-          });
-        }}
-      >
-        <AddressAvatar address={address} />
-      </button>
-      <button
-        className={classes.button}
-        onClick={() => {
-          disconnect();
-        }}
-      >
-        <IconLogout className={classes.linkIcon} stroke={1.5} />
-        <span>Disconnect</span>
-      </button>
-    </>
+    <Menu opened={menuOpen} onChange={setMenuOpen}>
+      <Menu.Target>
+        <Button
+          className={classes.button}
+          w="100%"
+          classNames={{ inner: classes.fullWidth }}
+          pos="relative"
+        >
+          <AddressAvatar address={address} size={26} />
+          {!isCorrectNetwork ? (
+            <Tooltip
+              label={'You are connected to the wrong network'}
+              position="right"
+            >
+              <Box pos="absolute" right={12}>
+                <IconExclamationCircle
+                  color={theme.colors.yellow[6]}
+                  size={18}
+                />
+              </Box>
+            </Tooltip>
+          ) : (
+            <Box pos="absolute" right={12}>
+              {menuOpen ? (
+                <IconChevronDown size={18} />
+              ) : (
+                <IconChevronUp size={18} />
+              )}
+            </Box>
+          )}
+        </Button>
+      </Menu.Target>
+      <Menu.Dropdown w={267}>
+        {!isCorrectNetwork && (
+          <Menu.Item
+            onClick={() => {
+              switchChain({ chainId: appNetwork.id });
+            }}
+            leftSection={
+              <IconExclamationCircle color={theme.colors.yellow[6]} />
+            }
+          >
+            Switch to {appNetwork.name}
+          </Menu.Item>
+        )}
+        <Menu.Item
+          leftSection={<IconCopy />}
+          onClick={() => {
+            copy(address);
+            notifications.show({
+              title: 'Address Copied',
+              message: `Address: ${address} has been copied to clipboard`,
+            });
+          }}
+        >
+          Copy Address
+        </Menu.Item>
+        <Menu.Item leftSection={<IconLogout />} onClick={() => disconnect()}>
+          Disconnect
+        </Menu.Item>
+      </Menu.Dropdown>
+    </Menu>
   );
 };
+
+// <button
+//   className={classes.button}
+//   onClick={() => {
+//     disconnect();
+//   }}
+// >
+//   <IconLogout className={classes.linkIcon} stroke={1.5} />
+//   <span>Disconnect</span>
+// </button>

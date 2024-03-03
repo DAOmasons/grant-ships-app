@@ -171,22 +171,28 @@ export const Project = () => {
       <Stack gap={'xs'} mt={72} w={270}>
         <Paper p="md" bg={theme.colors.dark[6]}>
           <Text size="lg" mb={2}>
-            {totalFundsReceived} {GAME_TOKEN.SYMBOL}
+            {totalFundsAllocated} {GAME_TOKEN.SYMBOL}
           </Text>
-          <Group mb="md" gap={'xs'}>
-            <Text size="sm">Funding Received</Text>
-            <Tooltip label="Total funding received for work completed">
-              <IconInfoCircle size={18} color={theme.colors.violet[8]} />
+          <Group mb="md" gap={4}>
+            <Text size="sm">Funding allocated </Text>
+            <Tooltip
+              position="bottom"
+              label="Total funding allocated to this project"
+            >
+              <IconInfoCircle size={14} color={theme.colors.violet[4]} />
             </Tooltip>
           </Group>
 
           <Text size="lg" mb={2}>
-            {totalFundsAllocated} {GAME_TOKEN.SYMBOL}
+            {totalFundsReceived} {GAME_TOKEN.SYMBOL}
           </Text>
-          <Group gap={'xs'}>
-            <Text size="sm">Funding Allocated</Text>
-            <Tooltip label="Total funding allocated to this project">
-              <IconInfoCircle size={18} color={theme.colors.violet[8]} />
+          <Group gap={4}>
+            <Text size="sm">Funding Received</Text>
+            <Tooltip
+              label="Total funding received for work completed"
+              position="bottom"
+            >
+              <IconInfoCircle size={14} color={theme.colors.violet[4]} />
             </Tooltip>
           </Group>
         </Paper>
