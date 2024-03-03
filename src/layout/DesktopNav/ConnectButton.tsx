@@ -1,11 +1,11 @@
 import { useClipboard, useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
-import { IconLogout, IconUserCircle } from '@tabler/icons-react';
+import { IconCopy, IconLogout, IconUserCircle } from '@tabler/icons-react';
 import { useAccount, useConnect, useDisconnect } from 'wagmi';
 
 import { Address } from 'viem';
 import classes from './DesktoNavStyles.module.css';
-import { Button, Modal, Stack } from '@mantine/core';
+import { Button, Combobox, Menu, Modal, Stack } from '@mantine/core';
 import { AddressAvatar } from '../../components/AddressAvatar';
 
 export const ConnectButton = () => {
@@ -61,28 +61,46 @@ const IsConnected = ({ address }: { address: Address }) => {
   const { copy } = useClipboard();
 
   return (
-    <>
-      <button
-        className={classes.button}
-        onClick={() => {
-          copy(address);
-          notifications.show({
-            title: 'Address Copied',
-            message: `Address: ${address} has been copied to clipboard`,
-          });
-        }}
-      >
-        <AddressAvatar address={address} />
-      </button>
-      <button
-        className={classes.button}
-        onClick={() => {
-          disconnect();
-        }}
-      >
-        <IconLogout className={classes.linkIcon} stroke={1.5} />
-        <span>Disconnect</span>
-      </button>
-    </>
+    <Menu>
+      <Menu.Target>
+        <Button className={classes.button}>
+          <AddressAvatar address={address} />
+        </Button>
+      </Menu.Target>
+      <Menu.Dropdown w={267}>
+        <Menu.Item
+          value="1"
+          key="1"
+          leftSection={<IconLogout />}
+          onClick={() => disconnect()}
+        >
+          Disconnect
+        </Menu.Item>
+        <Menu.Item
+          value="2"
+          key="2"
+          leftSection={<IconCopy />}
+          onClick={() => {
+            copy(address);
+            notifications.show({
+              title: 'Address Copied',
+              message: `Address: ${address} has been copied to clipboard`,
+            });
+          }}
+        >
+          Copy Address
+        </Menu.Item>
+      </Menu.Dropdown>
+    </Menu>
   );
 };
+
+// <button
+//   className={classes.button}
+//   onClick={() => {
+//     disconnect();
+//   }}
+// >
+//   <IconLogout className={classes.linkIcon} stroke={1.5} />
+//   <span>Disconnect</span>
+// </button>
