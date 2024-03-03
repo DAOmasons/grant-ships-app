@@ -1,6 +1,8 @@
 import { useClipboard, useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import {
+  IconChevronDown,
+  IconChevronUp,
   IconCopy,
   IconExclamationCircle,
   IconLogout,
@@ -13,7 +15,6 @@ import classes from './DesktoNavStyles.module.css';
 import {
   Box,
   Button,
-  Group,
   Menu,
   Modal,
   Stack,
@@ -22,6 +23,7 @@ import {
 } from '@mantine/core';
 import { AddressAvatar } from '../../components/AddressAvatar';
 import { appNetwork } from '../../utils/config';
+import { useState } from 'react';
 
 export const ConnectButton = () => {
   const { address, isConnected } = useAccount();
@@ -78,10 +80,12 @@ const IsConnected = ({ address }: { address: Address }) => {
   const { chain } = useAccount();
   const { switchChain } = useSwitchChain();
 
+  const [menuOpen, setMenuOpen] = useState(false);
+
   const isCorrectNetwork = appNetwork.id === chain?.id;
 
   return (
-    <Menu>
+    <Menu opened={menuOpen} onChange={setMenuOpen}>
       <Menu.Target>
         <Button
           className={classes.button}
@@ -90,7 +94,7 @@ const IsConnected = ({ address }: { address: Address }) => {
           pos="relative"
         >
           <AddressAvatar address={address} size={26} />
-          {!isCorrectNetwork && (
+          {!isCorrectNetwork ? (
             <Tooltip
               label={'You are connected to the wrong network'}
               position="right"
@@ -102,6 +106,14 @@ const IsConnected = ({ address }: { address: Address }) => {
                 />
               </Box>
             </Tooltip>
+          ) : (
+            <Box pos="absolute" right={12}>
+              {menuOpen ? (
+                <IconChevronDown size={18} />
+              ) : (
+                <IconChevronUp size={18} />
+              )}
+            </Box>
           )}
         </Button>
       </Menu.Target>
