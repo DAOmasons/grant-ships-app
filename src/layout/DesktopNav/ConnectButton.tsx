@@ -6,13 +6,22 @@ import {
   IconLogout,
   IconUserCircle,
 } from '@tabler/icons-react';
-import { useAccount, useConnect, useDisconnect } from 'wagmi';
+import { useAccount, useConnect, useDisconnect, useSwitchChain } from 'wagmi';
 
 import { Address } from 'viem';
 import classes from './DesktoNavStyles.module.css';
-import { Button, Menu, Modal, Stack, useMantineTheme } from '@mantine/core';
+import {
+  Box,
+  Button,
+  Group,
+  Menu,
+  Modal,
+  Stack,
+  Tooltip,
+  useMantineTheme,
+} from '@mantine/core';
 import { AddressAvatar } from '../../components/AddressAvatar';
-import { ArbLogo } from '../../assets/Arbitrum';
+import { appNetwork } from '../../utils/config';
 
 export const ConnectButton = () => {
   const { address, isConnected } = useAccount();
@@ -66,20 +75,49 @@ const IsConnected = ({ address }: { address: Address }) => {
   const { disconnect } = useDisconnect();
   const { copy } = useClipboard();
   const theme = useMantineTheme();
+  const { chain } = useAccount();
+  const { switchChain } = useSwitchChain();
+
+  const isCorrectNetwork = appNetwork.id === chain?.id;
 
   return (
     <Menu>
       <Menu.Target>
-        <Button className={classes.button}>
+        <Button
+          className={classes.button}
+          w="100%"
+          classNames={{ inner: classes.fullWidth }}
+          pos="relative"
+        >
           <AddressAvatar address={address} size={26} />
+          {!isCorrectNetwork && (
+            <Tooltip
+              label={'You are connected to the wrong network'}
+              position="right"
+            >
+              <Box pos="absolute" right={12}>
+                <IconExclamationCircle
+                  color={theme.colors.yellow[6]}
+                  size={18}
+                />
+              </Box>
+            </Tooltip>
+          )}
         </Button>
       </Menu.Target>
       <Menu.Dropdown w={267}>
-        <Menu.Item
-          leftSection={<IconExclamationCircle color={theme.colors.yellow[7]} />}
-        >
-          Wrong Network
-        </Menu.Item>
+        {!isCorrectNetwork && (
+          <Menu.Item
+            onClick={() => {
+              switchChain({ chainId: appNetwork.id });
+            }}
+            leftSection={
+              <IconExclamationCircle color={theme.colors.yellow[6]} />
+            }
+          >
+            Switch to {appNetwork.name}
+          </Menu.Item>
+        )}
         <Menu.Item
           leftSection={<IconCopy />}
           onClick={() => {

@@ -3,7 +3,7 @@ import { http, createConfig } from 'wagmi';
 import { arbitrumSepolia, arbitrum, mainnet } from 'wagmi/chains';
 import { safe, walletConnect } from 'wagmi/connectors';
 
-const appNetwork =
+export const appNetwork =
   import.meta.env.VITE_RUNTIME_ENV === 'dev' ? arbitrumSepolia : arbitrum;
 const appRpc =
   import.meta.env.VITE_RUNTIME_ENV === 'dev'

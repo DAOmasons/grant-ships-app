@@ -124,8 +124,8 @@ export function DesktopNav() {
           <span>My Projects</span>
           <Tooltip ml="auto" label={"You don't have any projects yet"}>
             <IconInfoCircle
-              size={20}
-              color={theme.colors.yellow[8]}
+              size={18}
+              color={theme.colors.yellow[6]}
               style={{ marginLeft: 'auto' }}
             />
           </Tooltip>
