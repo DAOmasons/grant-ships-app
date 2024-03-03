@@ -1,9 +1,10 @@
-import { Alert, Box, Button, Text } from '@mantine/core';
+import { Alert, Box, Text } from '@mantine/core';
 import { GameManager } from '../../../queries/getGameManger';
 import { secondsToLongDateTime } from '../../../utils/time';
 import { useTx } from '../../../hooks/useTx';
 import { ADDR } from '../../../constants/addresses';
 import GameManagerAbi from '../../../abi/GameManager.json';
+import { TxButton } from '../../TxButton';
 
 export const StartGamePanel = ({
   gm,
@@ -59,9 +60,9 @@ export const StartGamePanel = ({
           The game cannot be started until the start time has passed
         </Text>
       )}
-      <Button disabled={!isReadyToStart} onClick={handleStartGame}>
+      <TxButton disabled={!isReadyToStart} onClick={handleStartGame}>
         Start Game
-      </Button>
+      </TxButton>
     </Box>
   );
 };

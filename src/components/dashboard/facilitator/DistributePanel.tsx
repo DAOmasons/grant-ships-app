@@ -1,11 +1,4 @@
-import {
-  Alert,
-  Box,
-  Button,
-  Divider,
-  Text,
-  useMantineTheme,
-} from '@mantine/core';
+import { Alert, Box, Divider, Text, useMantineTheme } from '@mantine/core';
 import { DateTimePicker, DateValue } from '@mantine/dates';
 import { notifications } from '@mantine/notifications';
 import { useMemo, useState } from 'react';
@@ -15,6 +8,7 @@ import { ADDR } from '../../../constants/addresses';
 import { GAME_MANAGER, GAME_TOKEN } from '../../../constants/gameSetup';
 import { useTx } from '../../../hooks/useTx';
 import { CompressedApprovedShip } from '../../../queries/getFacDashShipData';
+import { TxButton } from '../../TxButton';
 
 export const DistributePanel = ({
   approvedShips,
@@ -136,9 +130,9 @@ export const DistributePanel = ({
         placeholder="Select a date and time"
         disabled={isNotReady}
       />
-      <Button onClick={handleDistribute} disabled={isNotReady}>
+      <TxButton onClick={handleDistribute} disabled={isNotReady}>
         Distribute Allocations
-      </Button>
+      </TxButton>
     </Box>
   );
 };

@@ -25,6 +25,9 @@ import { useTx } from '../../hooks/useTx';
 import { CacheKeys } from './cacheKeys';
 import { useEffect } from 'react';
 import { GAME_MANAGER } from '../../constants/gameSetup';
+import { useAccount, useConnect, useSwitchChain } from 'wagmi';
+import { injected } from 'wagmi/connectors';
+import { appNetwork } from '../../utils/config';
 
 const defaultValues = {
   thesis: '',
@@ -43,6 +46,9 @@ export const ShipApplication = ({
   profileData?: ProfileData;
   formComplete: () => void;
 }) => {
+  const { isConnected, chainId } = useAccount();
+  const { connect } = useConnect();
+  const { switchChainAsync } = useSwitchChain();
   const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
   const { tx } = useTx();
 
@@ -91,6 +97,26 @@ export const ShipApplication = ({
         message: 'Profile Data is missing',
         color: 'red',
       });
+      return;
+    }
+    if (!isConnected) {
+      if (window?.ethereum?.isMetaMask === true) {
+        connect({ connector: injected() });
+        return;
+      } else {
+        notifications.show({
+          title: 'Error',
+          message: 'Please connect your wallet',
+          color: 'red',
+        });
+        return;
+      }
+    }
+
+    const isCorrectChain = chainId === appNetwork.id;
+
+    if (!isCorrectChain) {
+      await switchChainAsync({ chainId: appNetwork.id });
       return;
     }
 

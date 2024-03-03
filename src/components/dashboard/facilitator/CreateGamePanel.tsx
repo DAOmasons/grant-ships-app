@@ -4,9 +4,10 @@ import { useTx } from '../../../hooks/useTx';
 import { formatEther, parseEther } from 'viem';
 import GameManagerAbi from '../../../abi/GameManager.json';
 import { ADDR } from '../../../constants/addresses';
-import { Box, Button, Text, TextInput } from '@mantine/core';
+import { Box, Text, TextInput } from '@mantine/core';
 import { GAME_TOKEN } from '../../../constants/gameSetup';
 import { GameManager } from '../../../queries/getGameManger';
+import { TxButton } from '../../TxButton';
 
 export const CreateGamePanel = ({
   gameStatusNumber,
@@ -19,7 +20,6 @@ export const CreateGamePanel = ({
 
   const [amount, setAmount] = useState(0);
   const { tx } = useTx();
-  const [isLoading, setIsLoading] = useState(false);
 
   const amountInWei = useMemo(() => {
     return parseEther(amount.toString());
@@ -66,9 +66,9 @@ export const CreateGamePanel = ({
         onChange={(e) => setAmount(Number(e.target.value))}
         type="number"
       />
-      <Button onClick={handleCreateRound} disabled={isLoading} w="100%">
+      <TxButton onClick={handleCreateRound} w="100%">
         Create Game Round
-      </Button>
+      </TxButton>
     </Box>
   );
 };

@@ -36,6 +36,7 @@ import { ProfileData } from '../../pages/CreateShip';
 import { useEffect } from 'react';
 import { CacheKeys } from './cacheKeys';
 import { ShipProfileMetadata } from '../../utils/ipfs/metadataValidation';
+import { TxButton } from '../TxButton';
 
 type FormValues = z.infer<typeof registerShipSchema>;
 
@@ -411,9 +412,9 @@ export const RegisterShip = ({
               Next Step
             </Button>
           ) : (
-            <Button ml="auto" onClick={() => handleFormSubmit(form.values)}>
+            <TxButton ml="auto" onClick={() => handleFormSubmit(form.values)}>
               Create Ship Profile
-            </Button>
+            </TxButton>
           )}
         </Flex>
       </Stack>

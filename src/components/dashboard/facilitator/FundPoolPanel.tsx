@@ -4,9 +4,10 @@ import { Address, erc20Abi, formatEther, parseEther } from 'viem';
 import { arbitrumSepolia } from 'viem/chains';
 import { GAME_MANAGER, GAME_TOKEN } from '../../../constants/gameSetup';
 import { ADDR } from '../../../constants/addresses';
-import { Alert, Box, Button, Skeleton, Text, TextInput } from '@mantine/core';
+import { Alert, Box, Skeleton, Text, TextInput } from '@mantine/core';
 import { useState } from 'react';
 import AlloAbi from '../../../abi/Allo.json';
+import { TxButton } from '../../TxButton';
 
 export const FundPoolPanel = ({
   poolBalance,
@@ -126,9 +127,9 @@ export const FundPoolPanel = ({
             {GAME_TOKEN.SYMBOL}
           </Text>
         </Alert>
-        <Button onClick={approveGameManager} w="100%">
+        <TxButton onClick={approveGameManager} w="100%">
           Approve {formatEther(BigInt(roundAmount))} {GAME_TOKEN.SYMBOL}
-        </Button>
+        </TxButton>
       </Box>
     );
   }
@@ -174,9 +175,9 @@ export const FundPoolPanel = ({
       <Text size="sm" mb="sm">
         Your Balance: {formatEther(BigInt(balance))} {GAME_TOKEN.SYMBOL}
       </Text>
-      <Button w="100%" onClick={() => fundPool()} disabled={isNotReady}>
+      <TxButton w="100%" onClick={() => fundPool()} disabled={isNotReady}>
         Fund Pool
-      </Button>
+      </TxButton>
     </Box>
   );
 };

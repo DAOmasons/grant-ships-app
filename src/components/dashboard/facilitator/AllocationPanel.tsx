@@ -1,12 +1,5 @@
 /* eslint-disable prefer-const */
-import {
-  Alert,
-  Box,
-  Button,
-  Text,
-  TextInput,
-  useMantineTheme,
-} from '@mantine/core';
+import { Alert, Box, Text, TextInput, useMantineTheme } from '@mantine/core';
 import {
   Address,
   encodeAbiParameters,
@@ -20,6 +13,7 @@ import { useMemo, useState } from 'react';
 import { useTx } from '../../../hooks/useTx';
 import AlloAbi from '../../../abi/Allo.json';
 import { ADDR } from '../../../constants/addresses';
+import { TxButton } from '../../TxButton';
 
 export const AllocationPanel = ({
   poolBalance,
@@ -136,9 +130,9 @@ export const AllocationPanel = ({
         />
       ))}
 
-      <Button onClick={handleAllocate} disabled={isNotReady}>
+      <TxButton onClick={handleAllocate} disabled={isNotReady}>
         Allocate
-      </Button>
+      </TxButton>
     </Box>
   );
 };

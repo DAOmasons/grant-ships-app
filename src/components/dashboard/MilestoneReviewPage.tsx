@@ -1,5 +1,4 @@
 import {
-  Button,
   Flex,
   Skeleton,
   Stack,
@@ -23,6 +22,7 @@ import { getIpfsJson } from '../../utils/ipfs/get';
 import { IconCheck } from '@tabler/icons-react';
 import { IconX } from '@tabler/icons-react';
 import { MilestoneTimeline } from './MilestoneTimeline';
+import { TxButton } from '../TxButton';
 
 export type UnpackedMilestoneData = PackedMilestoneData & {
   milestoneDetails: string | null;
@@ -247,21 +247,21 @@ export const MilestoneReviewPage = ({
               mb="xl"
             />
             <Flex justify="space-between">
-              <Button
+              <TxButton
                 size="sm"
                 variant="light"
                 loading={isPinning}
                 onClick={() => reviewMilestones(false)}
               >
                 Reject
-              </Button>
-              <Button
+              </TxButton>
+              <TxButton
                 size="sm"
                 onClick={() => reviewMilestones(true)}
                 loading={isPinning}
               >
                 Approve
-              </Button>
+              </TxButton>
             </Flex>
           </>
         }

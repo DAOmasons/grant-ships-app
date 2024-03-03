@@ -7,7 +7,8 @@ import GrantShipAbi from '../../abi/GrantShip.json';
 import AlloAbi from '../../abi/Allo.json';
 import { pinJSONToIPFS } from '../../utils/ipfs/pin';
 import { ADDR } from '../../constants/addresses';
-import { Box, Button, Divider, Flex, Textarea } from '@mantine/core';
+import { Box, Divider, Flex, Textarea } from '@mantine/core';
+import { TxButton } from '../TxButton';
 
 export const ReviewMilestone = ({
   grant,
@@ -120,17 +121,17 @@ export const ReviewMilestone = ({
         mb="lg"
       />
       <Flex>
-        <Button
+        <TxButton
           variant="light"
           onClick={handleReject}
           disabled={!reasonText}
           loading={isPinning}
         >
           Reject
-        </Button>
-        <Button ml="auto" onClick={handleApprove}>
+        </TxButton>
+        <TxButton ml="auto" onClick={handleApprove}>
           Approve
-        </Button>
+        </TxButton>
       </Flex>
     </Box>
   );

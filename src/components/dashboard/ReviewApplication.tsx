@@ -23,6 +23,7 @@ import { secondsToLongDateTime } from '../../utils/time';
 import { DashGrant } from '../../resolvers/grantResolvers';
 import { AppAlert } from '../UnderContruction';
 import { IconCheck, IconX } from '@tabler/icons-react';
+import { TxButton } from '../TxButton';
 
 export const ReviewApplication = ({
   grant,
@@ -72,8 +73,6 @@ export const ReviewApplication = ({
 
     const TAG = `TAG:SHIP_REVIEW_GRANT:${grant.id}:${isApproved ? 'APPROVED' : 'REJECTED'}`;
 
-    console.log('shipAddress', shipAddress);
-    console.log('pinRes', pinRes);
     tx({
       writeContractParams: {
         abi: GrantShipAbi,
@@ -224,19 +223,19 @@ export const ReviewApplication = ({
                       mb="xl"
                     />
                     <Flex justify="space-between">
-                      <Button
+                      <TxButton
                         variant="outline"
                         disabled={!reasonText}
                         onClick={() => handleApprove(false)}
                       >
                         Reject
-                      </Button>
-                      <Button
+                      </TxButton>
+                      <TxButton
                         disabled={!reasonText}
                         onClick={() => handleApprove(true)}
                       >
                         Approve
-                      </Button>
+                      </TxButton>
                     </Flex>
                   </>
                 )}

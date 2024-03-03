@@ -18,7 +18,7 @@ import { useForm, zodResolver } from '@mantine/form';
 import { registerProjectSchema } from './validationSchemas/registerProjectSchema';
 import { z } from 'zod';
 import { generateRandomUint256 } from '../../utils/helpers';
-import { useAccount } from 'wagmi';
+import { useAccount, useConnect, useSwitchChain } from 'wagmi';
 import { createMetadata, projectProfileHash } from '../../utils/metadata';
 import { ADDR } from '../../constants/addresses';
 
@@ -28,11 +28,15 @@ import { useNavigate } from 'react-router-dom';
 import { pinJSONToIPFS } from '../../utils/ipfs/pin';
 import { useMediaQuery } from '@mantine/hooks';
 import { ProjectProfileMetadata } from '../../utils/ipfs/metadataValidation';
+import { injected } from 'wagmi/connectors';
+import { appNetwork } from '../../utils/config';
 
 type FormValues = z.infer<typeof registerProjectSchema>;
 
 export const RegisterProject = () => {
-  const { address } = useAccount();
+  const { address, isConnected, chainId } = useAccount();
+  const { connect } = useConnect();
+  const { switchChainAsync } = useSwitchChain();
   const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
 
   const { tx } = useTx();
@@ -56,6 +60,27 @@ export const RegisterProject = () => {
   const navigate = useNavigate();
 
   const handleFormSubmit = async (values: FormValues) => {
+    if (!isConnected) {
+      if (window?.ethereum?.isMetaMask === true) {
+        connect({ connector: injected() });
+        return;
+      } else {
+        notifications.show({
+          title: 'Error',
+          message: 'Please connect your wallet',
+          color: 'red',
+        });
+        return;
+      }
+    }
+
+    const isCorrectChain = chainId === appNetwork.id;
+
+    if (!isCorrectChain) {
+      await switchChainAsync({ chainId: appNetwork.id });
+      return;
+    }
+
     try {
       const nonce = generateRandomUint256();
 
@@ -77,15 +102,6 @@ export const RegisterProject = () => {
         notifications.show({
           title: 'Validation Error',
           message: validation.error.errors[0].message,
-          color: 'red',
-        });
-        return;
-      }
-
-      if (!address) {
-        notifications.show({
-          title: 'Account Error',
-          message: 'No account found',
           color: 'red',
         });
         return;

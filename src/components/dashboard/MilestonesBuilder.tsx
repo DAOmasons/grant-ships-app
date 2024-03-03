@@ -17,6 +17,7 @@ import {
 import { DatePickerInput } from '@mantine/dates';
 import { IconPlus } from '@tabler/icons-react';
 import GrantShipAbi from '../../abi/GrantShip.json';
+import { TxButton } from '../TxButton';
 
 export const MilestoneBuilder = ({ grant }: { grant: DashGrant }) => {
   const { tx } = useTx();
@@ -211,9 +212,9 @@ export const MilestoneBuilder = ({ grant }: { grant: DashGrant }) => {
         </Button>
       </Stack>
       <Flex w="100%">
-        <Button ml="auto" onClick={submitMilestones}>
+        <TxButton ml="auto" onClick={submitMilestones}>
           Submit
-        </Button>
+        </TxButton>
       </Flex>
     </Box>
   );
