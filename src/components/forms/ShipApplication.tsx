@@ -46,7 +46,7 @@ export const ShipApplication = ({
   profileData?: ProfileData;
   formComplete: () => void;
 }) => {
-  const { address, isConnected, chainId } = useAccount();
+  const { isConnected, chainId } = useAccount();
   const { connect } = useConnect();
   const { switchChainAsync } = useSwitchChain();
   const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
