@@ -1,4 +1,11 @@
-import { Group, Loader, Stack, Text, useMantineTheme } from '@mantine/core';
+import {
+  Group,
+  Loader,
+  Spoiler,
+  Stack,
+  Text,
+  useMantineTheme,
+} from '@mantine/core';
 import { IconCheck, IconCircleX, IconUfo } from '@tabler/icons-react';
 import { ReactNode } from 'react';
 import classes from './txModalStyles.module.css';
@@ -98,18 +105,24 @@ export const ErrorState = ({
       <Text size="lg" mb={'xs'}>
         {title}
       </Text>
-      <Text
-        size="sm"
-        c={theme.colors.dark[2]}
-        lineClamp={4}
-        style={{ wordBreak: 'break-word' }}
-        px={'lg'}
+      <Spoiler
+        maxHeight={80}
+        showLabel={<Text size="xs">Show More</Text>}
+        hideLabel={<Text size="xs">Show More</Text>}
+        mx="lg"
       >
-        <Text span fw={700}>
-          Error Message:{' '}
-        </Text>{' '}
-        {description}
-      </Text>
+        <Text
+          size="sm"
+          c={theme.colors.dark[2]}
+          // lineClamp={4}
+          style={{ wordBreak: 'break-word' }}
+        >
+          <Text span fw={700}>
+            Error Message:{' '}
+          </Text>{' '}
+          {description}
+        </Text>
+      </Spoiler>
       {txHash && (
         <Text
           component={'a'}

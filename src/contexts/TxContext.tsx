@@ -159,10 +159,10 @@ export const TxProvider = ({ children }: { children: ReactNode }) => {
   }, [clearTx, close]);
 
   const shouldWaitForPoll =
-    viewParams?.awaitGraphPoll !== false &&
-    (pollStatus === PollStatus.Idle || pollStatus === PollStatus.Polling);
+    viewParams?.awaitGraphPoll !== false && pollStatus === PollStatus.Polling;
 
   const txModalContent = useMemo(() => {
+    console.log();
     if (isConfirming || isAwaitingSignature || shouldWaitForPoll) {
       return (
         <LoadingState
