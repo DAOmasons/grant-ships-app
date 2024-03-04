@@ -128,10 +128,12 @@ export const MilestoneReviewPage = ({
   if (isLoading) {
     return (
       <Layout>
-        <Skeleton height={200} w="100%" />
-        <Skeleton height={200} w="100%" />
-        <Skeleton height={200} w="100%" />
-        <Skeleton height={200} w="100%" />
+        <Stack>
+          <Skeleton height={200} w="100%" />
+          <Skeleton height={200} w="100%" />
+          <Skeleton height={200} w="100%" />
+          <Skeleton height={200} w="100%" />
+        </Stack>
       </Layout>
     );
   }
