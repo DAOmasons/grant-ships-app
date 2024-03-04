@@ -9,6 +9,7 @@ import { GAME_MANAGER, GAME_TOKEN } from '../../../constants/gameSetup';
 import { useTx } from '../../../hooks/useTx';
 import { CompressedApprovedShip } from '../../../queries/getFacDashShipData';
 import { TxButton } from '../../TxButton';
+import { GameStatus } from '../../../types/common';
 
 export const DistributePanel = ({
   approvedShips,
@@ -27,9 +28,7 @@ export const DistributePanel = ({
   const theme = useMantineTheme();
 
   const allocatedShips = useMemo(() => {
-    return approvedShips.filter(
-      (ship) => ship.allocatedAmount && BigInt(ship.allocatedAmount) > 0
-    );
+    return approvedShips.filter((ship) => ship.status === GameStatus.Allocated);
   }, [approvedShips]);
 
   const handleDistribute = () => {
