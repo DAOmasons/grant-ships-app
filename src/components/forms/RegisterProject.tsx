@@ -309,8 +309,8 @@ export const RegisterProject = () => {
             <TextInput
               w="50%"
               mr={'md'}
-              placeholder="X"
-              label="https://x.com/daomasons"
+              placeholder="https://x.com/daomasons"
+              label="Social Links"
               leftSection={<IconBrandX />}
               {...form.getInputProps('x')}
               onBlur={() => handleBlur('x')}

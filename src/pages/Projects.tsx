@@ -19,6 +19,8 @@ export const Projects = () => {
 
   const theme = useMantineTheme();
 
+  console.log('data', data);
+
   if (isLoading) {
     return (
       <PageLayout>
@@ -29,7 +31,7 @@ export const Projects = () => {
     );
   }
 
-  if (error) {
+  if (error || !data) {
     <PageLayout>
       <AppAlert
         title="Projects Page 404"
@@ -40,7 +42,7 @@ export const Projects = () => {
     </PageLayout>;
   }
 
-  if (Projects.length === 0) {
+  if (data?.length === 0) {
     return (
       <PageLayout>
         <AppAlert
