@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { MainSection, PageDescription, PageTitle } from '../layout/Sections';
-import { Button } from '@mantine/core';
-import { IconPlus } from '@tabler/icons-react';
+import { Button, useMantineTheme } from '@mantine/core';
+import { IconExclamationMark, IconPlus } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
 import { getProjectCards } from '../queries/getProjectCards';
 import {
@@ -9,12 +9,15 @@ import {
   ProjectCardSkeleton,
 } from '../components/projectItems/ProjectCard';
 import { ReactNode } from 'react';
+import { AppAlert } from '../components/UnderContruction';
 
 export const Projects = () => {
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: ['projects'],
     queryFn: getProjectCards,
   });
+
+  const theme = useMantineTheme();
 
   if (isLoading) {
     return (
@@ -22,6 +25,28 @@ export const Projects = () => {
         {Array.from({ length: 6 }).map((_, index) => (
           <ProjectCardSkeleton key={index} />
         ))}
+      </PageLayout>
+    );
+  }
+
+  if (error) {
+    <PageLayout>
+      <AppAlert
+        title="Projects Page 404"
+        description={error?.message || 'Error fetching projects'}
+        bg={theme.colors.pink[8]}
+        icon={<IconExclamationMark size={24} />}
+      />
+    </PageLayout>;
+  }
+
+  if (Projects.length === 0) {
+    return (
+      <PageLayout>
+        <AppAlert
+          title="No Projects Yet"
+          description={"Users haven't created any projects yet"}
+        />
       </PageLayout>
     );
   }
