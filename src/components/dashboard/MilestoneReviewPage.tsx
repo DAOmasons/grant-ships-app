@@ -1,4 +1,5 @@
 import {
+  Box,
   Flex,
   Skeleton,
   Stack,
@@ -11,7 +12,7 @@ import { DashGrant, PackedMilestoneData } from '../../resolvers/grantResolvers';
 import { useQuery } from '@tanstack/react-query';
 import { useAccount } from 'wagmi';
 import { useTx } from '../../hooks/useTx';
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { isAddress } from 'viem';
 import { pinJSONToIPFS } from '../../utils/ipfs/pin';
 import { notifications } from '@mantine/notifications';
@@ -126,34 +127,40 @@ export const MilestoneReviewPage = ({
 
   if (isLoading) {
     return (
-      <Stack w={600}>
-        <Skeleton height={200} w="100%" />
-        <Skeleton height={200} w="100%" />
-        <Skeleton height={200} w="100%" />
-        <Skeleton height={200} w="100%" />
-      </Stack>
+      <Layout>
+        <Stack>
+          <Skeleton height={200} w="100%" />
+          <Skeleton height={200} w="100%" />
+          <Skeleton height={200} w="100%" />
+          <Skeleton height={200} w="100%" />
+        </Stack>
+      </Layout>
     );
   }
 
   if (error) {
     return (
-      <AppAlert
-        title="Error"
-        description={
-          error?.message || 'An error occurred while fetching milestones'
-        }
-      />
+      <Layout>
+        <AppAlert
+          title="Error"
+          description={
+            error?.message || 'An error occurred while fetching milestones'
+          }
+        />
+      </Layout>
     );
   }
 
   if (!milestones) {
     return (
-      <AppAlert
-        title="Error"
-        description={
-          "No milestones found. This is likely an error with the grant's data. Please contact support."
-        }
-      />
+      <Layout>
+        <AppAlert
+          title="Error"
+          description={
+            "No milestones found. This is likely an error with the grant's data. Please contact support."
+          }
+        />
+      </Layout>
     );
   }
 
@@ -162,23 +169,27 @@ export const MilestoneReviewPage = ({
     grant.grantStatus === GrantStatus.MilestonesApproved
   ) {
     const reasonDisplay = GrantStatus.MilestoneApproved ? (
-      <AppAlert
-        mt={0}
-        mb={'xl'}
-        icon={<IconCheck />}
-        title="Milestones Approved"
-        description={`"${grant.milestonesApprovedReason}"`}
-        bg={theme.colors.blue[8]}
-      />
+      <Layout>
+        <AppAlert
+          mt={0}
+          mb={'xl'}
+          icon={<IconCheck />}
+          title="Milestones Approved"
+          description={`"${grant.milestonesApprovedReason}"`}
+          bg={theme.colors.blue[8]}
+        />
+      </Layout>
     ) : (
-      <AppAlert
-        mt={0}
-        mb={'xl'}
-        icon={<IconX />}
-        title="Milestones Rejected"
-        description={`"${grant.milestonesApprovedReason}"`}
-        bg={theme.colors.red[6]}
-      />
+      <Layout>
+        <AppAlert
+          mt={0}
+          mb={'xl'}
+          icon={<IconX />}
+          title="Milestones Rejected"
+          description={`"${grant.milestonesApprovedReason}"`}
+          bg={theme.colors.red[6]}
+        />
+      </Layout>
     );
 
     return (
@@ -289,5 +300,15 @@ export const MilestoneReviewPage = ({
         },
       ]}
     />
+  );
+};
+
+const Layout = ({ children }: { children: ReactNode }) => {
+  return (
+    <Flex justify={'center'} w="100%" h={'90vh'}>
+      <Box maw={600} miw={300} p="xl" fw={700} w="100%">
+        {children}
+      </Box>
+    </Flex>
   );
 };

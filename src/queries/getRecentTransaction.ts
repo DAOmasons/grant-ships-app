@@ -65,3 +65,12 @@ export const pollSubgraph = async ({
 
   return triesCount;
 };
+
+const test = async () => {
+  const res = await fetchRecentTransaction(
+    '0x3b358b4c363d30c586d1e097fa4812ff59eda66051116aaf7fdee99ab92ccc6c'
+  );
+  console.log(res);
+};
+
+test();

@@ -168,6 +168,25 @@
     "inputs": [
       {
         "indexed": false,
+        "internalType": "address",
+        "name": "recipientId",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      }
+    ],
+    "name": "GrantComplete",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
         "internalType": "uint256",
         "name": "poolId",
         "type": "uint256"
@@ -229,6 +248,41 @@
       }
     ],
     "name": "Initialized",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "recipientId",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "milestoneId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amountPercentage",
+        "type": "uint256"
+      },
+      {
+        "components": [
+          { "internalType": "uint256", "name": "protocol", "type": "uint256" },
+          { "internalType": "string", "name": "pointer", "type": "string" }
+        ],
+        "indexed": false,
+        "internalType": "struct Metadata",
+        "name": "metadata",
+        "type": "tuple"
+      }
+    ],
+    "name": "MilestoneCreated",
     "type": "event"
   },
   {
@@ -527,13 +581,6 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "anchorAddress",
-    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "address[]",
@@ -696,7 +743,7 @@
           },
           {
             "internalType": "address",
-            "name": "recipientAddress",
+            "name": "receivingAddress",
             "type": "address"
           },
           {
@@ -751,6 +798,15 @@
     "inputs": [],
     "name": "getStrategyId",
     "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_recipientId", "type": "address" }
+    ],
+    "name": "getUpcomingMilestone",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"
   },

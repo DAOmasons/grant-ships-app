@@ -126,7 +126,7 @@ export const TxProvider = ({ children }: { children: ReactNode }) => {
       onSuccess: (data, variables, context) => {
         writeContractOptions?.onSuccess?.(data, variables, context);
         if (viewParams?.awaitGraphPoll !== false && data) {
-          setPollStatus(PollStatus.Idle);
+          setPollStatus(PollStatus.Polling);
           pollSubgraph({
             txHash: data,
             onPollSuccess: () => {
@@ -159,8 +159,7 @@ export const TxProvider = ({ children }: { children: ReactNode }) => {
   }, [clearTx, close]);
 
   const shouldWaitForPoll =
-    viewParams?.awaitGraphPoll !== false &&
-    (pollStatus === PollStatus.Idle || pollStatus === PollStatus.Polling);
+    viewParams?.awaitGraphPoll !== false && pollStatus === PollStatus.Polling;
 
   const txModalContent = useMemo(() => {
     if (isConfirming || isAwaitingSignature || shouldWaitForPoll) {
