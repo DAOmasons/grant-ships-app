@@ -19,6 +19,7 @@ import { notifications } from '@mantine/notifications';
 import {
   Address,
   encodeAbiParameters,
+  formatEther,
   isAddress,
   parseAbiParameters,
   parseEther,
@@ -36,17 +37,19 @@ import AlloAbi from '../abi/Allo.json';
 import { ADDR } from '../constants/addresses';
 import { getShipPoolId } from '../queries/getShipPoolId';
 import { AppAlert } from '../components/UnderContruction';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { GrantStatus } from '../types/common';
 import { appNetwork } from '../utils/config';
 import { injected } from 'wagmi/connectors';
 import { useQuery } from '@tanstack/react-query';
 import { getBuiltGraphSDK } from '../.graphclient';
+import { isFieldNumber } from '../utils/helpers';
 
 const defaultValues = {
   projectId: '',
   dueDate: null,
   totalAmount: '',
+  shipBalance: '',
   sendAddress: '',
   objectives: '',
   proposalLink: '',
@@ -78,8 +81,6 @@ export const ApplyFunding = () => {
     enabled: !!id,
   });
 
-  console.log('shipBalance', shipBalance);
-
   const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
   const navigate = useNavigate();
 
@@ -109,6 +110,61 @@ export const ApplyFunding = () => {
         grant.shipId.id === id && grant.grantStatus !== GrantStatus.Completed
     );
   }, [form.values.projectId, id, userData]);
+
+  const isAmountFieldDirty = form.isDirty('totalAmount');
+
+  useEffect(() => {
+    if (shipBalanceError) {
+      return;
+    }
+    if (shipBalanceLoading) {
+      return;
+    }
+
+    // if (!isFieldNumber(form.values.totalAmount)) {
+    //   return;
+    // }
+
+    if (Number(shipBalance) === 0) {
+      form.setFieldError('totalAmount', 'Ship does not have any funds');
+    }
+
+    console.log('isAmountFieldDirty', isAmountFieldDirty);
+    console.log(
+      'form.values.totalAmount != null',
+      form.values.totalAmount != null
+    );
+    console.log(
+      'Number(form.values.totalAmount) <= 0',
+      Number(form.values.totalAmount) <= 0
+    );
+
+    if (
+      isAmountFieldDirty &&
+      form.values.totalAmount != null &&
+      Number(form.values.totalAmount) <= 0
+    ) {
+      console.log('Fired');
+      form.setFieldError('totalAmount', 'Amount must be greater than 0');
+      return;
+    }
+
+    if (isAmountFieldDirty && shipBalance && !shipBalanceLoading) {
+      const amountExceedsBalance =
+        shipBalance &&
+        form.values.totalAmount &&
+        parseEther(form.values.totalAmount) > BigInt(shipBalance);
+
+      if (amountExceedsBalance) {
+        form.setFieldError(
+          'totalAmount',
+          'Amount Exceeds Available Ship Funds'
+        );
+      } else {
+        form.clearFieldError('totalAmount');
+      }
+    }
+  }, [shipBalance, shipBalanceLoading, form.values, isAmountFieldDirty]);
 
   const handleBlur = (fieldName: string) => {
     form.validateField(fieldName);
@@ -277,6 +333,9 @@ export const ApplyFunding = () => {
 
   const noProjects = !userData?.projects.length && !userLoading;
 
+  const isPositiveAmount =
+    form.values.totalAmount && Number(form.values.totalAmount) > 0;
+
   return (
     <MainSection>
       <PageTitle title="Grant Application" />
@@ -304,6 +363,16 @@ export const ApplyFunding = () => {
           }
         />
       )}
+      <Text fw={600}>Funding Available</Text>
+      <Text fz="sm" mb="md">
+        {shipBalance ? (
+          `${formatEther(shipBalance)} ${GAME_TOKEN.SYMBOL}`
+        ) : (
+          <Text component="span" fs="italic" fz="sm">
+            Loading...
+          </Text>
+        )}
+      </Text>
       <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
         <Flex direction={isMobile ? 'column' : 'row'} mb="md">
           <Select
@@ -342,11 +411,14 @@ export const ApplyFunding = () => {
             w="100%"
             label="Total Amount Requested"
             required
-            disabled={noProjects}
+            type="number"
+            disabled={noProjects || shipBalanceLoading}
             mb={isMobile ? 'md' : undefined}
-            placeholder={GAME_TOKEN.SYMBOL}
+            placeholder={
+              shipBalanceLoading ? 'Loading ship balance...' : GAME_TOKEN.SYMBOL
+            }
+            error={'Amount exceeds available ship funds'}
             {...form.getInputProps('totalAmount')}
-            onBlur={() => handleBlur('totalAmount')}
             mr={'md'}
           />
           <TextInput

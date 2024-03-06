@@ -35,3 +35,7 @@ export function findValueByKey(obj: any, key: string): any {
   search(obj);
   return result;
 }
+
+export const isFieldNumber = (value: string): boolean => {
+  return !isNaN(+value) && value.trim() !== '';
+};
