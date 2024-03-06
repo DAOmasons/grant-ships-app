@@ -221,8 +221,8 @@ export const ApplyFunding = () => {
 
     const amountExceedsBalance =
       shipBalance &&
-      form.values.totalAmount &&
-      parseEther(form.values.totalAmount) > BigInt(shipBalance);
+      values.totalAmount &&
+      parseEther(values.totalAmount) > BigInt(shipBalance);
 
     if (amountExceedsBalance) {
       notifications.show({
@@ -233,6 +233,14 @@ export const ApplyFunding = () => {
       return;
     }
 
+    if (Number(values.totalAmount) <= 0) {
+      notifications.show({
+        title: 'Error',
+        message: 'Amount must be greater than 0',
+        color: 'red',
+      });
+      return;
+    }
     const dateInSeconds = BigInt(Math.round(dueDate.getTime() / 1000));
 
     const metadata = {
