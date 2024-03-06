@@ -1,7 +1,7 @@
 import { getBuiltGraphSDK } from '../.graphclient';
 import { DashGrant, resolveGrants } from '../resolvers/grantResolvers';
 
-export const getFacilitatorGrants = async () => {
+export const getFacilitatorGrants = async (): Promise<DashGrant[]> => {
   const { getFacilitatorGrants } = getBuiltGraphSDK();
 
   const res = await getFacilitatorGrants();
