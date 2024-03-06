@@ -43,7 +43,6 @@ import { appNetwork } from '../utils/config';
 import { injected } from 'wagmi/connectors';
 import { useQuery } from '@tanstack/react-query';
 import { getBuiltGraphSDK } from '../.graphclient';
-import { isFieldNumber } from '../utils/helpers';
 
 const defaultValues = {
   projectId: '',
@@ -121,30 +120,15 @@ export const ApplyFunding = () => {
       return;
     }
 
-    // if (!isFieldNumber(form.values.totalAmount)) {
-    //   return;
-    // }
-
     if (Number(shipBalance) === 0) {
       form.setFieldError('totalAmount', 'Ship does not have any funds');
     }
-
-    console.log('isAmountFieldDirty', isAmountFieldDirty);
-    console.log(
-      'form.values.totalAmount != null',
-      form.values.totalAmount != null
-    );
-    console.log(
-      'Number(form.values.totalAmount) <= 0',
-      Number(form.values.totalAmount) <= 0
-    );
 
     if (
       isAmountFieldDirty &&
       form.values.totalAmount != null &&
       Number(form.values.totalAmount) <= 0
     ) {
-      console.log('Fired');
       form.setFieldError('totalAmount', 'Amount must be greater than 0');
       return;
     }
@@ -164,6 +148,7 @@ export const ApplyFunding = () => {
         form.clearFieldError('totalAmount');
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shipBalance, shipBalanceLoading, form.values, isAmountFieldDirty]);
 
   const handleBlur = (fieldName: string) => {
@@ -229,6 +214,20 @@ export const ApplyFunding = () => {
       notifications.show({
         title: 'Error',
         message: 'Please fill out all required fields',
+        color: 'red',
+      });
+      return;
+    }
+
+    const amountExceedsBalance =
+      shipBalance &&
+      form.values.totalAmount &&
+      parseEther(form.values.totalAmount) > BigInt(shipBalance);
+
+    if (amountExceedsBalance) {
+      notifications.show({
+        title: 'Error',
+        message: 'Amount exceeds available ship funds',
         color: 'red',
       });
       return;
@@ -332,9 +331,6 @@ export const ApplyFunding = () => {
   };
 
   const noProjects = !userData?.projects.length && !userLoading;
-
-  const isPositiveAmount =
-    form.values.totalAmount && Number(form.values.totalAmount) > 0;
 
   return (
     <MainSection>
