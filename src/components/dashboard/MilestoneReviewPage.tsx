@@ -1,3 +1,7 @@
+import { ReactNode, useState } from 'react';
+import { useAccount } from 'wagmi';
+import { isAddress } from 'viem';
+import { useQuery } from '@tanstack/react-query';
 import {
   Box,
   Flex,
@@ -7,21 +11,18 @@ import {
   Textarea,
   useMantineTheme,
 } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
+import { IconCheck } from '@tabler/icons-react';
+import { IconX } from '@tabler/icons-react';
+
 import { ReviewPage } from '../../layout/ReviewPage';
 import { DashGrant, PackedMilestoneData } from '../../resolvers/grantResolvers';
-import { useQuery } from '@tanstack/react-query';
-import { useAccount } from 'wagmi';
 import { useTx } from '../../hooks/useTx';
-import { ReactNode, useState } from 'react';
-import { isAddress } from 'viem';
 import { pinJSONToIPFS } from '../../utils/ipfs/pin';
-import { notifications } from '@mantine/notifications';
 import { AlloStatus, GrantStatus } from '../../types/common';
 import { AppAlert } from '../UnderContruction';
 import GrantShipAbi from '../../abi/GrantShip.json';
 import { getIpfsJson } from '../../utils/ipfs/get';
-import { IconCheck } from '@tabler/icons-react';
-import { IconX } from '@tabler/icons-react';
 import { MilestoneTimeline } from './MilestoneTimeline';
 import { TxButton } from '../TxButton';
 

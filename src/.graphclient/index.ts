@@ -2583,6 +2583,8 @@ export type _Block_ = {
   number: Scalars['Int'];
   /** Integer representation of the timestamp stored in blocks for the chain */
   timestamp?: Maybe<Scalars['Int']>;
+  /** The hash of the parent block */
+  parentHash?: Maybe<Scalars['Bytes']>;
 };
 
 /** The type for the top-level _meta field */
@@ -3086,6 +3088,7 @@ export type _Block_Resolvers<ContextType = MeshContext, ParentType extends Resol
   hash?: Resolver<Maybe<ResolversTypes['Bytes']>, ParentType, ContextType>;
   number?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   timestamp?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  parentHash?: Resolver<Maybe<ResolversTypes['Bytes']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -3260,6 +3263,12 @@ const merger = new(BareMerger as any)({
           return printWithCache(GetRecentTransactionDocument);
         },
         location: 'GetRecentTransactionDocument.graphql'
+      },{
+        document: GetShipFundsAvailableDocument,
+        get rawSDL() {
+          return printWithCache(GetShipFundsAvailableDocument);
+        },
+        location: 'GetShipFundsAvailableDocument.graphql'
       },{
         document: GetShipIdByHatIdDocument,
         get rawSDL() {
@@ -3489,6 +3498,13 @@ export type getRecentTransactionQueryVariables = Exact<{
 
 
 export type getRecentTransactionQuery = { transaction?: Maybe<Pick<Transaction, 'id'>> };
+
+export type getShipFundsAvailableQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type getShipFundsAvailableQuery = { grantShip?: Maybe<Pick<GrantShip, 'totalAvailableFunds'>> };
 
 export type getShipIdByHatIdQueryVariables = Exact<{
   hatId: Scalars['BigInt'];
@@ -3829,6 +3845,13 @@ export const getRecentTransactionDocument = gql`
   }
 }
     ` as unknown as DocumentNode<getRecentTransactionQuery, getRecentTransactionQueryVariables>;
+export const getShipFundsAvailableDocument = gql`
+    query getShipFundsAvailable($id: ID!) {
+  grantShip(id: $id) {
+    totalAvailableFunds
+  }
+}
+    ` as unknown as DocumentNode<getShipFundsAvailableQuery, getShipFundsAvailableQueryVariables>;
 export const getShipIdByHatIdDocument = gql`
     query getShipIdByHatId($hatId: BigInt!) {
   grantShips(where: {hatId: $hatId}) {
@@ -3918,6 +3941,7 @@ export const ShipsPageQueryDocument = gql`
 
 
 
+
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
@@ -3947,6 +3971,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     getRecentTransaction(variables: getRecentTransactionQueryVariables, options?: C): Promise<getRecentTransactionQuery> {
       return requester<getRecentTransactionQuery, getRecentTransactionQueryVariables>(getRecentTransactionDocument, variables, options) as Promise<getRecentTransactionQuery>;
+    },
+    getShipFundsAvailable(variables: getShipFundsAvailableQueryVariables, options?: C): Promise<getShipFundsAvailableQuery> {
+      return requester<getShipFundsAvailableQuery, getShipFundsAvailableQueryVariables>(getShipFundsAvailableDocument, variables, options) as Promise<getShipFundsAvailableQuery>;
     },
     getShipIdByHatId(variables: getShipIdByHatIdQueryVariables, options?: C): Promise<getShipIdByHatIdQuery> {
       return requester<getShipIdByHatIdQuery, getShipIdByHatIdQueryVariables>(getShipIdByHatIdDocument, variables, options) as Promise<getShipIdByHatIdQuery>;

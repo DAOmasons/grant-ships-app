@@ -40,6 +40,8 @@ import { useMemo } from 'react';
 import { GrantStatus } from '../types/common';
 import { appNetwork } from '../utils/config';
 import { injected } from 'wagmi/connectors';
+import { useQuery } from '@tanstack/react-query';
+import { getBuiltGraphSDK } from '../.graphclient';
 
 const defaultValues = {
   projectId: '',
@@ -54,10 +56,31 @@ const defaultValues = {
 
 type FormValues = z.infer<typeof applyFundingSchema>;
 
+const getShipFunds = async (id: string) => {
+  const { getShipFundsAvailable } = getBuiltGraphSDK();
+
+  const res = await getShipFundsAvailable({ id });
+
+  return res.grantShip?.totalAvailableFunds;
+};
+
 export const ApplyFunding = () => {
   const { userData, userLoading, refetchUser } = useUserData();
-  const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
   const { id } = useParams();
+
+  const {
+    data: shipBalance,
+    isLoading: shipBalanceLoading,
+    error: shipBalanceError,
+  } = useQuery({
+    queryKey: [`ship-balance`, id],
+    queryFn: () => getShipFunds(id as string),
+    enabled: !!id,
+  });
+
+  console.log('shipBalance', shipBalance);
+
+  const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
   const navigate = useNavigate();
 
   const { address, isConnected, chainId } = useAccount();
