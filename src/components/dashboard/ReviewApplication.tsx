@@ -13,6 +13,7 @@ import {
   Modal,
   Text,
   Textarea,
+  Tooltip,
   useMantineTheme,
 } from '@mantine/core';
 import { GrantStatus } from '../../types/common';
@@ -22,7 +23,7 @@ import { GAME_TOKEN, ZER0_ADDRESS } from '../../constants/gameSetup';
 import { secondsToLongDateTime } from '../../utils/time';
 import { DashGrant } from '../../resolvers/grantResolvers';
 import { AppAlert } from '../UnderContruction';
-import { IconCheck, IconX } from '@tabler/icons-react';
+import { IconCheck, IconExclamationCircle, IconX } from '@tabler/icons-react';
 import { TxButton } from '../TxButton';
 
 export const ReviewApplication = ({
@@ -99,6 +100,10 @@ export const ReviewApplication = ({
       ? 'Review Application'
       : 'Application Reviewed';
 
+  const hasFunds =
+    BigInt(grant.applicationData.grantAmount) <=
+    BigInt(grant.shipId.totalAvailableFunds);
+
   return (
     <>
       <Group align="start" justify="space-between">
@@ -139,7 +144,22 @@ export const ReviewApplication = ({
             'DIVIDER',
             {
               subtitle: 'The Ask',
-              content: `${formatEther(grant.applicationData.grantAmount)} ${GAME_TOKEN.SYMBOL}`,
+              content: hasFunds ? (
+                `${formatEther(grant.applicationData.grantAmount)} ${GAME_TOKEN.SYMBOL}`
+              ) : (
+                <Group gap={'xs'} align="start">
+                  <Text fz="sm" c={theme.colors.red[5]}>
+                    {formatEther(grant.applicationData.grantAmount)}{' '}
+                    {GAME_TOKEN.SYMBOL}
+                  </Text>
+                  <Tooltip label="Amount requested exceeds funding available. Application cannot be approved">
+                    <IconExclamationCircle
+                      color={theme.colors.red[5]}
+                      size={18}
+                    />
+                  </Tooltip>
+                </Group>
+              ),
             },
             {
               subtitle: 'Expected Delivery',
@@ -169,7 +189,9 @@ export const ReviewApplication = ({
               ? {
                   subtitle: 'Additional Link',
                   content: (
-                    <Text component="a">grant.applicationData.extraLink </Text>
+                    <Text component="a" fz="sm">
+                      grant.applicationData.extraLink{' '}
+                    </Text>
                   ),
                 }
               : null,
@@ -231,7 +253,7 @@ export const ReviewApplication = ({
                         Reject
                       </TxButton>
                       <TxButton
-                        disabled={!reasonText}
+                        disabled={!reasonText || !hasFunds}
                         onClick={() => handleApprove(true)}
                       >
                         Approve

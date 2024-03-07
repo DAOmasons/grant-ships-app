@@ -4,15 +4,22 @@ import { useState } from 'react';
 import { AlloStatus, GrantStatus } from '../../../types/common';
 import { notifications } from '@mantine/notifications';
 import { pinJSONToIPFS } from '../../../utils/ipfs/pin';
-import { encodeAbiParameters, formatEther, parseAbiParameters } from 'viem';
+import {
+  encodeAbiParameters,
+  formatEther,
+  parseAbiParameters,
+  parseEther,
+} from 'viem';
 import AlloAbi from '../../../abi/Allo.json';
 import { ReviewPage } from '../../../layout/ReviewPage';
 import {
   Button,
   Flex,
+  Group,
   Modal,
   Text,
   Textarea,
+  Tooltip,
   useMantineTheme,
 } from '@mantine/core';
 import { TxButton } from '../../TxButton';
@@ -20,7 +27,7 @@ import { secondsToLongDateTime } from '../../../utils/time';
 import { ADDR } from '../../../constants/addresses';
 import { DashGrant } from '../../../resolvers/grantResolvers';
 import { GAME_TOKEN } from '../../../constants/gameSetup';
-import { IconCheck, IconX } from '@tabler/icons-react';
+import { IconCheck, IconExclamationCircle, IconX } from '@tabler/icons-react';
 import { AppAlert } from '../../UnderContruction';
 
 export const FacilitatorReview = ({ grant }: { grant: DashGrant }) => {
@@ -95,7 +102,12 @@ export const FacilitatorReview = ({ grant }: { grant: DashGrant }) => {
   const hasShipApproved = grant.grantStatus >= GrantStatus.ShipApproved;
   const hasFacilitatorApproved =
     grant.grantStatus >= GrantStatus.FacilitatorApproved;
+
   const hasFacilitatorReviewed = grant.grantStatus > GrantStatus.ShipApproved;
+  const hasFunds =
+    BigInt(grant.applicationData.grantAmount) <=
+    BigInt(grant.shipId.totalAvailableFunds);
+
   return (
     <>
       {hasFacilitatorReviewed ? (
@@ -123,7 +135,22 @@ export const FacilitatorReview = ({ grant }: { grant: DashGrant }) => {
             'DIVIDER',
             {
               subtitle: 'The Ask',
-              content: `${formatEther(grant.applicationData.grantAmount)} ${GAME_TOKEN.SYMBOL}`,
+              content: hasFunds ? (
+                `${formatEther(grant.applicationData.grantAmount)} ${GAME_TOKEN.SYMBOL}`
+              ) : (
+                <Group gap={'xs'} align="start">
+                  <Text fz="sm" c={theme.colors.red[5]}>
+                    {formatEther(grant.applicationData.grantAmount)}{' '}
+                    {GAME_TOKEN.SYMBOL}
+                  </Text>
+                  <Tooltip label="Amount requested exceeds funding available. Application cannot be approved">
+                    <IconExclamationCircle
+                      color={theme.colors.red[5]}
+                      size={18}
+                    />
+                  </Tooltip>
+                </Group>
+              ),
             },
             {
               subtitle: 'Expected Delivery',
@@ -220,7 +247,7 @@ export const FacilitatorReview = ({ grant }: { grant: DashGrant }) => {
                       Reject
                     </TxButton>
                     <TxButton
-                      disabled={!reasonText}
+                      disabled={!reasonText || !hasFunds}
                       onClick={() => handleApprove(true)}
                     >
                       Approve

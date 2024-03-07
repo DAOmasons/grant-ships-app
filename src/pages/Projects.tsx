@@ -19,8 +19,6 @@ export const Projects = () => {
 
   const theme = useMantineTheme();
 
-  console.log('data', data);
-
   if (isLoading) {
     return (
       <PageLayout>

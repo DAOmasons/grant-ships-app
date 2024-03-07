@@ -34,7 +34,9 @@ export const ReviewPage = ({
                   {section.content}
                 </Text>
               ) : (
-                <Box mb="lg"> {section.content} </Box>
+                <Box component="span" mb="lg">
+                  {section.content}{' '}
+                </Box>
               )}
             </Box>
           )

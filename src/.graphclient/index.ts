@@ -3360,7 +3360,7 @@ export type GrantDashFragment = (
     Pick<Project, 'id' | 'name'>
     & { metadata: Pick<RawMetadata, 'pointer'> }
   ), shipId: (
-    Pick<GrantShip, 'id' | 'name' | 'shipContractAddress' | 'poolId'>
+    Pick<GrantShip, 'id' | 'name' | 'shipContractAddress' | 'poolId' | 'totalAvailableFunds'>
     & { profileMetadata: Pick<RawMetadata, 'pointer'> }
   ), milestonesApprovedReason?: Maybe<Pick<RawMetadata, 'pointer'>>, facilitatorReason?: Maybe<Pick<RawMetadata, 'pointer'>>, shipApprovalReason?: Maybe<Pick<RawMetadata, 'pointer'>> }
 );
@@ -3393,7 +3393,7 @@ export type getFacilitatorGrantsQuery = { requiresAction: Array<(
       Pick<Project, 'id' | 'name'>
       & { metadata: Pick<RawMetadata, 'pointer'> }
     ), shipId: (
-      Pick<GrantShip, 'id' | 'name' | 'shipContractAddress' | 'poolId'>
+      Pick<GrantShip, 'id' | 'name' | 'shipContractAddress' | 'poolId' | 'totalAvailableFunds'>
       & { profileMetadata: Pick<RawMetadata, 'pointer'> }
     ), milestonesApprovedReason?: Maybe<Pick<RawMetadata, 'pointer'>>, facilitatorReason?: Maybe<Pick<RawMetadata, 'pointer'>>, shipApprovalReason?: Maybe<Pick<RawMetadata, 'pointer'>> }
   )>, rejected: Array<(
@@ -3402,7 +3402,7 @@ export type getFacilitatorGrantsQuery = { requiresAction: Array<(
       Pick<Project, 'id' | 'name'>
       & { metadata: Pick<RawMetadata, 'pointer'> }
     ), shipId: (
-      Pick<GrantShip, 'id' | 'name' | 'shipContractAddress' | 'poolId'>
+      Pick<GrantShip, 'id' | 'name' | 'shipContractAddress' | 'poolId' | 'totalAvailableFunds'>
       & { profileMetadata: Pick<RawMetadata, 'pointer'> }
     ), milestonesApprovedReason?: Maybe<Pick<RawMetadata, 'pointer'>>, facilitatorReason?: Maybe<Pick<RawMetadata, 'pointer'>>, shipApprovalReason?: Maybe<Pick<RawMetadata, 'pointer'>> }
   )>, approved: Array<(
@@ -3411,7 +3411,7 @@ export type getFacilitatorGrantsQuery = { requiresAction: Array<(
       Pick<Project, 'id' | 'name'>
       & { metadata: Pick<RawMetadata, 'pointer'> }
     ), shipId: (
-      Pick<GrantShip, 'id' | 'name' | 'shipContractAddress' | 'poolId'>
+      Pick<GrantShip, 'id' | 'name' | 'shipContractAddress' | 'poolId' | 'totalAvailableFunds'>
       & { profileMetadata: Pick<RawMetadata, 'pointer'> }
     ), milestonesApprovedReason?: Maybe<Pick<RawMetadata, 'pointer'>>, facilitatorReason?: Maybe<Pick<RawMetadata, 'pointer'>>, shipApprovalReason?: Maybe<Pick<RawMetadata, 'pointer'>> }
   )> };
@@ -3483,7 +3483,7 @@ export type getProjectGrantsQuery = { project?: Maybe<{ grants: Array<(
         Pick<Project, 'id' | 'name'>
         & { metadata: Pick<RawMetadata, 'pointer'> }
       ), shipId: (
-        Pick<GrantShip, 'id' | 'name' | 'shipContractAddress' | 'poolId'>
+        Pick<GrantShip, 'id' | 'name' | 'shipContractAddress' | 'poolId' | 'totalAvailableFunds'>
         & { profileMetadata: Pick<RawMetadata, 'pointer'> }
       ), milestonesApprovedReason?: Maybe<Pick<RawMetadata, 'pointer'>>, facilitatorReason?: Maybe<Pick<RawMetadata, 'pointer'>>, shipApprovalReason?: Maybe<Pick<RawMetadata, 'pointer'>> }
     )> }> };
@@ -3549,7 +3549,7 @@ export type getShipDashQuery = { grantShip?: Maybe<(
         Pick<Project, 'id' | 'name'>
         & { metadata: Pick<RawMetadata, 'pointer'> }
       ), shipId: (
-        Pick<GrantShip, 'id' | 'name' | 'shipContractAddress' | 'poolId'>
+        Pick<GrantShip, 'id' | 'name' | 'shipContractAddress' | 'poolId' | 'totalAvailableFunds'>
         & { profileMetadata: Pick<RawMetadata, 'pointer'> }
       ), milestonesApprovedReason?: Maybe<Pick<RawMetadata, 'pointer'>>, facilitatorReason?: Maybe<Pick<RawMetadata, 'pointer'>>, shipApprovalReason?: Maybe<Pick<RawMetadata, 'pointer'>> }
     )>, profileMetadata: Pick<RawMetadata, 'pointer'> }
@@ -3646,6 +3646,7 @@ export const GrantDashFragmentDoc = gql`
     profileMetadata {
       pointer
     }
+    totalAvailableFunds
   }
   milestonesApproved
   amtDistributed
