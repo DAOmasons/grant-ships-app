@@ -29,6 +29,7 @@ import { DashGrant } from '../../../resolvers/grantResolvers';
 import { GAME_TOKEN } from '../../../constants/gameSetup';
 import { IconCheck, IconExclamationCircle, IconX } from '@tabler/icons-react';
 import { AppAlert } from '../../UnderContruction';
+import { grantApplicationMetadata } from '../../../utils/ipfs/metadataValidation';
 
 export const FacilitatorReview = ({ grant }: { grant: DashGrant }) => {
   const [opened, { open, close }] = useDisclosure(false);
@@ -164,7 +165,18 @@ export const FacilitatorReview = ({ grant }: { grant: DashGrant }) => {
             },
             {
               subtitle: 'Proposal Link',
-              content: grant.applicationData.proposalLink,
+              content: (
+                <Text
+                  component="a"
+                  href={grant.applicationData.extraLink}
+                  fz="sm"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  td="underline"
+                >
+                  {grant.applicationData.extraLink}
+                </Text>
+              ),
             },
             {
               subtitle: 'Objectives',
@@ -182,9 +194,11 @@ export const FacilitatorReview = ({ grant }: { grant: DashGrant }) => {
                   content: (
                     <Text
                       component="a"
+                      href={grant.applicationData.extraLink}
                       fz="sm"
                       rel="noopener noreferrer"
                       target="_blank"
+                      td="underline"
                     >
                       {grant.applicationData.extraLink}
                     </Text>

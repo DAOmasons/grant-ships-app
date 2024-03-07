@@ -25,6 +25,7 @@ import { DashGrant } from '../../resolvers/grantResolvers';
 import { AppAlert } from '../UnderContruction';
 import { IconCheck, IconExclamationCircle, IconX } from '@tabler/icons-react';
 import { TxButton } from '../TxButton';
+import { scanAddressLink } from '../../utils/scan';
 
 export const ReviewApplication = ({
   grant,
@@ -104,6 +105,8 @@ export const ReviewApplication = ({
     BigInt(grant.applicationData.grantAmount) <=
     BigInt(grant.shipId.totalAvailableFunds);
 
+  const scanLink = scanAddressLink(grant.applicationData.receivingAddress);
+
   return (
     <>
       <Group align="start" justify="space-between">
@@ -169,11 +172,33 @@ export const ReviewApplication = ({
             },
             {
               subtitle: 'Receiving Address',
-              content: grant.applicationData.receivingAddress,
+              content: (
+                <Text
+                  component="a"
+                  href={scanLink}
+                  fz="sm"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  td="underline"
+                >
+                  {grant.applicationData.receivingAddress}
+                </Text>
+              ),
             },
             {
               subtitle: 'Proposal Link',
-              content: grant.applicationData.proposalLink,
+              content: (
+                <Text
+                  component="a"
+                  href={grant.applicationData.extraLink}
+                  fz="sm"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  td="underline"
+                >
+                  {grant.applicationData.extraLink}
+                </Text>
+              ),
             },
             {
               subtitle: 'Objectives',
@@ -189,8 +214,15 @@ export const ReviewApplication = ({
               ? {
                   subtitle: 'Additional Link',
                   content: (
-                    <Text component="a" fz="sm">
-                      grant.applicationData.extraLink{' '}
+                    <Text
+                      component="a"
+                      href={grant.applicationData.extraLink}
+                      fz="sm"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                      td="underline"
+                    >
+                      {grant.applicationData.extraLink}
                     </Text>
                   ),
                 }
