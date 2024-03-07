@@ -95,12 +95,18 @@ export const FacilitatorReview = ({ grant }: { grant: DashGrant }) => {
   const hasShipApproved = grant.grantStatus >= GrantStatus.ShipApproved;
   const hasFacilitatorApproved =
     grant.grantStatus >= GrantStatus.FacilitatorApproved;
-
+  const hasFacilitatorReviewed = grant.grantStatus > GrantStatus.ShipApproved;
   return (
     <>
-      <Button size="xs" ml="auto" onClick={open}>
-        Review
-      </Button>
+      {hasFacilitatorReviewed ? (
+        <Button size="xs" ml="auto" variant="subtle" onClick={open}>
+          View
+        </Button>
+      ) : (
+        <Button size="xs" ml="auto" onClick={open}>
+          Review
+        </Button>
+      )}
       <Modal
         opened={opened}
         onClose={close}
