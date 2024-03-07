@@ -1,5 +1,11 @@
 query getFacilitatorGrants {
-  grants(where: { grantStatus_gte: 2 }) {
+  requiresAction: grants(where: { grantStatus: 3 }) {
+    ...GrantDash
+  }
+  rejected: grants(where: { grantStatus: 4 }) {
+    ...GrantDash
+  }
+  approved: grants(where: { grantStatus_gt: 4 }) {
     ...GrantDash
   }
 }

@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { getFacilitatorGrants } from '../../../queries/getFacilitatorGrants';
-import { Skeleton, Stack, useMantineTheme } from '@mantine/core';
+import { Skeleton, Stack, Text, useMantineTheme } from '@mantine/core';
 import { AppAlert } from '../../UnderContruction';
 import { GrantApprovalCard } from './GrantApprovalCard';
 
@@ -44,17 +44,18 @@ export const ProjectApproval = () => {
       />
     );
 
-  if (grants.length === 0)
-    return (
-      <AppAlert
-        title={'No Grants'}
-        description={'Grants have not been submitted to Grant Ships yet'}
-      />
-    );
-
   return (
     <Stack gap={'lg'}>
-      {grants.map((grant) => (
+      <Text>Review Needed ({grants.requiresAction.length})</Text>
+      {grants.requiresAction.map((grant) => (
+        <GrantApprovalCard key={grant.id} grant={grant} />
+      ))}
+      <Text>Rejected Grantees ({grants.rejected.length})</Text>
+      {grants.rejected.map((grant) => (
+        <GrantApprovalCard key={grant.id} grant={grant} />
+      ))}
+      <Text>Approved Grantees ({grants.approved.length})</Text>
+      {grants.approved.map((grant) => (
         <GrantApprovalCard key={grant.id} grant={grant} />
       ))}
     </Stack>
