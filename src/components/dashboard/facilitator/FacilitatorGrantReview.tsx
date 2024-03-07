@@ -7,17 +7,27 @@ import { pinJSONToIPFS } from '../../../utils/ipfs/pin';
 import { encodeAbiParameters, formatEther, parseAbiParameters } from 'viem';
 import AlloAbi from '../../../abi/Allo.json';
 import { ReviewPage } from '../../../layout/ReviewPage';
-import { Alert, Button, Flex, Modal, Text, Textarea } from '@mantine/core';
+import {
+  Button,
+  Flex,
+  Modal,
+  Text,
+  Textarea,
+  useMantineTheme,
+} from '@mantine/core';
 import { TxButton } from '../../TxButton';
 import { secondsToLongDateTime } from '../../../utils/time';
 import { ADDR } from '../../../constants/addresses';
 import { DashGrant } from '../../../resolvers/grantResolvers';
 import { GAME_TOKEN } from '../../../constants/gameSetup';
+import { IconCheck, IconX } from '@tabler/icons-react';
+import { AppAlert } from '../../UnderContruction';
 
 export const FacilitatorReview = ({ grant }: { grant: DashGrant }) => {
   const [opened, { open, close }] = useDisclosure(false);
   const { tx } = useTx();
   const [reasonText, setReasonText] = useState('');
+  const theme = useMantineTheme();
 
   const handleApprove = async (isApproved: boolean) => {
     if (grant.grantStatus !== GrantStatus.ShipApproved) {
@@ -62,8 +72,6 @@ export const FacilitatorReview = ({ grant }: { grant: DashGrant }) => {
       return;
     }
 
-    // (address recipientId, Status recipientStatus, uint256 grantAmount, Metadata memory _reason)
-
     const encoded = encodeAbiParameters(
       parseAbiParameters('address, uint8, uint256, (uint256, string)'),
       [
@@ -83,6 +91,10 @@ export const FacilitatorReview = ({ grant }: { grant: DashGrant }) => {
       },
     });
   };
+
+  const hasShipApproved = grant.grantStatus >= GrantStatus.ShipApproved;
+  const hasFacilitatorApproved =
+    grant.grantStatus >= GrantStatus.FacilitatorApproved;
 
   return (
     <>
@@ -135,7 +147,14 @@ export const FacilitatorReview = ({ grant }: { grant: DashGrant }) => {
               ? {
                   subtitle: 'Additional Link',
                   content: (
-                    <Text component="a">grant.applicationData.extraLink </Text>
+                    <Text
+                      component="a"
+                      fz="sm"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                    >
+                      {grant.applicationData.extraLink}
+                    </Text>
                   ),
                 }
               : null,
@@ -143,12 +162,32 @@ export const FacilitatorReview = ({ grant }: { grant: DashGrant }) => {
           footerSection={
             <>
               {grant.shipApprovalReason && (
-                <Alert mb="xl">
-                  <Text mb="sm">Approval from Grant Ship</Text>
-                  <Text fz="sm" opacity={0.75} fs={'italic'}>
-                    "{grant.shipApprovalReason}"
-                  </Text>
-                </Alert>
+                <AppAlert
+                  mt={0}
+                  mb={'xl'}
+                  icon={hasShipApproved ? <IconCheck /> : <IconX />}
+                  title={`${hasShipApproved ? 'Approval' : 'Rejection'} from
+                    Grant Ship`}
+                  description={`"${grant.shipApprovalReason}"`}
+                  bg={
+                    hasShipApproved ? theme.colors.blue[8] : theme.colors.red[6]
+                  }
+                />
+              )}
+              {grant.facilitatorReason && (
+                <AppAlert
+                  mt={0}
+                  mb={'xl'}
+                  icon={hasFacilitatorApproved ? <IconCheck /> : <IconX />}
+                  title={`${hasFacilitatorApproved ? 'Approval' : 'Rejection'} from
+                    Game Facilitators`}
+                  description={`"${grant.facilitatorReason}"`}
+                  bg={
+                    hasFacilitatorApproved
+                      ? theme.colors.blue[8]
+                      : theme.colors.red[6]
+                  }
+                />
               )}
               {grant.grantStatus === GrantStatus.ShipApproved && (
                 <>
