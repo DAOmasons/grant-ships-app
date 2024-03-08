@@ -1,11 +1,8 @@
 import { useDisclosure } from '@mantine/hooks';
 import { useState } from 'react';
-import { ReviewPage } from '../../layout/ReviewPage';
 import { formatEther, isAddress } from 'viem';
-import GrantShipAbi from '../../abi/GrantShip.json';
 import { notifications } from '@mantine/notifications';
 import { useAccount } from 'wagmi';
-
 import {
   Button,
   Flex,
@@ -16,6 +13,10 @@ import {
   Tooltip,
   useMantineTheme,
 } from '@mantine/core';
+import { IconCheck, IconExclamationCircle, IconX } from '@tabler/icons-react';
+
+import { ReviewPage } from '../../layout/ReviewPage';
+import GrantShipAbi from '../../abi/GrantShip.json';
 import { GrantStatus } from '../../types/common';
 import { useTx } from '../../hooks/useTx';
 import { pinJSONToIPFS } from '../../utils/ipfs/pin';
@@ -23,7 +24,6 @@ import { GAME_TOKEN, ZER0_ADDRESS } from '../../constants/gameSetup';
 import { secondsToLongDateTime } from '../../utils/time';
 import { DashGrant } from '../../resolvers/grantResolvers';
 import { AppAlert } from '../UnderContruction';
-import { IconCheck, IconExclamationCircle, IconX } from '@tabler/icons-react';
 import { TxButton } from '../TxButton';
 import { scanAddressLink } from '../../utils/scan';
 
