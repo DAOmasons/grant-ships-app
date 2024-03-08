@@ -64,6 +64,8 @@ type TxContextType = {
     writeContractParams: WriteContractParams;
     writeContractOptions?: WriteContractOptions;
     viewParams?: ViewParams;
+    onComplete?: () => void;
+    onError?: (error: WriteContractErrorType) => void;
   }) => void;
   writeContract: WriteContractMutate<Config, unknown>;
   isAwaitingSignature: boolean;
@@ -120,10 +122,14 @@ export const TxProvider = ({ children }: { children: ReactNode }) => {
     viewParams,
     writeContractParams,
     writeContractOptions,
+    onComplete,
+    onError,
   }: {
     writeContractParams: WriteContractParams;
     writeContractOptions?: WriteContractOptions;
     viewParams?: ViewParams;
+    onError?: (error: WriteContractErrorType) => void;
+    onComplete?: () => void;
   }) => {
     open();
     writeContract(writeContractParams, {
@@ -137,6 +143,7 @@ export const TxProvider = ({ children }: { children: ReactNode }) => {
             onPollSuccess: () => {
               writeContractOptions?.onPollSuccess?.();
               setPollStatus(PollStatus.Success);
+              onComplete?.();
             },
             onPollError: () => {
               writeContractOptions?.onPollError?.();
@@ -147,10 +154,13 @@ export const TxProvider = ({ children }: { children: ReactNode }) => {
               setPollStatus(PollStatus.Timeout);
             },
           });
+        } else {
+          onComplete?.();
         }
       },
       onError: (error, variables, context) => {
         console.error('error', error);
+        onError?.(error as WriteContractErrorType);
         writeContractOptions?.onError?.(error, variables, context);
       },
     });
@@ -167,7 +177,6 @@ export const TxProvider = ({ children }: { children: ReactNode }) => {
     viewParams?.awaitGraphPoll !== false && pollStatus === PollStatus.Polling;
 
   const txModalContent = useMemo(() => {
-    console.log(pollStatus);
     if (isConfirming || isAwaitingSignature || shouldWaitForPoll) {
       const validateTitle =
         viewParams?.loading?.title || 'Validating Transaction';

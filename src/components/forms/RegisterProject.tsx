@@ -30,6 +30,7 @@ import { useMediaQuery } from '@mantine/hooks';
 import { ProjectProfileMetadata } from '../../utils/ipfs/metadataValidation';
 import { injected } from 'wagmi/connectors';
 import { appNetwork } from '../../utils/config';
+import { useUserData } from '../../hooks/useUserState';
 
 type FormValues = z.infer<typeof registerProjectSchema>;
 
@@ -37,6 +38,7 @@ export const RegisterProject = () => {
   const { address, isConnected, chainId } = useAccount();
   const { connect } = useConnect();
   const { switchChainAsync } = useSwitchChain();
+  const { refetchUser } = useUserData();
   const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
 
   const { tx } = useTx();
@@ -135,24 +137,13 @@ export const RegisterProject = () => {
           args: [nonce, values.name, metadataStruct, address, teamMembers],
         },
         viewParams: {
-          loading: {
-            title: 'Creating Your Project Profile',
-            description:
-              'Submitting your project profile to the Allo Registry.',
-          },
-          success: {
-            title: 'Project Profile Created',
-            description: 'Your project profile has been created.',
-          },
-          error: {
-            title: 'Something went wrong.',
-            fallback:
-              'There was an unknown error creating your project profile.',
-          },
           successButton: {
             label: 'Go find some Grants!',
             onClick: () => navigate('/ships'),
           },
+        },
+        onComplete() {
+          refetchUser();
         },
       });
     } catch (error: any) {

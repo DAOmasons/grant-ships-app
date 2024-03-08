@@ -154,7 +154,6 @@ export const MilestoneBuilder = ({ grant }: { grant: DashGrant }) => {
       <Text opacity={0.75} mb="xl">
         Let’s break down tasks into milestone(s). Minimum 1 Milestone required.
         Once each is done, submit to the ship operator for grant processing.
-        Your detailed input is key!
       </Text>
       <Stack align="center" mb="md">
         {inputs.map((_, index) => (
