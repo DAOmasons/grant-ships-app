@@ -9,6 +9,7 @@ import {
   ErrorState,
   LoadingState,
   SuccessState,
+  TimeoutState,
 } from '../components/modals/txModal/txModalStates';
 import { Button, Modal } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
@@ -39,6 +40,10 @@ type ViewParams = {
     title?: string;
     description?: string;
   };
+  polling?: {
+    title?: string;
+    description?: string;
+  };
   success?: {
     title?: string;
     description?: string;
@@ -59,6 +64,8 @@ type TxContextType = {
     writeContractParams: WriteContractParams;
     writeContractOptions?: WriteContractOptions;
     viewParams?: ViewParams;
+    onComplete?: () => void;
+    onError?: (error: WriteContractErrorType) => void;
   }) => void;
   writeContract: WriteContractMutate<Config, unknown>;
   isAwaitingSignature: boolean;
@@ -115,10 +122,14 @@ export const TxProvider = ({ children }: { children: ReactNode }) => {
     viewParams,
     writeContractParams,
     writeContractOptions,
+    onComplete,
+    onError,
   }: {
     writeContractParams: WriteContractParams;
     writeContractOptions?: WriteContractOptions;
     viewParams?: ViewParams;
+    onError?: (error: WriteContractErrorType) => void;
+    onComplete?: () => void;
   }) => {
     open();
     writeContract(writeContractParams, {
@@ -132,6 +143,7 @@ export const TxProvider = ({ children }: { children: ReactNode }) => {
             onPollSuccess: () => {
               writeContractOptions?.onPollSuccess?.();
               setPollStatus(PollStatus.Success);
+              onComplete?.();
             },
             onPollError: () => {
               writeContractOptions?.onPollError?.();
@@ -142,10 +154,13 @@ export const TxProvider = ({ children }: { children: ReactNode }) => {
               setPollStatus(PollStatus.Timeout);
             },
           });
+        } else {
+          onComplete?.();
         }
       },
       onError: (error, variables, context) => {
         console.error('error', error);
+        onError?.(error as WriteContractErrorType);
         writeContractOptions?.onError?.(error, variables, context);
       },
     });
@@ -163,15 +178,42 @@ export const TxProvider = ({ children }: { children: ReactNode }) => {
 
   const txModalContent = useMemo(() => {
     if (isConfirming || isAwaitingSignature || shouldWaitForPoll) {
+      const validateTitle =
+        viewParams?.loading?.title || 'Validating Transaction';
+      const validateDescription =
+        viewParams?.loading?.description || 'Please wait...';
+      const pollTitle = viewParams?.polling?.title || 'Polling Subgraph';
+      const pollDescription =
+        viewParams?.polling?.description ||
+        'Transaction successful! Indexing data to the subgraph...';
+
+      const title = shouldWaitForPoll ? pollTitle : validateTitle;
+      const description = shouldWaitForPoll
+        ? pollDescription
+        : validateDescription;
+
       return (
-        <LoadingState
-          title={viewParams?.loading?.title || 'Validating Transaction'}
-          description={viewParams?.loading?.description || 'Please wait...'}
+        <LoadingState title={title} description={description} txHash={hash} />
+      );
+    }
+
+    if (isError || waitError) {
+      return (
+        <ErrorState
+          title={viewParams?.error?.title || 'Something went wrong.'}
+          description={
+            error?.message ||
+            viewParams?.error?.fallback ||
+            'Error message unknown.'
+          }
           txHash={hash}
         />
       );
     }
 
+    if (pollStatus === PollStatus.Timeout) {
+      return <TimeoutState txHash={hash} />;
+    }
     if (isConfirmed) {
       return (
         <SuccessState
@@ -203,20 +245,6 @@ export const TxProvider = ({ children }: { children: ReactNode }) => {
         />
       );
     }
-
-    if (isError || waitError) {
-      return (
-        <ErrorState
-          title={viewParams?.error?.title || 'Something went wrong.'}
-          description={
-            error?.message ||
-            viewParams?.error?.fallback ||
-            'Error message unknown.'
-          }
-          txHash={hash}
-        />
-      );
-    }
   }, [
     isConfirmed,
     waitError,
@@ -228,6 +256,7 @@ export const TxProvider = ({ children }: { children: ReactNode }) => {
     error,
     handleClose,
     shouldWaitForPoll,
+    pollStatus,
   ]);
 
   return (

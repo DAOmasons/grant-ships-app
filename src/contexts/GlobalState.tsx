@@ -12,6 +12,7 @@ type GlobalStateContext = {
   isLoadingUserData: boolean;
   userDataError: Error | null;
   refetchUserData: () => void;
+  refetchGameManager: () => void;
 };
 
 export const GlobalContext = createContext<GlobalStateContext>({
@@ -22,6 +23,7 @@ export const GlobalContext = createContext<GlobalStateContext>({
   isLoadingUserData: false,
   userDataError: null,
   refetchUserData: () => {},
+  refetchGameManager: () => {},
 });
 
 export const GlobalStateProvider = ({
@@ -35,6 +37,7 @@ export const GlobalStateProvider = ({
     data: gameManager,
     isLoading: isLoadingGameManager,
     error: gameManagerError,
+    refetch: refetchGameManager,
   } = useQuery({ queryKey: ['game-manager-state'], queryFn: getGameManger });
 
   const {
@@ -58,6 +61,7 @@ export const GlobalStateProvider = ({
         isLoadingUserData: isLoadingUserState,
         userDataError: userStateError,
         refetchUserData: refetchUserState,
+        refetchGameManager,
       }}
     >
       {children}

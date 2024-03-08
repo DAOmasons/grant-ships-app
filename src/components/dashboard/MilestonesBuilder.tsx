@@ -18,10 +18,21 @@ import { DatePickerInput } from '@mantine/dates';
 import { IconPlus } from '@tabler/icons-react';
 import GrantShipAbi from '../../abi/GrantShip.json';
 import { TxButton } from '../TxButton';
+import { useQueryClient } from '@tanstack/react-query';
 
-export const MilestoneBuilder = ({ grant }: { grant: DashGrant }) => {
+export const MilestoneBuilder = ({
+  grant,
+  close,
+  isResubmitting = false,
+}: {
+  grant: DashGrant;
+  close: () => void;
+  isResubmitting?: boolean;
+}) => {
   const { tx } = useTx();
+  const queryClient = useQueryClient();
 
+  const [isPinning, setIsPinning] = useState(false);
   const [formData, setFormData] = useState<Record<string, string>>({
     'milestone-description-1': '',
     'milestone-perc-1': '0',
@@ -48,12 +59,14 @@ export const MilestoneBuilder = ({ grant }: { grant: DashGrant }) => {
   };
 
   const submitMilestones = async () => {
+    setIsPinning(true);
     const percentTotal = inputs.reduce((acc, _, index) => {
       const value = formData[`milestone-perc-${index + 1}`];
       return acc + Number(value);
     }, 0);
 
     if (percentTotal !== 100) {
+      setIsPinning(false);
       return notifications.show({
         title: 'Error',
         message: 'Milestone percentages must add up to 100',
@@ -62,6 +75,7 @@ export const MilestoneBuilder = ({ grant }: { grant: DashGrant }) => {
     }
 
     if (Object.values(formData).some((value) => value === '')) {
+      setIsPinning(false);
       return notifications.show({
         title: 'Error',
         message: 'Please fill out all fields',
@@ -85,6 +99,7 @@ export const MilestoneBuilder = ({ grant }: { grant: DashGrant }) => {
       percentagesInOrder.length !== descriptionsInOrder.length ||
       descriptionsInOrder.length !== datesInOrder.length
     ) {
+      setIsPinning(false);
       return notifications.show({
         title: 'Error',
         message: 'Data length mismatch: Please fill out all fields',
@@ -121,7 +136,7 @@ export const MilestoneBuilder = ({ grant }: { grant: DashGrant }) => {
             message: pinRes.IpfsHash[1],
             color: 'red',
           });
-
+          setIsPinning(false);
           return false;
         }
 
@@ -136,8 +151,12 @@ export const MilestoneBuilder = ({ grant }: { grant: DashGrant }) => {
     const hasPinError = milestones.some((milestone) => milestone === false);
 
     if (hasPinError) {
+      setIsPinning(false);
       return;
     }
+
+    setIsPinning(false);
+    close();
 
     tx({
       writeContractParams: {
@@ -146,15 +165,20 @@ export const MilestoneBuilder = ({ grant }: { grant: DashGrant }) => {
         functionName: 'setMilestones',
         args: [grant.projectId.id, milestones, [1n, 'NULL']],
       },
+      onComplete() {
+        queryClient.invalidateQueries({
+          queryKey: [`project-grants-${grant.projectId.id}`],
+        });
+      },
     });
   };
 
   return (
     <Box>
       <Text opacity={0.75} mb="xl">
-        Let’s break down tasks into milestone(s). Minimum 1 Milestone required.
-        Once each is done, submit to the ship operator for grant processing.
-        Your detailed input is key!
+        {isResubmitting
+          ? 'Resubmit your milestones'
+          : 'Let’s break down tasks into milestone(s). Minimum 1 Milestone required. Once each is done, submit to the ship operator for grant processing.'}
       </Text>
       <Stack align="center" mb="md">
         {inputs.map((_, index) => (
@@ -169,7 +193,7 @@ export const MilestoneBuilder = ({ grant }: { grant: DashGrant }) => {
                 label={`Percentage`}
                 name={`milestone-perc-${index + 1}`}
                 type="number"
-                placeholder="33"
+                placeholder="30"
                 w={'48%'}
                 onChange={handleChanges}
                 mb="xs"
@@ -212,7 +236,7 @@ export const MilestoneBuilder = ({ grant }: { grant: DashGrant }) => {
         </Button>
       </Stack>
       <Flex w="100%">
-        <TxButton ml="auto" onClick={submitMilestones}>
+        <TxButton ml="auto" onClick={submitMilestones} disabled={isPinning}>
           Submit
         </TxButton>
       </Flex>

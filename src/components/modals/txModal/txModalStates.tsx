@@ -6,7 +6,12 @@ import {
   Text,
   useMantineTheme,
 } from '@mantine/core';
-import { IconCheck, IconCircleX, IconUfo } from '@tabler/icons-react';
+import {
+  IconCheck,
+  IconCircleX,
+  IconExclamationCircle,
+  IconUfo,
+} from '@tabler/icons-react';
 import { ReactNode } from 'react';
 import classes from './txModalStyles.module.css';
 import { SCAN_URL } from '../../../constants/enpoints';
@@ -121,6 +126,47 @@ export const ErrorState = ({
             Error Message:{' '}
           </Text>{' '}
           {description}
+        </Text>
+      </Spoiler>
+      {txHash && (
+        <Text
+          component={'a'}
+          size="sm"
+          rel="noopener noreferrer"
+          target="_blank"
+          href={`${SCAN_URL}/tx/${txHash}`}
+          td="underline"
+          style={{ cursor: 'pointer' }}
+          c={theme.colors.dark[3]}
+        >
+          View on Etherscan
+        </Text>
+      )}
+    </Stack>
+  );
+};
+
+export const TimeoutState = ({ txHash }: { txHash?: string }) => {
+  const theme = useMantineTheme();
+  return (
+    <Stack align="center" pb={'xl'}>
+      <IconExclamationCircle size={80} color={theme.colors.violet[6]} />
+      <Text size="lg" mb={'xs'}>
+        Subgraph Lagging
+      </Text>
+      <Spoiler
+        maxHeight={80}
+        showLabel={<Text size="xs">Show More</Text>}
+        hideLabel={<Text size="xs">Show More</Text>}
+        mx="lg"
+      >
+        <Text
+          size="sm"
+          c={theme.colors.dark[2]}
+          style={{ wordBreak: 'break-word' }}
+        >
+          The Subgraph poll has timed out. Your transaction is successful,
+          however there may be a delay in updating the UI.
         </Text>
       </Spoiler>
       {txHash && (

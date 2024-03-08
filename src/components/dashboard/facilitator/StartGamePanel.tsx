@@ -5,6 +5,7 @@ import { useTx } from '../../../hooks/useTx';
 import { ADDR } from '../../../constants/addresses';
 import GameManagerAbi from '../../../abi/GameManager.json';
 import { TxButton } from '../../TxButton';
+import { useQueryClient } from '@tanstack/react-query';
 
 export const StartGamePanel = ({
   gm,
@@ -16,6 +17,7 @@ export const StartGamePanel = ({
   const STATUS_NUMBER = 5;
   const { tx } = useTx();
 
+  const queryClient = useQueryClient();
   const nowInSeconds = Math.floor(Date.now() / 1000);
 
   const isReadyToStart =
@@ -28,6 +30,9 @@ export const StartGamePanel = ({
         abi: GameManagerAbi,
         functionName: 'startGame',
         address: ADDR.GAME_MANAGER,
+      },
+      onComplete() {
+        queryClient.invalidateQueries({ queryKey: ['game-manager-state'] });
       },
     });
   };

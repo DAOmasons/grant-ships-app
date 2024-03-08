@@ -8,6 +8,7 @@ import { Box, Text, TextInput } from '@mantine/core';
 import { GAME_TOKEN } from '../../../constants/gameSetup';
 import { GameManager } from '../../../queries/getGameManger';
 import { TxButton } from '../../TxButton';
+import { useQueryClient } from '@tanstack/react-query';
 
 export const CreateGamePanel = ({
   gameStatusNumber,
@@ -20,6 +21,7 @@ export const CreateGamePanel = ({
 
   const [amount, setAmount] = useState(0);
   const { tx } = useTx();
+  const queryClient = useQueryClient();
 
   const amountInWei = useMemo(() => {
     return parseEther(amount.toString());
@@ -33,6 +35,9 @@ export const CreateGamePanel = ({
           abi: GameManagerAbi,
           address: ADDR.GAME_MANAGER,
           args: [amountInWei],
+        },
+        onComplete() {
+          queryClient.invalidateQueries({ queryKey: ['game-manager-state'] });
         },
       });
     } catch (error) {

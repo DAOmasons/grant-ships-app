@@ -19,16 +19,13 @@ type PollSubgraphParams = {
 
 export const pollSubgraph = async ({
   txHash,
-  interval = 1000,
-  tries = 15,
+  interval = 3000,
+  tries = 10,
   onPollSuccess,
   onPollError,
   onPollTimeout,
 }: PollSubgraphParams) => {
   let triesCount = 0;
-
-  console.log('****POLL STARTED****');
-  console.log('Polling subgraph for transaction', txHash);
 
   const checkRecentTransaction = async () => {
     try {

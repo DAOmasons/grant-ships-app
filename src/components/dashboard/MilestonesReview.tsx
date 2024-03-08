@@ -7,8 +7,10 @@ import { MilestoneReviewPage } from './MilestoneReviewPage';
 export const MilestonesReview = ({
   grant,
   view,
+  isProjectMember,
 }: {
   grant: DashGrant;
+  isProjectMember?: boolean;
   view: 'project-page' | 'ship-dash';
 }) => {
   const [opened, { open, close }] = useDisclosure(false);
@@ -63,6 +65,7 @@ export const MilestonesReview = ({
           grant={grant}
           opened={opened}
           isShipOperator={isShipOperator}
+          isProjectMember={isProjectMember}
           handleClose={handleClose}
         />
       </Modal>

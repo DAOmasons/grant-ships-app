@@ -19,6 +19,7 @@ import { notifications } from '@mantine/notifications';
 import {
   Address,
   encodeAbiParameters,
+  formatEther,
   isAddress,
   parseAbiParameters,
   parseEther,
@@ -36,15 +37,18 @@ import AlloAbi from '../abi/Allo.json';
 import { ADDR } from '../constants/addresses';
 import { getShipPoolId } from '../queries/getShipPoolId';
 import { AppAlert } from '../components/UnderContruction';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { GrantStatus } from '../types/common';
 import { appNetwork } from '../utils/config';
 import { injected } from 'wagmi/connectors';
+import { useQuery } from '@tanstack/react-query';
+import { getBuiltGraphSDK } from '../.graphclient';
 
 const defaultValues = {
   projectId: '',
   dueDate: null,
   totalAmount: '',
+  shipBalance: '',
   sendAddress: '',
   objectives: '',
   proposalLink: '',
@@ -54,10 +58,29 @@ const defaultValues = {
 
 type FormValues = z.infer<typeof applyFundingSchema>;
 
+const getShipFunds = async (id: string) => {
+  const { getShipFundsAvailable } = getBuiltGraphSDK();
+
+  const res = await getShipFundsAvailable({ id });
+
+  return res.grantShip?.totalAvailableFunds;
+};
+
 export const ApplyFunding = () => {
   const { userData, userLoading, refetchUser } = useUserData();
-  const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
   const { id } = useParams();
+
+  const {
+    data: shipBalance,
+    isLoading: shipBalanceLoading,
+    error: shipBalanceError,
+  } = useQuery({
+    queryKey: [`ship-balance`, id],
+    queryFn: () => getShipFunds(id as string),
+    enabled: !!id,
+  });
+
+  const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
   const navigate = useNavigate();
 
   const { address, isConnected, chainId } = useAccount();
@@ -86,6 +109,47 @@ export const ApplyFunding = () => {
         grant.shipId.id === id && grant.grantStatus !== GrantStatus.Completed
     );
   }, [form.values.projectId, id, userData]);
+
+  const isAmountFieldDirty = form.isDirty('totalAmount');
+
+  useEffect(() => {
+    if (shipBalanceError) {
+      return;
+    }
+    if (shipBalanceLoading) {
+      return;
+    }
+
+    if (Number(shipBalance) === 0) {
+      form.setFieldError('totalAmount', 'Ship does not have any funds');
+    }
+
+    if (
+      isAmountFieldDirty &&
+      form.values.totalAmount != null &&
+      Number(form.values.totalAmount) <= 0
+    ) {
+      form.setFieldError('totalAmount', 'Amount must be greater than 0');
+      return;
+    }
+
+    if (isAmountFieldDirty && shipBalance && !shipBalanceLoading) {
+      const amountExceedsBalance =
+        shipBalance &&
+        form.values.totalAmount &&
+        parseEther(form.values.totalAmount) > BigInt(shipBalance);
+
+      if (amountExceedsBalance) {
+        form.setFieldError(
+          'totalAmount',
+          'Amount Exceeds Available Ship Funds'
+        );
+      } else {
+        form.clearFieldError('totalAmount');
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [shipBalance, shipBalanceLoading, form.values, isAmountFieldDirty]);
 
   const handleBlur = (fieldName: string) => {
     form.validateField(fieldName);
@@ -155,6 +219,28 @@ export const ApplyFunding = () => {
       return;
     }
 
+    const amountExceedsBalance =
+      shipBalance &&
+      values.totalAmount &&
+      parseEther(values.totalAmount) > BigInt(shipBalance);
+
+    if (amountExceedsBalance) {
+      notifications.show({
+        title: 'Error',
+        message: 'Amount exceeds available ship funds',
+        color: 'red',
+      });
+      return;
+    }
+
+    if (Number(values.totalAmount) <= 0) {
+      notifications.show({
+        title: 'Error',
+        message: 'Amount must be greater than 0',
+        color: 'red',
+      });
+      return;
+    }
     const dateInSeconds = BigInt(Math.round(dueDate.getTime() / 1000));
 
     const metadata = {
@@ -281,6 +367,16 @@ export const ApplyFunding = () => {
           }
         />
       )}
+      <Text fw={600}>Funding Available</Text>
+      <Text fz="sm" mb="md">
+        {shipBalance ? (
+          `${formatEther(shipBalance)} ${GAME_TOKEN.SYMBOL}`
+        ) : (
+          <Text component="span" fs="italic" fz="sm">
+            Loading...
+          </Text>
+        )}
+      </Text>
       <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
         <Flex direction={isMobile ? 'column' : 'row'} mb="md">
           <Select
@@ -319,11 +415,14 @@ export const ApplyFunding = () => {
             w="100%"
             label="Total Amount Requested"
             required
-            disabled={noProjects}
+            type="number"
+            disabled={noProjects || shipBalanceLoading}
             mb={isMobile ? 'md' : undefined}
-            placeholder={GAME_TOKEN.SYMBOL}
+            placeholder={
+              shipBalanceLoading ? 'Loading ship balance...' : GAME_TOKEN.SYMBOL
+            }
+            error={'Amount exceeds available ship funds'}
             {...form.getInputProps('totalAmount')}
-            onBlur={() => handleBlur('totalAmount')}
             mr={'md'}
           />
           <TextInput

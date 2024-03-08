@@ -1,3 +1,7 @@
+import { ReactNode, useState } from 'react';
+import { useAccount } from 'wagmi';
+import { isAddress } from 'viem';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   Box,
   Flex,
@@ -7,23 +11,21 @@ import {
   Textarea,
   useMantineTheme,
 } from '@mantine/core';
+import { notifications } from '@mantine/notifications';
+import { IconCheck } from '@tabler/icons-react';
+import { IconX } from '@tabler/icons-react';
+
 import { ReviewPage } from '../../layout/ReviewPage';
 import { DashGrant, PackedMilestoneData } from '../../resolvers/grantResolvers';
-import { useQuery } from '@tanstack/react-query';
-import { useAccount } from 'wagmi';
 import { useTx } from '../../hooks/useTx';
-import { ReactNode, useState } from 'react';
-import { isAddress } from 'viem';
 import { pinJSONToIPFS } from '../../utils/ipfs/pin';
-import { notifications } from '@mantine/notifications';
 import { AlloStatus, GrantStatus } from '../../types/common';
 import { AppAlert } from '../UnderContruction';
 import GrantShipAbi from '../../abi/GrantShip.json';
 import { getIpfsJson } from '../../utils/ipfs/get';
-import { IconCheck } from '@tabler/icons-react';
-import { IconX } from '@tabler/icons-react';
 import { MilestoneTimeline } from './MilestoneTimeline';
 import { TxButton } from '../TxButton';
+import { MilestoneBuilder } from './MilestonesBuilder';
 
 export type UnpackedMilestoneData = PackedMilestoneData & {
   milestoneDetails: string | null;
@@ -75,7 +77,7 @@ export const MilestoneReviewPage = ({
   const { address } = useAccount();
   const { tx } = useTx();
   const theme = useMantineTheme();
-
+  const queryClient = useQueryClient();
   const [reasonText, setReasonText] = useState('');
   const [isPinning, setIsPinning] = useState(false);
 
@@ -113,6 +115,18 @@ export const MilestoneReviewPage = ({
             isApproved ? AlloStatus.Accepted : AlloStatus.Rejected,
             [1n, pinRes.IpfsHash],
           ],
+        },
+        onComplete() {
+          if (view === 'project-page') {
+            queryClient.invalidateQueries({
+              queryKey: [`project-grants-${grant.projectId.id}`],
+            });
+          }
+          if (view === 'ship-dash') {
+            queryClient.invalidateQueries({
+              queryKey: [`ship-dash-${grant.shipId.id}`],
+            });
+          }
         },
       });
     } catch (error) {
@@ -168,29 +182,37 @@ export const MilestoneReviewPage = ({
     grant.grantStatus === GrantStatus.MilestonesRejected ||
     grant.grantStatus === GrantStatus.MilestonesApproved
   ) {
-    const reasonDisplay = GrantStatus.MilestoneApproved ? (
-      <Layout>
-        <AppAlert
-          mt={0}
-          mb={'xl'}
-          icon={<IconCheck />}
-          title="Milestones Approved"
-          description={`"${grant.milestonesApprovedReason}"`}
-          bg={theme.colors.blue[8]}
-        />
-      </Layout>
-    ) : (
-      <Layout>
-        <AppAlert
-          mt={0}
-          mb={'xl'}
-          icon={<IconX />}
-          title="Milestones Rejected"
-          description={`"${grant.milestonesApprovedReason}"`}
-          bg={theme.colors.red[6]}
-        />
-      </Layout>
-    );
+    const reasonDisplay =
+      grant.grantStatus === GrantStatus.MilestonesApproved ? (
+        <Layout>
+          <AppAlert
+            mt={0}
+            mb={'xl'}
+            icon={<IconCheck />}
+            title="Milestones Approved"
+            description={`"${grant.milestonesApprovedReason}"`}
+            bg={theme.colors.blue[8]}
+          />
+        </Layout>
+      ) : (
+        <Layout>
+          <AppAlert
+            mt={0}
+            mb={'xl'}
+            icon={<IconX />}
+            title="Milestones Rejected"
+            description={`"${grant.milestonesApprovedReason}"`}
+            bg={theme.colors.red[6]}
+          />
+          {isProjectMember && view === 'project-page' && (
+            <MilestoneBuilder
+              grant={grant}
+              close={handleClose}
+              isResubmitting
+            />
+          )}
+        </Layout>
+      );
 
     return (
       <ReviewPage

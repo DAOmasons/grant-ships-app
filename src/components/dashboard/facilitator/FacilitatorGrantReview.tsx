@@ -1,8 +1,12 @@
 import { useDisclosure } from '@mantine/hooks';
+import { useTx } from '../../../hooks/useTx';
 import { useState } from 'react';
-import { formatEther, isAddress } from 'viem';
+import { AlloStatus, GrantStatus } from '../../../types/common';
 import { notifications } from '@mantine/notifications';
-import { useAccount } from 'wagmi';
+import { pinJSONToIPFS } from '../../../utils/ipfs/pin';
+import { encodeAbiParameters, formatEther, parseAbiParameters } from 'viem';
+import AlloAbi from '../../../abi/Allo.json';
+import { ReviewPage } from '../../../layout/ReviewPage';
 import {
   Button,
   Flex,
@@ -13,59 +17,56 @@ import {
   Tooltip,
   useMantineTheme,
 } from '@mantine/core';
+import { TxButton } from '../../TxButton';
+import { secondsToLongDateTime } from '../../../utils/time';
+import { ADDR } from '../../../constants/addresses';
+import { DashGrant } from '../../../resolvers/grantResolvers';
+import { GAME_TOKEN } from '../../../constants/gameSetup';
 import { IconCheck, IconExclamationCircle, IconX } from '@tabler/icons-react';
-
-import { ReviewPage } from '../../layout/ReviewPage';
-import GrantShipAbi from '../../abi/GrantShip.json';
-import { GrantStatus } from '../../types/common';
-import { useTx } from '../../hooks/useTx';
-import { pinJSONToIPFS } from '../../utils/ipfs/pin';
-import { GAME_TOKEN, ZER0_ADDRESS } from '../../constants/gameSetup';
-import { secondsToLongDateTime } from '../../utils/time';
-import { DashGrant } from '../../resolvers/grantResolvers';
-import { AppAlert } from '../UnderContruction';
-import { TxButton } from '../TxButton';
-import { scanAddressLink } from '../../utils/scan';
+import { AppAlert } from '../../UnderContruction';
 import { useQueryClient } from '@tanstack/react-query';
 
-export const ReviewApplication = ({
-  grant,
-  shipAddress,
-  isShipOperator,
-  view,
-}: {
-  grant: DashGrant;
-  isShipOperator?: boolean;
-  shipAddress: string;
-  view: 'project-page' | 'ship-dash';
-}) => {
-  const theme = useMantineTheme();
-
-  const [reasonText, setReasonText] = useState('');
+export const FacilitatorReview = ({ grant }: { grant: DashGrant }) => {
   const [opened, { open, close }] = useDisclosure(false);
-  const { address } = useAccount();
   const { tx } = useTx();
+  const theme = useMantineTheme();
   const queryClient = useQueryClient();
 
+  const [reasonText, setReasonText] = useState('');
   const handleApprove = async (isApproved: boolean) => {
-    if (view === 'project-page') {
-      console.error('Invalid View');
+    if (grant.grantStatus !== GrantStatus.ShipApproved) {
+      return;
+    }
+
+    const poolId = grant.shipId.poolId;
+    const grantAmount = grant.applicationData.grantAmount;
+
+    if (
+      isApproved === undefined ||
+      !reasonText ||
+      !poolId ||
+      !grant.shipId.id ||
+      !grantAmount
+    ) {
+      console.error(
+        `Invalid Data for review ${isApproved} ${reasonText} ${poolId} ${isApproved} ${grantAmount}`
+      );
+      notifications.show({
+        title: 'Error',
+        message: 'Invalid Data for review',
+        color: 'red',
+      });
+
       return;
     }
 
     close();
 
-    if (!isAddress(shipAddress)) {
-      console.error('Invalid Ship Address');
-      return;
-    }
-
-    const metadata = {
+    const pinRes = await pinJSONToIPFS({
       reason: reasonText,
-      reviewer: address as string,
-    };
+      reviewer: grant.shipId.id,
+    });
 
-    const pinRes = await pinJSONToIPFS(metadata);
     if (typeof pinRes.IpfsHash !== 'string' && pinRes.IpfsHash[0] !== 'Q') {
       notifications.show({
         title: 'IPFS Upload Error',
@@ -75,71 +76,51 @@ export const ReviewApplication = ({
       return;
     }
 
-    const TAG = `TAG:SHIP_REVIEW_GRANT:${grant.id}:${isApproved ? 'APPROVED' : 'REJECTED'}`;
+    const encoded = encodeAbiParameters(
+      parseAbiParameters('address, uint8, uint256, (uint256, string)'),
+      [
+        grant.projectId.id,
+        isApproved ? AlloStatus.Accepted : AlloStatus.Rejected,
+        grantAmount,
+        [1n, pinRes.IpfsHash],
+      ]
+    );
 
     tx({
       writeContractParams: {
-        abi: GrantShipAbi,
-        address: grant.shipId.shipContractAddress,
-        functionName: 'postUpdate',
-        args: [TAG, [1n, pinRes.IpfsHash], ZER0_ADDRESS],
+        address: ADDR.ALLO,
+        abi: AlloAbi,
+        functionName: 'allocate',
+        args: [poolId, encoded],
       },
       onComplete() {
-        if (view === 'ship-dash') {
-          queryClient.invalidateQueries({
-            queryKey: [`project-grants-${grant.shipId.id}`],
-          });
-        }
+        queryClient.invalidateQueries({
+          queryKey: [`fac-grants`],
+        });
       },
     });
   };
-
-  const isProjectView = view === 'project-page';
-  const isShipView = view === 'ship-dash';
 
   const hasShipApproved = grant.grantStatus >= GrantStatus.ShipApproved;
   const hasFacilitatorApproved =
     grant.grantStatus >= GrantStatus.FacilitatorApproved;
 
-  const projectPageIndicator =
-    grant.grantStatus === GrantStatus.Applied
-      ? 'Application Submitted'
-      : 'Application Reviewed';
-  const shipDashIndicator =
-    grant.grantStatus === GrantStatus.Applied
-      ? 'Review Application'
-      : 'Application Reviewed';
-
+  const hasFacilitatorReviewed = grant.grantStatus > GrantStatus.ShipApproved;
   const hasFunds =
     BigInt(grant.applicationData.grantAmount) <=
     BigInt(grant.shipId.totalAvailableFunds);
 
-  const scanLink = scanAddressLink(grant.applicationData.receivingAddress);
-
   return (
     <>
-      <Group align="start" justify="space-between">
-        <Text fz="sm">
-          {isShipView ? shipDashIndicator : null}
-          {isProjectView ? projectPageIndicator : null}
-        </Text>
-        <Button
-          size="xs"
-          style={{
-            transform: 'translateY(-2px)',
-          }}
-          onClick={open}
-          variant={
-            grant.grantStatus === GrantStatus.Applied && isShipView
-              ? undefined
-              : 'subtle'
-          }
-        >
-          {grant.grantStatus === GrantStatus.Applied && isShipView
-            ? 'Review'
-            : 'View'}
+      {hasFacilitatorReviewed ? (
+        <Button size="xs" ml="auto" variant="subtle" onClick={open}>
+          View
         </Button>
-      </Group>
+      ) : (
+        <Button size="xs" ml="auto" onClick={open}>
+          Review
+        </Button>
+      )}
       <Modal
         opened={opened}
         onClose={close}
@@ -181,18 +162,7 @@ export const ReviewApplication = ({
             },
             {
               subtitle: 'Receiving Address',
-              content: (
-                <Text
-                  component="a"
-                  href={scanLink}
-                  fz="sm"
-                  rel="noopener noreferrer"
-                  target="_blank"
-                  td="underline"
-                >
-                  {grant.applicationData.receivingAddress}
-                </Text>
-              ),
+              content: grant.applicationData.receivingAddress,
             },
             {
               subtitle: 'Proposal Link',
@@ -258,7 +228,7 @@ export const ReviewApplication = ({
                   mb={'xl'}
                   icon={hasFacilitatorApproved ? <IconCheck /> : <IconX />}
                   title={`${hasFacilitatorApproved ? 'Approval' : 'Rejection'} from
-                    Facilitators`}
+                    Game Facilitators`}
                   description={`"${grant.facilitatorReason}"`}
                   bg={
                     hasFacilitatorApproved
@@ -267,41 +237,39 @@ export const ReviewApplication = ({
                   }
                 />
               )}
-              {grant.grantStatus === GrantStatus.Applied &&
-                isShipOperator &&
-                isShipView && (
-                  <>
-                    <Text mb="md" fw={600}>
-                      Approve or Reject Applicant
-                    </Text>
-                    <Textarea
-                      label="Reasoning"
-                      description="Why are you approving or rejecting this application?"
-                      value={reasonText}
-                      onChange={(e) => setReasonText(e.currentTarget.value)}
-                      autosize
-                      required
-                      minRows={4}
-                      maxRows={8}
-                      mb="xl"
-                    />
-                    <Flex justify="space-between">
-                      <TxButton
-                        variant="outline"
-                        disabled={!reasonText}
-                        onClick={() => handleApprove(false)}
-                      >
-                        Reject
-                      </TxButton>
-                      <TxButton
-                        disabled={!reasonText || !hasFunds}
-                        onClick={() => handleApprove(true)}
-                      >
-                        Approve
-                      </TxButton>
-                    </Flex>
-                  </>
-                )}
+              {grant.grantStatus === GrantStatus.ShipApproved && (
+                <>
+                  <Text mb="md" fw={600}>
+                    Approve or Reject Applicant
+                  </Text>
+                  <Textarea
+                    label="Reasoning"
+                    description="Why are you approving or rejecting this application?"
+                    value={reasonText}
+                    onChange={(e) => setReasonText(e.currentTarget.value)}
+                    autosize
+                    required
+                    minRows={4}
+                    maxRows={8}
+                    mb="xl"
+                  />
+                  <Flex justify="space-between">
+                    <TxButton
+                      variant="outline"
+                      disabled={!reasonText}
+                      onClick={() => handleApprove(false)}
+                    >
+                      Reject
+                    </TxButton>
+                    <TxButton
+                      disabled={!reasonText || !hasFunds}
+                      onClick={() => handleApprove(true)}
+                    >
+                      Approve
+                    </TxButton>
+                  </Flex>
+                </>
+              )}
             </>
           }
         />

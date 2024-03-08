@@ -144,7 +144,11 @@ export const Ship = () => {
         <Paper p="md" bg={theme.colors.dark[6]}>
           <Group gap={4}>
             <Text size="sm">Ship Model:</Text>
-            <a href={`${SCAN_URL}/address/${ship.shipContractAddress}`}>
+            <a
+              rel="noopener noreferrer"
+              target="_blank"
+              href={`${SCAN_URL}/address/${ship.shipContractAddress}`}
+            >
               <Group>
                 <Text fz="sm" mr={-10}>
                   Grant Ship Alpha

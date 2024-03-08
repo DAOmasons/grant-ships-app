@@ -2583,6 +2583,8 @@ export type _Block_ = {
   number: Scalars['Int'];
   /** Integer representation of the timestamp stored in blocks for the chain */
   timestamp?: Maybe<Scalars['Int']>;
+  /** The hash of the parent block */
+  parentHash?: Maybe<Scalars['Bytes']>;
 };
 
 /** The type for the top-level _meta field */
@@ -3086,6 +3088,7 @@ export type _Block_Resolvers<ContextType = MeshContext, ParentType extends Resol
   hash?: Resolver<Maybe<ResolversTypes['Bytes']>, ParentType, ContextType>;
   number?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   timestamp?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  parentHash?: Resolver<Maybe<ResolversTypes['Bytes']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -3261,6 +3264,12 @@ const merger = new(BareMerger as any)({
         },
         location: 'GetRecentTransactionDocument.graphql'
       },{
+        document: GetShipFundsAvailableDocument,
+        get rawSDL() {
+          return printWithCache(GetShipFundsAvailableDocument);
+        },
+        location: 'GetShipFundsAvailableDocument.graphql'
+      },{
         document: GetShipIdByHatIdDocument,
         get rawSDL() {
           return printWithCache(GetShipIdByHatIdDocument);
@@ -3351,7 +3360,7 @@ export type GrantDashFragment = (
     Pick<Project, 'id' | 'name'>
     & { metadata: Pick<RawMetadata, 'pointer'> }
   ), shipId: (
-    Pick<GrantShip, 'id' | 'name' | 'shipContractAddress' | 'poolId'>
+    Pick<GrantShip, 'id' | 'name' | 'shipContractAddress' | 'poolId' | 'totalAvailableFunds'>
     & { profileMetadata: Pick<RawMetadata, 'pointer'> }
   ), milestonesApprovedReason?: Maybe<Pick<RawMetadata, 'pointer'>>, facilitatorReason?: Maybe<Pick<RawMetadata, 'pointer'>>, shipApprovalReason?: Maybe<Pick<RawMetadata, 'pointer'>> }
 );
@@ -3378,13 +3387,31 @@ export type facDashShipDataQuery = { shipApplicants: Array<(
 export type getFacilitatorGrantsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type getFacilitatorGrantsQuery = { grants: Array<(
+export type getFacilitatorGrantsQuery = { requiresAction: Array<(
     Pick<Grant, 'id' | 'grantApplicationBytes' | 'lastUpdated' | 'grantStatus' | 'milestonesAmount' | 'milestonesApproved' | 'amtDistributed' | 'amtAllocated' | 'currentMilestoneIndex'>
     & { projectId: (
       Pick<Project, 'id' | 'name'>
       & { metadata: Pick<RawMetadata, 'pointer'> }
     ), shipId: (
-      Pick<GrantShip, 'id' | 'name' | 'shipContractAddress' | 'poolId'>
+      Pick<GrantShip, 'id' | 'name' | 'shipContractAddress' | 'poolId' | 'totalAvailableFunds'>
+      & { profileMetadata: Pick<RawMetadata, 'pointer'> }
+    ), milestonesApprovedReason?: Maybe<Pick<RawMetadata, 'pointer'>>, facilitatorReason?: Maybe<Pick<RawMetadata, 'pointer'>>, shipApprovalReason?: Maybe<Pick<RawMetadata, 'pointer'>> }
+  )>, rejected: Array<(
+    Pick<Grant, 'id' | 'grantApplicationBytes' | 'lastUpdated' | 'grantStatus' | 'milestonesAmount' | 'milestonesApproved' | 'amtDistributed' | 'amtAllocated' | 'currentMilestoneIndex'>
+    & { projectId: (
+      Pick<Project, 'id' | 'name'>
+      & { metadata: Pick<RawMetadata, 'pointer'> }
+    ), shipId: (
+      Pick<GrantShip, 'id' | 'name' | 'shipContractAddress' | 'poolId' | 'totalAvailableFunds'>
+      & { profileMetadata: Pick<RawMetadata, 'pointer'> }
+    ), milestonesApprovedReason?: Maybe<Pick<RawMetadata, 'pointer'>>, facilitatorReason?: Maybe<Pick<RawMetadata, 'pointer'>>, shipApprovalReason?: Maybe<Pick<RawMetadata, 'pointer'>> }
+  )>, approved: Array<(
+    Pick<Grant, 'id' | 'grantApplicationBytes' | 'lastUpdated' | 'grantStatus' | 'milestonesAmount' | 'milestonesApproved' | 'amtDistributed' | 'amtAllocated' | 'currentMilestoneIndex'>
+    & { projectId: (
+      Pick<Project, 'id' | 'name'>
+      & { metadata: Pick<RawMetadata, 'pointer'> }
+    ), shipId: (
+      Pick<GrantShip, 'id' | 'name' | 'shipContractAddress' | 'poolId' | 'totalAvailableFunds'>
       & { profileMetadata: Pick<RawMetadata, 'pointer'> }
     ), milestonesApprovedReason?: Maybe<Pick<RawMetadata, 'pointer'>>, facilitatorReason?: Maybe<Pick<RawMetadata, 'pointer'>>, shipApprovalReason?: Maybe<Pick<RawMetadata, 'pointer'>> }
   )> };
@@ -3456,7 +3483,7 @@ export type getProjectGrantsQuery = { project?: Maybe<{ grants: Array<(
         Pick<Project, 'id' | 'name'>
         & { metadata: Pick<RawMetadata, 'pointer'> }
       ), shipId: (
-        Pick<GrantShip, 'id' | 'name' | 'shipContractAddress' | 'poolId'>
+        Pick<GrantShip, 'id' | 'name' | 'shipContractAddress' | 'poolId' | 'totalAvailableFunds'>
         & { profileMetadata: Pick<RawMetadata, 'pointer'> }
       ), milestonesApprovedReason?: Maybe<Pick<RawMetadata, 'pointer'>>, facilitatorReason?: Maybe<Pick<RawMetadata, 'pointer'>>, shipApprovalReason?: Maybe<Pick<RawMetadata, 'pointer'>> }
     )> }> };
@@ -3490,6 +3517,13 @@ export type getRecentTransactionQueryVariables = Exact<{
 
 export type getRecentTransactionQuery = { transaction?: Maybe<Pick<Transaction, 'id'>> };
 
+export type getShipFundsAvailableQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type getShipFundsAvailableQuery = { grantShip?: Maybe<Pick<GrantShip, 'totalAvailableFunds'>> };
+
 export type getShipIdByHatIdQueryVariables = Exact<{
   hatId: Scalars['BigInt'];
 }>;
@@ -3515,7 +3549,7 @@ export type getShipDashQuery = { grantShip?: Maybe<(
         Pick<Project, 'id' | 'name'>
         & { metadata: Pick<RawMetadata, 'pointer'> }
       ), shipId: (
-        Pick<GrantShip, 'id' | 'name' | 'shipContractAddress' | 'poolId'>
+        Pick<GrantShip, 'id' | 'name' | 'shipContractAddress' | 'poolId' | 'totalAvailableFunds'>
         & { profileMetadata: Pick<RawMetadata, 'pointer'> }
       ), milestonesApprovedReason?: Maybe<Pick<RawMetadata, 'pointer'>>, facilitatorReason?: Maybe<Pick<RawMetadata, 'pointer'>>, shipApprovalReason?: Maybe<Pick<RawMetadata, 'pointer'>> }
     )>, profileMetadata: Pick<RawMetadata, 'pointer'> }
@@ -3612,6 +3646,7 @@ export const GrantDashFragmentDoc = gql`
     profileMetadata {
       pointer
     }
+    totalAvailableFunds
   }
   milestonesApproved
   amtDistributed
@@ -3746,7 +3781,13 @@ export const facDashShipDataDocument = gql`
     ${FacShipDataFragmentDoc}` as unknown as DocumentNode<facDashShipDataQuery, facDashShipDataQueryVariables>;
 export const getFacilitatorGrantsDocument = gql`
     query getFacilitatorGrants {
-  grants(where: {grantStatus_gte: 2}) {
+  requiresAction: grants(where: {grantStatus: 3}) {
+    ...GrantDash
+  }
+  rejected: grants(where: {grantStatus: 4}) {
+    ...GrantDash
+  }
+  approved: grants(where: {grantStatus_gt: 4}) {
     ...GrantDash
   }
 }
@@ -3829,6 +3870,13 @@ export const getRecentTransactionDocument = gql`
   }
 }
     ` as unknown as DocumentNode<getRecentTransactionQuery, getRecentTransactionQueryVariables>;
+export const getShipFundsAvailableDocument = gql`
+    query getShipFundsAvailable($id: ID!) {
+  grantShip(id: $id) {
+    totalAvailableFunds
+  }
+}
+    ` as unknown as DocumentNode<getShipFundsAvailableQuery, getShipFundsAvailableQueryVariables>;
 export const getShipIdByHatIdDocument = gql`
     query getShipIdByHatId($hatId: BigInt!) {
   grantShips(where: {hatId: $hatId}) {
@@ -3918,6 +3966,7 @@ export const ShipsPageQueryDocument = gql`
 
 
 
+
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
@@ -3947,6 +3996,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     getRecentTransaction(variables: getRecentTransactionQueryVariables, options?: C): Promise<getRecentTransactionQuery> {
       return requester<getRecentTransactionQuery, getRecentTransactionQueryVariables>(getRecentTransactionDocument, variables, options) as Promise<getRecentTransactionQuery>;
+    },
+    getShipFundsAvailable(variables: getShipFundsAvailableQueryVariables, options?: C): Promise<getShipFundsAvailableQuery> {
+      return requester<getShipFundsAvailableQuery, getShipFundsAvailableQueryVariables>(getShipFundsAvailableDocument, variables, options) as Promise<getShipFundsAvailableQuery>;
     },
     getShipIdByHatId(variables: getShipIdByHatIdQueryVariables, options?: C): Promise<getShipIdByHatIdQuery> {
       return requester<getShipIdByHatIdQuery, getShipIdByHatIdQueryVariables>(getShipIdByHatIdDocument, variables, options) as Promise<getShipIdByHatIdQuery>;
