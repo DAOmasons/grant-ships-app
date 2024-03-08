@@ -26,6 +26,7 @@ import { DashGrant } from '../../resolvers/grantResolvers';
 import { AppAlert } from '../UnderContruction';
 import { TxButton } from '../TxButton';
 import { scanAddressLink } from '../../utils/scan';
+import { useQueryClient } from '@tanstack/react-query';
 
 export const ReviewApplication = ({
   grant,
@@ -44,6 +45,7 @@ export const ReviewApplication = ({
   const [opened, { open, close }] = useDisclosure(false);
   const { address } = useAccount();
   const { tx } = useTx();
+  const queryClient = useQueryClient();
 
   const handleApprove = async (isApproved: boolean) => {
     if (view === 'project-page') {
@@ -81,6 +83,13 @@ export const ReviewApplication = ({
         address: grant.shipId.shipContractAddress,
         functionName: 'postUpdate',
         args: [TAG, [1n, pinRes.IpfsHash], ZER0_ADDRESS],
+      },
+      onComplete() {
+        if (view === 'ship-dash') {
+          queryClient.invalidateQueries({
+            queryKey: [`project-grants-${grant.shipId.id}`],
+          });
+        }
       },
     });
   };

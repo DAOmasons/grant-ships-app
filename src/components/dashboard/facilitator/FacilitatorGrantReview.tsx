@@ -4,12 +4,7 @@ import { useState } from 'react';
 import { AlloStatus, GrantStatus } from '../../../types/common';
 import { notifications } from '@mantine/notifications';
 import { pinJSONToIPFS } from '../../../utils/ipfs/pin';
-import {
-  encodeAbiParameters,
-  formatEther,
-  parseAbiParameters,
-  parseEther,
-} from 'viem';
+import { encodeAbiParameters, formatEther, parseAbiParameters } from 'viem';
 import AlloAbi from '../../../abi/Allo.json';
 import { ReviewPage } from '../../../layout/ReviewPage';
 import {
@@ -29,14 +24,15 @@ import { DashGrant } from '../../../resolvers/grantResolvers';
 import { GAME_TOKEN } from '../../../constants/gameSetup';
 import { IconCheck, IconExclamationCircle, IconX } from '@tabler/icons-react';
 import { AppAlert } from '../../UnderContruction';
-import { grantApplicationMetadata } from '../../../utils/ipfs/metadataValidation';
+import { useQueryClient } from '@tanstack/react-query';
 
 export const FacilitatorReview = ({ grant }: { grant: DashGrant }) => {
   const [opened, { open, close }] = useDisclosure(false);
   const { tx } = useTx();
-  const [reasonText, setReasonText] = useState('');
   const theme = useMantineTheme();
+  const queryClient = useQueryClient();
 
+  const [reasonText, setReasonText] = useState('');
   const handleApprove = async (isApproved: boolean) => {
     if (grant.grantStatus !== GrantStatus.ShipApproved) {
       return;
@@ -96,6 +92,11 @@ export const FacilitatorReview = ({ grant }: { grant: DashGrant }) => {
         abi: AlloAbi,
         functionName: 'allocate',
         args: [poolId, encoded],
+      },
+      onComplete() {
+        queryClient.invalidateQueries({
+          queryKey: [`fac-grants`],
+        });
       },
     });
   };

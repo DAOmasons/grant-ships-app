@@ -1,7 +1,7 @@
 import { ReactNode, useState } from 'react';
 import { useAccount } from 'wagmi';
 import { isAddress } from 'viem';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import {
   Box,
   Flex,
@@ -76,7 +76,7 @@ export const MilestoneReviewPage = ({
   const { address } = useAccount();
   const { tx } = useTx();
   const theme = useMantineTheme();
-
+  const queryClient = useQueryClient();
   const [reasonText, setReasonText] = useState('');
   const [isPinning, setIsPinning] = useState(false);
 
@@ -114,6 +114,18 @@ export const MilestoneReviewPage = ({
             isApproved ? AlloStatus.Accepted : AlloStatus.Rejected,
             [1n, pinRes.IpfsHash],
           ],
+        },
+        onComplete() {
+          if (view === 'project-page') {
+            queryClient.invalidateQueries({
+              queryKey: [`project-grants-${grant.projectId.id}`],
+            });
+          }
+          if (view === 'ship-dash') {
+            queryClient.invalidateQueries({
+              queryKey: [`project-grants-${grant.shipId.id}`],
+            });
+          }
         },
       });
     } catch (error) {
