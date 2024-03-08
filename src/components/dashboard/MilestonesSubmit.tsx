@@ -40,7 +40,7 @@ export const MilestonesSubmit = ({
         },
         {
           subtitle: 'Create your Milestones',
-          content: <MilestoneBuilder grant={grant} />,
+          content: <MilestoneBuilder grant={grant} close={close} />,
         },
       ];
     }
@@ -60,7 +60,7 @@ export const MilestonesSubmit = ({
     }
 
     return [];
-  }, [grant, view, isProjectMember, currentStatus]);
+  }, [grant, view, isProjectMember, currentStatus, close]);
 
   if (currentStatus < GrantStatus.FacilitatorApproved)
     return <Text fz="sm">Awaiting Milestones</Text>;

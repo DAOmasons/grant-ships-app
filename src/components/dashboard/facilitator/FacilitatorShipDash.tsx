@@ -14,6 +14,7 @@ import { HATS } from '../../../constants/gameSetup';
 import { ADDR } from '../../../constants/addresses';
 import { pinJSONToIPFS } from '../../../utils/ipfs/pin';
 import { useTx } from '../../../hooks/useTx';
+import { useQueryClient } from '@tanstack/react-query';
 
 export type ShipReviewData = {
   id: string;
@@ -33,6 +34,7 @@ export const FacilitatorShipDash = ({
   shipData?: FacShipData;
   isLoading: boolean;
 }) => {
+  const queryClient = useQueryClient();
   const [opened, { open, close }] = useDisclosure(false);
   const { tx } = useTx();
 
@@ -216,25 +218,8 @@ export const FacilitatorShipDash = ({
           { protocol: 1n, pointer: pinRes.IpfsHash },
         ],
       },
-      viewParams: {
-        loading: {
-          title: 'Reviewing Application',
-          description: 'Submitting your review to the Game Manager contract.',
-        },
-        success: {
-          title: isApproved ? 'Application Approved' : 'Application Rejected',
-          description: isApproved
-            ? 'You have successfully approved this grant ship application.'
-            : 'You have successfully rejected this grant ship application.',
-        },
-        error: {
-          title: 'Something went wrong.',
-          fallback: 'There was an unknown error submitting your review.',
-        },
-        successButton: {
-          label: 'Finish',
-          onClick: () => {},
-        },
+      onComplete() {
+        queryClient.invalidateQueries({ queryKey: ['fac-ship-data'] });
       },
     });
   };

@@ -7,6 +7,7 @@ import { pinJSONToIPFS } from '../../utils/ipfs/pin';
 import GrantShipAbi from '../../abi/GrantShip.json';
 import { Box, Divider, Flex } from '@mantine/core';
 import { TxButton } from '../TxButton';
+import { useQueryClient } from '@tanstack/react-query';
 
 export const SubmitMilestone = ({
   grant,
@@ -25,6 +26,7 @@ export const SubmitMilestone = ({
 }) => {
   const { tx } = useTx();
   const [isPinning, setPinning] = useState(false);
+  const queryClient = useQueryClient();
 
   const handleSubmitMilestone = async () => {
     const dateInSeconds = Date.now() / 1000;
@@ -86,6 +88,11 @@ export const SubmitMilestone = ({
         address: grant.shipId.shipContractAddress,
         functionName: 'submitMilestone',
         args: [grant.projectId.id, currentMilestone, [1n, ipfsRes.IpfsHash]],
+      },
+      onComplete() {
+        queryClient.invalidateQueries({
+          queryKey: [`project-grants-${grant.projectId.id}`],
+        });
       },
     });
   };

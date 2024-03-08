@@ -10,6 +10,7 @@ import { useTx } from '../../../hooks/useTx';
 import { CompressedApprovedShip } from '../../../queries/getFacDashShipData';
 import { TxButton } from '../../TxButton';
 import { GameStatus } from '../../../types/common';
+import { useQueryClient } from '@tanstack/react-query';
 
 export const DistributePanel = ({
   approvedShips,
@@ -20,6 +21,8 @@ export const DistributePanel = ({
 }) => {
   const STATUS_NUMBER = 4;
   const isNotReady = gameStatusNumber < STATUS_NUMBER;
+
+  const queryClient = useQueryClient();
 
   const [startTime, setStartTime] = useState<DateValue>(null);
   const [endTime, setEndTime] = useState<DateValue>(null);
@@ -57,6 +60,9 @@ export const DistributePanel = ({
         abi: AlloAbi,
         address: ADDR.ALLO,
         args: [GAME_MANAGER.POOL.ID, shipIds, encoded],
+      },
+      onComplete() {
+        queryClient.invalidateQueries({ queryKey: ['game-manager-state'] });
       },
     });
   };

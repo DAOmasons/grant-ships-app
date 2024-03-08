@@ -18,10 +18,19 @@ import { DatePickerInput } from '@mantine/dates';
 import { IconPlus } from '@tabler/icons-react';
 import GrantShipAbi from '../../abi/GrantShip.json';
 import { TxButton } from '../TxButton';
+import { useQueryClient } from '@tanstack/react-query';
 
-export const MilestoneBuilder = ({ grant }: { grant: DashGrant }) => {
+export const MilestoneBuilder = ({
+  grant,
+  close,
+}: {
+  grant: DashGrant;
+  close: () => void;
+}) => {
   const { tx } = useTx();
+  const queryClient = useQueryClient();
 
+  const [isPinning, setIsPinning] = useState(false);
   const [formData, setFormData] = useState<Record<string, string>>({
     'milestone-description-1': '',
     'milestone-perc-1': '0',
@@ -48,6 +57,7 @@ export const MilestoneBuilder = ({ grant }: { grant: DashGrant }) => {
   };
 
   const submitMilestones = async () => {
+    setIsPinning(true);
     const percentTotal = inputs.reduce((acc, _, index) => {
       const value = formData[`milestone-perc-${index + 1}`];
       return acc + Number(value);
@@ -139,12 +149,20 @@ export const MilestoneBuilder = ({ grant }: { grant: DashGrant }) => {
       return;
     }
 
+    setIsPinning(false);
+    close();
+
     tx({
       writeContractParams: {
         abi: GrantShipAbi,
         address: grant.shipId.shipContractAddress,
         functionName: 'setMilestones',
         args: [grant.projectId.id, milestones, [1n, 'NULL']],
+      },
+      onComplete() {
+        queryClient.invalidateQueries({
+          queryKey: [`project-grants-${grant.projectId.id}`],
+        });
       },
     });
   };
@@ -168,7 +186,7 @@ export const MilestoneBuilder = ({ grant }: { grant: DashGrant }) => {
                 label={`Percentage`}
                 name={`milestone-perc-${index + 1}`}
                 type="number"
-                placeholder="33"
+                placeholder="30"
                 w={'48%'}
                 onChange={handleChanges}
                 mb="xs"
@@ -211,7 +229,7 @@ export const MilestoneBuilder = ({ grant }: { grant: DashGrant }) => {
         </Button>
       </Stack>
       <Flex w="100%">
-        <TxButton ml="auto" onClick={submitMilestones}>
+        <TxButton ml="auto" onClick={submitMilestones} disabled={isPinning}>
           Submit
         </TxButton>
       </Flex>

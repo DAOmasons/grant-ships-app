@@ -18,7 +18,7 @@ import { ProjectApproval } from '../components/dashboard/facilitator/ProjectAppr
 
 export const FacilitatorDashboard = () => {
   const { data: shipData, isLoading: shipsLoading } = useQuery({
-    queryKey: ['facShipData'],
+    queryKey: ['fac-ship-data'],
     queryFn: getFacDashShipData,
   });
 

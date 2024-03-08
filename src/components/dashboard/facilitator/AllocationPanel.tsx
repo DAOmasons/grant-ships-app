@@ -14,6 +14,7 @@ import { useTx } from '../../../hooks/useTx';
 import AlloAbi from '../../../abi/Allo.json';
 import { ADDR } from '../../../constants/addresses';
 import { TxButton } from '../../TxButton';
+import { useQueryClient } from '@tanstack/react-query';
 
 export const AllocationPanel = ({
   poolBalance,
@@ -26,6 +27,7 @@ export const AllocationPanel = ({
 }) => {
   const STATUS_NUMBER = 3;
   const isNotReady = gameStatusNumber < STATUS_NUMBER;
+  const queryClient = useQueryClient();
 
   const theme = useMantineTheme();
   const { tx } = useTx();
@@ -62,6 +64,9 @@ export const AllocationPanel = ({
         abi: AlloAbi,
         address: ADDR.ALLO,
         args: [GAME_MANAGER.POOL.ID, encoded],
+      },
+      onComplete() {
+        queryClient.invalidateQueries({ queryKey: ['game-manager-state'] });
       },
     });
   };

@@ -123,7 +123,7 @@ export const MilestoneReviewPage = ({
           }
           if (view === 'ship-dash') {
             queryClient.invalidateQueries({
-              queryKey: [`project-grants-${grant.shipId.id}`],
+              queryKey: [`ship-dash-${grant.shipId.id}`],
             });
           }
         },

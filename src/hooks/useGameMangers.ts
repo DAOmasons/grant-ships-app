@@ -13,5 +13,6 @@ export const useGameManager = () => {
     isLoadingGm: context.isLoadingGameManager,
     gmError: context.gameManagerError,
     currentRound: context.gameManager?.currentRound,
+    refetchGameManager: context.refetchGameManager,
   };
 };

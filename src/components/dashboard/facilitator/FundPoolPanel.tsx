@@ -23,7 +23,11 @@ export const FundPoolPanel = ({
 
   const { address } = useAccount();
   const { tx } = useTx();
-  const { data: queries, isLoading } = useReadContracts({
+  const {
+    data: queries,
+    isLoading,
+    refetch,
+  } = useReadContracts({
     contracts: [
       {
         abi: erc20Abi,
@@ -72,6 +76,9 @@ export const FundPoolPanel = ({
       viewParams: {
         awaitGraphPoll: false,
       },
+      onComplete() {
+        refetch();
+      },
     });
   };
 
@@ -85,6 +92,9 @@ export const FundPoolPanel = ({
       },
       viewParams: {
         awaitGraphPoll: false,
+      },
+      onComplete() {
+        refetch();
       },
     });
   };
