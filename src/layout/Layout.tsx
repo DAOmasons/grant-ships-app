@@ -7,8 +7,8 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <MantineProvider theme={theme} defaultColorScheme="dark">
       <Notifications />
-      <Container size={1275}>
-        <Flex maw={1275}>
+      <Container size={1250}>
+        <Flex maw={1250}>
           <DesktopNav />
           {children}
         </Flex>
