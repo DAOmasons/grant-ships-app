@@ -27,9 +27,6 @@ export const pollSubgraph = async ({
 }: PollSubgraphParams) => {
   let triesCount = 0;
 
-  console.log('****POLL STARTED****');
-  console.log('Polling subgraph for transaction', txHash);
-
   const checkRecentTransaction = async () => {
     try {
       const txHashFromGraph = await fetchRecentTransaction(txHash);
