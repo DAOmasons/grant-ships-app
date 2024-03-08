@@ -118,7 +118,7 @@ export const ReviewApplication = ({
 
   return (
     <>
-      <Group align="start" justify="space-between">
+      <Group align="start" justify="space-between" wrap="nowrap">
         <Text fz="sm">
           {isShipView ? shipDashIndicator : null}
           {isProjectView ? projectPageIndicator : null}

@@ -187,13 +187,13 @@ export const ShipApplication = ({
         <Textarea
           w="100%"
           inputWrapperOrder={['label', 'input', 'description', 'error']}
-          label="Impact Thesis"
-          description="How will your Grant Ship drive impact within the Arbitrum Ecosystem? How will this address Arbitrum's Strategic Initiatives?"
+          label="Allocation Thesis"
+          description="Include the types of projects prioritized, the desired impact of funding, and how grant effectiveness will be evaluated."
           required
           autosize
           minRows={4}
           maxRows={8}
-          placeholder="What is your Ship's funding mission?"
+          placeholder="What is your Ship's allocation thesis?"
           {...form.getInputProps('thesis')}
           onBlur={() => handleBlur('thesis')}
         />
@@ -201,12 +201,12 @@ export const ShipApplication = ({
           w="100%"
           inputWrapperOrder={['label', 'input', 'description', 'error']}
           label="Submission Guidelines"
-          description="What guidelines will you expect grant recipients to follow?"
+          description="Include any screening criteria, requirements and agreements you will have for grant recipients."
           required
           autosize
           minRows={4}
           maxRows={8}
-          placeholder="What is your Ship's funding mission?"
+          placeholder="What are your Ship's submission guidelines?"
           {...form.getInputProps('guidelines')}
           onBlur={() => handleBlur('guidelines')}
         />

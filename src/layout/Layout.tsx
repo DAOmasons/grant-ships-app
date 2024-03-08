@@ -1,11 +1,4 @@
-import {
-  Container,
-  Flex,
-  MantineProvider,
-  Paper,
-  Text,
-  useMantineTheme,
-} from '@mantine/core';
+import { Container, Flex, MantineProvider } from '@mantine/core';
 import { theme } from '../theme';
 import { DesktopNav } from './DesktopNav/DesktopNav';
 import { Notifications } from '@mantine/notifications';
@@ -14,8 +7,8 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <MantineProvider theme={theme} defaultColorScheme="dark">
       <Notifications />
-      <Container size={1200}>
-        <Flex maw={1200}>
+      <Container size={1275}>
+        <Flex maw={1275}>
           <DesktopNav />
           {children}
         </Flex>

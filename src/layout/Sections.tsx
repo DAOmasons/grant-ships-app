@@ -3,7 +3,6 @@ import {
   Box,
   DefaultMantineColor,
   Group,
-  MantineStyleProp,
   StyleProp,
   Text,
   useMantineTheme,

@@ -37,32 +37,62 @@ export const Contact = ({
       </Text>
       <Group gap={20} mb="xl">
         {website && (
-          <ActionIcon variant="subtle">
+          <ActionIcon
+            variant="subtle"
+            component="a"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
             <IconWorld size={22} />
           </ActionIcon>
         )}
         {email && (
-          <ActionIcon variant="subtle">
+          <ActionIcon
+            variant="subtle"
+            component="a"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
             <IconMail size={22} />
           </ActionIcon>
         )}
         {github && (
-          <ActionIcon variant="subtle">
+          <ActionIcon
+            variant="subtle"
+            component="a"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
             <IconBrandGithub size={22} />
           </ActionIcon>
         )}
         {x && (
-          <ActionIcon variant="subtle">
+          <ActionIcon
+            variant="subtle"
+            component="a"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
             <IconBrandX size={22} />
           </ActionIcon>
         )}
         {discord && (
-          <ActionIcon variant="subtle">
+          <ActionIcon
+            variant="subtle"
+            component="a"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
             <IconBrandDiscord size={22} />
           </ActionIcon>
         )}
         {telegram && (
-          <ActionIcon variant="subtle">
+          <ActionIcon
+            variant="subtle"
+            component="a"
+            rel="noopener noreferrer"
+            target="_blank"
+          >
             <IconBrandTelegram size={22} />
           </ActionIcon>
         )}
