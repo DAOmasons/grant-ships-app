@@ -1,5 +1,5 @@
 import { DashGrant } from '../../resolvers/grantResolvers';
-import { AlloStatus } from '../../types/common';
+import { AlloStatus, GrantStatus } from '../../types/common';
 import { UnpackedMilestoneData } from './MilestoneReviewPage';
 import { ReviewMilestone } from './ReviewMilestone';
 import { SubmitMilestone } from './SubmitMilestone';
@@ -24,16 +24,19 @@ export const MilestoneAction = ({
   const canSubmitMilestone =
     isProjectMember &&
     view === 'project-page' &&
+    grant.grantStatus >= GrantStatus.MilestonesApproved &&
     milestone.milestoneStatus === AlloStatus.None;
 
   const canReviewMilestone =
     isShipOperator &&
     view === 'ship-dash' &&
+    grant.grantStatus >= GrantStatus.MilestonesApproved &&
     milestone.milestoneStatus === AlloStatus.Pending;
 
   const canResubmitMilestone =
     isProjectMember &&
     view === 'project-page' &&
+    grant.grantStatus >= GrantStatus.MilestonesApproved &&
     milestone.milestoneStatus === AlloStatus.Rejected;
 
   if (canSubmitMilestone) {

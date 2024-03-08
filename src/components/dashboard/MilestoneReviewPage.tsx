@@ -25,6 +25,7 @@ import GrantShipAbi from '../../abi/GrantShip.json';
 import { getIpfsJson } from '../../utils/ipfs/get';
 import { MilestoneTimeline } from './MilestoneTimeline';
 import { TxButton } from '../TxButton';
+import { MilestoneBuilder } from './MilestonesBuilder';
 
 export type UnpackedMilestoneData = PackedMilestoneData & {
   milestoneDetails: string | null;
@@ -181,29 +182,37 @@ export const MilestoneReviewPage = ({
     grant.grantStatus === GrantStatus.MilestonesRejected ||
     grant.grantStatus === GrantStatus.MilestonesApproved
   ) {
-    const reasonDisplay = GrantStatus.MilestoneApproved ? (
-      <Layout>
-        <AppAlert
-          mt={0}
-          mb={'xl'}
-          icon={<IconCheck />}
-          title="Milestones Approved"
-          description={`"${grant.milestonesApprovedReason}"`}
-          bg={theme.colors.blue[8]}
-        />
-      </Layout>
-    ) : (
-      <Layout>
-        <AppAlert
-          mt={0}
-          mb={'xl'}
-          icon={<IconX />}
-          title="Milestones Rejected"
-          description={`"${grant.milestonesApprovedReason}"`}
-          bg={theme.colors.red[6]}
-        />
-      </Layout>
-    );
+    const reasonDisplay =
+      grant.grantStatus === GrantStatus.MilestonesApproved ? (
+        <Layout>
+          <AppAlert
+            mt={0}
+            mb={'xl'}
+            icon={<IconCheck />}
+            title="Milestones Approved"
+            description={`"${grant.milestonesApprovedReason}"`}
+            bg={theme.colors.blue[8]}
+          />
+        </Layout>
+      ) : (
+        <Layout>
+          <AppAlert
+            mt={0}
+            mb={'xl'}
+            icon={<IconX />}
+            title="Milestones Rejected"
+            description={`"${grant.milestonesApprovedReason}"`}
+            bg={theme.colors.red[6]}
+          />
+          {isProjectMember && view === 'project-page' && (
+            <MilestoneBuilder
+              grant={grant}
+              close={handleClose}
+              isResubmitting
+            />
+          )}
+        </Layout>
+      );
 
     return (
       <ReviewPage

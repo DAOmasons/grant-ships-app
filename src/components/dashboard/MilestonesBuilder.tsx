@@ -23,9 +23,11 @@ import { useQueryClient } from '@tanstack/react-query';
 export const MilestoneBuilder = ({
   grant,
   close,
+  isResubmitting = false,
 }: {
   grant: DashGrant;
   close: () => void;
+  isResubmitting?: boolean;
 }) => {
   const { tx } = useTx();
   const queryClient = useQueryClient();
@@ -64,6 +66,7 @@ export const MilestoneBuilder = ({
     }, 0);
 
     if (percentTotal !== 100) {
+      setIsPinning(false);
       return notifications.show({
         title: 'Error',
         message: 'Milestone percentages must add up to 100',
@@ -72,6 +75,7 @@ export const MilestoneBuilder = ({
     }
 
     if (Object.values(formData).some((value) => value === '')) {
+      setIsPinning(false);
       return notifications.show({
         title: 'Error',
         message: 'Please fill out all fields',
@@ -95,6 +99,7 @@ export const MilestoneBuilder = ({
       percentagesInOrder.length !== descriptionsInOrder.length ||
       descriptionsInOrder.length !== datesInOrder.length
     ) {
+      setIsPinning(false);
       return notifications.show({
         title: 'Error',
         message: 'Data length mismatch: Please fill out all fields',
@@ -131,7 +136,7 @@ export const MilestoneBuilder = ({
             message: pinRes.IpfsHash[1],
             color: 'red',
           });
-
+          setIsPinning(false);
           return false;
         }
 
@@ -146,6 +151,7 @@ export const MilestoneBuilder = ({
     const hasPinError = milestones.some((milestone) => milestone === false);
 
     if (hasPinError) {
+      setIsPinning(false);
       return;
     }
 
@@ -170,8 +176,9 @@ export const MilestoneBuilder = ({
   return (
     <Box>
       <Text opacity={0.75} mb="xl">
-        Let’s break down tasks into milestone(s). Minimum 1 Milestone required.
-        Once each is done, submit to the ship operator for grant processing.
+        {isResubmitting
+          ? 'Resubmit your milestones'
+          : 'Let’s break down tasks into milestone(s). Minimum 1 Milestone required. Once each is done, submit to the ship operator for grant processing.'}
       </Text>
       <Stack align="center" mb="md">
         {inputs.map((_, index) => (

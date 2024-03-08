@@ -162,8 +162,20 @@ export const GrantCard = ({
                       isShipOperator={isShipOperator}
                     />
                   ),
-                  onPending: <MilestonesReview grant={grant} view={view} />,
-                  onRejected: <MilestonesReview grant={grant} view={view} />,
+                  onPending: (
+                    <MilestonesReview
+                      grant={grant}
+                      view={view}
+                      isProjectMember={isProjectMember}
+                    />
+                  ),
+                  onRejected: (
+                    <MilestonesReview
+                      grant={grant}
+                      view={view}
+                      isProjectMember={isProjectMember}
+                    />
+                  ),
                   onCompleted: (
                     <MilestonesView
                       grant={grant}
