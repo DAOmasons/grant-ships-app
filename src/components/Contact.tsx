@@ -10,6 +10,8 @@ import {
 
 import { isAddress } from 'viem';
 import { AddressAvatar } from './AddressAvatar';
+import { useClipboard } from '@mantine/hooks';
+import { notifications } from '@mantine/notifications';
 
 type ContactProps = {
   website?: string;
@@ -30,6 +32,17 @@ export const Contact = ({
   telegram,
   members,
 }: ContactProps) => {
+  const { copy } = useClipboard();
+
+  const handleCopy = (text: string) => {
+    copy(text);
+    notifications.show({
+      title: 'Copied to clipboard',
+      message: text,
+      color: 'teal',
+    });
+  };
+
   return (
     <>
       <Text fw={700} fz="lg" mb={'md'} mt="xl">
@@ -40,6 +53,7 @@ export const Contact = ({
           <ActionIcon
             variant="subtle"
             component="a"
+            href={website}
             rel="noopener noreferrer"
             target="_blank"
           >
@@ -47,18 +61,14 @@ export const Contact = ({
           </ActionIcon>
         )}
         {email && (
-          <ActionIcon
-            variant="subtle"
-            component="a"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
+          <ActionIcon variant="subtle" onClick={() => handleCopy(email)}>
             <IconMail size={22} />
           </ActionIcon>
         )}
         {github && (
           <ActionIcon
             variant="subtle"
+            href={github}
             component="a"
             rel="noopener noreferrer"
             target="_blank"
@@ -69,6 +79,7 @@ export const Contact = ({
         {x && (
           <ActionIcon
             variant="subtle"
+            href={x}
             component="a"
             rel="noopener noreferrer"
             target="_blank"
@@ -79,6 +90,7 @@ export const Contact = ({
         {discord && (
           <ActionIcon
             variant="subtle"
+            href={discord}
             component="a"
             rel="noopener noreferrer"
             target="_blank"
@@ -89,6 +101,7 @@ export const Contact = ({
         {telegram && (
           <ActionIcon
             variant="subtle"
+            href={telegram}
             component="a"
             rel="noopener noreferrer"
             target="_blank"
