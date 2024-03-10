@@ -9,6 +9,7 @@ import { pinJSONToIPFS } from '../../utils/ipfs/pin';
 import { ADDR } from '../../constants/addresses';
 import { Box, Divider, Flex, Textarea } from '@mantine/core';
 import { TxButton } from '../TxButton';
+import { useQueryClient } from '@tanstack/react-query';
 
 export const ReviewMilestone = ({
   grant,
@@ -23,6 +24,7 @@ export const ReviewMilestone = ({
 }) => {
   const [reasonText, setReasonText] = useState('');
   const [isPinning, setIsPinning] = useState(false);
+  const queryClient = useQueryClient();
 
   const { tx } = useTx();
   const { address } = useAccount();
@@ -49,6 +51,11 @@ export const ReviewMilestone = ({
         address: ADDR.ALLO,
         functionName: 'distribute',
         args: [grant.shipId.poolId, [grant.projectId.id], ''],
+      },
+      onComplete() {
+        queryClient.invalidateQueries({
+          queryKey: [`ship-dash-${grant.shipId.id}`],
+        });
       },
     });
   };
@@ -102,6 +109,11 @@ export const ReviewMilestone = ({
         address: grant.shipId.shipContractAddress,
         functionName: 'rejectMilestone',
         args: [grant.projectId.id, currentMilestone, [1n, ipfsRes.IpfsHash]],
+      },
+      onComplete() {
+        queryClient.invalidateQueries({
+          queryKey: [`ship-dash-${grant.shipId.id}`],
+        });
       },
     });
   };
