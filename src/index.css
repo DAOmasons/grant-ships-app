@@ -3,5 +3,8 @@
 p {
   word-break: break-word;
   overflow-wrap: break-word;
+}
+
+.ws-pre-wrap {
   white-space: pre-wrap;
 }

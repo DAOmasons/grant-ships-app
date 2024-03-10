@@ -86,8 +86,8 @@ export const Ship = () => {
   const isShipActive = ship.status === GameStatus.Active;
 
   return (
-    <Flex>
-      <MainSection maw={534}>
+    <Flex w="100%">
+      <MainSection maw={600}>
         <PageTitle title={ship.name} />
         <Avatar size={160} mt={'xl'} mb="md" src={ship.imgUrl} />
         <Text fz="lg" fw={600}>

@@ -3,17 +3,24 @@ import { Box, Button, Text } from '@mantine/core';
 import { Link } from 'react-router-dom';
 
 import { AppAlert } from '../components/UnderContruction';
+import { useUserData } from '../hooks/useUserState';
 
 export const Apply = () => {
+  const { userLoading, userData } = useUserData();
+
+  const noProjects = !userLoading && userData?.projects.length === 0;
+
   return (
     <MainSection>
       <PageTitle title="Applications" />
       <Box w="100%">
-        <AppAlert
-          title="It looks like you haven't started any projects yet"
-          description="Don't worry, getting started is easy!"
-        />
-        <Text fw={600} mb="xs">
+        {noProjects && (
+          <AppAlert
+            title="It looks like you haven't started any projects yet"
+            description="Don't worry, getting started is easy!"
+          />
+        )}
+        <Text fw={600} mb="xs" mt={noProjects ? undefined : 88}>
           Seeking Funding for your project?
         </Text>
         <Text opacity={0.8} mb="sm">

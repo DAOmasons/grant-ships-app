@@ -109,8 +109,8 @@ export const Project = () => {
   );
 
   return (
-    <Flex>
-      <MainSection maw={534}>
+    <Flex w="100%">
+      <MainSection maw={600}>
         <PageTitle title={project.name} />
         <Avatar size={160} mt={'xl'} mb="md" src={project.imgUrl} />
         <Text fz="lg" fw={600}>
