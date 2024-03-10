@@ -4,8 +4,7 @@ import {
   Title,
   useMantineTheme,
   Tooltip,
-  Button,
-  Box,
+  Text,
 } from '@mantine/core';
 import {
   IconHome,
@@ -16,6 +15,7 @@ import {
   IconShieldHalf,
   IconClock,
   IconInfoCircle,
+  IconExternalLink,
 } from '@tabler/icons-react';
 import classes from './DesktoNavStyles.module.css';
 import Logo from '../../assets/Logo.svg';
@@ -24,19 +24,27 @@ import { Link, useLocation } from 'react-router-dom';
 
 import { useMemo } from 'react';
 import { useUserData } from '../../hooks/useUserState';
-import { useAccount, useSwitchChain } from 'wagmi';
-import { ArbLogo } from '../../assets/Arbitrum';
+import { useAccount } from 'wagmi';
 
 const data = [
   { link: '/', label: 'Home', icon: IconHome },
   { link: '/ships', label: 'Ships', icon: IconRocket },
   { link: '/projects', label: 'Projects', icon: IconAward },
+  { link: '/apply', label: 'Apply', icon: IconFileDescription },
   {
     href: 'https://rules.grantships.fun',
-    label: 'Game Rules',
+    label: (
+      <Group gap={'xs'}>
+        <Text>Game Rules</Text>
+        <IconExternalLink
+          size={14}
+          style={{ transform: 'translateY(-2px)' }}
+          opacity={0.7}
+        />
+      </Group>
+    ),
     icon: IconPacman,
   },
-  { link: '/apply', label: 'Apply', icon: IconFileDescription },
 ];
 
 export function DesktopNav() {
@@ -54,7 +62,7 @@ export function DesktopNav() {
           href={item.href}
           target="_blank"
           rel="noreferrer"
-          key={item.label}
+          key={item.link}
         >
           <item.icon className={classes.linkIcon} stroke={1.5} />
           <span>{item.label}</span>
