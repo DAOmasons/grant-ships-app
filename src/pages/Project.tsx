@@ -120,7 +120,7 @@ export const Project = () => {
           <Text>{GameStatus[project.status]}</Text>
           <IconInfoCircle size={18} color={theme.colors.violet[8]} />
         </Group>
-        <Text fz="sm" mb={'md'}>
+        <Text fz="sm" mb={'md'} className="ws-pre-wrap">
           {project.description}
         </Text>
         <AddressAvatarGroup
