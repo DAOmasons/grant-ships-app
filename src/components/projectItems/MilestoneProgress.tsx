@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Box,
   Flex,
   Group,
@@ -10,11 +11,11 @@ import classes from './ProjectItems.module.css';
 import { Fragment } from 'react';
 import { IconEye, IconX } from '@tabler/icons-react';
 import { IconCheck } from '@tabler/icons-react';
-import { Address, formatEther, isAddress } from 'viem';
+import { formatEther } from 'viem';
 import { GAME_TOKEN } from '../../constants/gameSetup';
-import { AddressAvatar } from '../AddressAvatar';
 import { DashGrant, PackedMilestoneData } from '../../resolvers/grantResolvers';
 import { AlloStatus } from '../../types/common';
+import { Link } from 'react-router-dom';
 
 type MilestoneProgressProps = {
   fundedBy: string;
@@ -66,20 +67,30 @@ export const MilestoneProgress = ({
     return (
       <>
         <Box>
-          <Group gap={5} mb={10}>
+          <Group gap={6} mb={10} align="start">
             <Text fz="sm">
               <Text fz="sm" component="span" fw={600}>
                 {grantAmount} {GAME_TOKEN.SYMBOL}{' '}
               </Text>
               funded by
             </Text>
-            <AddressAvatar
-              address={fundedBy as Address}
-              size={18}
-              displayText={false}
-            />
+            <Tooltip
+              label={
+                <Box p={8}>
+                  <Avatar src={grant.shipMetadata.imgUrl} size={66} mb={'xs'} />
+                  <Text>{grant.shipMetadata.name}</Text>
+                </Box>
+              }
+            >
+              <Avatar
+                src={grant.shipMetadata.imgUrl}
+                size={20}
+                component={Link}
+                to={`/ship/${grant.shipId.id}`}
+              />
+            </Tooltip>
           </Group>
-          <Text fz="xs">Awaiting Milestones from team</Text>
+          <Text fz="xs">Awaiting Milestones</Text>
         </Box>
       </>
     );
@@ -92,16 +103,28 @@ export const MilestoneProgress = ({
 
   return (
     <Box>
-      <Group gap={5} mb={10}>
+      <Group gap={6} mb={10} align="start">
         <Text fz="sm">
           <Text fz="sm" component="span" fw={600}>
-            {grantAmount} {GAME_TOKEN.SYMBOL}
+            {grantAmount} {GAME_TOKEN.SYMBOL}{' '}
           </Text>
           funded by
         </Text>
-        {isAddress(fundedBy) && (
-          <AddressAvatar address={fundedBy} size={18} displayText={false} />
-        )}
+        <Tooltip
+          label={
+            <Box p={8}>
+              <Avatar src={grant.shipMetadata.imgUrl} size={66} mb={'xs'} />
+              <Text>{grant.shipMetadata.name}</Text>
+            </Box>
+          }
+        >
+          <Avatar
+            src={grant.shipMetadata.imgUrl}
+            size={20}
+            component={Link}
+            to={`/ship/${grant.shipId.id}`}
+          />
+        </Tooltip>
       </Group>
       <MilestoneProgressSteps
         totalAmount={grant.applicationData.grantAmount}
