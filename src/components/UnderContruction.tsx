@@ -34,12 +34,12 @@ export const AppAlert = ({
 }: AppAlertProps) => {
   return (
     <Alert mt={mt} mb={mb} c={color} bg={bg} opacity={opacity}>
-      <Group wrap="nowrap">
+      <Group wrap="nowrap" align="start">
         <Box>{icon}</Box>
         <Box>
           <Text mb={2}>{title}</Text>
           {description && typeof description === 'string' && (
-            <Text size="xs" opacity={0.8}>
+            <Text size="xs" opacity={0.8} className="ws-pre-wrap">
               {description}
             </Text>
           )}
