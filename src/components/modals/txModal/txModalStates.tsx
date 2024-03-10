@@ -113,13 +113,12 @@ export const ErrorState = ({
       <Spoiler
         maxHeight={80}
         showLabel={<Text size="xs">Show More</Text>}
-        hideLabel={<Text size="xs">Show More</Text>}
+        hideLabel={<Text size="xs">Show Less</Text>}
         mx="lg"
       >
         <Text
           size="sm"
           c={theme.colors.dark[2]}
-          // lineClamp={4}
           style={{ wordBreak: 'break-word' }}
         >
           <Text span fw={700}>
