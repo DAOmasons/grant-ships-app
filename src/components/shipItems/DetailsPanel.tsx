@@ -35,9 +35,9 @@ export const DetailsPanel = ({
       {thesis && (
         <>
           <Text size="sm" fw={600} mb="xs">
-            Impact Thesis
+            Allocation Strategy
           </Text>
-          <Text size="sm" mb="xl">
+          <Text size="sm" mb="xl" className="ws-pre-wrap">
             {thesis}
           </Text>
         </>
@@ -47,7 +47,7 @@ export const DetailsPanel = ({
           <Text size="sm" fw={600} mb="xs">
             How to Apply
           </Text>
-          <Text size="sm" mb="xl">
+          <Text size="sm" mb="xl" className="ws-pre-wrap">
             {apply}
           </Text>
         </>
@@ -67,7 +67,7 @@ export const DetailsPanel = ({
           <Text size="sm" fw={600} mb="xs">
             Additional Information
           </Text>
-          <Text size="sm" mb="xl">
+          <Text size="sm" mb="xl" className="ws-pre-wrap">
             {extraInfo}
           </Text>
         </>
