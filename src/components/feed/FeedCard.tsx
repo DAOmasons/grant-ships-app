@@ -165,7 +165,9 @@ export const FeedCard = ({
               }}
               maxHeight={48}
             >
-              <Text fz="sm">{embedText}</Text>
+              <Text fz="sm" className="ws-pre-wrap">
+                {embedText}
+              </Text>
             </Spoiler>
           )}
           <Text size="xs" opacity={0.85}>
