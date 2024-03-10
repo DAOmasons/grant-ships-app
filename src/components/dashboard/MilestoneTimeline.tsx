@@ -2,11 +2,12 @@ import { Text, Timeline, useMantineTheme } from '@mantine/core';
 import { DashGrant } from '../../resolvers/grantResolvers';
 import { UnpackedMilestoneData } from './MilestoneReviewPage';
 import { IconCheck, IconEye, IconX } from '@tabler/icons-react';
-import { AlloStatus } from '../../types/common';
+import { AlloStatus, GrantStatus } from '../../types/common';
 import { formatEther } from 'viem';
 import { GAME_TOKEN } from '../../constants/gameSetup';
 import { secondsToLongDate } from '../../utils/time';
 import { MilestoneAction } from './MilestoneAction';
+import { AppAlert } from '../UnderContruction';
 
 export const MilestoneTimeline = ({
   milestones,
@@ -80,7 +81,19 @@ export const MilestoneTimeline = ({
                 {secondsToLongDate(milestone.date)}
               </Text>
             )}
-            <Text size="sm">{milestone.milestoneDetails}</Text>
+            <Text size="sm" className="ws-pre-wrap">
+              {milestone.milestoneDetails}
+            </Text>
+            {grant.milestoneRejectedReason &&
+              isCurrentMilestone &&
+              grant.grantStatus === GrantStatus.MilestoneRejected && (
+                <AppAlert
+                  title="Milestone Rejected"
+                  icon={<IconX />}
+                  bg={theme.colors.red[6]}
+                  description={`"${grant.milestoneRejectedReason}"`}
+                />
+              )}
             {isCurrentMilestone && (
               <MilestoneAction
                 close={close}
