@@ -30,7 +30,7 @@ export const ReviewPage = ({
                 {section.subtitle}
               </Text>
               {typeof section.content === 'string' ? (
-                <Text fz="sm" mb="lg">
+                <Text fz="sm" mb="lg" className="ws-pre-wrap">
                   {section.content}
                 </Text>
               ) : (
