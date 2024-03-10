@@ -62,7 +62,7 @@ export function DesktopNav() {
           href={item.href}
           target="_blank"
           rel="noreferrer"
-          key={item.link}
+          key={item.link || item.href}
         >
           <item.icon className={classes.linkIcon} stroke={1.5} />
           <span>{item.label}</span>
