@@ -39,6 +39,7 @@ export type DashGrant = GrantDashFragment & {
   facilitatorReason: string | null;
   milestones: PackedMilestoneData[] | null;
   milestonesApprovedReason: string | null;
+  milestoneRejectedReason: string | null;
 };
 
 export const resolveGrantApplicationData = async (bytes: string) => {
@@ -169,6 +170,23 @@ export const resolveMilestoneReviewReason = async (pointer?: string) => {
   return validated.data;
 };
 
+export const resolveMilestoneRejectedReason = async (pointer?: string) => {
+  if (!pointer) {
+    return null;
+  }
+
+  const data = await getIpfsJson(pointer);
+
+  const validated = reasonSchema.safeParse(data);
+
+  if (!validated.success) {
+    console.error('Invalid metadata', validated.error);
+    return null;
+  }
+
+  return validated.data;
+};
+
 export const resolveGrants = async (grants: GrantDashFragment[]) => {
   const resolvedGrants = await Promise.all(
     grants.map(async (grant) => {
@@ -180,6 +198,7 @@ export const resolveGrants = async (grants: GrantDashFragment[]) => {
         facilitatorReason,
         milestones,
         milestonesApprovedReason,
+        milestoneRejectedReason,
       ] = await Promise.all([
         resolveProjectMetadata(grant?.projectId?.metadata?.pointer),
         resolveShipMetadata(grant?.shipId?.profileMetadata?.pointer),
@@ -193,6 +212,9 @@ export const resolveGrants = async (grants: GrantDashFragment[]) => {
           grant.shipId.shipContractAddress
         ),
         resolveMilestoneReviewReason(grant.milestonesApprovedReason?.pointer),
+        resolveMilestoneRejectedReason(
+          grant.currentMilestoneRejectedReason?.pointer
+        ),
       ]);
 
       return {
@@ -209,6 +231,9 @@ export const resolveGrants = async (grants: GrantDashFragment[]) => {
         milestones: milestones ? milestones : null,
         milestonesApprovedReason: milestonesApprovedReason
           ? milestonesApprovedReason.reason
+          : null,
+        milestoneRejectedReason: milestoneRejectedReason
+          ? milestoneRejectedReason.reason
           : null,
       };
     })
