@@ -37,7 +37,7 @@ export const ShipOpDashboard = () => {
         </Tabs.Panel>
         <Tabs.Panel value="application">
           <AppAlert
-            title={'Under Contruction'}
+            title={'Under Construction'}
             description={"This feature isn't built yet. Check back soon."}
           />
         </Tabs.Panel>

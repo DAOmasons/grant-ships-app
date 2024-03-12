@@ -25,6 +25,9 @@ fragment GrantDash on Grant {
   amtDistributed
   amtAllocated
   currentMilestoneIndex
+  currentMilestoneRejectedReason {
+    pointer
+  }
   milestonesApprovedReason {
     pointer
   }

@@ -23,7 +23,7 @@ import { useQuery } from '@tanstack/react-query';
 import { getProjectPage } from '../queries/getProjectPage';
 import { AddressAvatarGroup } from '../components/AddressAvatar';
 import { AppAlert } from '../components/UnderContruction';
-import { GameStatus, GrantStatus } from '../types/common';
+import { GrantStatus } from '../types/common';
 import { SingleItemPageSkeleton } from '../components/skeletons';
 import { getEntityFeed } from '../queries/getFeed';
 import { getProjectGrants } from '../queries/getProjectGrants';
@@ -113,14 +113,10 @@ export const Project = () => {
       <MainSection maw={600}>
         <PageTitle title={project.name} />
         <Avatar size={160} mt={'xl'} mb="md" src={project.imgUrl} />
-        <Text fz="lg" fw={600}>
+        <Text fz="lg" fw={600} mb="md">
           {project.name}
         </Text>
-        <Group mb="xs" gap={6}>
-          <Text>{GameStatus[project.status]}</Text>
-          <IconInfoCircle size={18} color={theme.colors.violet[8]} />
-        </Group>
-        <Text fz="sm" mb={'md'}>
+        <Text fz="sm" mb={'md'} className="ws-pre-wrap">
           {project.description}
         </Text>
         <AddressAvatarGroup

@@ -22,7 +22,7 @@ export const ProjectCard = ({ project }: { project: ProjectCardType }) => {
           <Text fw={600} mb={'xs'}>
             {project.name}
           </Text>
-          <Text fz={'sm'} lineClamp={3}>
+          <Text fz={'sm'} lineClamp={3} className="ws-pre-wrap">
             {project.metadata?.description}
           </Text>
         </Box>

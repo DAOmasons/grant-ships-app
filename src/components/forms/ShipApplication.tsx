@@ -187,7 +187,7 @@ export const ShipApplication = ({
         <Textarea
           w="100%"
           inputWrapperOrder={['label', 'input', 'description', 'error']}
-          label="Allocation Thesis"
+          label="Allocation Strategy"
           description="Include the types of projects prioritized, the desired impact of funding, and how grant effectiveness will be evaluated."
           required
           autosize
