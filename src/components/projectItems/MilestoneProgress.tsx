@@ -55,10 +55,7 @@ const getCircleStyle = ({ milestoneStatus }: PackedMilestoneData) => {
   return `${classes.statusIcon}`;
 };
 
-export const MilestoneProgress = ({
-  fundedBy,
-  grant,
-}: MilestoneProgressProps) => {
+export const MilestoneProgress = ({ grant }: MilestoneProgressProps) => {
   const grantAmount = grant.applicationData.grantAmount
     ? formatEther(grant.applicationData.grantAmount)
     : 0;
@@ -114,7 +111,7 @@ export const MilestoneProgress = ({
           label={
             <Box p={8}>
               <Avatar src={grant.shipMetadata.imgUrl} size={66} mb={'xs'} />
-              <Text>{grant.shipMetadata.name}</Text>
+              <Text fz="sm">{grant.shipMetadata.name}</Text>
             </Box>
           }
         >
