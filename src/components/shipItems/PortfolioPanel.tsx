@@ -1,16 +1,28 @@
-import { Accordion, Avatar, Box, Group, Text } from '@mantine/core';
+import {
+  Accordion,
+  Avatar,
+  Box,
+  Group,
+  Skeleton,
+  Stack,
+  Text,
+  useMantineTheme,
+} from '@mantine/core';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { getShipGrants } from '../../queries/getShipGrants';
-import { DashGrant } from '../../resolvers/grantResolvers';
+
 import { formatEther } from 'viem';
 import { GAME_TOKEN } from '../../constants/gameSetup';
-import { AlloStatus } from '../../types/common';
-import { IconExternalLink } from '@tabler/icons-react';
+import { IconExclamationCircle, IconExternalLink } from '@tabler/icons-react';
 import { SCAN_URL } from '../../constants/enpoints';
+import { AppAlert } from '../UnderContruction';
+import { DashGrant } from '../../resolvers/grantResolvers';
+import { AlloStatus } from '../../types/common';
 
 export const PortfolioPanel = () => {
   const { id } = useParams();
+  const theme = useMantineTheme();
 
   const {
     data: grants,
@@ -22,12 +34,33 @@ export const PortfolioPanel = () => {
     enabled: !!id,
   });
 
-  if (isLoading) return <Box>Loading...</Box>;
+  if (isLoading)
+    return (
+      <Stack>
+        <Skeleton height={400} />
+        <Skeleton height={50} />
+        <Skeleton height={50} />
+        <Skeleton height={50} />
+      </Stack>
+    );
 
   if (error || !grants)
-    return <Box>Error: {error?.message || 'No Grants '}</Box>;
+    return (
+      <AppAlert
+        title="Error"
+        icon={<IconExclamationCircle />}
+        description={error?.message || 'Grant Data failed to load'}
+        bg={theme.colors.pink[8]}
+      />
+    );
 
-  if (grants.length === 0) return <Box>No Grants</Box>;
+  if (grants.length === 0)
+    return (
+      <AppAlert
+        title="No Grants"
+        description={"This ship hasn't approved any grants yet."}
+      />
+    );
 
   return (
     <Box>
