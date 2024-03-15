@@ -21,7 +21,11 @@ export const Ships = () => {
   const theme = useMantineTheme();
 
   if (isLoading) {
-    return <PageLayout>{<LoadingState />}</PageLayout>;
+    return (
+      <PageLayout>
+        <LoadingState />
+      </PageLayout>
+    );
   }
 
   if (error) {

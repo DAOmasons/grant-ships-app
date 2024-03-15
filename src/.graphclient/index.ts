@@ -3282,6 +3282,12 @@ const merger = new(BareMerger as any)({
         },
         location: 'GetShipDashDocument.graphql'
       },{
+        document: GetShipGrantsDocument,
+        get rawSDL() {
+          return printWithCache(GetShipGrantsDocument);
+        },
+        location: 'GetShipGrantsDocument.graphql'
+      },{
         document: GetShipPoolIdDocument,
         get rawSDL() {
           return printWithCache(GetShipPoolIdDocument);
@@ -3554,6 +3560,22 @@ export type getShipDashQuery = { grantShip?: Maybe<(
       ), currentMilestoneRejectedReason?: Maybe<Pick<RawMetadata, 'pointer'>>, milestonesApprovedReason?: Maybe<Pick<RawMetadata, 'pointer'>>, facilitatorReason?: Maybe<Pick<RawMetadata, 'pointer'>>, shipApprovalReason?: Maybe<Pick<RawMetadata, 'pointer'>> }
     )>, profileMetadata: Pick<RawMetadata, 'pointer'> }
   )> };
+
+export type getShipGrantsQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type getShipGrantsQuery = { grantShip?: Maybe<{ grants: Array<(
+      Pick<Grant, 'id' | 'grantApplicationBytes' | 'lastUpdated' | 'grantStatus' | 'milestonesAmount' | 'milestonesApproved' | 'amtDistributed' | 'amtAllocated' | 'currentMilestoneIndex'>
+      & { projectId: (
+        Pick<Project, 'id' | 'name'>
+        & { metadata: Pick<RawMetadata, 'pointer'> }
+      ), shipId: (
+        Pick<GrantShip, 'id' | 'name' | 'shipContractAddress' | 'poolId' | 'totalAvailableFunds'>
+        & { profileMetadata: Pick<RawMetadata, 'pointer'> }
+      ), currentMilestoneRejectedReason?: Maybe<Pick<RawMetadata, 'pointer'>>, milestonesApprovedReason?: Maybe<Pick<RawMetadata, 'pointer'>>, facilitatorReason?: Maybe<Pick<RawMetadata, 'pointer'>>, shipApprovalReason?: Maybe<Pick<RawMetadata, 'pointer'>> }
+    )> }> };
 
 export type getShipPoolIdQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -3898,6 +3920,15 @@ export const getShipDashDocument = gql`
 }
     ${ShipDashFragmentDoc}
 ${GrantDashFragmentDoc}` as unknown as DocumentNode<getShipDashQuery, getShipDashQueryVariables>;
+export const getShipGrantsDocument = gql`
+    query getShipGrants($id: ID!) {
+  grantShip(id: $id) {
+    grants(where: {grantStatus_gte: 5}) {
+      ...GrantDash
+    }
+  }
+}
+    ${GrantDashFragmentDoc}` as unknown as DocumentNode<getShipGrantsQuery, getShipGrantsQueryVariables>;
 export const getShipPoolIdDocument = gql`
     query getShipPoolId($id: ID!) {
   grantShip(id: $id) {
@@ -3970,6 +4001,7 @@ export const ShipsPageQueryDocument = gql`
 
 
 
+
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
@@ -4008,6 +4040,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     getShipDash(variables: getShipDashQueryVariables, options?: C): Promise<getShipDashQuery> {
       return requester<getShipDashQuery, getShipDashQueryVariables>(getShipDashDocument, variables, options) as Promise<getShipDashQuery>;
+    },
+    getShipGrants(variables: getShipGrantsQueryVariables, options?: C): Promise<getShipGrantsQuery> {
+      return requester<getShipGrantsQuery, getShipGrantsQueryVariables>(getShipGrantsDocument, variables, options) as Promise<getShipGrantsQuery>;
     },
     getShipPoolId(variables: getShipPoolIdQueryVariables, options?: C): Promise<getShipPoolIdQuery> {
       return requester<getShipPoolIdQuery, getShipPoolIdQueryVariables>(getShipPoolIdDocument, variables, options) as Promise<getShipPoolIdQuery>;

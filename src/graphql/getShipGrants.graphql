@@ -1,0 +1,7 @@
+query getShipGrants($id: ID!) {
+  grantShip(id: $id) {
+    grants(where: { grantStatus_gte: 5 }) {
+      ...GrantDash
+    }
+  }
+}
