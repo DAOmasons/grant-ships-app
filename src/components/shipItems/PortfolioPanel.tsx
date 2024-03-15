@@ -35,6 +35,8 @@ export const PortfolioPanel = () => {
         {grants.map((grant) => (
           <Accordion.Item key={grant.id} value={grant.id}>
             <Accordion.Control
+              px="lg"
+              py="xs"
               icon={<Avatar src={grant.projectMetadata.imgUrl} size={32} />}
             >
               {grant.projectId.name} (
