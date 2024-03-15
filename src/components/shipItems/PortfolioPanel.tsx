@@ -11,7 +11,6 @@ import {
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { getShipGrants } from '../../queries/getShipGrants';
-
 import { formatEther } from 'viem';
 import { GAME_TOKEN } from '../../constants/gameSetup';
 import { IconExclamationCircle, IconExternalLink } from '@tabler/icons-react';
@@ -68,7 +67,7 @@ export const PortfolioPanel = () => {
         {grants.map((grant) => (
           <Accordion.Item key={grant.id} value={grant.id}>
             <Accordion.Control
-              px="lg"
+              px="md"
               py="xs"
               icon={<Avatar src={grant.projectMetadata.imgUrl} size={32} />}
             >
