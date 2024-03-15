@@ -1,7 +1,11 @@
-import { Box } from '@mantine/core';
+import { Accordion, Avatar, Box, Text } from '@mantine/core';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { getShipGrants } from '../../queries/getShipGrants';
+import { DashGrant } from '../../resolvers/grantResolvers';
+import { formatEther } from 'viem';
+import { GAME_TOKEN } from '../../constants/gameSetup';
+import { AlloStatus } from '../../types/common';
 
 // type Grant = {
 //   id: string;
@@ -37,11 +41,76 @@ export const PortfolioPanel = () => {
   if (error || !grants)
     return <Box>Error: {error?.message || 'No Grants '}</Box>;
 
+  if (grants.length === 0) return <Box>No Grants</Box>;
+
   return (
     <Box>
-      {/* {grants.map((grant) => (
-        <PortfolioGrantCard grant={grant} />
-      ))} */}
+      <Accordion defaultValue={grants[0].id}>
+        {grants.map((grant) => (
+          <Accordion.Item key={grant.id} value={grant.id}>
+            <Accordion.Control
+              icon={<Avatar src={grant.projectMetadata.imgUrl} size={32} />}
+            >
+              {grant.projectId.name}
+            </Accordion.Control>
+            <Accordion.Panel>
+              <PorfolioItem grant={grant} />
+            </Accordion.Panel>
+          </Accordion.Item>
+        ))}
+      </Accordion>
+    </Box>
+  );
+};
+
+const PorfolioItem = ({ grant }: { grant: DashGrant }) => {
+  const completedMilestones = grant.milestones
+    ? grant.milestones.filter(
+        (ms) => ms.milestoneStatus === AlloStatus.Accepted
+      ).length
+    : [];
+
+  return (
+    <Box>
+      <Text fz="sm" mb="md" fw={600}>
+        Project Description
+      </Text>
+      <Text fz="sm">{grant.projectMetadata.description}</Text>
+      <ul style={{ paddingLeft: '1.6rem' }}>
+        <Text fz="sm">
+          <li>
+            <Text component="span" fz="sm" fw={600}>
+              Amount:{' '}
+            </Text>
+            {formatEther(grant.applicationData.grantAmount)} {GAME_TOKEN.SYMBOL}
+          </li>
+        </Text>
+        <Text fz="sm">
+          <li>
+            <Text component="span" fz="sm" fw={600}>
+              Milestones:{' '}
+            </Text>
+            {completedMilestones}/{grant.milestones?.length} milestones
+            completed
+          </li>
+        </Text>
+        <Text fz="sm" className="ws-pre-wrap">
+          <li>
+            <Text component="span" fz="sm" fw={600}>
+              Reason for funding:{' '}
+            </Text>
+            {grant.shipApprovalReason}
+          </li>
+        </Text>
+        <Text fz="sm" className="ws-pre-wrap">
+          <li>
+            <Text component="span" fz="sm" fw={600}>
+              Facilitator Approval Reason:{' '}
+            </Text>
+            {grant.facilitatorReason}
+          </li>
+        </Text>
+      </ul>
     </Box>
   );
 };

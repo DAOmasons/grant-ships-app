@@ -1,5 +1,5 @@
 import { getBuiltGraphSDK } from '../.graphclient';
-import { resolveGrants } from '../resolvers/grantResolvers';
+import { DashGrant, resolveGrants } from '../resolvers/grantResolvers';
 
 export const getShipGrants = async (shipId: string) => {
   const { getShipGrants } = getBuiltGraphSDK();
@@ -10,5 +10,5 @@ export const getShipGrants = async (shipId: string) => {
 
   const resolvedGrants = await resolveGrants(grantShip.grants);
 
-  return resolvedGrants;
+  return resolvedGrants as DashGrant[];
 };
