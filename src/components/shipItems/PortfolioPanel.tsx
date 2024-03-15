@@ -1,4 +1,4 @@
-import { Accordion, Avatar, Box, Text } from '@mantine/core';
+import { Accordion, Avatar, Box, Group, Text } from '@mantine/core';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { getShipGrants } from '../../queries/getShipGrants';
@@ -6,22 +6,8 @@ import { DashGrant } from '../../resolvers/grantResolvers';
 import { formatEther } from 'viem';
 import { GAME_TOKEN } from '../../constants/gameSetup';
 import { AlloStatus } from '../../types/common';
-
-// type Grant = {
-//   id: string;
-//   milestonesCount: number;
-//   milestonesCompleted: number;
-//   amount: number;
-// };
-
-// type PortfolioGrant = {
-//   id: string;
-//   name: string;
-//   description: string;
-//   grants: Grant[];
-// };
-
-// const grants: PortfolioGrant[] = [];
+import { IconExternalLink } from '@tabler/icons-react';
+import { SCAN_URL } from '../../constants/enpoints';
 
 export const PortfolioPanel = () => {
   const { id } = useParams();
@@ -51,7 +37,9 @@ export const PortfolioPanel = () => {
             <Accordion.Control
               icon={<Avatar src={grant.projectMetadata.imgUrl} size={32} />}
             >
-              {grant.projectId.name}
+              {grant.projectId.name} (
+              {formatEther(grant.applicationData.grantAmount)}{' '}
+              {GAME_TOKEN.SYMBOL})
             </Accordion.Control>
             <Accordion.Panel>
               <PorfolioItem grant={grant} />
@@ -70,12 +58,44 @@ const PorfolioItem = ({ grant }: { grant: DashGrant }) => {
       ).length
     : [];
 
+  const status =
+    completedMilestones === grant.milestones?.length ? 'Completed' : 'Active';
+
   return (
     <Box>
+      <Text fz="sm" className="ws-pre-wrap" mb="md">
+        <Text component="span" fz="sm" fw={600}>
+          Status:{' '}
+        </Text>
+        {status}
+      </Text>
+      <Box mb="md">
+        <Text fz="sm" mb="md" fw={600}>
+          Receiving Address:{' '}
+        </Text>
+        <Text
+          fz="sm"
+          component="a"
+          td="underline"
+          href={`${SCAN_URL}/address/${grant.applicationData.receivingAddress}`}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Group gap={4}>
+            {grant.applicationData.receivingAddress}{' '}
+            <IconExternalLink size={14} />
+          </Group>
+        </Text>
+      </Box>
       <Text fz="sm" mb="md" fw={600}>
         Project Description
       </Text>
-      <Text fz="sm">{grant.projectMetadata.description}</Text>
+      <Text fz="sm" mb="md">
+        {grant.projectMetadata.description}
+      </Text>
+      <Text fz="sm" mb="md" fw={600}>
+        Grant Details
+      </Text>
       <ul style={{ paddingLeft: '1.6rem' }}>
         <Text fz="sm">
           <li>
