@@ -169,36 +169,3 @@ const PorfolioItem = ({ grant }: { grant: DashGrant }) => {
     </Box>
   );
 };
-
-// const PortfolioGrantCard = ({ grant }: { grant: PortfolioGrant }) => {
-//   return (
-//     <Box>
-//       <Text fz="lg" fw={600} mb="md">
-//         {grant.name}
-//       </Text>
-//       <Text fz="sm" mb="md">
-//         {grant.description}
-//       </Text>
-//       <Stack>
-//         {grant.grants.map((grant) => (
-//           <GrantCard grant={grant} />
-//         ))}
-//       </Stack>
-//       <Divider />
-//     </Box>
-//   );
-// };
-
-// const GrantCard = ({ grant }: { grant: Grant }) => {
-//   return (
-//     <>
-//       <Text fz="sm" mb="xs">
-//         {grant.amount} {GAME_TOKEN.SYMBOL}
-//       </Text>
-//       <Text fz="sm" mb="xs">
-//         {grant.milestonesCompleted}/{grant.milestonesCount} Milestones Completed
-//       </Text>
-//       <Divider />
-//     </>
-//   );
-// };
