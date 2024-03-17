@@ -1,6 +1,14 @@
-import { Skeleton, Stack, Tabs, useMantineTheme } from '@mantine/core';
+import {
+  Avatar,
+  Group,
+  Skeleton,
+  Stack,
+  Tabs,
+  Text,
+  useMantineTheme,
+} from '@mantine/core';
 import { MainSection, PageTitle } from '../layout/Sections';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { DashShip, getShipDash } from '../queries/getShipDash';
 import { AppAlert } from '../components/UnderContruction';
@@ -22,6 +30,20 @@ export const ShipOpDashboard = () => {
   return (
     <MainSection>
       <PageTitle title="Ship Dashboard" />
+
+      <Link
+        to={`/ship/${shipData?.id}`}
+        style={{
+          display: 'flex',
+          gap: 8,
+          alignItems: 'center',
+          marginBottom: 16,
+          textDecoration: 'none',
+        }}
+      >
+        <Avatar size={30} src={shipData?.profileMetadata.imgUrl} />
+        <Text td="none">{shipData?.name}</Text>
+      </Link>
       <Tabs defaultValue="grants">
         <Tabs.List mb="xl" grow>
           <Tabs.Tab value="grants">Grants</Tabs.Tab>

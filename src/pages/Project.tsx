@@ -113,6 +113,7 @@ export const Project = () => {
           return acc + (grant.amtAllocated ? BigInt(grant.amtAllocated) : 0n);
         }, 0n)
       );
+
   const activeGrants = grants?.filter(
     (grant: DashGrant) => grant.grantStatus >= GrantStatus.FacilitatorApproved
   );
