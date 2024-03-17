@@ -7,10 +7,15 @@ import {
   Stack,
   Tabs,
   Text,
+  Tooltip,
   useMantineTheme,
 } from '@mantine/core';
 import { MainSection, PageTitle } from '../layout/Sections';
-import { IconExternalLink, IconInfoCircle } from '@tabler/icons-react';
+import {
+  IconExternalLink,
+  IconInfoCircle,
+  IconRocket,
+} from '@tabler/icons-react';
 import { FundingIndicator } from '../components/shipItems/FundingIndicator';
 import { FeedPanel } from '../components/shipItems/FeedPanel';
 import { PortfolioPanel } from '../components/shipItems/PortfolioPanel';
@@ -27,6 +32,7 @@ import { AppAlert } from '../components/UnderContruction';
 import { SingleItemPageSkeleton } from '../components/skeletons';
 import { getEntityFeed } from '../queries/getFeed';
 import { formatEther } from 'viem';
+import { useUserData } from '../hooks/useUserState';
 
 export const Ship = () => {
   const theme = useMantineTheme();
@@ -52,6 +58,8 @@ export const Ship = () => {
     queryFn: () => getShipPageData(id as string),
     enabled: !!id,
   });
+
+  const { userData } = useUserData();
 
   if (isLoading) {
     return <SingleItemPageSkeleton />;
@@ -84,15 +92,33 @@ export const Ship = () => {
   }
 
   const isShipActive = ship.status === GameStatus.Active;
+  const isShipOperator =
+    userData && userData.isShipOperator && userData.shipAddress === id;
 
   return (
     <Flex w="100%">
       <MainSection maw={600}>
         <PageTitle title={ship.name} />
         <Avatar size={160} mt={'xl'} mb="md" src={ship.imgUrl} />
-        <Text fz="lg" fw={600}>
-          {ship.name}
-        </Text>
+        <Group gap={'xs'} mb="md">
+          <Text fz="lg" fw={600}>
+            {ship.name}
+          </Text>
+          {isShipOperator && (
+            <Tooltip label="You are an operator of this program.">
+              <Group align="start" gap={6}>
+                <IconRocket
+                  size={16}
+                  color={theme.colors.violet[5]}
+                  style={{ transform: 'translateY(2px)' }}
+                />{' '}
+                <Text fz="sm" c={theme.colors.violet[5]}>
+                  Ship Operator
+                </Text>
+              </Group>
+            </Tooltip>
+          )}
+        </Group>
         <Group mb="xs" gap={6}>
           <Text>{GameStatus[ship.status]}</Text>
           <IconInfoCircle size={18} color={theme.colors.violet[6]} />

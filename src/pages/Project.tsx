@@ -10,7 +10,7 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import { MainSection, PageTitle } from '../layout/Sections';
-import { IconInfoCircle } from '@tabler/icons-react';
+import { IconAward, IconInfoCircle } from '@tabler/icons-react';
 import { FeedPanel } from '../components/shipItems/FeedPanel';
 import { GAME_TOKEN } from '../constants/gameSetup';
 import { MilestoneProgress } from '../components/projectItems/MilestoneProgress';
@@ -28,9 +28,12 @@ import { SingleItemPageSkeleton } from '../components/skeletons';
 import { getEntityFeed } from '../queries/getFeed';
 import { getProjectGrants } from '../queries/getProjectGrants';
 import { DashGrant } from '../resolvers/grantResolvers';
+import { useMemo } from 'react';
+import { useUserData } from '../hooks/useUserState';
 
 export const Project = () => {
   const { id } = useParams();
+  const { userData } = useUserData();
 
   const {
     data: project,
@@ -64,6 +67,12 @@ export const Project = () => {
   });
 
   const theme = useMantineTheme();
+
+  const isProjectMember = useMemo(() => {
+    return (
+      userData && !!userData.projects?.find((project) => project.anchor === id)
+    );
+  }, [userData, id]);
 
   if (isLoading) return <SingleItemPageSkeleton />;
 
@@ -113,9 +122,25 @@ export const Project = () => {
       <MainSection maw={600}>
         <PageTitle title={project.name} />
         <Avatar size={160} mt={'xl'} mb="md" src={project.imgUrl} />
-        <Text fz="lg" fw={600} mb="md">
-          {project.name}
-        </Text>
+        <Group gap={'xs'} mb="md">
+          <Text fz="lg" fw={600}>
+            {project.name}
+          </Text>
+          {isProjectMember && (
+            <Tooltip label="You are a member of this project">
+              <Group align="start" gap={6}>
+                <IconAward
+                  size={16}
+                  color={theme.colors.blue[5]}
+                  style={{ transform: 'translateY(2px)' }}
+                />{' '}
+                <Text fz="sm" c={theme.colors.blue[5]}>
+                  Project Member
+                </Text>
+              </Group>
+            </Tooltip>
+          )}
+        </Group>
         <Text fz="sm" mb={'md'} className="ws-pre-wrap">
           {project.description}
         </Text>
