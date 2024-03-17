@@ -16,7 +16,7 @@ export const DevPanel = () => {
           </Tabs.Tab>
         </Tabs.List>
         <Tabs.Panel value="versions">
-          <div>Version Control</div>
+          <VersionsPanel />
         </Tabs.Panel>
         <Tabs.Panel value="deployment">
           <div>Deployment</div>

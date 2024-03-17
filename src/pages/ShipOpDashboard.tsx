@@ -1,6 +1,5 @@
 import {
   Avatar,
-  Group,
   Skeleton,
   Stack,
   Tabs,
@@ -35,14 +34,15 @@ export const ShipOpDashboard = () => {
         to={`/ship/${shipData?.id}`}
         style={{
           display: 'flex',
-          gap: 8,
           alignItems: 'center',
-          marginBottom: 16,
+          marginBottom: '1rem',
           textDecoration: 'none',
         }}
       >
-        <Avatar size={30} src={shipData?.profileMetadata.imgUrl} />
-        <Text td="none">{shipData?.name}</Text>
+        <Avatar size={30} src={shipData?.profileMetadata.imgUrl} mr={8} />
+        <Text td="none" fz="sm">
+          {shipData?.name}
+        </Text>
       </Link>
       <Tabs defaultValue="grants">
         <Tabs.List mb="xl" grow>
