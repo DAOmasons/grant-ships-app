@@ -1,11 +1,22 @@
-import { Avatar, Box, Button, Flex, Group, Paper, Text } from '@mantine/core';
+import {
+  Avatar,
+  Box,
+  Button,
+  Flex,
+  Group,
+  Paper,
+  Text,
+  Tooltip,
+  useMantineTheme,
+} from '@mantine/core';
 import { useNavigate } from 'react-router-dom';
 import classes from './ShipItemStyles.module.css';
-import { IconInfoCircle } from '@tabler/icons-react';
+import { IconInfoCircle, IconRocket } from '@tabler/icons-react';
 import { FundingIndicator } from './FundingIndicator';
 
 import { GameStatus } from '../../types/common';
 import { ShipsCardUI } from '../../types/ui';
+import { useUserData } from '../../hooks/useUserState';
 
 export const ShipCard = ({
   id,
@@ -17,7 +28,12 @@ export const ShipCard = ({
   amtDistributed,
   amtAvailable,
 }: ShipsCardUI) => {
+  const theme = useMantineTheme();
   const navigate = useNavigate();
+  const { userData } = useUserData();
+
+  const isShipOperator =
+    userData && userData.isShipOperator && userData.shipAddress === id;
 
   return (
     <Paper
@@ -37,11 +53,19 @@ export const ShipCard = ({
         <Box w="100%">
           <Flex w="100%" mb="md" justify="space-between" align={'center'}>
             <Box>
-              <Text fw={600}>{name}</Text>
+              <Group gap={4}>
+                <Text fw={600}>{name}</Text>
+                {isShipOperator && (
+                  <Tooltip label="You are an operator of this ship.">
+                    <IconRocket size={18} color={theme.colors.violet[6]} />
+                  </Tooltip>
+                )}
+              </Group>
               <Group>
                 <Text fz="sm" mr="-6">
                   {GameStatus[status]}
                 </Text>
+
                 <IconInfoCircle
                   size={16}
                   style={{ transform: 'translateY(-1px)' }}
@@ -57,14 +81,16 @@ export const ShipCard = ({
           <Text size="sm" mb="md" h={60} lineClamp={3}>
             {description}
           </Text>
-          <Button
-            onClick={(e) => {
-              e.stopPropagation();
-              navigate(`/apply-funding/${id}`);
-            }}
-          >
-            Apply For Funding
-          </Button>
+          <Group>
+            <Button
+              onClick={(e) => {
+                e.stopPropagation();
+                navigate(`/apply-funding/${id}`);
+              }}
+            >
+              Apply For Funding
+            </Button>
+          </Group>
         </Box>
       </Flex>
     </Paper>
