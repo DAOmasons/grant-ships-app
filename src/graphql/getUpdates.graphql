@@ -1,5 +1,9 @@
 query getUpdates($entityAddress: Bytes!) {
-  updates(where: { entityAddress: $entityAddress }) {
+  updates(
+    where: { entityAddress: $entityAddress }
+    orderBy: timestamp
+    orderDirection: desc
+  ) {
     ...Update
   }
 }

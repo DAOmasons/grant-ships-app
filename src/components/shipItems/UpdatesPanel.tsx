@@ -131,6 +131,7 @@ export const UpdatesPanel = ({
       {posts?.length ? (
         posts.map((post) => (
           <FeedCard
+            key={post.id}
             timestamp={post.timestamp}
             sender={post.postedBy}
             subject={{

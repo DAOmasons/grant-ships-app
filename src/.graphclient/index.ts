@@ -4167,7 +4167,11 @@ export const getShipPoolIdDocument = gql`
     ` as unknown as DocumentNode<getShipPoolIdQuery, getShipPoolIdQueryVariables>;
 export const getUpdatesDocument = gql`
     query getUpdates($entityAddress: Bytes!) {
-  updates(where: {entityAddress: $entityAddress}) {
+  updates(
+    where: {entityAddress: $entityAddress}
+    orderBy: timestamp
+    orderDirection: desc
+  ) {
     ...Update
   }
 }

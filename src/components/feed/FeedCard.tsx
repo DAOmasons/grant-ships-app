@@ -151,7 +151,7 @@ export const FeedCard = ({
               {time}
             </Text>
           </Group>
-          <Text size="sm" mb={10}>
+          <Text size="sm" mb={10} className="ws-pre-wrap">
             {formattedFeedContent}
           </Text>
           {embedText && (
