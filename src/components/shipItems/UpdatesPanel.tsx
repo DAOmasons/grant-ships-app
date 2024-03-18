@@ -10,12 +10,14 @@ import { Address } from 'viem';
 import { pinJSONToIPFS } from '../../utils/ipfs/pin';
 import {
   ContentSchema,
-  updateSchema,
+  basicUpdateSchema,
 } from '../forms/validationSchemas/updateSchemas';
 import { useQuery } from '@tanstack/react-query';
 import { FeedSkeletonCard } from '../skeletons';
 import { AppAlert } from '../UnderContruction';
 import { IconX } from '@tabler/icons-react';
+import { getUpdates } from '../../queries/getUpdates';
+import { FeedCard } from '../feed/FeedCard';
 
 export const UpdatesPanel = ({
   ship,
@@ -32,7 +34,7 @@ export const UpdatesPanel = ({
     error,
   } = useQuery({
     queryKey: [`ship-updates-${shipId}`],
-    queryFn: async () => 'Success',
+    queryFn: () => getUpdates(shipId as string),
     enabled: !!shipId,
   });
 
@@ -60,7 +62,7 @@ export const UpdatesPanel = ({
       return;
     }
 
-    const metadata = updateSchema.safeParse({
+    const metadata = basicUpdateSchema.safeParse({
       text,
       contentSchema: ContentSchema.BasicUpdate,
     });
@@ -124,7 +126,7 @@ export const UpdatesPanel = ({
       {isShipOperator && (
         <UpdateInput imgUrl={ship?.imgUrl} onClick={handlePostUpdate} />
       )}
-      {/* {posts?.length  } */}
+      {/* {posts?.length ? <FeedCard subject={} object={} con/>} */}
     </Box>
   );
 };

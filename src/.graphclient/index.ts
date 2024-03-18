@@ -762,7 +762,7 @@ export type GrantShip = {
   rejectedTime?: Maybe<Scalars['BigInt']>;
   applicationReviewReason?: Maybe<RawMetadata>;
   poolId?: Maybe<Scalars['BigInt']>;
-  hatId?: Maybe<Scalars['BigInt']>;
+  hatId?: Maybe<Scalars['String']>;
   shipContractAddress?: Maybe<Scalars['Bytes']>;
   shipLaunched?: Maybe<Scalars['Boolean']>;
   poolActive?: Maybe<Scalars['Boolean']>;
@@ -1048,14 +1048,26 @@ export type GrantShip_filter = {
   poolId_lte?: InputMaybe<Scalars['BigInt']>;
   poolId_in?: InputMaybe<Array<Scalars['BigInt']>>;
   poolId_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  hatId?: InputMaybe<Scalars['BigInt']>;
-  hatId_not?: InputMaybe<Scalars['BigInt']>;
-  hatId_gt?: InputMaybe<Scalars['BigInt']>;
-  hatId_lt?: InputMaybe<Scalars['BigInt']>;
-  hatId_gte?: InputMaybe<Scalars['BigInt']>;
-  hatId_lte?: InputMaybe<Scalars['BigInt']>;
-  hatId_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  hatId_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  hatId?: InputMaybe<Scalars['String']>;
+  hatId_not?: InputMaybe<Scalars['String']>;
+  hatId_gt?: InputMaybe<Scalars['String']>;
+  hatId_lt?: InputMaybe<Scalars['String']>;
+  hatId_gte?: InputMaybe<Scalars['String']>;
+  hatId_lte?: InputMaybe<Scalars['String']>;
+  hatId_in?: InputMaybe<Array<Scalars['String']>>;
+  hatId_not_in?: InputMaybe<Array<Scalars['String']>>;
+  hatId_contains?: InputMaybe<Scalars['String']>;
+  hatId_contains_nocase?: InputMaybe<Scalars['String']>;
+  hatId_not_contains?: InputMaybe<Scalars['String']>;
+  hatId_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  hatId_starts_with?: InputMaybe<Scalars['String']>;
+  hatId_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  hatId_not_starts_with?: InputMaybe<Scalars['String']>;
+  hatId_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  hatId_ends_with?: InputMaybe<Scalars['String']>;
+  hatId_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  hatId_not_ends_with?: InputMaybe<Scalars['String']>;
+  hatId_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
   shipContractAddress?: InputMaybe<Scalars['Bytes']>;
   shipContractAddress_not?: InputMaybe<Scalars['Bytes']>;
   shipContractAddress_gt?: InputMaybe<Scalars['Bytes']>;
@@ -1883,6 +1895,8 @@ export type Query = {
   feedItemEntities: Array<FeedItemEntity>;
   feedItemEmbed?: Maybe<FeedItemEmbed>;
   feedItemEmbeds: Array<FeedItemEmbed>;
+  update?: Maybe<Update>;
+  updates: Array<Update>;
   grantShip?: Maybe<GrantShip>;
   grantShips: Array<GrantShip>;
   poolIdLookup?: Maybe<PoolIdLookup>;
@@ -1975,6 +1989,24 @@ export type QueryfeedItemEmbedsArgs = {
   orderBy?: InputMaybe<FeedItemEmbed_orderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
   where?: InputMaybe<FeedItemEmbed_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryupdateArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryupdatesArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Update_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<Update_filter>;
   block?: InputMaybe<Block_height>;
   subgraphError?: _SubgraphErrorPolicy_;
 };
@@ -2239,6 +2271,8 @@ export type Subscription = {
   feedItemEntities: Array<FeedItemEntity>;
   feedItemEmbed?: Maybe<FeedItemEmbed>;
   feedItemEmbeds: Array<FeedItemEmbed>;
+  update?: Maybe<Update>;
+  updates: Array<Update>;
   grantShip?: Maybe<GrantShip>;
   grantShips: Array<GrantShip>;
   poolIdLookup?: Maybe<PoolIdLookup>;
@@ -2331,6 +2365,24 @@ export type SubscriptionfeedItemEmbedsArgs = {
   orderBy?: InputMaybe<FeedItemEmbed_orderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
   where?: InputMaybe<FeedItemEmbed_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionupdateArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionupdatesArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Update_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<Update_filter>;
   block?: InputMaybe<Block_height>;
   subgraphError?: _SubgraphErrorPolicy_;
 };
@@ -2576,6 +2628,128 @@ export type Transaction_orderBy =
   | 'sender'
   | 'txHash';
 
+export type Update = {
+  id: Scalars['ID'];
+  scope: Scalars['Int'];
+  posterRole: Scalars['Int'];
+  entityAddress: Scalars['Bytes'];
+  postedBy: Scalars['Bytes'];
+  content: RawMetadata;
+  contentSchema: Scalars['Int'];
+  postDecorator: Scalars['Int'];
+  timestamp: Scalars['BigInt'];
+};
+
+export type Update_filter = {
+  id?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']>;
+  id_gt?: InputMaybe<Scalars['ID']>;
+  id_lt?: InputMaybe<Scalars['ID']>;
+  id_gte?: InputMaybe<Scalars['ID']>;
+  id_lte?: InputMaybe<Scalars['ID']>;
+  id_in?: InputMaybe<Array<Scalars['ID']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']>>;
+  scope?: InputMaybe<Scalars['Int']>;
+  scope_not?: InputMaybe<Scalars['Int']>;
+  scope_gt?: InputMaybe<Scalars['Int']>;
+  scope_lt?: InputMaybe<Scalars['Int']>;
+  scope_gte?: InputMaybe<Scalars['Int']>;
+  scope_lte?: InputMaybe<Scalars['Int']>;
+  scope_in?: InputMaybe<Array<Scalars['Int']>>;
+  scope_not_in?: InputMaybe<Array<Scalars['Int']>>;
+  posterRole?: InputMaybe<Scalars['Int']>;
+  posterRole_not?: InputMaybe<Scalars['Int']>;
+  posterRole_gt?: InputMaybe<Scalars['Int']>;
+  posterRole_lt?: InputMaybe<Scalars['Int']>;
+  posterRole_gte?: InputMaybe<Scalars['Int']>;
+  posterRole_lte?: InputMaybe<Scalars['Int']>;
+  posterRole_in?: InputMaybe<Array<Scalars['Int']>>;
+  posterRole_not_in?: InputMaybe<Array<Scalars['Int']>>;
+  entityAddress?: InputMaybe<Scalars['Bytes']>;
+  entityAddress_not?: InputMaybe<Scalars['Bytes']>;
+  entityAddress_gt?: InputMaybe<Scalars['Bytes']>;
+  entityAddress_lt?: InputMaybe<Scalars['Bytes']>;
+  entityAddress_gte?: InputMaybe<Scalars['Bytes']>;
+  entityAddress_lte?: InputMaybe<Scalars['Bytes']>;
+  entityAddress_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  entityAddress_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  entityAddress_contains?: InputMaybe<Scalars['Bytes']>;
+  entityAddress_not_contains?: InputMaybe<Scalars['Bytes']>;
+  postedBy?: InputMaybe<Scalars['Bytes']>;
+  postedBy_not?: InputMaybe<Scalars['Bytes']>;
+  postedBy_gt?: InputMaybe<Scalars['Bytes']>;
+  postedBy_lt?: InputMaybe<Scalars['Bytes']>;
+  postedBy_gte?: InputMaybe<Scalars['Bytes']>;
+  postedBy_lte?: InputMaybe<Scalars['Bytes']>;
+  postedBy_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  postedBy_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  postedBy_contains?: InputMaybe<Scalars['Bytes']>;
+  postedBy_not_contains?: InputMaybe<Scalars['Bytes']>;
+  content?: InputMaybe<Scalars['String']>;
+  content_not?: InputMaybe<Scalars['String']>;
+  content_gt?: InputMaybe<Scalars['String']>;
+  content_lt?: InputMaybe<Scalars['String']>;
+  content_gte?: InputMaybe<Scalars['String']>;
+  content_lte?: InputMaybe<Scalars['String']>;
+  content_in?: InputMaybe<Array<Scalars['String']>>;
+  content_not_in?: InputMaybe<Array<Scalars['String']>>;
+  content_contains?: InputMaybe<Scalars['String']>;
+  content_contains_nocase?: InputMaybe<Scalars['String']>;
+  content_not_contains?: InputMaybe<Scalars['String']>;
+  content_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  content_starts_with?: InputMaybe<Scalars['String']>;
+  content_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  content_not_starts_with?: InputMaybe<Scalars['String']>;
+  content_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  content_ends_with?: InputMaybe<Scalars['String']>;
+  content_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  content_not_ends_with?: InputMaybe<Scalars['String']>;
+  content_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  content_?: InputMaybe<RawMetadata_filter>;
+  contentSchema?: InputMaybe<Scalars['Int']>;
+  contentSchema_not?: InputMaybe<Scalars['Int']>;
+  contentSchema_gt?: InputMaybe<Scalars['Int']>;
+  contentSchema_lt?: InputMaybe<Scalars['Int']>;
+  contentSchema_gte?: InputMaybe<Scalars['Int']>;
+  contentSchema_lte?: InputMaybe<Scalars['Int']>;
+  contentSchema_in?: InputMaybe<Array<Scalars['Int']>>;
+  contentSchema_not_in?: InputMaybe<Array<Scalars['Int']>>;
+  postDecorator?: InputMaybe<Scalars['Int']>;
+  postDecorator_not?: InputMaybe<Scalars['Int']>;
+  postDecorator_gt?: InputMaybe<Scalars['Int']>;
+  postDecorator_lt?: InputMaybe<Scalars['Int']>;
+  postDecorator_gte?: InputMaybe<Scalars['Int']>;
+  postDecorator_lte?: InputMaybe<Scalars['Int']>;
+  postDecorator_in?: InputMaybe<Array<Scalars['Int']>>;
+  postDecorator_not_in?: InputMaybe<Array<Scalars['Int']>>;
+  timestamp?: InputMaybe<Scalars['BigInt']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Update_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Update_filter>>>;
+};
+
+export type Update_orderBy =
+  | 'id'
+  | 'scope'
+  | 'posterRole'
+  | 'entityAddress'
+  | 'postedBy'
+  | 'content'
+  | 'content__id'
+  | 'content__protocol'
+  | 'content__pointer'
+  | 'contentSchema'
+  | 'postDecorator'
+  | 'timestamp';
+
 export type _Block_ = {
   /** The hash of the block */
   hash?: Maybe<Scalars['Bytes']>;
@@ -2752,6 +2926,9 @@ export type ResolversTypes = ResolversObject<{
   Transaction: ResolverTypeWrapper<Transaction>;
   Transaction_filter: Transaction_filter;
   Transaction_orderBy: Transaction_orderBy;
+  Update: ResolverTypeWrapper<Update>;
+  Update_filter: Update_filter;
+  Update_orderBy: Update_orderBy;
   _Block_: ResolverTypeWrapper<_Block_>;
   _Meta_: ResolverTypeWrapper<_Meta_>;
   _SubgraphErrorPolicy_: _SubgraphErrorPolicy_;
@@ -2800,6 +2977,8 @@ export type ResolversParentTypes = ResolversObject<{
   Subscription: {};
   Transaction: Transaction;
   Transaction_filter: Transaction_filter;
+  Update: Update;
+  Update_filter: Update_filter;
   _Block_: _Block_;
   _Meta_: _Meta_;
 }>;
@@ -2944,7 +3123,7 @@ export type GrantShipResolvers<ContextType = MeshContext, ParentType extends Res
   rejectedTime?: Resolver<Maybe<ResolversTypes['BigInt']>, ParentType, ContextType>;
   applicationReviewReason?: Resolver<Maybe<ResolversTypes['RawMetadata']>, ParentType, ContextType>;
   poolId?: Resolver<Maybe<ResolversTypes['BigInt']>, ParentType, ContextType>;
-  hatId?: Resolver<Maybe<ResolversTypes['BigInt']>, ParentType, ContextType>;
+  hatId?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   shipContractAddress?: Resolver<Maybe<ResolversTypes['Bytes']>, ParentType, ContextType>;
   shipLaunched?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   poolActive?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
@@ -3014,6 +3193,8 @@ export type QueryResolvers<ContextType = MeshContext, ParentType extends Resolve
   feedItemEntities?: Resolver<Array<ResolversTypes['FeedItemEntity']>, ParentType, ContextType, RequireFields<QueryfeedItemEntitiesArgs, 'skip' | 'first' | 'subgraphError'>>;
   feedItemEmbed?: Resolver<Maybe<ResolversTypes['FeedItemEmbed']>, ParentType, ContextType, RequireFields<QueryfeedItemEmbedArgs, 'id' | 'subgraphError'>>;
   feedItemEmbeds?: Resolver<Array<ResolversTypes['FeedItemEmbed']>, ParentType, ContextType, RequireFields<QueryfeedItemEmbedsArgs, 'skip' | 'first' | 'subgraphError'>>;
+  update?: Resolver<Maybe<ResolversTypes['Update']>, ParentType, ContextType, RequireFields<QueryupdateArgs, 'id' | 'subgraphError'>>;
+  updates?: Resolver<Array<ResolversTypes['Update']>, ParentType, ContextType, RequireFields<QueryupdatesArgs, 'skip' | 'first' | 'subgraphError'>>;
   grantShip?: Resolver<Maybe<ResolversTypes['GrantShip']>, ParentType, ContextType, RequireFields<QuerygrantShipArgs, 'id' | 'subgraphError'>>;
   grantShips?: Resolver<Array<ResolversTypes['GrantShip']>, ParentType, ContextType, RequireFields<QuerygrantShipsArgs, 'skip' | 'first' | 'subgraphError'>>;
   poolIdLookup?: Resolver<Maybe<ResolversTypes['PoolIdLookup']>, ParentType, ContextType, RequireFields<QuerypoolIdLookupArgs, 'id' | 'subgraphError'>>;
@@ -3053,6 +3234,8 @@ export type SubscriptionResolvers<ContextType = MeshContext, ParentType extends 
   feedItemEntities?: SubscriptionResolver<Array<ResolversTypes['FeedItemEntity']>, "feedItemEntities", ParentType, ContextType, RequireFields<SubscriptionfeedItemEntitiesArgs, 'skip' | 'first' | 'subgraphError'>>;
   feedItemEmbed?: SubscriptionResolver<Maybe<ResolversTypes['FeedItemEmbed']>, "feedItemEmbed", ParentType, ContextType, RequireFields<SubscriptionfeedItemEmbedArgs, 'id' | 'subgraphError'>>;
   feedItemEmbeds?: SubscriptionResolver<Array<ResolversTypes['FeedItemEmbed']>, "feedItemEmbeds", ParentType, ContextType, RequireFields<SubscriptionfeedItemEmbedsArgs, 'skip' | 'first' | 'subgraphError'>>;
+  update?: SubscriptionResolver<Maybe<ResolversTypes['Update']>, "update", ParentType, ContextType, RequireFields<SubscriptionupdateArgs, 'id' | 'subgraphError'>>;
+  updates?: SubscriptionResolver<Array<ResolversTypes['Update']>, "updates", ParentType, ContextType, RequireFields<SubscriptionupdatesArgs, 'skip' | 'first' | 'subgraphError'>>;
   grantShip?: SubscriptionResolver<Maybe<ResolversTypes['GrantShip']>, "grantShip", ParentType, ContextType, RequireFields<SubscriptiongrantShipArgs, 'id' | 'subgraphError'>>;
   grantShips?: SubscriptionResolver<Array<ResolversTypes['GrantShip']>, "grantShips", ParentType, ContextType, RequireFields<SubscriptiongrantShipsArgs, 'skip' | 'first' | 'subgraphError'>>;
   poolIdLookup?: SubscriptionResolver<Maybe<ResolversTypes['PoolIdLookup']>, "poolIdLookup", ParentType, ContextType, RequireFields<SubscriptionpoolIdLookupArgs, 'id' | 'subgraphError'>>;
@@ -3081,6 +3264,19 @@ export type TransactionResolvers<ContextType = MeshContext, ParentType extends R
   blockNumber?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   sender?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
   txHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type UpdateResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Update'] = ResolversParentTypes['Update']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  scope?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  posterRole?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  entityAddress?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
+  postedBy?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
+  content?: Resolver<ResolversTypes['RawMetadata'], ParentType, ContextType>;
+  contentSchema?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  postDecorator?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  timestamp?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -3120,6 +3316,7 @@ export type Resolvers<ContextType = MeshContext> = ResolversObject<{
   RawMetadata?: RawMetadataResolvers<ContextType>;
   Subscription?: SubscriptionResolvers<ContextType>;
   Transaction?: TransactionResolvers<ContextType>;
+  Update?: UpdateResolvers<ContextType>;
   _Block_?: _Block_Resolvers<ContextType>;
   _Meta_?: _Meta_Resolvers<ContextType>;
 }>;
@@ -3294,6 +3491,12 @@ const merger = new(BareMerger as any)({
         },
         location: 'GetShipPoolIdDocument.graphql'
       },{
+        document: GetUpdatesDocument,
+        get rawSDL() {
+          return printWithCache(GetUpdatesDocument);
+        },
+        location: 'GetUpdatesDocument.graphql'
+      },{
         document: GetUserDataDocument,
         get rawSDL() {
           return printWithCache(GetUserDataDocument);
@@ -3358,6 +3561,11 @@ export function getBuiltGraphSDK<TGlobalContext = any, TOperationContext = any>(
 export type BaseShipDataFragment = (
   Pick<GrantShip, 'id' | 'name' | 'status' | 'shipContractAddress' | 'shipApplicationBytesData' | 'owner' | 'balance' | 'totalAvailableFunds' | 'totalAllocated' | 'totalDistributed' | 'totalRoundAmount'>
   & { profileMetadata: Pick<RawMetadata, 'pointer'>, alloProfileMembers?: Maybe<Pick<ProfileMemberGroup, 'addresses'>> }
+);
+
+export type UpdateFragment = (
+  Pick<Update, 'id' | 'postedBy' | 'entityAddress' | 'timestamp'>
+  & { content: Pick<RawMetadata, 'pointer'> }
 );
 
 export type GrantDashFragment = (
@@ -3531,7 +3739,7 @@ export type getShipFundsAvailableQueryVariables = Exact<{
 export type getShipFundsAvailableQuery = { grantShip?: Maybe<Pick<GrantShip, 'totalAvailableFunds'>> };
 
 export type getShipIdByHatIdQueryVariables = Exact<{
-  hatId: Scalars['BigInt'];
+  hatId: Scalars['String'];
 }>;
 
 
@@ -3583,6 +3791,16 @@ export type getShipPoolIdQueryVariables = Exact<{
 
 
 export type getShipPoolIdQuery = { grantShip?: Maybe<Pick<GrantShip, 'poolId'>> };
+
+export type getUpdatesQueryVariables = Exact<{
+  entityAddress: Scalars['Bytes'];
+}>;
+
+
+export type getUpdatesQuery = { updates: Array<(
+    Pick<Update, 'id' | 'postedBy' | 'entityAddress' | 'timestamp'>
+    & { content: Pick<RawMetadata, 'pointer'> }
+  )> };
 
 export type getUserDataQueryVariables = Exact<{
   id?: InputMaybe<Scalars['Bytes']>;
@@ -3646,6 +3864,17 @@ export const BaseShipDataFragmentDoc = gql`
   totalRoundAmount
 }
     ` as unknown as DocumentNode<BaseShipDataFragment, unknown>;
+export const UpdateFragmentDoc = gql`
+    fragment Update on Update {
+  id
+  content {
+    pointer
+  }
+  postedBy
+  entityAddress
+  timestamp
+}
+    ` as unknown as DocumentNode<UpdateFragment, unknown>;
 export const GrantDashFragmentDoc = gql`
     fragment GrantDash on Grant {
   id
@@ -3903,7 +4132,7 @@ export const getShipFundsAvailableDocument = gql`
 }
     ` as unknown as DocumentNode<getShipFundsAvailableQuery, getShipFundsAvailableQueryVariables>;
 export const getShipIdByHatIdDocument = gql`
-    query getShipIdByHatId($hatId: BigInt!) {
+    query getShipIdByHatId($hatId: String!) {
   grantShips(where: {hatId: $hatId}) {
     id
   }
@@ -3936,6 +4165,13 @@ export const getShipPoolIdDocument = gql`
   }
 }
     ` as unknown as DocumentNode<getShipPoolIdQuery, getShipPoolIdQueryVariables>;
+export const getUpdatesDocument = gql`
+    query getUpdates($entityAddress: Bytes!) {
+  updates(where: {entityAddress: $entityAddress}) {
+    ...Update
+  }
+}
+    ${UpdateFragmentDoc}` as unknown as DocumentNode<getUpdatesQuery, getUpdatesQueryVariables>;
 export const getUserDataDocument = gql`
     query getUserData($id: Bytes) {
   projects(where: {owner: $id}) {
@@ -4002,6 +4238,7 @@ export const ShipsPageQueryDocument = gql`
 
 
 
+
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
@@ -4046,6 +4283,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     getShipPoolId(variables: getShipPoolIdQueryVariables, options?: C): Promise<getShipPoolIdQuery> {
       return requester<getShipPoolIdQuery, getShipPoolIdQueryVariables>(getShipPoolIdDocument, variables, options) as Promise<getShipPoolIdQuery>;
+    },
+    getUpdates(variables: getUpdatesQueryVariables, options?: C): Promise<getUpdatesQuery> {
+      return requester<getUpdatesQuery, getUpdatesQueryVariables>(getUpdatesDocument, variables, options) as Promise<getUpdatesQuery>;
     },
     getUserData(variables?: getUserDataQueryVariables, options?: C): Promise<getUserDataQuery> {
       return requester<getUserDataQuery, getUserDataQueryVariables>(getUserDataDocument, variables, options) as Promise<getUserDataQuery>;

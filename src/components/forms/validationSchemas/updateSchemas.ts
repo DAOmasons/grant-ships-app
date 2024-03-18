@@ -4,7 +4,7 @@ export enum ContentSchema {
   BasicUpdate, // { text: string, contentSchema: ContentSchema.BasicUpdate }
 }
 
-export const updateSchema = z.object({
+export const basicUpdateSchema = z.object({
   text: z.string().min(1, { message: 'Text is required' }),
   contentSchema: z.literal(ContentSchema.BasicUpdate),
 });

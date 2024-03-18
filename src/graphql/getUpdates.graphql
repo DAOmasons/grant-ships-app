@@ -1,0 +1,5 @@
+query getUpdates($entityAddress: Bytes!) {
+  updates(where: { entityAddress: $entityAddress }) {
+    ...Update
+  }
+}
