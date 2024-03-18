@@ -12,6 +12,18 @@ import { useQuery } from '@tanstack/react-query';
 import { DashShip, getShipDash } from '../queries/getShipDash';
 import { AppAlert } from '../components/UnderContruction';
 import { GrantCard } from '../components/dashboard/GrantCard';
+import { useTx } from '../hooks/useTx';
+import { notifications } from '@mantine/notifications';
+import { UpdateInput } from '../components/forms/UpdateInput';
+import { pinJSONToIPFS } from '../utils/ipfs/pin';
+import {
+  ContentSchema,
+  basicUpdateSchema,
+} from '../components/forms/validationSchemas/updateSchemas';
+import ShipAbi from '../abi/GrantShip.json';
+import { Tag } from '../constants/tags';
+import { Address } from 'viem';
+import { ZER0_ADDRESS } from '../constants/gameSetup';
 
 export const ShipOpDashboard = () => {
   const { id } = useParams();
@@ -64,10 +76,7 @@ export const ShipOpDashboard = () => {
           />
         </Tabs.Panel>
         <Tabs.Panel value="postUpdate">
-          <AppAlert
-            title={'Under Contruction'}
-            description={"This feature isn't built yet. Check back soon."}
-          />
+          <PostUpdatePanel ship={shipData} />
         </Tabs.Panel>
       </Tabs>
     </MainSection>
@@ -126,5 +135,73 @@ export const GrantManager = ({
         <GrantCard key={grant.id} grant={grant} view="ship-dash" />
       ))}
     </Stack>
+  );
+};
+
+const PostUpdatePanel = ({ ship }: { ship?: DashShip }) => {
+  const { tx } = useTx();
+
+  const handlePostUpdate = async (text: string) => {
+    if (!ship || !ship.shipContractAddress) {
+      notifications.show({
+        title: 'Error',
+        message: 'Ship ID is missing',
+        color: 'red',
+      });
+
+      return;
+    }
+
+    if (text === '' || text === null) {
+      notifications.show({
+        title: 'Error',
+        message: 'Update text is missing',
+        color: 'red',
+      });
+
+      return;
+    }
+
+    const metadata = basicUpdateSchema.safeParse({
+      text,
+      contentSchema: ContentSchema.BasicUpdate,
+    });
+
+    if (!metadata.success) {
+      notifications.show({
+        title: 'Validation Error',
+        message: "Update text doesn't match the schema",
+        color: 'red',
+      });
+
+      return;
+    }
+
+    const pinRes = await pinJSONToIPFS(metadata.data);
+
+    if (typeof pinRes.IpfsHash !== 'string' && pinRes.IpfsHash[0] !== 'Q') {
+      notifications.show({
+        title: 'IPFS Upload Error',
+        message: pinRes.IpfsHash[1],
+        color: 'red',
+      });
+      return;
+    }
+
+    tx({
+      writeContractParams: {
+        abi: ShipAbi,
+        functionName: 'postUpdate',
+        address: ship?.shipContractAddress as Address,
+        args: [Tag.ShipPostUpdate, [1n, pinRes.IpfsHash], ZER0_ADDRESS],
+      },
+    });
+  };
+
+  return (
+    <UpdateInput
+      imgUrl={ship?.profileMetadata.imgUrl}
+      onClick={handlePostUpdate}
+    />
   );
 };
