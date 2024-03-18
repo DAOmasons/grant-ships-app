@@ -166,7 +166,11 @@ export const Ship = () => {
             <DetailsPanel details={ship.details} members={ship.members} />
           </Tabs.Panel>
           <Tabs.Panel value="updates">
-            <UpdatesPanel ship={ship} isShipOperator={isShipOperator} />
+            <UpdatesPanel
+              ship={ship}
+              isShipOperator={isShipOperator}
+              shipId={id}
+            />
           </Tabs.Panel>
           <Tabs.Panel value="portfolio">
             <PortfolioPanel />
