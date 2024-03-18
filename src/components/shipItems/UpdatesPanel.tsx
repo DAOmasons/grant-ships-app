@@ -32,6 +32,7 @@ export const UpdatesPanel = ({
     data: posts,
     isLoading,
     error,
+    refetch,
   } = useQuery({
     queryKey: [`ship-updates-${shipId}`],
     queryFn: () => getUpdates(shipId as string),
@@ -41,7 +42,7 @@ export const UpdatesPanel = ({
   const theme = useMantineTheme();
   const { tx } = useTx();
 
-  const handlePostUpdate = async (text: string) => {
+  const handlePostUpdate = async (text: string, clear: () => void) => {
     if (!ship || !ship.shipContractAddress) {
       notifications.show({
         title: 'Error',
@@ -94,6 +95,10 @@ export const UpdatesPanel = ({
         functionName: 'postUpdate',
         address: ship?.shipContractAddress as Address,
         args: [Tag.ShipPostUpdate, [1n, pinRes.IpfsHash], ZER0_ADDRESS],
+      },
+      onComplete() {
+        refetch();
+        clear?.();
       },
     });
   };

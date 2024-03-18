@@ -141,7 +141,7 @@ export const GrantManager = ({
 const PostUpdatePanel = ({ ship }: { ship?: DashShip }) => {
   const { tx } = useTx();
 
-  const handlePostUpdate = async (text: string) => {
+  const handlePostUpdate = async (text: string, clear: () => void) => {
     if (!ship || !ship.shipContractAddress) {
       notifications.show({
         title: 'Error',
@@ -194,6 +194,9 @@ const PostUpdatePanel = ({ ship }: { ship?: DashShip }) => {
         functionName: 'postUpdate',
         address: ship?.shipContractAddress as Address,
         args: [Tag.ShipPostUpdate, [1n, pinRes.IpfsHash], ZER0_ADDRESS],
+      },
+      onComplete() {
+        clear?.();
       },
     });
   };

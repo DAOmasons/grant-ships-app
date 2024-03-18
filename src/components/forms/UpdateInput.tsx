@@ -8,12 +8,16 @@ export const UpdateInput = ({
 }: {
   imgUrl?: string;
   disabled?: boolean;
-  onClick: (text: string) => void;
+  onClick: (text: string, clear: () => void) => void;
 }) => {
   const [text, setText] = useState('');
 
+  const clear = () => {
+    setText('');
+  };
+
   const handleSubmit = () => {
-    onClick(text);
+    onClick(text, clear);
   };
   return (
     <>
