@@ -110,7 +110,7 @@ export const ProjectUpdatesPanel = ({
         abi: ShipAbi,
         functionName: 'postUpdate',
         address: shipContractAddress as Address,
-        args: [Tag.ShipPostUpdate, [1n, pinRes.IpfsHash], ZER0_ADDRESS],
+        args: [Tag.ShipPostUpdate, [1n, pinRes.IpfsHash], project.id],
       },
       onComplete() {
         refetch();
