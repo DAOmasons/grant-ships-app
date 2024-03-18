@@ -65,7 +65,6 @@ export const ShipCard = ({
                 <Text fz="sm" mr="-6">
                   {GameStatus[status]}
                 </Text>
-
                 <IconInfoCircle
                   size={16}
                   style={{ transform: 'translateY(-1px)' }}

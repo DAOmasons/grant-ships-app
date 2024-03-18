@@ -33,6 +33,7 @@ import { SingleItemPageSkeleton } from '../components/skeletons';
 import { getEntityFeed } from '../queries/getFeed';
 import { formatEther } from 'viem';
 import { useUserData } from '../hooks/useUserState';
+import { UpdatesPanel } from '../components/shipItems/UpdatesPanel';
 
 export const Ship = () => {
   const theme = useMantineTheme();
@@ -141,13 +142,16 @@ export const Ship = () => {
         </Group>
         <Tabs defaultValue="feed">
           <Tabs.List mb={'xl'}>
-            <Tabs.Tab value="feed" w="20%">
+            <Tabs.Tab value="feed" w="6rem">
               Feed
             </Tabs.Tab>
-            <Tabs.Tab w="20%" value="details">
+            <Tabs.Tab w="6rem" value="details">
               Details
             </Tabs.Tab>
-            <Tabs.Tab w="20%" value="portfolio">
+            <Tabs.Tab w="6rem" value="updates">
+              Updates
+            </Tabs.Tab>
+            <Tabs.Tab w="6rem" value="portfolio">
               Portfolio
             </Tabs.Tab>
           </Tabs.List>
@@ -160,6 +164,9 @@ export const Ship = () => {
           </Tabs.Panel>
           <Tabs.Panel value="details">
             <DetailsPanel details={ship.details} members={ship.members} />
+          </Tabs.Panel>
+          <Tabs.Panel value="updates">
+            <UpdatesPanel ship={ship} isShipOperator={isShipOperator} />
           </Tabs.Panel>
           <Tabs.Panel value="portfolio">
             <PortfolioPanel />
