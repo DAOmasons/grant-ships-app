@@ -1,5 +1,5 @@
 import { Box, useMantineTheme } from '@mantine/core';
-import { ShipPageUI } from '../../types/ui';
+import { Player, ShipPageUI } from '../../types/ui';
 import { UpdateInput } from '../forms/UpdateInput';
 import { useTx } from '../../hooks/useTx';
 import { notifications } from '@mantine/notifications';
@@ -124,9 +124,31 @@ export const UpdatesPanel = ({
   return (
     <Box>
       {isShipOperator && (
-        <UpdateInput imgUrl={ship?.imgUrl} onClick={handlePostUpdate} />
+        <Box mb="md">
+          <UpdateInput imgUrl={ship?.imgUrl} onClick={handlePostUpdate} />
+        </Box>
       )}
-      {/* {posts?.length ? <FeedCard subject={} object={} con/>} */}
+      {posts?.length ? (
+        posts.map((post) => (
+          <FeedCard
+            timestamp={post.timestamp}
+            sender={post.postedBy}
+            subject={{
+              name: ship?.name as string,
+              id: shipId as string,
+              imgUrl: ship?.imgUrl,
+              entityType: Player.Ship,
+            }}
+            content={post.content.text}
+          />
+        ))
+      ) : (
+        <AppAlert
+          title="No updates"
+          description="No updates to show"
+          color={theme.colors.gray[6]}
+        />
+      )}
     </Box>
   );
 };
