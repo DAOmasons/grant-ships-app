@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Box,
   Flex,
   Group,
   Paper,
@@ -30,6 +31,7 @@ import { getProjectGrants } from '../queries/getProjectGrants';
 import { DashGrant } from '../resolvers/grantResolvers';
 import { useMemo } from 'react';
 import { useUserData } from '../hooks/useUserState';
+import { ProjectUpdatesPanel } from '../components/projectItems/ProjectUpdatesPanel';
 
 export const Project = () => {
   const { id } = useParams();
@@ -145,19 +147,24 @@ export const Project = () => {
         <Text fz="sm" mb={'md'} className="ws-pre-wrap">
           {project.description}
         </Text>
-        <AddressAvatarGroup
-          addresses={project.members}
-          avatarProps={{ size: 32 }}
-        />
+        <Box mb="xl">
+          <AddressAvatarGroup
+            addresses={project.members}
+            avatarProps={{ size: 32 }}
+          />
+        </Box>
         <Tabs defaultValue="feed">
           <Tabs.List mb={'xl'}>
-            <Tabs.Tab value="feed" w="20%">
+            <Tabs.Tab value="feed" w="6rem">
               Feed
             </Tabs.Tab>
-            <Tabs.Tab w="20%" value="grants">
+            <Tabs.Tab w="6rem" value="updates">
+              Updates
+            </Tabs.Tab>
+            <Tabs.Tab w="6rem" value="grants">
               Grants
             </Tabs.Tab>
-            <Tabs.Tab w="20%" value="details">
+            <Tabs.Tab w="6rem" value="details">
               Contact
             </Tabs.Tab>
           </Tabs.List>
@@ -176,6 +183,13 @@ export const Project = () => {
                 error={grantsError}
               />
             )}
+          </Tabs.Panel>
+          <Tabs.Panel value="updates">
+            <ProjectUpdatesPanel
+              grants={grants}
+              project={project}
+              isProjectMember={isProjectMember}
+            />
           </Tabs.Panel>
           <Tabs.Panel value="details">
             <Contact

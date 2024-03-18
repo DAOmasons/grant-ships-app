@@ -101,7 +101,7 @@ export const Ship = () => {
       <MainSection maw={600}>
         <PageTitle title={ship.name} />
         <Avatar size={160} mt={'xl'} mb="md" src={ship.imgUrl} />
-        <Group gap={'xs'} mb="md">
+        <Group gap={'xs'} mb="xs">
           <Text fz="lg" fw={600}>
             {ship.name}
           </Text>
@@ -145,14 +145,14 @@ export const Ship = () => {
             <Tabs.Tab value="feed" w="6rem">
               Feed
             </Tabs.Tab>
-            <Tabs.Tab w="6rem" value="details">
-              Details
-            </Tabs.Tab>
             <Tabs.Tab w="6rem" value="updates">
               Updates
             </Tabs.Tab>
             <Tabs.Tab w="6rem" value="portfolio">
               Portfolio
+            </Tabs.Tab>
+            <Tabs.Tab w="6rem" value="details">
+              Details
             </Tabs.Tab>
           </Tabs.List>
           <Tabs.Panel value="feed">
