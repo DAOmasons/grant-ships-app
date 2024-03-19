@@ -121,8 +121,13 @@ export const MilestoneBuilder = ({
           return false;
         }
 
+        const scaleFactor = BigInt(1e18);
+        const formPercentageBigInt = BigInt(formPercentage * 1e6);
+
         const solidityPercentage = BigInt(
-          formPercentage === 0 ? 0 : (formPercentage / 100) * 1e18
+          formPercentageBigInt === 0n
+            ? 0n
+            : (formPercentageBigInt * scaleFactor) / BigInt(1e6 * 100)
         );
 
         const pinRes = await pinJSONToIPFS({

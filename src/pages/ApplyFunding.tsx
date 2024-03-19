@@ -145,7 +145,6 @@ export const ApplyFunding = () => {
           'Amount Exceeds Available Ship Funds'
         );
       } else {
-        console.log('fired');
         form.clearFieldError('totalAmount');
       }
     }
