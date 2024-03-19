@@ -4,7 +4,6 @@ import { UpdateInput } from '../forms/UpdateInput';
 import { useTx } from '../../hooks/useTx';
 import { notifications } from '@mantine/notifications';
 import { Tag } from '../../constants/tags';
-import { ZER0_ADDRESS } from '../../constants/gameSetup';
 import ShipAbi from '../../abi/GrantShip.json';
 import { Address } from 'viem';
 import { pinJSONToIPFS } from '../../utils/ipfs/pin';
@@ -110,7 +109,7 @@ export const ProjectUpdatesPanel = ({
         abi: ShipAbi,
         functionName: 'postUpdate',
         address: shipContractAddress as Address,
-        args: [Tag.ShipPostUpdate, [1n, pinRes.IpfsHash], project.id],
+        args: [Tag.ProjectPostUpdate, [1n, pinRes.IpfsHash], project.id],
       },
       onComplete() {
         refetch();

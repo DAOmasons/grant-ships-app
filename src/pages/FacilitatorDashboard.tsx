@@ -15,6 +15,7 @@ import { arbitrumSepolia } from 'viem/chains';
 import { ADDR } from '../constants/addresses';
 import { GameStatus } from '../types/common';
 import { ProjectApproval } from '../components/dashboard/facilitator/ProjectApproval';
+import { FacPostUpdatePanel } from '../components/dashboard/facilitator/FacPostUpdatePanel';
 
 export const FacilitatorDashboard = () => {
   const { data: shipData, isLoading: shipsLoading } = useQuery({
@@ -99,7 +100,7 @@ export const FacilitatorDashboard = () => {
           <Tabs.Tab value="game-manager">Game</Tabs.Tab>
           <Tabs.Tab value="ships">Ships</Tabs.Tab>
           <Tabs.Tab value="projects">Approvals</Tabs.Tab>
-          <Tabs.Tab value="hats">Post</Tabs.Tab>
+          <Tabs.Tab value="post">Post</Tabs.Tab>
         </Tabs.List>
         <Tabs.Panel value="ships">
           <FacilitatorShipDash
@@ -119,11 +120,8 @@ export const FacilitatorDashboard = () => {
         <Tabs.Panel value="projects">
           <ProjectApproval />
         </Tabs.Panel>
-        <Tabs.Panel value="hats">
-          <AppAlert
-            title="This Feature is under construction."
-            description="Check back soon to try it out!"
-          />
+        <Tabs.Panel value="post">
+          <FacPostUpdatePanel />
         </Tabs.Panel>
       </Tabs>
     </MainSection>
