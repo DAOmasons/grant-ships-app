@@ -17,6 +17,7 @@ import { FundingIndicator } from './FundingIndicator';
 import { GameStatus } from '../../types/common';
 import { ShipsCardUI } from '../../types/ui';
 import { useUserData } from '../../hooks/useUserState';
+import { SHIP_STATUS_INFO } from '../../constants/copy';
 
 export const ShipCard = ({
   id,
@@ -64,14 +65,19 @@ export const ShipCard = ({
                   </Tooltip>
                 )}
               </Group>
-              <Group>
-                <Text fz="sm" mr="-6">
-                  {GameStatus[status]}
-                </Text>
-                <IconInfoCircle
-                  size={16}
-                  style={{ transform: 'translateY(-1px)' }}
-                />
+              <Group gap={4}>
+                <Text fz="sm">{GameStatus[status]}</Text>
+                <Tooltip
+                  label={
+                    SHIP_STATUS_INFO[status as GameStatus] || 'Copy not found'
+                  }
+                >
+                  <IconInfoCircle
+                    size={16}
+                    style={{ transform: 'translateY(-1px)' }}
+                    color={theme.colors.violet[6]}
+                  />
+                </Tooltip>
               </Group>
             </Box>
             {isGameActive && (

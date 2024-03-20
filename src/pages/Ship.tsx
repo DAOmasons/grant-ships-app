@@ -34,6 +34,7 @@ import { getEntityFeed } from '../queries/getFeed';
 import { formatEther } from 'viem';
 import { useUserData } from '../hooks/useUserState';
 import { UpdatesPanel } from '../components/shipItems/UpdatesPanel';
+import { SHIP_STATUS_INFO } from '../constants/copy';
 
 export const Ship = () => {
   const theme = useMantineTheme();
@@ -122,7 +123,9 @@ export const Ship = () => {
         </Group>
         <Group mb="xs" gap={6}>
           <Text>{GameStatus[ship.status]}</Text>
-          <IconInfoCircle size={18} color={theme.colors.violet[6]} />
+          <Tooltip label={SHIP_STATUS_INFO[ship.status]}>
+            <IconInfoCircle size={18} color={theme.colors.violet[6]} />
+          </Tooltip>
         </Group>
         <Text fz="sm" mb={'md'} mih={60}>
           {ship.description}
@@ -216,11 +219,13 @@ export const Ship = () => {
               ? 'Funding Available'
               : 'Not Funded'}
           </Text>
-          <FundingIndicator
-            available={ship.amtAvailable}
-            distributed={ship.amtDistributed}
-            allocated={ship.amtAllocated}
-          />
+          {ship.status >= GameStatus.Active && (
+            <FundingIndicator
+              available={ship.amtAvailable}
+              distributed={ship.amtDistributed}
+              allocated={ship.amtAllocated}
+            />
+          )}
         </Paper>
       </Stack>
     </Flex>
