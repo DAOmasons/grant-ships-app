@@ -1,8 +1,7 @@
-import { Box, Button, Group, Paper, Tabs, Text } from '@mantine/core';
+import { Box, Tabs } from '@mantine/core';
 import { Feed } from '../components/feed/Feed';
 import { MainSection } from '../layout/Sections';
 import { AppAlert } from '../components/UnderContruction';
-import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { getFeed } from '../queries/getFeed';
 import { FeedSkeletonCard } from '../components/skeletons';

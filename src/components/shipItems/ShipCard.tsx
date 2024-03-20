@@ -27,13 +27,16 @@ export const ShipCard = ({
   amtAllocated,
   amtDistributed,
   amtAvailable,
-}: ShipsCardUI) => {
+  gameStatus,
+}: ShipsCardUI & { gameStatus: GameStatus }) => {
   const theme = useMantineTheme();
   const navigate = useNavigate();
   const { userData } = useUserData();
 
   const isShipOperator =
     userData && userData.isShipOperator && userData.shipAddress === id;
+
+  const isGameActive = gameStatus === GameStatus.Active;
 
   return (
     <Paper
@@ -71,17 +74,20 @@ export const ShipCard = ({
                 />
               </Group>
             </Box>
-            <FundingIndicator
-              allocated={amtAllocated}
-              distributed={amtDistributed}
-              available={amtAvailable}
-            />
+            {isGameActive && (
+              <FundingIndicator
+                allocated={amtAllocated}
+                distributed={amtDistributed}
+                available={amtAvailable}
+              />
+            )}
           </Flex>
           <Text size="sm" mb="md" h={60} lineClamp={3}>
             {description}
           </Text>
           <Group>
             <Button
+              disabled={!isGameActive}
               onClick={(e) => {
                 e.stopPropagation();
                 navigate(`/apply-funding/${id}`);

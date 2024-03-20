@@ -5,7 +5,6 @@ import { useQuery } from '@tanstack/react-query';
 import { getFacDashShipData } from '../queries/getFacDashShipData';
 import { FacilitatorShipDash } from '../components/dashboard/facilitator/FacilitatorShipDash';
 import { FacilitatorGameDash } from '../components/dashboard/facilitator/FacilitatorGameDash';
-import { AppAlert } from '../components/UnderContruction';
 import { useGameManager } from '../hooks/useGameMangers';
 import GameManagerAbi from '../abi/GameManager.json';
 import { useMemo } from 'react';
