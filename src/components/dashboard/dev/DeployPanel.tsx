@@ -11,17 +11,32 @@ import {
 import { GmVersion } from '../../../queries/getGameManagerVersions';
 import { useState } from 'react';
 import { useReadContract } from 'wagmi';
-import { Address, erc20Abi } from 'viem';
+import {
+  Address,
+  encodeAbiParameters,
+  erc20Abi,
+  parseAbiParameters,
+} from 'viem';
 import { GAME_TOKEN, HATS } from '../../../constants/gameSetup';
 import { useForm } from '@mantine/form';
+import { z } from 'zod';
+import { deployGmSchema } from '../../forms/validationSchemas/deployGmSchema';
+import { useTx } from '../../../hooks/useTx';
+import GameManagerFactory from '../../../abi/GameManagerFactory.json';
+import { ADDR } from '../../../constants/addresses';
+import { generateRandomUint256 } from '../../../utils/helpers';
+import { pinJSONToIPFS } from '../../../utils/ipfs/pin';
+import { notifications } from '@mantine/notifications';
 
 const defaultFormValues = {
-  versionName: null,
+  versionName: '',
   tokenAddress: GAME_TOKEN.ADDRESS,
   facilitatorHatId: HATS.FACILITATOR.toString(),
   gmTitle: '',
   gmDescription: '',
 };
+
+type FormValues = z.infer<typeof deployGmSchema>;
 
 export const DeploymentPanel = ({
   versions,
@@ -36,6 +51,8 @@ export const DeploymentPanel = ({
     initialValues: defaultFormValues,
     validateInputOnBlur: true,
   });
+
+  const { tx } = useTx();
 
   const [versionName, setVersionName] = useState<null | string>(null);
 
@@ -59,17 +76,73 @@ export const DeploymentPanel = ({
     return <div>No versions available for deployment</div>;
   }
 
-  const handleCreateWithPool = () => {
-    // bytes memory initData = abi.encode(facilitatorHatId, hatsAddress, rootAccount);
-    // vm.startPrank(rootAccount);
-    // address cloneAddress = _gameManagerFactory.cloneWithPool(
-    //     gameManagerStrategyId, 0, dummyMetadata, dummyMetadata, initData, arbAddress
-    // );
-    // vm.stopPrank();
-    // GameManagerStrategy gameManagerStrategy = GameManagerStrategy(payable(cloneAddress));
-    // assertEq(gameManagerStrategy.gameFacilitatorHatId(), facilitatorHatId);
-    // assertEq(gameManagerStrategy.rootAccount(), rootAccount);
-    // assertEq(gameManagerStrategy.token(), arbAddress);
+  const handleCreateWithPool = async (formValues: FormValues) => {
+    const {
+      versionName,
+      tokenAddress,
+      facilitatorHatId,
+      gmTitle,
+      gmDescription,
+    } = formValues;
+
+    if (
+      !versionName ||
+      !tokenAddress ||
+      !facilitatorHatId ||
+      !gmTitle ||
+      !gmDescription
+    ) {
+      notifications.show({
+        title: 'Error',
+        message: 'All fields are required',
+        color: 'red',
+      });
+      return;
+    }
+
+    try {
+      const initData = encodeAbiParameters(
+        parseAbiParameters('uint256, address, address'),
+        [BigInt(facilitatorHatId), tokenAddress as Address, ADDR.HATS]
+      );
+
+      const pinRes = await pinJSONToIPFS({
+        title: gmTitle,
+        description: gmDescription,
+      });
+
+      if (typeof pinRes.IpfsHash !== 'string' && pinRes.IpfsHash[0] !== 'Q') {
+        notifications.show({
+          title: 'IPFS Upload Error',
+          message: pinRes.IpfsHash[1],
+          color: 'red',
+        });
+        return;
+      }
+
+      tx({
+        writeContractParams: {
+          abi: GameManagerFactory,
+          address: ADDR.GM_FACTORY,
+          functionName: 'cloneWithPool',
+          args: [
+            versionName,
+            generateRandomUint256(),
+            [0n, ''],
+            [1n, pinRes.IpfsHash],
+            initData,
+            tokenAddress,
+          ],
+        },
+      });
+    } catch (error: any) {
+      console.error(error);
+      notifications.show({
+        title: 'Error',
+        message: error?.message || 'Unknown error: Open Console',
+        color: 'red',
+      });
+    }
   };
 
   return (
@@ -84,6 +157,7 @@ export const DeploymentPanel = ({
             value={versionName}
             data={versions?.map((v) => v.name)}
             onChange={(v) => setVersionName(v)}
+            {...form.getInputProps('versionName')}
             placeholder="Select a version"
             required
           />
@@ -97,8 +171,8 @@ export const DeploymentPanel = ({
           <Textarea
             label="Game Description"
             placeholder="Enter the game description"
-            value={form.values.gmTitle}
-            {...form.getInputProps('gmTitle')}
+            value={form.values.gmDescription}
+            {...form.getInputProps('gmDescription')}
             required
             autosize
             minRows={4}
@@ -121,7 +195,9 @@ export const DeploymentPanel = ({
           />
         </Stack>
         <Group justify="end">
-          <Button onClick={handleCreateWithPool}>Deploy</Button>
+          <Button onClick={() => handleCreateWithPool(form.values)}>
+            Deploy
+          </Button>
         </Group>
       </form>
     </Box>
