@@ -28,6 +28,12 @@
         "internalType": "address",
         "name": "gameManagerAddress",
         "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "templateName",
+        "type": "string"
       }
     ],
     "name": "GameManagerDeployed",
@@ -53,6 +59,24 @@
         "internalType": "uint256",
         "name": "poolId",
         "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "templateName",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "tokenAddress",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes",
+        "name": "initData",
+        "type": "bytes"
       }
     ],
     "name": "GameManagerDeployedWithPool",

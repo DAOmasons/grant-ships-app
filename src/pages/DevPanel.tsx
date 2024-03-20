@@ -3,6 +3,7 @@ import { Tabs } from '@mantine/core';
 import { useQuery } from '@tanstack/react-query';
 import { getGameManagerVersions } from '../queries/getGameManagerVersions';
 import { VersionsPanel } from '../components/dashboard/dev/VersionPanel';
+import { DeploymentPanel } from '../components/dashboard/dev/DeployPanel';
 
 export const DevPanel = () => {
   const {
@@ -19,9 +20,9 @@ export const DevPanel = () => {
     <MainSection>
       <PageTitle title="Developer Panel" />
       <PageDescription description="Control panel for managing GameManager verions " />
-      <Tabs defaultValue="versions">
+      <Tabs defaultValue="deploy">
         <Tabs.List mb="xl">
-          <Tabs.Tab px={'lg'} value="deployment">
+          <Tabs.Tab px={'lg'} value="deploy">
             Deploy
           </Tabs.Tab>
           <Tabs.Tab px={'lg'} value="versions">
@@ -36,8 +37,12 @@ export const DevPanel = () => {
             refetch={refetch}
           />
         </Tabs.Panel>
-        <Tabs.Panel value="deployment">
-          <div>Deployment</div>
+        <Tabs.Panel value="deploy">
+          <DeploymentPanel
+            versions={versions}
+            versionError={error}
+            versionLoading={isLoading}
+          />
         </Tabs.Panel>
       </Tabs>
     </MainSection>

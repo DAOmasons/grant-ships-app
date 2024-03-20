@@ -8,6 +8,7 @@ import { VersionForm } from './VersionForm';
 import { IconExternalLink } from '@tabler/icons-react';
 import { SCAN_URL } from '../../../constants/enpoints';
 import GameManagerFactory from '../../../abi/GameManagerFactory.json';
+import { GmVersion } from '../../../queries/getGameManagerVersions';
 
 export const VersionsPanel = ({
   versions,
@@ -15,7 +16,7 @@ export const VersionsPanel = ({
   refetch,
   isLoading,
 }: {
-  versions?: any[];
+  versions?: GmVersion[];
   error: Error | null;
   isLoading: boolean;
   refetch: () => void;
