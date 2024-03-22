@@ -5,6 +5,7 @@ import { getGameManagerVersions } from '../queries/getGameManagerVersions';
 import { VersionsPanel } from '../components/dashboard/dev/VersionPanel';
 import { DeploymentPanel } from '../components/dashboard/dev/DeployPanel';
 import { getGameManagerDeployments } from '../queries/getGmDeploymnets';
+import { DeploymentsPanel } from '../components/dashboard/dev/DeploymentsPanel';
 
 export const DevPanel = () => {
   const {
@@ -59,7 +60,13 @@ export const DevPanel = () => {
             deploysRefetch={refetchDeploys}
           />
         </Tabs.Panel>
-        <Tabs.Panel value="deployments">deployments</Tabs.Panel>
+        <Tabs.Panel value="deployments">
+          <DeploymentsPanel
+            deploys={deploys}
+            error={deploysError}
+            isLoading={deploysLoading}
+          />
+        </Tabs.Panel>
       </Tabs>
     </MainSection>
   );

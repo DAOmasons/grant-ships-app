@@ -44,3 +44,8 @@ export const grantApplicationMetadata = z.object({
 export const reasonSchema = z.object({
   reason: z.string(),
 });
+
+export const gmDeploymentMetadata = z.object({
+  title: z.string(),
+  description: z.string(),
+});
