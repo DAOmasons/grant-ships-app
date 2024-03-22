@@ -9,7 +9,6 @@ import {
   Textarea,
 } from '@mantine/core';
 import { GmVersion } from '../../../queries/getGameManagerVersions';
-import { useState } from 'react';
 import { useReadContract } from 'wagmi';
 import {
   Address,
@@ -18,7 +17,7 @@ import {
   parseAbiParameters,
 } from 'viem';
 import { GAME_TOKEN, HATS } from '../../../constants/gameSetup';
-import { useForm } from '@mantine/form';
+import { useForm, zodResolver } from '@mantine/form';
 import { z } from 'zod';
 import { deployGmSchema } from '../../forms/validationSchemas/deployGmSchema';
 import { useTx } from '../../../hooks/useTx';
@@ -42,19 +41,20 @@ export const DeploymentPanel = ({
   versions,
   versionError,
   versionLoading,
+  deploysRefetch,
 }: {
   versions?: GmVersion[];
   versionError: Error | null;
   versionLoading: boolean;
+  deploysRefetch: () => void;
 }) => {
   const form = useForm({
     initialValues: defaultFormValues,
     validateInputOnBlur: true,
+    validate: zodResolver(deployGmSchema),
   });
 
   const { tx } = useTx();
-
-  const [versionName, setVersionName] = useState<null | string>(null);
 
   const result = useReadContract({
     abi: erc20Abi,
@@ -134,6 +134,15 @@ export const DeploymentPanel = ({
             tokenAddress,
           ],
         },
+        onComplete: () => {
+          deploysRefetch();
+          form.reset();
+          notifications.show({
+            title: 'Success',
+            message: 'Game Manager Deployed',
+            color: 'green',
+          });
+        },
       });
     } catch (error: any) {
       console.error(error);
@@ -148,15 +157,17 @@ export const DeploymentPanel = ({
   return (
     <Box p="md">
       <Text mb="md" fw={700}>
-        Deploy
+        Deploy With Pool
+      </Text>
+      <Text fz="sm" opacity={0.8} mb="md">
+        Deploy a new game manager with a pool, which initializes the game with a
+        new Allo pool and pool profile.
       </Text>
       <form>
         <Stack mb="xl">
           <Select
             label="Game Manager Version"
-            value={versionName}
             data={versions?.map((v) => v.name)}
-            onChange={(v) => setVersionName(v)}
             {...form.getInputProps('versionName')}
             placeholder="Select a version"
             required

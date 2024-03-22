@@ -679,7 +679,7 @@ export type GameRound_orderBy =
   | 'realStartTime'
   | 'realEndTime';
 
-export type GmDeployments = {
+export type GmDeployment = {
   id: Scalars['ID'];
   address: Scalars['Bytes'];
   version: GmVersion;
@@ -689,9 +689,11 @@ export type GmDeployments = {
   hasPool: Scalars['Boolean'];
   poolId?: Maybe<Scalars['BigInt']>;
   profileId: Scalars['Bytes'];
+  poolMetadata: RawMetadata;
+  poolProfileMetadata: RawMetadata;
 };
 
-export type GmDeployments_filter = {
+export type GmDeployment_filter = {
   id?: InputMaybe<Scalars['ID']>;
   id_not?: InputMaybe<Scalars['ID']>;
   id_gt?: InputMaybe<Scalars['ID']>;
@@ -779,13 +781,55 @@ export type GmDeployments_filter = {
   profileId_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   profileId_contains?: InputMaybe<Scalars['Bytes']>;
   profileId_not_contains?: InputMaybe<Scalars['Bytes']>;
+  poolMetadata?: InputMaybe<Scalars['String']>;
+  poolMetadata_not?: InputMaybe<Scalars['String']>;
+  poolMetadata_gt?: InputMaybe<Scalars['String']>;
+  poolMetadata_lt?: InputMaybe<Scalars['String']>;
+  poolMetadata_gte?: InputMaybe<Scalars['String']>;
+  poolMetadata_lte?: InputMaybe<Scalars['String']>;
+  poolMetadata_in?: InputMaybe<Array<Scalars['String']>>;
+  poolMetadata_not_in?: InputMaybe<Array<Scalars['String']>>;
+  poolMetadata_contains?: InputMaybe<Scalars['String']>;
+  poolMetadata_contains_nocase?: InputMaybe<Scalars['String']>;
+  poolMetadata_not_contains?: InputMaybe<Scalars['String']>;
+  poolMetadata_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  poolMetadata_starts_with?: InputMaybe<Scalars['String']>;
+  poolMetadata_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  poolMetadata_not_starts_with?: InputMaybe<Scalars['String']>;
+  poolMetadata_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  poolMetadata_ends_with?: InputMaybe<Scalars['String']>;
+  poolMetadata_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  poolMetadata_not_ends_with?: InputMaybe<Scalars['String']>;
+  poolMetadata_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  poolMetadata_?: InputMaybe<RawMetadata_filter>;
+  poolProfileMetadata?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_not?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_gt?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_lt?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_gte?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_lte?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_in?: InputMaybe<Array<Scalars['String']>>;
+  poolProfileMetadata_not_in?: InputMaybe<Array<Scalars['String']>>;
+  poolProfileMetadata_contains?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_contains_nocase?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_not_contains?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_starts_with?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_not_starts_with?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_ends_with?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_not_ends_with?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_?: InputMaybe<RawMetadata_filter>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<GmDeployments_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<GmDeployments_filter>>>;
+  and?: InputMaybe<Array<InputMaybe<GmDeployment_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<GmDeployment_filter>>>;
 };
 
-export type GmDeployments_orderBy =
+export type GmDeployment_orderBy =
   | 'id'
   | 'address'
   | 'version'
@@ -797,7 +841,15 @@ export type GmDeployments_orderBy =
   | 'timestamp'
   | 'hasPool'
   | 'poolId'
-  | 'profileId';
+  | 'profileId'
+  | 'poolMetadata'
+  | 'poolMetadata__id'
+  | 'poolMetadata__protocol'
+  | 'poolMetadata__pointer'
+  | 'poolProfileMetadata'
+  | 'poolProfileMetadata__id'
+  | 'poolProfileMetadata__protocol'
+  | 'poolProfileMetadata__pointer';
 
 export type GmVersion = {
   id: Scalars['ID'];
@@ -2073,8 +2125,8 @@ export type Query = {
   logs: Array<Log>;
   gmVersion?: Maybe<GmVersion>;
   gmVersions: Array<GmVersion>;
-  gmDeployments?: Maybe<GmDeployments>;
-  gmDeployments_collection: Array<GmDeployments>;
+  gmDeployment?: Maybe<GmDeployment>;
+  gmDeployments: Array<GmDeployment>;
   /** Access to subgraph metadata */
   _meta?: Maybe<_Meta_>;
 };
@@ -2368,19 +2420,19 @@ export type QuerygmVersionsArgs = {
 };
 
 
-export type QuerygmDeploymentsArgs = {
+export type QuerygmDeploymentArgs = {
   id: Scalars['ID'];
   block?: InputMaybe<Block_height>;
   subgraphError?: _SubgraphErrorPolicy_;
 };
 
 
-export type QuerygmDeployments_collectionArgs = {
+export type QuerygmDeploymentsArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<GmDeployments_orderBy>;
+  orderBy?: InputMaybe<GmDeployment_orderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<GmDeployments_filter>;
+  where?: InputMaybe<GmDeployment_filter>;
   block?: InputMaybe<Block_height>;
   subgraphError?: _SubgraphErrorPolicy_;
 };
@@ -2489,8 +2541,8 @@ export type Subscription = {
   logs: Array<Log>;
   gmVersion?: Maybe<GmVersion>;
   gmVersions: Array<GmVersion>;
-  gmDeployments?: Maybe<GmDeployments>;
-  gmDeployments_collection: Array<GmDeployments>;
+  gmDeployment?: Maybe<GmDeployment>;
+  gmDeployments: Array<GmDeployment>;
   /** Access to subgraph metadata */
   _meta?: Maybe<_Meta_>;
 };
@@ -2784,19 +2836,19 @@ export type SubscriptiongmVersionsArgs = {
 };
 
 
-export type SubscriptiongmDeploymentsArgs = {
+export type SubscriptiongmDeploymentArgs = {
   id: Scalars['ID'];
   block?: InputMaybe<Block_height>;
   subgraphError?: _SubgraphErrorPolicy_;
 };
 
 
-export type SubscriptiongmDeployments_collectionArgs = {
+export type SubscriptiongmDeploymentsArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<GmDeployments_orderBy>;
+  orderBy?: InputMaybe<GmDeployment_orderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<GmDeployments_filter>;
+  where?: InputMaybe<GmDeployment_filter>;
   block?: InputMaybe<Block_height>;
   subgraphError?: _SubgraphErrorPolicy_;
 };
@@ -3083,9 +3135,9 @@ export type _SubgraphErrorPolicy_ =
   /** null **/
   gmVersions: InContextSdkMethod<Query['gmVersions'], QuerygmVersionsArgs, MeshContext>,
   /** null **/
-  gmDeployments: InContextSdkMethod<Query['gmDeployments'], QuerygmDeploymentsArgs, MeshContext>,
+  gmDeployment: InContextSdkMethod<Query['gmDeployment'], QuerygmDeploymentArgs, MeshContext>,
   /** null **/
-  gmDeployments_collection: InContextSdkMethod<Query['gmDeployments_collection'], QuerygmDeployments_collectionArgs, MeshContext>,
+  gmDeployments: InContextSdkMethod<Query['gmDeployments'], QuerygmDeploymentsArgs, MeshContext>,
   /** Access to subgraph metadata **/
   _meta: InContextSdkMethod<Query['_meta'], Query_metaArgs, MeshContext>
   };
@@ -3160,9 +3212,9 @@ export type _SubgraphErrorPolicy_ =
   /** null **/
   gmVersions: InContextSdkMethod<Subscription['gmVersions'], SubscriptiongmVersionsArgs, MeshContext>,
   /** null **/
-  gmDeployments: InContextSdkMethod<Subscription['gmDeployments'], SubscriptiongmDeploymentsArgs, MeshContext>,
+  gmDeployment: InContextSdkMethod<Subscription['gmDeployment'], SubscriptiongmDeploymentArgs, MeshContext>,
   /** null **/
-  gmDeployments_collection: InContextSdkMethod<Subscription['gmDeployments_collection'], SubscriptiongmDeployments_collectionArgs, MeshContext>,
+  gmDeployments: InContextSdkMethod<Subscription['gmDeployments'], SubscriptiongmDeploymentsArgs, MeshContext>,
   /** Access to subgraph metadata **/
   _meta: InContextSdkMethod<Subscription['_meta'], Subscription_metaArgs, MeshContext>
   };

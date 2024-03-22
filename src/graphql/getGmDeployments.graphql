@@ -1,0 +1,26 @@
+fragment GmDeployment on GmDeployment {
+  id
+  address
+  version {
+    name
+    address
+  }
+  blockNumber
+  transactionHash
+  timestamp
+  hasPool
+  poolId
+  profileId
+  poolMetadata {
+    pointer
+  }
+  poolProfileMetadata {
+    pointer
+  }
+}
+
+query getGmDeployments {
+  gmDeployments {
+    ...GmDeployment
+  }
+}

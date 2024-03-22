@@ -51,7 +51,7 @@
       {
         "indexed": false,
         "internalType": "bytes32",
-        "name": "profileAddress",
+        "name": "profileId",
         "type": "bytes32"
       },
       {
@@ -77,6 +77,26 @@
         "internalType": "bytes",
         "name": "initData",
         "type": "bytes"
+      },
+      {
+        "components": [
+          { "internalType": "uint256", "name": "protocol", "type": "uint256" },
+          { "internalType": "string", "name": "pointer", "type": "string" }
+        ],
+        "indexed": false,
+        "internalType": "struct Metadata",
+        "name": "poolMetadata",
+        "type": "tuple"
+      },
+      {
+        "components": [
+          { "internalType": "uint256", "name": "protocol", "type": "uint256" },
+          { "internalType": "string", "name": "pointer", "type": "string" }
+        ],
+        "indexed": false,
+        "internalType": "struct Metadata",
+        "name": "profileMetadata",
+        "type": "tuple"
       }
     ],
     "name": "GameManagerDeployedWithPool",

@@ -701,7 +701,7 @@ export type GameRound_orderBy =
   | 'realStartTime'
   | 'realEndTime';
 
-export type GmDeployments = {
+export type GmDeployment = {
   id: Scalars['ID'];
   address: Scalars['Bytes'];
   version: GmVersion;
@@ -711,9 +711,11 @@ export type GmDeployments = {
   hasPool: Scalars['Boolean'];
   poolId?: Maybe<Scalars['BigInt']>;
   profileId: Scalars['Bytes'];
+  poolMetadata: RawMetadata;
+  poolProfileMetadata: RawMetadata;
 };
 
-export type GmDeployments_filter = {
+export type GmDeployment_filter = {
   id?: InputMaybe<Scalars['ID']>;
   id_not?: InputMaybe<Scalars['ID']>;
   id_gt?: InputMaybe<Scalars['ID']>;
@@ -801,13 +803,55 @@ export type GmDeployments_filter = {
   profileId_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   profileId_contains?: InputMaybe<Scalars['Bytes']>;
   profileId_not_contains?: InputMaybe<Scalars['Bytes']>;
+  poolMetadata?: InputMaybe<Scalars['String']>;
+  poolMetadata_not?: InputMaybe<Scalars['String']>;
+  poolMetadata_gt?: InputMaybe<Scalars['String']>;
+  poolMetadata_lt?: InputMaybe<Scalars['String']>;
+  poolMetadata_gte?: InputMaybe<Scalars['String']>;
+  poolMetadata_lte?: InputMaybe<Scalars['String']>;
+  poolMetadata_in?: InputMaybe<Array<Scalars['String']>>;
+  poolMetadata_not_in?: InputMaybe<Array<Scalars['String']>>;
+  poolMetadata_contains?: InputMaybe<Scalars['String']>;
+  poolMetadata_contains_nocase?: InputMaybe<Scalars['String']>;
+  poolMetadata_not_contains?: InputMaybe<Scalars['String']>;
+  poolMetadata_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  poolMetadata_starts_with?: InputMaybe<Scalars['String']>;
+  poolMetadata_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  poolMetadata_not_starts_with?: InputMaybe<Scalars['String']>;
+  poolMetadata_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  poolMetadata_ends_with?: InputMaybe<Scalars['String']>;
+  poolMetadata_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  poolMetadata_not_ends_with?: InputMaybe<Scalars['String']>;
+  poolMetadata_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  poolMetadata_?: InputMaybe<RawMetadata_filter>;
+  poolProfileMetadata?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_not?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_gt?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_lt?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_gte?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_lte?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_in?: InputMaybe<Array<Scalars['String']>>;
+  poolProfileMetadata_not_in?: InputMaybe<Array<Scalars['String']>>;
+  poolProfileMetadata_contains?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_contains_nocase?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_not_contains?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_starts_with?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_not_starts_with?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_ends_with?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_not_ends_with?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_?: InputMaybe<RawMetadata_filter>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
-  and?: InputMaybe<Array<InputMaybe<GmDeployments_filter>>>;
-  or?: InputMaybe<Array<InputMaybe<GmDeployments_filter>>>;
+  and?: InputMaybe<Array<InputMaybe<GmDeployment_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<GmDeployment_filter>>>;
 };
 
-export type GmDeployments_orderBy =
+export type GmDeployment_orderBy =
   | 'id'
   | 'address'
   | 'version'
@@ -819,7 +863,15 @@ export type GmDeployments_orderBy =
   | 'timestamp'
   | 'hasPool'
   | 'poolId'
-  | 'profileId';
+  | 'profileId'
+  | 'poolMetadata'
+  | 'poolMetadata__id'
+  | 'poolMetadata__protocol'
+  | 'poolMetadata__pointer'
+  | 'poolProfileMetadata'
+  | 'poolProfileMetadata__id'
+  | 'poolProfileMetadata__protocol'
+  | 'poolProfileMetadata__pointer';
 
 export type GmVersion = {
   id: Scalars['ID'];
@@ -2095,8 +2147,8 @@ export type Query = {
   logs: Array<Log>;
   gmVersion?: Maybe<GmVersion>;
   gmVersions: Array<GmVersion>;
-  gmDeployments?: Maybe<GmDeployments>;
-  gmDeployments_collection: Array<GmDeployments>;
+  gmDeployment?: Maybe<GmDeployment>;
+  gmDeployments: Array<GmDeployment>;
   /** Access to subgraph metadata */
   _meta?: Maybe<_Meta_>;
 };
@@ -2390,19 +2442,19 @@ export type QuerygmVersionsArgs = {
 };
 
 
-export type QuerygmDeploymentsArgs = {
+export type QuerygmDeploymentArgs = {
   id: Scalars['ID'];
   block?: InputMaybe<Block_height>;
   subgraphError?: _SubgraphErrorPolicy_;
 };
 
 
-export type QuerygmDeployments_collectionArgs = {
+export type QuerygmDeploymentsArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<GmDeployments_orderBy>;
+  orderBy?: InputMaybe<GmDeployment_orderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<GmDeployments_filter>;
+  where?: InputMaybe<GmDeployment_filter>;
   block?: InputMaybe<Block_height>;
   subgraphError?: _SubgraphErrorPolicy_;
 };
@@ -2511,8 +2563,8 @@ export type Subscription = {
   logs: Array<Log>;
   gmVersion?: Maybe<GmVersion>;
   gmVersions: Array<GmVersion>;
-  gmDeployments?: Maybe<GmDeployments>;
-  gmDeployments_collection: Array<GmDeployments>;
+  gmDeployment?: Maybe<GmDeployment>;
+  gmDeployments: Array<GmDeployment>;
   /** Access to subgraph metadata */
   _meta?: Maybe<_Meta_>;
 };
@@ -2806,19 +2858,19 @@ export type SubscriptiongmVersionsArgs = {
 };
 
 
-export type SubscriptiongmDeploymentsArgs = {
+export type SubscriptiongmDeploymentArgs = {
   id: Scalars['ID'];
   block?: InputMaybe<Block_height>;
   subgraphError?: _SubgraphErrorPolicy_;
 };
 
 
-export type SubscriptiongmDeployments_collectionArgs = {
+export type SubscriptiongmDeploymentsArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<GmDeployments_orderBy>;
+  orderBy?: InputMaybe<GmDeployment_orderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<GmDeployments_filter>;
+  where?: InputMaybe<GmDeployment_filter>;
   block?: InputMaybe<Block_height>;
   subgraphError?: _SubgraphErrorPolicy_;
 };
@@ -3148,9 +3200,9 @@ export type ResolversTypes = ResolversObject<{
   GameRound: ResolverTypeWrapper<GameRound>;
   GameRound_filter: GameRound_filter;
   GameRound_orderBy: GameRound_orderBy;
-  GmDeployments: ResolverTypeWrapper<GmDeployments>;
-  GmDeployments_filter: GmDeployments_filter;
-  GmDeployments_orderBy: GmDeployments_orderBy;
+  GmDeployment: ResolverTypeWrapper<GmDeployment>;
+  GmDeployment_filter: GmDeployment_filter;
+  GmDeployment_orderBy: GmDeployment_orderBy;
   GmVersion: ResolverTypeWrapper<GmVersion>;
   GmVersion_filter: GmVersion_filter;
   GmVersion_orderBy: GmVersion_orderBy;
@@ -3215,8 +3267,8 @@ export type ResolversParentTypes = ResolversObject<{
   GameManager_filter: GameManager_filter;
   GameRound: GameRound;
   GameRound_filter: GameRound_filter;
-  GmDeployments: GmDeployments;
-  GmDeployments_filter: GmDeployments_filter;
+  GmDeployment: GmDeployment;
+  GmDeployment_filter: GmDeployment_filter;
   GmVersion: GmVersion;
   GmVersion_filter: GmVersion_filter;
   Grant: Grant;
@@ -3336,7 +3388,7 @@ export type GameRoundResolvers<ContextType = MeshContext, ParentType extends Res
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type GmDeploymentsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['GmDeployments'] = ResolversParentTypes['GmDeployments']> = ResolversObject<{
+export type GmDeploymentResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['GmDeployment'] = ResolversParentTypes['GmDeployment']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   address?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
   version?: Resolver<ResolversTypes['GmVersion'], ParentType, ContextType>;
@@ -3346,6 +3398,8 @@ export type GmDeploymentsResolvers<ContextType = MeshContext, ParentType extends
   hasPool?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   poolId?: Resolver<Maybe<ResolversTypes['BigInt']>, ParentType, ContextType>;
   profileId?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
+  poolMetadata?: Resolver<ResolversTypes['RawMetadata'], ParentType, ContextType>;
+  poolProfileMetadata?: Resolver<ResolversTypes['RawMetadata'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -3503,8 +3557,8 @@ export type QueryResolvers<ContextType = MeshContext, ParentType extends Resolve
   logs?: Resolver<Array<ResolversTypes['Log']>, ParentType, ContextType, RequireFields<QuerylogsArgs, 'skip' | 'first' | 'subgraphError'>>;
   gmVersion?: Resolver<Maybe<ResolversTypes['GmVersion']>, ParentType, ContextType, RequireFields<QuerygmVersionArgs, 'id' | 'subgraphError'>>;
   gmVersions?: Resolver<Array<ResolversTypes['GmVersion']>, ParentType, ContextType, RequireFields<QuerygmVersionsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  gmDeployments?: Resolver<Maybe<ResolversTypes['GmDeployments']>, ParentType, ContextType, RequireFields<QuerygmDeploymentsArgs, 'id' | 'subgraphError'>>;
-  gmDeployments_collection?: Resolver<Array<ResolversTypes['GmDeployments']>, ParentType, ContextType, RequireFields<QuerygmDeployments_collectionArgs, 'skip' | 'first' | 'subgraphError'>>;
+  gmDeployment?: Resolver<Maybe<ResolversTypes['GmDeployment']>, ParentType, ContextType, RequireFields<QuerygmDeploymentArgs, 'id' | 'subgraphError'>>;
+  gmDeployments?: Resolver<Array<ResolversTypes['GmDeployment']>, ParentType, ContextType, RequireFields<QuerygmDeploymentsArgs, 'skip' | 'first' | 'subgraphError'>>;
   _meta?: Resolver<Maybe<ResolversTypes['_Meta_']>, ParentType, ContextType, Partial<Query_metaArgs>>;
 }>;
 
@@ -3548,8 +3602,8 @@ export type SubscriptionResolvers<ContextType = MeshContext, ParentType extends 
   logs?: SubscriptionResolver<Array<ResolversTypes['Log']>, "logs", ParentType, ContextType, RequireFields<SubscriptionlogsArgs, 'skip' | 'first' | 'subgraphError'>>;
   gmVersion?: SubscriptionResolver<Maybe<ResolversTypes['GmVersion']>, "gmVersion", ParentType, ContextType, RequireFields<SubscriptiongmVersionArgs, 'id' | 'subgraphError'>>;
   gmVersions?: SubscriptionResolver<Array<ResolversTypes['GmVersion']>, "gmVersions", ParentType, ContextType, RequireFields<SubscriptiongmVersionsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  gmDeployments?: SubscriptionResolver<Maybe<ResolversTypes['GmDeployments']>, "gmDeployments", ParentType, ContextType, RequireFields<SubscriptiongmDeploymentsArgs, 'id' | 'subgraphError'>>;
-  gmDeployments_collection?: SubscriptionResolver<Array<ResolversTypes['GmDeployments']>, "gmDeployments_collection", ParentType, ContextType, RequireFields<SubscriptiongmDeployments_collectionArgs, 'skip' | 'first' | 'subgraphError'>>;
+  gmDeployment?: SubscriptionResolver<Maybe<ResolversTypes['GmDeployment']>, "gmDeployment", ParentType, ContextType, RequireFields<SubscriptiongmDeploymentArgs, 'id' | 'subgraphError'>>;
+  gmDeployments?: SubscriptionResolver<Array<ResolversTypes['GmDeployment']>, "gmDeployments", ParentType, ContextType, RequireFields<SubscriptiongmDeploymentsArgs, 'skip' | 'first' | 'subgraphError'>>;
   _meta?: SubscriptionResolver<Maybe<ResolversTypes['_Meta_']>, "_meta", ParentType, ContextType, Partial<Subscription_metaArgs>>;
 }>;
 
@@ -3598,7 +3652,7 @@ export type Resolvers<ContextType = MeshContext> = ResolversObject<{
   FeedItemEntity?: FeedItemEntityResolvers<ContextType>;
   GameManager?: GameManagerResolvers<ContextType>;
   GameRound?: GameRoundResolvers<ContextType>;
-  GmDeployments?: GmDeploymentsResolvers<ContextType>;
+  GmDeployment?: GmDeploymentResolvers<ContextType>;
   GmVersion?: GmVersionResolvers<ContextType>;
   Grant?: GrantResolvers<ContextType>;
   GrantShip?: GrantShipResolvers<ContextType>;
@@ -3732,6 +3786,12 @@ const merger = new(BareMerger as any)({
           return printWithCache(GetGameManagerDocument);
         },
         location: 'GetGameManagerDocument.graphql'
+      },{
+        document: GetGmDeploymentsDocument,
+        get rawSDL() {
+          return printWithCache(GetGmDeploymentsDocument);
+        },
+        location: 'GetGmDeploymentsDocument.graphql'
       },{
         document: GetGmVersionsDocument,
         get rawSDL() {
@@ -3986,6 +4046,19 @@ export type getGameManagerQuery = { gameManager?: Maybe<(
       Pick<GameRound, 'id' | 'startTime' | 'endTime' | 'totalRoundAmount' | 'gameStatus'>
       & { ships: Array<Pick<GrantShip, 'anchor'>> }
     )> }
+  )> };
+
+export type GmDeploymentFragment = (
+  Pick<GmDeployment, 'id' | 'address' | 'blockNumber' | 'transactionHash' | 'timestamp' | 'hasPool' | 'poolId' | 'profileId'>
+  & { version: Pick<GmVersion, 'name' | 'address'>, poolMetadata: Pick<RawMetadata, 'pointer'>, poolProfileMetadata: Pick<RawMetadata, 'pointer'> }
+);
+
+export type getGmDeploymentsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type getGmDeploymentsQuery = { gmDeployments: Array<(
+    Pick<GmDeployment, 'id' | 'address' | 'blockNumber' | 'transactionHash' | 'timestamp' | 'hasPool' | 'poolId' | 'profileId'>
+    & { version: Pick<GmVersion, 'name' | 'address'>, poolMetadata: Pick<RawMetadata, 'pointer'>, poolProfileMetadata: Pick<RawMetadata, 'pointer'> }
   )> };
 
 export type getGmVersionsQueryVariables = Exact<{ [key: string]: never; }>;
@@ -4284,6 +4357,28 @@ export const GameManagerDataFragmentDoc = gql`
   }
 }
     ` as unknown as DocumentNode<GameManagerDataFragment, unknown>;
+export const GmDeploymentFragmentDoc = gql`
+    fragment GmDeployment on GmDeployment {
+  id
+  address
+  version {
+    name
+    address
+  }
+  blockNumber
+  transactionHash
+  timestamp
+  hasPool
+  poolId
+  profileId
+  poolMetadata {
+    pointer
+  }
+  poolProfileMetadata {
+    pointer
+  }
+}
+    ` as unknown as DocumentNode<GmDeploymentFragment, unknown>;
 export const ProjectDetailsFragmentDoc = gql`
     fragment ProjectDetails on Project {
   id
@@ -4393,6 +4488,13 @@ export const getGameManagerDocument = gql`
   }
 }
     ${GameManagerDataFragmentDoc}` as unknown as DocumentNode<getGameManagerQuery, getGameManagerQueryVariables>;
+export const getGmDeploymentsDocument = gql`
+    query getGmDeployments {
+  gmDeployments {
+    ...GmDeployment
+  }
+}
+    ${GmDeploymentFragmentDoc}` as unknown as DocumentNode<getGmDeploymentsQuery, getGmDeploymentsQueryVariables>;
 export const getGmVersionsDocument = gql`
     query getGmVersions {
   gmVersions {
@@ -4560,6 +4662,7 @@ export const ShipsPageQueryDocument = gql`
 
 
 
+
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
@@ -4577,6 +4680,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     getGameManager(variables: getGameManagerQueryVariables, options?: C): Promise<getGameManagerQuery> {
       return requester<getGameManagerQuery, getGameManagerQueryVariables>(getGameManagerDocument, variables, options) as Promise<getGameManagerQuery>;
+    },
+    getGmDeployments(variables?: getGmDeploymentsQueryVariables, options?: C): Promise<getGmDeploymentsQuery> {
+      return requester<getGmDeploymentsQuery, getGmDeploymentsQueryVariables>(getGmDeploymentsDocument, variables, options) as Promise<getGmDeploymentsQuery>;
     },
     getGmVersions(variables?: getGmVersionsQueryVariables, options?: C): Promise<getGmVersionsQuery> {
       return requester<getGmVersionsQuery, getGmVersionsQueryVariables>(getGmVersionsDocument, variables, options) as Promise<getGmVersionsQuery>;
