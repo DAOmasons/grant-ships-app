@@ -1,12 +1,11 @@
-import { Box, Button, Group, Paper, Tabs, Text } from '@mantine/core';
+import { Box, Tabs } from '@mantine/core';
 import { Feed } from '../components/feed/Feed';
 import { MainSection } from '../layout/Sections';
 import { AppAlert } from '../components/UnderContruction';
-import classes from './PageStyles.module.css';
-import { Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { getFeed } from '../queries/getFeed';
 import { FeedSkeletonCard } from '../components/skeletons';
+import { Banner } from '../components/Banner';
 
 export const Home = () => {
   return (
@@ -34,39 +33,6 @@ export const Home = () => {
         </Tabs>
       </MainSection>
     </Box>
-  );
-};
-
-const Banner = () => {
-  return (
-    <Paper
-      h={180}
-      w="100%"
-      p="xl"
-      mb={-30}
-      classNames={{ root: classes.banner }}
-    >
-      <Text fz={24} fw={700} c="white">
-        Now Accepting Grantees.{' '}
-        <Text fz={24} fw={700} component="span">
-          Submit your application today.{' '}
-        </Text>
-      </Text>
-      <Group mt="md">
-        <Button component={Link} to="create-project">
-          Create a Project
-        </Button>
-        <Button
-          component="a"
-          href="https://rules.grantships.fun/"
-          variant="transparent"
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          What is a Grant Ship?
-        </Button>
-      </Group>
-    </Paper>
   );
 };
 

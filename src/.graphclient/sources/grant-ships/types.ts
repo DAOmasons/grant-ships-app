@@ -679,6 +679,234 @@ export type GameRound_orderBy =
   | 'realStartTime'
   | 'realEndTime';
 
+export type GmDeployment = {
+  id: Scalars['ID'];
+  address: Scalars['Bytes'];
+  version: GmVersion;
+  blockNumber: Scalars['BigInt'];
+  transactionHash: Scalars['Bytes'];
+  timestamp: Scalars['BigInt'];
+  hasPool: Scalars['Boolean'];
+  poolId?: Maybe<Scalars['BigInt']>;
+  profileId: Scalars['Bytes'];
+  poolMetadata: RawMetadata;
+  poolProfileMetadata: RawMetadata;
+};
+
+export type GmDeployment_filter = {
+  id?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']>;
+  id_gt?: InputMaybe<Scalars['ID']>;
+  id_lt?: InputMaybe<Scalars['ID']>;
+  id_gte?: InputMaybe<Scalars['ID']>;
+  id_lte?: InputMaybe<Scalars['ID']>;
+  id_in?: InputMaybe<Array<Scalars['ID']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']>>;
+  address?: InputMaybe<Scalars['Bytes']>;
+  address_not?: InputMaybe<Scalars['Bytes']>;
+  address_gt?: InputMaybe<Scalars['Bytes']>;
+  address_lt?: InputMaybe<Scalars['Bytes']>;
+  address_gte?: InputMaybe<Scalars['Bytes']>;
+  address_lte?: InputMaybe<Scalars['Bytes']>;
+  address_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  address_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  address_contains?: InputMaybe<Scalars['Bytes']>;
+  address_not_contains?: InputMaybe<Scalars['Bytes']>;
+  version?: InputMaybe<Scalars['String']>;
+  version_not?: InputMaybe<Scalars['String']>;
+  version_gt?: InputMaybe<Scalars['String']>;
+  version_lt?: InputMaybe<Scalars['String']>;
+  version_gte?: InputMaybe<Scalars['String']>;
+  version_lte?: InputMaybe<Scalars['String']>;
+  version_in?: InputMaybe<Array<Scalars['String']>>;
+  version_not_in?: InputMaybe<Array<Scalars['String']>>;
+  version_contains?: InputMaybe<Scalars['String']>;
+  version_contains_nocase?: InputMaybe<Scalars['String']>;
+  version_not_contains?: InputMaybe<Scalars['String']>;
+  version_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  version_starts_with?: InputMaybe<Scalars['String']>;
+  version_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  version_not_starts_with?: InputMaybe<Scalars['String']>;
+  version_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  version_ends_with?: InputMaybe<Scalars['String']>;
+  version_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  version_not_ends_with?: InputMaybe<Scalars['String']>;
+  version_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  version_?: InputMaybe<GmVersion_filter>;
+  blockNumber?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_not?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_gt?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_lt?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_gte?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_lte?: InputMaybe<Scalars['BigInt']>;
+  blockNumber_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  blockNumber_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  transactionHash?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_not?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_gt?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_lt?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_gte?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_lte?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  transactionHash_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  transactionHash_contains?: InputMaybe<Scalars['Bytes']>;
+  transactionHash_not_contains?: InputMaybe<Scalars['Bytes']>;
+  timestamp?: InputMaybe<Scalars['BigInt']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  hasPool?: InputMaybe<Scalars['Boolean']>;
+  hasPool_not?: InputMaybe<Scalars['Boolean']>;
+  hasPool_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  hasPool_not_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  poolId?: InputMaybe<Scalars['BigInt']>;
+  poolId_not?: InputMaybe<Scalars['BigInt']>;
+  poolId_gt?: InputMaybe<Scalars['BigInt']>;
+  poolId_lt?: InputMaybe<Scalars['BigInt']>;
+  poolId_gte?: InputMaybe<Scalars['BigInt']>;
+  poolId_lte?: InputMaybe<Scalars['BigInt']>;
+  poolId_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  poolId_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  profileId?: InputMaybe<Scalars['Bytes']>;
+  profileId_not?: InputMaybe<Scalars['Bytes']>;
+  profileId_gt?: InputMaybe<Scalars['Bytes']>;
+  profileId_lt?: InputMaybe<Scalars['Bytes']>;
+  profileId_gte?: InputMaybe<Scalars['Bytes']>;
+  profileId_lte?: InputMaybe<Scalars['Bytes']>;
+  profileId_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  profileId_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  profileId_contains?: InputMaybe<Scalars['Bytes']>;
+  profileId_not_contains?: InputMaybe<Scalars['Bytes']>;
+  poolMetadata?: InputMaybe<Scalars['String']>;
+  poolMetadata_not?: InputMaybe<Scalars['String']>;
+  poolMetadata_gt?: InputMaybe<Scalars['String']>;
+  poolMetadata_lt?: InputMaybe<Scalars['String']>;
+  poolMetadata_gte?: InputMaybe<Scalars['String']>;
+  poolMetadata_lte?: InputMaybe<Scalars['String']>;
+  poolMetadata_in?: InputMaybe<Array<Scalars['String']>>;
+  poolMetadata_not_in?: InputMaybe<Array<Scalars['String']>>;
+  poolMetadata_contains?: InputMaybe<Scalars['String']>;
+  poolMetadata_contains_nocase?: InputMaybe<Scalars['String']>;
+  poolMetadata_not_contains?: InputMaybe<Scalars['String']>;
+  poolMetadata_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  poolMetadata_starts_with?: InputMaybe<Scalars['String']>;
+  poolMetadata_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  poolMetadata_not_starts_with?: InputMaybe<Scalars['String']>;
+  poolMetadata_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  poolMetadata_ends_with?: InputMaybe<Scalars['String']>;
+  poolMetadata_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  poolMetadata_not_ends_with?: InputMaybe<Scalars['String']>;
+  poolMetadata_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  poolMetadata_?: InputMaybe<RawMetadata_filter>;
+  poolProfileMetadata?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_not?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_gt?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_lt?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_gte?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_lte?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_in?: InputMaybe<Array<Scalars['String']>>;
+  poolProfileMetadata_not_in?: InputMaybe<Array<Scalars['String']>>;
+  poolProfileMetadata_contains?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_contains_nocase?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_not_contains?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_starts_with?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_not_starts_with?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_ends_with?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_not_ends_with?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  poolProfileMetadata_?: InputMaybe<RawMetadata_filter>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<GmDeployment_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<GmDeployment_filter>>>;
+};
+
+export type GmDeployment_orderBy =
+  | 'id'
+  | 'address'
+  | 'version'
+  | 'version__id'
+  | 'version__name'
+  | 'version__address'
+  | 'blockNumber'
+  | 'transactionHash'
+  | 'timestamp'
+  | 'hasPool'
+  | 'poolId'
+  | 'profileId'
+  | 'poolMetadata'
+  | 'poolMetadata__id'
+  | 'poolMetadata__protocol'
+  | 'poolMetadata__pointer'
+  | 'poolProfileMetadata'
+  | 'poolProfileMetadata__id'
+  | 'poolProfileMetadata__protocol'
+  | 'poolProfileMetadata__pointer';
+
+export type GmVersion = {
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  address: Scalars['Bytes'];
+};
+
+export type GmVersion_filter = {
+  id?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']>;
+  id_gt?: InputMaybe<Scalars['ID']>;
+  id_lt?: InputMaybe<Scalars['ID']>;
+  id_gte?: InputMaybe<Scalars['ID']>;
+  id_lte?: InputMaybe<Scalars['ID']>;
+  id_in?: InputMaybe<Array<Scalars['ID']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']>>;
+  name?: InputMaybe<Scalars['String']>;
+  name_not?: InputMaybe<Scalars['String']>;
+  name_gt?: InputMaybe<Scalars['String']>;
+  name_lt?: InputMaybe<Scalars['String']>;
+  name_gte?: InputMaybe<Scalars['String']>;
+  name_lte?: InputMaybe<Scalars['String']>;
+  name_in?: InputMaybe<Array<Scalars['String']>>;
+  name_not_in?: InputMaybe<Array<Scalars['String']>>;
+  name_contains?: InputMaybe<Scalars['String']>;
+  name_contains_nocase?: InputMaybe<Scalars['String']>;
+  name_not_contains?: InputMaybe<Scalars['String']>;
+  name_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  name_starts_with?: InputMaybe<Scalars['String']>;
+  name_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  name_not_starts_with?: InputMaybe<Scalars['String']>;
+  name_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  name_ends_with?: InputMaybe<Scalars['String']>;
+  name_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  name_not_ends_with?: InputMaybe<Scalars['String']>;
+  name_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  address?: InputMaybe<Scalars['Bytes']>;
+  address_not?: InputMaybe<Scalars['Bytes']>;
+  address_gt?: InputMaybe<Scalars['Bytes']>;
+  address_lt?: InputMaybe<Scalars['Bytes']>;
+  address_gte?: InputMaybe<Scalars['Bytes']>;
+  address_lte?: InputMaybe<Scalars['Bytes']>;
+  address_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  address_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  address_contains?: InputMaybe<Scalars['Bytes']>;
+  address_not_contains?: InputMaybe<Scalars['Bytes']>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<GmVersion_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<GmVersion_filter>>>;
+};
+
+export type GmVersion_orderBy =
+  | 'id'
+  | 'name'
+  | 'address';
+
 export type Grant = {
   id: Scalars['ID'];
   projectId: Project;
@@ -740,7 +968,7 @@ export type GrantShip = {
   rejectedTime?: Maybe<Scalars['BigInt']>;
   applicationReviewReason?: Maybe<RawMetadata>;
   poolId?: Maybe<Scalars['BigInt']>;
-  hatId?: Maybe<Scalars['BigInt']>;
+  hatId?: Maybe<Scalars['String']>;
   shipContractAddress?: Maybe<Scalars['Bytes']>;
   shipLaunched?: Maybe<Scalars['Boolean']>;
   poolActive?: Maybe<Scalars['Boolean']>;
@@ -1026,14 +1254,26 @@ export type GrantShip_filter = {
   poolId_lte?: InputMaybe<Scalars['BigInt']>;
   poolId_in?: InputMaybe<Array<Scalars['BigInt']>>;
   poolId_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  hatId?: InputMaybe<Scalars['BigInt']>;
-  hatId_not?: InputMaybe<Scalars['BigInt']>;
-  hatId_gt?: InputMaybe<Scalars['BigInt']>;
-  hatId_lt?: InputMaybe<Scalars['BigInt']>;
-  hatId_gte?: InputMaybe<Scalars['BigInt']>;
-  hatId_lte?: InputMaybe<Scalars['BigInt']>;
-  hatId_in?: InputMaybe<Array<Scalars['BigInt']>>;
-  hatId_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  hatId?: InputMaybe<Scalars['String']>;
+  hatId_not?: InputMaybe<Scalars['String']>;
+  hatId_gt?: InputMaybe<Scalars['String']>;
+  hatId_lt?: InputMaybe<Scalars['String']>;
+  hatId_gte?: InputMaybe<Scalars['String']>;
+  hatId_lte?: InputMaybe<Scalars['String']>;
+  hatId_in?: InputMaybe<Array<Scalars['String']>>;
+  hatId_not_in?: InputMaybe<Array<Scalars['String']>>;
+  hatId_contains?: InputMaybe<Scalars['String']>;
+  hatId_contains_nocase?: InputMaybe<Scalars['String']>;
+  hatId_not_contains?: InputMaybe<Scalars['String']>;
+  hatId_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  hatId_starts_with?: InputMaybe<Scalars['String']>;
+  hatId_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  hatId_not_starts_with?: InputMaybe<Scalars['String']>;
+  hatId_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  hatId_ends_with?: InputMaybe<Scalars['String']>;
+  hatId_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  hatId_not_ends_with?: InputMaybe<Scalars['String']>;
+  hatId_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
   shipContractAddress?: InputMaybe<Scalars['Bytes']>;
   shipContractAddress_not?: InputMaybe<Scalars['Bytes']>;
   shipContractAddress_gt?: InputMaybe<Scalars['Bytes']>;
@@ -1861,6 +2101,8 @@ export type Query = {
   feedItemEntities: Array<FeedItemEntity>;
   feedItemEmbed?: Maybe<FeedItemEmbed>;
   feedItemEmbeds: Array<FeedItemEmbed>;
+  update?: Maybe<Update>;
+  updates: Array<Update>;
   grantShip?: Maybe<GrantShip>;
   grantShips: Array<GrantShip>;
   poolIdLookup?: Maybe<PoolIdLookup>;
@@ -1881,6 +2123,10 @@ export type Query = {
   rawMetadata_collection: Array<RawMetadata>;
   log?: Maybe<Log>;
   logs: Array<Log>;
+  gmVersion?: Maybe<GmVersion>;
+  gmVersions: Array<GmVersion>;
+  gmDeployment?: Maybe<GmDeployment>;
+  gmDeployments: Array<GmDeployment>;
   /** Access to subgraph metadata */
   _meta?: Maybe<_Meta_>;
 };
@@ -1953,6 +2199,24 @@ export type QueryfeedItemEmbedsArgs = {
   orderBy?: InputMaybe<FeedItemEmbed_orderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
   where?: InputMaybe<FeedItemEmbed_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryupdateArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryupdatesArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Update_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<Update_filter>;
   block?: InputMaybe<Block_height>;
   subgraphError?: _SubgraphErrorPolicy_;
 };
@@ -2138,6 +2402,42 @@ export type QuerylogsArgs = {
 };
 
 
+export type QuerygmVersionArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QuerygmVersionsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<GmVersion_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<GmVersion_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QuerygmDeploymentArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QuerygmDeploymentsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<GmDeployment_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<GmDeployment_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
 export type Query_metaArgs = {
   block?: InputMaybe<Block_height>;
 };
@@ -2217,6 +2517,8 @@ export type Subscription = {
   feedItemEntities: Array<FeedItemEntity>;
   feedItemEmbed?: Maybe<FeedItemEmbed>;
   feedItemEmbeds: Array<FeedItemEmbed>;
+  update?: Maybe<Update>;
+  updates: Array<Update>;
   grantShip?: Maybe<GrantShip>;
   grantShips: Array<GrantShip>;
   poolIdLookup?: Maybe<PoolIdLookup>;
@@ -2237,6 +2539,10 @@ export type Subscription = {
   rawMetadata_collection: Array<RawMetadata>;
   log?: Maybe<Log>;
   logs: Array<Log>;
+  gmVersion?: Maybe<GmVersion>;
+  gmVersions: Array<GmVersion>;
+  gmDeployment?: Maybe<GmDeployment>;
+  gmDeployments: Array<GmDeployment>;
   /** Access to subgraph metadata */
   _meta?: Maybe<_Meta_>;
 };
@@ -2309,6 +2615,24 @@ export type SubscriptionfeedItemEmbedsArgs = {
   orderBy?: InputMaybe<FeedItemEmbed_orderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
   where?: InputMaybe<FeedItemEmbed_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionupdateArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionupdatesArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Update_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<Update_filter>;
   block?: InputMaybe<Block_height>;
   subgraphError?: _SubgraphErrorPolicy_;
 };
@@ -2494,6 +2818,42 @@ export type SubscriptionlogsArgs = {
 };
 
 
+export type SubscriptiongmVersionArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptiongmVersionsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<GmVersion_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<GmVersion_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptiongmDeploymentArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptiongmDeploymentsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<GmDeployment_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<GmDeployment_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
 export type Subscription_metaArgs = {
   block?: InputMaybe<Block_height>;
 };
@@ -2554,6 +2914,128 @@ export type Transaction_orderBy =
   | 'sender'
   | 'txHash';
 
+export type Update = {
+  id: Scalars['ID'];
+  scope: Scalars['Int'];
+  posterRole: Scalars['Int'];
+  entityAddress: Scalars['Bytes'];
+  postedBy: Scalars['Bytes'];
+  content: RawMetadata;
+  contentSchema: Scalars['Int'];
+  postDecorator: Scalars['Int'];
+  timestamp: Scalars['BigInt'];
+};
+
+export type Update_filter = {
+  id?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']>;
+  id_gt?: InputMaybe<Scalars['ID']>;
+  id_lt?: InputMaybe<Scalars['ID']>;
+  id_gte?: InputMaybe<Scalars['ID']>;
+  id_lte?: InputMaybe<Scalars['ID']>;
+  id_in?: InputMaybe<Array<Scalars['ID']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']>>;
+  scope?: InputMaybe<Scalars['Int']>;
+  scope_not?: InputMaybe<Scalars['Int']>;
+  scope_gt?: InputMaybe<Scalars['Int']>;
+  scope_lt?: InputMaybe<Scalars['Int']>;
+  scope_gte?: InputMaybe<Scalars['Int']>;
+  scope_lte?: InputMaybe<Scalars['Int']>;
+  scope_in?: InputMaybe<Array<Scalars['Int']>>;
+  scope_not_in?: InputMaybe<Array<Scalars['Int']>>;
+  posterRole?: InputMaybe<Scalars['Int']>;
+  posterRole_not?: InputMaybe<Scalars['Int']>;
+  posterRole_gt?: InputMaybe<Scalars['Int']>;
+  posterRole_lt?: InputMaybe<Scalars['Int']>;
+  posterRole_gte?: InputMaybe<Scalars['Int']>;
+  posterRole_lte?: InputMaybe<Scalars['Int']>;
+  posterRole_in?: InputMaybe<Array<Scalars['Int']>>;
+  posterRole_not_in?: InputMaybe<Array<Scalars['Int']>>;
+  entityAddress?: InputMaybe<Scalars['Bytes']>;
+  entityAddress_not?: InputMaybe<Scalars['Bytes']>;
+  entityAddress_gt?: InputMaybe<Scalars['Bytes']>;
+  entityAddress_lt?: InputMaybe<Scalars['Bytes']>;
+  entityAddress_gte?: InputMaybe<Scalars['Bytes']>;
+  entityAddress_lte?: InputMaybe<Scalars['Bytes']>;
+  entityAddress_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  entityAddress_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  entityAddress_contains?: InputMaybe<Scalars['Bytes']>;
+  entityAddress_not_contains?: InputMaybe<Scalars['Bytes']>;
+  postedBy?: InputMaybe<Scalars['Bytes']>;
+  postedBy_not?: InputMaybe<Scalars['Bytes']>;
+  postedBy_gt?: InputMaybe<Scalars['Bytes']>;
+  postedBy_lt?: InputMaybe<Scalars['Bytes']>;
+  postedBy_gte?: InputMaybe<Scalars['Bytes']>;
+  postedBy_lte?: InputMaybe<Scalars['Bytes']>;
+  postedBy_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  postedBy_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  postedBy_contains?: InputMaybe<Scalars['Bytes']>;
+  postedBy_not_contains?: InputMaybe<Scalars['Bytes']>;
+  content?: InputMaybe<Scalars['String']>;
+  content_not?: InputMaybe<Scalars['String']>;
+  content_gt?: InputMaybe<Scalars['String']>;
+  content_lt?: InputMaybe<Scalars['String']>;
+  content_gte?: InputMaybe<Scalars['String']>;
+  content_lte?: InputMaybe<Scalars['String']>;
+  content_in?: InputMaybe<Array<Scalars['String']>>;
+  content_not_in?: InputMaybe<Array<Scalars['String']>>;
+  content_contains?: InputMaybe<Scalars['String']>;
+  content_contains_nocase?: InputMaybe<Scalars['String']>;
+  content_not_contains?: InputMaybe<Scalars['String']>;
+  content_not_contains_nocase?: InputMaybe<Scalars['String']>;
+  content_starts_with?: InputMaybe<Scalars['String']>;
+  content_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  content_not_starts_with?: InputMaybe<Scalars['String']>;
+  content_not_starts_with_nocase?: InputMaybe<Scalars['String']>;
+  content_ends_with?: InputMaybe<Scalars['String']>;
+  content_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  content_not_ends_with?: InputMaybe<Scalars['String']>;
+  content_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
+  content_?: InputMaybe<RawMetadata_filter>;
+  contentSchema?: InputMaybe<Scalars['Int']>;
+  contentSchema_not?: InputMaybe<Scalars['Int']>;
+  contentSchema_gt?: InputMaybe<Scalars['Int']>;
+  contentSchema_lt?: InputMaybe<Scalars['Int']>;
+  contentSchema_gte?: InputMaybe<Scalars['Int']>;
+  contentSchema_lte?: InputMaybe<Scalars['Int']>;
+  contentSchema_in?: InputMaybe<Array<Scalars['Int']>>;
+  contentSchema_not_in?: InputMaybe<Array<Scalars['Int']>>;
+  postDecorator?: InputMaybe<Scalars['Int']>;
+  postDecorator_not?: InputMaybe<Scalars['Int']>;
+  postDecorator_gt?: InputMaybe<Scalars['Int']>;
+  postDecorator_lt?: InputMaybe<Scalars['Int']>;
+  postDecorator_gte?: InputMaybe<Scalars['Int']>;
+  postDecorator_lte?: InputMaybe<Scalars['Int']>;
+  postDecorator_in?: InputMaybe<Array<Scalars['Int']>>;
+  postDecorator_not_in?: InputMaybe<Array<Scalars['Int']>>;
+  timestamp?: InputMaybe<Scalars['BigInt']>;
+  timestamp_not?: InputMaybe<Scalars['BigInt']>;
+  timestamp_gt?: InputMaybe<Scalars['BigInt']>;
+  timestamp_lt?: InputMaybe<Scalars['BigInt']>;
+  timestamp_gte?: InputMaybe<Scalars['BigInt']>;
+  timestamp_lte?: InputMaybe<Scalars['BigInt']>;
+  timestamp_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  timestamp_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<Update_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<Update_filter>>>;
+};
+
+export type Update_orderBy =
+  | 'id'
+  | 'scope'
+  | 'posterRole'
+  | 'entityAddress'
+  | 'postedBy'
+  | 'content'
+  | 'content__id'
+  | 'content__protocol'
+  | 'content__pointer'
+  | 'contentSchema'
+  | 'postDecorator'
+  | 'timestamp';
+
 export type _Block_ = {
   /** The hash of the block */
   hash?: Maybe<Scalars['Bytes']>;
@@ -2605,6 +3087,10 @@ export type _SubgraphErrorPolicy_ =
   /** null **/
   feedItemEmbeds: InContextSdkMethod<Query['feedItemEmbeds'], QueryfeedItemEmbedsArgs, MeshContext>,
   /** null **/
+  update: InContextSdkMethod<Query['update'], QueryupdateArgs, MeshContext>,
+  /** null **/
+  updates: InContextSdkMethod<Query['updates'], QueryupdatesArgs, MeshContext>,
+  /** null **/
   grantShip: InContextSdkMethod<Query['grantShip'], QuerygrantShipArgs, MeshContext>,
   /** null **/
   grantShips: InContextSdkMethod<Query['grantShips'], QuerygrantShipsArgs, MeshContext>,
@@ -2644,6 +3130,14 @@ export type _SubgraphErrorPolicy_ =
   log: InContextSdkMethod<Query['log'], QuerylogArgs, MeshContext>,
   /** null **/
   logs: InContextSdkMethod<Query['logs'], QuerylogsArgs, MeshContext>,
+  /** null **/
+  gmVersion: InContextSdkMethod<Query['gmVersion'], QuerygmVersionArgs, MeshContext>,
+  /** null **/
+  gmVersions: InContextSdkMethod<Query['gmVersions'], QuerygmVersionsArgs, MeshContext>,
+  /** null **/
+  gmDeployment: InContextSdkMethod<Query['gmDeployment'], QuerygmDeploymentArgs, MeshContext>,
+  /** null **/
+  gmDeployments: InContextSdkMethod<Query['gmDeployments'], QuerygmDeploymentsArgs, MeshContext>,
   /** Access to subgraph metadata **/
   _meta: InContextSdkMethod<Query['_meta'], Query_metaArgs, MeshContext>
   };
@@ -2669,6 +3163,10 @@ export type _SubgraphErrorPolicy_ =
   feedItemEmbed: InContextSdkMethod<Subscription['feedItemEmbed'], SubscriptionfeedItemEmbedArgs, MeshContext>,
   /** null **/
   feedItemEmbeds: InContextSdkMethod<Subscription['feedItemEmbeds'], SubscriptionfeedItemEmbedsArgs, MeshContext>,
+  /** null **/
+  update: InContextSdkMethod<Subscription['update'], SubscriptionupdateArgs, MeshContext>,
+  /** null **/
+  updates: InContextSdkMethod<Subscription['updates'], SubscriptionupdatesArgs, MeshContext>,
   /** null **/
   grantShip: InContextSdkMethod<Subscription['grantShip'], SubscriptiongrantShipArgs, MeshContext>,
   /** null **/
@@ -2709,6 +3207,14 @@ export type _SubgraphErrorPolicy_ =
   log: InContextSdkMethod<Subscription['log'], SubscriptionlogArgs, MeshContext>,
   /** null **/
   logs: InContextSdkMethod<Subscription['logs'], SubscriptionlogsArgs, MeshContext>,
+  /** null **/
+  gmVersion: InContextSdkMethod<Subscription['gmVersion'], SubscriptiongmVersionArgs, MeshContext>,
+  /** null **/
+  gmVersions: InContextSdkMethod<Subscription['gmVersions'], SubscriptiongmVersionsArgs, MeshContext>,
+  /** null **/
+  gmDeployment: InContextSdkMethod<Subscription['gmDeployment'], SubscriptiongmDeploymentArgs, MeshContext>,
+  /** null **/
+  gmDeployments: InContextSdkMethod<Subscription['gmDeployments'], SubscriptiongmDeploymentsArgs, MeshContext>,
   /** Access to subgraph metadata **/
   _meta: InContextSdkMethod<Subscription['_meta'], Subscription_metaArgs, MeshContext>
   };

@@ -1,10 +1,29 @@
-import { Skeleton, Stack, Tabs, useMantineTheme } from '@mantine/core';
+import {
+  Avatar,
+  Skeleton,
+  Stack,
+  Tabs,
+  Text,
+  useMantineTheme,
+} from '@mantine/core';
 import { MainSection, PageTitle } from '../layout/Sections';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { DashShip, getShipDash } from '../queries/getShipDash';
 import { AppAlert } from '../components/UnderContruction';
 import { GrantCard } from '../components/dashboard/GrantCard';
+import { useTx } from '../hooks/useTx';
+import { notifications } from '@mantine/notifications';
+import { UpdateInput } from '../components/forms/UpdateInput';
+import { pinJSONToIPFS } from '../utils/ipfs/pin';
+import {
+  ContentSchema,
+  basicUpdateSchema,
+} from '../components/forms/validationSchemas/updateSchemas';
+import ShipAbi from '../abi/GrantShip.json';
+import { Tag } from '../constants/tags';
+import { Address } from 'viem';
+import { ZER0_ADDRESS } from '../constants/gameSetup';
 
 export const ShipOpDashboard = () => {
   const { id } = useParams();
@@ -22,6 +41,21 @@ export const ShipOpDashboard = () => {
   return (
     <MainSection>
       <PageTitle title="Ship Dashboard" />
+
+      <Link
+        to={`/ship/${shipData?.id}`}
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          marginBottom: '1rem',
+          textDecoration: 'none',
+        }}
+      >
+        <Avatar size={30} src={shipData?.profileMetadata.imgUrl} mr={8} />
+        <Text td="none" fz="sm">
+          {shipData?.name}
+        </Text>
+      </Link>
       <Tabs defaultValue="grants">
         <Tabs.List mb="xl" grow>
           <Tabs.Tab value="grants">Grants</Tabs.Tab>
@@ -42,10 +76,7 @@ export const ShipOpDashboard = () => {
           />
         </Tabs.Panel>
         <Tabs.Panel value="postUpdate">
-          <AppAlert
-            title={'Under Contruction'}
-            description={"This feature isn't built yet. Check back soon."}
-          />
+          <PostUpdatePanel ship={shipData} />
         </Tabs.Panel>
       </Tabs>
     </MainSection>
@@ -104,5 +135,76 @@ export const GrantManager = ({
         <GrantCard key={grant.id} grant={grant} view="ship-dash" />
       ))}
     </Stack>
+  );
+};
+
+const PostUpdatePanel = ({ ship }: { ship?: DashShip }) => {
+  const { tx } = useTx();
+
+  const handlePostUpdate = async (text: string, clear: () => void) => {
+    if (!ship || !ship.shipContractAddress) {
+      notifications.show({
+        title: 'Error',
+        message: 'Ship ID is missing',
+        color: 'red',
+      });
+
+      return;
+    }
+
+    if (text === '' || text === null) {
+      notifications.show({
+        title: 'Error',
+        message: 'Update text is missing',
+        color: 'red',
+      });
+
+      return;
+    }
+
+    const metadata = basicUpdateSchema.safeParse({
+      text,
+      contentSchema: ContentSchema.BasicUpdate,
+    });
+
+    if (!metadata.success) {
+      notifications.show({
+        title: 'Validation Error',
+        message: "Update text doesn't match the schema",
+        color: 'red',
+      });
+
+      return;
+    }
+
+    const pinRes = await pinJSONToIPFS(metadata.data);
+
+    if (typeof pinRes.IpfsHash !== 'string' && pinRes.IpfsHash[0] !== 'Q') {
+      notifications.show({
+        title: 'IPFS Upload Error',
+        message: pinRes.IpfsHash[1],
+        color: 'red',
+      });
+      return;
+    }
+
+    tx({
+      writeContractParams: {
+        abi: ShipAbi,
+        functionName: 'postUpdate',
+        address: ship?.shipContractAddress as Address,
+        args: [Tag.ShipPostUpdate, [1n, pinRes.IpfsHash], ZER0_ADDRESS],
+      },
+      onComplete() {
+        clear?.();
+      },
+    });
+  };
+
+  return (
+    <UpdateInput
+      imgUrl={ship?.profileMetadata.imgUrl}
+      onClick={handlePostUpdate}
+    />
   );
 };

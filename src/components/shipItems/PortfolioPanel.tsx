@@ -36,7 +36,7 @@ export const PortfolioPanel = () => {
   if (isLoading)
     return (
       <Stack>
-        <Skeleton height={400} />
+        <Skeleton height={300} />
         <Skeleton height={50} />
         <Skeleton height={50} />
         <Skeleton height={50} />

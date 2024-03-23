@@ -215,7 +215,7 @@ export const FacilitatorReview = ({ grant }: { grant: DashGrant }) => {
                   mb={'xl'}
                   icon={hasShipApproved ? <IconCheck /> : <IconX />}
                   title={`${hasShipApproved ? 'Approval' : 'Rejection'} from
-                    Grant Ship`}
+                    ${grant.shipId.name}`}
                   description={`"${grant.shipApprovalReason}"`}
                   bg={
                     hasShipApproved ? theme.colors.blue[8] : theme.colors.red[6]

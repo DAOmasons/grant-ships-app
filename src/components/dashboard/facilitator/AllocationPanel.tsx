@@ -44,7 +44,6 @@ export const AllocationPanel = ({
   }, [shipData, poolBalance]);
 
   const handleAllocate = () => {
-    // eslint-disable-next-line prefer-const
     let shipIds = [];
     let amounts = [];
 

@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Box,
   Flex,
   Group,
   Paper,
@@ -10,7 +11,7 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import { MainSection, PageTitle } from '../layout/Sections';
-import { IconInfoCircle } from '@tabler/icons-react';
+import { IconAward, IconInfoCircle } from '@tabler/icons-react';
 import { FeedPanel } from '../components/shipItems/FeedPanel';
 import { GAME_TOKEN } from '../constants/gameSetup';
 import { MilestoneProgress } from '../components/projectItems/MilestoneProgress';
@@ -28,9 +29,13 @@ import { SingleItemPageSkeleton } from '../components/skeletons';
 import { getEntityFeed } from '../queries/getFeed';
 import { getProjectGrants } from '../queries/getProjectGrants';
 import { DashGrant } from '../resolvers/grantResolvers';
+import { useMemo } from 'react';
+import { useUserData } from '../hooks/useUserState';
+import { ProjectUpdatesPanel } from '../components/projectItems/ProjectUpdatesPanel';
 
 export const Project = () => {
   const { id } = useParams();
+  const { userData } = useUserData();
 
   const {
     data: project,
@@ -64,6 +69,12 @@ export const Project = () => {
   });
 
   const theme = useMantineTheme();
+
+  const isProjectMember = useMemo(() => {
+    return (
+      userData && !!userData.projects?.find((project) => project.anchor === id)
+    );
+  }, [userData, id]);
 
   if (isLoading) return <SingleItemPageSkeleton />;
 
@@ -104,6 +115,7 @@ export const Project = () => {
           return acc + (grant.amtAllocated ? BigInt(grant.amtAllocated) : 0n);
         }, 0n)
       );
+
   const activeGrants = grants?.filter(
     (grant: DashGrant) => grant.grantStatus >= GrantStatus.FacilitatorApproved
   );
@@ -113,25 +125,46 @@ export const Project = () => {
       <MainSection maw={600}>
         <PageTitle title={project.name} />
         <Avatar size={160} mt={'xl'} mb="md" src={project.imgUrl} />
-        <Text fz="lg" fw={600} mb="md">
-          {project.name}
-        </Text>
+        <Group gap={'xs'} mb="md">
+          <Text fz="lg" fw={600}>
+            {project.name}
+          </Text>
+          {isProjectMember && (
+            <Tooltip label="You are a member of this project">
+              <Group align="start" gap={6}>
+                <IconAward
+                  size={16}
+                  color={theme.colors.blue[5]}
+                  style={{ transform: 'translateY(2px)' }}
+                />{' '}
+                <Text fz="sm" c={theme.colors.blue[5]}>
+                  Project Member
+                </Text>
+              </Group>
+            </Tooltip>
+          )}
+        </Group>
         <Text fz="sm" mb={'md'} className="ws-pre-wrap">
           {project.description}
         </Text>
-        <AddressAvatarGroup
-          addresses={project.members}
-          avatarProps={{ size: 32 }}
-        />
+        <Box mb="xl">
+          <AddressAvatarGroup
+            addresses={project.members}
+            avatarProps={{ size: 32 }}
+          />
+        </Box>
         <Tabs defaultValue="feed">
           <Tabs.List mb={'xl'}>
-            <Tabs.Tab value="feed" w="20%">
+            <Tabs.Tab value="feed" w="6rem">
               Feed
             </Tabs.Tab>
-            <Tabs.Tab w="20%" value="grants">
+            <Tabs.Tab w="6rem" value="updates">
+              Updates
+            </Tabs.Tab>
+            <Tabs.Tab w="6rem" value="grants">
               Grants
             </Tabs.Tab>
-            <Tabs.Tab w="20%" value="details">
+            <Tabs.Tab w="6rem" value="details">
               Contact
             </Tabs.Tab>
           </Tabs.List>
@@ -150,6 +183,13 @@ export const Project = () => {
                 error={grantsError}
               />
             )}
+          </Tabs.Panel>
+          <Tabs.Panel value="updates">
+            <ProjectUpdatesPanel
+              grants={grants}
+              project={project}
+              isProjectMember={isProjectMember}
+            />
           </Tabs.Panel>
           <Tabs.Panel value="details">
             <Contact

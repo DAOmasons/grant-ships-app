@@ -672,6 +672,236 @@ enum GameRound_orderBy {
   realEndTime
 }
 
+type GmDeployment {
+  id: ID!
+  address: Bytes!
+  version: GmVersion!
+  blockNumber: BigInt!
+  transactionHash: Bytes!
+  timestamp: BigInt!
+  hasPool: Boolean!
+  poolId: BigInt
+  profileId: Bytes!
+  poolMetadata: RawMetadata!
+  poolProfileMetadata: RawMetadata!
+}
+
+input GmDeployment_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  address: Bytes
+  address_not: Bytes
+  address_gt: Bytes
+  address_lt: Bytes
+  address_gte: Bytes
+  address_lte: Bytes
+  address_in: [Bytes!]
+  address_not_in: [Bytes!]
+  address_contains: Bytes
+  address_not_contains: Bytes
+  version: String
+  version_not: String
+  version_gt: String
+  version_lt: String
+  version_gte: String
+  version_lte: String
+  version_in: [String!]
+  version_not_in: [String!]
+  version_contains: String
+  version_contains_nocase: String
+  version_not_contains: String
+  version_not_contains_nocase: String
+  version_starts_with: String
+  version_starts_with_nocase: String
+  version_not_starts_with: String
+  version_not_starts_with_nocase: String
+  version_ends_with: String
+  version_ends_with_nocase: String
+  version_not_ends_with: String
+  version_not_ends_with_nocase: String
+  version_: GmVersion_filter
+  blockNumber: BigInt
+  blockNumber_not: BigInt
+  blockNumber_gt: BigInt
+  blockNumber_lt: BigInt
+  blockNumber_gte: BigInt
+  blockNumber_lte: BigInt
+  blockNumber_in: [BigInt!]
+  blockNumber_not_in: [BigInt!]
+  transactionHash: Bytes
+  transactionHash_not: Bytes
+  transactionHash_gt: Bytes
+  transactionHash_lt: Bytes
+  transactionHash_gte: Bytes
+  transactionHash_lte: Bytes
+  transactionHash_in: [Bytes!]
+  transactionHash_not_in: [Bytes!]
+  transactionHash_contains: Bytes
+  transactionHash_not_contains: Bytes
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_not_in: [BigInt!]
+  hasPool: Boolean
+  hasPool_not: Boolean
+  hasPool_in: [Boolean!]
+  hasPool_not_in: [Boolean!]
+  poolId: BigInt
+  poolId_not: BigInt
+  poolId_gt: BigInt
+  poolId_lt: BigInt
+  poolId_gte: BigInt
+  poolId_lte: BigInt
+  poolId_in: [BigInt!]
+  poolId_not_in: [BigInt!]
+  profileId: Bytes
+  profileId_not: Bytes
+  profileId_gt: Bytes
+  profileId_lt: Bytes
+  profileId_gte: Bytes
+  profileId_lte: Bytes
+  profileId_in: [Bytes!]
+  profileId_not_in: [Bytes!]
+  profileId_contains: Bytes
+  profileId_not_contains: Bytes
+  poolMetadata: String
+  poolMetadata_not: String
+  poolMetadata_gt: String
+  poolMetadata_lt: String
+  poolMetadata_gte: String
+  poolMetadata_lte: String
+  poolMetadata_in: [String!]
+  poolMetadata_not_in: [String!]
+  poolMetadata_contains: String
+  poolMetadata_contains_nocase: String
+  poolMetadata_not_contains: String
+  poolMetadata_not_contains_nocase: String
+  poolMetadata_starts_with: String
+  poolMetadata_starts_with_nocase: String
+  poolMetadata_not_starts_with: String
+  poolMetadata_not_starts_with_nocase: String
+  poolMetadata_ends_with: String
+  poolMetadata_ends_with_nocase: String
+  poolMetadata_not_ends_with: String
+  poolMetadata_not_ends_with_nocase: String
+  poolMetadata_: RawMetadata_filter
+  poolProfileMetadata: String
+  poolProfileMetadata_not: String
+  poolProfileMetadata_gt: String
+  poolProfileMetadata_lt: String
+  poolProfileMetadata_gte: String
+  poolProfileMetadata_lte: String
+  poolProfileMetadata_in: [String!]
+  poolProfileMetadata_not_in: [String!]
+  poolProfileMetadata_contains: String
+  poolProfileMetadata_contains_nocase: String
+  poolProfileMetadata_not_contains: String
+  poolProfileMetadata_not_contains_nocase: String
+  poolProfileMetadata_starts_with: String
+  poolProfileMetadata_starts_with_nocase: String
+  poolProfileMetadata_not_starts_with: String
+  poolProfileMetadata_not_starts_with_nocase: String
+  poolProfileMetadata_ends_with: String
+  poolProfileMetadata_ends_with_nocase: String
+  poolProfileMetadata_not_ends_with: String
+  poolProfileMetadata_not_ends_with_nocase: String
+  poolProfileMetadata_: RawMetadata_filter
+  """Filter for the block changed event."""
+  _change_block: BlockChangedFilter
+  and: [GmDeployment_filter]
+  or: [GmDeployment_filter]
+}
+
+enum GmDeployment_orderBy {
+  id
+  address
+  version
+  version__id
+  version__name
+  version__address
+  blockNumber
+  transactionHash
+  timestamp
+  hasPool
+  poolId
+  profileId
+  poolMetadata
+  poolMetadata__id
+  poolMetadata__protocol
+  poolMetadata__pointer
+  poolProfileMetadata
+  poolProfileMetadata__id
+  poolProfileMetadata__protocol
+  poolProfileMetadata__pointer
+}
+
+type GmVersion {
+  id: ID!
+  name: String!
+  address: Bytes!
+}
+
+input GmVersion_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  name: String
+  name_not: String
+  name_gt: String
+  name_lt: String
+  name_gte: String
+  name_lte: String
+  name_in: [String!]
+  name_not_in: [String!]
+  name_contains: String
+  name_contains_nocase: String
+  name_not_contains: String
+  name_not_contains_nocase: String
+  name_starts_with: String
+  name_starts_with_nocase: String
+  name_not_starts_with: String
+  name_not_starts_with_nocase: String
+  name_ends_with: String
+  name_ends_with_nocase: String
+  name_not_ends_with: String
+  name_not_ends_with_nocase: String
+  address: Bytes
+  address_not: Bytes
+  address_gt: Bytes
+  address_lt: Bytes
+  address_gte: Bytes
+  address_lte: Bytes
+  address_in: [Bytes!]
+  address_not_in: [Bytes!]
+  address_contains: Bytes
+  address_not_contains: Bytes
+  """Filter for the block changed event."""
+  _change_block: BlockChangedFilter
+  and: [GmVersion_filter]
+  or: [GmVersion_filter]
+}
+
+enum GmVersion_orderBy {
+  id
+  name
+  address
+}
+
 type Grant {
   id: ID!
   projectId: Project!
@@ -724,7 +954,7 @@ type GrantShip {
   rejectedTime: BigInt
   applicationReviewReason: RawMetadata
   poolId: BigInt
-  hatId: BigInt
+  hatId: String
   shipContractAddress: Bytes
   shipLaunched: Boolean
   poolActive: Boolean
@@ -1001,14 +1231,26 @@ input GrantShip_filter {
   poolId_lte: BigInt
   poolId_in: [BigInt!]
   poolId_not_in: [BigInt!]
-  hatId: BigInt
-  hatId_not: BigInt
-  hatId_gt: BigInt
-  hatId_lt: BigInt
-  hatId_gte: BigInt
-  hatId_lte: BigInt
-  hatId_in: [BigInt!]
-  hatId_not_in: [BigInt!]
+  hatId: String
+  hatId_not: String
+  hatId_gt: String
+  hatId_lt: String
+  hatId_gte: String
+  hatId_lte: String
+  hatId_in: [String!]
+  hatId_not_in: [String!]
+  hatId_contains: String
+  hatId_contains_nocase: String
+  hatId_not_contains: String
+  hatId_not_contains_nocase: String
+  hatId_starts_with: String
+  hatId_starts_with_nocase: String
+  hatId_not_starts_with: String
+  hatId_not_starts_with_nocase: String
+  hatId_ends_with: String
+  hatId_ends_with_nocase: String
+  hatId_not_ends_with: String
+  hatId_not_ends_with_nocase: String
   shipContractAddress: Bytes
   shipContractAddress_not: Bytes
   shipContractAddress_gt: Bytes
@@ -1937,6 +2179,32 @@ type Query {
     """
     subgraphError: _SubgraphErrorPolicy_! = deny
   ): [FeedItemEmbed!]!
+  update(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): Update
+  updates(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Update_orderBy
+    orderDirection: OrderDirection
+    where: Update_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): [Update!]!
   grantShip(
     id: ID!
     """
@@ -2197,6 +2465,58 @@ type Query {
     """
     subgraphError: _SubgraphErrorPolicy_! = deny
   ): [Log!]!
+  gmVersion(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): GmVersion
+  gmVersions(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: GmVersion_orderBy
+    orderDirection: OrderDirection
+    where: GmVersion_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): [GmVersion!]!
+  gmDeployment(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): GmDeployment
+  gmDeployments(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: GmDeployment_orderBy
+    orderDirection: OrderDirection
+    where: GmDeployment_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): [GmDeployment!]!
   """Access to subgraph metadata"""
   _meta(block: Block_height): _Meta_
 }
@@ -2373,6 +2693,32 @@ type Subscription {
     """
     subgraphError: _SubgraphErrorPolicy_! = deny
   ): [FeedItemEmbed!]!
+  update(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): Update
+  updates(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: Update_orderBy
+    orderDirection: OrderDirection
+    where: Update_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): [Update!]!
   grantShip(
     id: ID!
     """
@@ -2633,6 +2979,58 @@ type Subscription {
     """
     subgraphError: _SubgraphErrorPolicy_! = deny
   ): [Log!]!
+  gmVersion(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): GmVersion
+  gmVersions(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: GmVersion_orderBy
+    orderDirection: OrderDirection
+    where: GmVersion_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): [GmVersion!]!
+  gmDeployment(
+    id: ID!
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): GmDeployment
+  gmDeployments(
+    skip: Int = 0
+    first: Int = 100
+    orderBy: GmDeployment_orderBy
+    orderDirection: OrderDirection
+    where: GmDeployment_filter
+    """
+    The block at which the query should be executed. Can either be a `{ hash: Bytes }` value containing a block hash, a `{ number: Int }` containing the block number, or a `{ number_gte: Int }` containing the minimum block number. In the case of `number_gte`, the query will be executed on the latest block only if the subgraph has progressed to or past the minimum block number. Defaults to the latest block when omitted.
+    """
+    block: Block_height
+    """
+    Set to `allow` to receive data even if the subgraph has skipped over errors while syncing.
+    """
+    subgraphError: _SubgraphErrorPolicy_! = deny
+  ): [GmDeployment!]!
   """Access to subgraph metadata"""
   _meta(block: Block_height): _Meta_
 }
@@ -2692,6 +3090,129 @@ enum Transaction_orderBy {
   blockNumber
   sender
   txHash
+}
+
+type Update {
+  id: ID!
+  scope: Int!
+  posterRole: Int!
+  entityAddress: Bytes!
+  postedBy: Bytes!
+  content: RawMetadata!
+  contentSchema: Int!
+  postDecorator: Int!
+  timestamp: BigInt!
+}
+
+input Update_filter {
+  id: ID
+  id_not: ID
+  id_gt: ID
+  id_lt: ID
+  id_gte: ID
+  id_lte: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  scope: Int
+  scope_not: Int
+  scope_gt: Int
+  scope_lt: Int
+  scope_gte: Int
+  scope_lte: Int
+  scope_in: [Int!]
+  scope_not_in: [Int!]
+  posterRole: Int
+  posterRole_not: Int
+  posterRole_gt: Int
+  posterRole_lt: Int
+  posterRole_gte: Int
+  posterRole_lte: Int
+  posterRole_in: [Int!]
+  posterRole_not_in: [Int!]
+  entityAddress: Bytes
+  entityAddress_not: Bytes
+  entityAddress_gt: Bytes
+  entityAddress_lt: Bytes
+  entityAddress_gte: Bytes
+  entityAddress_lte: Bytes
+  entityAddress_in: [Bytes!]
+  entityAddress_not_in: [Bytes!]
+  entityAddress_contains: Bytes
+  entityAddress_not_contains: Bytes
+  postedBy: Bytes
+  postedBy_not: Bytes
+  postedBy_gt: Bytes
+  postedBy_lt: Bytes
+  postedBy_gte: Bytes
+  postedBy_lte: Bytes
+  postedBy_in: [Bytes!]
+  postedBy_not_in: [Bytes!]
+  postedBy_contains: Bytes
+  postedBy_not_contains: Bytes
+  content: String
+  content_not: String
+  content_gt: String
+  content_lt: String
+  content_gte: String
+  content_lte: String
+  content_in: [String!]
+  content_not_in: [String!]
+  content_contains: String
+  content_contains_nocase: String
+  content_not_contains: String
+  content_not_contains_nocase: String
+  content_starts_with: String
+  content_starts_with_nocase: String
+  content_not_starts_with: String
+  content_not_starts_with_nocase: String
+  content_ends_with: String
+  content_ends_with_nocase: String
+  content_not_ends_with: String
+  content_not_ends_with_nocase: String
+  content_: RawMetadata_filter
+  contentSchema: Int
+  contentSchema_not: Int
+  contentSchema_gt: Int
+  contentSchema_lt: Int
+  contentSchema_gte: Int
+  contentSchema_lte: Int
+  contentSchema_in: [Int!]
+  contentSchema_not_in: [Int!]
+  postDecorator: Int
+  postDecorator_not: Int
+  postDecorator_gt: Int
+  postDecorator_lt: Int
+  postDecorator_gte: Int
+  postDecorator_lte: Int
+  postDecorator_in: [Int!]
+  postDecorator_not_in: [Int!]
+  timestamp: BigInt
+  timestamp_not: BigInt
+  timestamp_gt: BigInt
+  timestamp_lt: BigInt
+  timestamp_gte: BigInt
+  timestamp_lte: BigInt
+  timestamp_in: [BigInt!]
+  timestamp_not_in: [BigInt!]
+  """Filter for the block changed event."""
+  _change_block: BlockChangedFilter
+  and: [Update_filter]
+  or: [Update_filter]
+}
+
+enum Update_orderBy {
+  id
+  scope
+  posterRole
+  entityAddress
+  postedBy
+  content
+  content__id
+  content__protocol
+  content__pointer
+  contentSchema
+  postDecorator
+  timestamp
 }
 
 type _Block_ {

@@ -8,3 +8,7 @@ p {
 .ws-pre-wrap {
   white-space: pre-wrap;
 }
+
+a {
+  color: inherit;
+}
