@@ -12,7 +12,7 @@ export const ADDR_TESTNET: Record<string, Address> = {
 export const ADDR_PROD: Record<string, Address> = {
   ALLO: '0x00000000',
   REGISTRY: '0x00000000',
-  HATS: '0x00000000',
+  HATS: '0x3bc1A0Ad72417f2d411118085256fC53CBdDd137',
   GAME_MANAGER: '0x00000000',
   FACTORY: '0x00000000',
   GM_FACTORY: '0x00000000',
