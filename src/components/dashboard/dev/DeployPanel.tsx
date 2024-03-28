@@ -129,7 +129,7 @@ export const DeploymentPanel = ({
           address: ADDR.GM_FACTORY,
           functionName: 'cloneWithPool',
           args: [
-            'game-manager-v3',
+            versionName,
             generateRandomUint256(),
             [0n, ''],
             [1n, pinRes.IpfsHash],
