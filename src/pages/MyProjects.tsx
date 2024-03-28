@@ -1,5 +1,15 @@
 import { Link, useParams } from 'react-router-dom';
-import { Box, Button, Skeleton, Text, useMantineTheme } from '@mantine/core';
+import {
+  Avatar,
+  Box,
+  Button,
+  Flex,
+  Group,
+  Paper,
+  Skeleton,
+  Text,
+  useMantineTheme,
+} from '@mantine/core';
 import { IconExclamationCircle, IconPlus } from '@tabler/icons-react';
 
 import { ReactNode } from 'react';
@@ -16,6 +26,7 @@ import {
   ProjectCard as ProjectCardType,
   ProjectCardFromQuery,
 } from '../queries/getProjectCards';
+import { PINATA_GATEWAY } from '../utils/ipfs/get';
 
 const getUserProjects = async (projects: ProjectCardFromQuery[]) => {
   const res = await Promise.all(
@@ -92,7 +103,7 @@ export const MyProjects = () => {
     );
   }
 
-  if (userData.projects.length === 0 || !projects?.length) {
+  if (!projects?.length && !userData?.shipApplicants?.length) {
     return (
       <ProjectPageLayout>
         <Box mt={80} py={68} px={25}>
@@ -126,9 +137,47 @@ export const MyProjects = () => {
       >
         Create a Project
       </Button>
-      {projects.map((project) => (
-        <ProjectCard key={project.anchor} project={project} />
-      ))}
+      {projects && projects?.length > 0 && (
+        <>
+          <Text fw={600} mb="md">
+            My Projects ({projects?.length})
+          </Text>
+          {projects?.map((project) => (
+            <ProjectCard key={project.anchor} project={project} />
+          ))}
+        </>
+      )}
+
+      {userData?.shipApplicants && userData?.shipApplicants.length > 0 && (
+        <>
+          <Text fw={600} mb="md">
+            Ship Applications ({userData?.shipApplicants?.length})
+          </Text>
+          {userData?.shipApplicants.map((applicant) => (
+            <Paper
+              key={applicant.id}
+              bg={theme.colors.dark[6]}
+              p="md"
+              style={{ pointer: 'cursor' }}
+            >
+              <Group align="start">
+                <Avatar
+                  size={65}
+                  src={`${PINATA_GATEWAY}/${applicant.profileMetadata.avatarHash_IPFS}`}
+                />
+                <Box style={{ flexGrow: 1 }} w="min-content">
+                  <Text fw={600} mb={4} size="sm" truncate maw={115}>
+                    {applicant.name}
+                  </Text>
+                  <Text size="sm" opacity={0.8}>
+                    {applicant.profileMetadata.mission}
+                  </Text>
+                </Box>
+              </Group>
+            </Paper>
+          ))}
+        </>
+      )}
     </ProjectPageLayout>
   );
 };

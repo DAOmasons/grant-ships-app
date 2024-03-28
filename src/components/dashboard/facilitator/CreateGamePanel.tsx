@@ -71,7 +71,7 @@ export const CreateGamePanel = ({
         onChange={(e) => setAmount(Number(e.target.value))}
         type="number"
       />
-      <TxButton onClick={handleCreateRound} w="100%">
+      <TxButton onClick={handleCreateRound} w="100%" disabled={!amountInWei}>
         Create Game Round
       </TxButton>
     </Box>

@@ -121,6 +121,19 @@ export function DesktopNav() {
       );
     }
 
+    if (address && userData?.shipApplicants?.length) {
+      return (
+        <Link to={`/my-projects/${address}`} className={classes.link}>
+          <IconRocket
+            className={classes.linkIcon}
+            stroke={1.5}
+            color={theme.colors.violet[5]}
+          />
+          <span>Ship Applications</span>
+        </Link>
+      );
+    }
+
     if (address && !userData?.projects?.length) {
       return (
         <Link to={`/my-projects/${address}`} className={classes.link}>

@@ -1,4 +1,6 @@
+import { z } from 'zod';
 import {
+  FacShipDataFragment,
   ProjectDetailsFragment,
   RawMetadataFragment,
   getBuiltGraphSDK,
@@ -6,10 +8,18 @@ import {
 import HatsAbi from '../abi/Hats.json';
 import { HATS } from '../constants/gameSetup';
 import { publicClient } from '../utils/config';
+import { getIpfsJson } from '../utils/ipfs/get';
+import { ShipProfileMetadata } from '../utils/ipfs/metadataValidation';
+
+type ShipMetadataType = z.infer<typeof ShipProfileMetadata>;
 
 type UserProjectData = ProjectDetailsFragment & {
   metadata: RawMetadataFragment;
   grants: { grantStatus: number; shipId: { id: string } }[];
+};
+
+type ShipApplicantData = FacShipDataFragment & {
+  profileMetadata: ShipMetadataType;
 };
 
 export type UserData = {
@@ -18,6 +28,7 @@ export type UserData = {
   shipAddress?: string;
   shipHatId?: bigint;
   projects: UserProjectData[];
+  shipApplicants?: (FacShipDataFragment & ShipApplicantData)[];
 };
 
 // Todo: Use subgraph once we migrate to Arbitrum
@@ -79,6 +90,27 @@ const checkIsShipOperator = async (address: string) => {
   }
 };
 
+const resolveShipApplicationProfile = async (
+  applicant: FacShipDataFragment
+) => {
+  if (!applicant?.profileMetadata?.pointer) {
+    console.error('No metadata pointer', applicant);
+    throw new Error('No metadata pointer');
+  }
+  const metadata = await getIpfsJson(applicant.profileMetadata.pointer);
+  const validate = ShipProfileMetadata.safeParse(metadata);
+
+  if (!validate.success) {
+    console.error('Invalid metadata', validate.error);
+    throw new Error('Invalid metadata');
+  }
+
+  return {
+    ...applicant,
+    profileMetadata: metadata as ShipMetadataType,
+  };
+};
+
 export const getUserData = async (address: string): Promise<UserData> => {
   try {
     const { getUserData } = getBuiltGraphSDK();
@@ -98,6 +130,24 @@ export const getUserData = async (address: string): Promise<UserData> => {
         isShipOperator: true,
         shipAddress: isShipOperator.shipAddress,
         shipHatId: isShipOperator.shipHatId,
+        shipApplicants: [],
+      };
+    }
+
+    if (data.shipApplicants?.length) {
+      const resolved = await Promise.all(
+        data.shipApplicants.map(async (profile) => {
+          const res = await resolveShipApplicationProfile(profile);
+          return res;
+        })
+      );
+
+      return {
+        ...data,
+        projects: data.projects,
+        isFacilitator,
+        isShipOperator: false,
+        shipApplicants: resolved as ShipApplicantData[],
       };
     }
 
@@ -106,6 +156,7 @@ export const getUserData = async (address: string): Promise<UserData> => {
       projects: data.projects,
       isFacilitator,
       isShipOperator,
+      shipApplicants: [],
     };
   } catch (error) {
     console.error('Error in getUserData', error);

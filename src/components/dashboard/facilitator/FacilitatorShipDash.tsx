@@ -15,6 +15,8 @@ import { ADDR } from '../../../constants/addresses';
 import { pinJSONToIPFS } from '../../../utils/ipfs/pin';
 import { useTx } from '../../../hooks/useTx';
 import { useQueryClient } from '@tanstack/react-query';
+import { GameManager } from '../../../.graphclient';
+import { AppAlert } from '../../UnderContruction';
 
 export type ShipReviewData = {
   id: string;
@@ -28,9 +30,10 @@ export type ShipReviewData = {
 
 export const FacilitatorShipDash = ({
   shipData,
-
   isLoading,
+  gm,
 }: {
+  gm?: GameManager;
   shipData?: FacShipData;
   isLoading: boolean;
 }) => {
@@ -41,6 +44,8 @@ export const FacilitatorShipDash = ({
   const [shipReviewData, setShipReviewData] = useState<ShipReviewData | null>(
     null
   );
+
+  const hasCurrentRound = gm?.currentRound !== null;
 
   const handleReviewApplicant = async (
     id: string,
@@ -252,6 +257,12 @@ export const FacilitatorShipDash = ({
 
   return (
     <>
+      {!hasCurrentRound && (
+        <AppAlert
+          title="Cannot review until Game Round is created"
+          description="Cannot approve or reject a Grant Ship Application until a game round is created "
+        />
+      )}
       <PageLayout
         top={
           <>
@@ -260,6 +271,7 @@ export const FacilitatorShipDash = ({
             </Text>
             {shipData.shipApplicants.map((ship) => (
               <ShipDashCard
+                hasCurrentRound={hasCurrentRound}
                 key={ship.id}
                 id={ship.id}
                 name={ship.name}
@@ -280,7 +292,7 @@ export const FacilitatorShipDash = ({
                 key={ship.id}
                 id={ship.id}
                 name={ship.name}
-                avatarUrl={ship.profileMetadata.avatarHash_IPFS}
+                avatarUrl={getGatewayUrl(ship.profileMetadata.avatarHash_IPFS)}
                 shipStatus={GameStatus.Accepted}
                 onReview={handleReviewApplicant}
               />
@@ -297,7 +309,7 @@ export const FacilitatorShipDash = ({
                 key={ship.id}
                 id={ship.id}
                 name={ship.name}
-                avatarUrl={ship.profileMetadata.avatarHash_IPFS}
+                avatarUrl={getGatewayUrl(ship.profileMetadata.avatarHash_IPFS)}
                 shipStatus={GameStatus.Accepted}
               />
             ))}
@@ -313,6 +325,7 @@ export const FacilitatorShipDash = ({
         <ApplicationReview
           shipReviewData={shipReviewData}
           handleApprove={handleApprove}
+          hasCurrentRound={hasCurrentRound}
         />
       </Modal>
     </>

@@ -1,5 +1,5 @@
 query getUserData($id: Bytes) {
-  projects(where: { owner: $id }) {
+  projects: projects(where: { owner: $id }) {
     ...ProjectDetails
     metadata {
       ...RawMetadata
@@ -10,5 +10,8 @@ query getUserData($id: Bytes) {
         id
       }
     }
+  }
+  shipApplicants: grantShips(where: { isAwaitingApproval: true, owner: $id }) {
+    ...FacShipData
   }
 }

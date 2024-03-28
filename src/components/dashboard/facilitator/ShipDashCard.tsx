@@ -21,6 +21,7 @@ type ShipDashCardProps = {
   lastUpdate?: string;
   avatarUrl?: string;
   shipStatus: GameStatus;
+  hasCurrentRound?: boolean;
   onReview?: (
     id: string,
     buttonLoading: Dispatch<SetStateAction<boolean>>
