@@ -52,7 +52,6 @@ const resolveProfileMetadata = async (
     throw new Error('No metadata pointer');
   }
   const metadata = await getIpfsJson(applicant.profileMetadata.pointer);
-
   const validate = ShipProfileMetadata.safeParse(metadata);
 
   if (!validate.success) {

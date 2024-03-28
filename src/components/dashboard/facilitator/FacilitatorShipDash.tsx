@@ -292,7 +292,7 @@ export const FacilitatorShipDash = ({
                 key={ship.id}
                 id={ship.id}
                 name={ship.name}
-                avatarUrl={ship.profileMetadata.avatarHash_IPFS}
+                avatarUrl={getGatewayUrl(ship.profileMetadata.avatarHash_IPFS)}
                 shipStatus={GameStatus.Accepted}
                 onReview={handleReviewApplicant}
               />
@@ -309,7 +309,7 @@ export const FacilitatorShipDash = ({
                 key={ship.id}
                 id={ship.id}
                 name={ship.name}
-                avatarUrl={ship.profileMetadata.avatarHash_IPFS}
+                avatarUrl={getGatewayUrl(ship.profileMetadata.avatarHash_IPFS)}
                 shipStatus={GameStatus.Accepted}
               />
             ))}
@@ -325,6 +325,7 @@ export const FacilitatorShipDash = ({
         <ApplicationReview
           shipReviewData={shipReviewData}
           handleApprove={handleApprove}
+          hasCurrentRound={hasCurrentRound}
         />
       </Modal>
     </>
