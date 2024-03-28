@@ -103,6 +103,7 @@ export const FacilitatorDashboard = () => {
         </Tabs.List>
         <Tabs.Panel value="ships">
           <FacilitatorShipDash
+            gm={gm}
             shipData={shipData}
             isLoading={shipsLoading || isLoadingGm}
           />

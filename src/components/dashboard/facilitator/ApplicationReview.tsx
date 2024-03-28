@@ -7,7 +7,9 @@ import { ReviewPage } from '../../../layout/ReviewPage';
 export const ApplicationReview = ({
   shipReviewData,
   handleApprove,
+  hasCurrentRound,
 }: {
+  hasCurrentRound: boolean;
   shipReviewData: ShipReviewData | null;
   handleApprove: (isApproved: boolean, reason: string, hatId: string) => void;
 }) => {
@@ -86,13 +88,13 @@ export const ApplicationReview = ({
           <Flex justify="space-between">
             <Button
               variant="outline"
-              disabled={!reasonText}
+              disabled={!reasonText || !hasCurrentRound}
               onClick={() => handleApprove(false, reasonText, '')}
             >
               Reject
             </Button>
             <Button
-              disabled={!reasonText || !hatId}
+              disabled={!reasonText || !hatId || !hasCurrentRound}
               onClick={() => handleApprove(true, reasonText, hatId)}
             >
               Approve
