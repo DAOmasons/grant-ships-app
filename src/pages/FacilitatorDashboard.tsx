@@ -30,6 +30,7 @@ export const FacilitatorDashboard = () => {
     functionName: 'getPoolAmount',
     address: ADDR.GAME_MANAGER,
   });
+  console.log('gm', gm);
 
   const gameOperationStage = useMemo(() => {
     if (!gm || !shipData || typeof poolBalance !== 'bigint') {

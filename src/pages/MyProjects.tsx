@@ -154,7 +154,12 @@ export const MyProjects = () => {
             Ship Applications ({userData?.shipApplicants?.length})
           </Text>
           {userData?.shipApplicants.map((applicant) => (
-            <Paper key={applicant.id} bg={theme.colors.dark[6]} p="md">
+            <Paper
+              key={applicant.id}
+              bg={theme.colors.dark[6]}
+              p="md"
+              style={{ pointer: 'cursor' }}
+            >
               <Group align="start">
                 <Avatar
                   size={65}
