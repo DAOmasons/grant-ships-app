@@ -36,10 +36,10 @@ export const GAME_TOKEN_DEV = {
 };
 
 export const GAME_TOKEN_PROD = {
-  NAME: 'Arbitrum Token',
-  SYMBOL: 'ARB',
+  NAME: 'Grant Ships Beta Test',
+  SYMBOL: 'GSBT',
   DECIMALS: 18,
-  ADDRESS: '0',
+  ADDRESS: '0xc3f93F3e304b1199625DF261a9F87367ab9e9e48',
 };
 
 export const HATS_DEV = {
