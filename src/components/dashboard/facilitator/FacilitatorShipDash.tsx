@@ -186,7 +186,7 @@ export const FacilitatorShipDash = ({
       return;
     }
 
-    if ((isApproved && hatId === '') || (isApproved && hatId.length !== 70)) {
+    if ((isApproved && hatId === '') || (isApproved && hatId.length < 50)) {
       notifications.show({
         title: 'Error',
         message: 'A valid Operator Hat ID is required for approval',

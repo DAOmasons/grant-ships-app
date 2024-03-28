@@ -79,8 +79,10 @@ export const FundPoolPanel = ({
       viewParams: {
         awaitGraphPoll: false,
       },
-      onComplete() {
-        refetch();
+      writeContractOptions: {
+        onSuccess: () => {
+          refetch();
+        },
       },
     });
   };
@@ -96,8 +98,10 @@ export const FundPoolPanel = ({
       viewParams: {
         awaitGraphPoll: false,
       },
-      onComplete() {
-        refetch();
+      writeContractOptions: {
+        onSuccess: () => {
+          refetch();
+        },
       },
     });
   };
