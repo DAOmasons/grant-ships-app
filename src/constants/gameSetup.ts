@@ -1,3 +1,4 @@
+import { arbitrum, arbitrumSepolia } from 'viem/chains';
 import { ADDR_PROD, ADDR_TESTNET } from './addresses';
 
 export const GAME_MANAGER_TESTNET = {
@@ -78,3 +79,6 @@ export const HATS =
   import.meta.env.VITE_RUNTIME_ENV === 'dev' ? HATS_DEV : HATS_PROD;
 
 export const SHIP_AMOUNT = 3;
+
+export const NETWORK_ID =
+  import.meta.env.VITE_RUNTIME_ENV === 'dev' ? arbitrumSepolia.id : arbitrum.id;

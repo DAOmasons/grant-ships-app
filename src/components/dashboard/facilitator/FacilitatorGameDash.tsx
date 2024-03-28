@@ -108,6 +108,9 @@ export const FacilitatorGameDash = ({
     ];
   }, [shipData, isLoading, gameStatusNumber, gm, poolBalance]);
 
+  console.log('poolBalance', poolBalance);
+  console.log('isLoading', isLoading);
+
   if (
     // !gameStatusNumber ||
     poolBalance === undefined ||
