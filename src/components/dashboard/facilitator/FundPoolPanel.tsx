@@ -1,8 +1,11 @@
 import { useAccount, useReadContracts } from 'wagmi';
 import { useTx } from '../../../hooks/useTx';
 import { Address, erc20Abi, formatEther, parseEther } from 'viem';
-import { arbitrumSepolia } from 'viem/chains';
-import { GAME_MANAGER, GAME_TOKEN } from '../../../constants/gameSetup';
+import {
+  GAME_MANAGER,
+  GAME_TOKEN,
+  NETWORK_ID,
+} from '../../../constants/gameSetup';
 import { ADDR } from '../../../constants/addresses';
 import { Alert, Box, Skeleton, Text, TextInput } from '@mantine/core';
 import { useState } from 'react';
@@ -31,14 +34,14 @@ export const FundPoolPanel = ({
     contracts: [
       {
         abi: erc20Abi,
-        chainId: arbitrumSepolia.id,
+        chainId: NETWORK_ID,
         address: GAME_TOKEN.ADDRESS as Address,
         functionName: 'allowance',
         args: [address as Address, ADDR.ALLO as Address],
       },
       {
         abi: erc20Abi,
-        chainId: arbitrumSepolia.id,
+        chainId: NETWORK_ID,
         address: GAME_TOKEN.ADDRESS as Address,
         functionName: 'balanceOf',
         args: [address as Address],

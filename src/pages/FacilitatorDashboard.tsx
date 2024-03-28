@@ -8,9 +8,8 @@ import { FacilitatorGameDash } from '../components/dashboard/facilitator/Facilit
 import { useGameManager } from '../hooks/useGameMangers';
 import GameManagerAbi from '../abi/GameManager.json';
 import { useMemo } from 'react';
-import { SHIP_AMOUNT } from '../constants/gameSetup';
+import { NETWORK_ID, SHIP_AMOUNT } from '../constants/gameSetup';
 import { useReadContract } from 'wagmi';
-import { arbitrumSepolia } from 'viem/chains';
 import { ADDR } from '../constants/addresses';
 import { GameStatus } from '../types/common';
 import { ProjectApproval } from '../components/dashboard/facilitator/ProjectApproval';
@@ -26,11 +25,10 @@ export const FacilitatorDashboard = () => {
 
   const { data: poolBalance, isLoading: poolLoading } = useReadContract({
     abi: GameManagerAbi,
-    chainId: arbitrumSepolia.id,
+    chainId: NETWORK_ID,
     functionName: 'getPoolAmount',
     address: ADDR.GAME_MANAGER,
   });
-  console.log('gm', gm);
 
   const gameOperationStage = useMemo(() => {
     if (!gm || !shipData || typeof poolBalance !== 'bigint') {
