@@ -42,6 +42,7 @@ export type Scalars = {
   BigInt: any;
   Bytes: any;
   Int8: any;
+  Timestamp: any;
 };
 
 export type Aggregation_interval =
@@ -3237,6 +3238,7 @@ export type ResolversTypes = ResolversObject<{
   RawMetadata_orderBy: RawMetadata_orderBy;
   String: ResolverTypeWrapper<Scalars['String']>;
   Subscription: ResolverTypeWrapper<{}>;
+  Timestamp: ResolverTypeWrapper<Scalars['Timestamp']>;
   Transaction: ResolverTypeWrapper<Transaction>;
   Transaction_filter: Transaction_filter;
   Transaction_orderBy: Transaction_orderBy;
@@ -3293,6 +3295,7 @@ export type ResolversParentTypes = ResolversObject<{
   RawMetadata_filter: RawMetadata_filter;
   String: Scalars['String'];
   Subscription: {};
+  Timestamp: Scalars['Timestamp'];
   Transaction: Transaction;
   Transaction_filter: Transaction_filter;
   Update: Update;
@@ -3607,6 +3610,10 @@ export type SubscriptionResolvers<ContextType = MeshContext, ParentType extends 
   _meta?: SubscriptionResolver<Maybe<ResolversTypes['_Meta_']>, "_meta", ParentType, ContextType, Partial<Subscription_metaArgs>>;
 }>;
 
+export interface TimestampScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Timestamp'], any> {
+  name: 'Timestamp';
+}
+
 export type TransactionResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Transaction'] = ResolversParentTypes['Transaction']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   blockNumber?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
@@ -3665,6 +3672,7 @@ export type Resolvers<ContextType = MeshContext> = ResolversObject<{
   Query?: QueryResolvers<ContextType>;
   RawMetadata?: RawMetadataResolvers<ContextType>;
   Subscription?: SubscriptionResolvers<ContextType>;
+  Timestamp?: GraphQLScalarType;
   Transaction?: TransactionResolvers<ContextType>;
   Update?: UpdateResolvers<ContextType>;
   _Block_?: _Block_Resolvers<ContextType>;
@@ -3723,7 +3731,7 @@ const grantShipsTransforms = [];
 const additionalTypeDefs = [] as any[];
 const grantShipsHandler = new GraphqlHandler({
               name: "grant-ships",
-              config: {"endpoint":"https://api.thegraph.com/subgraphs/name/jordanlesich/grant-ships"},
+              config: {"endpoint":"https://api.studio.thegraph.com/query/41101/grant-ships-arb/version/latest"},
               baseDir,
               cache,
               pubsub,

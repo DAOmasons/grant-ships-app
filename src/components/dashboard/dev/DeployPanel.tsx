@@ -33,6 +33,7 @@ const defaultFormValues = {
   facilitatorHatId: HATS.FACILITATOR.toString(),
   gmTitle: '',
   gmDescription: '',
+  rootAccount: '',
 };
 
 type FormValues = z.infer<typeof deployGmSchema>;
@@ -83,6 +84,7 @@ export const DeploymentPanel = ({
       facilitatorHatId,
       gmTitle,
       gmDescription,
+      rootAccount,
     } = formValues;
 
     if (
@@ -90,7 +92,8 @@ export const DeploymentPanel = ({
       !tokenAddress ||
       !facilitatorHatId ||
       !gmTitle ||
-      !gmDescription
+      !gmDescription ||
+      !rootAccount
     ) {
       notifications.show({
         title: 'Error',
@@ -103,7 +106,7 @@ export const DeploymentPanel = ({
     try {
       const initData = encodeAbiParameters(
         parseAbiParameters('uint256, address, address'),
-        [BigInt(facilitatorHatId), tokenAddress as Address, ADDR.HATS]
+        [BigInt(facilitatorHatId), ADDR.HATS, rootAccount as Address]
       );
 
       const pinRes = await pinJSONToIPFS({
@@ -193,8 +196,15 @@ export const DeploymentPanel = ({
             label="Token Address"
             value={form.values.tokenAddress}
             description={result.data ? result.data : 'Invalid Address'}
-            placeholder="Enter the token address"
+            placeholder="0x..."
             {...form.getInputProps('tokenAddress')}
+            required
+          />
+          <TextInput
+            label="Root Account Address"
+            value={form.values.rootAccount}
+            placeholder="0x..."
+            {...form.getInputProps('rootAccount')}
             required
           />
           <TextInput
