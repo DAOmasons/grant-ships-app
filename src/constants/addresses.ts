@@ -14,8 +14,8 @@ export const ADDR_PROD: Record<string, Address> = {
   REGISTRY: '0x4AAcca72145e1dF2aeC137E1f3C5E3D75DB8b5f3',
   HATS: '0x3bc1A0Ad72417f2d411118085256fC53CBdDd137',
   GAME_MANAGER: '0x00000000',
-  FACTORY: '0x00000000',
-  GM_FACTORY: '0x00000000',
+  GM_FACTORY: '0xdc9787b869e22256a4f4f49f484586fcff0d351f',
+  GS_FACTORY: '0xb130175b648d4ce92ca6153eaa138cc69eb1cf4c',
 } as const;
 
 export const ADDR: Record<string, Address> =

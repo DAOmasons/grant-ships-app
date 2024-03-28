@@ -214,7 +214,7 @@ export const FacilitatorShipDash = ({
           shipReviewData.id,
           isApproved ? GameStatus.Accepted : GameStatus.Rejected,
           shipInitData,
-          ADDR.FACTORY,
+          ADDR.GS_FACTORY,
           { protocol: 1n, pointer: pinRes.IpfsHash },
         ],
       },
