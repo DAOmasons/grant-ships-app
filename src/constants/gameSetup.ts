@@ -16,10 +16,10 @@ export const GAME_MANAGER_PROD = {
   ADDRESS: ADDR_PROD.GAME_MANAGER,
   FACTORY: ADDR_PROD.GS_FACTORY,
   PROFILE: {
-    ID: '0xb396b674bc59fdd47fe3c941942d219eedb40881bd7fad7ccc75f3f8805cbe89',
+    ID: '0x47465450fe64330c66074ed65c8aef71e196088c72eb71fb19e86bfc53f4206e',
   },
   POOL: {
-    ID: 21n,
+    ID: 22n,
   },
 };
 
