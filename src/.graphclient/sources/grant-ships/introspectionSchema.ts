@@ -13574,6 +13574,25 @@ const schemaAST = {
           "kind": "FieldDefinition",
           "name": {
             "kind": "Name",
+            "value": "shipAllocation"
+          },
+          "arguments": [],
+          "type": {
+            "kind": "NonNullType",
+            "type": {
+              "kind": "NamedType",
+              "name": {
+                "kind": "Name",
+                "value": "BigInt"
+              }
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "FieldDefinition",
+          "name": {
+            "kind": "Name",
             "value": "totalAvailableFunds"
           },
           "arguments": [],
@@ -16203,6 +16222,138 @@ const schemaAST = {
           "name": {
             "kind": "Name",
             "value": "balance_not_in"
+          },
+          "type": {
+            "kind": "ListType",
+            "type": {
+              "kind": "NonNullType",
+              "type": {
+                "kind": "NamedType",
+                "name": {
+                  "kind": "Name",
+                  "value": "BigInt"
+                }
+              }
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "shipAllocation"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "BigInt"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "shipAllocation_not"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "BigInt"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "shipAllocation_gt"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "BigInt"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "shipAllocation_lt"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "BigInt"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "shipAllocation_gte"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "BigInt"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "shipAllocation_lte"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "BigInt"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "shipAllocation_in"
+          },
+          "type": {
+            "kind": "ListType",
+            "type": {
+              "kind": "NonNullType",
+              "type": {
+                "kind": "NamedType",
+                "name": {
+                  "kind": "Name",
+                  "value": "BigInt"
+                }
+              }
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "shipAllocation_not_in"
           },
           "type": {
             "kind": "ListType",
@@ -19347,6 +19498,14 @@ const schemaAST = {
           "name": {
             "kind": "Name",
             "value": "balance"
+          },
+          "directives": []
+        },
+        {
+          "kind": "EnumValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "shipAllocation"
           },
           "directives": []
         },
@@ -23406,6 +23565,14 @@ const schemaAST = {
           "name": {
             "kind": "Name",
             "value": "shipId__balance"
+          },
+          "directives": []
+        },
+        {
+          "kind": "EnumValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "shipId__shipAllocation"
           },
           "directives": []
         },
@@ -39175,6 +39342,19 @@ const schemaAST = {
         }
       ],
       "interfaces": [],
+      "directives": []
+    },
+    {
+      "kind": "ScalarTypeDefinition",
+      "description": {
+        "kind": "StringValue",
+        "value": "A string representation of microseconds UNIX timestamp (16 digits)\n",
+        "block": true
+      },
+      "name": {
+        "kind": "Name",
+        "value": "Timestamp"
+      },
       "directives": []
     },
     {
