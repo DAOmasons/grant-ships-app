@@ -77,8 +77,8 @@ export const DistributePanel = ({
           {approvedShips.map((ship) => (
             <Text fz={'sm'} key={`distro-txt-${ship.id}`} mb="xs">
               {ship.name}:{' '}
-              {ship.distributedAmount
-                ? formatEther(BigInt(ship.distributedAmount))
+              {ship.totalAvailableFunds
+                ? formatEther(BigInt(ship.totalAvailableFunds))
                 : 'Error'}{' '}
               {GAME_TOKEN.SYMBOL}
             </Text>
@@ -109,8 +109,8 @@ export const DistributePanel = ({
       {allocatedShips.map((ship) => (
         <Text fz={'sm'} key={`allocated-ship-${ship.id}`} mb="xs">
           {ship.name}:{' '}
-          {ship.allocatedAmount
-            ? formatEther(BigInt(ship.allocatedAmount))
+          {ship.shipAllocation
+            ? formatEther(BigInt(ship.shipAllocation))
             : 'Error'}{' '}
           {GAME_TOKEN.SYMBOL}
         </Text>

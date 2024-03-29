@@ -80,8 +80,8 @@ export const AllocationPanel = ({
           {approvedShips.map((ship) => (
             <Text fz={'sm'} key={`allocation-txt-${ship.id}`} mb="xs">
               {ship.name}:{' '}
-              {ship.allocatedAmount
-                ? formatEther(BigInt(ship.allocatedAmount))
+              {ship.shipAllocation
+                ? formatEther(BigInt(ship.shipAllocation))
                 : 'Error'}{' '}
               {GAME_TOKEN.SYMBOL}
             </Text>

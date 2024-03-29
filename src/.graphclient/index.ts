@@ -42,6 +42,7 @@ export type Scalars = {
   BigInt: any;
   Bytes: any;
   Int8: any;
+  Timestamp: any;
 };
 
 export type Aggregation_interval =
@@ -974,6 +975,7 @@ export type GrantShip = {
   status: Scalars['Int'];
   poolFunded: Scalars['Boolean'];
   balance: Scalars['BigInt'];
+  shipAllocation: Scalars['BigInt'];
   totalAvailableFunds: Scalars['BigInt'];
   totalRoundAmount: Scalars['BigInt'];
   totalAllocated: Scalars['BigInt'];
@@ -1143,6 +1145,14 @@ export type GrantShip_filter = {
   balance_lte?: InputMaybe<Scalars['BigInt']>;
   balance_in?: InputMaybe<Array<Scalars['BigInt']>>;
   balance_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  shipAllocation?: InputMaybe<Scalars['BigInt']>;
+  shipAllocation_not?: InputMaybe<Scalars['BigInt']>;
+  shipAllocation_gt?: InputMaybe<Scalars['BigInt']>;
+  shipAllocation_lt?: InputMaybe<Scalars['BigInt']>;
+  shipAllocation_gte?: InputMaybe<Scalars['BigInt']>;
+  shipAllocation_lte?: InputMaybe<Scalars['BigInt']>;
+  shipAllocation_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  shipAllocation_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   totalAvailableFunds?: InputMaybe<Scalars['BigInt']>;
   totalAvailableFunds_not?: InputMaybe<Scalars['BigInt']>;
   totalAvailableFunds_gt?: InputMaybe<Scalars['BigInt']>;
@@ -1345,6 +1355,7 @@ export type GrantShip_orderBy =
   | 'status'
   | 'poolFunded'
   | 'balance'
+  | 'shipAllocation'
   | 'totalAvailableFunds'
   | 'totalRoundAmount'
   | 'totalAllocated'
@@ -1627,6 +1638,7 @@ export type Grant_orderBy =
   | 'shipId__status'
   | 'shipId__poolFunded'
   | 'shipId__balance'
+  | 'shipId__shipAllocation'
   | 'shipId__totalAvailableFunds'
   | 'shipId__totalRoundAmount'
   | 'shipId__totalAllocated'
@@ -3237,6 +3249,7 @@ export type ResolversTypes = ResolversObject<{
   RawMetadata_orderBy: RawMetadata_orderBy;
   String: ResolverTypeWrapper<Scalars['String']>;
   Subscription: ResolverTypeWrapper<{}>;
+  Timestamp: ResolverTypeWrapper<Scalars['Timestamp']>;
   Transaction: ResolverTypeWrapper<Transaction>;
   Transaction_filter: Transaction_filter;
   Transaction_orderBy: Transaction_orderBy;
@@ -3293,6 +3306,7 @@ export type ResolversParentTypes = ResolversObject<{
   RawMetadata_filter: RawMetadata_filter;
   String: Scalars['String'];
   Subscription: {};
+  Timestamp: Scalars['Timestamp'];
   Transaction: Transaction;
   Transaction_filter: Transaction_filter;
   Update: Update;
@@ -3447,6 +3461,7 @@ export type GrantShipResolvers<ContextType = MeshContext, ParentType extends Res
   status?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   poolFunded?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   balance?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  shipAllocation?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   totalAvailableFunds?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   totalRoundAmount?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   totalAllocated?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
@@ -3607,6 +3622,10 @@ export type SubscriptionResolvers<ContextType = MeshContext, ParentType extends 
   _meta?: SubscriptionResolver<Maybe<ResolversTypes['_Meta_']>, "_meta", ParentType, ContextType, Partial<Subscription_metaArgs>>;
 }>;
 
+export interface TimestampScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Timestamp'], any> {
+  name: 'Timestamp';
+}
+
 export type TransactionResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Transaction'] = ResolversParentTypes['Transaction']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   blockNumber?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
@@ -3665,6 +3684,7 @@ export type Resolvers<ContextType = MeshContext> = ResolversObject<{
   Query?: QueryResolvers<ContextType>;
   RawMetadata?: RawMetadataResolvers<ContextType>;
   Subscription?: SubscriptionResolvers<ContextType>;
+  Timestamp?: GraphQLScalarType;
   Transaction?: TransactionResolvers<ContextType>;
   Update?: UpdateResolvers<ContextType>;
   _Block_?: _Block_Resolvers<ContextType>;
@@ -3953,7 +3973,7 @@ export type facDashShipDataQuery = { shipApplicants: Array<(
     Pick<GrantShip, 'id' | 'name' | 'status' | 'applicationSubmittedTime' | 'shipApplicationBytesData'>
     & { profileMetadata: Pick<RawMetadata, 'pointer'> }
   )>, approvedShips: Array<(
-    Pick<GrantShip, 'approvedTime' | 'totalAllocated' | 'totalDistributed' | 'id' | 'name' | 'status' | 'applicationSubmittedTime' | 'shipApplicationBytesData'>
+    Pick<GrantShip, 'approvedTime' | 'shipAllocation' | 'totalAvailableFunds' | 'id' | 'name' | 'status' | 'applicationSubmittedTime' | 'shipApplicationBytesData'>
     & { applicationReviewReason?: Maybe<Pick<RawMetadata, 'pointer'>>, profileMetadata: Pick<RawMetadata, 'pointer'> }
   )>, rejectedShips: Array<(
     Pick<GrantShip, 'rejectedTime' | 'id' | 'name' | 'status' | 'applicationSubmittedTime' | 'shipApplicationBytesData'>
@@ -4423,8 +4443,8 @@ export const facDashShipDataDocument = gql`
   ) {
     ...FacShipData
     approvedTime
-    totalAllocated
-    totalDistributed
+    shipAllocation
+    totalAvailableFunds
     applicationReviewReason {
       pointer
     }
