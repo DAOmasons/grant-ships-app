@@ -1,6 +1,9 @@
 import { getBuiltGraphSDK } from '../.graphclient';
+import { SUBGRAPH_URL } from '../constants/gameSetup';
 
-const { getRecentTransaction } = getBuiltGraphSDK();
+const { getRecentTransaction } = getBuiltGraphSDK({
+  apiEndpoint: SUBGRAPH_URL,
+});
 
 export const fetchRecentTransaction = async (txHash: string) => {
   const res = await getRecentTransaction({ txHash });

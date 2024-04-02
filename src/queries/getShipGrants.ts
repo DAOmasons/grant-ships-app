@@ -1,8 +1,11 @@
 import { getBuiltGraphSDK } from '../.graphclient';
 import { DashGrant, resolveGrants } from '../resolvers/grantResolvers';
+import { SUBGRAPH_URL } from '../constants/gameSetup';
 
 export const getShipGrants = async (shipId: string) => {
-  const { getShipGrants } = getBuiltGraphSDK();
+  const { getShipGrants } = getBuiltGraphSDK({
+    apiEndpoint: SUBGRAPH_URL,
+  });
 
   const { grantShip } = await getShipGrants({ id: shipId });
 

@@ -1,11 +1,14 @@
 import { getBuiltGraphSDK } from '../.graphclient';
 import { DashGrant, resolveGrants } from '../resolvers/grantResolvers';
+import { SUBGRAPH_URL } from '../constants/gameSetup';
 
 export const getProjectGrants = async (
   projectId: string
 ): Promise<DashGrant[]> => {
   try {
-    const { getProjectGrants } = getBuiltGraphSDK();
+    const { getProjectGrants } = getBuiltGraphSDK({
+      apiEndpoint: SUBGRAPH_URL,
+    });
 
     const res = await getProjectGrants({ id: projectId });
 

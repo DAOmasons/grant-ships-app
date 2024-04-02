@@ -1,4 +1,5 @@
 import { getBuiltGraphSDK } from '../.graphclient';
+import { SUBGRAPH_URL } from '../constants/gameSetup';
 
 export type GmVersion = {
   id: string;
@@ -7,7 +8,9 @@ export type GmVersion = {
 };
 
 export const getGameManagerVersions = async () => {
-  const { getGmVersions } = getBuiltGraphSDK();
+  const { getGmVersions } = getBuiltGraphSDK({
+    apiEndpoint: SUBGRAPH_URL,
+  });
 
   try {
     const versions = await getGmVersions();

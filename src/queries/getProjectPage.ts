@@ -2,10 +2,13 @@ import { getBuiltGraphSDK } from '../.graphclient';
 import { ProjectPageUI } from '../types/ui';
 import { getGatewayUrl, getIpfsJson } from '../utils/ipfs/get';
 import { ProjectProfileMetadata } from '../utils/ipfs/metadataValidation';
+import { SUBGRAPH_URL } from '../constants/gameSetup';
 
 export const getProjectPage = async (id: string): Promise<ProjectPageUI> => {
   try {
-    const { projectPageQuery } = getBuiltGraphSDK();
+    const { projectPageQuery } = getBuiltGraphSDK({
+      apiEndpoint: SUBGRAPH_URL,
+    });
 
     const { project } = await projectPageQuery({ id });
 

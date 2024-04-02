@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { ShipProfileMetadata } from '../utils/ipfs/metadataValidation';
 import { FacShipDataFragment, getBuiltGraphSDK } from '../.graphclient';
 import { getIpfsJson } from '../utils/ipfs/get';
+import { SUBGRAPH_URL } from '../constants/gameSetup';
 
 type ShipMetadataType = z.infer<typeof ShipProfileMetadata>;
 
@@ -86,7 +87,9 @@ const rejectedMetadataResolver = async (applicant: QueryRejected) => {
 
 export const getFacDashShipData = async (): Promise<FacShipData> => {
   try {
-    const { facDashShipData } = getBuiltGraphSDK();
+    const { facDashShipData } = getBuiltGraphSDK({
+      apiEndpoint: SUBGRAPH_URL,
+    });
 
     const { shipApplicants, approvedShips, rejectedShips } =
       await facDashShipData();

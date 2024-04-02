@@ -1,6 +1,7 @@
 import { ShipDashFragment, getBuiltGraphSDK } from '../.graphclient';
 import { DashGrant, resolveGrants } from '../resolvers/grantResolvers';
 import { ShipMetadata, resolveShipMetadata } from '../resolvers/shipResolvers';
+import { SUBGRAPH_URL } from '../constants/gameSetup';
 
 export type DashShip = ShipDashFragment & {
   grants: DashGrant[];
@@ -9,7 +10,9 @@ export type DashShip = ShipDashFragment & {
 
 export const getShipDash = async (shipId: string): Promise<DashShip> => {
   try {
-    const { getShipDash } = getBuiltGraphSDK();
+    const { getShipDash } = getBuiltGraphSDK({
+      apiEndpoint: SUBGRAPH_URL,
+    });
 
     const res = await getShipDash({ id: shipId });
 

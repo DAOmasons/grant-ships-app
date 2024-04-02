@@ -1,5 +1,5 @@
 import { FeedDataFragment, getBuiltGraphSDK } from '../.graphclient';
-import { DAO_MASONS } from '../constants/gameSetup';
+import { DAO_MASONS, SUBGRAPH_URL } from '../constants/gameSetup';
 import { FeedCardUI, Player } from '../types/ui';
 import { findValueByKey } from '../utils/helpers';
 import { getGatewayUrl, getIpfsJson, isCID } from '../utils/ipfs/get';
@@ -122,7 +122,9 @@ export const getFeed = async ({
   skip: number;
 }) => {
   try {
-    const { getFeed } = getBuiltGraphSDK();
+    const { getFeed } = getBuiltGraphSDK({
+      apiEndpoint: SUBGRAPH_URL,
+    });
 
     const { feedItems } = await getFeed({
       first,
@@ -151,7 +153,9 @@ export const getEntityFeed = async ({
   skip: number;
 }) => {
   try {
-    const { getEntityFeed } = getBuiltGraphSDK();
+    const { getEntityFeed } = getBuiltGraphSDK({
+      apiEndpoint: SUBGRAPH_URL,
+    });
 
     const { subjectItems, objectItems } = await getEntityFeed({
       first: first,
