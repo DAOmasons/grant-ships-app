@@ -117,10 +117,7 @@ const resolveShipApplicationProfile = async (
 
 export const getUserData = async (address: string): Promise<UserData> => {
   try {
-    const sdk = getBuiltGraphSDK({ chainName: 'arbitrum' });
-    console.log('sdk', sdk);
-    const nonsense = await getBuiltGraphClient();
-    console.log('nonsense', nonsense);
+    const sdk = getBuiltGraphSDK(SUBGRAPH_URL);
     const { getUserData } = sdk;
     const data = await getUserData({ id: address });
     const isFacilitator = await checkIsFacilitator(address);

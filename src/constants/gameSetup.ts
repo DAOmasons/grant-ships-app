@@ -5,10 +5,10 @@ export const GAME_MANAGER_TESTNET = {
   ADDRESS: ADDR_TESTNET.GAME_MANAGER,
   FACTORY: ADDR_TESTNET.GS_FACTORY,
   PROFILE: {
-    ID: '0x1f28f68458b557a94b96d14b9ac6a4af714d6eb19f77a97c3df2f5ad4a53fb9d',
+    ID: '0x3f8a3e436fcd2b03d11d8d95294452a45aaca89c52eadc6f3331827b85ca8381',
   },
   POOL: {
-    ID: 238n,
+    ID: 289n,
   },
 };
 
@@ -85,5 +85,5 @@ export const NETWORK_ID =
 
 export const SUBGRAPH_URL =
   import.meta.env.VITE_RUNTIME_ENV === 'dev'
-    ? 'api.thegraph.com/subgraphs/name/jordanlesich/grant-ships'
+    ? 'api.thegraph.com/subgraphs/name/daomasons/grant-ships-arb-sepolia'
     : 'api.studio.thegraph.com/query/41101/grant-ships-arb/version/latest';

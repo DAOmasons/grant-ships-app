@@ -38,7 +38,7 @@ export const CreateShip = () => {
     syncConnectedChain: true,
     pollingInterval: 100,
     onError: (error) => {
-      console.log('error', error);
+      console.error('error', error);
     },
     onLogs: (logs: any) => {
       const log = logs[0];
@@ -51,7 +51,7 @@ export const CreateShip = () => {
           owner: log.args.owner,
           profileId: log.args.profileId,
         };
-        console.log('profileData', profileData);
+
         setProfileData(profileData);
       } else {
         console.warn(

@@ -13,7 +13,6 @@ export const getGameManagerDeployments = async () => {
     const res = await resolveDeployments(
       data.gmDeployments as GmDeploymentFragment[]
     );
-    console.log('res', res);
     return res as GmDeployment[];
   } catch (error) {
     throw new Error(`Failed to get game manager versions: ${error}`);
