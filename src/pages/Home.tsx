@@ -1,4 +1,4 @@
-import { Box, Tabs } from '@mantine/core';
+import { Box, Tabs, Text } from '@mantine/core';
 import { Feed } from '../components/feed/Feed';
 import { MainSection } from '../layout/Sections';
 import { AppAlert } from '../components/UnderContruction';
@@ -6,12 +6,20 @@ import { useQuery } from '@tanstack/react-query';
 import { getFeed } from '../queries/getFeed';
 import { FeedSkeletonCard } from '../components/skeletons';
 import { Banner } from '../components/Banner';
+import { useBreakpoints } from '../hooks/useBreakpoint';
 
 export const Home = () => {
+  const { isThin, isMobile, isTablet, isLaptop, isDesktop } = useBreakpoints();
+
   return (
     <Box w="100%">
       <Banner />
       <MainSection>
+        {isThin && <Text>Thin</Text>}
+        {isMobile && <Text>Mobile</Text>}
+        {isTablet && <Text>Tablet</Text>}
+        {isLaptop && <Text>Laptop</Text>}
+        {isDesktop && <Text>Desktop</Text>}
         <Tabs defaultValue="feed">
           <Tabs.List mb={'xl'}>
             <Tabs.Tab value="feed" w="20%">

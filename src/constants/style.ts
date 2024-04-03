@@ -1,7 +1,8 @@
 export enum BreakPoint {
-  Xs = '30rem',
-  Sm = '48rem',
-  Md = '64rem',
-  Lg = '74rem',
-  Xl = '90rem',
+  Xs = '22em',
+  Sm = '32em',
+  Md = '58em',
+  Lg = '87em',
+  UpperRange = '87.0001em',
+  Xl = '94em',
 }
