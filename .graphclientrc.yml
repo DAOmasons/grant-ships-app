@@ -2,6 +2,6 @@ sources:
   - name: grant-ships
     handler: 
       graphql: 
-        endpoint: https://api.studio.thegraph.com/query/41101/grant-ships-arb/version/latest
+        endpoint: https://{context.apiEndpoint:api.studio.thegraph.com/query/41101/grant-ships-arb/version/latest}
 documents: 
   - './src/**/*.graphql'

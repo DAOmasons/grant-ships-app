@@ -4,12 +4,14 @@ import {
   ProjectDetailsFragment,
   RawMetadataFragment,
   getBuiltGraphSDK,
+  getBuiltGraphClient,
 } from '../.graphclient';
 import HatsAbi from '../abi/Hats.json';
 import { HATS } from '../constants/gameSetup';
 import { publicClient } from '../utils/config';
 import { getIpfsJson } from '../utils/ipfs/get';
 import { ShipProfileMetadata } from '../utils/ipfs/metadataValidation';
+import { SUBGRAPH_URL } from '../constants/gameSetup';
 
 type ShipMetadataType = z.infer<typeof ShipProfileMetadata>;
 
@@ -66,7 +68,9 @@ const checkIsShipOperator = async (address: string) => {
     const isOperator = results.find((result) => result.isOperator);
 
     if (isOperator) {
-      const { getShipIdByHatId } = getBuiltGraphSDK();
+      const { getShipIdByHatId } = getBuiltGraphSDK({
+        apiEndpoint: SUBGRAPH_URL,
+      });
       const result = await getShipIdByHatId({
         hatId: isOperator.hatId.toString(),
       });
@@ -113,7 +117,8 @@ const resolveShipApplicationProfile = async (
 
 export const getUserData = async (address: string): Promise<UserData> => {
   try {
-    const { getUserData } = getBuiltGraphSDK();
+    const sdk = getBuiltGraphSDK(SUBGRAPH_URL);
+    const { getUserData } = sdk;
     const data = await getUserData({ id: address });
     const isFacilitator = await checkIsFacilitator(address);
     const isShipOperator = await checkIsShipOperator(address);

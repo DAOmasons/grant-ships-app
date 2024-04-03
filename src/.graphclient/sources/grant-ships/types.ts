@@ -3233,6 +3233,6 @@ export type _SubgraphErrorPolicy_ =
 
   export type Context = {
       ["grant-ships"]: { Query: QuerySdk, Mutation: MutationSdk, Subscription: SubscriptionSdk },
-      
+      ["apiEndpoint"]: Scalars['ID']
     };
 }

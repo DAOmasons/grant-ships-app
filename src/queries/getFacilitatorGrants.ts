@@ -1,4 +1,5 @@
 import { getBuiltGraphSDK } from '../.graphclient';
+import { SUBGRAPH_URL } from '../constants/gameSetup';
 import { DashGrant, resolveGrants } from '../resolvers/grantResolvers';
 
 type FacilitatorGrantsData = {
@@ -10,7 +11,9 @@ type FacilitatorGrantsData = {
 export const getFacilitatorGrants =
   async (): Promise<FacilitatorGrantsData> => {
     try {
-      const { getFacilitatorGrants } = getBuiltGraphSDK();
+      const { getFacilitatorGrants } = getBuiltGraphSDK({
+        apiEndpoint: SUBGRAPH_URL,
+      });
       const res = await getFacilitatorGrants();
 
       if (!res || !res.approved || !res.rejected || !res.requiresAction) {

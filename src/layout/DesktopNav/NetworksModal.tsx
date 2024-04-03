@@ -17,7 +17,6 @@ export const NetworksModal = ({
             key={connector.uid}
             onClick={() => {
               close();
-              console.log('fired');
             }}
           >
             {connector.name}

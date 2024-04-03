@@ -6,10 +6,13 @@ import {
   ShipProfileMetadata,
 } from '../utils/ipfs/metadataValidation';
 import { ShipPageUI } from '../types/ui';
+import { SUBGRAPH_URL } from '../constants/gameSetup';
 
 export const getShipPageData = async (id: string): Promise<ShipPageUI> => {
   try {
-    const { shipPageQuery } = getBuiltGraphSDK();
+    const { shipPageQuery } = getBuiltGraphSDK({
+      apiEndpoint: SUBGRAPH_URL,
+    });
 
     const { grantShip } = await shipPageQuery({ id });
 

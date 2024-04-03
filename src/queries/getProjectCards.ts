@@ -6,6 +6,7 @@ import {
 } from '../.graphclient';
 import { getGatewayUrl, getIpfsJson } from '../utils/ipfs/get';
 import { ProjectProfileMetadata } from '../utils/ipfs/metadataValidation';
+import { SUBGRAPH_URL } from '../constants/gameSetup';
 
 type ProjectMetadataType = z.infer<typeof ProjectProfileMetadata>;
 
@@ -37,7 +38,9 @@ const projectMetadataResolver = async (project: ProjectCardFromQuery) => {
 
 export const getProjectCards = async () => {
   try {
-    const { GetProjects } = getBuiltGraphSDK();
+    const { GetProjects } = getBuiltGraphSDK({
+      apiEndpoint: SUBGRAPH_URL,
+    });
 
     const { projects } = await GetProjects();
 
@@ -54,7 +57,9 @@ export const getProjectCards = async () => {
 
 export const getUserProjects = async (userId: string) => {
   try {
-    const { GetUserProjects } = getBuiltGraphSDK();
+    const { GetUserProjects } = getBuiltGraphSDK({
+      apiEndpoint: SUBGRAPH_URL,
+    });
 
     const { projects } = await GetUserProjects({ id: userId });
 

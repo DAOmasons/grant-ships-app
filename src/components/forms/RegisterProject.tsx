@@ -166,15 +166,11 @@ export const RegisterProject = () => {
       onSubmit={form.onSubmit((values) => handleFormSubmit(values))}
       primaryBtn={{
         label: 'Create Project',
-        onClick: () => {
-          console.log('create project');
-        },
+        onClick: () => {},
       }}
       secondaryBtn={{
         label: 'Back',
-        onClick: () => {
-          console.log('go back');
-        },
+        onClick: () => {},
       }}
     >
       <AvatarPickerIPFS

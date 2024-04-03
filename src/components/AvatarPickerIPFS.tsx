@@ -35,7 +35,6 @@ export const AvatarPickerIPFS = ({
       const res = await pinFileToIPFS(e);
       if (typeof res.IpfsHash !== 'string') return;
       setIpfsHash(res.IpfsHash);
-      console.log(res);
       onUploadSuccess?.(res.IpfsHash);
       setIsLoading(false);
     } catch (error: any) {

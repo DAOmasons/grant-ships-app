@@ -1,8 +1,11 @@
 import { getBuiltGraphSDK } from '../.graphclient';
+import { SUBGRAPH_URL } from '../constants/gameSetup';
 
 export const getShipPoolId = async (address: string): Promise<string> => {
   try {
-    const { getShipPoolId } = getBuiltGraphSDK();
+    const { getShipPoolId } = getBuiltGraphSDK({
+      apiEndpoint: SUBGRAPH_URL,
+    });
     const data = await getShipPoolId({ id: address });
 
     return data.grantShip?.poolId;

@@ -105,6 +105,12 @@ const DeploymentCard = ({ deploy }: { deploy: GmDeployment }) => {
         <Text fz="sm" opacity={0.8} mb="lg">
           {deploy.profileId}
         </Text>
+        <Text fz="sm" mb="xs">
+          Block Number
+        </Text>
+        <Text fz="sm" opacity={0.8} mb="lg">
+          {deploy.blockNumber}
+        </Text>
       </Spoiler>
     </Paper>
   );

@@ -27,7 +27,7 @@ import {
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { MainSection, PageTitle } from '../layout/Sections';
-import { GAME_TOKEN } from '../constants/gameSetup';
+import { GAME_TOKEN, SUBGRAPH_URL } from '../constants/gameSetup';
 import { useUserData } from '../hooks/useUserState';
 import { applyFundingSchema } from '../components/forms/validationSchemas/applyFundingSchema';
 import { grantApplicationMetadata } from '../utils/ipfs/metadataValidation';
@@ -59,7 +59,9 @@ const defaultValues = {
 type FormValues = z.infer<typeof applyFundingSchema>;
 
 const getShipFunds = async (id: string) => {
-  const { getShipFundsAvailable } = getBuiltGraphSDK();
+  const { getShipFundsAvailable } = getBuiltGraphSDK({
+    apiEndpoint: SUBGRAPH_URL,
+  });
 
   const res = await getShipFundsAvailable({ id });
 
