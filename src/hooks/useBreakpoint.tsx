@@ -1,10 +1,10 @@
 import { useMediaQuery } from '@mantine/hooks';
 import { BreakPoint } from '../constants/style';
 
-export const useBreakpoint = (bp: BreakPoint) => {
-  const isMax = bp === BreakPoint.UpperRange;
-  return useMediaQuery(`(${isMax ? 'min-width' : 'max-width'}: ${bp})`);
-};
+export const useBreakpoint = (bp: BreakPoint) =>
+  useMediaQuery(
+    `(${bp === BreakPoint.UpperRange ? 'min-width' : 'max-width'}: ${bp})`
+  );
 
 export const useThin = () => useBreakpoint(BreakPoint.Xs);
 export const useMobile = () => useBreakpoint(BreakPoint.Sm);
