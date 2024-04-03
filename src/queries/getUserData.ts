@@ -4,7 +4,6 @@ import {
   ProjectDetailsFragment,
   RawMetadataFragment,
   getBuiltGraphSDK,
-  getBuiltGraphClient,
 } from '../.graphclient';
 import HatsAbi from '../abi/Hats.json';
 import { HATS } from '../constants/gameSetup';

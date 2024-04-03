@@ -3,7 +3,6 @@ import {
   Avatar,
   Box,
   Button,
-  Flex,
   Group,
   Paper,
   Skeleton,
