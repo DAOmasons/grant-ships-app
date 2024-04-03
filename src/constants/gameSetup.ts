@@ -83,6 +83,8 @@ export const SHIP_AMOUNT = 3;
 export const NETWORK_ID =
   import.meta.env.VITE_RUNTIME_ENV === 'dev' ? arbitrumSepolia.id : arbitrum.id;
 
+console.log('Runtime Environment', import.meta.env.VITE_RUNTIME_ENV);
+
 export const SUBGRAPH_URL =
   import.meta.env.VITE_RUNTIME_ENV === 'dev'
     ? 'api.thegraph.com/subgraphs/name/daomasons/grant-ships-arb-sepolia'
