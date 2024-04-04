@@ -1,21 +1,10 @@
+import { Group, Code, Title, useMantineTheme, Tooltip } from '@mantine/core';
 import {
-  Group,
-  Code,
-  Title,
-  useMantineTheme,
-  Tooltip,
-  Text,
-} from '@mantine/core';
-import {
-  IconHome,
   IconRocket,
-  IconPacman,
   IconAward,
-  IconFileDescription,
   IconShieldHalf,
   IconClock,
   IconInfoCircle,
-  IconExternalLink,
 } from '@tabler/icons-react';
 import classes from './DesktoNavStyles.module.css';
 import Logo from '../../assets/Logo.svg';
@@ -25,27 +14,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { useMemo } from 'react';
 import { useUserData } from '../../hooks/useUserState';
 import { useAccount } from 'wagmi';
-
-const data = [
-  { link: '/', label: 'Home', icon: IconHome },
-  { link: '/ships', label: 'Ships', icon: IconRocket },
-  { link: '/projects', label: 'Projects', icon: IconAward },
-  { link: '/apply', label: 'Apply', icon: IconFileDescription },
-  {
-    href: 'https://rules.grantships.fun',
-    label: (
-      <Group gap={'xs'}>
-        <Text>Game Rules</Text>
-        <IconExternalLink
-          size={14}
-          style={{ transform: 'translateY(-2px)' }}
-          opacity={0.7}
-        />
-      </Group>
-    ),
-    icon: IconPacman,
-  },
-];
+import { navItems } from '../../constants/navItems';
 
 export function DesktopNav() {
   const location = useLocation();
@@ -54,7 +23,7 @@ export function DesktopNav() {
 
   const theme = useMantineTheme();
 
-  const links = data.map((item) => {
+  const links = navItems.map((item) => {
     if (item.href)
       return (
         <a

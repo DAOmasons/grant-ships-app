@@ -149,13 +149,3 @@ const IsConnected = ({ address }: { address: Address }) => {
     </Menu>
   );
 };
-
-// <button
-//   className={classes.button}
-//   onClick={() => {
-//     disconnect();
-//   }}
-// >
-//   <IconLogout className={classes.linkIcon} stroke={1.5} />
-//   <span>Disconnect</span>
-// </button>
