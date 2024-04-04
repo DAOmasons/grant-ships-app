@@ -12,11 +12,12 @@ export const useTablet = () => useBreakpoint(BreakPoint.Md);
 export const useLaptop = () => useBreakpoint(BreakPoint.Lg);
 export const useDesktop = () => useBreakpoint(BreakPoint.UpperRange);
 
-export const useBreakpoints = ({
-  singleBreakpoint = true,
-}: {
+type BreakpointsProps = {
   singleBreakpoint?: boolean;
-}) => {
+};
+
+export const useBreakpoints = (props?: BreakpointsProps) => {
+  const { singleBreakpoint } = props || {};
   const isThin = useThin();
   const isMobile = useMobile();
   const isTablet = useTablet();

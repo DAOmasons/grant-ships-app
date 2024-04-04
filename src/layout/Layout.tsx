@@ -20,7 +20,9 @@ import {
   IconClock,
   IconCopy,
   IconExclamationCircle,
+  IconExternalLink,
   IconLogout,
+  IconPacman,
   IconRocket,
   IconShieldHalf,
   IconUserCircle,
@@ -71,21 +73,29 @@ const MobileNav = () => {
         bottom={0}
         bg={theme.colors.dark[7]}
         w="100%"
-        px={'lg'}
-        py={'xs'}
+        py={4}
         style={{ zIndex: 10, borderTop: '1px solid #333' }}
       >
         <Flex justify={'space-around'} align="center">
           {navItems
             .filter((item) => item.link)
             .map((item) => (
-              <Flex direction="column" align="center" w="fit-content">
+              <Flex
+                component={Link}
+                to={item.link as string}
+                direction="column"
+                align="center"
+                w="fit-content"
+                td="none"
+              >
                 <item.icon size={24} />
-                <Text size="xs">{item.label}</Text>
+                <Text size="xs" mt={2}>
+                  {item.label}
+                </Text>
               </Flex>
             ))}
           {isConnected ? (
-            <Menu opened={menuOpen} onChange={setMenuOpen} offset={16}>
+            <Menu opened={menuOpen} onChange={setMenuOpen} offset={12}>
               <Menu.Target>
                 <IconChevronUp size={24} />
               </Menu.Target>
@@ -104,6 +114,16 @@ const MobileNav = () => {
                 )}
                 <DashboardLink />
                 <Menu.Item
+                  leftSection={<IconPacman />}
+                  rightSection={<IconExternalLink opacity={0.7} size={18} />}
+                  component="a"
+                  href="https://rules.grantships.fun"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Game Rules
+                </Menu.Item>
+                <Menu.Item
                   leftSection={<IconCopy />}
                   onClick={() => {
                     copy(address);
@@ -115,6 +135,7 @@ const MobileNav = () => {
                 >
                   Copy Address
                 </Menu.Item>
+
                 <Menu.Item
                   leftSection={<IconLogout />}
                   onClick={() => disconnect()}

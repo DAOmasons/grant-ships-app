@@ -10,6 +10,7 @@ import {
 import { IconArrowNarrowLeft } from '@tabler/icons-react';
 import { ReactNode } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useMobile } from '../hooks/useBreakpoint';
 
 export const MainSection = ({
   children,
@@ -20,8 +21,9 @@ export const MainSection = ({
   maw?: number;
   bg?: StyleProp<DefaultMantineColor | undefined>;
 }) => {
+  const isMobile = useMobile();
   return (
-    <Box maw={maw} miw={350} w={'100%'} m="xl" bg={bg}>
+    <Box maw={maw} miw={350} p={isMobile ? 'xs' : 'xl'} w={'100%'} bg={bg}>
       {children}
     </Box>
   );

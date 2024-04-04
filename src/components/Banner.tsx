@@ -4,34 +4,21 @@ import { Link } from 'react-router-dom';
 import classes from '../pages/PageStyles.module.css';
 import { useGameManager } from '../hooks/useGameMangers';
 import { GameStatus } from '../types/common';
+import { ReactNode } from 'react';
+import { useBreakpoints, useMobile } from '../hooks/useBreakpoint';
 
 export const Banner = () => {
   const { gm, isLoadingGm, gmError } = useGameManager();
 
-  if (isLoadingGm)
-    return (
-      <Paper
-        h={180}
-        w="100%"
-        p="xl"
-        mb={-30}
-        classNames={{ root: classes.banner }}
-      />
-    );
+  if (isLoadingGm) return <BannerBG />;
 
   if (gmError || !gm)
     return (
-      <Paper
-        h={180}
-        w="100%"
-        p="xl"
-        mb={-30}
-        classNames={{ root: classes.banner }}
-      >
+      <BannerBG>
         <Text fz={24} fw={700} c="white">
           Game Manager Error
         </Text>
-      </Paper>
+      </BannerBG>
     );
 
   if (
@@ -40,13 +27,7 @@ export const Banner = () => {
       gm?.currentRound?.gameStatus < GameStatus.Allocated)
   ) {
     return (
-      <Paper
-        h={180}
-        w="100%"
-        p="xl"
-        mb={-30}
-        classNames={{ root: classes.banner }}
-      >
+      <BannerBG>
         <Text fz={24} fw={700} c="white">
           Now accepting ship operatators.{' '}
           <Text fz={24} fw={700} component="span">
@@ -67,19 +48,13 @@ export const Banner = () => {
             What is a Grant Ship?
           </Button>
         </Group>
-      </Paper>
+      </BannerBG>
     );
   }
 
   if (gm.currentRound.gameStatus < GameStatus.Active) {
     return (
-      <Paper
-        h={180}
-        w="100%"
-        p="xl"
-        mb={-30}
-        classNames={{ root: classes.banner }}
-      >
+      <BannerBG>
         <Text fz={24} fw={700} c="white">
           Ships Accepted.{' '}
           <Text fz={24} fw={700} component="span">
@@ -100,19 +75,13 @@ export const Banner = () => {
             What is Grant Ships?
           </Button>
         </Group>
-      </Paper>
+      </BannerBG>
     );
   }
 
   if (gm.currentRound.gameStatus === GameStatus.Active) {
     return (
-      <Paper
-        h={180}
-        w="100%"
-        p="xl"
-        mb={-30}
-        classNames={{ root: classes.banner }}
-      >
+      <BannerBG>
         <Text fz={24} fw={700} c="white">
           Now Accepting Grantees.{' '}
           <Text fz={24} fw={700} component="span">
@@ -133,19 +102,13 @@ export const Banner = () => {
             What is a Grant Ship?
           </Button>
         </Group>
-      </Paper>
+      </BannerBG>
     );
   }
 
   if (gm.currentRound.gameStatus === GameStatus.Completed) {
     return (
-      <Paper
-        h={180}
-        w="100%"
-        p="xl"
-        mb={-30}
-        classNames={{ root: classes.banner }}
-      >
+      <BannerBG>
         <Text fz={24} fw={700} c="white">
           Round complete.{' '}
           <Text fz={24} fw={700} component="span">
@@ -166,8 +129,30 @@ export const Banner = () => {
             What are we electing?
           </Button>
         </Group>
-      </Paper>
+      </BannerBG>
     );
+  }
+
+  return (
+    <BannerBG>
+      <Text fz={24} fw={700} c="white">
+        Game State Not Found
+      </Text>
+    </BannerBG>
+  );
+};
+
+const BannerBG = ({ children }: { children?: ReactNode }) => {
+  const { isMobile, isDesktop, isLaptop, isTablet, isThin } = useBreakpoints({
+    singleBreakpoint: true,
+  });
+
+  if (isMobile || isThin) {
+    return null;
+  }
+
+  if (isTablet) {
+    return null;
   }
 
   return (
@@ -178,9 +163,7 @@ export const Banner = () => {
       mb={-30}
       classNames={{ root: classes.banner }}
     >
-      <Text fz={24} fw={700} c="white">
-        Game State Not Found
-      </Text>
+      {children}
     </Paper>
   );
 };
