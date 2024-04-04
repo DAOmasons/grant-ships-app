@@ -64,6 +64,7 @@ export const MobileNav = () => {
                   align="center"
                   w="fit-content"
                   p={4}
+                  px={'xs'}
                   td="none"
                   style={{
                     borderBottom: `2px solid ${isActive ? theme.colors.blue[6] : 'transparent'}`,

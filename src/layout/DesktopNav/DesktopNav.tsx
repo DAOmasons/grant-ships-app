@@ -15,11 +15,14 @@ import { useMemo } from 'react';
 import { useUserData } from '../../hooks/useUserState';
 import { useAccount } from 'wagmi';
 import { navItems } from '../../constants/navItems';
+import { useTablet } from '../../hooks/useBreakpoint';
 
 export function DesktopNav() {
   const location = useLocation();
   const { userData, userLoading } = useUserData();
   const { address } = useAccount();
+
+  const isTablet = useTablet();
 
   const theme = useMantineTheme();
 
@@ -34,7 +37,7 @@ export function DesktopNav() {
           key={item.link || item.href}
         >
           <item.icon className={classes.linkIcon} stroke={1.5} />
-          <span>{item.label}</span>
+          {!isTablet && <span>{item.label}</span>}
         </a>
       );
 
@@ -47,7 +50,7 @@ export function DesktopNav() {
           key={item.label}
         >
           <item.icon className={classes.linkIcon} stroke={1.5} />
-          <span>{item.label}</span>
+          {!isTablet && <span>{item.label}</span>}
         </Link>
       );
   });
@@ -57,7 +60,7 @@ export function DesktopNav() {
       return (
         <Link to="#" className={classes.link}>
           <IconClock className={classes.linkIcon} stroke={1.5} />
-          <span>Loading...</span>
+          {!isTablet && <span>Loading...</span>}
         </Link>
       );
 
@@ -69,7 +72,7 @@ export function DesktopNav() {
             stroke={1.5}
             color={theme.colors.pink[5]}
           />
-          <span>Dashboard</span>
+          {!isTablet && <span>Dashboard</span>}
         </Link>
       );
     }
@@ -85,7 +88,7 @@ export function DesktopNav() {
             stroke={1.5}
             color={theme.colors.violet[5]}
           />
-          <span>Dashboard</span>
+          {!isTablet && <span>Dashboard</span>}
         </Link>
       );
     }
@@ -98,7 +101,7 @@ export function DesktopNav() {
             stroke={1.5}
             color={theme.colors.violet[5]}
           />
-          <span>Ship Applications</span>
+          {!isTablet && <span>Ship Applications</span>}
         </Link>
       );
     }
@@ -111,7 +114,7 @@ export function DesktopNav() {
             stroke={1.5}
             color={theme.colors.blue[5]}
           />
-          <span>My Projects</span>
+          {!isTablet && <span>My Projects</span>}
           <Tooltip ml="auto" label={"You don't have any projects yet"}>
             <IconInfoCircle
               size={18}
@@ -131,22 +134,24 @@ export function DesktopNav() {
             stroke={1.5}
             color={theme.colors.blue[5]}
           />
-          <span>My Projects</span>
+          {!isTablet && <span>My Projects</span>}
         </Link>
       );
     }
 
     return null;
-  }, [userData, theme, address, userLoading]);
+  }, [userData, theme, address, userLoading, isTablet]);
 
   return (
     <nav className={classes.navbar}>
       <div className={classes.navbarMain}>
         <Group className={classes.header}>
           <Logo />
-          <Title order={1} fw={100} fz={32}>
-            Grant Ships
-          </Title>
+          {!isTablet && (
+            <Title order={1} fw={100} fz={32}>
+              Grant Ships
+            </Title>
+          )}
         </Group>
         {links}
       </div>
@@ -154,9 +159,11 @@ export function DesktopNav() {
       <div className={classes.footer}>{dashboardLink}</div>
       <ConnectButton />
 
-      <Code w="fit-content" ml={'sm'} mt={'lg'}>
-        v{process.env.PACKAGE_VERSION}
-      </Code>
+      {!isTablet && (
+        <Code w="fit-content" ml={'sm'} mt={'lg'}>
+          v{process.env.PACKAGE_VERSION}
+        </Code>
+      )}
     </nav>
   );
 }

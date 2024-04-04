@@ -24,6 +24,7 @@ import {
 import { AddressAvatar } from '../../components/AddressAvatar';
 import { appNetwork } from '../../utils/config';
 import { useState } from 'react';
+import { useTablet } from '../../hooks/useBreakpoint';
 
 export const ConnectButton = () => {
   const { address, isConnected } = useAccount();
@@ -58,6 +59,7 @@ export const ConnectButton = () => {
 };
 
 const IsNotConnected = ({ open }: { open: () => void }) => {
+  const isTablet = useTablet();
   return (
     <>
       <button
@@ -67,7 +69,7 @@ const IsNotConnected = ({ open }: { open: () => void }) => {
         }}
       >
         <IconUserCircle className={classes.linkIcon} stroke={1.5} size={26} />
-        <span>Connect Wallet</span>
+        {!isTablet && <span>Connect Wallet</span>}
       </button>
     </>
   );
@@ -79,6 +81,7 @@ const IsConnected = ({ address }: { address: Address }) => {
   const theme = useMantineTheme();
   const { chain } = useAccount();
   const { switchChain } = useSwitchChain();
+  const isTablet = useTablet();
 
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -93,7 +96,7 @@ const IsConnected = ({ address }: { address: Address }) => {
           classNames={{ inner: classes.fullWidth }}
           pos="relative"
         >
-          <AddressAvatar address={address} size={26} />
+          <AddressAvatar address={address} size={26} displayText={!isTablet} />
           {!isCorrectNetwork ? (
             <Tooltip
               label={'You are connected to the wrong network'}

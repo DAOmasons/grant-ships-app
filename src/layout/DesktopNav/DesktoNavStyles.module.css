@@ -8,6 +8,10 @@
   border-right: rem(1px) solid
     light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
   position: sticky;
+
+  @media (max-width: $mantine-breakpoint-md) {
+    min-width: 60px;
+  }
 }
 
 .navbarMain {
@@ -19,6 +23,11 @@
   margin-bottom: calc(var(--mantine-spacing-md) * 1.5);
   border-bottom: rem(1px) solid
     light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
+
+  @media (max-width: $mantine-breakpoint-md) {
+    justify-content: center;
+    width: 52px;
+  }
 }
 
 .footer {
@@ -62,6 +71,11 @@
       }
     }
   }
+  @media (max-width: $mantine-breakpoint-md) {
+    padding: var(--mantine-spacing-xs) var(--mantine-spacing-xs);
+    height: rem(52px);
+    width: fit-content;
+  }
 }
 
 .linkIcon {
@@ -70,6 +84,9 @@
   width: rem(28px);
   height: rem(28px);
   transform: translateY(-2px);
+  @media (max-width: $mantine-breakpoint-md) {
+    margin-right: 0;
+  }
 }
 
 .avatar {
@@ -78,6 +95,9 @@
   height: rem(2px); */
   transform: translateY(-2px);
   background: transparent;
+  @media (max-width: $mantine-breakpoint-md) {
+    margin-right: 0;
+  }
 }
 
 .button {
