@@ -8,7 +8,6 @@ import {
   Modal,
   Stack,
   Text,
-  Tooltip,
   useMantineTheme,
 } from '@mantine/core';
 import { theme } from '../theme';
@@ -21,7 +20,6 @@ import {
   IconClock,
   IconCopy,
   IconExclamationCircle,
-  IconInfoCircle,
   IconLogout,
   IconRocket,
   IconShieldHalf,
@@ -33,6 +31,7 @@ import { useAccount, useConnect, useDisconnect, useSwitchChain } from 'wagmi';
 import { useClipboard, useDisclosure } from '@mantine/hooks';
 import { appNetwork } from '../utils/config';
 import { useUserData } from '../hooks/useUserState';
+import { Link } from 'react-router-dom';
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {
   const isMobile = useMobile();
@@ -172,6 +171,8 @@ const DashboardLink = () => {
   if (userData?.isFacilitator)
     return (
       <Menu.Item
+        component={Link}
+        to="/facilitator-dashboard"
         leftSection={
           <IconShieldHalf stroke={1.5} color={theme.colors.pink[5]} />
         }
@@ -183,6 +184,8 @@ const DashboardLink = () => {
   if (userData?.isShipOperator && userData?.shipAddress)
     return (
       <Menu.Item
+        component={Link}
+        to={`/ship-operator-dashboard/${userData?.shipAddress}`}
         leftSection={<IconRocket stroke={1.5} color={theme.colors.violet[5]} />}
       >
         Ship Operator Dashboard
@@ -192,6 +195,8 @@ const DashboardLink = () => {
   if (address && userData?.shipApplicants?.length) {
     return (
       <Menu.Item
+        to={`/my-projects/${address}`}
+        component={Link}
         leftSection={<IconRocket stroke={1.5} color={theme.colors.violet[5]} />}
       >
         Ship Applications
@@ -202,6 +207,8 @@ const DashboardLink = () => {
   if (address && !userData?.projects?.length) {
     return (
       <Menu.Item
+        component={Link}
+        to={`/my-projects/${address}`}
         leftSection={<IconAward stroke={1.5} color={theme.colors.blue[5]} />}
       >
         Create a Project
