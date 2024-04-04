@@ -39,7 +39,7 @@ export const Home = () => {
 const FeedPanel = () => {
   const { data: feedItems, isLoading } = useQuery({
     queryKey: ['main-feed'],
-    queryFn: () => getFeed({ first: 10, skip: 0 }),
+    queryFn: () => getFeed({ first: 1000, skip: 0 }),
   });
 
   if (isLoading)
