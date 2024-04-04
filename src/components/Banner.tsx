@@ -5,7 +5,7 @@ import classes from '../pages/PageStyles.module.css';
 import { useGameManager } from '../hooks/useGameMangers';
 import { GameStatus } from '../types/common';
 import { ReactNode } from 'react';
-import { useBreakpoints, useMobile } from '../hooks/useBreakpoint';
+import { useMobile } from '../hooks/useBreakpoint';
 
 export const Banner = () => {
   const { gm, isLoadingGm, gmError } = useGameManager();
@@ -143,16 +143,14 @@ export const Banner = () => {
 };
 
 const BannerBG = ({ children }: { children?: ReactNode }) => {
-  const { isMobile, isDesktop, isLaptop, isTablet, isThin } = useBreakpoints({
-    singleBreakpoint: true,
-  });
+  const isMobile = useMobile();
 
-  if (isMobile || isThin) {
-    return null;
-  }
-
-  if (isTablet) {
-    return null;
+  if (isMobile) {
+    return (
+      <Paper h={116} w="100%" p="md" classNames={{ root: classes.banner }}>
+        {children}
+      </Paper>
+    );
   }
 
   return (
