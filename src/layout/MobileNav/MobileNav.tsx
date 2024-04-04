@@ -13,7 +13,7 @@ import { useState } from 'react';
 import { useAccount, useConnect, useDisconnect, useSwitchChain } from 'wagmi';
 import { appNetwork } from '../../utils/config';
 import { navItems } from '../../constants/navItems';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import {
   IconAward,
   IconChevronUp,
@@ -32,6 +32,7 @@ import { useUserData } from '../../hooks/useUserState';
 
 export const MobileNav = () => {
   const theme = useMantineTheme();
+  const location = useLocation();
   const { address, isConnected, chain } = useAccount();
   const { switchChain } = useSwitchChain();
   const { copy } = useClipboard();
@@ -47,27 +48,34 @@ export const MobileNav = () => {
         bottom={0}
         bg={theme.colors.dark[7]}
         w="100%"
-        py={4}
         style={{ zIndex: 10, borderTop: '1px solid #333' }}
       >
         <Flex justify={'space-around'} align="center">
           {navItems
             .filter((item) => item.link)
-            .map((item) => (
-              <Flex
-                component={Link}
-                to={item.link as string}
-                direction="column"
-                align="center"
-                w="fit-content"
-                td="none"
-              >
-                <item.icon size={24} />
-                <Text size="xs" mt={2}>
-                  {item.label}
-                </Text>
-              </Flex>
-            ))}
+            .map((item) => {
+              const isActive = location.pathname === item.link;
+              return (
+                <Flex
+                  key={item.link}
+                  component={Link}
+                  to={item.link as string}
+                  direction="column"
+                  align="center"
+                  w="fit-content"
+                  p={4}
+                  td="none"
+                  style={{
+                    borderBottom: `2px solid ${isActive ? theme.colors.blue[6] : 'transparent'}`,
+                  }}
+                >
+                  <item.icon size={24} />
+                  <Text size="xs" mt={2}>
+                    {item.label}
+                  </Text>
+                </Flex>
+              );
+            })}
           {isConnected ? (
             <Menu opened={menuOpen} onChange={setMenuOpen} offset={12}>
               <Menu.Target>
