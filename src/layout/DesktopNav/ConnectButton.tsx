@@ -110,7 +110,7 @@ const IsConnected = ({ address }: { address: Address }) => {
               </Box>
             </Tooltip>
           ) : (
-            <Box pos="absolute" right={isTablet ? -4 : 12}>
+            <Box pos="absolute" right={isTablet ? 0 : 12}>
               {menuOpen ? (
                 <IconChevronDown size={18} />
               ) : (
