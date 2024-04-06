@@ -3,6 +3,7 @@ import { Button, Group, Stack } from '@mantine/core';
 import { ReactNode } from 'react';
 import { NestedButton } from '../types/common';
 import { PageTitle } from './Sections';
+import { useMobile } from '../hooks/useBreakpoint';
 
 export const FormPageLayout = ({
   title,
@@ -20,9 +21,10 @@ export const FormPageLayout = ({
   primaryBtn?: NestedButton;
   errors?: Record<string, string>;
 }) => {
+  const isMobile = useMobile();
   return (
     <form onSubmit={onSubmit}>
-      <Stack maw={600} miw={300} w={'100%'} m="xl">
+      <Stack maw={600} miw={300} w={'100%'} p={isMobile ? 'xs' : 'xl'}>
         {title && <PageTitle title={title} />}
         {children}
         <Group w="100%" mt="md" justify="flex-end">

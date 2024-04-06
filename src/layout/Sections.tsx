@@ -29,7 +29,7 @@ export const MainSection = ({
       p={isMobile ? 'xs' : 'xl'}
       w={'100%'}
       bg={bg}
-      mb={72}
+      mb={isMobile ? 72 : 'xl'}
     >
       {children}
     </Box>
