@@ -9,6 +9,7 @@ import { useMobile } from '../hooks/useBreakpoint';
 
 export const Banner = () => {
   const { gm, isLoadingGm, gmError } = useGameManager();
+  const isMobile = useMobile();
 
   if (isLoadingGm) return <BannerBG />;
 
@@ -32,7 +33,11 @@ export const Banner = () => {
           statusText="Now accepting Grant Ships."
           ctaText="Submit your application today."
           ctaButton={
-            <Button component={Link} to="create-ship" size="xs">
+            <Button
+              component={Link}
+              to="create-ship"
+              size={isMobile ? 'xs' : 'sm'}
+            >
               Submit an Application
             </Button>
           }
@@ -59,7 +64,11 @@ export const Banner = () => {
           statusText="Ships Accepted."
           ctaText="Pre-submit projects for funding."
           ctaButton={
-            <Button component={Link} to="create-project">
+            <Button
+              component={Link}
+              to="create-project"
+              size={isMobile ? 'xs' : 'sm'}
+            >
               Create a Project
             </Button>
           }
@@ -86,7 +95,11 @@ export const Banner = () => {
           statusText="Projects Accepted."
           ctaText="Vote for your favorite projects."
           ctaButton={
-            <Button component={Link} to="create-project">
+            <Button
+              component={Link}
+              to="create-project"
+              size={isMobile ? 'xs' : 'sm'}
+            >
               Create a Project
             </Button>
           }
@@ -113,7 +126,11 @@ export const Banner = () => {
           statusText="Round Complete."
           ctaText="Stay tuned for election details."
           ctaButton={
-            <Button component={Link} to="create-project">
+            <Button
+              component={Link}
+              to="create-project"
+              size={isMobile ? 'xs' : 'sm'}
+            >
               View Details
             </Button>
           }

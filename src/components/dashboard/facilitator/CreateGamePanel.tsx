@@ -66,7 +66,6 @@ export const CreateGamePanel = ({
       <TextInput
         label="Game Funding Amount"
         placeholder="22.5"
-        w={350}
         mb="lg"
         onChange={(e) => setAmount(Number(e.target.value))}
         type="number"

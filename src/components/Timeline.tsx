@@ -81,7 +81,7 @@ export const TimelineBox = ({
   };
 
   return (
-    <Box>
+    <Box maw={450} miw={300} w={'100%'}>
       <Group mb="sm">
         <Flex className={statusIconBorder()}>
           {!isStepCompleted ? (
@@ -98,17 +98,26 @@ export const TimelineBox = ({
         </Box>
       </Group>
       {!last && (
-        <Flex className={leftBorderClasses} mb={'sm'} px={'xl'} pt="md" pb={0}>
+        <Flex
+          className={leftBorderClasses}
+          mb={'sm'}
+          px={'xl'}
+          pt="md"
+          pb={0}
+          w="100%"
+        >
           <Spoiler
             maxHeight={0}
             showLabel={<Text fz="sm">Expand</Text>}
             hideLabel={<Text fz="sm">Hide</Text>}
             pb={'md'}
+            w="100%"
             initialState={isStepActive}
           >
             <Box
               opacity={isUpcoming ? 0.5 : isStepCompleted ? 0.7 : 1}
               style={{ cursor: isUpcoming ? 'not-allowed' : 'default' }}
+              w={'100%'}
             >
               {content}
             </Box>
