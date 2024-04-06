@@ -14,6 +14,7 @@ import classes from '../../timeline.module.css';
 import { GameStatus } from '../../../types/common';
 import { Dispatch, SetStateAction, useMemo, useState } from 'react';
 import { TxButton } from '../../TxButton';
+import { useMobile, useTablet } from '../../../hooks/useBreakpoint';
 
 type ShipDashCardProps = {
   name: string;
@@ -38,6 +39,8 @@ export const ShipDashCard = ({
 }: ShipDashCardProps) => {
   const [reviewLoading, setReviewLoading] = useState(false);
   const theme = useMantineTheme();
+  const isMobile = useMobile();
+  const isTablet = useTablet();
 
   const reviewIcon = useMemo(() => {
     if (shipStatus === GameStatus.Pending) {
@@ -65,9 +68,9 @@ export const ShipDashCard = ({
     shipStatus !== GameStatus.Pending && shipStatus !== GameStatus.Rejected;
 
   return (
-    <Paper mih={144} w="100%" bg={theme.colors.dark[6]}>
-      <Flex m="lg" align="start" wrap="wrap">
-        <Group align="flex-start" w={200}>
+    <Paper w="100%" bg={theme.colors.dark[6]}>
+      <Flex p="lg" align="start" direction={isTablet ? 'column' : 'row'}>
+        <Group align="flex-start" w={200} mb={isTablet ? 'lg' : 0}>
           <Avatar size={65} src={avatarUrl} />
           <Box>
             <Text fw={600} mb={4} size="sm" truncate maw={115}>
@@ -81,7 +84,7 @@ export const ShipDashCard = ({
             </Text>
           </Box>
         </Group>
-        <Group ml="xl" justify="space-between" gap="xl">
+        <Group ml={isTablet ? 0 : 'lg'} gap="xl">
           <Flex className={classes.statusBox}>
             {reviewIcon}
             <Text size="sm">Application</Text>

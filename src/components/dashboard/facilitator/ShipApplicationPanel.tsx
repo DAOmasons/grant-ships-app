@@ -42,7 +42,7 @@ export const ShipApplicationPanel = ({
           ))}
         </Stack>
       ) : (
-        <Alert w={350}>
+        <Alert>
           <Text size="md" mb="sm">
             No ships approved yet
           </Text>
