@@ -70,7 +70,7 @@ export const DistributePanel = ({
   if (gameStatusNumber > STATUS_NUMBER) {
     return (
       <Box>
-        <Alert w={350}>
+        <Alert>
           <Text fw={600} mb="sm">
             Distribution Complete
           </Text>
@@ -93,7 +93,7 @@ export const DistributePanel = ({
       <Text mb="sm" fw={600}>
         Distribute Funds to Grant Ships
       </Text>
-      <Alert mb="sm" bg={theme.colors.yellow[9]} w={350}>
+      <Alert mb="sm" bg={theme.colors.yellow[9]}>
         <Text fz="sm" mb="sm" fw={600}>
           Warning!
         </Text>
@@ -120,7 +120,6 @@ export const DistributePanel = ({
       <DateTimePicker
         clearable
         label="Start Time"
-        w={350}
         mb={'md'}
         onChange={setStartTime}
         placeholder="Select a date and time"
@@ -129,7 +128,6 @@ export const DistributePanel = ({
       <DateTimePicker
         clearable
         label="End Time"
-        w={350}
         mb="md"
         onChange={setEndTime}
         placeholder="Select a date and time"

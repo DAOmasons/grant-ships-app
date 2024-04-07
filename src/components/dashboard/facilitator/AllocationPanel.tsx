@@ -73,7 +73,7 @@ export const AllocationPanel = ({
   if (gameStatusNumber > STATUS_NUMBER) {
     return (
       <Box>
-        <Alert w={350}>
+        <Alert>
           <Text fw={600} mb="sm">
             Allocation Complete
           </Text>
@@ -96,7 +96,7 @@ export const AllocationPanel = ({
       <Text mb="sm" fw={600}>
         Allocate to Grant Ships
       </Text>
-      <Alert mb="sm" bg={theme.colors.yellow[9]} w={350}>
+      <Alert mb="sm" bg={theme.colors.yellow[9]}>
         <Text fz="sm" mb="sm" fw={600}>
           Warning!
         </Text>
@@ -121,7 +121,6 @@ export const AllocationPanel = ({
         <TextInput
           key={`allocation-input-${ship.id}`}
           label={ship.name}
-          w={350}
           placeholder="22.5"
           mb="xs"
           type="number"

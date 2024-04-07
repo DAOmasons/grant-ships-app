@@ -40,7 +40,7 @@ export const StartGamePanel = ({
   if (gameStatusNumber > STATUS_NUMBER) {
     return (
       <Box>
-        <Alert w={350}>
+        <Alert>
           <Text fw={600} mb="sm">
             Game Started
           </Text>

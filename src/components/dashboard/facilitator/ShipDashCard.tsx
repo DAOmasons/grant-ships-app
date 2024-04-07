@@ -14,7 +14,7 @@ import classes from '../../timeline.module.css';
 import { GameStatus } from '../../../types/common';
 import { Dispatch, SetStateAction, useMemo, useState } from 'react';
 import { TxButton } from '../../TxButton';
-import { useMobile, useTablet } from '../../../hooks/useBreakpoint';
+import { useTablet } from '../../../hooks/useBreakpoint';
 
 type ShipDashCardProps = {
   name: string;
@@ -39,7 +39,6 @@ export const ShipDashCard = ({
 }: ShipDashCardProps) => {
   const [reviewLoading, setReviewLoading] = useState(false);
   const theme = useMantineTheme();
-  const isMobile = useMobile();
   const isTablet = useTablet();
 
   const reviewIcon = useMemo(() => {
