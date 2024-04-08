@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Box,
   Button,
   Flex,
   Group,
@@ -35,12 +36,13 @@ import { formatEther } from 'viem';
 import { useUserData } from '../hooks/useUserState';
 import { UpdatesPanel } from '../components/shipItems/UpdatesPanel';
 import { SHIP_STATUS_INFO } from '../constants/copy';
-import { useTablet } from '../hooks/useBreakpoint';
+import { useLaptop, useTablet } from '../hooks/useBreakpoint';
 
 export const Ship = () => {
   const theme = useMantineTheme();
   const { id } = useParams<{ id: string }>();
   const isTablet = useTablet();
+  const isLaptop = useLaptop();
 
   const {
     data: feedCards,
@@ -129,7 +131,41 @@ export const Ship = () => {
             <IconInfoCircle size={18} color={theme.colors.violet[6]} />
           </Tooltip>
         </Group>
-        <Text fz="sm" mb={'md'} mih={60}>
+        {isLaptop && (
+          <Stack gap="md" mb="md">
+            {ship.status == GameStatus.Active && (
+              <Box>
+                <FundingIndicator
+                  fullWidth
+                  available={ship.amtAvailable}
+                  distributed={ship.amtDistributed}
+                  allocated={ship.amtAllocated}
+                />
+              </Box>
+            )}
+            <Box>
+              <Group gap={4}>
+                <Text size="sm">Ship Model:</Text>
+                <a
+                  rel="noopener noreferrer"
+                  target="_blank"
+                  href={`${SCAN_URL}/address/${ship.shipContractAddress}`}
+                >
+                  <Group>
+                    <Text fz="sm" mr={-10}>
+                      Grant Ship Alpha
+                    </Text>
+                    <IconExternalLink
+                      size={16}
+                      style={{ transform: 'translateY(-1px)' }}
+                    />
+                  </Group>
+                </a>
+              </Group>
+            </Box>
+          </Stack>
+        )}
+        <Text fz="sm" mb={'lg'}>
           {ship.description}
         </Text>
         <Group mb="xl" justify="space-between">
@@ -182,54 +218,56 @@ export const Ship = () => {
           </Tabs.Panel>
         </Tabs>
       </MainSection>
-      <Stack mt={72} w={270}>
-        <Paper p="md" bg={theme.colors.dark[6]}>
-          <Group gap={4}>
-            <Text size="sm">Ship Model:</Text>
-            <a
-              rel="noopener noreferrer"
-              target="_blank"
-              href={`${SCAN_URL}/address/${ship.shipContractAddress}`}
-            >
-              <Group>
-                <Text fz="sm" mr={-10}>
-                  Grant Ship Alpha
-                </Text>
-                <IconExternalLink
-                  size={16}
-                  style={{ transform: 'translateY(-1px)' }}
-                />
-              </Group>
-            </a>
-          </Group>
-        </Paper>
-        <Paper p="md" bg={theme.colors.dark[6]}>
-          <Text size="lg" mb={2}>
-            {formatEther(BigInt(ship.totalRoundAmount))} {GAME_TOKEN.SYMBOL}
-          </Text>
-          <Text size="sm" mb="md">
-            Total Round Amount
-          </Text>
-          <Text size="lg" mb={2}>
-            {formatEther(BigInt(ship.amtAvailable))} {GAME_TOKEN.SYMBOL}
-          </Text>
-          <Text size="sm">Funding Available</Text>
-        </Paper>
-        <Paper p="md" bg={theme.colors.dark[6]}>
-          <Text size="sm" mb="lg">
-            {ship.status == GameStatus.Active
-              ? 'Funding Available'
-              : 'Not Funded'}
-          </Text>
-          {ship.status >= GameStatus.Active && (
-            <FundingIndicator
-              available={ship.amtAvailable}
-              distributed={ship.amtDistributed}
-              allocated={ship.amtAllocated}
-            />
-          )}
-        </Paper>
-      </Stack>
+      {!isLaptop && (
+        <Stack mt={72} w={270}>
+          <Paper p="md" bg={theme.colors.dark[6]}>
+            <Group gap={4}>
+              <Text size="sm">Ship Model:</Text>
+              <a
+                rel="noopener noreferrer"
+                target="_blank"
+                href={`${SCAN_URL}/address/${ship.shipContractAddress}`}
+              >
+                <Group>
+                  <Text fz="sm" mr={-10}>
+                    Grant Ship Alpha
+                  </Text>
+                  <IconExternalLink
+                    size={16}
+                    style={{ transform: 'translateY(-1px)' }}
+                  />
+                </Group>
+              </a>
+            </Group>
+          </Paper>
+          <Paper p="md" bg={theme.colors.dark[6]}>
+            <Text size="lg" mb={2}>
+              {formatEther(BigInt(ship.totalRoundAmount))} {GAME_TOKEN.SYMBOL}
+            </Text>
+            <Text size="sm" mb="md">
+              Total Round Amount
+            </Text>
+            <Text size="lg" mb={2}>
+              {formatEther(BigInt(ship.amtAvailable))} {GAME_TOKEN.SYMBOL}
+            </Text>
+            <Text size="sm">Funding Available</Text>
+          </Paper>
+          <Paper p="md" bg={theme.colors.dark[6]}>
+            <Text size="sm" mb="lg">
+              {ship.status == GameStatus.Active
+                ? 'Funding Available'
+                : 'Not Funded'}
+            </Text>
+            {ship.status >= GameStatus.Active && (
+              <FundingIndicator
+                available={ship.amtAvailable}
+                distributed={ship.amtDistributed}
+                allocated={ship.amtAllocated}
+              />
+            )}
+          </Paper>
+        </Stack>
+      )}
     </Flex>
   );
 };

@@ -25,7 +25,7 @@ export const MainSection = ({
   return (
     <Box
       maw={maw}
-      miw={350}
+      miw={320}
       p={isMobile ? 'xs' : 'xl'}
       w={'100%'}
       bg={bg}

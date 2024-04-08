@@ -11,12 +11,14 @@ type IndicatorProps = {
   allocated: string;
   distributed: string;
   available: string;
+  fullWidth?: boolean;
 };
 
 export const FundingIndicator = ({
   allocated,
   distributed,
   available,
+  fullWidth,
 }: IndicatorProps) => {
   const amounts = useMemo(() => {
     if (
@@ -34,7 +36,7 @@ export const FundingIndicator = ({
   }, [allocated, distributed, available]);
 
   return (
-    <Box w={238} pos="relative">
+    <Box w={fullWidth ? '100%' : 238} pos="relative">
       <Flex mb="sm" opacity={0.7} style={{ borderRadius: '100px' }}>
         <Tooltip
           label={`Distributed ${formatEther(BigInt(distributed))} ${GAME_TOKEN.SYMBOL}`}
