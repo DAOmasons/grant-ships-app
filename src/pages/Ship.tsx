@@ -35,10 +35,12 @@ import { formatEther } from 'viem';
 import { useUserData } from '../hooks/useUserState';
 import { UpdatesPanel } from '../components/shipItems/UpdatesPanel';
 import { SHIP_STATUS_INFO } from '../constants/copy';
+import { useTablet } from '../hooks/useBreakpoint';
 
 export const Ship = () => {
   const theme = useMantineTheme();
   const { id } = useParams<{ id: string }>();
+  const isTablet = useTablet();
 
   const {
     data: feedCards,
@@ -145,16 +147,16 @@ export const Ship = () => {
         </Group>
         <Tabs defaultValue="feed">
           <Tabs.List mb={'xl'}>
-            <Tabs.Tab value="feed" w="6rem">
+            <Tabs.Tab value="feed" w={isTablet ? '4.5rem' : '6rem'}>
               Feed
             </Tabs.Tab>
-            <Tabs.Tab w="6rem" value="updates">
+            <Tabs.Tab w={isTablet ? '4.5rem' : '6rem'} value="updates">
               Updates
             </Tabs.Tab>
-            <Tabs.Tab w="6rem" value="portfolio">
+            <Tabs.Tab w={isTablet ? '4.5rem' : '6rem'} value="portfolio">
               Portfolio
             </Tabs.Tab>
-            <Tabs.Tab w="6rem" value="details">
+            <Tabs.Tab w={isTablet ? '4.5rem' : '6rem'} value="details">
               Details
             </Tabs.Tab>
           </Tabs.List>
