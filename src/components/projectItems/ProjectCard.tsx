@@ -3,8 +3,10 @@ import { Avatar, Box, Flex, Paper, Skeleton, Text } from '@mantine/core';
 
 import { ProjectCard as ProjectCardType } from '../../queries/getProjectCards';
 import classes from './ProjectItems.module.css';
+import { useMobile } from '../../hooks/useBreakpoint';
 
 export const ProjectCard = ({ project }: { project: ProjectCardType }) => {
+  const isMobile = useMobile();
   return (
     <Paper
       component={Link}
@@ -14,7 +16,7 @@ export const ProjectCard = ({ project }: { project: ProjectCardType }) => {
       h={140}
       mb={16}
     >
-      <Flex h={'100%'} p="lg">
+      <Flex h={'100%'} p={isMobile ? 'sm' : 'lg'}>
         <Box mr="md">
           <Avatar size={65} src={project.imgUrl} />
         </Box>
