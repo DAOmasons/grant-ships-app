@@ -16,6 +16,7 @@ export const AddressAvatar = ({
   size?: MantineSize | number;
   fz?: StyleProp<number | MantineSize>;
   displayText?: boolean;
+  hideText?: boolean;
 }) => {
   const { data: ensName } = useEnsName({
     address,

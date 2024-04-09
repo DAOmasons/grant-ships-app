@@ -4,34 +4,22 @@ import { Link } from 'react-router-dom';
 import classes from '../pages/PageStyles.module.css';
 import { useGameManager } from '../hooks/useGameMangers';
 import { GameStatus } from '../types/common';
+import { ReactNode } from 'react';
+import { useMobile } from '../hooks/useBreakpoint';
 
 export const Banner = () => {
   const { gm, isLoadingGm, gmError } = useGameManager();
+  const isMobile = useMobile();
 
-  if (isLoadingGm)
-    return (
-      <Paper
-        h={180}
-        w="100%"
-        p="xl"
-        mb={-30}
-        classNames={{ root: classes.banner }}
-      />
-    );
+  if (isLoadingGm) return <BannerBG />;
 
   if (gmError || !gm)
     return (
-      <Paper
-        h={180}
-        w="100%"
-        p="xl"
-        mb={-30}
-        classNames={{ root: classes.banner }}
-      >
+      <BannerBG>
         <Text fz={24} fw={700} c="white">
           Game Manager Error
         </Text>
-      </Paper>
+      </BannerBG>
     );
 
   if (
@@ -40,132 +28,144 @@ export const Banner = () => {
       gm?.currentRound?.gameStatus < GameStatus.Allocated)
   ) {
     return (
-      <Paper
-        h={180}
-        w="100%"
-        p="xl"
-        mb={-30}
-        classNames={{ root: classes.banner }}
-      >
-        <Text fz={24} fw={700} c="white">
-          Now accepting ship operatators.{' '}
-          <Text fz={24} fw={700} component="span">
-            Submit your application today.{' '}
-          </Text>
-        </Text>
-        <Group mt="md">
-          <Button component={Link} to="create-ship">
-            Submit an Application
-          </Button>
-          <Button
-            component="a"
-            href="https://rules.grantships.fun/"
-            variant="transparent"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            What is a Grant Ship?
-          </Button>
-        </Group>
-      </Paper>
+      <BannerBG>
+        <Innards
+          statusText="Now accepting Grant Ships."
+          ctaText="Submit your application today."
+          ctaButton={
+            <Button
+              component={Link}
+              to="create-ship"
+              size={isMobile ? 'xs' : 'sm'}
+            >
+              Submit an Application
+            </Button>
+          }
+          infoBtn={
+            <Button
+              component="a"
+              href="https://rules.grantships.fun/"
+              variant="transparent"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              What is a Grant Ship?
+            </Button>
+          }
+        />
+      </BannerBG>
     );
   }
 
   if (gm.currentRound.gameStatus < GameStatus.Active) {
     return (
-      <Paper
-        h={180}
-        w="100%"
-        p="xl"
-        mb={-30}
-        classNames={{ root: classes.banner }}
-      >
-        <Text fz={24} fw={700} c="white">
-          Ships Accepted.{' '}
-          <Text fz={24} fw={700} component="span">
-            Pre-submit projects for funding.{' '}
-          </Text>
-        </Text>
-        <Group mt="md">
-          <Button component={Link} to="create-project">
-            Create a Project
-          </Button>
-          <Button
-            component="a"
-            href="https://rules.grantships.fun/"
-            variant="transparent"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            What is Grant Ships?
-          </Button>
-        </Group>
-      </Paper>
+      <BannerBG>
+        <Innards
+          statusText="Ships Accepted."
+          ctaText="Pre-submit projects for funding."
+          ctaButton={
+            <Button
+              component={Link}
+              to="create-project"
+              size={isMobile ? 'xs' : 'sm'}
+            >
+              Create a Project
+            </Button>
+          }
+          infoBtn={
+            <Button
+              component="a"
+              href="https://rules.grantships.fun/"
+              variant="transparent"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              What is Grant Ships?
+            </Button>
+          }
+        />
+      </BannerBG>
     );
   }
 
   if (gm.currentRound.gameStatus === GameStatus.Active) {
     return (
-      <Paper
-        h={180}
-        w="100%"
-        p="xl"
-        mb={-30}
-        classNames={{ root: classes.banner }}
-      >
-        <Text fz={24} fw={700} c="white">
-          Now Accepting Grantees.{' '}
-          <Text fz={24} fw={700} component="span">
-            Submit your application today.{' '}
-          </Text>
-        </Text>
-        <Group mt="md">
-          <Button component={Link} to="create-project">
-            Create a Project
-          </Button>
-          <Button
-            component="a"
-            href="https://rules.grantships.fun/"
-            variant="transparent"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            What is a Grant Ship?
-          </Button>
-        </Group>
-      </Paper>
+      <BannerBG>
+        <Innards
+          statusText="Projects Accepted."
+          ctaText="Vote for your favorite projects."
+          ctaButton={
+            <Button
+              component={Link}
+              to="create-project"
+              size={isMobile ? 'xs' : 'sm'}
+            >
+              Create a Project
+            </Button>
+          }
+          infoBtn={
+            <Button
+              component="a"
+              href="https://rules.grantships.fun/"
+              variant="transparent"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              What is a Grant Ship?
+            </Button>
+          }
+        />
+      </BannerBG>
     );
   }
 
   if (gm.currentRound.gameStatus === GameStatus.Completed) {
     return (
-      <Paper
-        h={180}
-        w="100%"
-        p="xl"
-        mb={-30}
-        classNames={{ root: classes.banner }}
-      >
-        <Text fz={24} fw={700} c="white">
-          Round complete.{' '}
-          <Text fz={24} fw={700} component="span">
-            Stay tuned for election details.{' '}
-          </Text>
-        </Text>
-        <Group mt="md">
-          <Button component={Link} to="create-project">
-            View Details
-          </Button>
-          <Button
-            component="a"
-            href="https://rules.grantships.fun/"
-            variant="transparent"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            What are we electing?
-          </Button>
-        </Group>
+      <BannerBG>
+        <Innards
+          statusText="Round Complete."
+          ctaText="Stay tuned for election details."
+          ctaButton={
+            <Button
+              component={Link}
+              to="create-project"
+              size={isMobile ? 'xs' : 'sm'}
+            >
+              View Details
+            </Button>
+          }
+          infoBtn={
+            <Button
+              component="a"
+              href="https://rules.grantships.fun/"
+              variant="transparent"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              What are we electing?
+            </Button>
+          }
+        />
+      </BannerBG>
+    );
+  }
+
+  return (
+    <BannerBG>
+      <Text fw={700} c="white">
+        Game State Not Found
+      </Text>
+    </BannerBG>
+  );
+};
+
+const BannerBG = ({ children }: { children?: ReactNode }) => {
+  const isMobile = useMobile();
+
+  if (isMobile) {
+    return (
+      <Paper h={124} w="100%" p="md" classNames={{ root: classes.banner }}>
+        {children}
       </Paper>
     );
   }
@@ -178,9 +178,45 @@ export const Banner = () => {
       mb={-30}
       classNames={{ root: classes.banner }}
     >
-      <Text fz={24} fw={700} c="white">
-        Game State Not Found
-      </Text>
+      {children}
     </Paper>
+  );
+};
+
+export const Innards = ({
+  statusText,
+  ctaText,
+  ctaButton,
+  infoBtn,
+}: {
+  statusText?: string;
+  ctaText?: string;
+  ctaButton?: ReactNode;
+  infoBtn?: ReactNode;
+}) => {
+  const isMobile = useMobile();
+
+  const fz = isMobile ? 'md' : '1.5rem';
+  return (
+    <>
+      {isMobile ? (
+        <>
+          <Text fz={fz} fw={700} c="white" mr={8}>
+            {statusText}
+          </Text>
+          <Text fz={fz} fw={700} c="white">
+            {ctaText}
+          </Text>
+        </>
+      ) : (
+        <Text fz={fz} fw={700} c="white" mr={8}>
+          {statusText} {ctaText}
+        </Text>
+      )}
+      <Group mt={isMobile ? 8 : 'md'} gap={isMobile ? 4 : 'md'}>
+        {ctaButton}
+        {infoBtn}
+      </Group>
+    </>
   );
 };

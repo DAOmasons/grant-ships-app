@@ -1,6 +1,8 @@
 import {
+  ActionIcon,
   Avatar,
   Box,
+  Collapse,
   Flex,
   Group,
   Paper,
@@ -11,7 +13,12 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import { MainSection, PageTitle } from '../layout/Sections';
-import { IconAward, IconInfoCircle } from '@tabler/icons-react';
+import {
+  IconAward,
+  IconChevronDown,
+  IconChevronUp,
+  IconInfoCircle,
+} from '@tabler/icons-react';
 import { FeedPanel } from '../components/shipItems/FeedPanel';
 import { GAME_TOKEN } from '../constants/gameSetup';
 import { MilestoneProgress } from '../components/projectItems/MilestoneProgress';
@@ -32,10 +39,15 @@ import { DashGrant } from '../resolvers/grantResolvers';
 import { useMemo } from 'react';
 import { useUserData } from '../hooks/useUserState';
 import { ProjectUpdatesPanel } from '../components/projectItems/ProjectUpdatesPanel';
+import { useLaptop, useTablet } from '../hooks/useBreakpoint';
+import { useDisclosure } from '@mantine/hooks';
 
 export const Project = () => {
   const { id } = useParams();
   const { userData } = useUserData();
+  const isTablet = useTablet();
+  const isLaptop = useLaptop();
+  const [opened, { toggle }] = useDisclosure(false);
 
   const {
     data: project,
@@ -144,6 +156,62 @@ export const Project = () => {
             </Tooltip>
           )}
         </Group>
+
+        {isLaptop && (
+          <Stack mb="md">
+            {activeGrants?.length !== 0 && (
+              <Box>
+                <Group mb={opened ? 'sm' : 0}>
+                  <Text fz="sm">Active Grants</Text>
+                  <ActionIcon size="xs" onClick={toggle}>
+                    {opened ? <IconChevronUp /> : <IconChevronDown />}
+                  </ActionIcon>
+                </Group>
+                <Collapse in={opened}>
+                  <Stack gap="sm">
+                    {activeGrants?.map((grant: DashGrant, i: number) => (
+                      <MilestoneProgress
+                        key={`milestone-progress-bar-${i}`}
+                        grant={grant}
+                        fundedBy={grant.shipId.id}
+                      />
+                    ))}
+                  </Stack>
+                </Collapse>
+              </Box>
+            )}
+            <Group>
+              <Box>
+                <Group gap={4}>
+                  <Text size="sm">Funding allocated </Text>
+                  <Tooltip
+                    position="bottom"
+                    label="Total funding allocated to this project"
+                  >
+                    <IconInfoCircle size={14} color={theme.colors.violet[4]} />
+                  </Tooltip>
+                </Group>
+                <Text size="sm" mb={2}>
+                  {totalFundsAllocated} {GAME_TOKEN.SYMBOL}
+                </Text>
+              </Box>
+              <Box>
+                <Group gap={4}>
+                  <Text size="sm">Funding Received</Text>
+                  <Tooltip
+                    label="Total funding received for work completed"
+                    position="bottom"
+                  >
+                    <IconInfoCircle size={14} color={theme.colors.violet[4]} />
+                  </Tooltip>
+                </Group>
+                <Text size="sm" mb={2}>
+                  {totalFundsReceived} {GAME_TOKEN.SYMBOL}
+                </Text>
+              </Box>
+            </Group>
+          </Stack>
+        )}
         <Text fz="sm" mb={'md'} className="ws-pre-wrap">
           {project.description}
         </Text>
@@ -155,16 +223,16 @@ export const Project = () => {
         </Box>
         <Tabs defaultValue="feed">
           <Tabs.List mb={'xl'}>
-            <Tabs.Tab value="feed" w="6rem">
+            <Tabs.Tab value="feed" w={isTablet ? '4.5rem' : '6rem'}>
               Feed
             </Tabs.Tab>
-            <Tabs.Tab w="6rem" value="updates">
+            <Tabs.Tab w={isTablet ? '4.5rem' : '6rem'} value="updates">
               Updates
             </Tabs.Tab>
-            <Tabs.Tab w="6rem" value="grants">
+            <Tabs.Tab w={isTablet ? '4.5rem' : '6rem'} value="grants">
               Grants
             </Tabs.Tab>
-            <Tabs.Tab w="6rem" value="details">
+            <Tabs.Tab w={isTablet ? '4.5rem' : '6rem'} value="details">
               Contact
             </Tabs.Tab>
           </Tabs.List>
@@ -204,49 +272,50 @@ export const Project = () => {
           </Tabs.Panel>
         </Tabs>
       </MainSection>
-      <Stack gap={'xs'} mt={72} w={270}>
-        <Paper p="md" bg={theme.colors.dark[6]}>
-          <Text size="lg" mb={2}>
-            {totalFundsAllocated} {GAME_TOKEN.SYMBOL}
-          </Text>
-          <Group mb="md" gap={4}>
-            <Text size="sm">Funding allocated </Text>
-            <Tooltip
-              position="bottom"
-              label="Total funding allocated to this project"
-            >
-              <IconInfoCircle size={14} color={theme.colors.violet[4]} />
-            </Tooltip>
-          </Group>
-
-          <Text size="lg" mb={2}>
-            {totalFundsReceived} {GAME_TOKEN.SYMBOL}
-          </Text>
-          <Group gap={4}>
-            <Text size="sm">Funding Received</Text>
-            <Tooltip
-              label="Total funding received for work completed"
-              position="bottom"
-            >
-              <IconInfoCircle size={14} color={theme.colors.violet[4]} />
-            </Tooltip>
-          </Group>
-        </Paper>
-        {activeGrants?.length !== 0 && (
+      {!isLaptop && (
+        <Stack gap={'xs'} mt={72} w={270}>
           <Paper p="md" bg={theme.colors.dark[6]}>
-            <Stack gap="lg">
-              <Text>Active Grants</Text>
-              {activeGrants?.map((grant: DashGrant, i: number) => (
-                <MilestoneProgress
-                  key={`milestone-progress-bar-${i}`}
-                  grant={grant}
-                  fundedBy={grant.shipId.id}
-                />
-              ))}
-            </Stack>
+            <Text size="lg" mb={2}>
+              {totalFundsAllocated} {GAME_TOKEN.SYMBOL}
+            </Text>
+            <Group mb="md" gap={4}>
+              <Text size="sm">Funding allocated </Text>
+              <Tooltip
+                position="bottom"
+                label="Total funding allocated to this project"
+              >
+                <IconInfoCircle size={14} color={theme.colors.violet[4]} />
+              </Tooltip>
+            </Group>
+            <Text size="lg" mb={2}>
+              {totalFundsReceived} {GAME_TOKEN.SYMBOL}
+            </Text>
+            <Group gap={4}>
+              <Text size="sm">Funding Received</Text>
+              <Tooltip
+                label="Total funding received for work completed"
+                position="bottom"
+              >
+                <IconInfoCircle size={14} color={theme.colors.violet[4]} />
+              </Tooltip>
+            </Group>
           </Paper>
-        )}
-      </Stack>
+          {activeGrants?.length !== 0 && (
+            <Paper p="md" bg={theme.colors.dark[6]}>
+              <Stack gap="lg">
+                <Text>Active Grants</Text>
+                {activeGrants?.map((grant: DashGrant, i: number) => (
+                  <MilestoneProgress
+                    key={`milestone-progress-bar-${i}`}
+                    grant={grant}
+                    fundedBy={grant.shipId.id}
+                  />
+                ))}
+              </Stack>
+            </Paper>
+          )}
+        </Stack>
+      )}
     </Flex>
   );
 };

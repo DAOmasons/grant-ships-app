@@ -19,6 +19,7 @@ import { MilestonesSubmit } from './MilestonesSubmit';
 import { MilestonesReview } from './MilestonesReview';
 import { MilestonesView } from './MilestonesView';
 import { useMemo } from 'react';
+import { useElementSize } from '@mantine/hooks';
 
 export const GrantCard = ({
   grant,
@@ -33,8 +34,9 @@ export const GrantCard = ({
   const currentStage = grant.grantStatus;
   const shipAddress = grant.shipId.id;
 
-  const isShipDash = view === 'ship-dash';
-  const isProjectPage = view === 'project-page';
+  const { ref, width } = useElementSize();
+
+  const cardShouldCollapse = width < 490;
 
   const isShipOperator =
     userData && userData.isShipOperator && userData.shipAddress === shipAddress;
@@ -49,37 +51,31 @@ export const GrantCard = ({
   }, [userData, grant.projectId.id]);
 
   return (
-    <Paper bg={theme.colors.dark[6]} mih={220} w="100%" p="lg">
-      <Flex>
-        <Box w="100%">
-          {isShipDash && (
-            <Group wrap="nowrap" mr="sm">
-              <Avatar size={66} src={grant?.projectMetadata?.imgUrl} />
-              <Box>
-                <Text fw={600} lineClamp={1}>
-                  {grant.projectId.name}
-                </Text>
-                <Text fz="sm">
-                  Last Updated {secondsToRelativeTime(grant.lastUpdated)}
-                </Text>
-              </Box>
-            </Group>
-          )}
-          {isProjectPage && (
-            <Group wrap="nowrap" mr="sm">
-              <Avatar size={44} src={grant?.shipMetadata?.imgUrl} />
-              <Box>
-                <Text fw={600} lineClamp={1}>
-                  {grant.shipId.name}
-                </Text>
-                <Text fz="sm">
-                  Last Updated {secondsToRelativeTime(grant.lastUpdated)}
-                </Text>
-              </Box>
-            </Group>
-          )}
+    <Paper bg={theme.colors.dark[6]} mih={220} w="100%" p="lg" ref={ref}>
+      <Flex direction={cardShouldCollapse ? 'column' : 'row'}>
+        <Box w="100%" mb={cardShouldCollapse ? 'md' : 0}>
+          <Group wrap="nowrap" mr="sm">
+            <Avatar
+              size={44}
+              src={
+                view === 'ship-dash'
+                  ? grant?.projectMetadata.imgUrl
+                  : grant?.shipMetadata?.imgUrl
+              }
+            />
+            <Box>
+              <Text fw={600} lineClamp={1}>
+                {view === 'ship-dash'
+                  ? grant.projectMetadata.name
+                  : grant.shipId.name}
+              </Text>
+              <Text fz="sm">
+                Last Updated {secondsToRelativeTime(grant.lastUpdated)}
+              </Text>
+            </Box>
+          </Group>
         </Box>
-        <Box w="100%">
+        <Box w="100%" ml={cardShouldCollapse ? 'sm' : 0}>
           <Timeline bulletSize={20} lineWidth={2} active={4}>
             <Timeline.Item
               h={12}

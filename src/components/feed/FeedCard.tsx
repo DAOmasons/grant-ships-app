@@ -16,8 +16,8 @@ import { mainnet } from 'viem/chains';
 import { FeedCardUI } from '../../types/ui';
 import {
   IconAward,
-  IconChevronCompactDown,
-  IconChevronCompactUp,
+  IconChevronDown,
+  IconChevronUp,
   IconRocket,
   IconShieldHalf,
 } from '@tabler/icons-react';
@@ -157,8 +157,8 @@ export const FeedCard = ({
           {embedText && (
             <Spoiler
               mb={'xs'}
-              hideLabel={<IconChevronCompactUp />}
-              showLabel={<IconChevronCompactDown />}
+              hideLabel={<IconChevronUp stroke={1} />}
+              showLabel={<IconChevronDown stroke={1} />}
               classNames={{
                 root: classes.embedTextBox,
                 control: classes.embedTextControl,

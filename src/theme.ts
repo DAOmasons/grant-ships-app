@@ -1,5 +1,6 @@
 import { Loader, Tooltip, createTheme } from '@mantine/core';
 import { RingLoader } from './components/loader/RingLoader';
+import { BreakPoint } from './constants/style';
 
 export const theme = createTheme({
   fontFamily: 'Roboto',
@@ -26,6 +27,13 @@ export const theme = createTheme({
         color: 'dark.8',
       },
     }),
+  },
+  breakpoints: {
+    xs: BreakPoint.Xs,
+    sm: BreakPoint.Sm,
+    md: BreakPoint.Md,
+    lg: BreakPoint.Lg,
+    xl: BreakPoint.Xl,
   },
   /* Put your mantine theme override here */
 });

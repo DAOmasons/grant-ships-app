@@ -58,7 +58,7 @@ export const FundPoolPanel = ({
   }
 
   if (isLoading) {
-    return <Skeleton w={350} h={120} />;
+    return <Skeleton w="100%" h={120} />;
   }
 
   if (queries[0].status !== 'success' || queries[1].status !== 'success') {
@@ -109,7 +109,7 @@ export const FundPoolPanel = ({
   if (gameStatusNumber > STATUS_NUMBER) {
     return (
       <Box>
-        <Alert w={350} mb="sm">
+        <Alert mb="sm">
           <Text fw={600} mb="sm">
             Pool Funded
           </Text>
@@ -127,7 +127,7 @@ export const FundPoolPanel = ({
   if (roundAmount && allowance < BigInt(roundAmount)) {
     return (
       <Box>
-        <Alert w={350} mb="sm">
+        <Alert mb="sm">
           <Text fw={600} mb="sm">
             Approve Allo Protocol
           </Text>
@@ -161,7 +161,7 @@ export const FundPoolPanel = ({
 
   return (
     <Box>
-      <Alert w={350} mb="sm">
+      <Alert mb="sm">
         <Text fw={600} mb="sm">
           Fund Pool
         </Text>
@@ -179,7 +179,6 @@ export const FundPoolPanel = ({
       <TextInput
         label="Amount to Fund Pool"
         placeholder="22.5"
-        w={350}
         mb="md"
         onChange={(e) => {
           setInputText(Number(e.target.value));
