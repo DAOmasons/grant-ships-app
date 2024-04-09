@@ -1,6 +1,8 @@
 import {
+  ActionIcon,
   Avatar,
   Box,
+  Collapse,
   Flex,
   Group,
   Paper,
@@ -11,7 +13,12 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import { MainSection, PageTitle } from '../layout/Sections';
-import { IconAward, IconInfoCircle } from '@tabler/icons-react';
+import {
+  IconAward,
+  IconChevronDown,
+  IconChevronUp,
+  IconInfoCircle,
+} from '@tabler/icons-react';
 import { FeedPanel } from '../components/shipItems/FeedPanel';
 import { GAME_TOKEN } from '../constants/gameSetup';
 import { MilestoneProgress } from '../components/projectItems/MilestoneProgress';
@@ -151,7 +158,28 @@ export const Project = () => {
         </Group>
 
         {isLaptop && (
-          <Stack>
+          <Stack mb="md">
+            {activeGrants?.length !== 0 && (
+              <Box>
+                <Group mb={opened ? 'sm' : 0}>
+                  <Text fz="sm">Active Grants</Text>
+                  <ActionIcon size="xs" onClick={toggle}>
+                    {opened ? <IconChevronUp /> : <IconChevronDown />}
+                  </ActionIcon>
+                </Group>
+                <Collapse in={opened}>
+                  <Stack gap="sm">
+                    {activeGrants?.map((grant: DashGrant, i: number) => (
+                      <MilestoneProgress
+                        key={`milestone-progress-bar-${i}`}
+                        grant={grant}
+                        fundedBy={grant.shipId.id}
+                      />
+                    ))}
+                  </Stack>
+                </Collapse>
+              </Box>
+            )}
             <Group>
               <Box>
                 <Group gap={4}>
