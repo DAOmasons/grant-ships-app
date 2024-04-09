@@ -18,7 +18,7 @@ import { GameStatus } from '../../types/common';
 import { ShipsCardUI } from '../../types/ui';
 import { useUserData } from '../../hooks/useUserState';
 import { SHIP_STATUS_INFO } from '../../constants/copy';
-import { useTablet } from '../../hooks/useBreakpoint';
+import { useMobile, useTablet } from '../../hooks/useBreakpoint';
 
 export const ShipCard = ({
   id,
@@ -35,6 +35,7 @@ export const ShipCard = ({
   const navigate = useNavigate();
   const { userData } = useUserData();
   const isTablet = useTablet();
+  const isMobile = useMobile();
 
   const isShipOperator =
     userData && userData.isShipOperator && userData.shipAddress === id;
@@ -52,7 +53,7 @@ export const ShipCard = ({
         navigate(`/ship/${id}`);
       }}
     >
-      <Flex h="100%" p="lg" w="100%">
+      <Flex h="100%" p={isMobile ? 'sm' : 'lg'} w="100%">
         {!isTablet && (
           <Box mr="md">
             <Avatar size={65} src={imgUrl} />
@@ -95,6 +96,7 @@ export const ShipCard = ({
             </Group>
             {isGameActive && (
               <FundingIndicator
+                fullWidth={isTablet}
                 allocated={amtAllocated}
                 distributed={amtDistributed}
                 available={amtAvailable}

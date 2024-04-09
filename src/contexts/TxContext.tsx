@@ -11,7 +11,7 @@ import {
   SuccessState,
   TimeoutState,
 } from '../components/modals/txModal/txModalStates';
-import { Button, Modal } from '@mantine/core';
+import { Box, Button, Modal } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { pollSubgraph } from '../queries/getRecentTransaction';
 

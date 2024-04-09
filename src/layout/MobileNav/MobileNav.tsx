@@ -223,6 +223,8 @@ const DashboardLink = () => {
   if (address) {
     return (
       <Menu.Item
+        component={Link}
+        to={`/my-projects/${address}`}
         leftSection={<IconAward stroke={1.5} color={theme.colors.blue[5]} />}
       >
         My Projects

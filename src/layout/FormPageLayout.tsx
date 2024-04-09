@@ -24,7 +24,13 @@ export const FormPageLayout = ({
   const isMobile = useMobile();
   return (
     <form onSubmit={onSubmit}>
-      <Stack maw={600} miw={300} w={'100%'} p={isMobile ? 'xs' : 'xl'}>
+      <Stack
+        maw={600}
+        miw={300}
+        w={'100%'}
+        p={isMobile ? 'xs' : 'xl'}
+        mb={isMobile ? 72 : 'xl'}
+      >
         {title && <PageTitle title={title} />}
         {children}
         <Group w="100%" mt="md" justify="flex-end">

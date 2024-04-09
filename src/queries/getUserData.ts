@@ -116,7 +116,7 @@ const resolveShipApplicationProfile = async (
 
 export const getUserData = async (address: string): Promise<UserData> => {
   try {
-    const sdk = getBuiltGraphSDK(SUBGRAPH_URL);
+    const sdk = getBuiltGraphSDK({ apiEndpoint: SUBGRAPH_URL });
     const { getUserData } = sdk;
     const data = await getUserData({ id: address });
     const isFacilitator = await checkIsFacilitator(address);
