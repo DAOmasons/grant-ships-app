@@ -1,4 +1,11 @@
-import { Group, Code, Title, useMantineTheme, Tooltip } from '@mantine/core';
+import {
+  Group,
+  Code,
+  Title,
+  useMantineTheme,
+  Tooltip,
+  Avatar,
+} from '@mantine/core';
 import {
   IconRocket,
   IconAward,
@@ -146,10 +153,15 @@ export function DesktopNav() {
     <nav className={classes.navbar}>
       <div className={classes.navbarMain}>
         <Group className={classes.header}>
-          <Logo />
+          {/* <Logo /> */}
+          <Avatar
+            src={
+              'https://global.discourse-cdn.com/apecoin/original/1X/5f6ded5c91cffb569faa208776309b3229530244.png'
+            }
+          />
           {!isTablet && (
             <Title order={1} fw={100} fz={32}>
-              Grant Ships
+              Ape Ships
             </Title>
           )}
         </Group>
