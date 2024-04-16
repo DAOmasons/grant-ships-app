@@ -89,7 +89,7 @@ For a detailed breakdown of the fixes, features, and tasks we aim to address in 
 - Allo Protocol: Tech support, code reviews, assistance.
 - Hats Protocol: Support, assistance with onchain development, and community stewardship.
 
-## Liscense
+## License
 
 [GNU V3](license.md)
 
