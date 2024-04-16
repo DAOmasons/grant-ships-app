@@ -1,6 +1,6 @@
 # Grant Ships Web App
 
-![image](https://hackmd.io/_uploads/H1oLyGseA.png)
+![image](https://hackmd-prod-images.s3-ap-northeast-1.amazonaws.com/uploads/upload_796cef232e421f2037d8d7cebaacb94c.png?AWSAccessKeyId=AKIA3XSAAW6AWSKNINWO&Expires=1713226985&Signature=Esm%2BxF%2FlAyBYrJ4faZ2x2yyCqoE%3D)
 
 ![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
 ![License](https://img.shields.io/badge/license-GNU-green)
@@ -97,7 +97,7 @@ For a detailed breakdown of the fixes, features, and tasks we aim to address in 
 
 **Shipped!** Early production Beta release. Visit the [app](https://app.grantships.fun/) to see Grant Ships in action!
 
-![dao masons logo](https://www.daomasons.com/_next/image?url=%2Fimages%2Fdaomasons_logo_830X830.png&w=1920&q=75)
+![dao masons logo](public/dmlogo.png)
 
 DAO Masons is a small, independent service and tooling guild. Our mission is to help DAOs win. We focus on the key issues facing DAOs today and implement systems that make DAOs more accessible, functional, and exceptional.
 
