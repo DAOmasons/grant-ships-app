@@ -97,7 +97,7 @@ For a detailed breakdown of the fixes, features, and tasks we aim to address in 
 
 **Shipped!** Early production Beta release. Visit the [app](https://app.grantships.fun/) to see Grant Ships in action!
 
-![dao masons logo](public/dmlogo.png)
+![dao masons logo](public/dmlogo_bg.png)
 
 DAO Masons is a small, independent service and tooling guild. Our mission is to help DAOs win. We focus on the key issues facing DAOs today and implement systems that make DAOs more accessible, functional, and exceptional.
 
