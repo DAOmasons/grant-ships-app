@@ -1,6 +1,6 @@
 # Grant Ships Web App
 
-![image](https://hackmd-prod-images.s3-ap-northeast-1.amazonaws.com/uploads/upload_796cef232e421f2037d8d7cebaacb94c.png?AWSAccessKeyId=AKIA3XSAAW6AWSKNINWO&Expires=1713226985&Signature=Esm%2BxF%2FlAyBYrJ4faZ2x2yyCqoE%3D)
+![image](public/gslogo.svg)
 
 ![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
 ![License](https://img.shields.io/badge/license-GNU-green)
