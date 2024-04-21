@@ -136,6 +136,7 @@ export const getFeed = async ({
     const resolved = await Promise.all(
       feedItems.map(async (item) => await resolveFeedItem(item))
     );
+
     return resolved;
   } catch (error) {
     console.error('Error in getFeed', error);

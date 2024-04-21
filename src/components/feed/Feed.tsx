@@ -1,13 +1,34 @@
+import { useIntersection } from '@mantine/hooks';
 import { FeedCardUI } from '../../types/ui';
 import { FeedCard } from './FeedCard';
 import { Box, Paper, Text, useMantineTheme } from '@mantine/core';
+import { useRef } from 'react';
 
-export const Feed = ({ feed }: { feed?: FeedCardUI[] }) => {
+export const Feed = ({
+  feed,
+  fetchNext,
+}: {
+  feed?: FeedCardUI[];
+  fetchNext: () => void;
+}) => {
   const theme = useMantineTheme();
+
+  const observer = useIntersection({
+    root: null,
+    threshold: 0.1,
+    rootMargin: '50%',
+  });
   return feed?.length ? (
-    <Box>
+    <Box h="100%">
       {feed.map((feedCard, i) => (
-        <FeedCard key={`${i}-${feedCard.subject.id}`} {...feedCard} />
+        <FeedCard
+          key={`${i}-${feedCard.subject.id}`}
+          {...feedCard}
+          observer={observer}
+          cardIndex={i}
+          cardCount={feed.length}
+          onIntersect={fetchNext}
+        />
       ))}
     </Box>
   ) : (
