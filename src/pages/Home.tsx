@@ -1,4 +1,12 @@
-import { Box, Flex, Group, Loader, Tabs, Text } from '@mantine/core';
+import {
+  Box,
+  Flex,
+  Group,
+  Loader,
+  Tabs,
+  Text,
+  useMantineTheme,
+} from '@mantine/core';
 import { Feed } from '../components/feed/Feed';
 import { MainSection } from '../layout/Sections';
 import { AppAlert } from '../components/UnderContruction';
@@ -43,6 +51,7 @@ const infiniteWrapper = async ({ pageParam }: any) => {
 };
 
 const FeedPanel = () => {
+  const theme = useMantineTheme();
   const {
     data: feedPages,
     isLoading,
@@ -50,7 +59,6 @@ const FeedPanel = () => {
     isFetchingNextPage,
     hasNextPage,
     error,
-    ...rest
   } = useInfiniteQuery({
     queryKey: ['main-feed'],
     initialPageParam: { first: 8, skip: 0 },
@@ -61,7 +69,6 @@ const FeedPanel = () => {
         : { first: lastPageParam.first, skip: lastPageParam.skip + 8 },
   });
 
-  console.log('rest', rest);
   const feedItems = useMemo(() => feedPages?.pages?.flat(), [feedPages]);
 
   if (isLoading)
@@ -76,7 +83,20 @@ const FeedPanel = () => {
         <FeedSkeletonCard />
       </>
     );
-  if (!feedItems) return null;
+
+  if (error)
+    return (
+      <AppAlert
+        title="Error"
+        color={theme.colors.red[6]}
+        description={
+          error.message || 'An error occurred while fetching the feed.'
+        }
+      />
+    );
+
+  if (!feedItems)
+    return <AppAlert title="Empty Feed" description={'No feed items found.'} />;
 
   return (
     <>

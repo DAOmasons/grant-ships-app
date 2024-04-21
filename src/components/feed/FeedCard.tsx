@@ -147,7 +147,7 @@ export const FeedCard = ({
     return secondsToShortRelativeTime(timestamp);
   }, [timestamp]);
 
-  const shouldFetch = cardIndex === cardCount - 5;
+  const shouldFetch = cardIndex === cardCount - 4;
   useEffect(() => {
     if (observer.entry?.isIntersecting) {
       if (shouldFetch && !hasFetchedMore.current) {
