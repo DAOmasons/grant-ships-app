@@ -25,6 +25,7 @@ import classes from './FeedStyles.module.css';
 import { secondsToShortRelativeTime } from '../../utils/time';
 import { Link } from 'react-router-dom';
 import { GAME_TOKEN } from '../../constants/gameSetup';
+import { useIntersection } from '@mantine/hooks';
 
 const getUrlByEntityType = (entityType: string, entityId: string) => {
   if (entityType === 'project') {
@@ -103,19 +104,21 @@ export const FeedCard = ({
   embedText,
   timestamp,
   sender,
-  observer,
+
   cardIndex,
   cardCount,
   onIntersect,
 }: FeedCardUI & {
-  observer: {
-    ref: (element: any) => void;
-    entry: IntersectionObserverEntry | null;
-  };
   cardIndex: number;
   cardCount: number;
   onIntersect: () => void;
 }) => {
+  const observer = useIntersection({
+    root: null,
+    threshold: 1,
+    // rootMargin: '50%',
+  });
+
   const hasFetchedMore = useRef(false);
   const theme = useMantineTheme();
   const { data: ensName } = useEnsName({
@@ -147,7 +150,7 @@ export const FeedCard = ({
     return secondsToShortRelativeTime(timestamp);
   }, [timestamp]);
 
-  const shouldFetch = cardIndex === cardCount - 4;
+  const shouldFetch = cardIndex === cardCount - 1;
   useEffect(
     () => {
       if (observer.entry?.isIntersecting) {
@@ -168,7 +171,7 @@ export const FeedCard = ({
         <Box mr="xs">
           <Avatar size={32} src={subject.imgUrl && subject.imgUrl} />
         </Box>
-        <Box>
+        <Box w="100%">
           <Group gap={8} mb={8}>
             <Text size="sm">{subject.name}</Text>
             {icon}
