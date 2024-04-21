@@ -138,7 +138,6 @@ export const UpdatesPanel = ({
           <FeedCard
             cardIndex={index}
             cardCount={posts.length}
-            onIntersect={() => {}}
             key={post.id}
             timestamp={post.timestamp}
             sender={post.postedBy}

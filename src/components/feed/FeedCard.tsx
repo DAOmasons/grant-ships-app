@@ -104,14 +104,13 @@ export const FeedCard = ({
   embedText,
   timestamp,
   sender,
-
   cardIndex,
   cardCount,
   onIntersect,
 }: FeedCardUI & {
   cardIndex: number;
   cardCount: number;
-  onIntersect: () => void;
+  onIntersect?: () => void;
 }) => {
   const observer = useIntersection({
     root: null,
@@ -152,7 +151,7 @@ export const FeedCard = ({
   const shouldFetch = cardIndex === cardCount - 1;
   useEffect(
     () => {
-      if (observer.entry?.isIntersecting) {
+      if (observer.entry?.isIntersecting && onIntersect) {
         if (shouldFetch && !hasFetchedMore.current) {
           onIntersect?.();
           hasFetchedMore.current = true;
