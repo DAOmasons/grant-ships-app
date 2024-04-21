@@ -134,8 +134,10 @@ export const UpdatesPanel = ({
         </Box>
       )}
       {posts?.length ? (
-        posts.map((post) => (
+        posts.map((post, index) => (
           <FeedCard
+            cardIndex={index}
+            cardCount={posts.length}
             key={post.id}
             timestamp={post.timestamp}
             sender={post.postedBy}

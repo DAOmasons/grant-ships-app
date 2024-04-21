@@ -5,6 +5,7 @@ import {
   Collapse,
   Flex,
   Group,
+  Loader,
   Paper,
   Stack,
   Tabs,
@@ -27,7 +28,7 @@ import { Contact } from '../components/Contact';
 
 import { formatEther } from 'viem';
 import { useParams } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useInfiniteQuery } from '@tanstack/react-query';
 import { getProjectPage } from '../queries/getProjectPage';
 import { AddressAvatarGroup } from '../components/AddressAvatar';
 import { AppAlert } from '../components/UnderContruction';
@@ -41,6 +42,11 @@ import { useUserData } from '../hooks/useUserState';
 import { ProjectUpdatesPanel } from '../components/projectItems/ProjectUpdatesPanel';
 import { useLaptop, useTablet } from '../hooks/useBreakpoint';
 import { useDisclosure } from '@mantine/hooks';
+
+const infiniteWrapper = async ({ pageParam }: any) => {
+  const result = await getEntityFeed(pageParam);
+  return result;
+};
 
 export const Project = () => {
   const { id } = useParams();
@@ -60,15 +66,32 @@ export const Project = () => {
   });
 
   const {
-    data: feedCards,
+    data: feedPages,
     isLoading: feedLoading,
     error: feedError,
-  } = useQuery({
+    fetchNextPage,
+    isFetchingNextPage,
+    hasNextPage,
+  } = useInfiniteQuery({
     queryKey: [`entity-feed-${id}`],
-    queryFn: () =>
-      getEntityFeed({ first: 10, skip: 0, entityId: id as string }),
+    initialPageParam: { first: 8, skip: 0, entityId: id as string },
+    getNextPageParam: (lastPage, _allPages, lastPageParam) => {
+      return lastPage.length === 0
+        ? undefined
+        : {
+            first: lastPageParam.first,
+            skip: lastPageParam.skip + 8,
+            entityId: id as string,
+          };
+    },
+    queryFn: infiniteWrapper,
     enabled: !!id,
   });
+
+  const feedCards = useMemo(
+    () => feedPages?.pages.flat().sort((a, b) => b.timestamp - a.timestamp),
+    [feedPages]
+  );
 
   const {
     data: grants,
@@ -241,7 +264,21 @@ export const Project = () => {
               feedItems={feedCards}
               isLoading={feedLoading}
               error={feedError}
+              fetchNext={fetchNextPage}
             />
+            {isFetchingNextPage && (
+              <Group w="100%" justify="center">
+                <Loader size="xl" />
+              </Group>
+            )}
+            {!hasNextPage && (
+              <Flex w="100%" justify="center" align="center" direction="column">
+                <Text opacity={0.8}>You're all caught up!</Text>
+                <Text opacity={0.7} fz="sm">
+                  Come back later to see more
+                </Text>
+              </Flex>
+            )}
           </Tabs.Panel>
           <Tabs.Panel value="grants">
             {project.grants && (
