@@ -2,7 +2,6 @@ import { useIntersection } from '@mantine/hooks';
 import { FeedCardUI } from '../../types/ui';
 import { FeedCard } from './FeedCard';
 import { Box, Paper, Text, useMantineTheme } from '@mantine/core';
-import { useRef } from 'react';
 
 export const Feed = ({
   feed,

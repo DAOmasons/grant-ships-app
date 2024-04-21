@@ -8,7 +8,7 @@ import {
   Text,
   useMantineTheme,
 } from '@mantine/core';
-import { ReactNode, useEffect, useMemo } from 'react';
+import { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { Address, formatEther } from 'viem';
 import { useEnsName } from 'wagmi';
 import { ensConfig } from '../../utils/config';
@@ -116,6 +116,7 @@ export const FeedCard = ({
   cardCount: number;
   onIntersect: () => void;
 }) => {
+  const hasFetchedMore = useRef(false);
   const theme = useMantineTheme();
   const { data: ensName } = useEnsName({
     address: sender as Address,
@@ -149,11 +150,10 @@ export const FeedCard = ({
   const shouldFetch = cardIndex === cardCount - 5;
   useEffect(() => {
     if (observer.entry?.isIntersecting) {
-      console.log(observer);
-      console.log('cardIndex', cardIndex);
-      if (shouldFetch) {
-        // onIntersect?.();
-        console.log('fetching next');
+      if (shouldFetch && !hasFetchedMore.current) {
+        console.log('fired Index: ', cardIndex, 'Count: ', cardCount);
+        onIntersect?.();
+        hasFetchedMore.current = true;
       }
     }
   }, [observer, cardCount, cardIndex, shouldFetch]);
