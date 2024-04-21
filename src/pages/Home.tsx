@@ -1,4 +1,4 @@
-import { Box, Button, Tabs } from '@mantine/core';
+import { Box, Flex, Group, Loader, Tabs, Text } from '@mantine/core';
 import { Feed } from '../components/feed/Feed';
 import { MainSection } from '../layout/Sections';
 import { AppAlert } from '../components/UnderContruction';
@@ -6,7 +6,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { getFeed } from '../queries/getFeed';
 import { FeedSkeletonCard } from '../components/skeletons';
 import { Banner } from '../components/Banner';
-import Logo from '../assets/Logo.svg';
+import { useMemo } from 'react';
 
 export const Home = () => {
   return (
@@ -48,6 +48,9 @@ const FeedPanel = () => {
     isLoading,
     fetchNextPage,
     isFetchingNextPage,
+    hasNextPage,
+    error,
+    ...rest
   } = useInfiniteQuery({
     queryKey: ['main-feed'],
     initialPageParam: { first: 8, skip: 0 },
@@ -58,7 +61,8 @@ const FeedPanel = () => {
         : { first: lastPageParam.first, skip: lastPageParam.skip + 8 },
   });
 
-  const feedItems = feedPages?.pages?.flat();
+  console.log('rest', rest);
+  const feedItems = useMemo(() => feedPages?.pages?.flat(), [feedPages]);
 
   if (isLoading)
     return (
@@ -77,7 +81,19 @@ const FeedPanel = () => {
   return (
     <>
       <Feed feed={feedItems} fetchNext={fetchNextPage} />
-      <Logo />
+      {isFetchingNextPage && (
+        <Group w="100%" justify="center">
+          <Loader size="xl" />
+        </Group>
+      )}
+      {!hasNextPage && (
+        <Flex w="100%" justify="center" align="center" direction="column">
+          <Text opacity={0.8}>You're all caught up!</Text>
+          <Text opacity={0.7} fz="sm">
+            Come back later to see more
+          </Text>
+        </Flex>
+      )}
     </>
   );
 };
