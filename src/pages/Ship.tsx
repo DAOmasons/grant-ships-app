@@ -4,6 +4,7 @@ import {
   Button,
   Flex,
   Group,
+  Loader,
   Paper,
   Stack,
   Tabs,
@@ -27,7 +28,7 @@ import { AddressAvatarGroup } from '../components/AddressAvatar';
 import { GameStatus } from '../types/common';
 
 import { getShipPageData } from '../queries/getShipPage';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useInfiniteQuery } from '@tanstack/react-query';
 import { SCAN_URL } from '../constants/enpoints';
 import { AppAlert } from '../components/UnderContruction';
 import { SingleItemPageSkeleton } from '../components/skeletons';
@@ -37,6 +38,12 @@ import { useUserData } from '../hooks/useUserState';
 import { UpdatesPanel } from '../components/shipItems/UpdatesPanel';
 import { SHIP_STATUS_INFO } from '../constants/copy';
 import { useLaptop, useTablet } from '../hooks/useBreakpoint';
+import { useMemo } from 'react';
+
+const infiniteWrapper = async ({ pageParam }: any) => {
+  const result = await getEntityFeed(pageParam);
+  return result;
+};
 
 export const Ship = () => {
   const theme = useMantineTheme();
@@ -45,15 +52,32 @@ export const Ship = () => {
   const isLaptop = useLaptop();
 
   const {
-    data: feedCards,
+    data: feedPages,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
     isLoading: feedLoading,
     error: feedError,
-  } = useQuery({
+  } = useInfiniteQuery({
     queryKey: [`entity-feed-${id}`],
-    queryFn: () =>
-      getEntityFeed({ first: 10, skip: 0, entityId: id as string }),
+    initialPageParam: { first: 8, skip: 0, entityId: id as string },
+    getNextPageParam: (lastPage, _allPages, lastPageParam) => {
+      return lastPage.length === 0
+        ? undefined
+        : {
+            ...lastPageParam,
+            skip: lastPageParam.skip + 8,
+            entityId: id as string,
+          };
+    },
+    queryFn: infiniteWrapper,
     enabled: !!id,
   });
+
+  const feedCards = useMemo(
+    () => feedPages?.pages.flat().sort((a, b) => b.timestamp - a.timestamp),
+    [feedPages]
+  );
 
   const {
     data: ship,
@@ -201,7 +225,21 @@ export const Ship = () => {
               feedItems={feedCards}
               isLoading={feedLoading}
               error={feedError}
+              fetchNext={fetchNextPage}
             />
+            {isFetchingNextPage && (
+              <Group w="100%" justify="center">
+                <Loader size="xl" />
+              </Group>
+            )}
+            {!hasNextPage && (
+              <Flex w="100%" justify="center" align="center" direction="column">
+                <Text opacity={0.8}>You're all caught up!</Text>
+                <Text opacity={0.7} fz="sm">
+                  Come back later to see more
+                </Text>
+              </Flex>
+            )}
           </Tabs.Panel>
           <Tabs.Panel value="details">
             <DetailsPanel details={ship.details} members={ship.members} />

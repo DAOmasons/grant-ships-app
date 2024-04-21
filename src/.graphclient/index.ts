@@ -3317,19 +3317,19 @@ export type ResolversParentTypes = ResolversObject<{
 
 export type entityDirectiveArgs = { };
 
-export type entityDirectiveResolver<Result, Parent, ContextType = MeshContext & { apiEndpoint: string }, Args = entityDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+export type entityDirectiveResolver<Result, Parent, ContextType = MeshContext, Args = entityDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export type subgraphIdDirectiveArgs = {
   id: Scalars['String'];
 };
 
-export type subgraphIdDirectiveResolver<Result, Parent, ContextType = MeshContext & { apiEndpoint: string }, Args = subgraphIdDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+export type subgraphIdDirectiveResolver<Result, Parent, ContextType = MeshContext, Args = subgraphIdDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export type derivedFromDirectiveArgs = {
   field: Scalars['String'];
 };
 
-export type derivedFromDirectiveResolver<Result, Parent, ContextType = MeshContext & { apiEndpoint: string }, Args = derivedFromDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+export type derivedFromDirectiveResolver<Result, Parent, ContextType = MeshContext, Args = derivedFromDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export interface BigDecimalScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['BigDecimal'], any> {
   name: 'BigDecimal';
@@ -3343,7 +3343,7 @@ export interface BytesScalarConfig extends GraphQLScalarTypeConfig<ResolversType
   name: 'Bytes';
 }
 
-export type FeedItemResolvers<ContextType = MeshContext & { apiEndpoint: string }, ParentType extends ResolversParentTypes['FeedItem'] = ResolversParentTypes['FeedItem']> = ResolversObject<{
+export type FeedItemResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['FeedItem'] = ResolversParentTypes['FeedItem']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   timestamp?: Resolver<Maybe<ResolversTypes['BigInt']>, ParentType, ContextType>;
   content?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -3359,7 +3359,7 @@ export type FeedItemResolvers<ContextType = MeshContext & { apiEndpoint: string 
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type FeedItemEmbedResolvers<ContextType = MeshContext & { apiEndpoint: string }, ParentType extends ResolversParentTypes['FeedItemEmbed'] = ResolversParentTypes['FeedItemEmbed']> = ResolversObject<{
+export type FeedItemEmbedResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['FeedItemEmbed'] = ResolversParentTypes['FeedItemEmbed']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   key?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   pointer?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -3368,14 +3368,14 @@ export type FeedItemEmbedResolvers<ContextType = MeshContext & { apiEndpoint: st
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type FeedItemEntityResolvers<ContextType = MeshContext & { apiEndpoint: string }, ParentType extends ResolversParentTypes['FeedItemEntity'] = ResolversParentTypes['FeedItemEntity']> = ResolversObject<{
+export type FeedItemEntityResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['FeedItemEntity'] = ResolversParentTypes['FeedItemEntity']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type GameManagerResolvers<ContextType = MeshContext & { apiEndpoint: string }, ParentType extends ResolversParentTypes['GameManager'] = ResolversParentTypes['GameManager']> = ResolversObject<{
+export type GameManagerResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['GameManager'] = ResolversParentTypes['GameManager']> = ResolversObject<{
   id?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
   poolId?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   gameFacilitatorId?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
@@ -3387,7 +3387,7 @@ export type GameManagerResolvers<ContextType = MeshContext & { apiEndpoint: stri
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type GameRoundResolvers<ContextType = MeshContext & { apiEndpoint: string }, ParentType extends ResolversParentTypes['GameRound'] = ResolversParentTypes['GameRound']> = ResolversObject<{
+export type GameRoundResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['GameRound'] = ResolversParentTypes['GameRound']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   startTime?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   endTime?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
@@ -3402,7 +3402,7 @@ export type GameRoundResolvers<ContextType = MeshContext & { apiEndpoint: string
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type GmDeploymentResolvers<ContextType = MeshContext & { apiEndpoint: string }, ParentType extends ResolversParentTypes['GmDeployment'] = ResolversParentTypes['GmDeployment']> = ResolversObject<{
+export type GmDeploymentResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['GmDeployment'] = ResolversParentTypes['GmDeployment']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   address?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
   version?: Resolver<ResolversTypes['GmVersion'], ParentType, ContextType>;
@@ -3417,14 +3417,14 @@ export type GmDeploymentResolvers<ContextType = MeshContext & { apiEndpoint: str
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type GmVersionResolvers<ContextType = MeshContext & { apiEndpoint: string }, ParentType extends ResolversParentTypes['GmVersion'] = ResolversParentTypes['GmVersion']> = ResolversObject<{
+export type GmVersionResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['GmVersion'] = ResolversParentTypes['GmVersion']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   address?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type GrantResolvers<ContextType = MeshContext & { apiEndpoint: string }, ParentType extends ResolversParentTypes['Grant'] = ResolversParentTypes['Grant']> = ResolversObject<{
+export type GrantResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Grant'] = ResolversParentTypes['Grant']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   projectId?: Resolver<ResolversTypes['Project'], ParentType, ContextType>;
   shipId?: Resolver<ResolversTypes['GrantShip'], ParentType, ContextType>;
@@ -3447,7 +3447,7 @@ export type GrantResolvers<ContextType = MeshContext & { apiEndpoint: string }, 
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type GrantShipResolvers<ContextType = MeshContext & { apiEndpoint: string }, ParentType extends ResolversParentTypes['GrantShip'] = ResolversParentTypes['GrantShip']> = ResolversObject<{
+export type GrantShipResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['GrantShip'] = ResolversParentTypes['GrantShip']> = ResolversObject<{
   id?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
   profileId?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
   nonce?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
@@ -3491,7 +3491,7 @@ export interface Int8ScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes
   name: 'Int8';
 }
 
-export type LogResolvers<ContextType = MeshContext & { apiEndpoint: string }, ParentType extends ResolversParentTypes['Log'] = ResolversParentTypes['Log']> = ResolversObject<{
+export type LogResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Log'] = ResolversParentTypes['Log']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -3499,7 +3499,7 @@ export type LogResolvers<ContextType = MeshContext & { apiEndpoint: string }, Pa
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type MilestoneResolvers<ContextType = MeshContext & { apiEndpoint: string }, ParentType extends ResolversParentTypes['Milestone'] = ResolversParentTypes['Milestone']> = ResolversObject<{
+export type MilestoneResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Milestone'] = ResolversParentTypes['Milestone']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   amountPercentage?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
   mmetadata?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
@@ -3509,19 +3509,19 @@ export type MilestoneResolvers<ContextType = MeshContext & { apiEndpoint: string
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type PoolIdLookupResolvers<ContextType = MeshContext & { apiEndpoint: string }, ParentType extends ResolversParentTypes['PoolIdLookup'] = ResolversParentTypes['PoolIdLookup']> = ResolversObject<{
+export type PoolIdLookupResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['PoolIdLookup'] = ResolversParentTypes['PoolIdLookup']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   entityId?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type ProfileMemberGroupResolvers<ContextType = MeshContext & { apiEndpoint: string }, ParentType extends ResolversParentTypes['ProfileMemberGroup'] = ResolversParentTypes['ProfileMemberGroup']> = ResolversObject<{
+export type ProfileMemberGroupResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['ProfileMemberGroup'] = ResolversParentTypes['ProfileMemberGroup']> = ResolversObject<{
   id?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
   addresses?: Resolver<Maybe<Array<ResolversTypes['Bytes']>>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type ProjectResolvers<ContextType = MeshContext & { apiEndpoint: string }, ParentType extends ResolversParentTypes['Project'] = ResolversParentTypes['Project']> = ResolversObject<{
+export type ProjectResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Project'] = ResolversParentTypes['Project']> = ResolversObject<{
   id?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
   profileId?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
   status?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -3539,7 +3539,7 @@ export type ProjectResolvers<ContextType = MeshContext & { apiEndpoint: string }
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type QueryResolvers<ContextType = MeshContext & { apiEndpoint: string }, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
+export type QueryResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
   project?: Resolver<Maybe<ResolversTypes['Project']>, ParentType, ContextType, RequireFields<QueryprojectArgs, 'id' | 'subgraphError'>>;
   projects?: Resolver<Array<ResolversTypes['Project']>, ParentType, ContextType, RequireFields<QueryprojectsArgs, 'skip' | 'first' | 'subgraphError'>>;
   feedItem?: Resolver<Maybe<ResolversTypes['FeedItem']>, ParentType, ContextType, RequireFields<QueryfeedItemArgs, 'id' | 'subgraphError'>>;
@@ -3577,14 +3577,14 @@ export type QueryResolvers<ContextType = MeshContext & { apiEndpoint: string }, 
   _meta?: Resolver<Maybe<ResolversTypes['_Meta_']>, ParentType, ContextType, Partial<Query_metaArgs>>;
 }>;
 
-export type RawMetadataResolvers<ContextType = MeshContext & { apiEndpoint: string }, ParentType extends ResolversParentTypes['RawMetadata'] = ResolversParentTypes['RawMetadata']> = ResolversObject<{
+export type RawMetadataResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['RawMetadata'] = ResolversParentTypes['RawMetadata']> = ResolversObject<{
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   protocol?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   pointer?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type SubscriptionResolvers<ContextType = MeshContext & { apiEndpoint: string }, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = ResolversObject<{
+export type SubscriptionResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = ResolversObject<{
   project?: SubscriptionResolver<Maybe<ResolversTypes['Project']>, "project", ParentType, ContextType, RequireFields<SubscriptionprojectArgs, 'id' | 'subgraphError'>>;
   projects?: SubscriptionResolver<Array<ResolversTypes['Project']>, "projects", ParentType, ContextType, RequireFields<SubscriptionprojectsArgs, 'skip' | 'first' | 'subgraphError'>>;
   feedItem?: SubscriptionResolver<Maybe<ResolversTypes['FeedItem']>, "feedItem", ParentType, ContextType, RequireFields<SubscriptionfeedItemArgs, 'id' | 'subgraphError'>>;
@@ -3626,7 +3626,7 @@ export interface TimestampScalarConfig extends GraphQLScalarTypeConfig<Resolvers
   name: 'Timestamp';
 }
 
-export type TransactionResolvers<ContextType = MeshContext & { apiEndpoint: string }, ParentType extends ResolversParentTypes['Transaction'] = ResolversParentTypes['Transaction']> = ResolversObject<{
+export type TransactionResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Transaction'] = ResolversParentTypes['Transaction']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   blockNumber?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   sender?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
@@ -3634,7 +3634,7 @@ export type TransactionResolvers<ContextType = MeshContext & { apiEndpoint: stri
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type UpdateResolvers<ContextType = MeshContext & { apiEndpoint: string }, ParentType extends ResolversParentTypes['Update'] = ResolversParentTypes['Update']> = ResolversObject<{
+export type UpdateResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Update'] = ResolversParentTypes['Update']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   scope?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   posterRole?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -3647,7 +3647,7 @@ export type UpdateResolvers<ContextType = MeshContext & { apiEndpoint: string },
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type _Block_Resolvers<ContextType = MeshContext & { apiEndpoint: string }, ParentType extends ResolversParentTypes['_Block_'] = ResolversParentTypes['_Block_']> = ResolversObject<{
+export type _Block_Resolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['_Block_'] = ResolversParentTypes['_Block_']> = ResolversObject<{
   hash?: Resolver<Maybe<ResolversTypes['Bytes']>, ParentType, ContextType>;
   number?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   timestamp?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
@@ -3655,14 +3655,14 @@ export type _Block_Resolvers<ContextType = MeshContext & { apiEndpoint: string }
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type _Meta_Resolvers<ContextType = MeshContext & { apiEndpoint: string }, ParentType extends ResolversParentTypes['_Meta_'] = ResolversParentTypes['_Meta_']> = ResolversObject<{
+export type _Meta_Resolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['_Meta_'] = ResolversParentTypes['_Meta_']> = ResolversObject<{
   block?: Resolver<ResolversTypes['_Block_'], ParentType, ContextType>;
   deployment?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   hasIndexingErrors?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type Resolvers<ContextType = MeshContext & { apiEndpoint: string }> = ResolversObject<{
+export type Resolvers<ContextType = MeshContext> = ResolversObject<{
   BigDecimal?: GraphQLScalarType;
   BigInt?: GraphQLScalarType;
   Bytes?: GraphQLScalarType;
@@ -3691,7 +3691,7 @@ export type Resolvers<ContextType = MeshContext & { apiEndpoint: string }> = Res
   _Meta_?: _Meta_Resolvers<ContextType>;
 }>;
 
-export type DirectiveResolvers<ContextType = MeshContext & { apiEndpoint: string }> = ResolversObject<{
+export type DirectiveResolvers<ContextType = MeshContext> = ResolversObject<{
   entity?: entityDirectiveResolver<any, any, ContextType>;
   subgraphId?: subgraphIdDirectiveResolver<any, any, ContextType>;
   derivedFrom?: derivedFromDirectiveResolver<any, any, ContextType>;

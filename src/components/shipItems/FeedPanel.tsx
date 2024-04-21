@@ -8,7 +8,9 @@ export const FeedPanel = ({
   feedItems,
   isLoading,
   error,
+  fetchNext,
 }: {
+  fetchNext: () => void;
   feedItems?: FeedCardUI[];
   isLoading: boolean;
   error: Error | null;
@@ -34,5 +36,5 @@ export const FeedPanel = ({
       />
     );
 
-  return <Feed feed={feedItems} />;
+  return <Feed feed={feedItems} fetchNext={fetchNext} />;
 };

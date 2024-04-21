@@ -8,7 +8,7 @@ import {
   Text,
   useMantineTheme,
 } from '@mantine/core';
-import { ReactNode, useMemo } from 'react';
+import { ReactNode, useEffect, useMemo, useRef } from 'react';
 import { Address, formatEther } from 'viem';
 import { useEnsName } from 'wagmi';
 import { ensConfig } from '../../utils/config';
@@ -25,6 +25,7 @@ import classes from './FeedStyles.module.css';
 import { secondsToShortRelativeTime } from '../../utils/time';
 import { Link } from 'react-router-dom';
 import { GAME_TOKEN } from '../../constants/gameSetup';
+import { useIntersection } from '@mantine/hooks';
 
 const getUrlByEntityType = (entityType: string, entityId: string) => {
   if (entityType === 'project') {
@@ -103,7 +104,20 @@ export const FeedCard = ({
   embedText,
   timestamp,
   sender,
-}: FeedCardUI) => {
+  cardIndex,
+  cardCount,
+  onIntersect,
+}: FeedCardUI & {
+  cardIndex: number;
+  cardCount: number;
+  onIntersect?: () => void;
+}) => {
+  const observer = useIntersection({
+    root: null,
+    threshold: 1,
+  });
+
+  const hasFetchedMore = useRef(false);
   const theme = useMantineTheme();
   const { data: ensName } = useEnsName({
     address: sender as Address,
@@ -134,13 +148,27 @@ export const FeedCard = ({
     return secondsToShortRelativeTime(timestamp);
   }, [timestamp]);
 
+  const shouldFetch = cardIndex === cardCount - 1;
+  useEffect(
+    () => {
+      if (observer.entry?.isIntersecting && onIntersect) {
+        if (shouldFetch && !hasFetchedMore.current) {
+          onIntersect?.();
+          hasFetchedMore.current = true;
+        }
+      }
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [observer, cardCount, cardIndex, shouldFetch]
+  );
+
   return (
-    <Box mb="lg">
+    <Box mb="lg" ref={observer.ref}>
       <Flex mb="lg">
         <Box mr="xs">
           <Avatar size={32} src={subject.imgUrl && subject.imgUrl} />
         </Box>
-        <Box>
+        <Box w="100%">
           <Group gap={8} mb={8}>
             <Text size="sm">{subject.name}</Text>
             {icon}

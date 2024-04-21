@@ -1,11 +1,20 @@
-import { Box, Tabs } from '@mantine/core';
+import {
+  Box,
+  Flex,
+  Group,
+  Loader,
+  Tabs,
+  Text,
+  useMantineTheme,
+} from '@mantine/core';
 import { Feed } from '../components/feed/Feed';
 import { MainSection } from '../layout/Sections';
 import { AppAlert } from '../components/UnderContruction';
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { getFeed } from '../queries/getFeed';
 import { FeedSkeletonCard } from '../components/skeletons';
 import { Banner } from '../components/Banner';
+import { useMemo } from 'react';
 
 export const Home = () => {
   return (
@@ -36,11 +45,31 @@ export const Home = () => {
   );
 };
 
+const infiniteWrapper = async ({ pageParam }: any) => {
+  const result = await getFeed(pageParam);
+  return result;
+};
+
 const FeedPanel = () => {
-  const { data: feedItems, isLoading } = useQuery({
+  const theme = useMantineTheme();
+  const {
+    data: feedPages,
+    isLoading,
+    fetchNextPage,
+    isFetchingNextPage,
+    hasNextPage,
+    error,
+  } = useInfiniteQuery({
     queryKey: ['main-feed'],
-    queryFn: () => getFeed({ first: 10, skip: 0 }),
+    initialPageParam: { first: 8, skip: 0 },
+    queryFn: infiniteWrapper,
+    getNextPageParam: (lastPage, _allPages, lastPageParam) =>
+      lastPage.length === 0
+        ? undefined
+        : { first: lastPageParam.first, skip: lastPageParam.skip + 8 },
   });
+
+  const feedItems = useMemo(() => feedPages?.pages?.flat(), [feedPages]);
 
   if (isLoading)
     return (
@@ -54,7 +83,37 @@ const FeedPanel = () => {
         <FeedSkeletonCard />
       </>
     );
-  if (!feedItems) return null;
 
-  return <Feed feed={feedItems} />;
+  if (error)
+    return (
+      <AppAlert
+        title="Error"
+        color={theme.colors.red[6]}
+        description={
+          error.message || 'An error occurred while fetching the feed.'
+        }
+      />
+    );
+
+  if (!feedItems)
+    return <AppAlert title="Empty Feed" description={'No feed items found.'} />;
+
+  return (
+    <>
+      <Feed feed={feedItems} fetchNext={fetchNextPage} />
+      {isFetchingNextPage && (
+        <Group w="100%" justify="center">
+          <Loader size="xl" />
+        </Group>
+      )}
+      {!hasNextPage && (
+        <Flex w="100%" justify="center" align="center" direction="column">
+          <Text opacity={0.8}>You're all caught up!</Text>
+          <Text opacity={0.7} fz="sm">
+            Come back later to see more
+          </Text>
+        </Flex>
+      )}
+    </>
+  );
 };
