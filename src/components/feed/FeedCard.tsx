@@ -8,7 +8,7 @@ import {
   Text,
   useMantineTheme,
 } from '@mantine/core';
-import { ReactNode, useMemo } from 'react';
+import { ReactNode, useEffect, useMemo } from 'react';
 import { Address, formatEther } from 'viem';
 import { useEnsName } from 'wagmi';
 import { ensConfig } from '../../utils/config';
@@ -103,7 +103,19 @@ export const FeedCard = ({
   embedText,
   timestamp,
   sender,
-}: FeedCardUI) => {
+  observer,
+  cardIndex,
+  cardCount,
+  onIntersect,
+}: FeedCardUI & {
+  observer: {
+    ref: (element: any) => void;
+    entry: IntersectionObserverEntry | null;
+  };
+  cardIndex: number;
+  cardCount: number;
+  onIntersect: () => void;
+}) => {
   const theme = useMantineTheme();
   const { data: ensName } = useEnsName({
     address: sender as Address,
@@ -134,8 +146,24 @@ export const FeedCard = ({
     return secondsToShortRelativeTime(timestamp);
   }, [timestamp]);
 
+  const shouldFetch = cardIndex === cardCount - 5;
+  useEffect(() => {
+    if (observer.entry?.isIntersecting) {
+      console.log(observer);
+      console.log('cardIndex', cardIndex);
+      if (shouldFetch) {
+        // onIntersect?.();
+        console.log('fetching next');
+      }
+    }
+  }, [observer, cardCount, cardIndex, shouldFetch]);
+
   return (
-    <Box mb="lg">
+    <Box
+      mb="lg"
+      ref={observer.ref}
+      bg={observer.entry?.isIntersecting && shouldFetch ? 'red' : undefined}
+    >
       <Flex mb="lg">
         <Box mr="xs">
           <Avatar size={32} src={subject.imgUrl && subject.imgUrl} />

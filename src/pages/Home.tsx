@@ -1,11 +1,12 @@
-import { Box, Tabs } from '@mantine/core';
+import { Box, Button, Tabs } from '@mantine/core';
 import { Feed } from '../components/feed/Feed';
 import { MainSection } from '../layout/Sections';
 import { AppAlert } from '../components/UnderContruction';
-import { useQuery } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { getFeed } from '../queries/getFeed';
 import { FeedSkeletonCard } from '../components/skeletons';
 import { Banner } from '../components/Banner';
+import { useRef } from 'react';
 
 export const Home = () => {
   return (
@@ -36,11 +37,29 @@ export const Home = () => {
   );
 };
 
+const infiniteWrapper = async ({ pageParam }: any) => {
+  const result = await getFeed(pageParam);
+  return result;
+};
+
 const FeedPanel = () => {
-  const { data: feedItems, isLoading } = useQuery({
+  const {
+    data: feedPages,
+    isLoading,
+    fetchNextPage,
+  } = useInfiniteQuery({
     queryKey: ['main-feed'],
-    queryFn: () => getFeed({ first: 10, skip: 0 }),
+    initialPageParam: { first: 10, skip: 0 },
+    queryFn: infiniteWrapper,
+    getNextPageParam: (lastPage, _allPages, lastPageParam) =>
+      lastPage.length === 0
+        ? undefined
+        : { first: lastPageParam.first + 10, skip: lastPageParam.skip + 10 },
+    // getNextPageParam: (lastPage) => lastPage
+    // getNextPageParam: (lastPage, pages) => lastPage.nextCursor,
   });
+
+  const feedItems = feedPages?.pages?.flat();
 
   if (isLoading)
     return (
@@ -56,5 +75,20 @@ const FeedPanel = () => {
     );
   if (!feedItems) return null;
 
-  return <Feed feed={feedItems} />;
+  return (
+    <>
+      <Feed
+        feed={feedItems}
+        fetchNext={fetchNextPage}
+        containerRef={containerRef}
+      />
+      <Button
+        onClick={() => {
+          fetchNextPage();
+        }}
+      >
+        Fetch Next
+      </Button>
+    </>
+  );
 };
