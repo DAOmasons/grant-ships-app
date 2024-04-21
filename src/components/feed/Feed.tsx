@@ -14,9 +14,10 @@ export const Feed = ({
 
   const observer = useIntersection({
     root: null,
-    threshold: 0.1,
+    threshold: 1,
     rootMargin: '50%',
   });
+
   return feed?.length ? (
     <Box h="100%">
       {feed.map((feedCard, i) => (

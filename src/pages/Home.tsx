@@ -6,6 +6,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { getFeed } from '../queries/getFeed';
 import { FeedSkeletonCard } from '../components/skeletons';
 import { Banner } from '../components/Banner';
+import Logo from '../assets/Logo.svg';
 
 export const Home = () => {
   return (
@@ -46,16 +47,15 @@ const FeedPanel = () => {
     data: feedPages,
     isLoading,
     fetchNextPage,
+    isFetchingNextPage,
   } = useInfiniteQuery({
     queryKey: ['main-feed'],
-    initialPageParam: { first: 10, skip: 0 },
+    initialPageParam: { first: 8, skip: 0 },
     queryFn: infiniteWrapper,
     getNextPageParam: (lastPage, _allPages, lastPageParam) =>
       lastPage.length === 0
         ? undefined
-        : { first: lastPageParam.first, skip: lastPageParam.skip + 10 },
-    // getNextPageParam: (lastPage) => lastPage
-    // getNextPageParam: (lastPage, pages) => lastPage.nextCursor,
+        : { first: lastPageParam.first, skip: lastPageParam.skip + 8 },
   });
 
   const feedItems = feedPages?.pages?.flat();
@@ -77,13 +77,7 @@ const FeedPanel = () => {
   return (
     <>
       <Feed feed={feedItems} fetchNext={fetchNextPage} />
-      <Button
-        onClick={() => {
-          fetchNextPage();
-        }}
-      >
-        Fetch Next
-      </Button>
+      <Logo />
     </>
   );
 };

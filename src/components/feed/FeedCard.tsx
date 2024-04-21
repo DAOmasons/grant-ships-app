@@ -8,7 +8,7 @@ import {
   Text,
   useMantineTheme,
 } from '@mantine/core';
-import { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
+import { ReactNode, useEffect, useMemo, useRef } from 'react';
 import { Address, formatEther } from 'viem';
 import { useEnsName } from 'wagmi';
 import { ensConfig } from '../../utils/config';
@@ -151,19 +151,15 @@ export const FeedCard = ({
   useEffect(() => {
     if (observer.entry?.isIntersecting) {
       if (shouldFetch && !hasFetchedMore.current) {
-        console.log('fired Index: ', cardIndex, 'Count: ', cardCount);
         onIntersect?.();
+        console.log('cardIndex', cardIndex);
         hasFetchedMore.current = true;
       }
     }
   }, [observer, cardCount, cardIndex, shouldFetch]);
 
   return (
-    <Box
-      mb="lg"
-      ref={observer.ref}
-      bg={observer.entry?.isIntersecting && shouldFetch ? 'red' : undefined}
-    >
+    <Box mb="lg" ref={observer.ref}>
       <Flex mb="lg">
         <Box mr="xs">
           <Avatar size={32} src={subject.imgUrl && subject.imgUrl} />
