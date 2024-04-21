@@ -166,12 +166,10 @@ export const getEntityFeed = async ({
       orderDirection: 'desc',
     });
 
-    const sorted = [...subjectItems, ...objectItems].sort(
-      (a, b) => b.timestamp - a.timestamp
-    );
-
     const resolved = await Promise.all(
-      sorted.map(async (item) => await resolveFeedItem(item))
+      [...subjectItems, ...objectItems].map(
+        async (item) => await resolveFeedItem(item)
+      )
     );
 
     return resolved;

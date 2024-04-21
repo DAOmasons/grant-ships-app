@@ -148,15 +148,19 @@ export const FeedCard = ({
   }, [timestamp]);
 
   const shouldFetch = cardIndex === cardCount - 4;
-  useEffect(() => {
-    if (observer.entry?.isIntersecting) {
-      if (shouldFetch && !hasFetchedMore.current) {
-        onIntersect?.();
-        console.log('cardIndex', cardIndex);
-        hasFetchedMore.current = true;
+  useEffect(
+    () => {
+      if (observer.entry?.isIntersecting) {
+        if (shouldFetch && !hasFetchedMore.current) {
+          onIntersect?.();
+          console.log('cardIndex', cardIndex);
+          hasFetchedMore.current = true;
+        }
       }
-    }
-  }, [observer, cardCount, cardIndex, shouldFetch]);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [observer, cardCount, cardIndex, shouldFetch]
+  );
 
   return (
     <Box mb="lg" ref={observer.ref}>
