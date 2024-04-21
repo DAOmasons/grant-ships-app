@@ -116,7 +116,6 @@ export const FeedCard = ({
   const observer = useIntersection({
     root: null,
     threshold: 1,
-    // rootMargin: '50%',
   });
 
   const hasFetchedMore = useRef(false);
@@ -156,7 +155,6 @@ export const FeedCard = ({
       if (observer.entry?.isIntersecting) {
         if (shouldFetch && !hasFetchedMore.current) {
           onIntersect?.();
-          console.log('cardIndex', cardIndex);
           hasFetchedMore.current = true;
         }
       }
