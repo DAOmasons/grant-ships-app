@@ -1,5 +1,5 @@
 .banner {
-  background-image: url('/BgSvg.svg');
+  background-image: url('https://imgur.com/9IOFWOc.png');
   position: relative;
   background-size: cover;
   background-position: center;
@@ -14,7 +14,7 @@
   top: 0;
   right: 0;
   bottom: 0;
-  width: 20%; /* Adjust the width of the fade effect as needed */
+  width: 30%; /* Adjust the width of the fade effect as needed */
   background: linear-gradient(
     to right,
     rgba(0, 0, 0, 0),
@@ -29,7 +29,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  height: 20%; /* Adjust the height of the fade effect as needed */
+  height: 10%; /* Adjust the height of the fade effect as needed */
   background: linear-gradient(
     to bottom,
     rgba(0, 0, 0, 0),
