@@ -5,24 +5,30 @@ import { useEnsAvatar, useEnsName } from 'wagmi';
 import { ensConfig } from '../utils/config';
 import { mainnet } from 'viem/chains';
 import { normalize } from 'path';
+import { useClipboard } from '@mantine/hooks';
+import { notifications } from '@mantine/notifications';
 
 export const AddressAvatar = ({
   address,
   size = 28,
   fz,
   displayText = true,
+  canCopy,
 }: {
   address: Address;
   size?: MantineSize | number;
   fz?: StyleProp<number | MantineSize>;
   displayText?: boolean;
   hideText?: boolean;
+  canCopy?: boolean;
 }) => {
   const { data: ensName } = useEnsName({
     address,
     config: ensConfig,
     chainId: mainnet.id,
   });
+
+  const { copy } = useClipboard();
 
   const { data: ensAvatar } = useEnsAvatar({
     name: ensName ? normalize(ensName) : undefined,
@@ -34,7 +40,20 @@ export const AddressAvatar = ({
   const imgUrl = ensAvatar || `https://effigy.im/a/${address}.svg`;
 
   return (
-    <Group>
+    <Group
+      style={{
+        cursor: canCopy ? 'pointer' : 'default',
+      }}
+      onClick={() => {
+        if (canCopy) {
+          copy(address);
+          notifications.show({
+            title: 'Address Copied',
+            message: `Address: ${address} has been copied to clipboard`,
+          });
+        }
+      }}
+    >
       <Avatar src={imgUrl} size={size} />
       {displayText && <Text fz={fz}>{name}</Text>}
     </Group>

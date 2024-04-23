@@ -116,7 +116,7 @@ export const Contact = ({
       <Stack>
         {members.map((address) =>
           isAddress(address) ? (
-            <AddressAvatar key={address} address={address} fz={'sm'} />
+            <AddressAvatar key={address} address={address} fz={'sm'} canCopy />
           ) : null
         )}
       </Stack>
