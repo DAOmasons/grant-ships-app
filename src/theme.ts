@@ -35,5 +35,31 @@ export const theme = createTheme({
     lg: BreakPoint.Lg,
     xl: BreakPoint.Xl,
   },
+  colors: {
+    dark: [
+      '#D9D9D9',
+      '#CCCCCC',
+      '#BFBFBF',
+      '#B3B3B3',
+      '#404040',
+      '#262626',
+      '#191919',
+      '#0D0D0D',
+      '#000002',
+      '#000000',
+    ],
+    blue: [
+      '#e8f1ff',
+      '#d2e0fd',
+      '#a2bdf8',
+      '#6f98f4',
+      '#4579f1',
+      '#2d66f0',
+      '#205cf2',
+      '#144cd7',
+      '#0944c1',
+      '#003aaa',
+    ],
+  },
   /* Put your mantine theme override here */
 });
