@@ -92,8 +92,8 @@ export const Banner = () => {
     return (
       <BannerBG>
         <Innards
-          statusText="Projects Accepted."
-          ctaText="Vote for your favorite projects."
+          statusText="Game On!"
+          ctaText="Now Accepting Project Applications"
           ctaButton={
             <Button
               component={Link}
