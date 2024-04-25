@@ -4,8 +4,10 @@ import {
   Divider,
   Flex,
   Group,
+  HoverCard,
   Spoiler,
   Text,
+  Tooltip,
 } from '@mantine/core';
 import { ReactNode, useEffect, useMemo, useRef } from 'react';
 import { Address, formatEther } from 'viem';
@@ -155,11 +157,34 @@ export const FeedCard = ({
     [observer, cardCount, cardIndex, shouldFetch]
   );
 
+  console.log('subject', subject);
+
   return (
     <Box mb="lg" ref={observer.ref}>
       <Flex mb="lg">
         <Box mr="xs">
-          <Avatar size={32} src={subject.imgUrl && subject.imgUrl} />
+          {/* <SubjectTooltip> */}
+          <HoverCard
+            position="bottom-start"
+            width={280}
+            openDelay={300}
+            closeDelay={300}
+            transitionProps={{ transition: 'fade', duration: 300 }}
+          >
+            <HoverCard.Target>
+              <Avatar size={32} src={subject.imgUrl && subject.imgUrl} />
+            </HoverCard.Target>
+            <HoverCard.Dropdown style={{ border: 'none' }}>
+              <Box p="xs" w="100%">
+                <Avatar size={64} mb="xs" />
+                <Text size="lg" fw={600} mb="sm">
+                  Name
+                </Text>
+                <Text size="sm">Description</Text>
+              </Box>
+            </HoverCard.Dropdown>
+          </HoverCard>
+          {/* </SubjectTooltip> */}
         </Box>
         <Box w="100%">
           <Group gap={8} mb={8}>
@@ -200,4 +225,34 @@ export const FeedCard = ({
       <Divider />
     </Box>
   );
+};
+
+export const SubjectTooltip = ({ children }: { children: ReactNode }) => {
+  <HoverCard>
+    <HoverCard.Target>{children}</HoverCard.Target>
+  </HoverCard>;
+
+  // return (
+  //   <Tooltip
+  //     multiline
+  //     openDelay={300}
+  //     closeDelay={300}
+  //     position="bottom-start"
+  //     w={280}
+  //     h={180}
+  //     withArrow
+  //     transitionProps={{ transition: 'fade', duration: 300 }}
+  //     label={
+  //       <Box p="sm" w="100%">
+  //         <Avatar size={64} />
+  //         <Text size="lg" fw={600}>
+  //           Name
+  //         </Text>
+  //         <Text size="sm">Description</Text>
+  //       </Box>
+  //     }
+  //   >
+  //     {children}
+  //   </Tooltip>
+  // );
 };

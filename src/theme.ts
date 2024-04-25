@@ -24,7 +24,7 @@ export const theme = createTheme({
     }),
     Tooltip: Tooltip.extend({
       defaultProps: {
-        color: 'dark.8',
+        color: 'dark.6',
       },
     }),
   },
