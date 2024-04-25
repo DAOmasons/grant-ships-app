@@ -195,7 +195,16 @@ export const FeedCard = ({
         </Box>
         <Box w="100%">
           <Group gap={8} mb={8}>
-            <Text size="sm">{subject.name}</Text>
+            <HoverCard {...hoverCardProps}>
+              <HoverCard.Target>
+                <Text size="sm" component={Link} to={entityUrl}>
+                  {subject.name}
+                </Text>
+              </HoverCard.Target>
+              <HoverCard.Dropdown style={{ border: 'none' }}>
+                <HoverCardContent subject={subject} url={entityUrl} />
+              </HoverCard.Dropdown>
+            </HoverCard>
             {icon}
             <Text size="sm" opacity={0.8}>
               ·
