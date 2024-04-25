@@ -14,18 +14,13 @@ import { useEnsName } from 'wagmi';
 import { ensConfig } from '../../utils/config';
 import { mainnet } from 'viem/chains';
 import { FeedCardUI } from '../../types/ui';
-import {
-  IconAward,
-  IconChevronDown,
-  IconChevronUp,
-  IconRocket,
-  IconShieldHalf,
-} from '@tabler/icons-react';
+import { IconChevronDown, IconChevronUp } from '@tabler/icons-react';
 import classes from './FeedStyles.module.css';
 import { secondsToShortRelativeTime } from '../../utils/time';
 import { Link } from 'react-router-dom';
 import { GAME_TOKEN } from '../../constants/gameSetup';
 import { useIntersection } from '@mantine/hooks';
+import { FacilitatorBadge, ProjectBadge, ShipBadge } from '../RoleBadges';
 
 const getUrlByEntityType = (entityType: string, entityId: string) => {
   if (entityType === 'project') {
@@ -118,7 +113,6 @@ export const FeedCard = ({
   });
 
   const hasFetchedMore = useRef(false);
-  const theme = useMantineTheme();
   const { data: ensName } = useEnsName({
     address: sender as Address,
     config: ensConfig,
@@ -134,15 +128,15 @@ export const FeedCard = ({
 
   const icon = useMemo(() => {
     if (subject.entityType === 'project') {
-      return <IconAward size={16} color={theme.colors.blue[5]} />;
+      return <ProjectBadge />;
     }
     if (subject.entityType === 'ship') {
-      return <IconRocket size={16} color={theme.colors.violet[5]} />;
+      return <ShipBadge />;
     }
     if (subject.entityType === 'facilitators') {
-      return <IconShieldHalf size={16} color={theme.colors.pink[5]} />;
+      return <FacilitatorBadge />;
     }
-  }, [subject.entityType, theme]);
+  }, [subject.entityType]);
 
   const time = useMemo(() => {
     return secondsToShortRelativeTime(timestamp);
