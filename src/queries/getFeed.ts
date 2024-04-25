@@ -44,7 +44,8 @@ export const handleSubjectMetadata = async (
   if (entityType === 'facilitators') {
     return {
       imgCID: DAO_MASONS.AVATAR_IMG,
-      description: 'DAO Masons description',
+      description:
+        'DAO Masons is an independent product and service guild for DAOs.',
     };
   }
 

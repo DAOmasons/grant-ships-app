@@ -179,27 +179,9 @@ export const FeedCard = ({
               />
             </HoverCard.Target>
             <HoverCard.Dropdown style={{ border: 'none' }}>
-              <Box w="100%" p="xs">
-                <Flex justify="space-between">
-                  <Avatar
-                    size={64}
-                    mb="xs"
-                    src={subject.imgUrl && subject.imgUrl}
-                  />
-                  <Button size="xs" component={Link} to={entityUrl}>
-                    View
-                  </Button>
-                </Flex>
-                <Text size="lg" fw={600} mb="sm">
-                  {subject.name}
-                </Text>
-                <Text size="sm" lineClamp={2}>
-                  {subject.description}
-                </Text>
-              </Box>
+              <HoverCardContent subject={subject} url={entityUrl} />
             </HoverCard.Dropdown>
           </HoverCard>
-          {/* </SubjectTooltip> */}
         </Box>
         <Box w="100%">
           <Group gap={8} mb={8}>
@@ -242,32 +224,27 @@ export const FeedCard = ({
   );
 };
 
-export const SubjectTooltip = ({ children }: { children: ReactNode }) => {
-  <HoverCard>
-    <HoverCard.Target>{children}</HoverCard.Target>
-  </HoverCard>;
-
-  // return (
-  //   <Tooltip
-  //     multiline
-  //     openDelay={300}
-  //     closeDelay={300}
-  //     position="bottom-start"
-  //     w={280}
-  //     h={180}
-  //     withArrow
-  //     transitionProps={{ transition: 'fade', duration: 300 }}
-  //     label={
-  //       <Box p="sm" w="100%">
-  //         <Avatar size={64} />
-  //         <Text size="lg" fw={600}>
-  //           Name
-  //         </Text>
-  //         <Text size="sm">Description</Text>
-  //       </Box>
-  //     }
-  //   >
-  //     {children}
-  //   </Tooltip>
-  // );
+export const HoverCardContent = ({
+  subject,
+  url,
+}: {
+  subject: FeedCardUI['subject'];
+  url: string;
+}) => {
+  return (
+    <Box w="100%" p="xs">
+      <Flex justify="space-between">
+        <Avatar size={64} mb="xs" src={subject.imgUrl && subject.imgUrl} />
+        <Button size="xs" component={Link} to={url}>
+          View
+        </Button>
+      </Flex>
+      <Text size="lg" fw={600} mb="sm">
+        {subject.name}
+      </Text>
+      <Text size="sm" lineClamp={2}>
+        {subject.description}
+      </Text>
+    </Box>
+  );
 };
