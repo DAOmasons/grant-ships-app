@@ -256,7 +256,7 @@ export const HoverCardContent = ({
   const roleDisplay = useMemo(() => {
     if (subject.entityType === 'project') {
       return (
-        <Group gap={8}>
+        <Group gap={8} mb="sm">
           <IconAward size={20} color={theme.colors.blue[5]} />
           <Text c={theme.colors.blue[5]}>Project</Text>
         </Group>
@@ -264,7 +264,7 @@ export const HoverCardContent = ({
     }
     if (subject.entityType === 'ship') {
       return (
-        <Group gap={8}>
+        <Group gap={8} mb="sm">
           <IconRocket size={20} color={theme.colors.violet[5]} />
           <Text c={theme.colors.violet[5]}>Grant Ship</Text>
         </Group>
@@ -272,7 +272,7 @@ export const HoverCardContent = ({
     }
     if (subject.entityType === 'facilitators') {
       return (
-        <Group gap={8}>
+        <Group gap={8} mb="sm">
           <IconShieldHalf size={20} color={theme.colors.pink[5]} />
           <Text c={theme.colors.pink[5]}>Facilitator</Text>
         </Group>
@@ -291,9 +291,8 @@ export const HoverCardContent = ({
       <Text size="lg" mb={4} fw={600}>
         {subject.name}
       </Text>
-      <Text size="sm" opacity={0.8} mb="sm">
-        {roleDisplay}
-      </Text>
+
+      {roleDisplay}
       <Text size="sm" lineClamp={2}>
         {subject.description}
       </Text>

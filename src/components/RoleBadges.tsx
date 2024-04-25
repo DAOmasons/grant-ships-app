@@ -16,7 +16,7 @@ export const ShipBadge = ({ size = 16 }: { size?: number }) => {
   const theme = useMantineTheme();
 
   return (
-    <Tooltip label="Grant Ship Operator" position="bottom">
+    <Tooltip label="Grant Ship" position="bottom">
       <IconRocket size={size} color={theme.colors.violet[5]} />
     </Tooltip>
   );
