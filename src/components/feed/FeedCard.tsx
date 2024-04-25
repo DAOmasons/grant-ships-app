@@ -6,7 +6,6 @@ import {
   Group,
   Spoiler,
   Text,
-  useMantineTheme,
 } from '@mantine/core';
 import { ReactNode, useEffect, useMemo, useRef } from 'react';
 import { Address, formatEther } from 'viem';

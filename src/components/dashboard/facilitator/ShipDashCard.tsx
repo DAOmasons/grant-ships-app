@@ -33,7 +33,6 @@ type ShipDashCardProps = {
 export const ShipDashCard = ({
   name,
   id,
-  lastUpdate,
   avatarUrl,
   shipStatus,
   onReview,
