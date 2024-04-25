@@ -53,11 +53,12 @@ export const handleSubjectMetadata = async (
     const data = await getIpfsJson(metadataPointer);
 
     const cid = data?.avatarHash_IPFS;
-    const description = data?.description;
+    const mission = data?.mission;
+    const description = data?.description || mission;
 
     if (!isCID(cid)) {
       console.log('No image found in metadata for project: ', data.name, cid);
-      return { imgCID: undefined, description: '' };
+      return { imgCID: undefined, description };
     }
 
     return { imgCID: cid, description };

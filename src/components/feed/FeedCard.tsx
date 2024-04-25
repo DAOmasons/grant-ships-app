@@ -6,8 +6,10 @@ import {
   Flex,
   Group,
   HoverCard,
+  HoverCardProps,
   Spoiler,
   Text,
+  useMantineTheme,
 } from '@mantine/core';
 import { ReactNode, useEffect, useMemo, useRef } from 'react';
 import { Address, formatEther } from 'viem';
@@ -15,13 +17,27 @@ import { useEnsName } from 'wagmi';
 import { ensConfig } from '../../utils/config';
 import { mainnet } from 'viem/chains';
 import { FeedCardUI } from '../../types/ui';
-import { IconChevronDown, IconChevronUp } from '@tabler/icons-react';
+import {
+  IconChevronDown,
+  IconChevronUp,
+  IconRocket,
+  IconShieldHalf,
+} from '@tabler/icons-react';
 import classes from './FeedStyles.module.css';
 import { secondsToShortRelativeTime } from '../../utils/time';
 import { Link } from 'react-router-dom';
 import { GAME_TOKEN } from '../../constants/gameSetup';
 import { useIntersection } from '@mantine/hooks';
 import { FacilitatorBadge, ProjectBadge, ShipBadge } from '../RoleBadges';
+import { IconAward } from '@tabler/icons-react';
+
+const hoverCardProps: HoverCardProps = {
+  position: 'bottom-start',
+  width: 280,
+  openDelay: 300,
+  closeDelay: 300,
+  transitionProps: { transition: 'fade', duration: 300 },
+};
 
 const getUrlByEntityType = (entityType: string, entityId: string) => {
   if (entityType === 'project') {
@@ -163,13 +179,7 @@ export const FeedCard = ({
     <Box mb="lg" ref={observer.ref}>
       <Flex mb="lg">
         <Box mr="xs">
-          <HoverCard
-            position="bottom-start"
-            width={280}
-            openDelay={300}
-            closeDelay={300}
-            transitionProps={{ transition: 'fade', duration: 300 }}
-          >
+          <HoverCard {...hoverCardProps}>
             <HoverCard.Target>
               <Avatar
                 size={32}
@@ -190,6 +200,7 @@ export const FeedCard = ({
             <Text size="sm" opacity={0.8}>
               ·
             </Text>
+
             <Text size="sm" opacity={0.8}>
               {time}
             </Text>
@@ -231,6 +242,35 @@ export const HoverCardContent = ({
   subject: FeedCardUI['subject'];
   url: string;
 }) => {
+  const theme = useMantineTheme();
+
+  const roleDisplay = useMemo(() => {
+    if (subject.entityType === 'project') {
+      return (
+        <Group gap={8}>
+          <IconAward size={20} color={theme.colors.blue[5]} />
+          <Text c={theme.colors.blue[5]}>Project</Text>
+        </Group>
+      );
+    }
+    if (subject.entityType === 'ship') {
+      return (
+        <Group gap={8}>
+          <IconRocket size={20} color={theme.colors.violet[5]} />
+          <Text c={theme.colors.violet[5]}>Grant Ship</Text>
+        </Group>
+      );
+    }
+    if (subject.entityType === 'facilitators') {
+      return (
+        <Group gap={8}>
+          <IconShieldHalf size={20} color={theme.colors.pink[5]} />
+          <Text c={theme.colors.pink[5]}>Facilitator</Text>
+        </Group>
+      );
+    }
+  }, [subject.entityType, theme]);
+
   return (
     <Box w="100%" p="xs">
       <Flex justify="space-between">
@@ -239,8 +279,11 @@ export const HoverCardContent = ({
           View
         </Button>
       </Flex>
-      <Text size="lg" fw={600} mb="sm">
+      <Text size="lg" mb={4} fw={600}>
         {subject.name}
+      </Text>
+      <Text size="sm" opacity={0.8} mb="sm">
+        {roleDisplay}
       </Text>
       <Text size="sm" lineClamp={2}>
         {subject.description}
