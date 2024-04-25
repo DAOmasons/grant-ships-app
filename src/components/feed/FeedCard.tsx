@@ -1,13 +1,13 @@
 import {
   Avatar,
   Box,
+  Button,
   Divider,
   Flex,
   Group,
   HoverCard,
   Spoiler,
   Text,
-  Tooltip,
 } from '@mantine/core';
 import { ReactNode, useEffect, useMemo, useRef } from 'react';
 import { Address, formatEther } from 'viem';
@@ -157,13 +157,12 @@ export const FeedCard = ({
     [observer, cardCount, cardIndex, shouldFetch]
   );
 
-  console.log('subject', subject);
+  const entityUrl = getUrlByEntityType(subject.entityType, subject.id);
 
   return (
     <Box mb="lg" ref={observer.ref}>
       <Flex mb="lg">
         <Box mr="xs">
-          {/* <SubjectTooltip> */}
           <HoverCard
             position="bottom-start"
             width={280}
@@ -172,15 +171,31 @@ export const FeedCard = ({
             transitionProps={{ transition: 'fade', duration: 300 }}
           >
             <HoverCard.Target>
-              <Avatar size={32} src={subject.imgUrl && subject.imgUrl} />
+              <Avatar
+                size={32}
+                src={subject.imgUrl && subject.imgUrl}
+                component={Link}
+                to={entityUrl}
+              />
             </HoverCard.Target>
             <HoverCard.Dropdown style={{ border: 'none' }}>
-              <Box p="xs" w="100%">
-                <Avatar size={64} mb="xs" />
+              <Box w="100%" p="xs">
+                <Flex justify="space-between">
+                  <Avatar
+                    size={64}
+                    mb="xs"
+                    src={subject.imgUrl && subject.imgUrl}
+                  />
+                  <Button size="xs" component={Link} to={entityUrl}>
+                    View
+                  </Button>
+                </Flex>
                 <Text size="lg" fw={600} mb="sm">
-                  Name
+                  {subject.name}
                 </Text>
-                <Text size="sm">Description</Text>
+                <Text size="sm" lineClamp={2}>
+                  {subject.description}
+                </Text>
               </Box>
             </HoverCard.Dropdown>
           </HoverCard>

@@ -37,29 +37,33 @@ const isPlayerType = (type: string): type is Player => {
   return Object.values(Player).includes(type as any);
 };
 
-export const handleSubjectImgCID = async (
+export const handleSubjectMetadata = async (
   entityType: string,
   metadataPointer: string
 ) => {
   if (entityType === 'facilitators') {
-    return DAO_MASONS.AVATAR_IMG;
+    return {
+      imgCID: DAO_MASONS.AVATAR_IMG,
+      description: 'DAO Masons description',
+    };
   }
 
   if (entityType === 'ship' || entityType === 'project') {
     const data = await getIpfsJson(metadataPointer);
 
     const cid = data?.avatarHash_IPFS;
+    const description = data?.description;
 
     if (!isCID(cid)) {
       console.log('No image found in metadata for project: ', data.name, cid);
-      return undefined;
+      return { imgCID: undefined, description: '' };
     }
 
-    return cid;
+    return { imgCID: cid, description };
   }
 
   console.warn('No image found for entity type', entityType);
-  return undefined;
+  return { imgCID: undefined, description: '' };
 };
 
 export const resolveFeedItem = async (
@@ -67,7 +71,7 @@ export const resolveFeedItem = async (
 ): Promise<FeedCardUI> => {
   //check entity type
 
-  const imgCID = await handleSubjectImgCID(
+  const { imgCID, description } = await handleSubjectMetadata(
     item.subject.type,
     item.subjectMetadataPointer
   );
@@ -91,6 +95,7 @@ export const resolveFeedItem = async (
       id: item.subject.id,
       entityType: item.subject.type as Player,
       imgUrl: imgCID ? getGatewayUrl(imgCID) : undefined,
+      description,
     },
     object: hasObject
       ? {
@@ -104,14 +109,6 @@ export const resolveFeedItem = async (
     sender: item.sender,
     embedText,
   };
-
-  // if entity type is ship or project
-  // then get metadata from ipfs so we can get the image
-  // is there an embed?
-  // if so, is the content already included?
-  // if so, return the content
-  // if so, does the metadata have pointer for content?
-  // if so, get content from ipfs
 };
 
 export const getFeed = async ({
