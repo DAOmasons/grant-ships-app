@@ -8,7 +8,7 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import { IconArrowNarrowLeft } from '@tabler/icons-react';
-import { ReactNode } from 'react';
+import { ReactNode, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMobile } from '../hooks/useBreakpoint';
 
@@ -40,10 +40,22 @@ export const PageTitle = ({
   title,
   backBtn = true,
 }: {
-  title: string;
+  title: string | ReactNode;
   backBtn?: boolean;
 }) => {
   const navigate = useNavigate();
+
+  const processedTitle = useMemo(() => {
+    if (typeof title === 'string') {
+      return (
+        <Text fz={20} fw={500}>
+          {title}
+        </Text>
+      );
+    }
+    return title;
+  }, [title]);
+
   return (
     <Group w="100%" mb="lg">
       {backBtn && (
@@ -51,9 +63,7 @@ export const PageTitle = ({
           <IconArrowNarrowLeft />
         </ActionIcon>
       )}
-      <Text fz={20} fw={500}>
-        {title}
-      </Text>
+      {processedTitle}
     </Group>
   );
 };
