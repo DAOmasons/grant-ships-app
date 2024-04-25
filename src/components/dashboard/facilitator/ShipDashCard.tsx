@@ -15,6 +15,7 @@ import { GameStatus } from '../../../types/common';
 import { Dispatch, SetStateAction, useMemo, useState } from 'react';
 import { TxButton } from '../../TxButton';
 import { useTablet } from '../../../hooks/useBreakpoint';
+import { Link } from 'react-router-dom';
 
 type ShipDashCardProps = {
   name: string;
@@ -69,20 +70,16 @@ export const ShipDashCard = ({
   return (
     <Paper w="100%" bg={theme.colors.dark[6]}>
       <Flex p="lg" align="start" direction={isTablet ? 'column' : 'row'}>
-        <Group align="flex-start" w={200} mb={isTablet ? 'lg' : 0}>
-          <Avatar size={65} src={avatarUrl} />
-          <Box>
-            <Text fw={600} mb={4} size="sm" truncate maw={115}>
-              {name}
-            </Text>
-            <Text fz="sm" mb={2} size="xs" opacity={0.8}>
-              Last update
-            </Text>
-            <Text fz="sm" size="xs" opacity={0.8}>
-              {lastUpdate}
-            </Text>
-          </Box>
-        </Group>
+        <Link to={`/ship/${id}`}>
+          <Group align="flex-start" w={200} mb={isTablet ? 'lg' : 0}>
+            <Avatar size={65} src={avatarUrl} />
+            <Box>
+              <Text fw={600} mb={4} size="sm" truncate maw={115}>
+                {name}
+              </Text>
+            </Box>
+          </Group>
+        </Link>
         <Group ml={isTablet ? 0 : 'lg'} gap="xl">
           <Flex className={classes.statusBox}>
             {reviewIcon}
