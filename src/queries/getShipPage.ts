@@ -57,10 +57,12 @@ export const getShipPageData = async (id: string): Promise<ShipPageUI> => {
     const profileData = validated.data;
 
     const members = [
-      grantShip.owner,
-      ...(Array.isArray(grantShip.alloProfileMembers?.addresses)
-        ? (grantShip.alloProfileMembers?.addresses as string[])
-        : []),
+      ...new Set([
+        grantShip.owner,
+        ...(Array.isArray(grantShip.alloProfileMembers?.addresses)
+          ? (grantShip.alloProfileMembers?.addresses as string[])
+          : []),
+      ]),
     ];
 
     return {
