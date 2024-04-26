@@ -12,6 +12,7 @@ export type FeedCardUI = {
     id: string;
     imgUrl?: string;
     entityType: Player;
+    description?: string;
   };
   object?: {
     name: string;

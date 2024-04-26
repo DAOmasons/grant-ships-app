@@ -20,6 +20,7 @@ import { MilestonesReview } from './MilestonesReview';
 import { MilestonesView } from './MilestonesView';
 import { useMemo } from 'react';
 import { useElementSize } from '@mantine/hooks';
+import { Link } from 'react-router-dom';
 
 export const GrantCard = ({
   grant,
@@ -54,26 +55,35 @@ export const GrantCard = ({
     <Paper bg={theme.colors.dark[6]} mih={220} w="100%" p="lg" ref={ref}>
       <Flex direction={cardShouldCollapse ? 'column' : 'row'}>
         <Box w="100%" mb={cardShouldCollapse ? 'md' : 0}>
-          <Group wrap="nowrap" mr="sm">
-            <Avatar
-              size={44}
-              src={
-                view === 'ship-dash'
-                  ? grant?.projectMetadata.imgUrl
-                  : grant?.shipMetadata?.imgUrl
-              }
-            />
-            <Box>
-              <Text fw={600} lineClamp={1}>
-                {view === 'ship-dash'
-                  ? grant.projectMetadata.name
-                  : grant.shipId.name}
-              </Text>
-              <Text fz="sm">
-                Last Updated {secondsToRelativeTime(grant.lastUpdated)}
-              </Text>
-            </Box>
-          </Group>
+          <Link
+            to={
+              view === 'ship-dash'
+                ? `/project/${grant.projectId.id}`
+                : `/ship/${grant.shipId.id}`
+            }
+            style={{ textDecoration: 'none' }}
+          >
+            <Group wrap="nowrap" mr="sm">
+              <Avatar
+                size={44}
+                src={
+                  view === 'ship-dash'
+                    ? grant?.projectMetadata.imgUrl
+                    : grant?.shipMetadata?.imgUrl
+                }
+              />
+              <Box>
+                <Text fw={600} lineClamp={1}>
+                  {view === 'ship-dash'
+                    ? grant.projectMetadata.name
+                    : grant.shipId.name}
+                </Text>
+                <Text fz="sm">
+                  Last Updated {secondsToRelativeTime(grant.lastUpdated)}
+                </Text>
+              </Box>
+            </Group>
+          </Link>
         </Box>
         <Box w="100%" ml={cardShouldCollapse ? 'sm' : 0}>
           <Timeline bulletSize={20} lineWidth={2} active={4}>

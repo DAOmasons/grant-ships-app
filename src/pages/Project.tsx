@@ -42,6 +42,7 @@ import { useUserData } from '../hooks/useUserState';
 import { ProjectUpdatesPanel } from '../components/projectItems/ProjectUpdatesPanel';
 import { useLaptop, useTablet } from '../hooks/useBreakpoint';
 import { useDisclosure } from '@mantine/hooks';
+import { ProjectBadge } from '../components/RoleBadges';
 
 const infiniteWrapper = async ({ pageParam }: any) => {
   const result = await getEntityFeed(pageParam);
@@ -158,7 +159,16 @@ export const Project = () => {
   return (
     <Flex w="100%">
       <MainSection maw={600}>
-        <PageTitle title={project.name} />
+        <PageTitle
+          title={
+            <Group gap={'sm'}>
+              <Text fz={20} fw={500}>
+                {project.name}
+              </Text>
+              <ProjectBadge size={24} />
+            </Group>
+          }
+        />
         <Avatar size={160} mt={'xl'} mb="md" src={project.imgUrl} />
         <Group gap={'xs'} mb="md">
           <Text fz="lg" fw={600}>

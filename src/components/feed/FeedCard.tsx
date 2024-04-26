@@ -1,9 +1,12 @@
 import {
   Avatar,
   Box,
+  Button,
   Divider,
   Flex,
   Group,
+  HoverCard,
+  HoverCardProps,
   Spoiler,
   Text,
   useMantineTheme,
@@ -15,7 +18,6 @@ import { ensConfig } from '../../utils/config';
 import { mainnet } from 'viem/chains';
 import { FeedCardUI } from '../../types/ui';
 import {
-  IconAward,
   IconChevronDown,
   IconChevronUp,
   IconRocket,
@@ -26,6 +28,16 @@ import { secondsToShortRelativeTime } from '../../utils/time';
 import { Link } from 'react-router-dom';
 import { GAME_TOKEN } from '../../constants/gameSetup';
 import { useIntersection } from '@mantine/hooks';
+import { FacilitatorBadge, ProjectBadge, ShipBadge } from '../RoleBadges';
+import { IconAward } from '@tabler/icons-react';
+
+const hoverCardProps: HoverCardProps = {
+  position: 'bottom-start',
+  width: 280,
+  openDelay: 300,
+  closeDelay: 300,
+  transitionProps: { transition: 'fade', duration: 300 },
+};
 
 const getUrlByEntityType = (entityType: string, entityId: string) => {
   if (entityType === 'project') {
@@ -118,7 +130,6 @@ export const FeedCard = ({
   });
 
   const hasFetchedMore = useRef(false);
-  const theme = useMantineTheme();
   const { data: ensName } = useEnsName({
     address: sender as Address,
     config: ensConfig,
@@ -134,15 +145,15 @@ export const FeedCard = ({
 
   const icon = useMemo(() => {
     if (subject.entityType === 'project') {
-      return <IconAward size={16} color={theme.colors.blue[5]} />;
+      return <ProjectBadge />;
     }
     if (subject.entityType === 'ship') {
-      return <IconRocket size={16} color={theme.colors.violet[5]} />;
+      return <ShipBadge />;
     }
     if (subject.entityType === 'facilitators') {
-      return <IconShieldHalf size={16} color={theme.colors.pink[5]} />;
+      return <FacilitatorBadge />;
     }
-  }, [subject.entityType, theme]);
+  }, [subject.entityType]);
 
   const time = useMemo(() => {
     return secondsToShortRelativeTime(timestamp);
@@ -162,19 +173,43 @@ export const FeedCard = ({
     [observer, cardCount, cardIndex, shouldFetch]
   );
 
+  const entityUrl = getUrlByEntityType(subject.entityType, subject.id);
+
   return (
     <Box mb="lg" ref={observer.ref}>
       <Flex mb="lg">
         <Box mr="xs">
-          <Avatar size={32} src={subject.imgUrl && subject.imgUrl} />
+          <HoverCard {...hoverCardProps}>
+            <HoverCard.Target>
+              <Avatar
+                size={32}
+                src={subject.imgUrl && subject.imgUrl}
+                component={Link}
+                to={entityUrl}
+              />
+            </HoverCard.Target>
+            <HoverCard.Dropdown style={{ border: 'none' }}>
+              <HoverCardContent subject={subject} url={entityUrl} />
+            </HoverCard.Dropdown>
+          </HoverCard>
         </Box>
         <Box w="100%">
           <Group gap={8} mb={8}>
-            <Text size="sm">{subject.name}</Text>
+            <HoverCard {...hoverCardProps}>
+              <HoverCard.Target>
+                <Text size="sm" component={Link} to={entityUrl}>
+                  {subject.name}
+                </Text>
+              </HoverCard.Target>
+              <HoverCard.Dropdown style={{ border: 'none' }}>
+                <HoverCardContent subject={subject} url={entityUrl} />
+              </HoverCard.Dropdown>
+            </HoverCard>
             {icon}
             <Text size="sm" opacity={0.8}>
               ·
             </Text>
+
             <Text size="sm" opacity={0.8}>
               {time}
             </Text>
@@ -205,6 +240,62 @@ export const FeedCard = ({
         </Box>
       </Flex>
       <Divider />
+    </Box>
+  );
+};
+
+export const HoverCardContent = ({
+  subject,
+  url,
+}: {
+  subject: FeedCardUI['subject'];
+  url: string;
+}) => {
+  const theme = useMantineTheme();
+
+  const roleDisplay = useMemo(() => {
+    if (subject.entityType === 'project') {
+      return (
+        <Group gap={8} mb="sm">
+          <IconAward size={20} color={theme.colors.blue[5]} />
+          <Text c={theme.colors.blue[5]}>Project</Text>
+        </Group>
+      );
+    }
+    if (subject.entityType === 'ship') {
+      return (
+        <Group gap={8} mb="sm">
+          <IconRocket size={20} color={theme.colors.violet[5]} />
+          <Text c={theme.colors.violet[5]}>Grant Ship</Text>
+        </Group>
+      );
+    }
+    if (subject.entityType === 'facilitators') {
+      return (
+        <Group gap={8} mb="sm">
+          <IconShieldHalf size={20} color={theme.colors.pink[5]} />
+          <Text c={theme.colors.pink[5]}>Facilitator</Text>
+        </Group>
+      );
+    }
+  }, [subject.entityType, theme]);
+
+  return (
+    <Box w="100%" p="xs">
+      <Flex justify="space-between">
+        <Avatar size={64} mb="xs" src={subject.imgUrl && subject.imgUrl} />
+        <Button size="xs" component={Link} to={url}>
+          View
+        </Button>
+      </Flex>
+      <Text size="lg" mb={4} fw={600}>
+        {subject.name}
+      </Text>
+
+      {roleDisplay}
+      <Text size="sm" lineClamp={2}>
+        {subject.description}
+      </Text>
     </Box>
   );
 };

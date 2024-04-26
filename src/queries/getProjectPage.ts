@@ -40,7 +40,9 @@ export const getProjectPage = async (id: string): Promise<ProjectPageUI> => {
       description: profileData.description,
       imgUrl: getGatewayUrl(profileData.avatarHash_IPFS),
       status: project.status,
-      members: [project.owner, ...(project.members?.addresses || [])],
+      members: [
+        ...new Set([project.owner, ...(project.members?.addresses || [])]),
+      ],
       grants: [],
       website: profileData.website,
       github: profileData.github,

@@ -9,7 +9,7 @@ import {
 } from '@mantine/core';
 
 import { IconBell } from '@tabler/icons-react';
-import React from 'react';
+import React, { useMemo } from 'react';
 
 type AppAlertProps = {
   title: string;

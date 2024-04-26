@@ -39,6 +39,7 @@ import { UpdatesPanel } from '../components/shipItems/UpdatesPanel';
 import { SHIP_STATUS_INFO } from '../constants/copy';
 import { useLaptop, useTablet } from '../hooks/useBreakpoint';
 import { useMemo } from 'react';
+import { ShipBadge } from '../components/RoleBadges';
 
 const infiniteWrapper = async ({ pageParam }: any) => {
   const result = await getEntityFeed(pageParam);
@@ -128,7 +129,16 @@ export const Ship = () => {
   return (
     <Flex w="100%">
       <MainSection maw={600}>
-        <PageTitle title={ship.name} />
+        <PageTitle
+          title={
+            <Group gap={'sm'}>
+              <Text fz={20} fw={500}>
+                {ship.name}
+              </Text>
+              <ShipBadge size={24} />
+            </Group>
+          }
+        />
         <Avatar size={160} mt={'xl'} mb="md" src={ship.imgUrl} />
         <Group gap={'xs'} mb="xs">
           <Text fz="lg" fw={600}>
