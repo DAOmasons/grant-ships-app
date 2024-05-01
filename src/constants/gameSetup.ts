@@ -5,10 +5,10 @@ export const GAME_MANAGER_TESTNET = {
   ADDRESS: ADDR_TESTNET.GAME_MANAGER,
   FACTORY: ADDR_TESTNET.GS_FACTORY,
   PROFILE: {
-    ID: '0xf021604017a6c6273f627d3ff9012871b0b0387e0876805edf6e6cb229551217',
+    ID: '0xab00163cc5a78abcc61d1e59a9ae56ae80076dc8b77c4358f03ab0a2575cddde7',
   },
   POOL: {
-    ID: 294n,
+    ID: 340n,
   },
 };
 
@@ -87,5 +87,5 @@ console.log('Runtime Environment', import.meta.env.VITE_RUNTIME_ENV);
 
 export const SUBGRAPH_URL =
   import.meta.env.VITE_RUNTIME_ENV === 'dev'
-    ? 'api.goldsky.com/api/public/project_clruaxx0m7yn101uj2rmi6mfj/subgraphs/grant-ships-arb-sepolia/1.0.0/gn'
+    ? 'api.thegraph.com/subgraphs/id/QmWhAZxEMGH7VbtcUwE1KstPwpicjDtDP29h8UnensgCAH'
     : 'api.studio.thegraph.com/query/41101/grant-ships-arb/version/latest';
