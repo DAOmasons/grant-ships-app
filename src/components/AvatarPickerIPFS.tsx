@@ -58,7 +58,10 @@ export const AvatarPickerIPFS = ({
         <Avatar size={120} src={canPreview ? avatarPreview : undefined}>
           {canPreview || <IconUser size={80} />}
         </Avatar>
-        <FileButton onChange={handleUpload} accept={'image/png,image/jpeg'}>
+        <FileButton
+          onChange={handleUpload}
+          accept={'image/png,image/jpeg,image/webp'}
+        >
           {(props) => (
             <ActionIcon
               {...props}

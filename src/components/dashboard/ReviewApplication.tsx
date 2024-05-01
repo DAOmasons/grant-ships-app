@@ -239,34 +239,38 @@ export const ReviewApplication = ({
           ]}
           footerSection={
             <>
-              {grant.shipApprovalReason && (
-                <AppAlert
-                  mt={0}
-                  mb={'xl'}
-                  icon={hasShipApproved ? <IconCheck /> : <IconX />}
-                  title={`${hasShipApproved ? 'Approval' : 'Rejection'} from
+              {grant.grantStatus > GrantStatus.ShipRejected &&
+                grant.shipApprovalReason && (
+                  <AppAlert
+                    mt={0}
+                    mb={'xl'}
+                    icon={hasShipApproved ? <IconCheck /> : <IconX />}
+                    title={`${hasShipApproved ? 'Approval' : 'Rejection'} from
                     ${grant.shipId.name}`}
-                  description={`"${grant.shipApprovalReason}"`}
-                  bg={
-                    hasShipApproved ? theme.colors.blue[8] : theme.colors.red[6]
-                  }
-                />
-              )}
-              {grant.facilitatorReason && (
-                <AppAlert
-                  mt={0}
-                  mb={'xl'}
-                  icon={hasFacilitatorApproved ? <IconCheck /> : <IconX />}
-                  title={`${hasFacilitatorApproved ? 'Approval' : 'Rejection'} from
+                    description={`"${grant.shipApprovalReason}"`}
+                    bg={
+                      hasShipApproved
+                        ? theme.colors.blue[8]
+                        : theme.colors.red[6]
+                    }
+                  />
+                )}
+              {grant.grantStatus > GrantStatus.FacilitatorRejected &&
+                grant.facilitatorReason && (
+                  <AppAlert
+                    mt={0}
+                    mb={'xl'}
+                    icon={hasFacilitatorApproved ? <IconCheck /> : <IconX />}
+                    title={`${hasFacilitatorApproved ? 'Approval' : 'Rejection'} from
                     Facilitators`}
-                  description={`"${grant.facilitatorReason}"`}
-                  bg={
-                    hasFacilitatorApproved
-                      ? theme.colors.blue[8]
-                      : theme.colors.red[6]
-                  }
-                />
-              )}
+                    description={`"${grant.facilitatorReason}"`}
+                    bg={
+                      hasFacilitatorApproved
+                        ? theme.colors.blue[8]
+                        : theme.colors.red[6]
+                    }
+                  />
+                )}
               {grant.grantStatus === GrantStatus.Applied &&
                 isShipOperator &&
                 isShipView && (

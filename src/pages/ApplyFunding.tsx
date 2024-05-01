@@ -108,7 +108,9 @@ export const ApplyFunding = () => {
 
     return currentProject.grants.some(
       (grant) =>
-        grant.shipId.id === id && grant.grantStatus !== GrantStatus.Completed
+        grant.shipId.id === id &&
+        grant.grantStatus !== GrantStatus.Completed &&
+        grant.grantStatus !== GrantStatus.ShipRejected
     );
   }, [form.values.projectId, id, userData]);
 
