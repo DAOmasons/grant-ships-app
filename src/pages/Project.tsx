@@ -18,6 +18,7 @@ import {
   IconAward,
   IconChevronDown,
   IconChevronUp,
+  IconEdit,
   IconInfoCircle,
 } from '@tabler/icons-react';
 import { FeedPanel } from '../components/shipItems/FeedPanel';
@@ -27,7 +28,7 @@ import { GrantsPanel } from '../components/projectItems/GrantsPanel';
 import { Contact } from '../components/Contact';
 
 import { formatEther } from 'viem';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useQuery, useInfiniteQuery } from '@tanstack/react-query';
 import { getProjectPage } from '../queries/getProjectPage';
 import { AddressAvatarGroup } from '../components/AddressAvatar';
@@ -189,7 +190,6 @@ export const Project = () => {
             </Tooltip>
           )}
         </Group>
-
         {isLaptop && (
           <Stack mb="md">
             {activeGrants?.length !== 0 && (
@@ -245,15 +245,23 @@ export const Project = () => {
             </Group>
           </Stack>
         )}
+
         <Text fz="sm" mb={'md'} className="ws-pre-wrap">
           {project.description}
         </Text>
-        <Box mb="xl">
+        <Group mb="xl" justify="space-between">
           <AddressAvatarGroup
             addresses={project.members}
             avatarProps={{ size: 32 }}
           />
-        </Box>
+          {isProjectMember && (
+            <Tooltip label="Edit Profile" position="bottom">
+              <ActionIcon component={Link} to={`/edit-project/${id}`} size="md">
+                <IconEdit />
+              </ActionIcon>
+            </Tooltip>
+          )}
+        </Group>
         <Tabs defaultValue="feed">
           <Tabs.List mb={'xl'}>
             <Tabs.Tab value="feed" w={isTablet ? '4.5rem' : '6rem'}>
@@ -268,6 +276,7 @@ export const Project = () => {
             <Tabs.Tab w={isTablet ? '4.5rem' : '6rem'} value="details">
               Contact
             </Tabs.Tab>
+            <Tabs.Tab value="settings">Settings</Tabs.Tab>
           </Tabs.List>
           <Tabs.Panel value="feed">
             <FeedPanel
