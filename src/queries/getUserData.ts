@@ -11,6 +11,7 @@ import { publicClient } from '../utils/config';
 import { getIpfsJson } from '../utils/ipfs/get';
 import { ShipProfileMetadata } from '../utils/ipfs/metadataValidation';
 import { SUBGRAPH_URL } from '../constants/gameSetup';
+import { PROJECT_FILTER_LIST } from '../constants/filterLists';
 
 type ShipMetadataType = z.infer<typeof ShipProfileMetadata>;
 
@@ -126,10 +127,14 @@ export const getUserData = async (address: string): Promise<UserData> => {
       throw new Error('No user data found');
     }
 
+    const filteredProjects = data.projects?.filter(
+      (project) => !PROJECT_FILTER_LIST.includes(project.id)
+    );
+
     if (isShipOperator) {
       return {
         ...data,
-        projects: data.projects,
+        projects: filteredProjects,
         isFacilitator,
         isShipOperator: true,
         shipAddress: isShipOperator.shipAddress,
@@ -148,7 +153,7 @@ export const getUserData = async (address: string): Promise<UserData> => {
 
       return {
         ...data,
-        projects: data.projects,
+        projects: filteredProjects,
         isFacilitator,
         isShipOperator: false,
         shipApplicants: resolved as ShipApplicantData[],
@@ -157,7 +162,7 @@ export const getUserData = async (address: string): Promise<UserData> => {
 
     return {
       ...data,
-      projects: data.projects,
+      projects: filteredProjects,
       isFacilitator,
       isShipOperator,
       shipApplicants: [],
