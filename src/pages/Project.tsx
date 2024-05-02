@@ -276,7 +276,6 @@ export const Project = () => {
             <Tabs.Tab w={isTablet ? '4.5rem' : '6rem'} value="details">
               Contact
             </Tabs.Tab>
-            <Tabs.Tab value="settings">Settings</Tabs.Tab>
           </Tabs.List>
           <Tabs.Panel value="feed">
             <FeedPanel
