@@ -40,7 +40,10 @@ export const FormPageLayout = ({
             </Button>
           )}
           {primaryBtn && (
-            <Button type="submit" disabled={disableSubmit}>
+            <Button
+              disabled={disableSubmit}
+              onClick={() => primaryBtn?.onClick?.()}
+            >
               {primaryBtn.label}
             </Button>
           )}

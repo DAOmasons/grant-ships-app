@@ -23,7 +23,7 @@ import { createMetadata, projectProfileHash } from '../../utils/metadata';
 import { ADDR } from '../../constants/addresses';
 
 import { useTx } from '../../hooks/useTx';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import { pinJSONToIPFS } from '../../utils/ipfs/pin';
 import { useMediaQuery } from '@mantine/hooks';
@@ -31,6 +31,9 @@ import { ProjectProfileMetadata } from '../../utils/ipfs/metadataValidation';
 import { injected } from 'wagmi/connectors';
 import { appNetwork } from '../../utils/config';
 import { useUserData } from '../../hooks/useUserState';
+import { useQuery } from '@tanstack/react-query';
+import { getProjectPage } from '../../queries/getProjectPage';
+import { useEffect } from 'react';
 
 type FormValues = z.infer<typeof registerProjectSchema>;
 
@@ -39,7 +42,17 @@ export const RegisterProject = () => {
   const { connect } = useConnect();
   const { switchChainAsync } = useSwitchChain();
   const { refetchUser } = useUserData();
+  const { id } = useParams();
+  const location = useLocation();
   const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
+
+  const isEdit = location.pathname.includes('edit-project') && !!id;
+
+  const { data: existingProject, refetch } = useQuery({
+    queryKey: [`project-page-${id}`],
+    queryFn: () => getProjectPage(id as string),
+    enabled: !!isEdit,
+  });
 
   const { tx } = useTx();
 
@@ -58,6 +71,29 @@ export const RegisterProject = () => {
     },
     validate: zodResolver(registerProjectSchema),
   });
+
+  useEffect(
+    () => {
+      if (!existingProject) return;
+
+      form.setValues((prev) => ({
+        ...prev,
+        ...{
+          avatarHash: existingProject.avatarHash || '',
+          name: existingProject.name || '',
+          description: existingProject.description || '',
+          email: existingProject.email || '',
+          x: existingProject.x || '',
+          github: existingProject.github || '',
+          discord: existingProject.discord || '',
+          telegram: existingProject.telegram || '',
+          website: existingProject.website || '',
+        },
+      }));
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [existingProject]
+  );
 
   const navigate = useNavigate();
 
@@ -129,23 +165,45 @@ export const RegisterProject = () => {
         ipfsHash: pinRes.IpfsHash,
       });
 
-      tx({
-        writeContractParams: {
-          abi: Registry,
-          address: ADDR.REGISTRY,
-          functionName: 'createProfile',
-          args: [nonce, values.name, metadataStruct, address, teamMembers],
-        },
-        viewParams: {
-          successButton: {
-            label: 'Go find some Grants!',
-            onClick: () => navigate('/ships'),
+      if (isEdit) {
+        const pointerWithName = `${pinRes.IpfsHash}##name##${values.name}`;
+        tx({
+          writeContractParams: {
+            abi: Registry,
+            address: ADDR.REGISTRY,
+            functionName: 'updateProfileMetadata',
+            args: [existingProject?.profileId, [1n, pointerWithName]],
           },
-        },
-        onComplete() {
-          refetchUser();
-        },
-      });
+          viewParams: {
+            successButton: {
+              label: 'Go see your project!',
+              onClick: () => navigate(`/project/${id}`),
+            },
+          },
+          onComplete() {
+            refetch();
+            refetchUser();
+          },
+        });
+      } else {
+        tx({
+          writeContractParams: {
+            abi: Registry,
+            address: ADDR.REGISTRY,
+            functionName: 'createProfile',
+            args: [nonce, values.name, metadataStruct, address, teamMembers],
+          },
+          viewParams: {
+            successButton: {
+              label: 'Go find some Grants!',
+              onClick: () => navigate('/ships'),
+            },
+          },
+          onComplete() {
+            refetchUser();
+          },
+        });
+      }
     } catch (error: any) {
       console.error(error);
       notifications.show({
@@ -162,15 +220,10 @@ export const RegisterProject = () => {
 
   return (
     <FormPageLayout
-      title="Register Project Profile"
-      onSubmit={form.onSubmit((values) => handleFormSubmit(values))}
+      title={isEdit ? 'Edit Project Profile' : 'Register Project Profile'}
       primaryBtn={{
-        label: 'Create Project',
-        onClick: () => {},
-      }}
-      secondaryBtn={{
-        label: 'Back',
-        onClick: () => {},
+        label: isEdit ? 'Update Metadata' : 'Create Project',
+        onClick: () => handleFormSubmit(form.values),
       }}
     >
       <AvatarPickerIPFS
@@ -200,17 +253,19 @@ export const RegisterProject = () => {
         placeholder="Project Name"
         {...form.getInputProps('name')}
       />
-      <AddressBox
-        w="100%"
-        label="Team Members"
-        description={`Must be comma separated. Team members can edit metadata and apply for grants. You do not need to enter your own address as you are already the profile owner`}
-        placeholder="Paste addresses here. Must be comma separated."
-        {...form.getInputProps('teamMembers')}
-        onBlur={() => handleBlur('teamMembers')}
-        formSetValue={(addresses: string[]) => {
-          form.setFieldValue('teamMembers', addresses);
-        }}
-      />
+      {!isEdit && (
+        <AddressBox
+          w="100%"
+          label="Team Members"
+          description={`Must be comma separated. Team members can edit metadata and apply for grants. You do not need to enter your own address as you are already the profile owner`}
+          placeholder="Paste addresses here. Must be comma separated."
+          {...form.getInputProps('teamMembers')}
+          onBlur={() => handleBlur('teamMembers')}
+          formSetValue={(addresses: string[]) => {
+            form.setFieldValue('teamMembers', addresses);
+          }}
+        />
+      )}
       <Textarea
         w="100%"
         label="Short Project Description"

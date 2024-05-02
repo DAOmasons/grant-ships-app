@@ -101,7 +101,9 @@ export type GrantUI = {
 export type ProjectPageUI = {
   id: string;
   name: string;
+  profileId: string;
   imgUrl: string;
+  avatarHash: string;
   status: GameStatus;
   description: string;
   grants: GrantUI[] | null;

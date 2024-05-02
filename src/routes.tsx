@@ -21,6 +21,7 @@ export const ClientRoutes = () => {
       <Route path="/" element={<Home />} />
       <Route path="projects" element={<Projects />} />
       <Route path="create-project" element={<RegisterProject />} />
+      <Route path="edit-project/:id" element={<RegisterProject />} />
       <Route path="create-ship" element={<CreateShip />} />
       <Route path="ships" element={<Ships />} />
       <Route path="game-rules" element={<GameRules />} />
