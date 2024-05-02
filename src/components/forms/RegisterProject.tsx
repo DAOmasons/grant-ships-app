@@ -48,12 +48,7 @@ export const RegisterProject = () => {
 
   const isEdit = location.pathname.includes('edit-project') && !!id;
 
-  const {
-    data: existingProject,
-    error,
-    isLoading,
-    refetch,
-  } = useQuery({
+  const { data: existingProject, refetch } = useQuery({
     queryKey: [`project-page-${id}`],
     queryFn: () => getProjectPage(id as string),
     enabled: !!isEdit,
@@ -77,24 +72,28 @@ export const RegisterProject = () => {
     validate: zodResolver(registerProjectSchema),
   });
 
-  useEffect(() => {
-    if (!existingProject) return;
+  useEffect(
+    () => {
+      if (!existingProject) return;
 
-    form.setValues((prev) => ({
-      ...prev,
-      ...{
-        avatarHash: existingProject.avatarHash || '',
-        name: existingProject.name || '',
-        description: existingProject.description || '',
-        email: existingProject.email || '',
-        x: existingProject.x || '',
-        github: existingProject.github || '',
-        discord: existingProject.discord || '',
-        telegram: existingProject.telegram || '',
-        website: existingProject.website || '',
-      },
-    }));
-  }, [existingProject]);
+      form.setValues((prev) => ({
+        ...prev,
+        ...{
+          avatarHash: existingProject.avatarHash || '',
+          name: existingProject.name || '',
+          description: existingProject.description || '',
+          email: existingProject.email || '',
+          x: existingProject.x || '',
+          github: existingProject.github || '',
+          discord: existingProject.discord || '',
+          telegram: existingProject.telegram || '',
+          website: existingProject.website || '',
+        },
+      }));
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [existingProject]
+  );
 
   const navigate = useNavigate();
 
@@ -167,8 +166,6 @@ export const RegisterProject = () => {
       });
 
       if (isEdit) {
-        console.log(existingProject?.profileId);
-
         const pointerWithName = `${pinRes.IpfsHash}##name##${values.name}`;
         tx({
           writeContractParams: {
@@ -180,7 +177,7 @@ export const RegisterProject = () => {
           viewParams: {
             successButton: {
               label: 'Go see your project!',
-              onClick: () => navigate(`/projects/${id}`),
+              onClick: () => navigate(`/project/${id}`),
             },
           },
           onComplete() {
