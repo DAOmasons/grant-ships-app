@@ -1,0 +1,17 @@
+export const DEV_PROJECT_FILTER_LIST: string[] = [
+  '0x6c44450b4ec16500e0a18122ce60dcd57eb3f763',
+  '0xd727c29b19e98453d9051e1889ea529309f33ce9',
+];
+
+export const PROD_PROJECT_FILTER_LIST: string[] = [
+  '0x0cd754f04b1123c60e10907fb77e0f5f83f38820',
+  '0x4abcf5af3284bc04f1b22839c9795e638a1e98b1',
+  '0x6cc0ab6764657bbf9bf44a9156674eebe870528a',
+  '0x9474322501a0d6dae5729a2eed6ab8498af65fbc',
+  '0x98a92adc79fa79e38dd3ce6373ebb74b8f90b486',
+];
+
+export const PROJECT_FILTER_LIST =
+  import.meta.env.VITE_RUNTIME_ENV === 'dev'
+    ? DEV_PROJECT_FILTER_LIST
+    : PROD_PROJECT_FILTER_LIST;
