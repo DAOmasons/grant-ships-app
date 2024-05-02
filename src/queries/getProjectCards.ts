@@ -8,6 +8,11 @@ import { getGatewayUrl, getIpfsJson } from '../utils/ipfs/get';
 import { ProjectProfileMetadata } from '../utils/ipfs/metadataValidation';
 import { SUBGRAPH_URL } from '../constants/gameSetup';
 
+const FILTER_LIST: string[] = [
+  '0x6c44450b4ec16500e0a18122ce60dcd57eb3f763',
+  '0xd727c29b19e98453d9051e1889ea529309f33ce9',
+];
+
 type ProjectMetadataType = z.infer<typeof ProjectProfileMetadata>;
 
 export type ProjectCardFromQuery = ProjectDetailsFragment & {
@@ -44,8 +49,12 @@ export const getProjectCards = async () => {
 
     const { projects } = await GetProjects();
 
+    const filteredProjects = projects?.filter(
+      (project) => !FILTER_LIST.includes(project.id)
+    );
+
     const resolvedProjects = await Promise.all(
-      projects?.map((project) => projectMetadataResolver(project))
+      filteredProjects?.map((project) => projectMetadataResolver(project))
     );
 
     return resolvedProjects as ProjectCard[];
@@ -63,8 +72,14 @@ export const getUserProjects = async (userId: string) => {
 
     const { projects } = await GetUserProjects({ id: userId });
 
+    const filteredProjects = projects?.filter(
+      (project) => !FILTER_LIST.includes(project.id)
+    );
+
+    console.log('filteredProjects', filteredProjects);
+
     const resolvedProjects = await Promise.all(
-      projects?.map((project) => projectMetadataResolver(project))
+      filteredProjects?.map((project) => projectMetadataResolver(project))
     );
 
     return resolvedProjects as ProjectCard[];
