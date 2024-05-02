@@ -37,6 +37,7 @@ export const getProjectPage = async (id: string): Promise<ProjectPageUI> => {
     return {
       id: project.id,
       name: project.name,
+      profileId: project.profileId,
       description: profileData.description,
       imgUrl: getGatewayUrl(profileData.avatarHash_IPFS),
       avatarHash: profileData.avatarHash_IPFS,

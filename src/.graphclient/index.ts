@@ -4224,7 +4224,7 @@ export type projectPageQueryQueryVariables = Exact<{
 
 
 export type projectPageQueryQuery = { project?: Maybe<(
-    Pick<Project, 'id' | 'name' | 'status' | 'owner'>
+    Pick<Project, 'id' | 'profileId' | 'name' | 'status' | 'owner'>
     & { metadata: Pick<RawMetadata, 'pointer'>, members?: Maybe<Pick<ProfileMemberGroup, 'addresses'>> }
   )> };
 
@@ -4642,6 +4642,7 @@ export const projectPageQueryDocument = gql`
     query projectPageQuery($id: ID!) {
   project(id: $id) {
     id
+    profileId
     name
     status
     owner

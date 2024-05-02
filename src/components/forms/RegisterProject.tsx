@@ -167,13 +167,15 @@ export const RegisterProject = () => {
       });
 
       if (isEdit) {
-        console.log('edit');
+        console.log(existingProject?.profileId);
+
+        const pointerWithName = `${pinRes.IpfsHash}##name##${values.name}`;
         tx({
           writeContractParams: {
             abi: Registry,
             address: ADDR.REGISTRY,
-            functionName: 'updateMetadata',
-            args: [id, metadataStruct],
+            functionName: 'updateProfileMetadata',
+            args: [existingProject?.profileId, [1n, pointerWithName]],
           },
           viewParams: {
             successButton: {
@@ -222,17 +224,9 @@ export const RegisterProject = () => {
   return (
     <FormPageLayout
       title={isEdit ? 'Edit Project Profile' : 'Register Project Profile'}
-      onSubmit={form.onSubmit((values) => {
-        console.log('test');
-        handleFormSubmit(values);
-      })}
       primaryBtn={{
         label: isEdit ? 'Update Metadata' : 'Create Project',
-        onClick: () => {},
-      }}
-      secondaryBtn={{
-        label: 'Back',
-        onClick: () => {},
+        onClick: () => handleFormSubmit(form.values),
       }}
     >
       <AvatarPickerIPFS
