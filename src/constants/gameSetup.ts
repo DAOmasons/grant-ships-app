@@ -87,5 +87,5 @@ console.log('Runtime Environment', import.meta.env.VITE_RUNTIME_ENV);
 
 export const SUBGRAPH_URL =
   import.meta.env.VITE_RUNTIME_ENV === 'dev'
-    ? 'api.goldsky.com/api/public/project_clruaxx0m7yn101uj2rmi6mfj/subgraphs/gs-arb-sepolia/1.0.2/gn'
-    : 'api.studio.thegraph.com/query/41101/grant-ships-arb/v0.1.3';
+    ? 'api.goldsky.com/api/public/project_clruaxx0m7yn101uj2rmi6mfj/subgraphs/gs-arb-sepolia/1.0.3/gn'
+    : 'api.studio.thegraph.com/query/41101/grant-ships-arb/version/latest';
