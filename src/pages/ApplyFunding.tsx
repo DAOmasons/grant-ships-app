@@ -110,7 +110,8 @@ export const ApplyFunding = () => {
       (grant) =>
         grant.shipId.id === id &&
         grant.grantStatus !== GrantStatus.Completed &&
-        grant.grantStatus !== GrantStatus.ShipRejected
+        grant.grantStatus !== GrantStatus.ShipRejected &&
+        grant.grantStatus !== GrantStatus.FacilitatorRejected
     );
   }, [form.values.projectId, id, userData]);
 
