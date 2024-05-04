@@ -1,6 +1,6 @@
 # Grant Ships Web App
 
-![image](public/gslogo.svg)
+![image](public/XL-Logo.svg)
 
 ![Build Status](https://img.shields.io/badge/build-passing-brightgreen)
 ![License](https://img.shields.io/badge/license-GNU-green)
