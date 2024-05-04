@@ -47,7 +47,7 @@ import { getGrant } from '../queries/getGrant';
 
 const defaultValues = {
   projectId: '',
-  dueDate: null,
+  dueDate: '',
   totalAmount: '',
   shipBalance: '',
   sendAddress: '',
@@ -74,9 +74,9 @@ export const ApplyFunding = () => {
   const { shipId, projectId } = useParams();
   const location = useLocation();
 
-  const isResubmitting =
+  const canResubmit =
     location.pathname.includes('resubmit-funding') && !!shipId && !!projectId;
-  const grantId = isResubmitting ? `${projectId}-${shipId}` : undefined;
+  const grantId = canResubmit ? `${projectId}-${shipId}` : undefined;
 
   const {
     data: shipBalance,
@@ -97,8 +97,6 @@ export const ApplyFunding = () => {
     queryFn: () => getGrant(grantId as string),
     enabled: !!grantId,
   });
-
-  console.log('grantData', grantData);
 
   const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
   const navigate = useNavigate();
@@ -173,6 +171,25 @@ export const ApplyFunding = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shipBalance, shipBalanceLoading, form.values, isAmountFieldDirty]);
+
+  useEffect(() => {
+    if (!grantData || !canResubmit) return;
+
+    form.setValues(
+      (prev) =>
+        ({
+          ...prev,
+          projectId: grantData.projectId.id,
+          dueDate: new Date(Number(grantData.applicationData.dueDate) * 1000),
+          totalAmount: formatEther(grantData.applicationData.grantAmount),
+          sendAddress: grantData.applicationData.receivingAddress,
+          objectives: grantData.applicationData.objectives,
+          proposalLink: grantData.applicationData.proposalLink,
+          extraLink: grantData.applicationData.extraLink,
+          extraInfo: grantData.applicationData.extraInfo,
+        }) as any
+    );
+  }, [canResubmit, grantData]);
 
   const handleBlur = (fieldName: string) => {
     form.validateField(fieldName);
