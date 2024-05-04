@@ -98,6 +98,12 @@ export const RegisterProject = () => {
   const navigate = useNavigate();
 
   const handleFormSubmit = async (values: FormValues) => {
+    const results = form.validate();
+
+    if (results.hasErrors) {
+      return;
+    }
+
     if (!isConnected) {
       if (window?.ethereum?.isMetaMask === true) {
         connect({ connector: injected() });
