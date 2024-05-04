@@ -146,7 +146,9 @@ export function DesktopNav() {
     <nav className={classes.navbar}>
       <div className={classes.navbarMain}>
         <Group className={classes.header}>
-          <Logo />
+          <Link to="/">
+            <Logo />
+          </Link>
           {!isTablet && (
             <Title order={1} fw={100} fz={32}>
               Grant Ships
