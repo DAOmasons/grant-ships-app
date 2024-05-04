@@ -47,7 +47,7 @@ import { getGrant } from '../queries/getGrant';
 
 const defaultValues = {
   projectId: '',
-  dueDate: '',
+  dueDate: null,
   totalAmount: '',
   shipBalance: '',
   sendAddress: '',
@@ -125,7 +125,7 @@ export const ApplyFunding = () => {
     return currentProject.grants.some(
       (grant) =>
         grant.shipId.id === shipId &&
-        grant.grantStatus !== GrantStatus.Completed &&
+        // grant.grantStatus !== GrantStatus.Completed && // for now
         grant.grantStatus !== GrantStatus.ShipRejected &&
         grant.grantStatus !== GrantStatus.FacilitatorRejected
     );
@@ -421,7 +421,7 @@ export const ApplyFunding = () => {
           </Text>
         )}
       </Text>
-      <form onSubmit={form.onSubmit((values) => handleSubmit(values as any))}>
+      <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
         <Flex direction={isMobile ? 'column' : 'row'} mb="md">
           <Select
             w="100%"

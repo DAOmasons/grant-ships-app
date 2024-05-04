@@ -126,6 +126,8 @@ export const ReviewApplication = ({
   const scanLink = scanAddressLink(grant.applicationData.receivingAddress);
   const canResubmit =
     grant.grantStatus <= GrantStatus.FacilitatorRejected && isProjectMember;
+
+  console.log(grant);
   return (
     <>
       <Group align="start" justify="space-between" wrap="nowrap">
@@ -249,7 +251,7 @@ export const ReviewApplication = ({
           ]}
           footerSection={
             <>
-              {grant.grantStatus > GrantStatus.ShipRejected &&
+              {grant.grantStatus >= GrantStatus.ShipRejected &&
                 grant.shipApprovalReason && (
                   <AppAlert
                     mt={0}
@@ -265,7 +267,7 @@ export const ReviewApplication = ({
                     }
                   />
                 )}
-              {grant.grantStatus > GrantStatus.FacilitatorRejected &&
+              {grant.grantStatus >= GrantStatus.FacilitatorRejected &&
                 grant.facilitatorReason && (
                   <AppAlert
                     mt={0}
