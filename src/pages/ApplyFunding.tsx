@@ -24,7 +24,7 @@ import {
   parseAbiParameters,
   parseEther,
 } from 'viem';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import { MainSection, PageTitle } from '../layout/Sections';
 import { GAME_TOKEN, SUBGRAPH_URL } from '../constants/gameSetup';
@@ -70,16 +70,20 @@ const getShipFunds = async (id: string) => {
 
 export const ApplyFunding = () => {
   const { userData, userLoading, refetchUser } = useUserData();
-  const { id } = useParams();
+  const { shipId, projectId } = useParams();
+  const location = useLocation();
+
+  const isResubmitting =
+    location.pathname.includes('resubmit-funding') && !!shipId && !!projectId;
 
   const {
     data: shipBalance,
     isLoading: shipBalanceLoading,
     error: shipBalanceError,
   } = useQuery({
-    queryKey: [`ship-balance`, id],
-    queryFn: () => getShipFunds(id as string),
-    enabled: !!id,
+    queryKey: [`ship-balance`, shipId],
+    queryFn: () => getShipFunds(shipId as string),
+    enabled: !!shipId,
   });
 
   const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
@@ -108,12 +112,12 @@ export const ApplyFunding = () => {
 
     return currentProject.grants.some(
       (grant) =>
-        grant.shipId.id === id &&
+        grant.shipId.id === shipId &&
         grant.grantStatus !== GrantStatus.Completed &&
         grant.grantStatus !== GrantStatus.ShipRejected &&
         grant.grantStatus !== GrantStatus.FacilitatorRejected
     );
-  }, [form.values.projectId, id, userData]);
+  }, [form.values.projectId, shipId, userData]);
 
   const isAmountFieldDirty = form.isDirty('totalAmount');
 
@@ -189,7 +193,7 @@ export const ApplyFunding = () => {
       });
     }
 
-    if (!id) {
+    if (!shipId) {
       notifications.show({
         title: 'Error',
         message: 'Invalid project anchor in url',
@@ -305,7 +309,7 @@ export const ApplyFunding = () => {
         [anchor, sendAddress as Address, parsedUnits, [1n, pinRes.IpfsHash]]
       );
 
-      const shipPoolId = await getShipPoolId(id as string);
+      const shipPoolId = await getShipPoolId(shipId as string);
 
       tx({
         writeContractParams: {
