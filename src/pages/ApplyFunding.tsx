@@ -43,6 +43,7 @@ import { appNetwork } from '../utils/config';
 import { injected } from 'wagmi/connectors';
 import { useQuery } from '@tanstack/react-query';
 import { getBuiltGraphSDK } from '../.graphclient';
+import { getGrant } from '../queries/getGrant';
 
 const defaultValues = {
   projectId: '',
@@ -75,6 +76,7 @@ export const ApplyFunding = () => {
 
   const isResubmitting =
     location.pathname.includes('resubmit-funding') && !!shipId && !!projectId;
+  const grantId = isResubmitting ? `${projectId}-${shipId}` : undefined;
 
   const {
     data: shipBalance,
@@ -85,6 +87,18 @@ export const ApplyFunding = () => {
     queryFn: () => getShipFunds(shipId as string),
     enabled: !!shipId,
   });
+
+  const {
+    data: grantData,
+    // isLoading: shipBalanceLoading,
+    // error: shipBalanceError,
+  } = useQuery({
+    queryKey: [`grant`, grantId],
+    queryFn: () => getGrant(grantId as string),
+    enabled: !!grantId,
+  });
+
+  console.log('grantData', grantData);
 
   const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
   const navigate = useNavigate();

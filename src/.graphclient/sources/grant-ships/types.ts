@@ -1669,7 +1669,7 @@ export type Log = {
   id: Scalars['ID'];
   message: Scalars['String'];
   description?: Maybe<Scalars['String']>;
-  type: Scalars['String'];
+  type?: Maybe<Scalars['String']>;
 };
 
 export type Log_filter = {
@@ -1865,6 +1865,52 @@ export type PoolIdLookup_filter = {
 export type PoolIdLookup_orderBy =
   | 'id'
   | 'entityId';
+
+export type ProfileIdToAnchor = {
+  id: Scalars['ID'];
+  profileId: Scalars['Bytes'];
+  anchor: Scalars['Bytes'];
+};
+
+export type ProfileIdToAnchor_filter = {
+  id?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']>;
+  id_gt?: InputMaybe<Scalars['ID']>;
+  id_lt?: InputMaybe<Scalars['ID']>;
+  id_gte?: InputMaybe<Scalars['ID']>;
+  id_lte?: InputMaybe<Scalars['ID']>;
+  id_in?: InputMaybe<Array<Scalars['ID']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']>>;
+  profileId?: InputMaybe<Scalars['Bytes']>;
+  profileId_not?: InputMaybe<Scalars['Bytes']>;
+  profileId_gt?: InputMaybe<Scalars['Bytes']>;
+  profileId_lt?: InputMaybe<Scalars['Bytes']>;
+  profileId_gte?: InputMaybe<Scalars['Bytes']>;
+  profileId_lte?: InputMaybe<Scalars['Bytes']>;
+  profileId_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  profileId_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  profileId_contains?: InputMaybe<Scalars['Bytes']>;
+  profileId_not_contains?: InputMaybe<Scalars['Bytes']>;
+  anchor?: InputMaybe<Scalars['Bytes']>;
+  anchor_not?: InputMaybe<Scalars['Bytes']>;
+  anchor_gt?: InputMaybe<Scalars['Bytes']>;
+  anchor_lt?: InputMaybe<Scalars['Bytes']>;
+  anchor_gte?: InputMaybe<Scalars['Bytes']>;
+  anchor_lte?: InputMaybe<Scalars['Bytes']>;
+  anchor_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  anchor_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  anchor_contains?: InputMaybe<Scalars['Bytes']>;
+  anchor_not_contains?: InputMaybe<Scalars['Bytes']>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<ProfileIdToAnchor_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<ProfileIdToAnchor_filter>>>;
+};
+
+export type ProfileIdToAnchor_orderBy =
+  | 'id'
+  | 'profileId'
+  | 'anchor';
 
 export type ProfileMemberGroup = {
   id: Scalars['Bytes'];
@@ -2127,6 +2173,8 @@ export type Query = {
   grants: Array<Grant>;
   milestone?: Maybe<Milestone>;
   milestones: Array<Milestone>;
+  profileIdToAnchor?: Maybe<ProfileIdToAnchor>;
+  profileIdToAnchors: Array<ProfileIdToAnchor>;
   profileMemberGroup?: Maybe<ProfileMemberGroup>;
   profileMemberGroups: Array<ProfileMemberGroup>;
   transaction?: Maybe<Transaction>;
@@ -2342,6 +2390,24 @@ export type QuerymilestonesArgs = {
 };
 
 
+export type QueryprofileIdToAnchorArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryprofileIdToAnchorsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<ProfileIdToAnchor_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<ProfileIdToAnchor_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
 export type QueryprofileMemberGroupArgs = {
   id: Scalars['ID'];
   block?: InputMaybe<Block_height>;
@@ -2543,6 +2609,8 @@ export type Subscription = {
   grants: Array<Grant>;
   milestone?: Maybe<Milestone>;
   milestones: Array<Milestone>;
+  profileIdToAnchor?: Maybe<ProfileIdToAnchor>;
+  profileIdToAnchors: Array<ProfileIdToAnchor>;
   profileMemberGroup?: Maybe<ProfileMemberGroup>;
   profileMemberGroups: Array<ProfileMemberGroup>;
   transaction?: Maybe<Transaction>;
@@ -2753,6 +2821,24 @@ export type SubscriptionmilestonesArgs = {
   orderBy?: InputMaybe<Milestone_orderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
   where?: InputMaybe<Milestone_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionprofileIdToAnchorArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionprofileIdToAnchorsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<ProfileIdToAnchor_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<ProfileIdToAnchor_filter>;
   block?: InputMaybe<Block_height>;
   subgraphError?: _SubgraphErrorPolicy_;
 };
@@ -3127,6 +3213,10 @@ export type _SubgraphErrorPolicy_ =
   /** null **/
   milestones: InContextSdkMethod<Query['milestones'], QuerymilestonesArgs, MeshContext>,
   /** null **/
+  profileIdToAnchor: InContextSdkMethod<Query['profileIdToAnchor'], QueryprofileIdToAnchorArgs, MeshContext>,
+  /** null **/
+  profileIdToAnchors: InContextSdkMethod<Query['profileIdToAnchors'], QueryprofileIdToAnchorsArgs, MeshContext>,
+  /** null **/
   profileMemberGroup: InContextSdkMethod<Query['profileMemberGroup'], QueryprofileMemberGroupArgs, MeshContext>,
   /** null **/
   profileMemberGroups: InContextSdkMethod<Query['profileMemberGroups'], QueryprofileMemberGroupsArgs, MeshContext>,
@@ -3203,6 +3293,10 @@ export type _SubgraphErrorPolicy_ =
   milestone: InContextSdkMethod<Subscription['milestone'], SubscriptionmilestoneArgs, MeshContext>,
   /** null **/
   milestones: InContextSdkMethod<Subscription['milestones'], SubscriptionmilestonesArgs, MeshContext>,
+  /** null **/
+  profileIdToAnchor: InContextSdkMethod<Subscription['profileIdToAnchor'], SubscriptionprofileIdToAnchorArgs, MeshContext>,
+  /** null **/
+  profileIdToAnchors: InContextSdkMethod<Subscription['profileIdToAnchors'], SubscriptionprofileIdToAnchorsArgs, MeshContext>,
   /** null **/
   profileMemberGroup: InContextSdkMethod<Subscription['profileMemberGroup'], SubscriptionprofileMemberGroupArgs, MeshContext>,
   /** null **/

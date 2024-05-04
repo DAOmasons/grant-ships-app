@@ -1691,7 +1691,7 @@ export type Log = {
   id: Scalars['ID'];
   message: Scalars['String'];
   description?: Maybe<Scalars['String']>;
-  type: Scalars['String'];
+  type?: Maybe<Scalars['String']>;
 };
 
 export type Log_filter = {
@@ -1887,6 +1887,52 @@ export type PoolIdLookup_filter = {
 export type PoolIdLookup_orderBy =
   | 'id'
   | 'entityId';
+
+export type ProfileIdToAnchor = {
+  id: Scalars['ID'];
+  profileId: Scalars['Bytes'];
+  anchor: Scalars['Bytes'];
+};
+
+export type ProfileIdToAnchor_filter = {
+  id?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']>;
+  id_gt?: InputMaybe<Scalars['ID']>;
+  id_lt?: InputMaybe<Scalars['ID']>;
+  id_gte?: InputMaybe<Scalars['ID']>;
+  id_lte?: InputMaybe<Scalars['ID']>;
+  id_in?: InputMaybe<Array<Scalars['ID']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']>>;
+  profileId?: InputMaybe<Scalars['Bytes']>;
+  profileId_not?: InputMaybe<Scalars['Bytes']>;
+  profileId_gt?: InputMaybe<Scalars['Bytes']>;
+  profileId_lt?: InputMaybe<Scalars['Bytes']>;
+  profileId_gte?: InputMaybe<Scalars['Bytes']>;
+  profileId_lte?: InputMaybe<Scalars['Bytes']>;
+  profileId_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  profileId_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  profileId_contains?: InputMaybe<Scalars['Bytes']>;
+  profileId_not_contains?: InputMaybe<Scalars['Bytes']>;
+  anchor?: InputMaybe<Scalars['Bytes']>;
+  anchor_not?: InputMaybe<Scalars['Bytes']>;
+  anchor_gt?: InputMaybe<Scalars['Bytes']>;
+  anchor_lt?: InputMaybe<Scalars['Bytes']>;
+  anchor_gte?: InputMaybe<Scalars['Bytes']>;
+  anchor_lte?: InputMaybe<Scalars['Bytes']>;
+  anchor_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  anchor_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  anchor_contains?: InputMaybe<Scalars['Bytes']>;
+  anchor_not_contains?: InputMaybe<Scalars['Bytes']>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<ProfileIdToAnchor_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<ProfileIdToAnchor_filter>>>;
+};
+
+export type ProfileIdToAnchor_orderBy =
+  | 'id'
+  | 'profileId'
+  | 'anchor';
 
 export type ProfileMemberGroup = {
   id: Scalars['Bytes'];
@@ -2149,6 +2195,8 @@ export type Query = {
   grants: Array<Grant>;
   milestone?: Maybe<Milestone>;
   milestones: Array<Milestone>;
+  profileIdToAnchor?: Maybe<ProfileIdToAnchor>;
+  profileIdToAnchors: Array<ProfileIdToAnchor>;
   profileMemberGroup?: Maybe<ProfileMemberGroup>;
   profileMemberGroups: Array<ProfileMemberGroup>;
   transaction?: Maybe<Transaction>;
@@ -2364,6 +2412,24 @@ export type QuerymilestonesArgs = {
 };
 
 
+export type QueryprofileIdToAnchorArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryprofileIdToAnchorsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<ProfileIdToAnchor_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<ProfileIdToAnchor_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
 export type QueryprofileMemberGroupArgs = {
   id: Scalars['ID'];
   block?: InputMaybe<Block_height>;
@@ -2565,6 +2631,8 @@ export type Subscription = {
   grants: Array<Grant>;
   milestone?: Maybe<Milestone>;
   milestones: Array<Milestone>;
+  profileIdToAnchor?: Maybe<ProfileIdToAnchor>;
+  profileIdToAnchors: Array<ProfileIdToAnchor>;
   profileMemberGroup?: Maybe<ProfileMemberGroup>;
   profileMemberGroups: Array<ProfileMemberGroup>;
   transaction?: Maybe<Transaction>;
@@ -2775,6 +2843,24 @@ export type SubscriptionmilestonesArgs = {
   orderBy?: InputMaybe<Milestone_orderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
   where?: InputMaybe<Milestone_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionprofileIdToAnchorArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionprofileIdToAnchorsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<ProfileIdToAnchor_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<ProfileIdToAnchor_filter>;
   block?: InputMaybe<Block_height>;
   subgraphError?: _SubgraphErrorPolicy_;
 };
@@ -3237,6 +3323,9 @@ export type ResolversTypes = ResolversObject<{
   PoolIdLookup: ResolverTypeWrapper<PoolIdLookup>;
   PoolIdLookup_filter: PoolIdLookup_filter;
   PoolIdLookup_orderBy: PoolIdLookup_orderBy;
+  ProfileIdToAnchor: ResolverTypeWrapper<ProfileIdToAnchor>;
+  ProfileIdToAnchor_filter: ProfileIdToAnchor_filter;
+  ProfileIdToAnchor_orderBy: ProfileIdToAnchor_orderBy;
   ProfileMemberGroup: ResolverTypeWrapper<ProfileMemberGroup>;
   ProfileMemberGroup_filter: ProfileMemberGroup_filter;
   ProfileMemberGroup_orderBy: ProfileMemberGroup_orderBy;
@@ -3297,6 +3386,8 @@ export type ResolversParentTypes = ResolversObject<{
   Milestone_filter: Milestone_filter;
   PoolIdLookup: PoolIdLookup;
   PoolIdLookup_filter: PoolIdLookup_filter;
+  ProfileIdToAnchor: ProfileIdToAnchor;
+  ProfileIdToAnchor_filter: ProfileIdToAnchor_filter;
   ProfileMemberGroup: ProfileMemberGroup;
   ProfileMemberGroup_filter: ProfileMemberGroup_filter;
   Project: Project;
@@ -3495,7 +3586,7 @@ export type LogResolvers<ContextType = MeshContext, ParentType extends Resolvers
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  type?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -3512,6 +3603,13 @@ export type MilestoneResolvers<ContextType = MeshContext, ParentType extends Res
 export type PoolIdLookupResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['PoolIdLookup'] = ResolversParentTypes['PoolIdLookup']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   entityId?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type ProfileIdToAnchorResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['ProfileIdToAnchor'] = ResolversParentTypes['ProfileIdToAnchor']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  profileId?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
+  anchor?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -3562,6 +3660,8 @@ export type QueryResolvers<ContextType = MeshContext, ParentType extends Resolve
   grants?: Resolver<Array<ResolversTypes['Grant']>, ParentType, ContextType, RequireFields<QuerygrantsArgs, 'skip' | 'first' | 'subgraphError'>>;
   milestone?: Resolver<Maybe<ResolversTypes['Milestone']>, ParentType, ContextType, RequireFields<QuerymilestoneArgs, 'id' | 'subgraphError'>>;
   milestones?: Resolver<Array<ResolversTypes['Milestone']>, ParentType, ContextType, RequireFields<QuerymilestonesArgs, 'skip' | 'first' | 'subgraphError'>>;
+  profileIdToAnchor?: Resolver<Maybe<ResolversTypes['ProfileIdToAnchor']>, ParentType, ContextType, RequireFields<QueryprofileIdToAnchorArgs, 'id' | 'subgraphError'>>;
+  profileIdToAnchors?: Resolver<Array<ResolversTypes['ProfileIdToAnchor']>, ParentType, ContextType, RequireFields<QueryprofileIdToAnchorsArgs, 'skip' | 'first' | 'subgraphError'>>;
   profileMemberGroup?: Resolver<Maybe<ResolversTypes['ProfileMemberGroup']>, ParentType, ContextType, RequireFields<QueryprofileMemberGroupArgs, 'id' | 'subgraphError'>>;
   profileMemberGroups?: Resolver<Array<ResolversTypes['ProfileMemberGroup']>, ParentType, ContextType, RequireFields<QueryprofileMemberGroupsArgs, 'skip' | 'first' | 'subgraphError'>>;
   transaction?: Resolver<Maybe<ResolversTypes['Transaction']>, ParentType, ContextType, RequireFields<QuerytransactionArgs, 'id' | 'subgraphError'>>;
@@ -3607,6 +3707,8 @@ export type SubscriptionResolvers<ContextType = MeshContext, ParentType extends 
   grants?: SubscriptionResolver<Array<ResolversTypes['Grant']>, "grants", ParentType, ContextType, RequireFields<SubscriptiongrantsArgs, 'skip' | 'first' | 'subgraphError'>>;
   milestone?: SubscriptionResolver<Maybe<ResolversTypes['Milestone']>, "milestone", ParentType, ContextType, RequireFields<SubscriptionmilestoneArgs, 'id' | 'subgraphError'>>;
   milestones?: SubscriptionResolver<Array<ResolversTypes['Milestone']>, "milestones", ParentType, ContextType, RequireFields<SubscriptionmilestonesArgs, 'skip' | 'first' | 'subgraphError'>>;
+  profileIdToAnchor?: SubscriptionResolver<Maybe<ResolversTypes['ProfileIdToAnchor']>, "profileIdToAnchor", ParentType, ContextType, RequireFields<SubscriptionprofileIdToAnchorArgs, 'id' | 'subgraphError'>>;
+  profileIdToAnchors?: SubscriptionResolver<Array<ResolversTypes['ProfileIdToAnchor']>, "profileIdToAnchors", ParentType, ContextType, RequireFields<SubscriptionprofileIdToAnchorsArgs, 'skip' | 'first' | 'subgraphError'>>;
   profileMemberGroup?: SubscriptionResolver<Maybe<ResolversTypes['ProfileMemberGroup']>, "profileMemberGroup", ParentType, ContextType, RequireFields<SubscriptionprofileMemberGroupArgs, 'id' | 'subgraphError'>>;
   profileMemberGroups?: SubscriptionResolver<Array<ResolversTypes['ProfileMemberGroup']>, "profileMemberGroups", ParentType, ContextType, RequireFields<SubscriptionprofileMemberGroupsArgs, 'skip' | 'first' | 'subgraphError'>>;
   transaction?: SubscriptionResolver<Maybe<ResolversTypes['Transaction']>, "transaction", ParentType, ContextType, RequireFields<SubscriptiontransactionArgs, 'id' | 'subgraphError'>>;
@@ -3679,6 +3781,7 @@ export type Resolvers<ContextType = MeshContext> = ResolversObject<{
   Log?: LogResolvers<ContextType>;
   Milestone?: MilestoneResolvers<ContextType>;
   PoolIdLookup?: PoolIdLookupResolvers<ContextType>;
+  ProfileIdToAnchor?: ProfileIdToAnchorResolvers<ContextType>;
   ProfileMemberGroup?: ProfileMemberGroupResolvers<ContextType>;
   Project?: ProjectResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
@@ -3818,6 +3921,12 @@ const merger = new(BareMerger as any)({
           return printWithCache(GetGmVersionsDocument);
         },
         location: 'GetGmVersionsDocument.graphql'
+      },{
+        document: GetGrantDocument,
+        get rawSDL() {
+          return printWithCache(GetGrantDocument);
+        },
+        location: 'GetGrantDocument.graphql'
       },{
         document: GetProjectGrantsDocument,
         get rawSDL() {
@@ -4085,6 +4194,22 @@ export type getGmVersionsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type getGmVersionsQuery = { gmVersions: Array<Pick<GmVersion, 'id' | 'name' | 'address'>> };
+
+export type getGrantQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type getGrantQuery = { grant?: Maybe<(
+    Pick<Grant, 'id' | 'grantApplicationBytes' | 'lastUpdated' | 'grantStatus' | 'milestonesAmount' | 'milestonesApproved' | 'amtDistributed' | 'amtAllocated' | 'currentMilestoneIndex'>
+    & { projectId: (
+      Pick<Project, 'id' | 'name'>
+      & { metadata: Pick<RawMetadata, 'pointer'> }
+    ), shipId: (
+      Pick<GrantShip, 'id' | 'name' | 'shipContractAddress' | 'poolId' | 'totalAvailableFunds'>
+      & { profileMetadata: Pick<RawMetadata, 'pointer'> }
+    ), currentMilestoneRejectedReason?: Maybe<Pick<RawMetadata, 'pointer'>>, milestonesApprovedReason?: Maybe<Pick<RawMetadata, 'pointer'>>, facilitatorReason?: Maybe<Pick<RawMetadata, 'pointer'>>, shipApprovalReason?: Maybe<Pick<RawMetadata, 'pointer'>> }
+  )> };
 
 export type getProjectGrantsQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -4527,6 +4652,13 @@ export const getGmVersionsDocument = gql`
   }
 }
     ` as unknown as DocumentNode<getGmVersionsQuery, getGmVersionsQueryVariables>;
+export const getGrantDocument = gql`
+    query getGrant($id: ID!) {
+  grant(id: $id) {
+    ...GrantDash
+  }
+}
+    ${GrantDashFragmentDoc}` as unknown as DocumentNode<getGrantQuery, getGrantQueryVariables>;
 export const getProjectGrantsDocument = gql`
     query getProjectGrants($id: ID!) {
   project(id: $id) {
@@ -4691,6 +4823,7 @@ export const ShipsPageQueryDocument = gql`
 
 
 
+
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
@@ -4714,6 +4847,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     getGmVersions(variables?: getGmVersionsQueryVariables, options?: C): Promise<getGmVersionsQuery> {
       return requester<getGmVersionsQuery, getGmVersionsQueryVariables>(getGmVersionsDocument, variables, options) as Promise<getGmVersionsQuery>;
+    },
+    getGrant(variables: getGrantQueryVariables, options?: C): Promise<getGrantQuery> {
+      return requester<getGrantQuery, getGrantQueryVariables>(getGrantDocument, variables, options) as Promise<getGrantQuery>;
     },
     getProjectGrants(variables: getProjectGrantsQueryVariables, options?: C): Promise<getProjectGrantsQuery> {
       return requester<getProjectGrantsQuery, getProjectGrantsQueryVariables>(getProjectGrantsDocument, variables, options) as Promise<getProjectGrantsQuery>;
