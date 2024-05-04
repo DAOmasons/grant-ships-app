@@ -172,24 +172,28 @@ export const ApplyFunding = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shipBalance, shipBalanceLoading, form.values, isAmountFieldDirty]);
 
-  useEffect(() => {
-    if (!grantData || !canResubmit) return;
+  useEffect(
+    () => {
+      if (!grantData || !canResubmit) return;
 
-    form.setValues(
-      (prev) =>
-        ({
-          ...prev,
-          projectId: grantData.projectId.id,
-          dueDate: new Date(Number(grantData.applicationData.dueDate) * 1000),
-          totalAmount: formatEther(grantData.applicationData.grantAmount),
-          sendAddress: grantData.applicationData.receivingAddress,
-          objectives: grantData.applicationData.objectives,
-          proposalLink: grantData.applicationData.proposalLink,
-          extraLink: grantData.applicationData.extraLink,
-          extraInfo: grantData.applicationData.extraInfo,
-        }) as any
-    );
-  }, [canResubmit, grantData]);
+      form.setValues(
+        (prev) =>
+          ({
+            ...prev,
+            projectId: grantData.projectId.id,
+            dueDate: new Date(Number(grantData.applicationData.dueDate) * 1000),
+            totalAmount: formatEther(grantData.applicationData.grantAmount),
+            sendAddress: grantData.applicationData.receivingAddress,
+            objectives: grantData.applicationData.objectives,
+            proposalLink: grantData.applicationData.proposalLink,
+            extraLink: grantData.applicationData.extraLink,
+            extraInfo: grantData.applicationData.extraInfo,
+          }) as any
+      );
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [canResubmit, grantData]
+  );
 
   const handleBlur = (fieldName: string) => {
     form.validateField(fieldName);
@@ -417,12 +421,12 @@ export const ApplyFunding = () => {
           </Text>
         )}
       </Text>
-      <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
+      <form onSubmit={form.onSubmit((values) => handleSubmit(values as any))}>
         <Flex direction={isMobile ? 'column' : 'row'} mb="md">
           <Select
             w="100%"
             label="Project"
-            disabled={userLoading}
+            disabled={userLoading || canResubmit}
             rightSection={userLoading ? <Loader /> : undefined}
             required
             mb={isMobile ? 'md' : undefined}
@@ -433,7 +437,7 @@ export const ApplyFunding = () => {
               label: project.name,
             }))}
             error={
-              alreadyHasGrantFromShip
+              alreadyHasGrantFromShip && !canResubmit
                 ? 'You already have an active grant from this ship'
                 : undefined
             }
@@ -528,7 +532,7 @@ export const ApplyFunding = () => {
           <Button
             ml="auto"
             type="submit"
-            disabled={noProjects || alreadyHasGrantFromShip}
+            disabled={noProjects || (alreadyHasGrantFromShip && !canResubmit)}
           >
             Finish Application
           </Button>
