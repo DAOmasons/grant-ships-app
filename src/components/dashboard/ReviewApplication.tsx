@@ -18,6 +18,7 @@ import {
   IconCheck,
   IconEdit,
   IconExclamationCircle,
+  IconInfoCircle,
   IconX,
 } from '@tabler/icons-react';
 
@@ -94,11 +95,12 @@ export const ReviewApplication = ({
         args: [TAG, [1n, pinRes.IpfsHash], ZER0_ADDRESS],
       },
       onComplete() {
-        if (view === 'ship-dash') {
-          queryClient.invalidateQueries({
-            queryKey: [`project-grants-${grant.shipId.id}`],
-          });
-        }
+        queryClient.invalidateQueries({
+          queryKey: [`project-grants-${grant.projectId.id}`],
+        });
+        queryClient.invalidateQueries({
+          queryKey: [`ship-dash-${grant.shipId.id}`],
+        });
       },
     });
   };
@@ -127,7 +129,6 @@ export const ReviewApplication = ({
   const canResubmit =
     grant.grantStatus <= GrantStatus.FacilitatorRejected && isProjectMember;
 
-  console.log(grant);
   return (
     <>
       <Group align="start" justify="space-between" wrap="nowrap">
@@ -318,6 +319,13 @@ export const ReviewApplication = ({
                     </Flex>
                   </>
                 )}
+              {grant.hasResubmitted && (
+                <Group mb="md" mt="md" align="start" gap={'xs'}>
+                  <IconInfoCircle color={theme.colors.yellow[6]} />
+                  <Text fs="italic">Application has been resubmitted</Text>
+                </Group>
+              )}
+
               {canResubmit && (
                 <Group mt="xl" justify="end">
                   <Tooltip label="Resubmit Application">

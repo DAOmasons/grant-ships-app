@@ -4,6 +4,7 @@ fragment GrantDash on Grant {
   lastUpdated
   grantStatus
   milestonesAmount
+  hasResubmitted
   projectId {
     id
     name
