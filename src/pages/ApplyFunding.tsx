@@ -24,7 +24,7 @@ import {
   parseAbiParameters,
   parseEther,
 } from 'viem';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 
 import { MainSection, PageTitle } from '../layout/Sections';
 import { GAME_TOKEN, SUBGRAPH_URL } from '../constants/gameSetup';
@@ -43,6 +43,7 @@ import { appNetwork } from '../utils/config';
 import { injected } from 'wagmi/connectors';
 import { useQuery } from '@tanstack/react-query';
 import { getBuiltGraphSDK } from '../.graphclient';
+import { getGrant } from '../queries/getGrant';
 
 const defaultValues = {
   projectId: '',
@@ -70,16 +71,31 @@ const getShipFunds = async (id: string) => {
 
 export const ApplyFunding = () => {
   const { userData, userLoading, refetchUser } = useUserData();
-  const { id } = useParams();
+  const { shipId, projectId } = useParams();
+  const location = useLocation();
+
+  const canResubmit =
+    location.pathname.includes('resubmit-funding') && !!shipId && !!projectId;
+  const grantId = canResubmit ? `${projectId}-${shipId}` : undefined;
 
   const {
     data: shipBalance,
     isLoading: shipBalanceLoading,
     error: shipBalanceError,
   } = useQuery({
-    queryKey: [`ship-balance`, id],
-    queryFn: () => getShipFunds(id as string),
-    enabled: !!id,
+    queryKey: [`ship-balance`, shipId],
+    queryFn: () => getShipFunds(shipId as string),
+    enabled: !!shipId,
+  });
+
+  const {
+    data: grantData,
+    // isLoading: shipBalanceLoading,
+    // error: shipBalanceError,
+  } = useQuery({
+    queryKey: [`grant`, grantId],
+    queryFn: () => getGrant(grantId as string),
+    enabled: !!grantId,
   });
 
   const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
@@ -108,12 +124,12 @@ export const ApplyFunding = () => {
 
     return currentProject.grants.some(
       (grant) =>
-        grant.shipId.id === id &&
-        grant.grantStatus !== GrantStatus.Completed &&
+        grant.shipId.id === shipId &&
+        // grant.grantStatus !== GrantStatus.Completed && // for now
         grant.grantStatus !== GrantStatus.ShipRejected &&
         grant.grantStatus !== GrantStatus.FacilitatorRejected
     );
-  }, [form.values.projectId, id, userData]);
+  }, [form.values.projectId, shipId, userData]);
 
   const isAmountFieldDirty = form.isDirty('totalAmount');
 
@@ -156,6 +172,29 @@ export const ApplyFunding = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [shipBalance, shipBalanceLoading, form.values, isAmountFieldDirty]);
 
+  useEffect(
+    () => {
+      if (!grantData || !canResubmit) return;
+
+      form.setValues(
+        (prev) =>
+          ({
+            ...prev,
+            projectId: grantData.projectId.id,
+            dueDate: new Date(Number(grantData.applicationData.dueDate) * 1000),
+            totalAmount: formatEther(grantData.applicationData.grantAmount),
+            sendAddress: grantData.applicationData.receivingAddress,
+            objectives: grantData.applicationData.objectives,
+            proposalLink: grantData.applicationData.proposalLink,
+            extraLink: grantData.applicationData.extraLink,
+            extraInfo: grantData.applicationData.extraInfo,
+          }) as any
+      );
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [canResubmit, grantData]
+  );
+
   const handleBlur = (fieldName: string) => {
     form.validateField(fieldName);
   };
@@ -189,7 +228,7 @@ export const ApplyFunding = () => {
       });
     }
 
-    if (!id) {
+    if (!shipId) {
       notifications.show({
         title: 'Error',
         message: 'Invalid project anchor in url',
@@ -305,7 +344,7 @@ export const ApplyFunding = () => {
         [anchor, sendAddress as Address, parsedUnits, [1n, pinRes.IpfsHash]]
       );
 
-      const shipPoolId = await getShipPoolId(id as string);
+      const shipPoolId = await getShipPoolId(shipId as string);
 
       tx({
         writeContractParams: {
@@ -387,7 +426,7 @@ export const ApplyFunding = () => {
           <Select
             w="100%"
             label="Project"
-            disabled={userLoading}
+            disabled={userLoading || canResubmit}
             rightSection={userLoading ? <Loader /> : undefined}
             required
             mb={isMobile ? 'md' : undefined}
@@ -398,7 +437,7 @@ export const ApplyFunding = () => {
               label: project.name,
             }))}
             error={
-              alreadyHasGrantFromShip
+              alreadyHasGrantFromShip && !canResubmit
                 ? 'You already have an active grant from this ship'
                 : undefined
             }
@@ -493,7 +532,7 @@ export const ApplyFunding = () => {
           <Button
             ml="auto"
             type="submit"
-            disabled={noProjects || alreadyHasGrantFromShip}
+            disabled={noProjects || (alreadyHasGrantFromShip && !canResubmit)}
           >
             Finish Application
           </Button>

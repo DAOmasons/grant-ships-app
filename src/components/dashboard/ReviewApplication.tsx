@@ -4,6 +4,7 @@ import { formatEther, isAddress } from 'viem';
 import { notifications } from '@mantine/notifications';
 import { useAccount } from 'wagmi';
 import {
+  ActionIcon,
   Button,
   Flex,
   Group,
@@ -13,7 +14,13 @@ import {
   Tooltip,
   useMantineTheme,
 } from '@mantine/core';
-import { IconCheck, IconExclamationCircle, IconX } from '@tabler/icons-react';
+import {
+  IconCheck,
+  IconEdit,
+  IconExclamationCircle,
+  IconInfoCircle,
+  IconX,
+} from '@tabler/icons-react';
 
 import { ReviewPage } from '../../layout/ReviewPage';
 import GrantShipAbi from '../../abi/GrantShip.json';
@@ -27,17 +34,20 @@ import { AppAlert } from '../UnderContruction';
 import { TxButton } from '../TxButton';
 import { scanAddressLink } from '../../utils/scan';
 import { useQueryClient } from '@tanstack/react-query';
+import { Link } from 'react-router-dom';
 
 export const ReviewApplication = ({
   grant,
   shipAddress,
   isShipOperator,
+  isProjectMember,
   view,
 }: {
   grant: DashGrant;
   isShipOperator?: boolean;
   shipAddress: string;
   view: 'project-page' | 'ship-dash';
+  isProjectMember?: boolean;
 }) => {
   const theme = useMantineTheme();
 
@@ -85,11 +95,12 @@ export const ReviewApplication = ({
         args: [TAG, [1n, pinRes.IpfsHash], ZER0_ADDRESS],
       },
       onComplete() {
-        if (view === 'ship-dash') {
-          queryClient.invalidateQueries({
-            queryKey: [`project-grants-${grant.shipId.id}`],
-          });
-        }
+        queryClient.invalidateQueries({
+          queryKey: [`project-grants-${grant.projectId.id}`],
+        });
+        queryClient.invalidateQueries({
+          queryKey: [`ship-dash-${grant.shipId.id}`],
+        });
       },
     });
   };
@@ -115,6 +126,8 @@ export const ReviewApplication = ({
     BigInt(grant.shipId.totalAvailableFunds);
 
   const scanLink = scanAddressLink(grant.applicationData.receivingAddress);
+  const canResubmit =
+    grant.grantStatus <= GrantStatus.FacilitatorRejected && isProjectMember;
 
   return (
     <>
@@ -239,7 +252,7 @@ export const ReviewApplication = ({
           ]}
           footerSection={
             <>
-              {grant.grantStatus > GrantStatus.ShipRejected &&
+              {grant.grantStatus >= GrantStatus.ShipRejected &&
                 grant.shipApprovalReason && (
                   <AppAlert
                     mt={0}
@@ -255,7 +268,7 @@ export const ReviewApplication = ({
                     }
                   />
                 )}
-              {grant.grantStatus > GrantStatus.FacilitatorRejected &&
+              {grant.grantStatus >= GrantStatus.FacilitatorRejected &&
                 grant.facilitatorReason && (
                   <AppAlert
                     mt={0}
@@ -306,6 +319,26 @@ export const ReviewApplication = ({
                     </Flex>
                   </>
                 )}
+              {grant.hasResubmitted && (
+                <Group mb="md" mt="md" align="start" gap={'xs'}>
+                  <IconInfoCircle color={theme.colors.yellow[6]} />
+                  <Text fs="italic">Application has been resubmitted</Text>
+                </Group>
+              )}
+
+              {canResubmit && (
+                <Group mt="xl" justify="end">
+                  <Tooltip label="Resubmit Application">
+                    <ActionIcon
+                      variant="subtle"
+                      component={Link}
+                      to={`/resubmit-funding/${grant.shipId.id}/${grant.projectId.id}`}
+                    >
+                      <IconEdit />
+                    </ActionIcon>
+                  </Tooltip>
+                </Group>
+              )}
             </>
           }
         />

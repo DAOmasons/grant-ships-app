@@ -10,6 +10,7 @@ import { RegisterShip } from '../components/forms/RegisterShip';
 import { ShipApplication } from '../components/forms/ShipApplication';
 import { useLocalStorage } from '@mantine/hooks';
 import { CacheKeys } from '../components/forms/cacheKeys';
+import { Link } from 'react-router-dom';
 
 export type ProfileData = {
   anchor: string;
@@ -21,7 +22,7 @@ export type ProfileData = {
 export const CreateShip = () => {
   const { address } = useAccount();
 
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(2);
   const [profileData, setProfileData, removeProfileStorage] = useLocalStorage<
     ProfileData | ''
   >({
@@ -110,6 +111,7 @@ export const CreateShip = () => {
 };
 
 const ApplicationComplete = () => {
+  const { address } = useAccount();
   const theme = useMantineTheme();
 
   return (
@@ -119,20 +121,11 @@ const ApplicationComplete = () => {
       </Text>
       <Text size="md" c={theme.colors.dark[2]} mb="sm">
         Your application has been submitted to the Game Facilitators. Review
-        time is around 3-4 days. Please check back in 'My Projects' to see the
-        results.
+        time is around 3-4 days. Please check back in 'Ship Applications' to see
+        the results.
       </Text>
-      <Text c={theme.colors.dark[2]} mb="xl">
-        In the meantime, you can take some time to familiarize yourself with the
-        rules of the game.
-      </Text>
-      <Button
-        component="a"
-        href="https://rules.grantships.fun/"
-        rel="noopener noreferrer"
-        target="_blank"
-      >
-        See Game Rules
+      <Button component={Link} to={`/my-projects/${address}`}>
+        See Application
       </Button>
     </Paper>
   );

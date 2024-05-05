@@ -105,6 +105,7 @@ export const GrantCard = ({
                       grant={grant}
                       shipAddress={shipAddress}
                       isShipOperator={isShipOperator}
+                      isProjectMember={isProjectMember}
                     />
                   ),
                   onRejected: (
@@ -113,6 +114,7 @@ export const GrantCard = ({
                       grant={grant}
                       shipAddress={shipAddress}
                       isShipOperator={isShipOperator}
+                      isProjectMember={isProjectMember}
                     />
                   ),
                   onCompleted: (
@@ -121,6 +123,7 @@ export const GrantCard = ({
                       grant={grant}
                       shipAddress={shipAddress}
                       isShipOperator={isShipOperator}
+                      isProjectMember={isProjectMember}
                     />
                   ),
                 }

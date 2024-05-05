@@ -42,12 +42,51 @@ export type Scalars = {
   BigInt: any;
   Bytes: any;
   Int8: any;
-  Timestamp: any;
 };
 
-export type Aggregation_interval =
-  | 'hour'
-  | 'day';
+export type ApplicationHistory = {
+  id: Scalars['ID'];
+  grantApplicationBytes: Scalars['Bytes'];
+  applicationSubmitted: Scalars['BigInt'];
+};
+
+export type ApplicationHistory_filter = {
+  id?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']>;
+  id_gt?: InputMaybe<Scalars['ID']>;
+  id_lt?: InputMaybe<Scalars['ID']>;
+  id_gte?: InputMaybe<Scalars['ID']>;
+  id_lte?: InputMaybe<Scalars['ID']>;
+  id_in?: InputMaybe<Array<Scalars['ID']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']>>;
+  grantApplicationBytes?: InputMaybe<Scalars['Bytes']>;
+  grantApplicationBytes_not?: InputMaybe<Scalars['Bytes']>;
+  grantApplicationBytes_gt?: InputMaybe<Scalars['Bytes']>;
+  grantApplicationBytes_lt?: InputMaybe<Scalars['Bytes']>;
+  grantApplicationBytes_gte?: InputMaybe<Scalars['Bytes']>;
+  grantApplicationBytes_lte?: InputMaybe<Scalars['Bytes']>;
+  grantApplicationBytes_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  grantApplicationBytes_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  grantApplicationBytes_contains?: InputMaybe<Scalars['Bytes']>;
+  grantApplicationBytes_not_contains?: InputMaybe<Scalars['Bytes']>;
+  applicationSubmitted?: InputMaybe<Scalars['BigInt']>;
+  applicationSubmitted_not?: InputMaybe<Scalars['BigInt']>;
+  applicationSubmitted_gt?: InputMaybe<Scalars['BigInt']>;
+  applicationSubmitted_lt?: InputMaybe<Scalars['BigInt']>;
+  applicationSubmitted_gte?: InputMaybe<Scalars['BigInt']>;
+  applicationSubmitted_lte?: InputMaybe<Scalars['BigInt']>;
+  applicationSubmitted_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  applicationSubmitted_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<ApplicationHistory_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<ApplicationHistory_filter>>>;
+};
+
+export type ApplicationHistory_orderBy =
+  | 'id'
+  | 'grantApplicationBytes'
+  | 'applicationSubmitted';
 
 export type BlockChangedFilter = {
   number_gte: Scalars['Int'];
@@ -935,8 +974,10 @@ export type Grant = {
   projectId: Project;
   shipId: GrantShip;
   lastUpdated: Scalars['BigInt'];
+  hasResubmitted: Scalars['Boolean'];
   grantStatus: Scalars['Int'];
   grantApplicationBytes: Scalars['Bytes'];
+  applicationSubmitted: Scalars['BigInt'];
   currentMilestoneIndex: Scalars['BigInt'];
   milestonesAmount: Scalars['BigInt'];
   milestones?: Maybe<Array<Milestone>>;
@@ -950,6 +991,7 @@ export type Grant = {
   milestonesApproved?: Maybe<Scalars['Boolean']>;
   milestonesApprovedReason?: Maybe<RawMetadata>;
   currentMilestoneRejectedReason?: Maybe<RawMetadata>;
+  resubmitHistory: Array<ApplicationHistory>;
 };
 
 
@@ -959,6 +1001,15 @@ export type GrantmilestonesArgs = {
   orderBy?: InputMaybe<Milestone_orderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
   where?: InputMaybe<Milestone_filter>;
+};
+
+
+export type GrantresubmitHistoryArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<ApplicationHistory_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<ApplicationHistory_filter>;
 };
 
 export type GrantShip = {
@@ -1442,6 +1493,10 @@ export type Grant_filter = {
   lastUpdated_lte?: InputMaybe<Scalars['BigInt']>;
   lastUpdated_in?: InputMaybe<Array<Scalars['BigInt']>>;
   lastUpdated_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  hasResubmitted?: InputMaybe<Scalars['Boolean']>;
+  hasResubmitted_not?: InputMaybe<Scalars['Boolean']>;
+  hasResubmitted_in?: InputMaybe<Array<Scalars['Boolean']>>;
+  hasResubmitted_not_in?: InputMaybe<Array<Scalars['Boolean']>>;
   grantStatus?: InputMaybe<Scalars['Int']>;
   grantStatus_not?: InputMaybe<Scalars['Int']>;
   grantStatus_gt?: InputMaybe<Scalars['Int']>;
@@ -1460,6 +1515,14 @@ export type Grant_filter = {
   grantApplicationBytes_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
   grantApplicationBytes_contains?: InputMaybe<Scalars['Bytes']>;
   grantApplicationBytes_not_contains?: InputMaybe<Scalars['Bytes']>;
+  applicationSubmitted?: InputMaybe<Scalars['BigInt']>;
+  applicationSubmitted_not?: InputMaybe<Scalars['BigInt']>;
+  applicationSubmitted_gt?: InputMaybe<Scalars['BigInt']>;
+  applicationSubmitted_lt?: InputMaybe<Scalars['BigInt']>;
+  applicationSubmitted_gte?: InputMaybe<Scalars['BigInt']>;
+  applicationSubmitted_lte?: InputMaybe<Scalars['BigInt']>;
+  applicationSubmitted_in?: InputMaybe<Array<Scalars['BigInt']>>;
+  applicationSubmitted_not_in?: InputMaybe<Array<Scalars['BigInt']>>;
   currentMilestoneIndex?: InputMaybe<Scalars['BigInt']>;
   currentMilestoneIndex_not?: InputMaybe<Scalars['BigInt']>;
   currentMilestoneIndex_gt?: InputMaybe<Scalars['BigInt']>;
@@ -1605,6 +1668,13 @@ export type Grant_filter = {
   currentMilestoneRejectedReason_not_ends_with?: InputMaybe<Scalars['String']>;
   currentMilestoneRejectedReason_not_ends_with_nocase?: InputMaybe<Scalars['String']>;
   currentMilestoneRejectedReason_?: InputMaybe<RawMetadata_filter>;
+  resubmitHistory?: InputMaybe<Array<Scalars['String']>>;
+  resubmitHistory_not?: InputMaybe<Array<Scalars['String']>>;
+  resubmitHistory_contains?: InputMaybe<Array<Scalars['String']>>;
+  resubmitHistory_contains_nocase?: InputMaybe<Array<Scalars['String']>>;
+  resubmitHistory_not_contains?: InputMaybe<Array<Scalars['String']>>;
+  resubmitHistory_not_contains_nocase?: InputMaybe<Array<Scalars['String']>>;
+  resubmitHistory_?: InputMaybe<ApplicationHistory_filter>;
   /** Filter for the block changed event. */
   _change_block?: InputMaybe<BlockChangedFilter>;
   and?: InputMaybe<Array<InputMaybe<Grant_filter>>>;
@@ -1659,8 +1729,10 @@ export type Grant_orderBy =
   | 'shipId__isAllocated'
   | 'shipId__isDistributed'
   | 'lastUpdated'
+  | 'hasResubmitted'
   | 'grantStatus'
   | 'grantApplicationBytes'
+  | 'applicationSubmitted'
   | 'currentMilestoneIndex'
   | 'milestonesAmount'
   | 'milestones'
@@ -1685,13 +1757,14 @@ export type Grant_orderBy =
   | 'currentMilestoneRejectedReason'
   | 'currentMilestoneRejectedReason__id'
   | 'currentMilestoneRejectedReason__protocol'
-  | 'currentMilestoneRejectedReason__pointer';
+  | 'currentMilestoneRejectedReason__pointer'
+  | 'resubmitHistory';
 
 export type Log = {
   id: Scalars['ID'];
   message: Scalars['String'];
   description?: Maybe<Scalars['String']>;
-  type: Scalars['String'];
+  type?: Maybe<Scalars['String']>;
 };
 
 export type Log_filter = {
@@ -1887,6 +1960,52 @@ export type PoolIdLookup_filter = {
 export type PoolIdLookup_orderBy =
   | 'id'
   | 'entityId';
+
+export type ProfileIdToAnchor = {
+  id: Scalars['ID'];
+  profileId: Scalars['Bytes'];
+  anchor: Scalars['Bytes'];
+};
+
+export type ProfileIdToAnchor_filter = {
+  id?: InputMaybe<Scalars['ID']>;
+  id_not?: InputMaybe<Scalars['ID']>;
+  id_gt?: InputMaybe<Scalars['ID']>;
+  id_lt?: InputMaybe<Scalars['ID']>;
+  id_gte?: InputMaybe<Scalars['ID']>;
+  id_lte?: InputMaybe<Scalars['ID']>;
+  id_in?: InputMaybe<Array<Scalars['ID']>>;
+  id_not_in?: InputMaybe<Array<Scalars['ID']>>;
+  profileId?: InputMaybe<Scalars['Bytes']>;
+  profileId_not?: InputMaybe<Scalars['Bytes']>;
+  profileId_gt?: InputMaybe<Scalars['Bytes']>;
+  profileId_lt?: InputMaybe<Scalars['Bytes']>;
+  profileId_gte?: InputMaybe<Scalars['Bytes']>;
+  profileId_lte?: InputMaybe<Scalars['Bytes']>;
+  profileId_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  profileId_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  profileId_contains?: InputMaybe<Scalars['Bytes']>;
+  profileId_not_contains?: InputMaybe<Scalars['Bytes']>;
+  anchor?: InputMaybe<Scalars['Bytes']>;
+  anchor_not?: InputMaybe<Scalars['Bytes']>;
+  anchor_gt?: InputMaybe<Scalars['Bytes']>;
+  anchor_lt?: InputMaybe<Scalars['Bytes']>;
+  anchor_gte?: InputMaybe<Scalars['Bytes']>;
+  anchor_lte?: InputMaybe<Scalars['Bytes']>;
+  anchor_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  anchor_not_in?: InputMaybe<Array<Scalars['Bytes']>>;
+  anchor_contains?: InputMaybe<Scalars['Bytes']>;
+  anchor_not_contains?: InputMaybe<Scalars['Bytes']>;
+  /** Filter for the block changed event. */
+  _change_block?: InputMaybe<BlockChangedFilter>;
+  and?: InputMaybe<Array<InputMaybe<ProfileIdToAnchor_filter>>>;
+  or?: InputMaybe<Array<InputMaybe<ProfileIdToAnchor_filter>>>;
+};
+
+export type ProfileIdToAnchor_orderBy =
+  | 'id'
+  | 'profileId'
+  | 'anchor';
 
 export type ProfileMemberGroup = {
   id: Scalars['Bytes'];
@@ -2145,16 +2264,19 @@ export type Query = {
   gameManagers: Array<GameManager>;
   gameRound?: Maybe<GameRound>;
   gameRounds: Array<GameRound>;
+  applicationHistory?: Maybe<ApplicationHistory>;
+  applicationHistories: Array<ApplicationHistory>;
   grant?: Maybe<Grant>;
   grants: Array<Grant>;
   milestone?: Maybe<Milestone>;
   milestones: Array<Milestone>;
+  profileIdToAnchor?: Maybe<ProfileIdToAnchor>;
+  profileIdToAnchors: Array<ProfileIdToAnchor>;
   profileMemberGroup?: Maybe<ProfileMemberGroup>;
   profileMemberGroups: Array<ProfileMemberGroup>;
   transaction?: Maybe<Transaction>;
   transactions: Array<Transaction>;
-  rawMetadata?: Maybe<RawMetadata>;
-  rawMetadata_collection: Array<RawMetadata>;
+  rawMetadata: Array<RawMetadata>;
   log?: Maybe<Log>;
   logs: Array<Log>;
   gmVersion?: Maybe<GmVersion>;
@@ -2328,6 +2450,24 @@ export type QuerygameRoundsArgs = {
 };
 
 
+export type QueryapplicationHistoryArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryapplicationHistoriesArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<ApplicationHistory_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<ApplicationHistory_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
 export type QuerygrantArgs = {
   id: Scalars['ID'];
   block?: InputMaybe<Block_height>;
@@ -2359,6 +2499,24 @@ export type QuerymilestonesArgs = {
   orderBy?: InputMaybe<Milestone_orderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
   where?: InputMaybe<Milestone_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryprofileIdToAnchorArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryprofileIdToAnchorsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<ProfileIdToAnchor_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<ProfileIdToAnchor_filter>;
   block?: InputMaybe<Block_height>;
   subgraphError?: _SubgraphErrorPolicy_;
 };
@@ -2401,13 +2559,6 @@ export type QuerytransactionsArgs = {
 
 
 export type QueryrawMetadataArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QueryrawMetadata_collectionArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   first?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<RawMetadata_orderBy>;
@@ -2561,16 +2712,19 @@ export type Subscription = {
   gameManagers: Array<GameManager>;
   gameRound?: Maybe<GameRound>;
   gameRounds: Array<GameRound>;
+  applicationHistory?: Maybe<ApplicationHistory>;
+  applicationHistories: Array<ApplicationHistory>;
   grant?: Maybe<Grant>;
   grants: Array<Grant>;
   milestone?: Maybe<Milestone>;
   milestones: Array<Milestone>;
+  profileIdToAnchor?: Maybe<ProfileIdToAnchor>;
+  profileIdToAnchors: Array<ProfileIdToAnchor>;
   profileMemberGroup?: Maybe<ProfileMemberGroup>;
   profileMemberGroups: Array<ProfileMemberGroup>;
   transaction?: Maybe<Transaction>;
   transactions: Array<Transaction>;
-  rawMetadata?: Maybe<RawMetadata>;
-  rawMetadata_collection: Array<RawMetadata>;
+  rawMetadata: Array<RawMetadata>;
   log?: Maybe<Log>;
   logs: Array<Log>;
   gmVersion?: Maybe<GmVersion>;
@@ -2744,6 +2898,24 @@ export type SubscriptiongameRoundsArgs = {
 };
 
 
+export type SubscriptionapplicationHistoryArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionapplicationHistoriesArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<ApplicationHistory_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<ApplicationHistory_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
 export type SubscriptiongrantArgs = {
   id: Scalars['ID'];
   block?: InputMaybe<Block_height>;
@@ -2775,6 +2947,24 @@ export type SubscriptionmilestonesArgs = {
   orderBy?: InputMaybe<Milestone_orderBy>;
   orderDirection?: InputMaybe<OrderDirection>;
   where?: InputMaybe<Milestone_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionprofileIdToAnchorArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionprofileIdToAnchorsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<ProfileIdToAnchor_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<ProfileIdToAnchor_filter>;
   block?: InputMaybe<Block_height>;
   subgraphError?: _SubgraphErrorPolicy_;
 };
@@ -2817,13 +3007,6 @@ export type SubscriptiontransactionsArgs = {
 
 
 export type SubscriptionrawMetadataArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionrawMetadata_collectionArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   first?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<RawMetadata_orderBy>;
@@ -3077,8 +3260,6 @@ export type _Block_ = {
   number: Scalars['Int'];
   /** Integer representation of the timestamp stored in blocks for the chain */
   timestamp?: Maybe<Scalars['Int']>;
-  /** The hash of the parent block */
-  parentHash?: Maybe<Scalars['Bytes']>;
 };
 
 /** The type for the top-level _meta field */
@@ -3189,7 +3370,9 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = ResolversObject<{
-  Aggregation_interval: Aggregation_interval;
+  ApplicationHistory: ResolverTypeWrapper<ApplicationHistory>;
+  ApplicationHistory_filter: ApplicationHistory_filter;
+  ApplicationHistory_orderBy: ApplicationHistory_orderBy;
   BigDecimal: ResolverTypeWrapper<Scalars['BigDecimal']>;
   BigInt: ResolverTypeWrapper<Scalars['BigInt']>;
   BlockChangedFilter: BlockChangedFilter;
@@ -3237,6 +3420,9 @@ export type ResolversTypes = ResolversObject<{
   PoolIdLookup: ResolverTypeWrapper<PoolIdLookup>;
   PoolIdLookup_filter: PoolIdLookup_filter;
   PoolIdLookup_orderBy: PoolIdLookup_orderBy;
+  ProfileIdToAnchor: ResolverTypeWrapper<ProfileIdToAnchor>;
+  ProfileIdToAnchor_filter: ProfileIdToAnchor_filter;
+  ProfileIdToAnchor_orderBy: ProfileIdToAnchor_orderBy;
   ProfileMemberGroup: ResolverTypeWrapper<ProfileMemberGroup>;
   ProfileMemberGroup_filter: ProfileMemberGroup_filter;
   ProfileMemberGroup_orderBy: ProfileMemberGroup_orderBy;
@@ -3249,7 +3435,6 @@ export type ResolversTypes = ResolversObject<{
   RawMetadata_orderBy: RawMetadata_orderBy;
   String: ResolverTypeWrapper<Scalars['String']>;
   Subscription: ResolverTypeWrapper<{}>;
-  Timestamp: ResolverTypeWrapper<Scalars['Timestamp']>;
   Transaction: ResolverTypeWrapper<Transaction>;
   Transaction_filter: Transaction_filter;
   Transaction_orderBy: Transaction_orderBy;
@@ -3263,6 +3448,8 @@ export type ResolversTypes = ResolversObject<{
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
+  ApplicationHistory: ApplicationHistory;
+  ApplicationHistory_filter: ApplicationHistory_filter;
   BigDecimal: Scalars['BigDecimal'];
   BigInt: Scalars['BigInt'];
   BlockChangedFilter: BlockChangedFilter;
@@ -3297,6 +3484,8 @@ export type ResolversParentTypes = ResolversObject<{
   Milestone_filter: Milestone_filter;
   PoolIdLookup: PoolIdLookup;
   PoolIdLookup_filter: PoolIdLookup_filter;
+  ProfileIdToAnchor: ProfileIdToAnchor;
+  ProfileIdToAnchor_filter: ProfileIdToAnchor_filter;
   ProfileMemberGroup: ProfileMemberGroup;
   ProfileMemberGroup_filter: ProfileMemberGroup_filter;
   Project: Project;
@@ -3306,7 +3495,6 @@ export type ResolversParentTypes = ResolversObject<{
   RawMetadata_filter: RawMetadata_filter;
   String: Scalars['String'];
   Subscription: {};
-  Timestamp: Scalars['Timestamp'];
   Transaction: Transaction;
   Transaction_filter: Transaction_filter;
   Update: Update;
@@ -3330,6 +3518,13 @@ export type derivedFromDirectiveArgs = {
 };
 
 export type derivedFromDirectiveResolver<Result, Parent, ContextType = MeshContext, Args = derivedFromDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+
+export type ApplicationHistoryResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['ApplicationHistory'] = ResolversParentTypes['ApplicationHistory']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  grantApplicationBytes?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
+  applicationSubmitted?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
 
 export interface BigDecimalScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['BigDecimal'], any> {
   name: 'BigDecimal';
@@ -3429,8 +3624,10 @@ export type GrantResolvers<ContextType = MeshContext, ParentType extends Resolve
   projectId?: Resolver<ResolversTypes['Project'], ParentType, ContextType>;
   shipId?: Resolver<ResolversTypes['GrantShip'], ParentType, ContextType>;
   lastUpdated?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  hasResubmitted?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   grantStatus?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   grantApplicationBytes?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
+  applicationSubmitted?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   currentMilestoneIndex?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   milestonesAmount?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
   milestones?: Resolver<Maybe<Array<ResolversTypes['Milestone']>>, ParentType, ContextType, RequireFields<GrantmilestonesArgs, 'skip' | 'first'>>;
@@ -3444,6 +3641,7 @@ export type GrantResolvers<ContextType = MeshContext, ParentType extends Resolve
   milestonesApproved?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   milestonesApprovedReason?: Resolver<Maybe<ResolversTypes['RawMetadata']>, ParentType, ContextType>;
   currentMilestoneRejectedReason?: Resolver<Maybe<ResolversTypes['RawMetadata']>, ParentType, ContextType>;
+  resubmitHistory?: Resolver<Array<ResolversTypes['ApplicationHistory']>, ParentType, ContextType, RequireFields<GrantresubmitHistoryArgs, 'skip' | 'first'>>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -3495,7 +3693,7 @@ export type LogResolvers<ContextType = MeshContext, ParentType extends Resolvers
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   description?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  type?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  type?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -3512,6 +3710,13 @@ export type MilestoneResolvers<ContextType = MeshContext, ParentType extends Res
 export type PoolIdLookupResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['PoolIdLookup'] = ResolversParentTypes['PoolIdLookup']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   entityId?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type ProfileIdToAnchorResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['ProfileIdToAnchor'] = ResolversParentTypes['ProfileIdToAnchor']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  profileId?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
+  anchor?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -3558,16 +3763,19 @@ export type QueryResolvers<ContextType = MeshContext, ParentType extends Resolve
   gameManagers?: Resolver<Array<ResolversTypes['GameManager']>, ParentType, ContextType, RequireFields<QuerygameManagersArgs, 'skip' | 'first' | 'subgraphError'>>;
   gameRound?: Resolver<Maybe<ResolversTypes['GameRound']>, ParentType, ContextType, RequireFields<QuerygameRoundArgs, 'id' | 'subgraphError'>>;
   gameRounds?: Resolver<Array<ResolversTypes['GameRound']>, ParentType, ContextType, RequireFields<QuerygameRoundsArgs, 'skip' | 'first' | 'subgraphError'>>;
+  applicationHistory?: Resolver<Maybe<ResolversTypes['ApplicationHistory']>, ParentType, ContextType, RequireFields<QueryapplicationHistoryArgs, 'id' | 'subgraphError'>>;
+  applicationHistories?: Resolver<Array<ResolversTypes['ApplicationHistory']>, ParentType, ContextType, RequireFields<QueryapplicationHistoriesArgs, 'skip' | 'first' | 'subgraphError'>>;
   grant?: Resolver<Maybe<ResolversTypes['Grant']>, ParentType, ContextType, RequireFields<QuerygrantArgs, 'id' | 'subgraphError'>>;
   grants?: Resolver<Array<ResolversTypes['Grant']>, ParentType, ContextType, RequireFields<QuerygrantsArgs, 'skip' | 'first' | 'subgraphError'>>;
   milestone?: Resolver<Maybe<ResolversTypes['Milestone']>, ParentType, ContextType, RequireFields<QuerymilestoneArgs, 'id' | 'subgraphError'>>;
   milestones?: Resolver<Array<ResolversTypes['Milestone']>, ParentType, ContextType, RequireFields<QuerymilestonesArgs, 'skip' | 'first' | 'subgraphError'>>;
+  profileIdToAnchor?: Resolver<Maybe<ResolversTypes['ProfileIdToAnchor']>, ParentType, ContextType, RequireFields<QueryprofileIdToAnchorArgs, 'id' | 'subgraphError'>>;
+  profileIdToAnchors?: Resolver<Array<ResolversTypes['ProfileIdToAnchor']>, ParentType, ContextType, RequireFields<QueryprofileIdToAnchorsArgs, 'skip' | 'first' | 'subgraphError'>>;
   profileMemberGroup?: Resolver<Maybe<ResolversTypes['ProfileMemberGroup']>, ParentType, ContextType, RequireFields<QueryprofileMemberGroupArgs, 'id' | 'subgraphError'>>;
   profileMemberGroups?: Resolver<Array<ResolversTypes['ProfileMemberGroup']>, ParentType, ContextType, RequireFields<QueryprofileMemberGroupsArgs, 'skip' | 'first' | 'subgraphError'>>;
   transaction?: Resolver<Maybe<ResolversTypes['Transaction']>, ParentType, ContextType, RequireFields<QuerytransactionArgs, 'id' | 'subgraphError'>>;
   transactions?: Resolver<Array<ResolversTypes['Transaction']>, ParentType, ContextType, RequireFields<QuerytransactionsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  rawMetadata?: Resolver<Maybe<ResolversTypes['RawMetadata']>, ParentType, ContextType, RequireFields<QueryrawMetadataArgs, 'id' | 'subgraphError'>>;
-  rawMetadata_collection?: Resolver<Array<ResolversTypes['RawMetadata']>, ParentType, ContextType, RequireFields<QueryrawMetadata_collectionArgs, 'skip' | 'first' | 'subgraphError'>>;
+  rawMetadata?: Resolver<Array<ResolversTypes['RawMetadata']>, ParentType, ContextType, RequireFields<QueryrawMetadataArgs, 'skip' | 'first' | 'subgraphError'>>;
   log?: Resolver<Maybe<ResolversTypes['Log']>, ParentType, ContextType, RequireFields<QuerylogArgs, 'id' | 'subgraphError'>>;
   logs?: Resolver<Array<ResolversTypes['Log']>, ParentType, ContextType, RequireFields<QuerylogsArgs, 'skip' | 'first' | 'subgraphError'>>;
   gmVersion?: Resolver<Maybe<ResolversTypes['GmVersion']>, ParentType, ContextType, RequireFields<QuerygmVersionArgs, 'id' | 'subgraphError'>>;
@@ -3603,16 +3811,19 @@ export type SubscriptionResolvers<ContextType = MeshContext, ParentType extends 
   gameManagers?: SubscriptionResolver<Array<ResolversTypes['GameManager']>, "gameManagers", ParentType, ContextType, RequireFields<SubscriptiongameManagersArgs, 'skip' | 'first' | 'subgraphError'>>;
   gameRound?: SubscriptionResolver<Maybe<ResolversTypes['GameRound']>, "gameRound", ParentType, ContextType, RequireFields<SubscriptiongameRoundArgs, 'id' | 'subgraphError'>>;
   gameRounds?: SubscriptionResolver<Array<ResolversTypes['GameRound']>, "gameRounds", ParentType, ContextType, RequireFields<SubscriptiongameRoundsArgs, 'skip' | 'first' | 'subgraphError'>>;
+  applicationHistory?: SubscriptionResolver<Maybe<ResolversTypes['ApplicationHistory']>, "applicationHistory", ParentType, ContextType, RequireFields<SubscriptionapplicationHistoryArgs, 'id' | 'subgraphError'>>;
+  applicationHistories?: SubscriptionResolver<Array<ResolversTypes['ApplicationHistory']>, "applicationHistories", ParentType, ContextType, RequireFields<SubscriptionapplicationHistoriesArgs, 'skip' | 'first' | 'subgraphError'>>;
   grant?: SubscriptionResolver<Maybe<ResolversTypes['Grant']>, "grant", ParentType, ContextType, RequireFields<SubscriptiongrantArgs, 'id' | 'subgraphError'>>;
   grants?: SubscriptionResolver<Array<ResolversTypes['Grant']>, "grants", ParentType, ContextType, RequireFields<SubscriptiongrantsArgs, 'skip' | 'first' | 'subgraphError'>>;
   milestone?: SubscriptionResolver<Maybe<ResolversTypes['Milestone']>, "milestone", ParentType, ContextType, RequireFields<SubscriptionmilestoneArgs, 'id' | 'subgraphError'>>;
   milestones?: SubscriptionResolver<Array<ResolversTypes['Milestone']>, "milestones", ParentType, ContextType, RequireFields<SubscriptionmilestonesArgs, 'skip' | 'first' | 'subgraphError'>>;
+  profileIdToAnchor?: SubscriptionResolver<Maybe<ResolversTypes['ProfileIdToAnchor']>, "profileIdToAnchor", ParentType, ContextType, RequireFields<SubscriptionprofileIdToAnchorArgs, 'id' | 'subgraphError'>>;
+  profileIdToAnchors?: SubscriptionResolver<Array<ResolversTypes['ProfileIdToAnchor']>, "profileIdToAnchors", ParentType, ContextType, RequireFields<SubscriptionprofileIdToAnchorsArgs, 'skip' | 'first' | 'subgraphError'>>;
   profileMemberGroup?: SubscriptionResolver<Maybe<ResolversTypes['ProfileMemberGroup']>, "profileMemberGroup", ParentType, ContextType, RequireFields<SubscriptionprofileMemberGroupArgs, 'id' | 'subgraphError'>>;
   profileMemberGroups?: SubscriptionResolver<Array<ResolversTypes['ProfileMemberGroup']>, "profileMemberGroups", ParentType, ContextType, RequireFields<SubscriptionprofileMemberGroupsArgs, 'skip' | 'first' | 'subgraphError'>>;
   transaction?: SubscriptionResolver<Maybe<ResolversTypes['Transaction']>, "transaction", ParentType, ContextType, RequireFields<SubscriptiontransactionArgs, 'id' | 'subgraphError'>>;
   transactions?: SubscriptionResolver<Array<ResolversTypes['Transaction']>, "transactions", ParentType, ContextType, RequireFields<SubscriptiontransactionsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  rawMetadata?: SubscriptionResolver<Maybe<ResolversTypes['RawMetadata']>, "rawMetadata", ParentType, ContextType, RequireFields<SubscriptionrawMetadataArgs, 'id' | 'subgraphError'>>;
-  rawMetadata_collection?: SubscriptionResolver<Array<ResolversTypes['RawMetadata']>, "rawMetadata_collection", ParentType, ContextType, RequireFields<SubscriptionrawMetadata_collectionArgs, 'skip' | 'first' | 'subgraphError'>>;
+  rawMetadata?: SubscriptionResolver<Array<ResolversTypes['RawMetadata']>, "rawMetadata", ParentType, ContextType, RequireFields<SubscriptionrawMetadataArgs, 'skip' | 'first' | 'subgraphError'>>;
   log?: SubscriptionResolver<Maybe<ResolversTypes['Log']>, "log", ParentType, ContextType, RequireFields<SubscriptionlogArgs, 'id' | 'subgraphError'>>;
   logs?: SubscriptionResolver<Array<ResolversTypes['Log']>, "logs", ParentType, ContextType, RequireFields<SubscriptionlogsArgs, 'skip' | 'first' | 'subgraphError'>>;
   gmVersion?: SubscriptionResolver<Maybe<ResolversTypes['GmVersion']>, "gmVersion", ParentType, ContextType, RequireFields<SubscriptiongmVersionArgs, 'id' | 'subgraphError'>>;
@@ -3621,10 +3832,6 @@ export type SubscriptionResolvers<ContextType = MeshContext, ParentType extends 
   gmDeployments?: SubscriptionResolver<Array<ResolversTypes['GmDeployment']>, "gmDeployments", ParentType, ContextType, RequireFields<SubscriptiongmDeploymentsArgs, 'skip' | 'first' | 'subgraphError'>>;
   _meta?: SubscriptionResolver<Maybe<ResolversTypes['_Meta_']>, "_meta", ParentType, ContextType, Partial<Subscription_metaArgs>>;
 }>;
-
-export interface TimestampScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['Timestamp'], any> {
-  name: 'Timestamp';
-}
 
 export type TransactionResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Transaction'] = ResolversParentTypes['Transaction']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
@@ -3651,7 +3858,6 @@ export type _Block_Resolvers<ContextType = MeshContext, ParentType extends Resol
   hash?: Resolver<Maybe<ResolversTypes['Bytes']>, ParentType, ContextType>;
   number?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   timestamp?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  parentHash?: Resolver<Maybe<ResolversTypes['Bytes']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -3663,6 +3869,7 @@ export type _Meta_Resolvers<ContextType = MeshContext, ParentType extends Resolv
 }>;
 
 export type Resolvers<ContextType = MeshContext> = ResolversObject<{
+  ApplicationHistory?: ApplicationHistoryResolvers<ContextType>;
   BigDecimal?: GraphQLScalarType;
   BigInt?: GraphQLScalarType;
   Bytes?: GraphQLScalarType;
@@ -3679,12 +3886,12 @@ export type Resolvers<ContextType = MeshContext> = ResolversObject<{
   Log?: LogResolvers<ContextType>;
   Milestone?: MilestoneResolvers<ContextType>;
   PoolIdLookup?: PoolIdLookupResolvers<ContextType>;
+  ProfileIdToAnchor?: ProfileIdToAnchorResolvers<ContextType>;
   ProfileMemberGroup?: ProfileMemberGroupResolvers<ContextType>;
   Project?: ProjectResolvers<ContextType>;
   Query?: QueryResolvers<ContextType>;
   RawMetadata?: RawMetadataResolvers<ContextType>;
   Subscription?: SubscriptionResolvers<ContextType>;
-  Timestamp?: GraphQLScalarType;
   Transaction?: TransactionResolvers<ContextType>;
   Update?: UpdateResolvers<ContextType>;
   _Block_?: _Block_Resolvers<ContextType>;
@@ -3743,7 +3950,7 @@ const grantShipsTransforms = [];
 const additionalTypeDefs = [] as any[];
 const grantShipsHandler = new GraphqlHandler({
               name: "grant-ships",
-              config: {"endpoint":"https://{context.apiEndpoint:api.studio.thegraph.com/query/41101/grant-ships-arb/version/latest}"},
+              config: {"endpoint":"https://{context.apiEndpoint:api.goldsky.com/api/public/project_clruaxx0m7yn101uj2rmi6mfj/subgraphs/gs-arb-sepolia/1.0.5/gn}"},
               baseDir,
               cache,
               pubsub,
@@ -3818,6 +4025,12 @@ const merger = new(BareMerger as any)({
           return printWithCache(GetGmVersionsDocument);
         },
         location: 'GetGmVersionsDocument.graphql'
+      },{
+        document: GetGrantDocument,
+        get rawSDL() {
+          return printWithCache(GetGrantDocument);
+        },
+        location: 'GetGrantDocument.graphql'
       },{
         document: GetProjectGrantsDocument,
         get rawSDL() {
@@ -3951,7 +4164,7 @@ export type UpdateFragment = (
 );
 
 export type GrantDashFragment = (
-  Pick<Grant, 'id' | 'grantApplicationBytes' | 'lastUpdated' | 'grantStatus' | 'milestonesAmount' | 'milestonesApproved' | 'amtDistributed' | 'amtAllocated' | 'currentMilestoneIndex'>
+  Pick<Grant, 'id' | 'grantApplicationBytes' | 'lastUpdated' | 'grantStatus' | 'milestonesAmount' | 'hasResubmitted' | 'milestonesApproved' | 'amtDistributed' | 'amtAllocated' | 'currentMilestoneIndex'>
   & { projectId: (
     Pick<Project, 'id' | 'name'>
     & { metadata: Pick<RawMetadata, 'pointer'> }
@@ -3984,7 +4197,7 @@ export type getFacilitatorGrantsQueryVariables = Exact<{ [key: string]: never; }
 
 
 export type getFacilitatorGrantsQuery = { requiresAction: Array<(
-    Pick<Grant, 'id' | 'grantApplicationBytes' | 'lastUpdated' | 'grantStatus' | 'milestonesAmount' | 'milestonesApproved' | 'amtDistributed' | 'amtAllocated' | 'currentMilestoneIndex'>
+    Pick<Grant, 'id' | 'grantApplicationBytes' | 'lastUpdated' | 'grantStatus' | 'milestonesAmount' | 'hasResubmitted' | 'milestonesApproved' | 'amtDistributed' | 'amtAllocated' | 'currentMilestoneIndex'>
     & { projectId: (
       Pick<Project, 'id' | 'name'>
       & { metadata: Pick<RawMetadata, 'pointer'> }
@@ -3993,7 +4206,7 @@ export type getFacilitatorGrantsQuery = { requiresAction: Array<(
       & { profileMetadata: Pick<RawMetadata, 'pointer'> }
     ), currentMilestoneRejectedReason?: Maybe<Pick<RawMetadata, 'pointer'>>, milestonesApprovedReason?: Maybe<Pick<RawMetadata, 'pointer'>>, facilitatorReason?: Maybe<Pick<RawMetadata, 'pointer'>>, shipApprovalReason?: Maybe<Pick<RawMetadata, 'pointer'>> }
   )>, rejected: Array<(
-    Pick<Grant, 'id' | 'grantApplicationBytes' | 'lastUpdated' | 'grantStatus' | 'milestonesAmount' | 'milestonesApproved' | 'amtDistributed' | 'amtAllocated' | 'currentMilestoneIndex'>
+    Pick<Grant, 'id' | 'grantApplicationBytes' | 'lastUpdated' | 'grantStatus' | 'milestonesAmount' | 'hasResubmitted' | 'milestonesApproved' | 'amtDistributed' | 'amtAllocated' | 'currentMilestoneIndex'>
     & { projectId: (
       Pick<Project, 'id' | 'name'>
       & { metadata: Pick<RawMetadata, 'pointer'> }
@@ -4002,7 +4215,7 @@ export type getFacilitatorGrantsQuery = { requiresAction: Array<(
       & { profileMetadata: Pick<RawMetadata, 'pointer'> }
     ), currentMilestoneRejectedReason?: Maybe<Pick<RawMetadata, 'pointer'>>, milestonesApprovedReason?: Maybe<Pick<RawMetadata, 'pointer'>>, facilitatorReason?: Maybe<Pick<RawMetadata, 'pointer'>>, shipApprovalReason?: Maybe<Pick<RawMetadata, 'pointer'>> }
   )>, approved: Array<(
-    Pick<Grant, 'id' | 'grantApplicationBytes' | 'lastUpdated' | 'grantStatus' | 'milestonesAmount' | 'milestonesApproved' | 'amtDistributed' | 'amtAllocated' | 'currentMilestoneIndex'>
+    Pick<Grant, 'id' | 'grantApplicationBytes' | 'lastUpdated' | 'grantStatus' | 'milestonesAmount' | 'hasResubmitted' | 'milestonesApproved' | 'amtDistributed' | 'amtAllocated' | 'currentMilestoneIndex'>
     & { projectId: (
       Pick<Project, 'id' | 'name'>
       & { metadata: Pick<RawMetadata, 'pointer'> }
@@ -4086,13 +4299,29 @@ export type getGmVersionsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type getGmVersionsQuery = { gmVersions: Array<Pick<GmVersion, 'id' | 'name' | 'address'>> };
 
+export type getGrantQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type getGrantQuery = { grant?: Maybe<(
+    Pick<Grant, 'id' | 'grantApplicationBytes' | 'lastUpdated' | 'grantStatus' | 'milestonesAmount' | 'hasResubmitted' | 'milestonesApproved' | 'amtDistributed' | 'amtAllocated' | 'currentMilestoneIndex'>
+    & { projectId: (
+      Pick<Project, 'id' | 'name'>
+      & { metadata: Pick<RawMetadata, 'pointer'> }
+    ), shipId: (
+      Pick<GrantShip, 'id' | 'name' | 'shipContractAddress' | 'poolId' | 'totalAvailableFunds'>
+      & { profileMetadata: Pick<RawMetadata, 'pointer'> }
+    ), currentMilestoneRejectedReason?: Maybe<Pick<RawMetadata, 'pointer'>>, milestonesApprovedReason?: Maybe<Pick<RawMetadata, 'pointer'>>, facilitatorReason?: Maybe<Pick<RawMetadata, 'pointer'>>, shipApprovalReason?: Maybe<Pick<RawMetadata, 'pointer'>> }
+  )> };
+
 export type getProjectGrantsQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
 
 
 export type getProjectGrantsQuery = { project?: Maybe<{ grants: Array<(
-      Pick<Grant, 'id' | 'grantApplicationBytes' | 'lastUpdated' | 'grantStatus' | 'milestonesAmount' | 'milestonesApproved' | 'amtDistributed' | 'amtAllocated' | 'currentMilestoneIndex'>
+      Pick<Grant, 'id' | 'grantApplicationBytes' | 'lastUpdated' | 'grantStatus' | 'milestonesAmount' | 'hasResubmitted' | 'milestonesApproved' | 'amtDistributed' | 'amtAllocated' | 'currentMilestoneIndex'>
       & { projectId: (
         Pick<Project, 'id' | 'name'>
         & { metadata: Pick<RawMetadata, 'pointer'> }
@@ -4158,7 +4387,7 @@ export type getShipDashQueryVariables = Exact<{
 export type getShipDashQuery = { grantShip?: Maybe<(
     Pick<GrantShip, 'id' | 'name' | 'status' | 'hatId' | 'shipContractAddress' | 'shipApplicationBytesData' | 'owner' | 'balance'>
     & { grants: Array<(
-      Pick<Grant, 'id' | 'grantApplicationBytes' | 'lastUpdated' | 'grantStatus' | 'milestonesAmount' | 'milestonesApproved' | 'amtDistributed' | 'amtAllocated' | 'currentMilestoneIndex'>
+      Pick<Grant, 'id' | 'grantApplicationBytes' | 'lastUpdated' | 'grantStatus' | 'milestonesAmount' | 'hasResubmitted' | 'milestonesApproved' | 'amtDistributed' | 'amtAllocated' | 'currentMilestoneIndex'>
       & { projectId: (
         Pick<Project, 'id' | 'name'>
         & { metadata: Pick<RawMetadata, 'pointer'> }
@@ -4175,7 +4404,7 @@ export type getShipGrantsQueryVariables = Exact<{
 
 
 export type getShipGrantsQuery = { grantShip?: Maybe<{ grants: Array<(
-      Pick<Grant, 'id' | 'grantApplicationBytes' | 'lastUpdated' | 'grantStatus' | 'milestonesAmount' | 'milestonesApproved' | 'amtDistributed' | 'amtAllocated' | 'currentMilestoneIndex'>
+      Pick<Grant, 'id' | 'grantApplicationBytes' | 'lastUpdated' | 'grantStatus' | 'milestonesAmount' | 'hasResubmitted' | 'milestonesApproved' | 'amtDistributed' | 'amtAllocated' | 'currentMilestoneIndex'>
       & { projectId: (
         Pick<Project, 'id' | 'name'>
         & { metadata: Pick<RawMetadata, 'pointer'> }
@@ -4285,6 +4514,7 @@ export const GrantDashFragmentDoc = gql`
   lastUpdated
   grantStatus
   milestonesAmount
+  hasResubmitted
   projectId {
     id
     name
@@ -4527,6 +4757,13 @@ export const getGmVersionsDocument = gql`
   }
 }
     ` as unknown as DocumentNode<getGmVersionsQuery, getGmVersionsQueryVariables>;
+export const getGrantDocument = gql`
+    query getGrant($id: ID!) {
+  grant(id: $id) {
+    ...GrantDash
+  }
+}
+    ${GrantDashFragmentDoc}` as unknown as DocumentNode<getGrantQuery, getGrantQueryVariables>;
 export const getProjectGrantsDocument = gql`
     query getProjectGrants($id: ID!) {
   project(id: $id) {
@@ -4691,6 +4928,7 @@ export const ShipsPageQueryDocument = gql`
 
 
 
+
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
@@ -4714,6 +4952,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     getGmVersions(variables?: getGmVersionsQueryVariables, options?: C): Promise<getGmVersionsQuery> {
       return requester<getGmVersionsQuery, getGmVersionsQueryVariables>(getGmVersionsDocument, variables, options) as Promise<getGmVersionsQuery>;
+    },
+    getGrant(variables: getGrantQueryVariables, options?: C): Promise<getGrantQuery> {
+      return requester<getGrantQuery, getGrantQueryVariables>(getGrantDocument, variables, options) as Promise<getGrantQuery>;
     },
     getProjectGrants(variables: getProjectGrantsQueryVariables, options?: C): Promise<getProjectGrantsQuery> {
       return requester<getProjectGrantsQuery, getProjectGrantsQueryVariables>(getProjectGrantsDocument, variables, options) as Promise<getProjectGrantsQuery>;
