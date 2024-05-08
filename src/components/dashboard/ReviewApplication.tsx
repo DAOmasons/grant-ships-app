@@ -127,7 +127,7 @@ export const ReviewApplication = ({
 
   const scanLink = scanAddressLink(grant.applicationData.receivingAddress);
   const canResubmit =
-    grant.grantStatus <= GrantStatus.FacilitatorRejected && isProjectMember;
+    grant.grantStatus <= GrantStatus.ShipRejected && isProjectMember;
 
   return (
     <>
