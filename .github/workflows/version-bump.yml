@@ -18,7 +18,7 @@ jobs:
           node-version: '14'  
 
       - name: Bump version
-        uses: phips28/gh-action-bump-version@v11.x
+        uses: phips28/gh-action-bump-version@v11.0.4
         with:
           minor-wording: 'feature'
           major-wording: 'BREAKING CHANGE'
