@@ -112,14 +112,6 @@ export const MilestoneBuilder = ({
         const milestoneDetails = formData[`milestone-description-${index + 1}`];
         const formPercentage = Number(formData[`milestone-perc-${index + 1}`]);
         const formDate = Number(formData[`milestone-date-${index + 1}`]);
-        if (formPercentage === 0) {
-          notifications.show({
-            title: 'Error',
-            message: 'Milestone percentage cannot be 0',
-            color: 'red',
-          });
-          return false;
-        }
 
         const scaleFactor = BigInt(1e18);
         const formPercentageBigInt = BigInt(formPercentage * 1e6);

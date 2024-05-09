@@ -127,7 +127,7 @@ export const ReviewApplication = ({
 
   const scanLink = scanAddressLink(grant.applicationData.receivingAddress);
   const canResubmit =
-    grant.grantStatus <= GrantStatus.ShipRejected && isProjectMember;
+    grant.grantStatus <= GrantStatus.FacilitatorRejected && isProjectMember;
 
   return (
     <>
@@ -264,7 +264,7 @@ export const ReviewApplication = ({
                     bg={
                       hasShipApproved
                         ? theme.colors.blue[8]
-                        : theme.colors.red[6]
+                        : theme.colors.pink[9]
                     }
                   />
                 )}
@@ -280,7 +280,7 @@ export const ReviewApplication = ({
                     bg={
                       hasFacilitatorApproved
                         ? theme.colors.blue[8]
-                        : theme.colors.red[6]
+                        : theme.colors.pink[9]
                     }
                   />
                 )}
