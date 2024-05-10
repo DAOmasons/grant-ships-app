@@ -1,5 +1,6 @@
 import { useMediaQuery } from '@mantine/hooks';
 import {
+  Box,
   Button,
   Flex,
   Group,
@@ -9,9 +10,14 @@ import {
   TextInput,
   Textarea,
   em,
+  useMantineTheme,
 } from '@mantine/core';
 import { useForm, zodResolver } from '@mantine/form';
-import { IconCalendar, IconExternalLink } from '@tabler/icons-react';
+import {
+  IconCalendar,
+  IconExternalLink,
+  IconInfoCircle,
+} from '@tabler/icons-react';
 import { DatePickerInput } from '@mantine/dates';
 import { z } from 'zod';
 import { useAccount, useConnect, useSwitchChain } from 'wagmi';
@@ -105,6 +111,7 @@ export const ApplyFunding = () => {
   const { switchChainAsync } = useSwitchChain();
   const { connect } = useConnect();
   const { tx } = useTx();
+  const theme = useMantineTheme();
 
   const form = useForm({
     initialValues: defaultValues,
@@ -528,6 +535,20 @@ export const ApplyFunding = () => {
           {...form.getInputProps('extraInfo')}
           onBlur={() => handleBlur('extraInfo')}
         />
+        {grantData?.grantStatus != null &&
+          (grantData?.grantStatus === GrantStatus.ShipApproved ||
+            grantData?.grantStatus === GrantStatus.ShipRejected ||
+            grantData?.grantStatus === GrantStatus.FacilitatorRejected) && (
+            <Flex mb="md" mt="md" align="start" gap={'xs'}>
+              <Box>
+                <IconInfoCircle color={theme.colors.yellow[6]} size={24} />
+              </Box>
+              <Text fs="italic">
+                WARNING. This grant has already been approved. If you edit this
+                application, the Ship Operator will need to approve it again.
+              </Text>
+            </Flex>
+          )}
         <Flex mt="md" justify="flex-end">
           <Button
             ml="auto"
