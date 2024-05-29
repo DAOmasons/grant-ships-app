@@ -3,6 +3,7 @@ import {
   Avatar,
   Blockquote,
   Box,
+  Button,
   Group,
   Skeleton,
   Stack,
@@ -15,12 +16,30 @@ import { Link } from 'react-router-dom';
 import { getShipGrants } from '../../../queries/getShipGrants';
 import { formatEther } from 'viem';
 import { GAME_TOKEN } from '../../../constants/gameSetup';
-import { IconExclamationCircle, IconExternalLink } from '@tabler/icons-react';
+import {
+  IconExclamationCircle,
+  IconExternalLink,
+  IconSquare,
+  IconSquareCheck,
+} from '@tabler/icons-react';
 import { SCAN_URL } from '../../../constants/enpoints';
 import { AppAlert } from '../../UnderContruction';
 import { DashGrant } from '../../../resolvers/grantResolvers';
 import { AlloStatus, ReportStatus } from '../../../types/common';
 import { FacilitatorBadge, ShipBadge } from '../../RoleBadges';
+import { UseFormReturnType, useForm, zodResolver } from '@mantine/form';
+import { portfolioReportSchema } from '../../forms/validationSchemas/portfolioReportSchema';
+import { z } from 'zod';
+import { notifications } from '@mantine/notifications';
+import { pinJSONToIPFS } from '../../../utils/ipfs/pin';
+import { useTx } from '../../../hooks/useTx';
+
+type FormValues = z.infer<typeof portfolioReportSchema>;
+
+const defaultValues: FormValues = {
+  roundReview: '',
+  grantReviews: {},
+};
 
 export const PortfolioReport = ({
   shipId,
@@ -39,6 +58,12 @@ export const PortfolioReport = ({
     queryKey: [`portfolio-${shipId}`],
     queryFn: () => getShipGrants(shipId as string),
     enabled: !!shipId,
+  });
+
+  const form = useForm({
+    initialValues: defaultValues,
+    validate: zodResolver(portfolioReportSchema),
+    validateInputOnBlur: true,
   });
 
   if (isLoading)
@@ -71,7 +96,10 @@ export const PortfolioReport = ({
 
   return (
     <Box>
-      <Accordion defaultValue={grants[0].id}>
+      {reportStatus === ReportStatus.Submit && (
+        <ReportSubmitHeader grants={grants} formValues={form.values} />
+      )}
+      <Accordion defaultValue={grants[0].id} mb="lg">
         {grants.map((grant) => (
           <Accordion.Item key={grant.id} value={grant.id}>
             <Accordion.Control
@@ -84,11 +112,27 @@ export const PortfolioReport = ({
               {GAME_TOKEN.SYMBOL})
             </Accordion.Control>
             <Accordion.Panel>
-              <PortfolioItem grant={grant} reportStatus={reportStatus} />
+              <PortfolioItem
+                grant={grant}
+                reportStatus={reportStatus}
+                form={form}
+              />
             </Accordion.Panel>
           </Accordion.Item>
         ))}
       </Accordion>
+      <Textarea
+        label="Season Report Summary"
+        required
+        autosize
+        minRows={4}
+        maxRows={8}
+        description="How did your first round of Grant Ships go? How do you feel about your allocation strategy? What worked well? What didn't?"
+        placeholder="Explain here..."
+        {...form.getInputProps(`roundReview`)}
+        mb="xl"
+      />
+      <SubmitReport formValues={form.values} disabled={form.isValid()} />
     </Box>
   );
 };
@@ -96,7 +140,9 @@ export const PortfolioReport = ({
 const PortfolioItem = ({
   grant,
   reportStatus,
+  form,
 }: {
+  form: UseFormReturnType<FormValues, (values: FormValues) => FormValues>;
   grant: DashGrant;
   reportStatus: ReportStatus;
 }) => {
@@ -210,7 +256,7 @@ const PortfolioItem = ({
             </Blockquote>
           </li>
         </Text>
-        {reportStatus === ReportStatus.Review && (
+        {reportStatus === ReportStatus.Submit && (
           <Textarea
             label="Your Report"
             required
@@ -219,9 +265,96 @@ const PortfolioItem = ({
             maxRows={8}
             description="How did the project go? What did you learn? What would you do differently next time?"
             placeholder="Type your report here..."
+            {...form.getInputProps(`grantReviews.${grant.id}`)}
           />
         )}
       </ul>
     </Box>
+  );
+};
+
+const SubmitReport = ({
+  formValues,
+  disabled,
+}: {
+  formValues: FormValues;
+  disabled: boolean;
+}) => {
+  const { tx } = useTx();
+  const submitReport = async () => {
+    if (disabled) {
+      notifications.show({
+        title: 'Error',
+        message: 'Please fill out all required fields',
+        color: 'red',
+      });
+    }
+
+    const validated = portfolioReportSchema.safeParse(formValues);
+
+    if (!validated.success) {
+      notifications.show({
+        title: 'Error',
+        message: 'Validation Error',
+        color: 'red',
+      });
+    }
+
+    const pinRes = await pinJSONToIPFS(formValues);
+  };
+
+  return (
+    <Group justify="flex-end">
+      <Button disabled onClick={submitReport}>
+        Submit Report
+      </Button>
+    </Group>
+  );
+};
+
+const ReportSubmitHeader = ({
+  grants,
+  formValues,
+}: {
+  grants: DashGrant[];
+  formValues: FormValues;
+}) => {
+  const theme = useMantineTheme();
+  return (
+    <>
+      <Text fz="lg" mb="lg" fw={600}>
+        Your Portfolio Report
+      </Text>
+      <Box>
+        <Text fz="sm" mb="md" fs="italic">
+          Please provide a summary of each grant that you issued in the list.
+          Also submit a round summary the bottom of the page
+        </Text>
+        <Text fz="sm" mb="md">
+          <Group gap="xs" mb="sm">
+            <Text component="span" fz="sm" fw={600}>
+              Round Review:{' '}
+            </Text>
+            {formValues.roundReview ? (
+              <IconSquareCheck size={16} color={theme.colors.teal[5]} />
+            ) : (
+              <IconSquare size={16} />
+            )}
+          </Group>
+          <Group gap="xs">
+            <Text component="span" fz="sm" fw={600}>
+              Grant Reviews:{' '}
+            </Text>
+            {grants.map((g) =>
+              formValues?.grantReviews[g.id] ? (
+                <IconSquareCheck size={16} color={theme.colors.teal[5]} />
+              ) : (
+                <IconSquare key={g.id} size={16} />
+              )
+            )}
+          </Group>
+        </Text>
+      </Box>
+    </>
   );
 };
