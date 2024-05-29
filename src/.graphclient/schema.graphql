@@ -90,6 +90,23 @@ type Query {
   """fetch data from the table: "ERCPointParams" using primary key columns"""
   ERCPointParams_by_pk(id: String!): ERCPointParams
   """
+  fetch data from the table: "EnvioTX"
+  """
+  EnvioTX(
+    """distinct select on columns"""
+    distinct_on: [EnvioTX_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [EnvioTX_order_by!]
+    """filter the rows returned"""
+    where: EnvioTX_bool_exp
+  ): [EnvioTX!]!
+  """fetch data from the table: "EnvioTX" using primary key columns"""
+  EnvioTX_by_pk(id: String!): EnvioTX
+  """
   fetch data from the table: "EventPost"
   """
   EventPost(
@@ -297,23 +314,6 @@ type Query {
   ): [TVParams!]!
   """fetch data from the table: "TVParams" using primary key columns"""
   TVParams_by_pk(id: String!): TVParams
-  """
-  fetch data from the table: "Transaction"
-  """
-  Transaction(
-    """distinct select on columns"""
-    distinct_on: [Transaction_select_column!]
-    """limit the number of rows returned"""
-    limit: Int
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-    """sort the rows by one or more columns"""
-    order_by: [Transaction_order_by!]
-    """filter the rows returned"""
-    where: Transaction_bool_exp
-  ): [Transaction!]!
-  """fetch data from the table: "Transaction" using primary key columns"""
-  Transaction_by_pk(id: String!): Transaction
   """
   fetch data from the table: "chain_metadata"
   """
@@ -1068,6 +1068,34 @@ type Subscription {
     where: ERCPointParams_bool_exp
   ): [ERCPointParams!]!
   """
+  fetch data from the table: "EnvioTX"
+  """
+  EnvioTX(
+    """distinct select on columns"""
+    distinct_on: [EnvioTX_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [EnvioTX_order_by!]
+    """filter the rows returned"""
+    where: EnvioTX_bool_exp
+  ): [EnvioTX!]!
+  """fetch data from the table: "EnvioTX" using primary key columns"""
+  EnvioTX_by_pk(id: String!): EnvioTX
+  """
+  fetch data from the table in a streaming manner: "EnvioTX"
+  """
+  EnvioTX_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [EnvioTX_stream_cursor_input]!
+    """filter the rows returned"""
+    where: EnvioTX_bool_exp
+  ): [EnvioTX!]!
+  """
   fetch data from the table: "EventPost"
   """
   EventPost(
@@ -1407,34 +1435,6 @@ type Subscription {
     """filter the rows returned"""
     where: TVParams_bool_exp
   ): [TVParams!]!
-  """
-  fetch data from the table: "Transaction"
-  """
-  Transaction(
-    """distinct select on columns"""
-    distinct_on: [Transaction_select_column!]
-    """limit the number of rows returned"""
-    limit: Int
-    """skip the first n rows. Use only with order_by"""
-    offset: Int
-    """sort the rows by one or more columns"""
-    order_by: [Transaction_order_by!]
-    """filter the rows returned"""
-    where: Transaction_bool_exp
-  ): [Transaction!]!
-  """fetch data from the table: "Transaction" using primary key columns"""
-  Transaction_by_pk(id: String!): Transaction
-  """
-  fetch data from the table in a streaming manner: "Transaction"
-  """
-  Transaction_stream(
-    """maximum number of rows returned in a single batch"""
-    batch_size: Int!
-    """cursor to stream the results returned by the query"""
-    cursor: [Transaction_stream_cursor_input]!
-    """filter the rows returned"""
-    where: Transaction_bool_exp
-  ): [Transaction!]!
   """
   fetch data from the table: "chain_metadata"
   """
@@ -2505,6 +2505,81 @@ input ERCPointParams_stream_cursor_value_input {
   id: String
   voteTokenAddress: String
   votingCheckpoint: numeric
+}
+
+"""
+columns and relationships of "EnvioTX"
+"""
+type EnvioTX {
+  blockNumber: numeric!
+  db_write_timestamp: timestamp
+  id: String!
+  srcAddress: String!
+  txHash: String!
+  txOrigin: String
+}
+
+"""
+Boolean expression to filter rows from the table "EnvioTX". All fields are combined with a logical 'AND'.
+"""
+input EnvioTX_bool_exp {
+  _and: [EnvioTX_bool_exp!]
+  _not: EnvioTX_bool_exp
+  _or: [EnvioTX_bool_exp!]
+  blockNumber: numeric_comparison_exp
+  db_write_timestamp: timestamp_comparison_exp
+  id: String_comparison_exp
+  srcAddress: String_comparison_exp
+  txHash: String_comparison_exp
+  txOrigin: String_comparison_exp
+}
+
+"""Ordering options when selecting data from "EnvioTX"."""
+input EnvioTX_order_by {
+  blockNumber: order_by
+  db_write_timestamp: order_by
+  id: order_by
+  srcAddress: order_by
+  txHash: order_by
+  txOrigin: order_by
+}
+
+"""
+select columns of table "EnvioTX"
+"""
+enum EnvioTX_select_column {
+  """column name"""
+  blockNumber
+  """column name"""
+  db_write_timestamp
+  """column name"""
+  id
+  """column name"""
+  srcAddress
+  """column name"""
+  txHash
+  """column name"""
+  txOrigin
+}
+
+"""
+Streaming cursor of the table "EnvioTX"
+"""
+input EnvioTX_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: EnvioTX_stream_cursor_value_input!
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input EnvioTX_stream_cursor_value_input {
+  blockNumber: numeric
+  db_write_timestamp: timestamp
+  id: String
+  srcAddress: String
+  txHash: String
+  txOrigin: String
 }
 
 """
@@ -4056,79 +4131,6 @@ input TVParams_stream_cursor_value_input {
   db_write_timestamp: timestamp
   id: String
   voteDuration: numeric
-}
-
-type Transaction {
-  blockNumber: BigInt!
-  db_write_timestamp: timestamp
-  id: ID!
-  srcAddress: String!
-  txHash: Bytes!
-  txOrigin: String
-  sender: Bytes!
-}
-
-"""
-Boolean expression to filter rows from the table "Transaction". All fields are combined with a logical 'AND'.
-"""
-input Transaction_bool_exp {
-  _and: [Transaction_bool_exp!]
-  _not: Transaction_bool_exp
-  _or: [Transaction_bool_exp!]
-  blockNumber: numeric_comparison_exp
-  db_write_timestamp: timestamp_comparison_exp
-  id: String_comparison_exp
-  srcAddress: String_comparison_exp
-  txHash: String_comparison_exp
-  txOrigin: String_comparison_exp
-}
-
-"""Ordering options when selecting data from "Transaction"."""
-input Transaction_order_by {
-  blockNumber: order_by
-  db_write_timestamp: order_by
-  id: order_by
-  srcAddress: order_by
-  txHash: order_by
-  txOrigin: order_by
-}
-
-"""
-select columns of table "Transaction"
-"""
-enum Transaction_select_column {
-  """column name"""
-  blockNumber
-  """column name"""
-  db_write_timestamp
-  """column name"""
-  id
-  """column name"""
-  srcAddress
-  """column name"""
-  txHash
-  """column name"""
-  txOrigin
-}
-
-"""
-Streaming cursor of the table "Transaction"
-"""
-input Transaction_stream_cursor_input {
-  """Stream column input with initial value"""
-  initial_value: Transaction_stream_cursor_value_input!
-  """cursor ordering"""
-  ordering: cursor_ordering
-}
-
-"""Initial value of the column from where the streaming should start"""
-input Transaction_stream_cursor_value_input {
-  blockNumber: numeric
-  db_write_timestamp: timestamp
-  id: String
-  srcAddress: String
-  txHash: String
-  txOrigin: String
 }
 
 scalar _numeric
@@ -7410,6 +7412,13 @@ A string representation of microseconds UNIX timestamp (16 digits)
 
 """
 scalar Timestamp
+
+type Transaction {
+  id: ID!
+  blockNumber: BigInt!
+  sender: Bytes!
+  txHash: Bytes!
+}
 
 input Transaction_filter {
   id: ID

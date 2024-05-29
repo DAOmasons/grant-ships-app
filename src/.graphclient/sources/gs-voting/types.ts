@@ -344,6 +344,72 @@ export type ERCPointParams_stream_cursor_value_input = {
   votingCheckpoint?: InputMaybe<Scalars['numeric']>;
 };
 
+/** columns and relationships of "EnvioTX" */
+export type EnvioTX = {
+  blockNumber: Scalars['numeric'];
+  db_write_timestamp?: Maybe<Scalars['timestamp']>;
+  id: Scalars['String'];
+  srcAddress: Scalars['String'];
+  txHash: Scalars['String'];
+  txOrigin?: Maybe<Scalars['String']>;
+};
+
+/** Boolean expression to filter rows from the table "EnvioTX". All fields are combined with a logical 'AND'. */
+export type EnvioTX_bool_exp = {
+  _and?: InputMaybe<Array<EnvioTX_bool_exp>>;
+  _not?: InputMaybe<EnvioTX_bool_exp>;
+  _or?: InputMaybe<Array<EnvioTX_bool_exp>>;
+  blockNumber?: InputMaybe<numeric_comparison_exp>;
+  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
+  id?: InputMaybe<String_comparison_exp>;
+  srcAddress?: InputMaybe<String_comparison_exp>;
+  txHash?: InputMaybe<String_comparison_exp>;
+  txOrigin?: InputMaybe<String_comparison_exp>;
+};
+
+/** Ordering options when selecting data from "EnvioTX". */
+export type EnvioTX_order_by = {
+  blockNumber?: InputMaybe<order_by>;
+  db_write_timestamp?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  srcAddress?: InputMaybe<order_by>;
+  txHash?: InputMaybe<order_by>;
+  txOrigin?: InputMaybe<order_by>;
+};
+
+/** select columns of table "EnvioTX" */
+export type EnvioTX_select_column =
+  /** column name */
+  | 'blockNumber'
+  /** column name */
+  | 'db_write_timestamp'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'srcAddress'
+  /** column name */
+  | 'txHash'
+  /** column name */
+  | 'txOrigin';
+
+/** Streaming cursor of the table "EnvioTX" */
+export type EnvioTX_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: EnvioTX_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type EnvioTX_stream_cursor_value_input = {
+  blockNumber?: InputMaybe<Scalars['numeric']>;
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
+  id?: InputMaybe<Scalars['String']>;
+  srcAddress?: InputMaybe<Scalars['String']>;
+  txHash?: InputMaybe<Scalars['String']>;
+  txOrigin?: InputMaybe<Scalars['String']>;
+};
+
 /** columns and relationships of "EventPost" */
 export type EventPost = {
   db_write_timestamp?: Maybe<Scalars['timestamp']>;
@@ -1682,72 +1748,6 @@ export type TVParams_stream_cursor_value_input = {
   voteDuration?: InputMaybe<Scalars['numeric']>;
 };
 
-/** columns and relationships of "Transaction" */
-export type Transaction = {
-  blockNumber: Scalars['numeric'];
-  db_write_timestamp?: Maybe<Scalars['timestamp']>;
-  id: Scalars['String'];
-  srcAddress: Scalars['String'];
-  txHash: Scalars['String'];
-  txOrigin?: Maybe<Scalars['String']>;
-};
-
-/** Boolean expression to filter rows from the table "Transaction". All fields are combined with a logical 'AND'. */
-export type Transaction_bool_exp = {
-  _and?: InputMaybe<Array<Transaction_bool_exp>>;
-  _not?: InputMaybe<Transaction_bool_exp>;
-  _or?: InputMaybe<Array<Transaction_bool_exp>>;
-  blockNumber?: InputMaybe<numeric_comparison_exp>;
-  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
-  id?: InputMaybe<String_comparison_exp>;
-  srcAddress?: InputMaybe<String_comparison_exp>;
-  txHash?: InputMaybe<String_comparison_exp>;
-  txOrigin?: InputMaybe<String_comparison_exp>;
-};
-
-/** Ordering options when selecting data from "Transaction". */
-export type Transaction_order_by = {
-  blockNumber?: InputMaybe<order_by>;
-  db_write_timestamp?: InputMaybe<order_by>;
-  id?: InputMaybe<order_by>;
-  srcAddress?: InputMaybe<order_by>;
-  txHash?: InputMaybe<order_by>;
-  txOrigin?: InputMaybe<order_by>;
-};
-
-/** select columns of table "Transaction" */
-export type Transaction_select_column =
-  /** column name */
-  | 'blockNumber'
-  /** column name */
-  | 'db_write_timestamp'
-  /** column name */
-  | 'id'
-  /** column name */
-  | 'srcAddress'
-  /** column name */
-  | 'txHash'
-  /** column name */
-  | 'txOrigin';
-
-/** Streaming cursor of the table "Transaction" */
-export type Transaction_stream_cursor_input = {
-  /** Stream column input with initial value */
-  initial_value: Transaction_stream_cursor_value_input;
-  /** cursor ordering */
-  ordering?: InputMaybe<cursor_ordering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type Transaction_stream_cursor_value_input = {
-  blockNumber?: InputMaybe<Scalars['numeric']>;
-  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
-  id?: InputMaybe<Scalars['String']>;
-  srcAddress?: InputMaybe<Scalars['String']>;
-  txHash?: InputMaybe<Scalars['String']>;
-  txOrigin?: InputMaybe<Scalars['String']>;
-};
-
 /** Boolean expression to compare columns of type "_numeric". All fields are combined with logical 'AND'. */
 export type _numeric_comparison_exp = {
   _eq?: InputMaybe<Scalars['_numeric']>;
@@ -2522,6 +2522,10 @@ export type query_root = {
   ERCPointParams: Array<ERCPointParams>;
   /** fetch data from the table: "ERCPointParams" using primary key columns */
   ERCPointParams_by_pk?: Maybe<ERCPointParams>;
+  /** fetch data from the table: "EnvioTX" */
+  EnvioTX: Array<EnvioTX>;
+  /** fetch data from the table: "EnvioTX" using primary key columns */
+  EnvioTX_by_pk?: Maybe<EnvioTX>;
   /** fetch data from the table: "EventPost" */
   EventPost: Array<EventPost>;
   /** fetch data from the table: "EventPost" using primary key columns */
@@ -2570,10 +2574,6 @@ export type query_root = {
   TVParams: Array<TVParams>;
   /** fetch data from the table: "TVParams" using primary key columns */
   TVParams_by_pk?: Maybe<TVParams>;
-  /** fetch data from the table: "Transaction" */
-  Transaction: Array<Transaction>;
-  /** fetch data from the table: "Transaction" using primary key columns */
-  Transaction_by_pk?: Maybe<Transaction>;
   /** fetch data from the table: "chain_metadata" */
   chain_metadata: Array<chain_metadata>;
   /** fetch data from the table: "chain_metadata" using primary key columns */
@@ -2659,6 +2659,20 @@ export type query_rootERCPointParamsArgs = {
 
 
 export type query_rootERCPointParams_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type query_rootEnvioTXArgs = {
+  distinct_on?: InputMaybe<Array<EnvioTX_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<EnvioTX_order_by>>;
+  where?: InputMaybe<EnvioTX_bool_exp>;
+};
+
+
+export type query_rootEnvioTX_by_pkArgs = {
   id: Scalars['String'];
 };
 
@@ -2827,20 +2841,6 @@ export type query_rootTVParamsArgs = {
 
 
 export type query_rootTVParams_by_pkArgs = {
-  id: Scalars['String'];
-};
-
-
-export type query_rootTransactionArgs = {
-  distinct_on?: InputMaybe<Array<Transaction_select_column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Transaction_order_by>>;
-  where?: InputMaybe<Transaction_bool_exp>;
-};
-
-
-export type query_rootTransaction_by_pkArgs = {
   id: Scalars['String'];
 };
 
@@ -3111,6 +3111,12 @@ export type subscription_root = {
   ERCPointParams_by_pk?: Maybe<ERCPointParams>;
   /** fetch data from the table in a streaming manner: "ERCPointParams" */
   ERCPointParams_stream: Array<ERCPointParams>;
+  /** fetch data from the table: "EnvioTX" */
+  EnvioTX: Array<EnvioTX>;
+  /** fetch data from the table: "EnvioTX" using primary key columns */
+  EnvioTX_by_pk?: Maybe<EnvioTX>;
+  /** fetch data from the table in a streaming manner: "EnvioTX" */
+  EnvioTX_stream: Array<EnvioTX>;
   /** fetch data from the table: "EventPost" */
   EventPost: Array<EventPost>;
   /** fetch data from the table: "EventPost" using primary key columns */
@@ -3183,12 +3189,6 @@ export type subscription_root = {
   TVParams_by_pk?: Maybe<TVParams>;
   /** fetch data from the table in a streaming manner: "TVParams" */
   TVParams_stream: Array<TVParams>;
-  /** fetch data from the table: "Transaction" */
-  Transaction: Array<Transaction>;
-  /** fetch data from the table: "Transaction" using primary key columns */
-  Transaction_by_pk?: Maybe<Transaction>;
-  /** fetch data from the table in a streaming manner: "Transaction" */
-  Transaction_stream: Array<Transaction>;
   /** fetch data from the table: "chain_metadata" */
   chain_metadata: Array<chain_metadata>;
   /** fetch data from the table: "chain_metadata" using primary key columns */
@@ -3317,6 +3317,27 @@ export type subscription_rootERCPointParams_streamArgs = {
   batch_size: Scalars['Int'];
   cursor: Array<InputMaybe<ERCPointParams_stream_cursor_input>>;
   where?: InputMaybe<ERCPointParams_bool_exp>;
+};
+
+
+export type subscription_rootEnvioTXArgs = {
+  distinct_on?: InputMaybe<Array<EnvioTX_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<EnvioTX_order_by>>;
+  where?: InputMaybe<EnvioTX_bool_exp>;
+};
+
+
+export type subscription_rootEnvioTX_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type subscription_rootEnvioTX_streamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<EnvioTX_stream_cursor_input>>;
+  where?: InputMaybe<EnvioTX_bool_exp>;
 };
 
 
@@ -3572,27 +3593,6 @@ export type subscription_rootTVParams_streamArgs = {
 };
 
 
-export type subscription_rootTransactionArgs = {
-  distinct_on?: InputMaybe<Array<Transaction_select_column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Transaction_order_by>>;
-  where?: InputMaybe<Transaction_bool_exp>;
-};
-
-
-export type subscription_rootTransaction_by_pkArgs = {
-  id: Scalars['String'];
-};
-
-
-export type subscription_rootTransaction_streamArgs = {
-  batch_size: Scalars['Int'];
-  cursor: Array<InputMaybe<Transaction_stream_cursor_input>>;
-  where?: InputMaybe<Transaction_bool_exp>;
-};
-
-
 export type subscription_rootchain_metadataArgs = {
   distinct_on?: InputMaybe<Array<chain_metadata_select_column>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -3804,6 +3804,10 @@ export type timestamptz_comparison_exp = {
   ERCPointParams: InContextSdkMethod<query_root['ERCPointParams'], query_rootERCPointParamsArgs, MeshContext>,
   /** fetch data from the table: "ERCPointParams" using primary key columns **/
   ERCPointParams_by_pk: InContextSdkMethod<query_root['ERCPointParams_by_pk'], query_rootERCPointParams_by_pkArgs, MeshContext>,
+  /** fetch data from the table: "EnvioTX" **/
+  EnvioTX: InContextSdkMethod<query_root['EnvioTX'], query_rootEnvioTXArgs, MeshContext>,
+  /** fetch data from the table: "EnvioTX" using primary key columns **/
+  EnvioTX_by_pk: InContextSdkMethod<query_root['EnvioTX_by_pk'], query_rootEnvioTX_by_pkArgs, MeshContext>,
   /** fetch data from the table: "EventPost" **/
   EventPost: InContextSdkMethod<query_root['EventPost'], query_rootEventPostArgs, MeshContext>,
   /** fetch data from the table: "EventPost" using primary key columns **/
@@ -3852,10 +3856,6 @@ export type timestamptz_comparison_exp = {
   TVParams: InContextSdkMethod<query_root['TVParams'], query_rootTVParamsArgs, MeshContext>,
   /** fetch data from the table: "TVParams" using primary key columns **/
   TVParams_by_pk: InContextSdkMethod<query_root['TVParams_by_pk'], query_rootTVParams_by_pkArgs, MeshContext>,
-  /** fetch data from the table: "Transaction" **/
-  Transaction: InContextSdkMethod<query_root['Transaction'], query_rootTransactionArgs, MeshContext>,
-  /** fetch data from the table: "Transaction" using primary key columns **/
-  Transaction_by_pk: InContextSdkMethod<query_root['Transaction_by_pk'], query_rootTransaction_by_pkArgs, MeshContext>,
   /** fetch data from the table: "chain_metadata" **/
   chain_metadata: InContextSdkMethod<query_root['chain_metadata'], query_rootchain_metadataArgs, MeshContext>,
   /** fetch data from the table: "chain_metadata" using primary key columns **/
@@ -3917,6 +3917,12 @@ export type timestamptz_comparison_exp = {
   ERCPointParams_by_pk: InContextSdkMethod<subscription_root['ERCPointParams_by_pk'], subscription_rootERCPointParams_by_pkArgs, MeshContext>,
   /** fetch data from the table in a streaming manner: "ERCPointParams" **/
   ERCPointParams_stream: InContextSdkMethod<subscription_root['ERCPointParams_stream'], subscription_rootERCPointParams_streamArgs, MeshContext>,
+  /** fetch data from the table: "EnvioTX" **/
+  EnvioTX: InContextSdkMethod<subscription_root['EnvioTX'], subscription_rootEnvioTXArgs, MeshContext>,
+  /** fetch data from the table: "EnvioTX" using primary key columns **/
+  EnvioTX_by_pk: InContextSdkMethod<subscription_root['EnvioTX_by_pk'], subscription_rootEnvioTX_by_pkArgs, MeshContext>,
+  /** fetch data from the table in a streaming manner: "EnvioTX" **/
+  EnvioTX_stream: InContextSdkMethod<subscription_root['EnvioTX_stream'], subscription_rootEnvioTX_streamArgs, MeshContext>,
   /** fetch data from the table: "EventPost" **/
   EventPost: InContextSdkMethod<subscription_root['EventPost'], subscription_rootEventPostArgs, MeshContext>,
   /** fetch data from the table: "EventPost" using primary key columns **/
@@ -3989,12 +3995,6 @@ export type timestamptz_comparison_exp = {
   TVParams_by_pk: InContextSdkMethod<subscription_root['TVParams_by_pk'], subscription_rootTVParams_by_pkArgs, MeshContext>,
   /** fetch data from the table in a streaming manner: "TVParams" **/
   TVParams_stream: InContextSdkMethod<subscription_root['TVParams_stream'], subscription_rootTVParams_streamArgs, MeshContext>,
-  /** fetch data from the table: "Transaction" **/
-  Transaction: InContextSdkMethod<subscription_root['Transaction'], subscription_rootTransactionArgs, MeshContext>,
-  /** fetch data from the table: "Transaction" using primary key columns **/
-  Transaction_by_pk: InContextSdkMethod<subscription_root['Transaction_by_pk'], subscription_rootTransaction_by_pkArgs, MeshContext>,
-  /** fetch data from the table in a streaming manner: "Transaction" **/
-  Transaction_stream: InContextSdkMethod<subscription_root['Transaction_stream'], subscription_rootTransaction_streamArgs, MeshContext>,
   /** fetch data from the table: "chain_metadata" **/
   chain_metadata: InContextSdkMethod<subscription_root['chain_metadata'], subscription_rootchain_metadataArgs, MeshContext>,
   /** fetch data from the table: "chain_metadata" using primary key columns **/

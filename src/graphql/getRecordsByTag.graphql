@@ -1,0 +1,9 @@
+query getRecordsByTag($tag: String!) {
+  Record(where: { tag: { _eq: $tag } }) {
+    id
+    tag
+    hatId
+    mdPointer
+    mdProtocol
+  }
+}

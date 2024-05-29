@@ -73,6 +73,10 @@ export type Query = {
   ERCPointParams: Array<ERCPointParams>;
   /** fetch data from the table: "ERCPointParams" using primary key columns */
   ERCPointParams_by_pk?: Maybe<ERCPointParams>;
+  /** fetch data from the table: "EnvioTX" */
+  EnvioTX: Array<EnvioTX>;
+  /** fetch data from the table: "EnvioTX" using primary key columns */
+  EnvioTX_by_pk?: Maybe<EnvioTX>;
   /** fetch data from the table: "EventPost" */
   EventPost: Array<EventPost>;
   /** fetch data from the table: "EventPost" using primary key columns */
@@ -121,10 +125,6 @@ export type Query = {
   TVParams: Array<TVParams>;
   /** fetch data from the table: "TVParams" using primary key columns */
   TVParams_by_pk?: Maybe<TVParams>;
-  /** fetch data from the table: "Transaction" */
-  Transaction: Array<Transaction>;
-  /** fetch data from the table: "Transaction" using primary key columns */
-  Transaction_by_pk?: Maybe<Transaction>;
   /** fetch data from the table: "chain_metadata" */
   chain_metadata: Array<chain_metadata>;
   /** fetch data from the table: "chain_metadata" using primary key columns */
@@ -250,6 +250,20 @@ export type QueryERCPointParamsArgs = {
 
 
 export type QueryERCPointParams_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type QueryEnvioTXArgs = {
+  distinct_on?: InputMaybe<Array<EnvioTX_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<EnvioTX_order_by>>;
+  where?: InputMaybe<EnvioTX_bool_exp>;
+};
+
+
+export type QueryEnvioTX_by_pkArgs = {
   id: Scalars['String'];
 };
 
@@ -418,20 +432,6 @@ export type QueryTVParamsArgs = {
 
 
 export type QueryTVParams_by_pkArgs = {
-  id: Scalars['String'];
-};
-
-
-export type QueryTransactionArgs = {
-  distinct_on?: InputMaybe<Array<Transaction_select_column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Transaction_order_by>>;
-  where?: InputMaybe<Transaction_bool_exp>;
-};
-
-
-export type QueryTransaction_by_pkArgs = {
   id: Scalars['String'];
 };
 
@@ -927,6 +927,12 @@ export type Subscription = {
   ERCPointParams_by_pk?: Maybe<ERCPointParams>;
   /** fetch data from the table in a streaming manner: "ERCPointParams" */
   ERCPointParams_stream: Array<ERCPointParams>;
+  /** fetch data from the table: "EnvioTX" */
+  EnvioTX: Array<EnvioTX>;
+  /** fetch data from the table: "EnvioTX" using primary key columns */
+  EnvioTX_by_pk?: Maybe<EnvioTX>;
+  /** fetch data from the table in a streaming manner: "EnvioTX" */
+  EnvioTX_stream: Array<EnvioTX>;
   /** fetch data from the table: "EventPost" */
   EventPost: Array<EventPost>;
   /** fetch data from the table: "EventPost" using primary key columns */
@@ -999,12 +1005,6 @@ export type Subscription = {
   TVParams_by_pk?: Maybe<TVParams>;
   /** fetch data from the table in a streaming manner: "TVParams" */
   TVParams_stream: Array<TVParams>;
-  /** fetch data from the table: "Transaction" */
-  Transaction: Array<Transaction>;
-  /** fetch data from the table: "Transaction" using primary key columns */
-  Transaction_by_pk?: Maybe<Transaction>;
-  /** fetch data from the table in a streaming manner: "Transaction" */
-  Transaction_stream: Array<Transaction>;
   /** fetch data from the table: "chain_metadata" */
   chain_metadata: Array<chain_metadata>;
   /** fetch data from the table: "chain_metadata" using primary key columns */
@@ -1173,6 +1173,27 @@ export type SubscriptionERCPointParams_streamArgs = {
   batch_size: Scalars['Int'];
   cursor: Array<InputMaybe<ERCPointParams_stream_cursor_input>>;
   where?: InputMaybe<ERCPointParams_bool_exp>;
+};
+
+
+export type SubscriptionEnvioTXArgs = {
+  distinct_on?: InputMaybe<Array<EnvioTX_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<EnvioTX_order_by>>;
+  where?: InputMaybe<EnvioTX_bool_exp>;
+};
+
+
+export type SubscriptionEnvioTX_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type SubscriptionEnvioTX_streamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<EnvioTX_stream_cursor_input>>;
+  where?: InputMaybe<EnvioTX_bool_exp>;
 };
 
 
@@ -1425,27 +1446,6 @@ export type SubscriptionTVParams_streamArgs = {
   batch_size: Scalars['Int'];
   cursor: Array<InputMaybe<TVParams_stream_cursor_input>>;
   where?: InputMaybe<TVParams_bool_exp>;
-};
-
-
-export type SubscriptionTransactionArgs = {
-  distinct_on?: InputMaybe<Array<Transaction_select_column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Transaction_order_by>>;
-  where?: InputMaybe<Transaction_bool_exp>;
-};
-
-
-export type SubscriptionTransaction_by_pkArgs = {
-  id: Scalars['String'];
-};
-
-
-export type SubscriptionTransaction_streamArgs = {
-  batch_size: Scalars['Int'];
-  cursor: Array<InputMaybe<Transaction_stream_cursor_input>>;
-  where?: InputMaybe<Transaction_bool_exp>;
 };
 
 
@@ -2279,6 +2279,72 @@ export type ERCPointParams_stream_cursor_value_input = {
   id?: InputMaybe<Scalars['String']>;
   voteTokenAddress?: InputMaybe<Scalars['String']>;
   votingCheckpoint?: InputMaybe<Scalars['numeric']>;
+};
+
+/** columns and relationships of "EnvioTX" */
+export type EnvioTX = {
+  blockNumber: Scalars['numeric'];
+  db_write_timestamp?: Maybe<Scalars['timestamp']>;
+  id: Scalars['String'];
+  srcAddress: Scalars['String'];
+  txHash: Scalars['String'];
+  txOrigin?: Maybe<Scalars['String']>;
+};
+
+/** Boolean expression to filter rows from the table "EnvioTX". All fields are combined with a logical 'AND'. */
+export type EnvioTX_bool_exp = {
+  _and?: InputMaybe<Array<EnvioTX_bool_exp>>;
+  _not?: InputMaybe<EnvioTX_bool_exp>;
+  _or?: InputMaybe<Array<EnvioTX_bool_exp>>;
+  blockNumber?: InputMaybe<numeric_comparison_exp>;
+  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
+  id?: InputMaybe<String_comparison_exp>;
+  srcAddress?: InputMaybe<String_comparison_exp>;
+  txHash?: InputMaybe<String_comparison_exp>;
+  txOrigin?: InputMaybe<String_comparison_exp>;
+};
+
+/** Ordering options when selecting data from "EnvioTX". */
+export type EnvioTX_order_by = {
+  blockNumber?: InputMaybe<order_by>;
+  db_write_timestamp?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  srcAddress?: InputMaybe<order_by>;
+  txHash?: InputMaybe<order_by>;
+  txOrigin?: InputMaybe<order_by>;
+};
+
+/** select columns of table "EnvioTX" */
+export type EnvioTX_select_column =
+  /** column name */
+  | 'blockNumber'
+  /** column name */
+  | 'db_write_timestamp'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'srcAddress'
+  /** column name */
+  | 'txHash'
+  /** column name */
+  | 'txOrigin';
+
+/** Streaming cursor of the table "EnvioTX" */
+export type EnvioTX_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: EnvioTX_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type EnvioTX_stream_cursor_value_input = {
+  blockNumber?: InputMaybe<Scalars['numeric']>;
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
+  id?: InputMaybe<Scalars['String']>;
+  srcAddress?: InputMaybe<Scalars['String']>;
+  txHash?: InputMaybe<Scalars['String']>;
+  txOrigin?: InputMaybe<Scalars['String']>;
 };
 
 /** columns and relationships of "EventPost" */
@@ -3617,72 +3683,6 @@ export type TVParams_stream_cursor_value_input = {
   db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
   id?: InputMaybe<Scalars['String']>;
   voteDuration?: InputMaybe<Scalars['numeric']>;
-};
-
-export type Transaction = {
-  blockNumber: Scalars['BigInt'];
-  db_write_timestamp?: Maybe<Scalars['timestamp']>;
-  id: Scalars['ID'];
-  srcAddress: Scalars['String'];
-  txHash: Scalars['Bytes'];
-  txOrigin?: Maybe<Scalars['String']>;
-  sender: Scalars['Bytes'];
-};
-
-/** Boolean expression to filter rows from the table "Transaction". All fields are combined with a logical 'AND'. */
-export type Transaction_bool_exp = {
-  _and?: InputMaybe<Array<Transaction_bool_exp>>;
-  _not?: InputMaybe<Transaction_bool_exp>;
-  _or?: InputMaybe<Array<Transaction_bool_exp>>;
-  blockNumber?: InputMaybe<numeric_comparison_exp>;
-  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
-  id?: InputMaybe<String_comparison_exp>;
-  srcAddress?: InputMaybe<String_comparison_exp>;
-  txHash?: InputMaybe<String_comparison_exp>;
-  txOrigin?: InputMaybe<String_comparison_exp>;
-};
-
-/** Ordering options when selecting data from "Transaction". */
-export type Transaction_order_by = {
-  blockNumber?: InputMaybe<order_by>;
-  db_write_timestamp?: InputMaybe<order_by>;
-  id?: InputMaybe<order_by>;
-  srcAddress?: InputMaybe<order_by>;
-  txHash?: InputMaybe<order_by>;
-  txOrigin?: InputMaybe<order_by>;
-};
-
-/** select columns of table "Transaction" */
-export type Transaction_select_column =
-  /** column name */
-  | 'blockNumber'
-  /** column name */
-  | 'db_write_timestamp'
-  /** column name */
-  | 'id'
-  /** column name */
-  | 'srcAddress'
-  /** column name */
-  | 'txHash'
-  /** column name */
-  | 'txOrigin';
-
-/** Streaming cursor of the table "Transaction" */
-export type Transaction_stream_cursor_input = {
-  /** Stream column input with initial value */
-  initial_value: Transaction_stream_cursor_value_input;
-  /** cursor ordering */
-  ordering?: InputMaybe<cursor_ordering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type Transaction_stream_cursor_value_input = {
-  blockNumber?: InputMaybe<Scalars['numeric']>;
-  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
-  id?: InputMaybe<Scalars['String']>;
-  srcAddress?: InputMaybe<Scalars['String']>;
-  txHash?: InputMaybe<Scalars['String']>;
-  txOrigin?: InputMaybe<Scalars['String']>;
 };
 
 /** Boolean expression to compare columns of type "_numeric". All fields are combined with logical 'AND'. */
@@ -6861,6 +6861,13 @@ export type RawMetadata_orderBy =
   | 'protocol'
   | 'pointer';
 
+export type Transaction = {
+  id: Scalars['ID'];
+  blockNumber: Scalars['BigInt'];
+  sender: Scalars['Bytes'];
+  txHash: Scalars['Bytes'];
+};
+
 export type Transaction_filter = {
   id?: InputMaybe<Scalars['ID']>;
   id_not?: InputMaybe<Scalars['ID']>;
@@ -7179,6 +7186,12 @@ export type ResolversTypes = ResolversObject<{
   ERCPointParams_select_column: ERCPointParams_select_column;
   ERCPointParams_stream_cursor_input: ERCPointParams_stream_cursor_input;
   ERCPointParams_stream_cursor_value_input: ERCPointParams_stream_cursor_value_input;
+  EnvioTX: ResolverTypeWrapper<EnvioTX>;
+  EnvioTX_bool_exp: EnvioTX_bool_exp;
+  EnvioTX_order_by: EnvioTX_order_by;
+  EnvioTX_select_column: EnvioTX_select_column;
+  EnvioTX_stream_cursor_input: EnvioTX_stream_cursor_input;
+  EnvioTX_stream_cursor_value_input: EnvioTX_stream_cursor_value_input;
   EventPost: ResolverTypeWrapper<EventPost>;
   EventPost_aggregate_order_by: EventPost_aggregate_order_by;
   EventPost_avg_order_by: EventPost_avg_order_by;
@@ -7299,12 +7312,6 @@ export type ResolversTypes = ResolversObject<{
   TVParams_select_column: TVParams_select_column;
   TVParams_stream_cursor_input: TVParams_stream_cursor_input;
   TVParams_stream_cursor_value_input: TVParams_stream_cursor_value_input;
-  Transaction: ResolverTypeWrapper<Transaction>;
-  Transaction_bool_exp: Transaction_bool_exp;
-  Transaction_order_by: Transaction_order_by;
-  Transaction_select_column: Transaction_select_column;
-  Transaction_stream_cursor_input: Transaction_stream_cursor_input;
-  Transaction_stream_cursor_value_input: Transaction_stream_cursor_value_input;
   _numeric: ResolverTypeWrapper<Scalars['_numeric']>;
   _numeric_comparison_exp: _numeric_comparison_exp;
   _text: ResolverTypeWrapper<Scalars['_text']>;
@@ -7441,6 +7448,7 @@ export type ResolversTypes = ResolversObject<{
   RawMetadata_filter: RawMetadata_filter;
   RawMetadata_orderBy: RawMetadata_orderBy;
   Timestamp: ResolverTypeWrapper<Scalars['Timestamp']>;
+  Transaction: ResolverTypeWrapper<Transaction>;
   Transaction_filter: Transaction_filter;
   Transaction_orderBy: Transaction_orderBy;
   Update: ResolverTypeWrapper<Update>;
@@ -7477,6 +7485,11 @@ export type ResolversParentTypes = ResolversObject<{
   ERCPointParams_order_by: ERCPointParams_order_by;
   ERCPointParams_stream_cursor_input: ERCPointParams_stream_cursor_input;
   ERCPointParams_stream_cursor_value_input: ERCPointParams_stream_cursor_value_input;
+  EnvioTX: EnvioTX;
+  EnvioTX_bool_exp: EnvioTX_bool_exp;
+  EnvioTX_order_by: EnvioTX_order_by;
+  EnvioTX_stream_cursor_input: EnvioTX_stream_cursor_input;
+  EnvioTX_stream_cursor_value_input: EnvioTX_stream_cursor_value_input;
   EventPost: EventPost;
   EventPost_aggregate_order_by: EventPost_aggregate_order_by;
   EventPost_avg_order_by: EventPost_avg_order_by;
@@ -7585,11 +7598,6 @@ export type ResolversParentTypes = ResolversObject<{
   TVParams_order_by: TVParams_order_by;
   TVParams_stream_cursor_input: TVParams_stream_cursor_input;
   TVParams_stream_cursor_value_input: TVParams_stream_cursor_value_input;
-  Transaction: Transaction;
-  Transaction_bool_exp: Transaction_bool_exp;
-  Transaction_order_by: Transaction_order_by;
-  Transaction_stream_cursor_input: Transaction_stream_cursor_input;
-  Transaction_stream_cursor_value_input: Transaction_stream_cursor_value_input;
   _numeric: Scalars['_numeric'];
   _numeric_comparison_exp: _numeric_comparison_exp;
   _text: Scalars['_text'];
@@ -7698,6 +7706,7 @@ export type ResolversParentTypes = ResolversObject<{
   RawMetadata: RawMetadata;
   RawMetadata_filter: RawMetadata_filter;
   Timestamp: Scalars['Timestamp'];
+  Transaction: Transaction;
   Transaction_filter: Transaction_filter;
   Update: Update;
   Update_filter: Update_filter;
@@ -7737,6 +7746,8 @@ export type QueryResolvers<ContextType = MeshContext, ParentType extends Resolve
   Contest_by_pk?: Resolver<Maybe<ResolversTypes['Contest']>, ParentType, ContextType, RequireFields<QueryContest_by_pkArgs, 'id'>>;
   ERCPointParams?: Resolver<Array<ResolversTypes['ERCPointParams']>, ParentType, ContextType, Partial<QueryERCPointParamsArgs>>;
   ERCPointParams_by_pk?: Resolver<Maybe<ResolversTypes['ERCPointParams']>, ParentType, ContextType, RequireFields<QueryERCPointParams_by_pkArgs, 'id'>>;
+  EnvioTX?: Resolver<Array<ResolversTypes['EnvioTX']>, ParentType, ContextType, Partial<QueryEnvioTXArgs>>;
+  EnvioTX_by_pk?: Resolver<Maybe<ResolversTypes['EnvioTX']>, ParentType, ContextType, RequireFields<QueryEnvioTX_by_pkArgs, 'id'>>;
   EventPost?: Resolver<Array<ResolversTypes['EventPost']>, ParentType, ContextType, Partial<QueryEventPostArgs>>;
   EventPost_by_pk?: Resolver<Maybe<ResolversTypes['EventPost']>, ParentType, ContextType, RequireFields<QueryEventPost_by_pkArgs, 'id'>>;
   FactoryEventsSummary?: Resolver<Array<ResolversTypes['FactoryEventsSummary']>, ParentType, ContextType, Partial<QueryFactoryEventsSummaryArgs>>;
@@ -7761,8 +7772,6 @@ export type QueryResolvers<ContextType = MeshContext, ParentType extends Resolve
   StemModule_by_pk?: Resolver<Maybe<ResolversTypes['StemModule']>, ParentType, ContextType, RequireFields<QueryStemModule_by_pkArgs, 'id'>>;
   TVParams?: Resolver<Array<ResolversTypes['TVParams']>, ParentType, ContextType, Partial<QueryTVParamsArgs>>;
   TVParams_by_pk?: Resolver<Maybe<ResolversTypes['TVParams']>, ParentType, ContextType, RequireFields<QueryTVParams_by_pkArgs, 'id'>>;
-  Transaction?: Resolver<Array<ResolversTypes['Transaction']>, ParentType, ContextType, Partial<QueryTransactionArgs>>;
-  Transaction_by_pk?: Resolver<Maybe<ResolversTypes['Transaction']>, ParentType, ContextType, RequireFields<QueryTransaction_by_pkArgs, 'id'>>;
   chain_metadata?: Resolver<Array<ResolversTypes['chain_metadata']>, ParentType, ContextType, Partial<Querychain_metadataArgs>>;
   chain_metadata_by_pk?: Resolver<Maybe<ResolversTypes['chain_metadata']>, ParentType, ContextType, RequireFields<Querychain_metadata_by_pkArgs, 'chain_id'>>;
   dynamic_contract_registry?: Resolver<Array<ResolversTypes['dynamic_contract_registry']>, ParentType, ContextType, Partial<Querydynamic_contract_registryArgs>>;
@@ -7832,6 +7841,9 @@ export type SubscriptionResolvers<ContextType = MeshContext, ParentType extends 
   ERCPointParams?: SubscriptionResolver<Array<ResolversTypes['ERCPointParams']>, "ERCPointParams", ParentType, ContextType, Partial<SubscriptionERCPointParamsArgs>>;
   ERCPointParams_by_pk?: SubscriptionResolver<Maybe<ResolversTypes['ERCPointParams']>, "ERCPointParams_by_pk", ParentType, ContextType, RequireFields<SubscriptionERCPointParams_by_pkArgs, 'id'>>;
   ERCPointParams_stream?: SubscriptionResolver<Array<ResolversTypes['ERCPointParams']>, "ERCPointParams_stream", ParentType, ContextType, RequireFields<SubscriptionERCPointParams_streamArgs, 'batch_size' | 'cursor'>>;
+  EnvioTX?: SubscriptionResolver<Array<ResolversTypes['EnvioTX']>, "EnvioTX", ParentType, ContextType, Partial<SubscriptionEnvioTXArgs>>;
+  EnvioTX_by_pk?: SubscriptionResolver<Maybe<ResolversTypes['EnvioTX']>, "EnvioTX_by_pk", ParentType, ContextType, RequireFields<SubscriptionEnvioTX_by_pkArgs, 'id'>>;
+  EnvioTX_stream?: SubscriptionResolver<Array<ResolversTypes['EnvioTX']>, "EnvioTX_stream", ParentType, ContextType, RequireFields<SubscriptionEnvioTX_streamArgs, 'batch_size' | 'cursor'>>;
   EventPost?: SubscriptionResolver<Array<ResolversTypes['EventPost']>, "EventPost", ParentType, ContextType, Partial<SubscriptionEventPostArgs>>;
   EventPost_by_pk?: SubscriptionResolver<Maybe<ResolversTypes['EventPost']>, "EventPost_by_pk", ParentType, ContextType, RequireFields<SubscriptionEventPost_by_pkArgs, 'id'>>;
   EventPost_stream?: SubscriptionResolver<Array<ResolversTypes['EventPost']>, "EventPost_stream", ParentType, ContextType, RequireFields<SubscriptionEventPost_streamArgs, 'batch_size' | 'cursor'>>;
@@ -7868,9 +7880,6 @@ export type SubscriptionResolvers<ContextType = MeshContext, ParentType extends 
   TVParams?: SubscriptionResolver<Array<ResolversTypes['TVParams']>, "TVParams", ParentType, ContextType, Partial<SubscriptionTVParamsArgs>>;
   TVParams_by_pk?: SubscriptionResolver<Maybe<ResolversTypes['TVParams']>, "TVParams_by_pk", ParentType, ContextType, RequireFields<SubscriptionTVParams_by_pkArgs, 'id'>>;
   TVParams_stream?: SubscriptionResolver<Array<ResolversTypes['TVParams']>, "TVParams_stream", ParentType, ContextType, RequireFields<SubscriptionTVParams_streamArgs, 'batch_size' | 'cursor'>>;
-  Transaction?: SubscriptionResolver<Array<ResolversTypes['Transaction']>, "Transaction", ParentType, ContextType, Partial<SubscriptionTransactionArgs>>;
-  Transaction_by_pk?: SubscriptionResolver<Maybe<ResolversTypes['Transaction']>, "Transaction_by_pk", ParentType, ContextType, RequireFields<SubscriptionTransaction_by_pkArgs, 'id'>>;
-  Transaction_stream?: SubscriptionResolver<Array<ResolversTypes['Transaction']>, "Transaction_stream", ParentType, ContextType, RequireFields<SubscriptionTransaction_streamArgs, 'batch_size' | 'cursor'>>;
   chain_metadata?: SubscriptionResolver<Array<ResolversTypes['chain_metadata']>, "chain_metadata", ParentType, ContextType, Partial<Subscriptionchain_metadataArgs>>;
   chain_metadata_by_pk?: SubscriptionResolver<Maybe<ResolversTypes['chain_metadata']>, "chain_metadata_by_pk", ParentType, ContextType, RequireFields<Subscriptionchain_metadata_by_pkArgs, 'chain_id'>>;
   chain_metadata_stream?: SubscriptionResolver<Array<ResolversTypes['chain_metadata']>, "chain_metadata_stream", ParentType, ContextType, RequireFields<Subscriptionchain_metadata_streamArgs, 'batch_size' | 'cursor'>>;
@@ -7979,6 +7988,16 @@ export type ERCPointParamsResolvers<ContextType = MeshContext, ParentType extend
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   voteTokenAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   votingCheckpoint?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type EnvioTXResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['EnvioTX'] = ResolversParentTypes['EnvioTX']> = ResolversObject<{
+  blockNumber?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
+  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  srcAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  txHash?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  txOrigin?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -8121,17 +8140,6 @@ export type TVParamsResolvers<ContextType = MeshContext, ParentType extends Reso
   db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   voteDuration?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type TransactionResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Transaction'] = ResolversParentTypes['Transaction']> = ResolversObject<{
-  blockNumber?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
-  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  srcAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  txHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
-  txOrigin?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  sender?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -8498,6 +8506,14 @@ export interface TimestampScalarConfig extends GraphQLScalarTypeConfig<Resolvers
   name: 'Timestamp';
 }
 
+export type TransactionResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Transaction'] = ResolversParentTypes['Transaction']> = ResolversObject<{
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  blockNumber?: Resolver<ResolversTypes['BigInt'], ParentType, ContextType>;
+  sender?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
+  txHash?: Resolver<ResolversTypes['Bytes'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type UpdateResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Update'] = ResolversParentTypes['Update']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   scope?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -8533,6 +8549,7 @@ export type Resolvers<ContextType = MeshContext> = ResolversObject<{
   ContestClone?: ContestCloneResolvers<ContextType>;
   ContestTemplate?: ContestTemplateResolvers<ContextType>;
   ERCPointParams?: ERCPointParamsResolvers<ContextType>;
+  EnvioTX?: EnvioTXResolvers<ContextType>;
   EventPost?: EventPostResolvers<ContextType>;
   FactoryEventsSummary?: FactoryEventsSummaryResolvers<ContextType>;
   GrantShipsVoting?: GrantShipsVotingResolvers<ContextType>;
@@ -8545,7 +8562,6 @@ export type Resolvers<ContextType = MeshContext> = ResolversObject<{
   ShipVote?: ShipVoteResolvers<ContextType>;
   StemModule?: StemModuleResolvers<ContextType>;
   TVParams?: TVParamsResolvers<ContextType>;
-  Transaction?: TransactionResolvers<ContextType>;
   _numeric?: GraphQLScalarType;
   _text?: GraphQLScalarType;
   chain_metadata?: chain_metadataResolvers<ContextType>;
@@ -8584,6 +8600,7 @@ export type Resolvers<ContextType = MeshContext> = ResolversObject<{
   Project?: ProjectResolvers<ContextType>;
   RawMetadata?: RawMetadataResolvers<ContextType>;
   Timestamp?: GraphQLScalarType;
+  Transaction?: TransactionResolvers<ContextType>;
   Update?: UpdateResolvers<ContextType>;
   _Block_?: _Block_Resolvers<ContextType>;
   _Meta_?: _Meta_Resolvers<ContextType>;
@@ -8766,6 +8783,18 @@ const merger = new(StitchingMerger as any)({
           return printWithCache(GetRecentTransactionDocument);
         },
         location: 'GetRecentTransactionDocument.graphql'
+      },{
+        document: GetRecentEnvioDocument,
+        get rawSDL() {
+          return printWithCache(GetRecentEnvioDocument);
+        },
+        location: 'GetRecentEnvioDocument.graphql'
+      },{
+        document: GetRecordsByTagDocument,
+        get rawSDL() {
+          return printWithCache(GetRecordsByTagDocument);
+        },
+        location: 'GetRecordsByTagDocument.graphql'
       },{
         document: GetShipFundsAvailableDocument,
         get rawSDL() {
@@ -9070,6 +9099,20 @@ export type getRecentTransactionQueryVariables = Exact<{
 
 
 export type getRecentTransactionQuery = { transaction?: Maybe<Pick<Transaction, 'id'>> };
+
+export type getRecentEnvioQueryVariables = Exact<{
+  txHash: Scalars['String'];
+}>;
+
+
+export type getRecentEnvioQuery = { EnvioTX: Array<Pick<EnvioTX, 'id'>> };
+
+export type getRecordsByTagQueryVariables = Exact<{
+  tag: Scalars['String'];
+}>;
+
+
+export type getRecordsByTagQuery = { Record: Array<Pick<Record, 'id' | 'tag' | 'hatId' | 'mdPointer' | 'mdProtocol'>> };
 
 export type getShipFundsAvailableQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -9513,6 +9556,24 @@ export const getRecentTransactionDocument = gql`
   }
 }
     ` as unknown as DocumentNode<getRecentTransactionQuery, getRecentTransactionQueryVariables>;
+export const getRecentEnvioDocument = gql`
+    query getRecentEnvio($txHash: String!) {
+  EnvioTX(where: {id: {_eq: $txHash}}) {
+    id
+  }
+}
+    ` as unknown as DocumentNode<getRecentEnvioQuery, getRecentEnvioQueryVariables>;
+export const getRecordsByTagDocument = gql`
+    query getRecordsByTag($tag: String!) {
+  Record(where: {tag: {_eq: $tag}}) {
+    id
+    tag
+    hatId
+    mdPointer
+    mdProtocol
+  }
+}
+    ` as unknown as DocumentNode<getRecordsByTagQuery, getRecordsByTagQueryVariables>;
 export const getShipFundsAvailableDocument = gql`
     query getShipFundsAvailable($id: ID!) {
   grantShip(id: $id) {
@@ -9640,6 +9701,8 @@ export const ShipsPageQueryDocument = gql`
 
 
 
+
+
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
@@ -9678,6 +9741,12 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     getRecentTransaction(variables: getRecentTransactionQueryVariables, options?: C): Promise<getRecentTransactionQuery> {
       return requester<getRecentTransactionQuery, getRecentTransactionQueryVariables>(getRecentTransactionDocument, variables, options) as Promise<getRecentTransactionQuery>;
+    },
+    getRecentEnvio(variables: getRecentEnvioQueryVariables, options?: C): Promise<getRecentEnvioQuery> {
+      return requester<getRecentEnvioQuery, getRecentEnvioQueryVariables>(getRecentEnvioDocument, variables, options) as Promise<getRecentEnvioQuery>;
+    },
+    getRecordsByTag(variables: getRecordsByTagQueryVariables, options?: C): Promise<getRecordsByTagQuery> {
+      return requester<getRecordsByTagQuery, getRecordsByTagQueryVariables>(getRecordsByTagDocument, variables, options) as Promise<getRecordsByTagQuery>;
     },
     getShipFundsAvailable(variables: getShipFundsAvailableQueryVariables, options?: C): Promise<getShipFundsAvailableQuery> {
       return requester<getShipFundsAvailableQuery, getShipFundsAvailableQueryVariables>(getShipFundsAvailableDocument, variables, options) as Promise<getShipFundsAvailableQuery>;

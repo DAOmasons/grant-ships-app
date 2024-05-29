@@ -36,6 +36,7 @@ enum PollStatus {
 
 type ViewParams = {
   awaitGraphPoll?: boolean;
+  awaitEnvioPoll?: boolean;
   loading?: {
     title?: string;
     description?: string;
@@ -154,6 +155,7 @@ export const TxProvider = ({ children }: { children: ReactNode }) => {
               setPollStatus(PollStatus.Timeout);
             },
           });
+        } else if (viewParams?.awaitEnvioPoll !== false && data) {
         } else {
           onComplete?.();
         }
