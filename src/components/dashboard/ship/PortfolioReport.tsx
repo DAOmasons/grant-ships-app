@@ -5,17 +5,20 @@ import {
   Box,
   Group,
   Skeleton,
+  Spoiler,
   Stack,
   Text,
   Textarea,
   useMantineTheme,
 } from '@mantine/core';
-import { useQuery } from '@tanstack/react-query';
 import { Link } from 'react-router-dom';
-import { getShipGrants } from '../../../queries/getShipGrants';
+import classes from '../../feed/FeedStyles.module.css';
+
 import { formatEther } from 'viem';
 import { GAME_TOKEN } from '../../../constants/gameSetup';
 import {
+  IconChevronDown,
+  IconChevronUp,
   IconExclamationCircle,
   IconExternalLink,
   IconSquare,
@@ -45,26 +48,31 @@ const defaultValues: FormValues = {
   grantReviews: {},
 };
 
+type ReportData = {
+  roundReview: string;
+  grantReviews: Record<string, string>;
+};
+
 export const PortfolioReport = ({
   shipId,
+  grants,
   shipHatId,
   reportStatus,
+  isLoading,
+  error,
+  onReportSubmit,
+  reportData,
 }: {
+  grants?: DashGrant[] | null;
+  isLoading: boolean;
+  error: Error | null;
   shipHatId?: string | null;
   shipId: string;
   reportStatus: ReportStatus;
+  onReportSubmit?: () => void;
+  reportData?: ReportData;
 }) => {
   const theme = useMantineTheme();
-
-  const {
-    data: grants,
-    error,
-    isLoading,
-  } = useQuery({
-    queryKey: [`portfolio-${shipId}`],
-    queryFn: () => getShipGrants(shipId as string),
-    enabled: !!shipId,
-  });
 
   const form = useForm({
     initialValues: defaultValues,
@@ -100,10 +108,18 @@ export const PortfolioReport = ({
       />
     );
 
+  console.log(
+    'reportStatus === ReportStatus.Review',
+    reportStatus === ReportStatus.Review
+  );
+
   return (
     <Box>
       {reportStatus === ReportStatus.Submit && (
         <ReportSubmitHeader grants={grants} formValues={form.values} />
+      )}
+      {reportStatus === ReportStatus.Review && reportData && (
+        <ReportReviewHeader reportData={reportData} />
       )}
       <Accordion defaultValue={grants[0].id} mb="lg">
         {grants.map((grant) => (
@@ -121,32 +137,71 @@ export const PortfolioReport = ({
               <PortfolioItem
                 grant={grant}
                 reportStatus={reportStatus}
+                reportData={reportData}
                 form={form}
               />
             </Accordion.Panel>
           </Accordion.Item>
         ))}
       </Accordion>
-      <Textarea
-        label="Season Report Summary"
-        required
-        autosize
-        minRows={4}
-        maxRows={8}
-        description="How did your first round of Grant Ships go? How do you feel about your allocation strategy? What worked well? What didn't?"
-        placeholder="Explain here..."
-        {...form.getInputProps(`roundReview`)}
-        mb="xl"
-      />
-      {shipHatId && (
-        <SubmitReport
-          formValues={form.values}
-          disabled={!form.isValid()}
-          shipHatId={shipHatId}
-          shipId={shipId}
-        />
+      {shipHatId && reportStatus === ReportStatus.Submit && (
+        <>
+          <Textarea
+            label="Season Report Summary"
+            required
+            autosize
+            minRows={4}
+            maxRows={8}
+            description="How did your first round of Grant Ships go? How do you feel about your allocation strategy? What worked well? What didn't?"
+            placeholder="Explain here..."
+            {...form.getInputProps(`roundReview`)}
+            mb="xl"
+          />
+          <SubmitReport
+            formValues={form.values}
+            disabled={!form.isValid()}
+            shipHatId={shipHatId}
+            shipId={shipId}
+            onReportSubmit={onReportSubmit}
+          />
+        </>
       )}
     </Box>
+  );
+};
+
+const ReportReviewHeader = ({ reportData }: { reportData: ReportData }) => {
+  return (
+    <Box>
+      <Text fz="lg" mb="lg" fw={600}>
+        Your Portfolio Report
+      </Text>
+      <Box>
+        <Text fz="sm" fw={600} mb="xs">
+          Round Review:{' '}
+        </Text>
+        <ReviewBox text={reportData.roundReview} />
+      </Box>
+    </Box>
+  );
+};
+
+const ReviewBox = ({ text }: { text: string }) => {
+  return (
+    <Spoiler
+      mb={'xs'}
+      hideLabel={<IconChevronUp stroke={1} />}
+      showLabel={<IconChevronDown stroke={1} />}
+      classNames={{
+        root: classes.embedTextBox,
+        control: classes.embedTextControl,
+      }}
+      maxHeight={48}
+    >
+      <Text fz="sm" className="ws-pre-wrap">
+        {text}
+      </Text>
+    </Spoiler>
   );
 };
 
@@ -154,10 +209,12 @@ const PortfolioItem = ({
   grant,
   reportStatus,
   form,
+  reportData,
 }: {
   form: UseFormReturnType<FormValues, (values: FormValues) => FormValues>;
   grant: DashGrant;
   reportStatus: ReportStatus;
+  reportData?: ReportData;
 }) => {
   const theme = useMantineTheme();
   const completedMilestones = grant.milestones
@@ -284,6 +341,15 @@ const PortfolioItem = ({
             {...form.getInputProps(`grantReviews.${grant.id}`)}
           />
         )}
+
+        {reportStatus === ReportStatus.Review && reportData && (
+          <>
+            <Text fz="sm" mb="md" fw={600}>
+              Your Review:{' '}
+            </Text>
+            <ReviewBox text={reportData.grantReviews[grant.id]} />
+          </>
+        )}
       </ul>
     </Box>
   );
@@ -294,11 +360,13 @@ const SubmitReport = ({
   shipId,
   shipHatId,
   disabled,
+  onReportSubmit,
 }: {
   formValues: FormValues;
   shipId: string;
   disabled: boolean;
   shipHatId: string;
+  onReportSubmit?: () => void;
 }) => {
   const { tx } = useTx();
   const submitReport = async () => {
@@ -346,6 +414,11 @@ const SubmitReport = ({
           shipHatId,
           [1n, pinRes.IpfsHash],
         ],
+      },
+      writeContractOptions: {
+        onPollSuccess() {
+          onReportSubmit?.();
+        },
       },
     });
   };

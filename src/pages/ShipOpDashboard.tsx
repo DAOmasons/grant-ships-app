@@ -24,9 +24,9 @@ import ShipAbi from '../abi/GrantShip.json';
 import { Tag } from '../constants/tags';
 import { Address } from 'viem';
 import { ZER0_ADDRESS } from '../constants/gameSetup';
-import { PortfolioPanel } from '../components/shipItems/PortfolioPanel';
 import { PortfolioReport } from '../components/dashboard/ship/PortfolioReport';
 import { ReportStatus } from '../types/common';
+import { getRecentPortfolioReport } from '../queries/getRecordsByTag';
 
 export const ShipOpDashboard = () => {
   const { id } = useParams();
@@ -41,10 +41,21 @@ export const ShipOpDashboard = () => {
     enabled: !!id,
   });
 
+  const { data: recentRecord, refetch: refetchRecentRecord } = useQuery({
+    queryKey: [`ship-portfolio-${id}`],
+    queryFn: () => getRecentPortfolioReport(`${Tag.ShipSubmitReport}-${id}`),
+    enabled: !!id,
+  });
+
+  const porfolioGrants = shipData?.grants
+    ? shipData.grants.filter((grant) => grant.grantStatus >= 5)
+    : undefined;
+
+  const reportStatus = recentRecord ? ReportStatus.Review : ReportStatus.Submit;
+
   return (
     <MainSection>
       <PageTitle title="Ship Dashboard" />
-
       <Link
         to={`/ship/${shipData?.id}`}
         style={{
@@ -75,9 +86,16 @@ export const ShipOpDashboard = () => {
         <Tabs.Panel value="application">
           {id && (
             <PortfolioReport
+              grants={porfolioGrants}
+              isLoading={shipLoading}
+              error={shipError}
               shipId={id}
-              reportStatus={ReportStatus.Submit}
+              reportStatus={reportStatus}
               shipHatId={shipData?.hatId}
+              onReportSubmit={() => {
+                refetchRecentRecord();
+              }}
+              reportData={recentRecord}
             />
           )}
         </Tabs.Panel>

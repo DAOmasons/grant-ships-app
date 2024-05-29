@@ -9565,7 +9565,7 @@ export const getRecentEnvioDocument = gql`
     ` as unknown as DocumentNode<getRecentEnvioQuery, getRecentEnvioQueryVariables>;
 export const getRecordsByTagDocument = gql`
     query getRecordsByTag($tag: String!) {
-  Record(where: {tag: {_eq: $tag}}) {
+  Record(where: {tag: {_eq: $tag}}, order_by: {db_write_timestamp: desc}) {
     id
     tag
     hatId

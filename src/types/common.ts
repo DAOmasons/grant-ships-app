@@ -72,6 +72,7 @@ export enum AlloStatus {
 }
 export enum ReportStatus {
   Submit,
+
   Review,
   Vote,
 }
