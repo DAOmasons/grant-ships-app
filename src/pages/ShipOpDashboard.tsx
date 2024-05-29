@@ -24,6 +24,9 @@ import ShipAbi from '../abi/GrantShip.json';
 import { Tag } from '../constants/tags';
 import { Address } from 'viem';
 import { ZER0_ADDRESS } from '../constants/gameSetup';
+import { PortfolioPanel } from '../components/shipItems/PortfolioPanel';
+import { PortfolioReport } from '../components/dashboard/ship/PortfolioReport';
+import { ReportStatus } from '../types/common';
 
 export const ShipOpDashboard = () => {
   const { id } = useParams();
@@ -59,7 +62,7 @@ export const ShipOpDashboard = () => {
       <Tabs defaultValue="grants">
         <Tabs.List mb="xl" grow>
           <Tabs.Tab value="grants">Grants</Tabs.Tab>
-          <Tabs.Tab value="application">Ship Application</Tabs.Tab>
+          <Tabs.Tab value="application">Portfolio Report</Tabs.Tab>
           <Tabs.Tab value="postUpdate">Post</Tabs.Tab>
         </Tabs.List>
         <Tabs.Panel value="grants">
@@ -70,10 +73,9 @@ export const ShipOpDashboard = () => {
           />
         </Tabs.Panel>
         <Tabs.Panel value="application">
-          <AppAlert
-            title={'Under Construction'}
-            description={"This feature isn't built yet. Check back soon."}
-          />
+          {id && (
+            <PortfolioReport shipId={id} reportStatus={ReportStatus.Submit} />
+          )}
         </Tabs.Panel>
         <Tabs.Panel value="postUpdate">
           <PostUpdatePanel ship={shipData} />

@@ -70,3 +70,8 @@ export enum AlloStatus {
   InReview,
   Canceled,
 }
+export enum ReportStatus {
+  Submit,
+  Review,
+  Vote,
+}
