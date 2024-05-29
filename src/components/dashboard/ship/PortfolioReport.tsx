@@ -333,6 +333,9 @@ const SubmitReport = ({
     }
 
     tx({
+      viewParams: {
+        awaitEnvioPoll: true,
+      },
       writeContractParams: {
         abi: HatsPoster,
         address: ADDR.HATS_POSTER,

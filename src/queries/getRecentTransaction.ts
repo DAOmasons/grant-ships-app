@@ -39,7 +39,7 @@ export const pollSubgraph = async ({
   onPollTimeout,
 }: PollSubgraphParams) => {
   let triesCount = 0;
-
+  console.log('************* Polling Subgraph *************');
   const checkRecentTransaction = async () => {
     try {
       const txHashFromGraph = await fetchRecentTransaction(txHash);
@@ -78,14 +78,14 @@ export const pollSubgraph = async ({
 
 export const pollEnvio = async ({
   txHash,
-  interval = 500,
+  interval = 1000,
   tries = 20,
   onPollSuccess,
   onPollError,
   onPollTimeout,
 }: PollSubgraphParams) => {
   let triesCount = 0;
-
+  console.log('************* Polling Envio *************');
   const checkRecentTransaction = async () => {
     try {
       const txHashFromEnvio = await fetchRecentEnvio(txHash);
@@ -98,7 +98,7 @@ export const pollEnvio = async ({
 
       if (txHashFromEnvio && txHashFromEnvio === txHash) {
         console.log('Poll Success!');
-        console.log('Transaction has been indexed by the subgraph');
+        console.log('Transaction has been indexed by the Envio indexer');
         onPollSuccess?.(txHashFromEnvio);
         clearInterval(intervalId);
       } else {

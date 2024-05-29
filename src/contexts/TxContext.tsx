@@ -11,9 +11,9 @@ import {
   SuccessState,
   TimeoutState,
 } from '../components/modals/txModal/txModalStates';
-import { Box, Button, Modal } from '@mantine/core';
+import { Button, Modal } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { pollSubgraph } from '../queries/getRecentTransaction';
+import { pollEnvio, pollSubgraph } from '../queries/getRecentTransaction';
 
 type WriteContractParams = Parameters<
   ReturnType<typeof useWriteContract>['writeContract']
@@ -137,7 +137,11 @@ export const TxProvider = ({ children }: { children: ReactNode }) => {
       ...writeContractOptions,
       onSuccess: (data, variables, context) => {
         writeContractOptions?.onSuccess?.(data, variables, context);
-        if (viewParams?.awaitGraphPoll !== false && data) {
+        if (
+          viewParams?.awaitGraphPoll !== false &&
+          data &&
+          !viewParams?.awaitEnvioPoll
+        ) {
           setPollStatus(PollStatus.Polling);
           pollSubgraph({
             txHash: data,
@@ -155,7 +159,24 @@ export const TxProvider = ({ children }: { children: ReactNode }) => {
               setPollStatus(PollStatus.Timeout);
             },
           });
-        } else if (viewParams?.awaitEnvioPoll !== false && data) {
+        } else if (viewParams?.awaitEnvioPoll && data) {
+          setPollStatus(PollStatus.Polling);
+          pollEnvio({
+            txHash: data,
+            onPollSuccess: () => {
+              writeContractOptions?.onPollSuccess?.();
+              setPollStatus(PollStatus.Success);
+              onComplete?.();
+            },
+            onPollError: () => {
+              writeContractOptions?.onPollError?.();
+              setPollStatus(PollStatus.Error);
+            },
+            onPollTimeout: () => {
+              writeContractOptions?.onPollTimeout?.();
+              setPollStatus(PollStatus.Timeout);
+            },
+          });
         } else {
           onComplete?.();
         }
