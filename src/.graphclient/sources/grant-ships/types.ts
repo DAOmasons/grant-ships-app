@@ -20,7 +20,12 @@ export type Scalars = {
   BigInt: any;
   Bytes: any;
   Int8: any;
+  Timestamp: any;
 };
+
+export type Aggregation_interval =
+  | 'hour'
+  | 'day';
 
 export type ApplicationHistory = {
   id: Scalars['ID'];
@@ -2254,7 +2259,8 @@ export type Query = {
   profileMemberGroups: Array<ProfileMemberGroup>;
   transaction?: Maybe<Transaction>;
   transactions: Array<Transaction>;
-  rawMetadata: Array<RawMetadata>;
+  rawMetadata?: Maybe<RawMetadata>;
+  rawMetadata_collection: Array<RawMetadata>;
   log?: Maybe<Log>;
   logs: Array<Log>;
   gmVersion?: Maybe<GmVersion>;
@@ -2537,6 +2543,13 @@ export type QuerytransactionsArgs = {
 
 
 export type QueryrawMetadataArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryrawMetadata_collectionArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   first?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<RawMetadata_orderBy>;
@@ -2702,7 +2715,8 @@ export type Subscription = {
   profileMemberGroups: Array<ProfileMemberGroup>;
   transaction?: Maybe<Transaction>;
   transactions: Array<Transaction>;
-  rawMetadata: Array<RawMetadata>;
+  rawMetadata?: Maybe<RawMetadata>;
+  rawMetadata_collection: Array<RawMetadata>;
   log?: Maybe<Log>;
   logs: Array<Log>;
   gmVersion?: Maybe<GmVersion>;
@@ -2985,6 +2999,13 @@ export type SubscriptiontransactionsArgs = {
 
 
 export type SubscriptionrawMetadataArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionrawMetadata_collectionArgs = {
   skip?: InputMaybe<Scalars['Int']>;
   first?: InputMaybe<Scalars['Int']>;
   orderBy?: InputMaybe<RawMetadata_orderBy>;
@@ -3238,6 +3259,8 @@ export type _Block_ = {
   number: Scalars['Int'];
   /** Integer representation of the timestamp stored in blocks for the chain */
   timestamp?: Maybe<Scalars['Int']>;
+  /** The hash of the parent block */
+  parentHash?: Maybe<Scalars['Bytes']>;
 };
 
 /** The type for the top-level _meta field */
@@ -3326,6 +3349,8 @@ export type _SubgraphErrorPolicy_ =
   /** null **/
   rawMetadata: InContextSdkMethod<Query['rawMetadata'], QueryrawMetadataArgs, MeshContext>,
   /** null **/
+  rawMetadata_collection: InContextSdkMethod<Query['rawMetadata_collection'], QueryrawMetadata_collectionArgs, MeshContext>,
+  /** null **/
   log: InContextSdkMethod<Query['log'], QuerylogArgs, MeshContext>,
   /** null **/
   logs: InContextSdkMethod<Query['logs'], QuerylogsArgs, MeshContext>,
@@ -3408,6 +3433,8 @@ export type _SubgraphErrorPolicy_ =
   transactions: InContextSdkMethod<Subscription['transactions'], SubscriptiontransactionsArgs, MeshContext>,
   /** null **/
   rawMetadata: InContextSdkMethod<Subscription['rawMetadata'], SubscriptionrawMetadataArgs, MeshContext>,
+  /** null **/
+  rawMetadata_collection: InContextSdkMethod<Subscription['rawMetadata_collection'], SubscriptionrawMetadata_collectionArgs, MeshContext>,
   /** null **/
   log: InContextSdkMethod<Subscription['log'], SubscriptionlogArgs, MeshContext>,
   /** null **/

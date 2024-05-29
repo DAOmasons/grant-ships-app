@@ -15,12 +15,13 @@ export const generateRandomUint256 = (): bigint => {
 };
 
 export const generateRandomBytes32 = (): string => {
-  const randomBytes = crypto.getRandomValues(new Uint8Array(32));
-  const bytes32 = Array.from(randomBytes)
-    .map((b) => b.toString(16).padStart(2, '0'))
-    .join('');
+  return `0x${crypto.randomBytes(32).toString('hex')}`;
+  // const randomBytes = crypto.getRandomValues(new Uint8Array(32));
+  // const bytes32 = Array.from(randomBytes)
+  //   .map((b) => b.toString(16).padStart(2, '0'))
+  //   .join('');
 
-  return `0x${bytes32}`;
+  // return `0x${bytes32}`;
 };
 
 export function findValueByKey(obj: any, key: string): any {

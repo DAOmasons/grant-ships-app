@@ -3,7 +3,6 @@ import {
   Avatar,
   Blockquote,
   Box,
-  Button,
   Group,
   Skeleton,
   Stack,
@@ -33,6 +32,11 @@ import { z } from 'zod';
 import { notifications } from '@mantine/notifications';
 import { pinJSONToIPFS } from '../../../utils/ipfs/pin';
 import { useTx } from '../../../hooks/useTx';
+import HatsPoster from '../../../abi/HatsPoster.json';
+import { ADDR } from '../../../constants/addresses';
+import { Tag } from '../../../constants/tags';
+import { generateRandomBytes32 } from '../../../utils/helpers';
+import { TxButton } from '../../TxButton';
 
 type FormValues = z.infer<typeof portfolioReportSchema>;
 
@@ -43,8 +47,10 @@ const defaultValues: FormValues = {
 
 export const PortfolioReport = ({
   shipId,
+  shipHatId,
   reportStatus,
 }: {
+  shipHatId?: string | null;
   shipId: string;
   reportStatus: ReportStatus;
 }) => {
@@ -132,7 +138,14 @@ export const PortfolioReport = ({
         {...form.getInputProps(`roundReview`)}
         mb="xl"
       />
-      <SubmitReport formValues={form.values} disabled={form.isValid()} />
+      {shipHatId && (
+        <SubmitReport
+          formValues={form.values}
+          disabled={!form.isValid()}
+          shipHatId={shipHatId}
+          shipId={shipId}
+        />
+      )}
     </Box>
   );
 };
@@ -224,38 +237,41 @@ const PortfolioItem = ({
             completed
           </li>
         </Text>
-        <Text fz="sm" className="ws-pre-wrap">
-          <li>
-            <Text component="span" fz="sm" fw={600}>
-              Reason for funding:{' '}
-            </Text>
-            <Blockquote
-              p={'md'}
-              color={theme.colors.violet[5]}
-              my="md"
-              icon={<ShipBadge />}
-              iconSize={16}
-            >
-              {grant.shipApprovalReason}
-            </Blockquote>
-          </li>
-        </Text>
-        <Text fz="sm" className="ws-pre-wrap">
-          <li>
-            <Text component="span" fz="sm" fw={600}>
-              Facilitator Approval Reason:{' '}
-            </Text>
-            <Blockquote
-              p={'md'}
-              my="md"
-              color={theme.colors.pink[5]}
-              icon={<FacilitatorBadge />}
-              iconSize={18}
-            >
-              {grant.facilitatorReason}
-            </Blockquote>
-          </li>
-        </Text>
+
+        <li>
+          <Text component="span" fz="sm" fw={600}>
+            Reason for funding:{' '}
+          </Text>
+          <Blockquote
+            p={'md'}
+            color={theme.colors.violet[5]}
+            my="md"
+            icon={<ShipBadge />}
+            iconSize={16}
+            className="ws-pre-wrap"
+            fz="sm"
+          >
+            {grant.shipApprovalReason}
+          </Blockquote>
+        </li>
+
+        <li>
+          <Text component="span" fz="sm" fw={600}>
+            Facilitator Approval Reason:{' '}
+          </Text>
+        </li>
+        <Blockquote
+          p={'md'}
+          my="md"
+          color={theme.colors.pink[5]}
+          icon={<FacilitatorBadge />}
+          iconSize={18}
+          fz="sm"
+          className="ws-pre-wrap"
+        >
+          {grant.facilitatorReason}
+        </Blockquote>
+
         {reportStatus === ReportStatus.Submit && (
           <Textarea
             label="Your Report"
@@ -275,10 +291,14 @@ const PortfolioItem = ({
 
 const SubmitReport = ({
   formValues,
+  shipId,
+  shipHatId,
   disabled,
 }: {
   formValues: FormValues;
+  shipId: string;
   disabled: boolean;
+  shipHatId: string;
 }) => {
   const { tx } = useTx();
   const submitReport = async () => {
@@ -301,13 +321,37 @@ const SubmitReport = ({
     }
 
     const pinRes = await pinJSONToIPFS(formValues);
+
+    const nonce = generateRandomBytes32();
+
+    if (!pinRes) {
+      notifications.show({
+        title: 'Error',
+        message: 'Failed to pin report to IPFS',
+        color: 'red',
+      });
+    }
+
+    tx({
+      writeContractParams: {
+        abi: HatsPoster,
+        address: ADDR.HATS_POSTER,
+        functionName: 'postRecord',
+        args: [
+          `${Tag.ShipSubmitReport}-${shipId}`,
+          nonce,
+          shipHatId,
+          [1n, pinRes.IpfsHash],
+        ],
+      },
+    });
   };
 
   return (
     <Group justify="flex-end">
-      <Button disabled onClick={submitReport}>
+      <TxButton disabled={disabled} onClick={submitReport}>
         Submit Report
-      </Button>
+      </TxButton>
     </Group>
   );
 };
@@ -330,7 +374,7 @@ const ReportSubmitHeader = ({
           Please provide a summary of each grant that you issued in the list.
           Also submit a round summary the bottom of the page
         </Text>
-        <Text fz="sm" mb="md">
+        <Box mb="md">
           <Group gap="xs" mb="sm">
             <Text component="span" fz="sm" fw={600}>
               Round Review:{' '}
@@ -347,13 +391,17 @@ const ReportSubmitHeader = ({
             </Text>
             {grants.map((g) =>
               formValues?.grantReviews[g.id] ? (
-                <IconSquareCheck size={16} color={theme.colors.teal[5]} />
+                <IconSquareCheck
+                  key={g.id}
+                  size={16}
+                  color={theme.colors.teal[5]}
+                />
               ) : (
                 <IconSquare key={g.id} size={16} />
               )
             )}
           </Group>
-        </Text>
+        </Box>
       </Box>
     </>
   );

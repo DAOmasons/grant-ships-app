@@ -74,7 +74,11 @@ export const ShipOpDashboard = () => {
         </Tabs.Panel>
         <Tabs.Panel value="application">
           {id && (
-            <PortfolioReport shipId={id} reportStatus={ReportStatus.Submit} />
+            <PortfolioReport
+              shipId={id}
+              reportStatus={ReportStatus.Submit}
+              shipHatId={shipData?.hatId}
+            />
           )}
         </Tabs.Panel>
         <Tabs.Panel value="postUpdate">
