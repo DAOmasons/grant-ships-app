@@ -39,7 +39,7 @@ export type GsVoting = Pick<
 
 export type VoteData = {
   votes: GsVoting | null;
-  userVotes: UserVotes[] | null;
+  userVotes: UserVote[] | null;
 };
 
 export const getGsVoting = async ({
@@ -56,6 +56,6 @@ export const getGsVoting = async ({
 
   return {
     votes: (contestRes?.GrantShipsVoting?.[0] as GsVoting) || null,
-    userVotes: (voterRes?.ShipVote as UserVotes[]) || null,
+    userVotes: (voterRes?.ShipVote as UserVote[]) || null,
   };
 };
