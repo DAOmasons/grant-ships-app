@@ -20,8 +20,8 @@ import { getMesh, ExecuteMeshFn, SubscribeMeshFn, MeshContext as BaseMeshContext
 import { MeshStore, FsStoreStorageAdapter } from '@graphql-mesh/store';
 import { path as pathModule } from '@graphql-mesh/cross-helpers';
 import { ImportFn } from '@graphql-mesh/types';
-import type { GrantShipsTypes } from './sources/grant-ships/types';
 import type { GsVotingTypes } from './sources/gs-voting/types';
+import type { GrantShipsTypes } from './sources/grant-ships/types';
 import * as importedModule$0 from "./sources/gs-voting/introspectionSchema";
 import * as importedModule$1 from "./sources/grant-ships/introspectionSchema";
 export type Maybe<T> = T | null;
@@ -8760,6 +8760,12 @@ const merger = new(StitchingMerger as any)({
         },
         location: 'GetGrantDocument.graphql'
       },{
+        document: GetGsVotingDocument,
+        get rawSDL() {
+          return printWithCache(GetGsVotingDocument);
+        },
+        location: 'GetGsVotingDocument.graphql'
+      },{
         document: GetProjectGrantsDocument,
         get rawSDL() {
           return printWithCache(GetProjectGrantsDocument);
@@ -8837,6 +8843,12 @@ const merger = new(StitchingMerger as any)({
           return printWithCache(GetUserDataDocument);
         },
         location: 'GetUserDataDocument.graphql'
+      },{
+        document: GetUserVotesDocument,
+        get rawSDL() {
+          return printWithCache(GetUserVotesDocument);
+        },
+        location: 'GetUserVotesDocument.graphql'
       },{
         document: ProjectPageQueryDocument,
         get rawSDL() {
@@ -9055,6 +9067,16 @@ export type getGrantQuery = { grant?: Maybe<(
     ), currentMilestoneRejectedReason?: Maybe<Pick<RawMetadata, 'pointer'>>, milestonesApprovedReason?: Maybe<Pick<RawMetadata, 'pointer'>>, facilitatorReason?: Maybe<Pick<RawMetadata, 'pointer'>>, shipApprovalReason?: Maybe<Pick<RawMetadata, 'pointer'>> }
   )> };
 
+export type getGsVotingQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type getGsVotingQuery = { GrantShipsVoting: Array<(
+    Pick<GrantShipsVoting, 'id' | 'endTime' | 'startTime' | 'totalVotes' | 'voteDuration' | 'voteTokenAddress' | 'votingCheckpoint'>
+    & { choices: Array<Pick<ShipChoice, 'active' | 'id' | 'mdPointer' | 'mdProtocol' | 'voteTally'>>, contest?: Maybe<Pick<Contest, 'votesModule_id' | 'choicesModule_id' | 'pointsModule_id' | 'executionModule_id'>> }
+  )> };
+
 export type getProjectGrantsQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
@@ -9200,6 +9222,14 @@ export type getUserDataQuery = { projects: Array<(
     Pick<GrantShip, 'id' | 'name' | 'status' | 'applicationSubmittedTime' | 'shipApplicationBytesData'>
     & { profileMetadata: Pick<RawMetadata, 'pointer'> }
   )> };
+
+export type getUserVotesQueryVariables = Exact<{
+  contestId: Scalars['String'];
+  voterAddress: Scalars['String'];
+}>;
+
+
+export type getUserVotesQuery = { ShipVote: Array<Pick<ShipVote, 'id' | 'choice_id' | 'mdPointer' | 'mdProtocol'>> };
 
 export type projectPageQueryQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -9518,6 +9548,32 @@ export const getGrantDocument = gql`
   }
 }
     ${GrantDashFragmentDoc}` as unknown as DocumentNode<getGrantQuery, getGrantQueryVariables>;
+export const getGsVotingDocument = gql`
+    query getGsVoting($id: String!) {
+  GrantShipsVoting(where: {id: {_eq: $id}}) {
+    id
+    choices {
+      active
+      id
+      mdPointer
+      mdProtocol
+      voteTally
+    }
+    contest {
+      votesModule_id
+      choicesModule_id
+      pointsModule_id
+      executionModule_id
+    }
+    endTime
+    startTime
+    totalVotes
+    voteDuration
+    voteTokenAddress
+    votingCheckpoint
+  }
+}
+    ` as unknown as DocumentNode<getGsVotingQuery, getGsVotingQueryVariables>;
 export const getProjectGrantsDocument = gql`
     query getProjectGrants($id: ID!) {
   project(id: $id) {
@@ -9647,6 +9703,16 @@ export const getUserDataDocument = gql`
     ${ProjectDetailsFragmentDoc}
 ${RawMetadataFragmentDoc}
 ${FacShipDataFragmentDoc}` as unknown as DocumentNode<getUserDataQuery, getUserDataQueryVariables>;
+export const getUserVotesDocument = gql`
+    query getUserVotes($contestId: String!, $voterAddress: String!) {
+  ShipVote(where: {voter: {_eq: $voterAddress}, contest_id: {_eq: $contestId}}) {
+    id
+    choice_id
+    mdPointer
+    mdProtocol
+  }
+}
+    ` as unknown as DocumentNode<getUserVotesQuery, getUserVotesQueryVariables>;
 export const projectPageQueryDocument = gql`
     query projectPageQuery($id: ID!) {
   project(id: $id) {
@@ -9703,6 +9769,8 @@ export const ShipsPageQueryDocument = gql`
 
 
 
+
+
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
@@ -9729,6 +9797,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     getGrant(variables: getGrantQueryVariables, options?: C): Promise<getGrantQuery> {
       return requester<getGrantQuery, getGrantQueryVariables>(getGrantDocument, variables, options) as Promise<getGrantQuery>;
+    },
+    getGsVoting(variables: getGsVotingQueryVariables, options?: C): Promise<getGsVotingQuery> {
+      return requester<getGsVotingQuery, getGsVotingQueryVariables>(getGsVotingDocument, variables, options) as Promise<getGsVotingQuery>;
     },
     getProjectGrants(variables: getProjectGrantsQueryVariables, options?: C): Promise<getProjectGrantsQuery> {
       return requester<getProjectGrantsQuery, getProjectGrantsQueryVariables>(getProjectGrantsDocument, variables, options) as Promise<getProjectGrantsQuery>;
@@ -9768,6 +9839,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     getUserData(variables?: getUserDataQueryVariables, options?: C): Promise<getUserDataQuery> {
       return requester<getUserDataQuery, getUserDataQueryVariables>(getUserDataDocument, variables, options) as Promise<getUserDataQuery>;
+    },
+    getUserVotes(variables: getUserVotesQueryVariables, options?: C): Promise<getUserVotesQuery> {
+      return requester<getUserVotesQuery, getUserVotesQueryVariables>(getUserVotesDocument, variables, options) as Promise<getUserVotesQuery>;
     },
     projectPageQuery(variables: projectPageQueryQueryVariables, options?: C): Promise<projectPageQueryQuery> {
       return requester<projectPageQueryQuery, projectPageQueryQueryVariables>(projectPageQueryDocument, variables, options) as Promise<projectPageQueryQuery>;

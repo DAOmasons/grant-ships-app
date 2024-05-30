@@ -3,6 +3,9 @@ import { createContext } from 'react';
 import { GameManager, getGameManger } from '../queries/getGameManger';
 import { useAccount } from 'wagmi';
 import { UserData, getUserData } from '../queries/getUserData';
+import { ADDR } from '../constants/addresses';
+import { getGsVoting } from '../queries/getGsVoting';
+import { Address } from 'viem';
 
 type GlobalStateContext = {
   gameManager?: GameManager;
@@ -50,6 +53,22 @@ export const GlobalStateProvider = ({
     queryFn: () => getUserData(address as string),
     enabled: !!address,
   });
+
+  const {
+    data: gsVoting,
+    isLoading: isLoadingGsVote,
+    error: gsVotingError,
+  } = useQuery({
+    queryKey: ['gsVoting', ADDR.VOTE_CONTEST, address],
+    queryFn: () =>
+      getGsVoting({
+        contestId: ADDR.VOTE_CONTEST,
+        userAddress: address as Address,
+      }),
+    enabled: !!address,
+  });
+
+  console.log('gsVoting', gsVoting);
 
   return (
     <GlobalContext.Provider

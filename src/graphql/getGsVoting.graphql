@@ -1,0 +1,25 @@
+query getGsVoting($id: String!) {
+  GrantShipsVoting(where: { id: { _eq: $id } }) {
+    id
+    choices {
+      active
+      id
+      mdPointer
+      mdProtocol
+      voteTally
+    }
+    contest {
+      votesModule_id
+      choicesModule_id
+      pointsModule_id
+      executionModule_id
+      contestStatus
+    }
+    endTime
+    startTime
+    totalVotes
+    voteDuration
+    voteTokenAddress
+    votingCheckpoint
+  }
+}
