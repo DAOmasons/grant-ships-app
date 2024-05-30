@@ -7,7 +7,7 @@ import {
   getBuiltGraphSDK,
 } from '../.graphclient';
 
-export type UserVotes = Pick<
+export type UserVote = Pick<
   ShipVote,
   'id' | 'choice_id' | 'mdPointer' | 'mdProtocol'
 >;
