@@ -164,6 +164,9 @@ export const resolveMilestoneReviewReason = async (pointer?: string) => {
   const validated = reasonSchema.safeParse(data);
 
   if (!validated.success) {
+    if (pointer === 'NULL') {
+      return;
+    }
     console.error('Invalid metadata', validated.error);
     return null;
   }

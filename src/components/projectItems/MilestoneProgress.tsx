@@ -18,7 +18,7 @@ import { AlloStatus } from '../../types/common';
 import { Link } from 'react-router-dom';
 
 type MilestoneProgressProps = {
-  fundedBy: string;
+  onlyMilestones?: boolean;
   grant: DashGrant;
 };
 
@@ -55,7 +55,10 @@ const getCircleStyle = ({ milestoneStatus }: PackedMilestoneData) => {
   return `${classes.statusIcon}`;
 };
 
-export const MilestoneProgress = ({ grant }: MilestoneProgressProps) => {
+export const MilestoneProgress = ({
+  grant,
+  onlyMilestones,
+}: MilestoneProgressProps) => {
   const grantAmount = grant.applicationData.grantAmount
     ? formatEther(grant.applicationData.grantAmount)
     : 0;
@@ -100,29 +103,31 @@ export const MilestoneProgress = ({ grant }: MilestoneProgressProps) => {
 
   return (
     <Box>
-      <Group gap={6} mb={10} align="start">
-        <Text fz="sm">
-          <Text fz="sm" component="span" fw={600}>
-            {grantAmount} {GAME_TOKEN.SYMBOL}{' '}
+      {!onlyMilestones && (
+        <Group gap={6} mb={10} align="start">
+          <Text fz="sm">
+            <Text fz="sm" component="span" fw={600}>
+              {grantAmount} {GAME_TOKEN.SYMBOL}{' '}
+            </Text>
+            funded by
           </Text>
-          funded by
-        </Text>
-        <Tooltip
-          label={
-            <Box p={8}>
-              <Avatar src={grant.shipMetadata.imgUrl} size={66} mb={'xs'} />
-              <Text fz="sm">{grant.shipMetadata.name}</Text>
-            </Box>
-          }
-        >
-          <Avatar
-            src={grant.shipMetadata.imgUrl}
-            size={20}
-            component={Link}
-            to={`/ship/${grant.shipId.id}`}
-          />
-        </Tooltip>
-      </Group>
+          <Tooltip
+            label={
+              <Box p={8}>
+                <Avatar src={grant.shipMetadata.imgUrl} size={66} mb={'xs'} />
+                <Text fz="sm">{grant.shipMetadata.name}</Text>
+              </Box>
+            }
+          >
+            <Avatar
+              src={grant.shipMetadata.imgUrl}
+              size={20}
+              component={Link}
+              to={`/ship/${grant.shipId.id}`}
+            />
+          </Tooltip>
+        </Group>
+      )}
       <MilestoneProgressSteps
         totalAmount={grant.applicationData.grantAmount}
         steps={grant.milestones}

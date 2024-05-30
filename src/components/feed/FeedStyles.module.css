@@ -3,7 +3,7 @@
   flex-direction: column-reverse;
 
   padding: rem(16);
-  border: 1px solid var(--mantine-color-dark-6);
+  border: 1px solid var(--mantine-color-dark-5);
   border-radius: rem(12);
 }
 .embedTextControl {

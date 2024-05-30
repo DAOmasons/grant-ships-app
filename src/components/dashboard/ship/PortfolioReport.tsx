@@ -20,11 +20,9 @@ import {
   IconChevronDown,
   IconChevronUp,
   IconExclamationCircle,
-  IconExternalLink,
   IconSquare,
   IconSquareCheck,
 } from '@tabler/icons-react';
-import { SCAN_URL } from '../../../constants/enpoints';
 import { AppAlert } from '../../UnderContruction';
 import { DashGrant } from '../../../resolvers/grantResolvers';
 import { AlloStatus, ReportStatus } from '../../../types/common';
@@ -40,6 +38,7 @@ import { ADDR } from '../../../constants/addresses';
 import { Tag } from '../../../constants/tags';
 import { generateRandomBytes32 } from '../../../utils/helpers';
 import { TxButton } from '../../TxButton';
+import { MilestoneProgress } from '../../projectItems/MilestoneProgress';
 
 type FormValues = z.infer<typeof portfolioReportSchema>;
 
@@ -83,13 +82,12 @@ export const PortfolioReport = ({
   if (isLoading)
     return (
       <Stack>
-        <Skeleton height={300} />
         <Skeleton height={50} />
         <Skeleton height={50} />
-        <Skeleton height={50} />2{' '}
+        <Skeleton height={50} />
       </Stack>
     );
-  2;
+
   if (error || !grants)
     return (
       <AppAlert
@@ -108,20 +106,16 @@ export const PortfolioReport = ({
       />
     );
 
-  console.log(
-    'reportStatus === ReportStatus.Review',
-    reportStatus === ReportStatus.Review
-  );
+  const shipName = grants?.[0]?.shipMetadata?.name;
+  const shipAvatar = grants?.[0]?.shipMetadata?.imgUrl;
 
   return (
     <Box>
       {reportStatus === ReportStatus.Submit && (
         <ReportSubmitHeader grants={grants} formValues={form.values} />
       )}
-      {reportStatus === ReportStatus.Review && reportData && (
-        <ReportReviewHeader reportData={reportData} />
-      )}
-      <Accordion defaultValue={grants[0].id} mb="lg">
+
+      <Accordion mb="lg">
         {grants.map((grant) => (
           <Accordion.Item key={grant.id} value={grant.id}>
             <Accordion.Control
@@ -144,6 +138,19 @@ export const PortfolioReport = ({
           </Accordion.Item>
         ))}
       </Accordion>
+      {reportData &&
+        (reportStatus === ReportStatus.Review ||
+          reportStatus === ReportStatus.Vote) && (
+          <>
+            <Group align="center" mb="md" gap="xs">
+              <Text fz="sm" fw={600}>
+                Round Summary from {shipName}
+              </Text>
+              <Avatar src={shipAvatar} size={16} />
+            </Group>
+            <ReviewBox text={reportData.roundReview} />
+          </>
+        )}
       {shipHatId && reportStatus === ReportStatus.Submit && (
         <>
           <Textarea
@@ -166,22 +173,6 @@ export const PortfolioReport = ({
           />
         </>
       )}
-    </Box>
-  );
-};
-
-const ReportReviewHeader = ({ reportData }: { reportData: ReportData }) => {
-  return (
-    <Box>
-      <Text fz="lg" mb="lg" fw={600}>
-        Your Portfolio Report
-      </Text>
-      <Box>
-        <Text fz="sm" fw={600} mb="xs">
-          Round Review:{' '}
-        </Text>
-        <ReviewBox text={reportData.roundReview} />
-      </Box>
     </Box>
   );
 };
@@ -228,10 +219,12 @@ const PortfolioItem = ({
 
   return (
     <Box>
-      <Text fz="sm" className="ws-pre-wrap" mb="md">
+      <MilestoneProgress grant={grant} onlyMilestones />
+      <Text fz="sm" className="ws-pre-wrap" mb="md" mt="md">
         <Text component="span" fz="sm" fw={600}>
           Link To Project:{' '}
         </Text>
+
         <Text
           component={Link}
           to={`/project/${grant.projectId.id}`}
@@ -249,24 +242,7 @@ const PortfolioItem = ({
         </Text>
         {status}
       </Text>
-      <Box mb="md">
-        <Text fz="sm" mb="md" fw={600}>
-          Receiving Address:{' '}
-        </Text>
-        <Text
-          fz="sm"
-          component="a"
-          td="underline"
-          href={`${SCAN_URL}/address/${grant.applicationData.receivingAddress}`}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Group gap={4}>
-            {grant.applicationData.receivingAddress}{' '}
-            <IconExternalLink size={14} />
-          </Group>
-        </Text>
-      </Box>
+      <Box mb="md"></Box>
       <Text fz="sm" mb="md" fw={600}>
         Project Description
       </Text>
@@ -329,7 +305,8 @@ const PortfolioItem = ({
           {grant.facilitatorReason}
         </Blockquote>
 
-        {reportStatus === ReportStatus.Submit && (
+        {(reportStatus === ReportStatus.Submit ||
+          reportStatus === ReportStatus.Vote) && (
           <Textarea
             label="Your Report"
             required
@@ -344,9 +321,12 @@ const PortfolioItem = ({
 
         {reportStatus === ReportStatus.Review && reportData && (
           <>
-            <Text fz="sm" mb="md" fw={600}>
-              Your Review:{' '}
-            </Text>
+            <Group align="center" mb="md" gap="xs">
+              <Text fz="sm" fw={600}>
+                Review from {grant.shipMetadata.name}
+              </Text>
+              <Avatar src={grant.shipMetadata.imgUrl} size={16} />
+            </Group>
             <ReviewBox text={reportData.grantReviews[grant.id]} />
           </>
         )}
