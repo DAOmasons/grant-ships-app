@@ -15,6 +15,13 @@ import { PINATA_GATEWAY } from '../../../utils/ipfs/get';
 import { IconInfoCircle, IconSquareCheck } from '@tabler/icons-react';
 import { IconSquare } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
+import { useMemo } from 'react';
+import { notifications } from '@mantine/notifications';
+import HatsAllowList from '../../../abi/HatsAllowList.json';
+import { ADDR } from '../../../constants/addresses';
+import { useTx } from '../../../hooks/useTx';
+import { Address } from 'viem';
+import { TxButton } from '../../TxButton';
 
 export const PopulateChoicesPanel = ({
   ships,
@@ -23,6 +30,7 @@ export const PopulateChoicesPanel = ({
 }) => {
   const shipIds = ships.map((ship) => ship.id);
   const theme = useMantineTheme();
+  const { tx } = useTx();
 
   const {
     data: shipReports,
@@ -35,6 +43,30 @@ export const PopulateChoicesPanel = ({
   });
 
   const { votingExists } = useVoting();
+
+  const { contest, refetchGsVotes } = useVoting();
+
+  const shipChoiceIds = useMemo(() => {
+    if (!ships?.length || !contest?.choices?.length) {
+      return {};
+    }
+
+    let ids: Record<string, boolean> = {};
+
+    for (const ship of ships) {
+      const shipId = contest?.choices.find(
+        (choice) => choice.shipId === ship.id
+      )?.shipId;
+
+      if (shipId) {
+        ids = { ...ids, [shipId]: true };
+      }
+    }
+
+    return ids;
+  }, [contest?.choices, ships]);
+
+  console.log('shipChoiceIds', shipChoiceIds);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -54,22 +86,48 @@ export const PopulateChoicesPanel = ({
   }
   const completedReports = shipReports.filter(Boolean);
   const allHaveReports = completedReports.length === ships.length;
-  const amountApproved = 0;
+  const amountApproved = Object.keys(shipChoiceIds).length;
   const allAreApproved = amountApproved === ships.length;
 
-  // have ships submitted PRs?
+  const handleFinalizeChoices = () => {
+    if (!allAreApproved || !allHaveReports) {
+      notifications.show({
+        title: 'Error',
+        message:
+          'All ships must have approved reports before finalizing choices',
+        color: 'red',
+      });
+      return;
+    }
 
-  // no? display awaiting PR UI
+    const choicesAddress = contest?.contest?.choicesModule_id;
 
-  // have all ship PRs been approved?
+    if (!choicesAddress) {
+      notifications.show({
+        title: 'Error',
+        message: 'Choices address not found',
+        color: 'red',
+      });
+      return;
+    }
 
-  // no? display awaiting approval UI
-
-  // Has the contest entered into the voting phase?
-
-  // no? display the finalize choices UI
-
-  // yes? display the completed choices UI
+    tx({
+      viewParams: {
+        awaitEnvioPoll: true,
+      },
+      writeContractParams: {
+        abi: HatsAllowList,
+        address: choicesAddress as Address,
+        functionName: 'finalizeChoices',
+        args: [],
+      },
+      writeContractOptions: {
+        onPollSuccess() {
+          refetchGsVotes();
+        },
+      },
+    });
+  };
 
   return (
     <Box>
@@ -103,7 +161,7 @@ export const PopulateChoicesPanel = ({
             {amountApproved}/{ships.length} approved
           </Text>
         </Group>
-        <Text size="xs">
+        <Text size="sm">
           You can approve ships by navigating to the{' '}
           <Link to="/vote">vote</Link> page and selecting 'Approve' while logged
           in as a game facilitator
@@ -113,33 +171,40 @@ export const PopulateChoicesPanel = ({
       <Box mb="lg">
         {ships.map((ship, index) => {
           const shipReport = shipReports[index];
+          const hasBeenApproved = !!shipChoiceIds[ship.id as string];
           return (
             <ShipIndicator
               key={ship.id}
               ship={ship}
               hasShipReport={!!shipReport}
-              hasBeenApproved={false}
+              hasBeenApproved={hasBeenApproved}
             />
           );
         })}
       </Box>
-      <Button size="md" w="100%" disabled={!allAreApproved || !allHaveReports}>
+      <TxButton
+        size="md"
+        w="100%"
+        disabled={!allAreApproved || !allHaveReports}
+        onClick={handleFinalizeChoices}
+      >
         Finalize Choices
-      </Button>
+      </TxButton>
     </Box>
   );
 };
 
 const ShipIndicator = ({
   ship,
-  hasBeenApproved,
   hasShipReport,
+  hasBeenApproved,
 }: {
   ship: CompressedApprovedShip;
   hasShipReport: boolean;
   hasBeenApproved: boolean;
 }) => {
   const theme = useMantineTheme();
+
   const imgUrl = `${PINATA_GATEWAY}/${ship.profileMetadata.avatarHash_IPFS}`;
 
   return (

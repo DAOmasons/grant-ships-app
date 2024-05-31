@@ -24,7 +24,12 @@ import {
   getRecentPortfolioReport,
 } from '../queries/getRecordsByTag';
 import { Tag } from '../constants/tags';
-import { encodeAbiParameters, formatEther, parseAbiParameters } from 'viem';
+import {
+  Address,
+  encodeAbiParameters,
+  formatEther,
+  parseAbiParameters,
+} from 'viem';
 import { useVoting } from '../hooks/useVoting';
 import { useUserData } from '../hooks/useUserState';
 import { IconCheck, IconInfoCircle } from '@tabler/icons-react';
@@ -34,17 +39,12 @@ import { useTx } from '../hooks/useTx';
 import HatsAllowList from '../abi/HatsAllowList.json';
 import { portfolioReportSchema } from '../components/forms/validationSchemas/portfolioReportSchema';
 import { pinJSONToIPFS } from '../utils/ipfs/pin';
-import { ADDR } from '../constants/addresses';
 import { addressToBytes32, bytes32toAddress } from '../utils/helpers';
 
 export const Vote = () => {
   const [step, setStep] = useState(0);
   const theme = useMantineTheme();
-  const {
-    data: ships,
-    isLoading: isLoadingShips,
-    error,
-  } = useQuery({
+  const { data: ships } = useQuery({
     queryKey: ['ships-page'],
     queryFn: getShipsPageData,
   });
@@ -112,10 +112,7 @@ export const ShipPanel = ({ ship }: { ship: ShipsCardUI }) => {
   const { userData, userLoading } = useUserData();
 
   const shipChoiceId = useMemo(() => {
-    return contest?.choices.find((choice) => {
-      const shipBytes32 = choice?.id?.split('-')?.[1];
-      return bytes32toAddress(shipBytes32) === ship.id;
-    })?.id;
+    return contest?.choices.find((choice) => choice.shipId === ship.id)?.id;
   }, [contest?.choices, ship]);
 
   const { data: recentRecord, isLoading: isLoadingRecord } = useQuery({
@@ -170,6 +167,7 @@ export const ShipPanel = ({ ship }: { ship: ShipsCardUI }) => {
             shipId={ship.id}
             onSuccess={refetchGsVotes}
             shipChoiceId={shipChoiceId}
+            choicesAddress={contest?.contest?.choicesModule_id}
           />
         )}
       </Box>
@@ -183,12 +181,14 @@ const FacilitatorFooter = ({
   shipId,
   onSuccess,
   shipChoiceId,
+  choicesAddress,
 }: {
   isFacilitator?: boolean;
   recentRecord?: PostedRecord | null;
   shipId?: string;
   onSuccess: () => void;
   shipChoiceId?: string;
+  choicesAddress?: string;
 }) => {
   const theme = useMantineTheme();
   const { tx } = useTx();
@@ -252,13 +252,22 @@ const FacilitatorFooter = ({
       ['0x', [1n, pinRes.IpfsHash]]
     );
 
+    if (!choicesAddress) {
+      notifications.show({
+        title: 'Error',
+        message: 'Choices address not found',
+        color: 'red',
+      });
+      return;
+    }
+
     tx({
       viewParams: {
         awaitEnvioPoll: true,
       },
       writeContractParams: {
         abi: HatsAllowList,
-        address: ADDR.HATS_ALLOW_LIST,
+        address: choicesAddress as Address,
         functionName: 'registerChoice',
         args: [bytes32address, encoded],
       },
