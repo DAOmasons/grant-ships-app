@@ -5,7 +5,6 @@ import { useVoting } from '../../../hooks/useVoting';
 import {
   Avatar,
   Box,
-  Button,
   Group,
   Text,
   Tooltip,
@@ -18,7 +17,6 @@ import { Link } from 'react-router-dom';
 import { useMemo } from 'react';
 import { notifications } from '@mantine/notifications';
 import HatsAllowList from '../../../abi/HatsAllowList.json';
-import { ADDR } from '../../../constants/addresses';
 import { useTx } from '../../../hooks/useTx';
 import { Address } from 'viem';
 import { TxButton } from '../../TxButton';

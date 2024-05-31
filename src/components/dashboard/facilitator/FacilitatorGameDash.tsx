@@ -13,6 +13,7 @@ import { StartGamePanel } from './StartGamePanel';
 import { StopGamePanel } from './StopGamePanel';
 import { GameManager } from '../../../queries/getGameManger';
 import { PopulateChoicesPanel } from './PopulateChoicesPanel';
+import { StartVotingPanel } from './StartVotingPanel';
 
 export const FacilitatorGameDash = ({
   isLoading,
@@ -117,6 +118,7 @@ export const FacilitatorGameDash = ({
           gameStatusNumber > 8
             ? 'Voting parameters initiated'
             : 'Voting parameters not initiated',
+        content: <StartVotingPanel />,
       },
       {
         title: 'Start Voting',
