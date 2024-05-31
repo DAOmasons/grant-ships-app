@@ -12,6 +12,7 @@ import { AllocationPanel } from './AllocationPanel';
 import { StartGamePanel } from './StartGamePanel';
 import { StopGamePanel } from './StopGamePanel';
 import { GameManager } from '../../../queries/getGameManger';
+import { PopulateChoicesPanel } from './PopulateChoicesPanel';
 
 export const FacilitatorGameDash = ({
   isLoading,
@@ -19,12 +20,14 @@ export const FacilitatorGameDash = ({
   gameStatusNumber,
   poolBalance,
   gm,
+  isLoadingVoting,
 }: {
   gm?: GameManager;
   shipData?: FacShipData;
   gameStatusNumber?: number;
   isLoading: boolean;
   poolBalance?: bigint;
+  isLoadingVoting: boolean;
 }) => {
   const steps = useMemo((): TimelineContent[] | null => {
     if (
@@ -96,14 +99,36 @@ export const FacilitatorGameDash = ({
         content: <StartGamePanel gm={gm} gameStatusNumber={gameStatusNumber} />,
       },
       {
-        title: 'End Game',
+        title: 'End Round',
         description: gameStatusNumber > 5 ? 'Game Ended' : 'Game Not Finished',
         content: <StopGamePanel gm={gm} gameStatusNumber={gameStatusNumber} />,
       },
       {
-        title: 'Game Complete',
+        title: 'Populate Choices',
         description:
-          gameStatusNumber > 6 ? 'Game is not yet complete' : 'Game Complete',
+          gameStatusNumber > 7
+            ? 'Choices have been approved'
+            : "Choices haven't been approved",
+        content: <PopulateChoicesPanel ships={shipData.approvedShips} />,
+      },
+      {
+        title: 'Initiate Voting',
+        description:
+          gameStatusNumber > 8
+            ? 'Voting parameters initiated'
+            : 'Voting parameters not initiated',
+      },
+      {
+        title: 'Start Voting',
+        description:
+          gameStatusNumber > 9
+            ? 'Voting round is active'
+            : 'Voting has not started',
+      },
+      {
+        title: 'End Voting',
+        description:
+          gameStatusNumber > 10 ? 'Voting complete!' : 'Voting Ongoing',
       },
     ];
   }, [shipData, isLoading, gameStatusNumber, gm, poolBalance]);
@@ -113,7 +138,8 @@ export const FacilitatorGameDash = ({
     poolBalance === undefined ||
     isLoading ||
     !gm ||
-    !shipData
+    !shipData ||
+    isLoadingVoting
   ) {
     return (
       <Stack>

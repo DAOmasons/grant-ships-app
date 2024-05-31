@@ -2604,6 +2604,7 @@ export type GrantShipsVoting = {
   hatId: Scalars['numeric'];
   hatsAddress: Scalars['String'];
   id: Scalars['String'];
+  isVotingActive: Scalars['Boolean'];
   startTime?: Maybe<Scalars['numeric']>;
   totalVotes: Scalars['numeric'];
   voteDuration: Scalars['numeric'];
@@ -2646,6 +2647,7 @@ export type GrantShipsVoting_bool_exp = {
   hatId?: InputMaybe<numeric_comparison_exp>;
   hatsAddress?: InputMaybe<String_comparison_exp>;
   id?: InputMaybe<String_comparison_exp>;
+  isVotingActive?: InputMaybe<Boolean_comparison_exp>;
   startTime?: InputMaybe<numeric_comparison_exp>;
   totalVotes?: InputMaybe<numeric_comparison_exp>;
   voteDuration?: InputMaybe<numeric_comparison_exp>;
@@ -2664,6 +2666,7 @@ export type GrantShipsVoting_order_by = {
   hatId?: InputMaybe<order_by>;
   hatsAddress?: InputMaybe<order_by>;
   id?: InputMaybe<order_by>;
+  isVotingActive?: InputMaybe<order_by>;
   startTime?: InputMaybe<order_by>;
   totalVotes?: InputMaybe<order_by>;
   voteDuration?: InputMaybe<order_by>;
@@ -2686,6 +2689,8 @@ export type GrantShipsVoting_select_column =
   | 'hatsAddress'
   /** column name */
   | 'id'
+  /** column name */
+  | 'isVotingActive'
   /** column name */
   | 'startTime'
   /** column name */
@@ -2713,6 +2718,7 @@ export type GrantShipsVoting_stream_cursor_value_input = {
   hatId?: InputMaybe<Scalars['numeric']>;
   hatsAddress?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['String']>;
+  isVotingActive?: InputMaybe<Scalars['Boolean']>;
   startTime?: InputMaybe<Scalars['numeric']>;
   totalVotes?: InputMaybe<Scalars['numeric']>;
   voteDuration?: InputMaybe<Scalars['numeric']>;
@@ -8035,6 +8041,7 @@ export type GrantShipsVotingResolvers<ContextType = MeshContext, ParentType exte
   hatId?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
   hatsAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  isVotingActive?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   startTime?: Resolver<Maybe<ResolversTypes['numeric']>, ParentType, ContextType>;
   totalVotes?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
   voteDuration?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
@@ -9073,8 +9080,8 @@ export type getGsVotingQueryVariables = Exact<{
 
 
 export type getGsVotingQuery = { GrantShipsVoting: Array<(
-    Pick<GrantShipsVoting, 'id' | 'endTime' | 'startTime' | 'totalVotes' | 'voteDuration' | 'voteTokenAddress' | 'votingCheckpoint'>
-    & { choices: Array<Pick<ShipChoice, 'active' | 'id' | 'mdPointer' | 'mdProtocol' | 'voteTally'>>, contest?: Maybe<Pick<Contest, 'votesModule_id' | 'choicesModule_id' | 'pointsModule_id' | 'executionModule_id'>> }
+    Pick<GrantShipsVoting, 'id' | 'endTime' | 'startTime' | 'totalVotes' | 'voteDuration' | 'voteTokenAddress' | 'votingCheckpoint' | 'isVotingActive'>
+    & { choices: Array<Pick<ShipChoice, 'active' | 'id' | 'mdPointer' | 'mdProtocol' | 'voteTally'>>, contest?: Maybe<Pick<Contest, 'votesModule_id' | 'choicesModule_id' | 'pointsModule_id' | 'executionModule_id' | 'contestStatus'>> }
   )> };
 
 export type getProjectGrantsQueryVariables = Exact<{
@@ -9564,6 +9571,7 @@ export const getGsVotingDocument = gql`
       choicesModule_id
       pointsModule_id
       executionModule_id
+      contestStatus
     }
     endTime
     startTime
@@ -9571,6 +9579,7 @@ export const getGsVotingDocument = gql`
     voteDuration
     voteTokenAddress
     votingCheckpoint
+    isVotingActive
   }
 }
     ` as unknown as DocumentNode<getGsVotingQuery, getGsVotingQueryVariables>;

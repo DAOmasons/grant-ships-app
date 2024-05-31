@@ -21,6 +21,7 @@ export type GsVoting = Pick<
   | 'voteDuration'
   | 'voteTokenAddress'
   | 'votingCheckpoint'
+  | 'isVotingActive'
 > & {
   contest: Pick<
     Contest,
@@ -38,7 +39,7 @@ export type GsVoting = Pick<
 };
 
 export type VoteData = {
-  votes: GsVoting | null;
+  contest: GsVoting | null;
   userVotes: UserVote[] | null;
 };
 
@@ -55,7 +56,7 @@ export const getGsVoting = async ({
   const voterRes = await getUserVotes({ contestId, voterAddress: userAddress });
 
   return {
-    votes: (contestRes?.GrantShipsVoting?.[0] as GsVoting) || null,
+    contest: (contestRes?.GrantShipsVoting?.[0] as GsVoting) || null,
     userVotes: (voterRes?.ShipVote as UserVote[]) || null,
   };
 };

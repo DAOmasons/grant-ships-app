@@ -751,6 +751,7 @@ type GrantShipsVoting {
   hatId: numeric!
   hatsAddress: String!
   id: String!
+  isVotingActive: Boolean!
   startTime: numeric
   totalVotes: numeric!
   voteDuration: numeric!
@@ -786,6 +787,7 @@ input GrantShipsVoting_bool_exp {
   hatId: numeric_comparison_exp
   hatsAddress: String_comparison_exp
   id: String_comparison_exp
+  isVotingActive: Boolean_comparison_exp
   startTime: numeric_comparison_exp
   totalVotes: numeric_comparison_exp
   voteDuration: numeric_comparison_exp
@@ -804,6 +806,7 @@ input GrantShipsVoting_order_by {
   hatId: order_by
   hatsAddress: order_by
   id: order_by
+  isVotingActive: order_by
   startTime: order_by
   totalVotes: order_by
   voteDuration: order_by
@@ -828,6 +831,8 @@ enum GrantShipsVoting_select_column {
   hatsAddress
   """column name"""
   id
+  """column name"""
+  isVotingActive
   """column name"""
   startTime
   """column name"""
@@ -858,6 +863,7 @@ input GrantShipsVoting_stream_cursor_value_input {
   hatId: numeric
   hatsAddress: String
   id: String
+  isVotingActive: Boolean
   startTime: numeric
   totalVotes: numeric
   voteDuration: numeric

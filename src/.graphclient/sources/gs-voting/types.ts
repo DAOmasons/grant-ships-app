@@ -667,6 +667,7 @@ export type GrantShipsVoting = {
   hatId: Scalars['numeric'];
   hatsAddress: Scalars['String'];
   id: Scalars['String'];
+  isVotingActive: Scalars['Boolean'];
   startTime?: Maybe<Scalars['numeric']>;
   totalVotes: Scalars['numeric'];
   voteDuration: Scalars['numeric'];
@@ -709,6 +710,7 @@ export type GrantShipsVoting_bool_exp = {
   hatId?: InputMaybe<numeric_comparison_exp>;
   hatsAddress?: InputMaybe<String_comparison_exp>;
   id?: InputMaybe<String_comparison_exp>;
+  isVotingActive?: InputMaybe<Boolean_comparison_exp>;
   startTime?: InputMaybe<numeric_comparison_exp>;
   totalVotes?: InputMaybe<numeric_comparison_exp>;
   voteDuration?: InputMaybe<numeric_comparison_exp>;
@@ -727,6 +729,7 @@ export type GrantShipsVoting_order_by = {
   hatId?: InputMaybe<order_by>;
   hatsAddress?: InputMaybe<order_by>;
   id?: InputMaybe<order_by>;
+  isVotingActive?: InputMaybe<order_by>;
   startTime?: InputMaybe<order_by>;
   totalVotes?: InputMaybe<order_by>;
   voteDuration?: InputMaybe<order_by>;
@@ -749,6 +752,8 @@ export type GrantShipsVoting_select_column =
   | 'hatsAddress'
   /** column name */
   | 'id'
+  /** column name */
+  | 'isVotingActive'
   /** column name */
   | 'startTime'
   /** column name */
@@ -776,6 +781,7 @@ export type GrantShipsVoting_stream_cursor_value_input = {
   hatId?: InputMaybe<Scalars['numeric']>;
   hatsAddress?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['String']>;
+  isVotingActive?: InputMaybe<Scalars['Boolean']>;
   startTime?: InputMaybe<Scalars['numeric']>;
   totalVotes?: InputMaybe<Scalars['numeric']>;
   voteDuration?: InputMaybe<Scalars['numeric']>;

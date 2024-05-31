@@ -72,7 +72,15 @@ export enum AlloStatus {
 }
 export enum ReportStatus {
   Submit,
-
   Review,
   Vote,
+}
+
+export enum ContestStatus {
+  None,
+  Populating,
+  Voting,
+  Continuous,
+  Finalized,
+  Executed,
 }
