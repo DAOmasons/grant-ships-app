@@ -356,6 +356,7 @@ const SubmitReport = ({
         message: 'Please fill out all required fields',
         color: 'red',
       });
+      return;
     }
 
     const validated = portfolioReportSchema.safeParse(formValues);
@@ -366,6 +367,7 @@ const SubmitReport = ({
         message: 'Validation Error',
         color: 'red',
       });
+      return;
     }
 
     const pinRes = await pinJSONToIPFS(formValues);
@@ -378,6 +380,7 @@ const SubmitReport = ({
         message: 'Failed to pin report to IPFS',
         color: 'red',
       });
+      return;
     }
 
     tx({

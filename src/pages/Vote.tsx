@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { MainSection, PageTitle } from '../layout/Sections';
 import {
   Affix,
@@ -24,10 +24,18 @@ import {
   getRecentPortfolioReport,
 } from '../queries/getRecordsByTag';
 import { Tag } from '../constants/tags';
-import { formatEther } from 'viem';
+import { encodeAbiParameters, formatEther, parseAbiParameters } from 'viem';
 import { useVoting } from '../hooks/useVoting';
 import { useUserData } from '../hooks/useUserState';
-import { IconInfoCircle } from '@tabler/icons-react';
+import { IconCheck, IconInfoCircle } from '@tabler/icons-react';
+import { notifications } from '@mantine/notifications';
+import { TxButton } from '../components/TxButton';
+import { useTx } from '../hooks/useTx';
+import HatsAllowList from '../abi/HatsAllowList.json';
+import { portfolioReportSchema } from '../components/forms/validationSchemas/portfolioReportSchema';
+import { pinJSONToIPFS } from '../utils/ipfs/pin';
+import { ADDR } from '../constants/addresses';
+import { addressToBytes32, bytes32toAddress } from '../utils/helpers';
 
 export const Vote = () => {
   const [step, setStep] = useState(0);
@@ -99,8 +107,16 @@ export const ShipPanel = ({ ship }: { ship: ShipsCardUI }) => {
     enabled: !!ship.id,
   });
 
-  const { contest, contestStatus, isLoadingVoting } = useVoting();
+  const { contest, contestStatus, isLoadingVoting, refetchGsVotes } =
+    useVoting();
   const { userData, userLoading } = useUserData();
+
+  const shipChoiceId = useMemo(() => {
+    return contest?.choices.find((choice) => {
+      const shipBytes32 = choice?.id?.split('-')?.[1];
+      return bytes32toAddress(shipBytes32) === ship.id;
+    })?.id;
+  }, [contest?.choices, ship]);
 
   const { data: recentRecord, isLoading: isLoadingRecord } = useQuery({
     queryKey: [`ship-portfolio-${ship.id}`],
@@ -151,6 +167,9 @@ export const ShipPanel = ({ ship }: { ship: ShipsCardUI }) => {
           <FacilitatorFooter
             isFacilitator={userData?.isFacilitator}
             recentRecord={recentRecord}
+            shipId={ship.id}
+            onSuccess={refetchGsVotes}
+            shipChoiceId={shipChoiceId}
           />
         )}
       </Box>
@@ -161,21 +180,104 @@ export const ShipPanel = ({ ship }: { ship: ShipsCardUI }) => {
 const FacilitatorFooter = ({
   isFacilitator,
   recentRecord,
+  shipId,
+  onSuccess,
+  shipChoiceId,
 }: {
   isFacilitator?: boolean;
   recentRecord?: PostedRecord | null;
+  shipId?: string;
+  onSuccess: () => void;
+  shipChoiceId?: string;
 }) => {
   const theme = useMantineTheme();
-  const handleAddChoice = () => {};
+  const { tx } = useTx();
+
+  const handleAddChoice = async () => {
+    if (!recentRecord) {
+      notifications.show({
+        title: 'Error',
+        message: 'No report submitted',
+        color: 'red',
+      });
+      return;
+    }
+
+    if (!isFacilitator) {
+      notifications.show({
+        title: 'Error',
+        message: 'Only facilitator can approve',
+        color: 'red',
+      });
+      return;
+    }
+
+    if (!shipId) {
+      notifications.show({
+        title: 'Error',
+        message: 'No ship ID provided',
+        color: 'red',
+      });
+      return;
+    }
+
+    const bytes32address = addressToBytes32(shipId);
+
+    const convertedAddress = bytes32toAddress(bytes32address);
+
+    if (convertedAddress !== shipId) {
+      notifications.show({
+        title: 'Error',
+        message: 'Address conversion failed',
+        color: 'red',
+      });
+      return;
+    }
+
+    const validated = portfolioReportSchema.safeParse(recentRecord);
+
+    if (!validated.success) {
+      notifications.show({
+        title: 'Error',
+        message: 'Report data is invalid',
+        color: 'red',
+      });
+      return;
+    }
+
+    const pinRes = await pinJSONToIPFS(validated.data);
+
+    const encoded = encodeAbiParameters(
+      parseAbiParameters('bytes, (uint256, string)'),
+      ['0x', [1n, pinRes.IpfsHash]]
+    );
+
+    tx({
+      viewParams: {
+        awaitEnvioPoll: true,
+      },
+      writeContractParams: {
+        abi: HatsAllowList,
+        address: ADDR.HATS_ALLOW_LIST,
+        functionName: 'registerChoice',
+        args: [bytes32address, encoded],
+      },
+      writeContractOptions: {
+        onPollSuccess() {
+          onSuccess?.();
+        },
+      },
+    });
+  };
 
   return (
     <>
-      {recentRecord ? (
+      {recentRecord && shipChoiceId == undefined && (
         <Group justify="flex-end" mt="xl">
           {isFacilitator ? (
-            <Button onClick={handleAddChoice} size="md">
+            <TxButton onClick={handleAddChoice} size="md">
               Approve
-            </Button>
+            </TxButton>
           ) : (
             <Button
               disabled
@@ -190,16 +292,24 @@ const FacilitatorFooter = ({
             </Button>
           )}
         </Group>
-      ) : (
+      )}
+
+      {!recentRecord && (
         <Group gap="xs">
           <IconInfoCircle
             size={18}
             color={theme.colors.yellow[6]}
             style={{ marginLeft: 'auto' }}
           />
-          <Text fz="sm" color={theme.colors.yellow[6]}>
+          <Text fz="sm" c={theme.colors.yellow[6]}>
             This ship has not submitted a report yet
           </Text>
+        </Group>
+      )}
+      {shipChoiceId && (
+        <Group justify="flex-end" gap="xs">
+          <IconCheck size={18} color={theme.colors.teal[5]} />
+          <Text fz="sm">This ship has been approved</Text>
         </Group>
       )}
     </>

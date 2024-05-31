@@ -6,10 +6,16 @@ import {
   ShipVote,
   getBuiltGraphSDK,
 } from '../.graphclient';
+import { bytes32toAddress } from '../utils/helpers';
 
 export type UserVote = Pick<
   ShipVote,
   'id' | 'choice_id' | 'mdPointer' | 'mdProtocol'
+>;
+
+export type RawChoice = Pick<
+  ShipChoice,
+  'active' | 'id' | 'mdPointer' | 'mdProtocol' | 'voteTally'
 >;
 
 export type GsVoting = Pick<
@@ -32,15 +38,25 @@ export type GsVoting = Pick<
     | 'contestStatus'
   >;
 } & {
-  choices: Pick<
-    ShipChoice,
-    'active' | 'id' | 'mdPointer' | 'mdProtocol' | 'voteTally'
-  >[];
+  choices: (RawChoice & { shipId: string })[];
 };
 
 export type VoteData = {
   contest: GsVoting | null;
   userVotes: UserVote[] | null;
+};
+
+export const handleShipIds = (
+  choices: RawChoice[]
+): (RawChoice & { shipId: string })[] => {
+  return choices.map((choice) => {
+    const shipBytes32 = choice?.id?.split('-')?.[1];
+    const shipId = bytes32toAddress(shipBytes32);
+    return {
+      ...(choice as RawChoice),
+      shipId,
+    };
+  });
 };
 
 export const getGsVoting = async ({
@@ -56,7 +72,13 @@ export const getGsVoting = async ({
   const voterRes = await getUserVotes({ contestId, voterAddress: userAddress });
 
   return {
-    contest: (contestRes?.GrantShipsVoting?.[0] as GsVoting) || null,
+    contest:
+      ({
+        ...contestRes?.GrantShipsVoting?.[0],
+        choices: handleShipIds(
+          contestRes.GrantShipsVoting[0].choices as RawChoice[]
+        ) as (RawChoice & { shipId: string })[],
+      } as GsVoting) || null,
     userVotes: (voterRes?.ShipVote as UserVote[]) || null,
   };
 };

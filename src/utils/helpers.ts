@@ -49,3 +49,11 @@ export function findValueByKey(obj: any, key: string): any {
 export const isFieldNumber = (value: string): boolean => {
   return !isNaN(+value) && value.trim() !== '';
 };
+
+export const addressToBytes32 = (address: string): string => {
+  return `0x${address.slice(2).padStart(64, '0')}`;
+};
+
+export const bytes32toAddress = (bytes32: string): string => {
+  return `0x${bytes32.slice(26)}`;
+};
