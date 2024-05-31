@@ -1,4 +1,3 @@
-import React from 'react';
 import { CompressedApprovedShip } from '../../../queries/getFacDashShipData';
 import { useQuery } from '@tanstack/react-query';
 import { getAllShipReports } from '../../../queries/getRecordsByTag';
@@ -13,11 +12,7 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import { PINATA_GATEWAY } from '../../../utils/ipfs/get';
-import {
-  IconExclamationMark,
-  IconInfoCircle,
-  IconSquareCheck,
-} from '@tabler/icons-react';
+import { IconInfoCircle, IconSquareCheck } from '@tabler/icons-react';
 import { IconSquare } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
 

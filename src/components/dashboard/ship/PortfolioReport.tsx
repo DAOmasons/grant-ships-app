@@ -69,7 +69,7 @@ export const PortfolioReport = ({
   shipId: string;
   reportStatus: ReportStatus;
   onReportSubmit?: () => void;
-  reportData?: ReportData;
+  reportData?: ReportData | null;
 }) => {
   const theme = useMantineTheme();
 
@@ -205,7 +205,7 @@ const PortfolioItem = ({
   form: UseFormReturnType<FormValues, (values: FormValues) => FormValues>;
   grant: DashGrant;
   reportStatus: ReportStatus;
-  reportData?: ReportData;
+  reportData?: ReportData | null;
 }) => {
   const theme = useMantineTheme();
   const completedMilestones = grant.milestones

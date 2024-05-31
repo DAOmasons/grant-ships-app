@@ -3,7 +3,6 @@ import {
   IconAward,
   IconCheckbox,
   IconExternalLink,
-  IconFileDescription,
   IconHome,
   IconPacman,
   IconRocket,

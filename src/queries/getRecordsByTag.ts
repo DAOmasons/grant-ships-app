@@ -2,6 +2,11 @@ import { getBuiltGraphSDK } from '../.graphclient';
 import { Tag } from '../constants/tags';
 import { resolvePortfolioReport } from '../resolvers/grantResolvers';
 
+export type PostedRecord = {
+  roundReview: string;
+  grantReviews: Record<string, string>;
+};
+
 export const getAllRecordsByTag = async (tag: string) => {
   const { getRecordsByTag } = getBuiltGraphSDK();
 
@@ -10,11 +15,13 @@ export const getAllRecordsByTag = async (tag: string) => {
   return res.Record;
 };
 
-export const getRecentPortfolioReport = async (tag: string) => {
+export const getRecentPortfolioReport = async (
+  tag: string
+): Promise<PostedRecord | null> => {
   const res = await getAllRecordsByTag(tag);
 
   if (!res.length) {
-    return undefined;
+    return null;
   }
 
   const resolved = await resolvePortfolioReport(res[0].mdPointer);
@@ -28,8 +35,6 @@ export const getAllShipReports = async (shipAddresses: string[]) => {
   );
 
   const res = await Promise.all(promises);
-
-  console.log('res', res);
 
   return res;
 };
