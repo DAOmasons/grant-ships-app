@@ -52,5 +52,14 @@ export const useVoting = () => {
       : ContestStatus.None,
     isVotingActive: !!gsContest?.isVotingActive,
     votingStage,
+    userTokenData: {
+      userTokenBalance: gsVotes?.userTokenData?.userPoints || BigInt(0),
+      totalUserTokenBalance:
+        gsVotes?.userTokenData?.totalUserPoints || BigInt(0),
+    },
+    tokenData: {
+      tokenName: gsVotes?.userTokenData?.tokenName || null,
+      tokenSymbol: gsVotes?.userTokenData?.tokenSymbol || null,
+    },
   };
 };

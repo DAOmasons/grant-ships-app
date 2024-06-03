@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react';
 import { MainSection, PageTitle } from '../layout/Sections';
 import {
-  Affix,
   Avatar,
   Box,
   Button,
@@ -106,7 +105,7 @@ export const Vote = () => {
       {!isLaptop && (
         <Stack gap={'xs'} mt={72} w={270}>
           <VoteTimesIndicator />
-          {/* <VotePowerIndicator /> */}
+          <VotePowerIndicator />
         </Stack>
       )}
     </Flex>
@@ -117,18 +116,18 @@ const VotePowerIndicator = () => {
   const theme = useMantineTheme();
 
   const { contest } = useVoting();
-  const { address } = useAccount();
-  const voteTokenAddress = contest?.voteTokenAddress;
 
   const isLaptop = useLaptop();
 
-  <Paper
-    p={isLaptop ? 0 : 'md'}
-    bg={isLaptop ? 'transparent' : theme.colors.dark[6]}
-  >
-    <Text>Voting Token: {}</Text>
-    <Text>Voting Power: {}</Text>
-  </Paper>;
+  return (
+    <Paper
+      p={isLaptop ? 0 : 'md'}
+      bg={isLaptop ? 'transparent' : theme.colors.dark[6]}
+    >
+      <Text mb="md">Voting Token: {}</Text>
+      <Text>Voting Power: {}</Text>
+    </Paper>
+  );
 };
 
 const VoteTimesIndicator = () => {
@@ -152,12 +151,16 @@ const VoteTimesIndicator = () => {
             <Text fz={isLaptop ? 'md' : 'lg'}>Vote Start</Text>
             <Text fz="xs" mb="md">
               {' '}
-              {secondsToLongDateTime(contest.startTime)}
+              {contest.endTime
+                ? secondsToLongDateTime(contest.startTime)
+                : '--'}
             </Text>
           </Box>
           <Box>
             <Text fz={isLaptop ? 'md' : 'lg'}>Vote End</Text>
-            <Text fz="xs">{secondsToLongDateTime(contest.endTime)}</Text>
+            <Text fz="xs">
+              {contest.endTime ? secondsToLongDateTime(contest.endTime) : '--'}
+            </Text>
           </Box>
         </Flex>
         <Group gap={4} align="center">
@@ -204,8 +207,6 @@ export const ShipPanel = ({ ship }: { ship: ShipsCardUI }) => {
       ),
     enabled: !!ship.id,
   });
-
-  console.log('recentRecord', recentRecord);
 
   const totalAmount = formatEther(
     BigInt(ship.amtAllocated) +
