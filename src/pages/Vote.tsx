@@ -5,8 +5,10 @@ import {
   Avatar,
   Box,
   Button,
+  Flex,
   Group,
   Paper,
+  Stack,
   Stepper,
   Text,
   Tooltip,
@@ -14,11 +16,11 @@ import {
 } from '@mantine/core';
 import { useQuery } from '@tanstack/react-query';
 import { getShipsPageData } from '../queries/getShipsPage';
-import { useTablet } from '../hooks/useBreakpoint';
+import { useLaptop, useMobile, useTablet } from '../hooks/useBreakpoint';
 import { ShipsCardUI } from '../types/ui';
 import { getShipGrants } from '../queries/getShipGrants';
 import { PortfolioReport } from '../components/dashboard/ship/PortfolioReport';
-import { ContestStatus, ReportStatus } from '../types/common';
+import { ContestStatus, ReportStatus, VotingStage } from '../types/common';
 import {
   PostedRecord,
   getRecentPortfolioReport,
@@ -27,6 +29,7 @@ import { Tag } from '../constants/tags';
 import {
   Address,
   encodeAbiParameters,
+  erc20Abi,
   formatEther,
   parseAbiParameters,
 } from 'viem';
@@ -40,6 +43,11 @@ import HatsAllowList from '../abi/HatsAllowList.json';
 import { portfolioReportSchema } from '../components/forms/validationSchemas/portfolioReportSchema';
 import { pinJSONToIPFS } from '../utils/ipfs/pin';
 import { addressToBytes32, bytes32toAddress } from '../utils/helpers';
+import { secondsToLongDateTime } from '../utils/time';
+import { VOTING_STAGE_INFO } from '../constants/copy';
+import { NETWORK_ID } from '../constants/gameSetup';
+import { useAccount, useReadContracts } from 'wagmi';
+import { ADDR } from '../constants/addresses';
 
 export const Vote = () => {
   const [step, setStep] = useState(0);
@@ -48,51 +56,124 @@ export const Vote = () => {
     queryKey: ['ships-page'],
     queryFn: getShipsPageData,
   });
+  const isLaptop = useLaptop();
 
   const isTablet = useTablet();
+
+  const isMobile = useMobile();
 
   if (!ships) {
     return null;
   }
 
   return (
-    <MainSection>
-      <Affix bottom={20} right={20}>
-        <Paper bg={theme.colors.dark[6]} h={40} w={200}></Paper>
-      </Affix>
-      <PageTitle title="Vote" />
-      <Stepper
-        active={step}
-        maw={600}
-        miw={300}
-        size="xs"
-        w={'100%'}
-        mt={'lg'}
-        mb="xl"
-        onStepClick={setStep}
-        orientation={isTablet ? 'vertical' : 'horizontal'}
-      >
-        {ships?.map((ship, index) => (
+    <Flex w="100%">
+      <MainSection>
+        <PageTitle title="Vote" />
+        {isLaptop && <VoteTimesIndicator />}
+
+        <Stepper
+          active={step}
+          maw={600}
+          miw={300}
+          size="xs"
+          w={'100%'}
+          mt={'lg'}
+          mb="xl"
+          onStepClick={setStep}
+        >
+          {ships?.map((ship, index) => (
+            <Stepper.Step
+              key={ship.id}
+              mih={isTablet ? 36 : undefined}
+              label={isMobile ? undefined : `Ship ${index + 2}`}
+              style={{
+                alignItems: 'center',
+              }}
+            >
+              <ShipPanel ship={ship} />
+            </Stepper.Step>
+          ))}
           <Stepper.Step
-            key={ship.id}
+            label={isMobile ? undefined : 'Final'}
             mih={isTablet ? 36 : undefined}
-            label={`Ship ${index + 2}`}
             style={{
               alignItems: 'center',
             }}
-          >
-            <ShipPanel ship={ship} />
-          </Stepper.Step>
-        ))}
-        <Stepper.Step
-          label="Final"
-          mih={isTablet ? 36 : undefined}
-          style={{
-            alignItems: 'center',
-          }}
-        ></Stepper.Step>
-      </Stepper>
-    </MainSection>
+          ></Stepper.Step>
+        </Stepper>
+      </MainSection>
+      {!isLaptop && (
+        <Stack gap={'xs'} mt={72} w={270}>
+          <VoteTimesIndicator />
+          {/* <VotePowerIndicator /> */}
+        </Stack>
+      )}
+    </Flex>
+  );
+};
+
+const VotePowerIndicator = () => {
+  const theme = useMantineTheme();
+
+  const { contest } = useVoting();
+  const { address } = useAccount();
+  const voteTokenAddress = contest?.voteTokenAddress;
+
+  const isLaptop = useLaptop();
+
+  <Paper
+    p={isLaptop ? 0 : 'md'}
+    bg={isLaptop ? 'transparent' : theme.colors.dark[6]}
+  >
+    <Text>Voting Token: {}</Text>
+    <Text>Voting Power: {}</Text>
+  </Paper>;
+};
+
+const VoteTimesIndicator = () => {
+  const isLaptop = useLaptop();
+
+  const { contest, votingStage } = useVoting();
+  const theme = useMantineTheme();
+
+  if (!contest) {
+    return null;
+  }
+
+  return (
+    <Paper
+      p={isLaptop ? 0 : 'md'}
+      bg={isLaptop ? 'transparent' : theme.colors.dark[6]}
+    >
+      <Flex direction={isLaptop ? 'column-reverse' : 'column'} gap={'md'}>
+        <Flex direction={isLaptop ? 'row' : 'column'}>
+          <Box mr={isLaptop ? 'md' : undefined}>
+            <Text fz={isLaptop ? 'md' : 'lg'}>Vote Start</Text>
+            <Text fz="xs" mb="md">
+              {' '}
+              {secondsToLongDateTime(contest.startTime)}
+            </Text>
+          </Box>
+          <Box>
+            <Text fz={isLaptop ? 'md' : 'lg'}>Vote End</Text>
+            <Text fz="xs">{secondsToLongDateTime(contest.endTime)}</Text>
+          </Box>
+        </Flex>
+        <Group gap={4} align="center">
+          <Text fz="sm">Status: {VotingStage[votingStage]}</Text>
+          <Tooltip label={VOTING_STAGE_INFO[votingStage]}>
+            <IconInfoCircle
+              size={16}
+              color={theme.colors.violet[6]}
+              style={{
+                transform: 'translateY(-1px)',
+              }}
+            />
+          </Tooltip>
+        </Group>
+      </Flex>
+    </Paper>
   );
 };
 
@@ -118,9 +199,13 @@ export const ShipPanel = ({ ship }: { ship: ShipsCardUI }) => {
   const { data: recentRecord, isLoading: isLoadingRecord } = useQuery({
     queryKey: [`ship-portfolio-${ship.id}`],
     queryFn: () =>
-      getRecentPortfolioReport(`${Tag.ShipSubmitReport}-${ship.id}`),
+      getRecentPortfolioReport(
+        `${Tag.ShipSubmitReport}-${ADDR.VOTE_CONTEST}-${ship.id}`
+      ),
     enabled: !!ship.id,
   });
+
+  console.log('recentRecord', recentRecord);
 
   const totalAmount = formatEther(
     BigInt(ship.amtAllocated) +
@@ -133,7 +218,6 @@ export const ShipPanel = ({ ship }: { ship: ShipsCardUI }) => {
 
   return (
     <>
-      <Affix bottom={0} right={0}></Affix>
       <Box>
         <Avatar size={120} mt="xs" mb="md" src={ship.imgUrl} />
         <Text fz="lg" fw={600} mb="xs">

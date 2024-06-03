@@ -27,6 +27,7 @@ import { ZER0_ADDRESS } from '../constants/gameSetup';
 import { PortfolioReport } from '../components/dashboard/ship/PortfolioReport';
 import { ReportStatus } from '../types/common';
 import { getRecentPortfolioReport } from '../queries/getRecordsByTag';
+import { ADDR } from '../constants/addresses';
 
 export const ShipOpDashboard = () => {
   const { id } = useParams();
@@ -43,7 +44,10 @@ export const ShipOpDashboard = () => {
 
   const { data: recentRecord, refetch: refetchRecentRecord } = useQuery({
     queryKey: [`ship-portfolio-${id}`],
-    queryFn: () => getRecentPortfolioReport(`${Tag.ShipSubmitReport}-${id}`),
+    queryFn: () =>
+      getRecentPortfolioReport(
+        `${Tag.ShipSubmitReport}-${ADDR.VOTE_CONTEST}-${id}`
+      ),
     enabled: !!id,
   });
 

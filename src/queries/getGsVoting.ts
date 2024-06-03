@@ -7,6 +7,7 @@ import {
   getBuiltGraphSDK,
 } from '../.graphclient';
 import { bytes32toAddress } from '../utils/helpers';
+import { publicClient } from '../utils/config';
 
 export type UserVote = Pick<
   ShipVote,
@@ -58,6 +59,12 @@ export const handleShipIds = (
     };
   });
 };
+
+// const getVoteToken = ({userAddress, tokenAddress}:{userAddress: string, tokenAddress: string}) => {
+//     const data = publicClient.([
+//         {}
+//     ])
+// }
 
 export const getGsVoting = async ({
   contestId,

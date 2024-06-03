@@ -64,8 +64,6 @@ export const PopulateChoicesPanel = ({
     return ids;
   }, [contest?.choices, ships]);
 
-  console.log('shipChoiceIds', shipChoiceIds);
-
   if (isLoading) {
     return <div>Loading...</div>;
   }

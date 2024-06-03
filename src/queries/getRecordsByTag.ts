@@ -1,4 +1,5 @@
 import { getBuiltGraphSDK } from '../.graphclient';
+import { ADDR } from '../constants/addresses';
 import { Tag } from '../constants/tags';
 import { resolvePortfolioReport } from '../resolvers/grantResolvers';
 
@@ -18,6 +19,7 @@ export const getAllRecordsByTag = async (tag: string) => {
 export const getRecentPortfolioReport = async (
   tag: string
 ): Promise<PostedRecord | null> => {
+  console.log('tag', tag);
   const res = await getAllRecordsByTag(tag);
 
   if (!res.length) {
@@ -31,7 +33,9 @@ export const getRecentPortfolioReport = async (
 
 export const getAllShipReports = async (shipAddresses: string[]) => {
   const promises = shipAddresses.map((shipAddress) =>
-    getRecentPortfolioReport(`${Tag.ShipSubmitReport}-${shipAddress}`)
+    getRecentPortfolioReport(
+      `${Tag.ShipSubmitReport}-${ADDR.VOTE_CONTEST}-${shipAddress}`
+    )
   );
 
   const res = await Promise.all(promises);

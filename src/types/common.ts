@@ -84,3 +84,12 @@ export enum ContestStatus {
   Finalized,
   Executed,
 }
+
+export enum VotingStage {
+  None,
+  Initiated,
+  Active,
+  Closed,
+  Finalized,
+  Unknown,
+}

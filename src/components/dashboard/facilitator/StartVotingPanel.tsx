@@ -15,12 +15,13 @@ export const StartVotingPanel = () => {
 
   const [startNow, setChecked] = React.useState(true);
   const [votingTimeInSeconds, setVotingTime] = React.useState<number>(0);
+
   const handleSetVotingTime = (value: Date | null) => {
     if (!value) {
       setVotingTime(0);
       return;
     }
-    const dateInSeconds = value?.getTime() / 1000;
+    const dateInSeconds = Math.floor(value?.getTime() / 1000);
 
     setVotingTime(dateInSeconds);
   };

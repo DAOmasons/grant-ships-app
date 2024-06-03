@@ -392,7 +392,7 @@ const SubmitReport = ({
         address: ADDR.HATS_POSTER,
         functionName: 'postRecord',
         args: [
-          `${Tag.ShipSubmitReport}-${shipId}`,
+          `${Tag.ShipSubmitReport}-${ADDR.VOTE_CONTEST}-${shipId}`,
           nonce,
           shipHatId,
           [1n, pinRes.IpfsHash],
