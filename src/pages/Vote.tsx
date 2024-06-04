@@ -1,15 +1,20 @@
-import { useMemo, useState } from 'react';
+import { ComponentProps, useEffect, useMemo, useState } from 'react';
 import { MainSection, PageTitle } from '../layout/Sections';
 import {
+  Affix,
   Avatar,
   Box,
   Button,
   Flex,
   Group,
+  NumberInput,
   Paper,
+  RingProgress,
   Stack,
   Stepper,
   Text,
+  TextInput,
+  Textarea,
   Tooltip,
   useMantineTheme,
 } from '@mantine/core';
@@ -28,7 +33,6 @@ import { Tag } from '../constants/tags';
 import {
   Address,
   encodeAbiParameters,
-  erc20Abi,
   formatEther,
   parseAbiParameters,
 } from 'viem';
@@ -44,22 +48,42 @@ import { pinJSONToIPFS } from '../utils/ipfs/pin';
 import { addressToBytes32, bytes32toAddress } from '../utils/helpers';
 import { secondsToLongDateTime } from '../utils/time';
 import { VOTING_STAGE_INFO } from '../constants/copy';
-import { NETWORK_ID } from '../constants/gameSetup';
-import { useAccount, useReadContracts } from 'wagmi';
 import { ADDR } from '../constants/addresses';
+import { UseFormReturnType, useForm, zodResolver } from '@mantine/form';
+import { votingSchema } from '../components/forms/validationSchemas/votingFormSchema';
+import { z } from 'zod';
+
+export type VotingFormValues = z.infer<typeof votingSchema>;
 
 export const Vote = () => {
   const [step, setStep] = useState(0);
-  const theme = useMantineTheme();
   const { data: ships } = useQuery({
     queryKey: ['ships-page'],
     queryFn: getShipsPageData,
   });
+
   const isLaptop = useLaptop();
 
   const isTablet = useTablet();
 
   const isMobile = useMobile();
+
+  const form = useForm({
+    initialValues: {
+      ships: [],
+    } as VotingFormValues,
+    validate: zodResolver(votingSchema),
+  });
+
+  useEffect(() => {
+    if (!ships) return;
+    const updatedShips = ships?.map((ship) => ({
+      shipId: ship.id,
+      shipPerc: '',
+      shipComment: '',
+    }));
+    form.setValues((prev) => ({ ...prev, ships: updatedShips }));
+  }, [ships]);
 
   if (!ships) {
     return null;
@@ -68,9 +92,8 @@ export const Vote = () => {
   return (
     <Flex w="100%">
       <MainSection>
+        <VotingTokenAffix formValues={form.values} />
         <PageTitle title="Vote" />
-        {isLaptop && <VoteTimesIndicator />}
-
         <Stepper
           active={step}
           maw={600}
@@ -90,7 +113,7 @@ export const Vote = () => {
                 alignItems: 'center',
               }}
             >
-              <ShipPanel ship={ship} />
+              <ShipPanel ship={ship} form={form} index={index} />
             </Stepper.Step>
           ))}
           <Stepper.Step
@@ -99,35 +122,94 @@ export const Vote = () => {
             style={{
               alignItems: 'center',
             }}
-          ></Stepper.Step>
+          />
         </Stepper>
       </MainSection>
       {!isLaptop && (
-        <Stack gap={'xs'} mt={72} w={270}>
+        <Stack gap={'md'} mt={72} w={270}>
           <VoteTimesIndicator />
-          <VotePowerIndicator />
         </Stack>
       )}
     </Flex>
   );
 };
 
-const VotePowerIndicator = () => {
+const VotingTokenAffix = ({ formValues }: { formValues: VotingFormValues }) => {
+  const { userTokenData, tokenData } = useVoting();
   const theme = useMantineTheme();
 
-  const { contest } = useVoting();
+  const isMobile = useMobile();
 
-  const isLaptop = useLaptop();
+  const shipPercs = formValues.ships.map((s) => s.shipPerc);
 
   return (
-    <Paper
-      p={isLaptop ? 0 : 'md'}
-      bg={isLaptop ? 'transparent' : theme.colors.dark[6]}
-    >
-      <Text mb="md">Voting Token: {}</Text>
-      <Text>Voting Power: {}</Text>
-    </Paper>
+    <Affix bottom={isMobile ? 54 : 32} right={isMobile ? 0 : 30}>
+      <Paper bg={theme.colors.dark[6]} py={'sm'} px={'xl'}>
+        <Group>
+          <VotingWeightProgress
+            shipVotePercs={{
+              ship1: shipPercs[0] || '0',
+              ship2: shipPercs[1] || '0',
+              ship3: shipPercs[2] || '0',
+            }}
+          />
+          <Text>
+            Your Voting Power:{' '}
+            <Tooltip
+              offset={24}
+              label={
+                <Box w={200} p={'sm'}>
+                  <Text className="ws-pre-wrap" fz="sm">
+                    Your voting power is equal to the amount of{' '}
+                    {tokenData.tokenSymbol} delegated to your address before
+                    snapshot
+                  </Text>
+                </Box>
+              }
+            >
+              <Text c={theme.colors.blue[3]} component="span">
+                {formatEther(userTokenData.totalUserTokenBalance)}{' '}
+                {tokenData.tokenSymbol}{' '}
+              </Text>
+            </Tooltip>
+          </Text>
+        </Group>
+      </Paper>
+    </Affix>
   );
+};
+
+const VotingWeightProgress = (
+  props: Omit<ComponentProps<typeof RingProgress>, 'sections'> & {
+    shipVotePercs: {
+      ship1: string;
+      ship2: string;
+      ship3: string;
+    };
+  }
+) => {
+  const { shipVotePercs, ...rest } = props;
+
+  const theme = useMantineTheme();
+
+  const sections = useMemo(() => {
+    return [
+      {
+        value: Number(shipVotePercs.ship1) || 0,
+        color: theme.colors.blue[5],
+      },
+      {
+        value: Number(shipVotePercs.ship2) || 0,
+        color: theme.colors.violet[5],
+      },
+      {
+        value: Number(shipVotePercs.ship3) || 0,
+        color: theme.colors.pink[5],
+      },
+    ];
+  }, [shipVotePercs, theme]);
+
+  return <RingProgress {...rest} size={36} thickness={2} sections={sections} />;
 };
 
 const VoteTimesIndicator = () => {
@@ -180,7 +262,18 @@ const VoteTimesIndicator = () => {
   );
 };
 
-export const ShipPanel = ({ ship }: { ship: ShipsCardUI }) => {
+export const ShipPanel = ({
+  ship,
+  form,
+  index,
+}: {
+  ship: ShipsCardUI;
+  form: UseFormReturnType<
+    VotingFormValues,
+    (values: VotingFormValues) => VotingFormValues
+  >;
+  index: number;
+}) => {
   const {
     data: grants,
     error,
@@ -255,8 +348,59 @@ export const ShipPanel = ({ ship }: { ship: ShipsCardUI }) => {
             choicesAddress={contest?.contest?.choicesModule_id}
           />
         )}
+        {shipChoiceId && <VotingFooter form={form} index={index} />}
       </Box>
     </>
+  );
+};
+
+const VotingFooter = ({
+  form,
+  index,
+}: {
+  index: number;
+  form: UseFormReturnType<
+    VotingFormValues,
+    (values: VotingFormValues) => VotingFormValues
+  >;
+}) => {
+  const shipPercs = form.values.ships.map((s) => s.shipPerc);
+  const totalPercLeft =
+    100 - shipPercs.reduce((acc, perc) => acc + Number(perc), 0);
+  return (
+    <Box mt="xl">
+      <Group align="flex-end" mb="md">
+        <NumberInput
+          label="Amount (%)"
+          maw={298}
+          min={0}
+          max={100}
+          placeholder="30%"
+          {...form.getInputProps(`ships.${index}.shipPerc`)}
+        />
+        <Group>
+          <VotingWeightProgress
+            shipVotePercs={{
+              ship1: shipPercs[0],
+              ship2: shipPercs[1],
+              ship3: shipPercs[2],
+            }}
+          />
+          <Text fz="sm" opacity={0.8}>
+            {totalPercLeft}% left
+          </Text>
+        </Group>
+      </Group>
+      <Textarea
+        label="Vote Allocation Reason"
+        w="100%"
+        autosize
+        minRows={4}
+        maxRows={8}
+        placeholder="I am awarding this ship 32% of my voting power because..."
+        {...form.getInputProps(`ships.${index}.shipComment`)}
+      />
+    </Box>
   );
 };
 
