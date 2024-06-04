@@ -16,6 +16,7 @@ import { GAME_TOKEN } from '../../constants/gameSetup';
 import { DashGrant, PackedMilestoneData } from '../../resolvers/grantResolvers';
 import { AlloStatus } from '../../types/common';
 import { Link } from 'react-router-dom';
+import { IconExclamationMark } from '@tabler/icons-react';
 
 type MilestoneProgressProps = {
   onlyMilestones?: boolean;
@@ -59,6 +60,7 @@ export const MilestoneProgress = ({
   grant,
   onlyMilestones,
 }: MilestoneProgressProps) => {
+  const theme = useMantineTheme();
   const grantAmount = grant.applicationData.grantAmount
     ? formatEther(grant.applicationData.grantAmount)
     : 0;
@@ -66,32 +68,51 @@ export const MilestoneProgress = ({
   if (!grant.milestones)
     return (
       <>
-        <Box>
-          <Group gap={6} mb={10} align="start">
-            <Text fz="sm">
-              <Text fz="sm" component="span" fw={600}>
-                {grantAmount} {GAME_TOKEN.SYMBOL}{' '}
-              </Text>
-              funded by
+        {onlyMilestones ? (
+          <Group gap="4">
+            <IconExclamationMark
+              size={20}
+              color={theme.colors.orange[6]}
+              style={{
+                transform: 'translateY(-1px)',
+              }}
+            />
+            <Text fz="sm" c={theme.colors.orange[4]}>
+              Milestones have yet to be submitted for this grant.
             </Text>
-            <Tooltip
-              label={
-                <Box p={8}>
-                  <Avatar src={grant.shipMetadata.imgUrl} size={66} mb={'xs'} />
-                  <Text>{grant.shipMetadata.name}</Text>
-                </Box>
-              }
-            >
-              <Avatar
-                src={grant.shipMetadata.imgUrl}
-                size={20}
-                component={Link}
-                to={`/ship/${grant.shipId.id}`}
-              />
-            </Tooltip>
           </Group>
-          <Text fz="xs">Awaiting Milestones</Text>
-        </Box>
+        ) : (
+          <Box>
+            <Group gap={6} mb={10} align="start">
+              <Text fz="sm">
+                <Text fz="sm" component="span" fw={600}>
+                  {grantAmount} {GAME_TOKEN.SYMBOL}{' '}
+                </Text>
+                funded by
+              </Text>
+              <Tooltip
+                label={
+                  <Box p={8}>
+                    <Avatar
+                      src={grant.shipMetadata.imgUrl}
+                      size={66}
+                      mb={'xs'}
+                    />
+                    <Text>{grant.shipMetadata.name}</Text>
+                  </Box>
+                }
+              >
+                <Avatar
+                  src={grant.shipMetadata.imgUrl}
+                  size={20}
+                  component={Link}
+                  to={`/ship/${grant.shipId.id}`}
+                />
+              </Tooltip>
+            </Group>
+            <Text fz="xs">Awaiting Milestones</Text>
+          </Box>
+        )}
       </>
     );
 

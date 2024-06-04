@@ -20,6 +20,7 @@ import {
   IconChevronDown,
   IconChevronUp,
   IconExclamationCircle,
+  IconExternalLink,
   IconSquare,
   IconSquareCheck,
 } from '@tabler/icons-react';
@@ -236,13 +237,57 @@ const PortfolioItem = ({
     completedMilestones === grant.milestones?.length ? 'Completed' : 'Active';
 
   return (
-    <Box>
-      <MilestoneProgress grant={grant} onlyMilestones />
-      <Text fz="sm" className="ws-pre-wrap" mb="md" mt="md">
+    <Box px="sm">
+      <Text fz="sm" className="ws-pre-wrap" mb="md">
         <Text component="span" fz="sm" fw={600}>
-          Link To Project:{' '}
+          Grant Status:{' '}
         </Text>
+        {status}
+      </Text>
+      <Text fz="sm" mb="4" fw={600}>
+        Description:
+      </Text>
+      <Text fz="sm" mb="md">
+        {grant.projectMetadata.description}
+      </Text>
+      <Text fz="sm" mb="xs" fw={600}>
+        Milestones Completed:
+      </Text>
+      <Box mb="lg">
+        <MilestoneProgress grant={grant} onlyMilestones />
+      </Box>
+      {(reportStatus === ReportStatus.Submit ||
+        reportStatus === ReportStatus.Vote) && (
+        <Textarea
+          label="Your Report"
+          required
+          autosize
+          minRows={4}
+          maxRows={8}
+          description="How did the project go? What did you learn? What would you do differently next time?"
+          placeholder="Type your report here..."
+          {...form.getInputProps(`grantReviews.${grant.id}`)}
+        />
+      )}
 
+      {reportStatus === ReportStatus.Review && reportData && (
+        <>
+          <Text fz="sm" mb="sm" fw={600}>
+            Ship Operator summary:
+          </Text>
+          <ReviewBox
+            text={reportData.grantReviews[grant.id]}
+            from={{
+              label: grant.shipMetadata.name,
+              avatarUrl: grant.shipMetadata.imgUrl,
+            }}
+          />
+        </>
+      )}
+      <Text fz="sm" mb="xs" fw={600} mt="md">
+        Links:
+      </Text>
+      <Group mb="md" align="center" gap={4}>
         <Text
           component={Link}
           to={`/project/${grant.projectId.id}`}
@@ -251,104 +296,42 @@ const PortfolioItem = ({
           rel="noopener noreferrer"
           td="underline"
         >
-          {grant.projectId.name}
+          Project
         </Text>
-      </Text>
-      <Text fz="sm" className="ws-pre-wrap" mb="md">
-        <Text component="span" fz="sm" fw={600}>
-          Status:{' '}
-        </Text>
-        {status}
-      </Text>
-      <Box mb="md"></Box>
-      <Text fz="sm" mb="md" fw={600}>
-        Project Description
-      </Text>
-      <Text fz="sm" mb="md">
-        {grant.projectMetadata.description}
-      </Text>
-      <Text fz="sm" mb="md" fw={600}>
-        Grant Details
-      </Text>
-      <ul style={{ paddingLeft: '1.6rem' }}>
-        <Text fz="sm">
-          <li>
-            <Text component="span" fz="sm" fw={600}>
-              Amount:{' '}
-            </Text>
-            {formatEther(grant.applicationData.grantAmount)} {GAME_TOKEN.SYMBOL}
-          </li>
-        </Text>
-        <Text fz="sm">
-          <li>
-            <Text component="span" fz="sm" fw={600}>
-              Milestones:{' '}
-            </Text>
-            {completedMilestones}/{grant.milestones?.length} milestones
-            completed
-          </li>
-        </Text>
-
-        <li>
-          <Text component="span" fz="sm" fw={600}>
-            Reason for funding:{' '}
-          </Text>
-          <Blockquote
-            p={'md'}
-            color={theme.colors.violet[5]}
-            my="md"
-            icon={<ShipBadge />}
-            iconSize={16}
-            className="ws-pre-wrap"
-            fz="sm"
-          >
-            {grant.shipApprovalReason}
-          </Blockquote>
-        </li>
-
-        <li>
-          <Text component="span" fz="sm" fw={600}>
-            Facilitator Approval Reason:{' '}
-          </Text>
-        </li>
-        <Blockquote
-          p={'md'}
-          my="md"
-          color={theme.colors.pink[5]}
-          icon={<FacilitatorBadge />}
-          iconSize={18}
-          fz="sm"
-          className="ws-pre-wrap"
+        <IconExternalLink size={16} />
+      </Group>
+      <Group mb="md" align="center" gap={4}>
+        <Text
+          component={Link}
+          to={`/project/${grant.projectId.id}`}
+          target="_blank"
+          fz={'sm'}
+          rel="noopener noreferrer"
+          td="underline"
         >
-          {grant.facilitatorReason}
-        </Blockquote>
-
-        {(reportStatus === ReportStatus.Submit ||
-          reportStatus === ReportStatus.Vote) && (
-          <Textarea
-            label="Your Report"
-            required
-            autosize
-            minRows={4}
-            maxRows={8}
-            description="How did the project go? What did you learn? What would you do differently next time?"
-            placeholder="Type your report here..."
-            {...form.getInputProps(`grantReviews.${grant.id}`)}
-          />
-        )}
-
-        {reportStatus === ReportStatus.Review && reportData && (
-          <>
-            <Group align="center" mb="md" gap="xs">
-              <Text fz="sm" fw={600}>
-                Review from {grant.shipMetadata.name}
-              </Text>
-              <Avatar src={grant.shipMetadata.imgUrl} size={16} />
-            </Group>
-            <ReviewBox text={reportData.grantReviews[grant.id]} />
-          </>
-        )}
-      </ul>
+          Demo
+        </Text>
+        <IconExternalLink size={16} />
+        <Text fz="sm" lineClamp={1} w={250} opacity={0.5}>
+          (https://www.figma.com/design/CgYFonR6ZFu7bGZJVlNqSN/Grantships?node-id=5616-15872&t=6E8hdGKHLya2d6NX-0)
+        </Text>
+      </Group>
+      <Group mb="md" align="center" gap={4}>
+        <Text
+          component={Link}
+          to={`/project/${grant.projectId.id}`}
+          target="_blank"
+          fz={'sm'}
+          rel="noopener noreferrer"
+          td="underline"
+        >
+          Extra
+        </Text>
+        <IconExternalLink size={16} />
+        <Text fz="sm" lineClamp={1} w={250} opacity={0.5}>
+          (https://www.figma.com/design/CgYFonR6ZFu7bGZJVlNqSN/Grantships?node-id=5616-15872&t=6E8hdGKHLya2d6NX-0)
+        </Text>
+      </Group>
     </Box>
   );
 };

@@ -19,7 +19,6 @@ export const getAllRecordsByTag = async (tag: string) => {
 export const getRecentPortfolioReport = async (
   tag: string
 ): Promise<PostedRecord | null> => {
-  console.log('tag', tag);
   const res = await getAllRecordsByTag(tag);
 
   if (!res.length) {
