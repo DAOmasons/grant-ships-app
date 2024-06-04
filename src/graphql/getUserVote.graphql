@@ -6,5 +6,6 @@ query getUserVotes($contestId: String!, $voterAddress: String!) {
     choice_id
     mdPointer
     mdProtocol
+    amount
   }
 }

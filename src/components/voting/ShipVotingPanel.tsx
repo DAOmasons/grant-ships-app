@@ -9,7 +9,7 @@ import { useMemo } from 'react';
 import { getRecentPortfolioReport } from '../../queries/getRecordsByTag';
 import { ADDR } from '../../constants/addresses';
 import { formatEther } from 'viem';
-import { Avatar, Box, Text } from '@mantine/core';
+import { Avatar, Box, Flex, Paper, Text, useMantineTheme } from '@mantine/core';
 import { PortfolioReport } from '../dashboard/ship/PortfolioReport';
 import { ContestStatus, ReportStatus, VotingStage } from '../../types/common';
 import { Tag } from '../../constants/tags';
@@ -49,6 +49,7 @@ export const ShipVotingPanel = ({
     refetchGsVotes,
     votingStage,
   } = useVoting();
+  const theme = useMantineTheme();
   const { userData, userLoading } = useUserData();
 
   const shipChoiceId = useMemo(() => {
@@ -72,25 +73,33 @@ export const ShipVotingPanel = ({
 
   const isLoading =
     isLoadingRecord || isLoadingVoting || isLoadingGrants || userLoading;
-
   return (
     <Box>
-      <Avatar size={120} mt="xs" mb="md" src={ship.imgUrl} />
-      <Text fz="lg" fw={600} mb="xs">
-        {ship.name}
+      <Text fz="xl" fw={600} mb="md">
+        Ship Portfolio Report
       </Text>
-      <Text fz="sm" fw={400} mb="xs">
-        Total Round Amount{' '}
-        <Text fz="sm" component="span" fw={600}>
-          {totalAmount} GSBT
-        </Text>
-      </Text>
-      <Text fz="sm" fw={400} mb="md">
-        Total Amount Distributed{' '}
-        <Text fz="sm" component="span" fw={600}>
-          {formatEther(BigInt(ship.amtDistributed))} GSBT
-        </Text>
-      </Text>
+      <Paper bg={theme.colors.dark[6]} p="xs" mb="xl">
+        <Flex align="center">
+          <Avatar size={120} mr="xl" src={ship.imgUrl} />
+          <Box>
+            <Text fz="md" fw={600} mb="xs">
+              {ship.name}
+            </Text>
+            <Text fz="xs" fw={400} mb={4}>
+              Total Round Amount{' '}
+              <Text fz="xs" component="span" fw={600}>
+                {totalAmount} GSBT
+              </Text>
+            </Text>
+            <Text fz="xs" fw={400} mb="md">
+              Total Amount Distributed{' '}
+              <Text fz="xs" component="span" fw={600}>
+                {formatEther(BigInt(ship.amtDistributed))} GSBT
+              </Text>
+            </Text>
+          </Box>
+        </Flex>
+      </Paper>
 
       <PortfolioReport
         grants={grants}
@@ -100,6 +109,7 @@ export const ShipVotingPanel = ({
         reportData={recentRecord}
         shipId={ship.id}
       />
+
       {contestStatus === ContestStatus.Populating && !isLoading && (
         <FacilitatorFooter
           isFacilitator={userData?.isFacilitator}

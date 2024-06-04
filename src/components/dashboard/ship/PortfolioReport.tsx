@@ -114,7 +114,25 @@ export const PortfolioReport = ({
       {reportStatus === ReportStatus.Submit && (
         <ReportSubmitHeader grants={grants} formValues={form.values} />
       )}
-
+      {reportData &&
+        (reportStatus === ReportStatus.Review ||
+          reportStatus === ReportStatus.Vote) && (
+          <Box mb="xl">
+            <Text fz="md" fw={600} mb="xs">
+              Operator's Summary:
+            </Text>
+            <ReviewBox
+              text={reportData.roundReview}
+              from={{
+                label: shipName,
+                avatarUrl: shipAvatar,
+              }}
+            />
+          </Box>
+        )}
+      <Text fz="md" fw={600} mb="xs">
+        Funded Projects
+      </Text>
       <Accordion mb="lg">
         {grants.map((grant) => (
           <Accordion.Item key={grant.id} value={grant.id}>
@@ -138,19 +156,7 @@ export const PortfolioReport = ({
           </Accordion.Item>
         ))}
       </Accordion>
-      {reportData &&
-        (reportStatus === ReportStatus.Review ||
-          reportStatus === ReportStatus.Vote) && (
-          <>
-            <Group align="center" mb="md" gap="xs">
-              <Text fz="sm" fw={600}>
-                Round Summary from {shipName}
-              </Text>
-              <Avatar src={shipAvatar} size={16} />
-            </Group>
-            <ReviewBox text={reportData.roundReview} />
-          </>
-        )}
+
       {shipHatId && reportStatus === ReportStatus.Submit && (
         <>
           <Textarea
@@ -177,7 +183,13 @@ export const PortfolioReport = ({
   );
 };
 
-const ReviewBox = ({ text }: { text: string }) => {
+const ReviewBox = ({
+  text,
+  from,
+}: {
+  text: string;
+  from?: { label: string; avatarUrl: string };
+}) => {
   return (
     <Spoiler
       mb={'xs'}
@@ -187,8 +199,14 @@ const ReviewBox = ({ text }: { text: string }) => {
         root: classes.embedTextBox,
         control: classes.embedTextControl,
       }}
-      maxHeight={48}
+      maxHeight={68}
     >
+      {from && (
+        <Group gap={6} mb="xs" align="center">
+          <Avatar src={from?.avatarUrl} size={16} />
+          <Text fz="sm">{from.label}</Text>
+        </Group>
+      )}
       <Text fz="sm" className="ws-pre-wrap">
         {text}
       </Text>

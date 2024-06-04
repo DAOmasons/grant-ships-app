@@ -8,7 +8,7 @@ export const secondsToLongDate = (seconds: number) =>
   dayjs(seconds * 1000).format('MMMM D, YYYY');
 
 export const secondsToLongDateTime = (seconds: number) =>
-  dayjs.utc(seconds * 1000).format('MMMM D, YYYY h:mm A');
+  dayjs(seconds * 1000).format('MMMM D, YYYY h:mm A');
 
 export const secondsToShortRelativeTime = (seconds: number) => {
   return dayjs.utc(seconds * 1000).fromNow();

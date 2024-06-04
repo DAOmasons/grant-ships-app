@@ -13,7 +13,7 @@ import ERC20Votes from '../abi/Erc20Votes.json';
 
 export type UserVote = Pick<
   ShipVote,
-  'id' | 'choice_id' | 'mdPointer' | 'mdProtocol'
+  'id' | 'choice_id' | 'mdPointer' | 'mdProtocol' | 'amount'
 >;
 
 export type RawChoice = Pick<
@@ -131,7 +131,7 @@ export const getGsVoting = async ({
 
   const contestRes = await getGsVoting({ id: contestId });
   const voterRes = await getUserVotes({ contestId, voterAddress: userAddress });
-
+  console.log('contestRes', contestRes);
   const currentContest = contestRes?.GrantShipsVoting?.[0];
 
   if (!currentContest) {

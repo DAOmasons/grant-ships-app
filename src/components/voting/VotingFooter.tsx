@@ -24,7 +24,7 @@ export const VotingFooter = ({
     100 - shipPercs.reduce((acc, perc) => acc + Number(perc), 0);
   return (
     <Box mt="xl">
-      <Text fz="lg" mb="xs">
+      <Text fz="md" mb="xs" fw={600}>
         Vote Allocation
       </Text>
       <Text fz="sm" mb="md" fs="italic">

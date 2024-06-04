@@ -20,8 +20,8 @@ import { getMesh, ExecuteMeshFn, SubscribeMeshFn, MeshContext as BaseMeshContext
 import { MeshStore, FsStoreStorageAdapter } from '@graphql-mesh/store';
 import { path as pathModule } from '@graphql-mesh/cross-helpers';
 import { ImportFn } from '@graphql-mesh/types';
-import type { GsVotingTypes } from './sources/gs-voting/types';
 import type { GrantShipsTypes } from './sources/grant-ships/types';
+import type { GsVotingTypes } from './sources/gs-voting/types';
 import * as importedModule$0 from "./sources/gs-voting/introspectionSchema";
 import * as importedModule$1 from "./sources/grant-ships/introspectionSchema";
 export type Maybe<T> = T | null;
@@ -9236,7 +9236,7 @@ export type getUserVotesQueryVariables = Exact<{
 }>;
 
 
-export type getUserVotesQuery = { ShipVote: Array<Pick<ShipVote, 'id' | 'choice_id' | 'mdPointer' | 'mdProtocol'>> };
+export type getUserVotesQuery = { ShipVote: Array<Pick<ShipVote, 'id' | 'choice_id' | 'mdPointer' | 'mdProtocol' | 'amount'>> };
 
 export type projectPageQueryQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -9719,6 +9719,7 @@ export const getUserVotesDocument = gql`
     choice_id
     mdPointer
     mdProtocol
+    amount
   }
 }
     ` as unknown as DocumentNode<getUserVotesQuery, getUserVotesQueryVariables>;
