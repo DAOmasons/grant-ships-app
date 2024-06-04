@@ -10,6 +10,7 @@ import { z } from 'zod';
 import { VoteAffix } from '../components/voting/VoteAffix';
 import { VoteTimesIndicator } from '../components/voting/VoteTimesIndicator';
 import { ShipVotingPanel } from '../components/voting/ShipVotingPanel';
+import { ConfirmationPanel } from '../components/voting/ConfirmationPanel';
 
 export type VotingFormValues = z.infer<typeof votingSchema>;
 
@@ -95,7 +96,9 @@ export const Vote = () => {
             style={{
               alignItems: 'center',
             }}
-          />
+          >
+            <ConfirmationPanel ships={ships} form={form} />
+          </Stepper.Step>
         </Stepper>
       </MainSection>
       {!isLaptop && (

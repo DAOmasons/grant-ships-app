@@ -24,6 +24,15 @@ export const VotingFooter = ({
     100 - shipPercs.reduce((acc, perc) => acc + Number(perc), 0);
   return (
     <Box mt="xl">
+      <Text fz="lg" mb="xs">
+        Vote Allocation
+      </Text>
+      <Text fz="sm" mb="md" fs="italic">
+        Read through the ship's portfolio and allocate a percentage of your
+        voting power and a reason for that percentage. You will be able to
+        adjust values and reasons in the final step.
+      </Text>
+
       <Group align="flex-end" mb="md">
         <NumberInput
           label="Amount (%)"
