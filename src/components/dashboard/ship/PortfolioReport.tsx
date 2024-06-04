@@ -7,6 +7,7 @@ import {
   Spoiler,
   Stack,
   Text,
+  TextInput,
   Textarea,
   useMantineTheme,
 } from '@mantine/core';
@@ -45,11 +46,15 @@ type FormValues = z.infer<typeof portfolioReportSchema>;
 const defaultValues: FormValues = {
   roundReview: '',
   grantReviews: {},
+  grantDemos: {},
+  grantExtras: {},
 };
 
 type ReportData = {
   roundReview: string;
   grantReviews: Record<string, string>;
+  grantDemos: Record<string, string>;
+  grantExtras: Record<string, string>;
 };
 
 export const PortfolioReport = ({
@@ -236,7 +241,9 @@ const PortfolioItem = ({
 
   const status =
     completedMilestones === grant.milestones?.length ? 'Completed' : 'Active';
+  const demoLink = reportData?.grantDemos?.[grant.id];
 
+  const extraLink = reportData?.grantExtras?.[grant.id];
   return (
     <Box px="sm">
       <Text fz="sm" className="ws-pre-wrap" mb="md">
@@ -259,16 +266,34 @@ const PortfolioItem = ({
       </Box>
       {(reportStatus === ReportStatus.Submit ||
         reportStatus === ReportStatus.Vote) && (
-        <Textarea
-          label="Your Report"
-          required
-          autosize
-          minRows={4}
-          maxRows={8}
-          description="How did the project go? What did you learn? What would you do differently next time?"
-          placeholder="Type your report here..."
-          {...form.getInputProps(`grantReviews.${grant.id}`)}
-        />
+        <Box>
+          <Textarea
+            label="Your Report"
+            required
+            autosize
+            minRows={4}
+            maxRows={8}
+            mb={'sm'}
+            description="How did the project go? What did you learn? What would you do differently next time?"
+            placeholder="Type your report here..."
+            {...form.getInputProps(`grantReviews.${grant.id}`)}
+          />
+          <TextInput
+            mb="sm"
+            label="Demo Link"
+            description="Optional. If you have a demo link, please provide it here."
+            placeholder="https://app.grantships.fun/"
+            {...form.getInputProps(`grantDemos.${grant.id}`)}
+            value={form.values.grantDemos[grant.id] || ''}
+          />
+          <TextInput
+            label="Extra Link"
+            description="Optional. If you have any additional links or resources, please provide them here."
+            placeholder="https://app.grantships.fun/"
+            {...form.getInputProps(`grantExtras.${grant.id}`)}
+            value={form.values.grantExtras[grant.id] || ''}
+          />
+        </Box>
       )}
 
       {reportStatus === ReportStatus.Review && reportData && (
@@ -286,56 +311,60 @@ const PortfolioItem = ({
               avatarUrl: grant.shipMetadata.imgUrl,
             }}
           />
+          <Text fz="sm" mb="xs" fw={600} mt="md">
+            Links:
+          </Text>
+          <Group mb="md" align="center" gap={4}>
+            <Text
+              component={Link}
+              to={`/project/${grant.projectId.id}`}
+              target="_blank"
+              fz={'sm'}
+              rel="noopener noreferrer"
+              td="underline"
+            >
+              Project
+            </Text>
+            <IconExternalLink size={16} />
+          </Group>
+          {demoLink && (
+            <Group mb="md" align="center" gap={4}>
+              <Text
+                component="a"
+                href={demoLink}
+                target="_blank"
+                fz={'sm'}
+                rel="noopener noreferrer"
+                td="underline"
+              >
+                Demo
+              </Text>
+              <IconExternalLink size={16} />
+              <Text fz="sm" lineClamp={1} w={250} opacity={0.5}>
+                ({demoLink})
+              </Text>
+            </Group>
+          )}
+          {extraLink && (
+            <Group mb="md" align="center" gap={4}>
+              <Text
+                component="a"
+                href={extraLink}
+                target="_blank"
+                fz={'sm'}
+                rel="noopener noreferrer"
+                td="underline"
+              >
+                Extra
+              </Text>
+              <IconExternalLink size={16} />
+              <Text fz="sm" lineClamp={1} w={250} opacity={0.5}>
+                ({extraLink})
+              </Text>
+            </Group>
+          )}
         </>
       )}
-      <Text fz="sm" mb="xs" fw={600} mt="md">
-        Links:
-      </Text>
-      <Group mb="md" align="center" gap={4}>
-        <Text
-          component={Link}
-          to={`/project/${grant.projectId.id}`}
-          target="_blank"
-          fz={'sm'}
-          rel="noopener noreferrer"
-          td="underline"
-        >
-          Project
-        </Text>
-        <IconExternalLink size={16} />
-      </Group>
-      <Group mb="md" align="center" gap={4}>
-        <Text
-          component={Link}
-          to={`/project/${grant.projectId.id}`}
-          target="_blank"
-          fz={'sm'}
-          rel="noopener noreferrer"
-          td="underline"
-        >
-          Demo
-        </Text>
-        <IconExternalLink size={16} />
-        <Text fz="sm" lineClamp={1} w={250} opacity={0.5}>
-          (https://www.figma.com/design/CgYFonR6ZFu7bGZJVlNqSN/Grantships?node-id=5616-15872&t=6E8hdGKHLya2d6NX-0)
-        </Text>
-      </Group>
-      <Group mb="md" align="center" gap={4}>
-        <Text
-          component={Link}
-          to={`/project/${grant.projectId.id}`}
-          target="_blank"
-          fz={'sm'}
-          rel="noopener noreferrer"
-          td="underline"
-        >
-          Extra
-        </Text>
-        <IconExternalLink size={16} />
-        <Text fz="sm" lineClamp={1} w={250} opacity={0.5}>
-          (https://www.figma.com/design/CgYFonR6ZFu7bGZJVlNqSN/Grantships?node-id=5616-15872&t=6E8hdGKHLya2d6NX-0)
-        </Text>
-      </Group>
     </Box>
   );
 };
@@ -375,7 +404,7 @@ const SubmitReport = ({
       return;
     }
 
-    const pinRes = await pinJSONToIPFS(formValues);
+    const pinRes = await pinJSONToIPFS(validated.data);
 
     const nonce = generateRandomBytes32();
 

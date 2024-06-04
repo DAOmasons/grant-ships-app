@@ -52,10 +52,6 @@ export const Vote = () => {
     return null;
   }
 
-  // if (hasUserVoted || votingStage > VotingStage.Active) {
-  //   return <PostVote ships={ships} />;
-  // }
-
   const nextStep = () =>
     setStep((current) => (current < 3 ? current + 1 : current));
   const prevStep = () =>

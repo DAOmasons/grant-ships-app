@@ -5,4 +5,10 @@ export const portfolioReportSchema = z.object({
   grantReviews: z.record(
     z.string().min(1, { message: 'Grant Review is required' })
   ),
+  grantDemos: z.record(
+    z.string().url({ message: 'Invalid URL' }).or(z.literal(''))
+  ),
+  grantExtras: z.record(
+    z.string().url({ message: 'Invalid URL' }).or(z.literal(''))
+  ),
 });
