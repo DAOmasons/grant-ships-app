@@ -1,7 +1,6 @@
 import {
   Accordion,
   Avatar,
-  Blockquote,
   Box,
   Group,
   Skeleton,
@@ -27,7 +26,7 @@ import {
 import { AppAlert } from '../../UnderContruction';
 import { DashGrant } from '../../../resolvers/grantResolvers';
 import { AlloStatus, ReportStatus } from '../../../types/common';
-import { FacilitatorBadge, ShipBadge } from '../../RoleBadges';
+import { ShipBadge } from '../../RoleBadges';
 import { UseFormReturnType, useForm, zodResolver } from '@mantine/form';
 import { portfolioReportSchema } from '../../forms/validationSchemas/portfolioReportSchema';
 import { z } from 'zod';
@@ -119,9 +118,12 @@ export const PortfolioReport = ({
         (reportStatus === ReportStatus.Review ||
           reportStatus === ReportStatus.Vote) && (
           <Box mb="xl">
-            <Text fz="md" fw={600} mb="xs">
-              Operator's Summary:
-            </Text>
+            <Group gap={4} mb="sm" align="center">
+              <ShipBadge />
+              <Text fz="md" fw={600}>
+                Operator's Summary:
+              </Text>
+            </Group>
             <ReviewBox
               text={reportData.roundReview}
               from={{
@@ -226,7 +228,6 @@ const PortfolioItem = ({
   reportStatus: ReportStatus;
   reportData?: ReportData | null;
 }) => {
-  const theme = useMantineTheme();
   const completedMilestones = grant.milestones
     ? grant.milestones.filter(
         (ms) => ms.milestoneStatus === AlloStatus.Accepted
@@ -272,9 +273,12 @@ const PortfolioItem = ({
 
       {reportStatus === ReportStatus.Review && reportData && (
         <>
-          <Text fz="sm" mb="sm" fw={600}>
-            Ship Operator summary:
-          </Text>
+          <Group mb="sm" gap={4}>
+            <ShipBadge />
+            <Text fz="sm" fw={600}>
+              Ship Operator summary:
+            </Text>
+          </Group>
           <ReviewBox
             text={reportData.grantReviews[grant.id]}
             from={{

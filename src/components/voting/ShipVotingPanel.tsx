@@ -85,15 +85,15 @@ export const ShipVotingPanel = ({
             <Text fz="md" fw={600} mb="xs">
               {ship.name}
             </Text>
-            <Text fz="xs" fw={400} mb={4}>
-              Total Round Amount{' '}
-              <Text fz="xs" component="span" fw={600}>
+            <Text fz="sm" fw={400} mb={4}>
+              Allocation Budget:{' '}
+              <Text fz="sm" component="span" fw={600}>
                 {totalAmount} GSBT
               </Text>
             </Text>
-            <Text fz="xs" fw={400} mb="md">
-              Total Amount Distributed{' '}
-              <Text fz="xs" component="span" fw={600}>
+            <Text fz="sm" fw={400} mb="md">
+              Amount Distributed:{' '}
+              <Text fz="sm" component="span" fw={600}>
                 {formatEther(BigInt(ship.amtDistributed))} GSBT
               </Text>
             </Text>
