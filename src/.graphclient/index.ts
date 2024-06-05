@@ -22,8 +22,8 @@ import { path as pathModule } from '@graphql-mesh/cross-helpers';
 import { ImportFn } from '@graphql-mesh/types';
 import type { GrantShipsTypes } from './sources/grant-ships/types';
 import type { GsVotingTypes } from './sources/gs-voting/types';
-import * as importedModule$0 from "./sources/gs-voting/introspectionSchema";
-import * as importedModule$1 from "./sources/grant-ships/introspectionSchema";
+import * as importedModule$0 from "./sources/grant-ships/introspectionSchema";
+import * as importedModule$1 from "./sources/gs-voting/introspectionSchema";
 export type Maybe<T> = T | null;
 export type InputMaybe<T> = Maybe<T>;
 export type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };
@@ -40,8 +40,11 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
-  _numeric: any;
-  _text: any;
+  BigDecimal: any;
+  BigInt: any;
+  Bytes: any;
+  Int8: any;
+  Timestamp: any;
   contract_type: any;
   entity_type: any;
   event_type: any;
@@ -49,14 +52,49 @@ export type Scalars = {
   numeric: any;
   timestamp: any;
   timestamptz: any;
-  BigDecimal: any;
-  BigInt: any;
-  Bytes: any;
-  Int8: any;
-  Timestamp: any;
 };
 
 export type Query = {
+  project?: Maybe<Project>;
+  projects: Array<Project>;
+  feedItem?: Maybe<FeedItem>;
+  feedItems: Array<FeedItem>;
+  feedItemEntity?: Maybe<FeedItemEntity>;
+  feedItemEntities: Array<FeedItemEntity>;
+  feedItemEmbed?: Maybe<FeedItemEmbed>;
+  feedItemEmbeds: Array<FeedItemEmbed>;
+  update?: Maybe<Update>;
+  updates: Array<Update>;
+  grantShip?: Maybe<GrantShip>;
+  grantShips: Array<GrantShip>;
+  poolIdLookup?: Maybe<PoolIdLookup>;
+  poolIdLookups: Array<PoolIdLookup>;
+  gameManager?: Maybe<GameManager>;
+  gameManagers: Array<GameManager>;
+  gameRound?: Maybe<GameRound>;
+  gameRounds: Array<GameRound>;
+  applicationHistory?: Maybe<ApplicationHistory>;
+  applicationHistories: Array<ApplicationHistory>;
+  grant?: Maybe<Grant>;
+  grants: Array<Grant>;
+  milestone?: Maybe<Milestone>;
+  milestones: Array<Milestone>;
+  profileIdToAnchor?: Maybe<ProfileIdToAnchor>;
+  profileIdToAnchors: Array<ProfileIdToAnchor>;
+  profileMemberGroup?: Maybe<ProfileMemberGroup>;
+  profileMemberGroups: Array<ProfileMemberGroup>;
+  transaction?: Maybe<Transaction>;
+  transactions: Array<Transaction>;
+  rawMetadata?: Maybe<RawMetadata>;
+  rawMetadata_collection: Array<RawMetadata>;
+  log?: Maybe<Log>;
+  logs: Array<Log>;
+  gmVersion?: Maybe<GmVersion>;
+  gmVersions: Array<GmVersion>;
+  gmDeployment?: Maybe<GmDeployment>;
+  gmDeployments: Array<GmDeployment>;
+  /** Access to subgraph metadata */
+  _meta?: Maybe<_Meta_>;
   /** fetch data from the table: "Contest" */
   Contest: Array<Contest>;
   /** fetch data from the table: "ContestClone" */
@@ -155,46 +193,353 @@ export type Query = {
   raw_events: Array<raw_events>;
   /** fetch data from the table: "raw_events" using primary key columns */
   raw_events_by_pk?: Maybe<raw_events>;
-  project?: Maybe<Project>;
-  projects: Array<Project>;
-  feedItem?: Maybe<FeedItem>;
-  feedItems: Array<FeedItem>;
-  feedItemEntity?: Maybe<FeedItemEntity>;
-  feedItemEntities: Array<FeedItemEntity>;
-  feedItemEmbed?: Maybe<FeedItemEmbed>;
-  feedItemEmbeds: Array<FeedItemEmbed>;
-  update?: Maybe<Update>;
-  updates: Array<Update>;
-  grantShip?: Maybe<GrantShip>;
-  grantShips: Array<GrantShip>;
-  poolIdLookup?: Maybe<PoolIdLookup>;
-  poolIdLookups: Array<PoolIdLookup>;
-  gameManager?: Maybe<GameManager>;
-  gameManagers: Array<GameManager>;
-  gameRound?: Maybe<GameRound>;
-  gameRounds: Array<GameRound>;
-  applicationHistory?: Maybe<ApplicationHistory>;
-  applicationHistories: Array<ApplicationHistory>;
-  grant?: Maybe<Grant>;
-  grants: Array<Grant>;
-  milestone?: Maybe<Milestone>;
-  milestones: Array<Milestone>;
-  profileIdToAnchor?: Maybe<ProfileIdToAnchor>;
-  profileIdToAnchors: Array<ProfileIdToAnchor>;
-  profileMemberGroup?: Maybe<ProfileMemberGroup>;
-  profileMemberGroups: Array<ProfileMemberGroup>;
-  transaction?: Maybe<Transaction>;
-  transactions: Array<Transaction>;
-  rawMetadata?: Maybe<RawMetadata>;
-  rawMetadata_collection: Array<RawMetadata>;
-  log?: Maybe<Log>;
-  logs: Array<Log>;
-  gmVersion?: Maybe<GmVersion>;
-  gmVersions: Array<GmVersion>;
-  gmDeployment?: Maybe<GmDeployment>;
-  gmDeployments: Array<GmDeployment>;
-  /** Access to subgraph metadata */
-  _meta?: Maybe<_Meta_>;
+};
+
+
+export type QueryprojectArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryprojectsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Project_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<Project_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryfeedItemArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryfeedItemsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<FeedItem_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<FeedItem_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryfeedItemEntityArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryfeedItemEntitiesArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<FeedItemEntity_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<FeedItemEntity_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryfeedItemEmbedArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryfeedItemEmbedsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<FeedItemEmbed_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<FeedItemEmbed_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryupdateArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryupdatesArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Update_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<Update_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QuerygrantShipArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QuerygrantShipsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<GrantShip_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<GrantShip_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QuerypoolIdLookupArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QuerypoolIdLookupsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<PoolIdLookup_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<PoolIdLookup_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QuerygameManagerArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QuerygameManagersArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<GameManager_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<GameManager_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QuerygameRoundArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QuerygameRoundsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<GameRound_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<GameRound_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryapplicationHistoryArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryapplicationHistoriesArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<ApplicationHistory_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<ApplicationHistory_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QuerygrantArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QuerygrantsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Grant_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<Grant_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QuerymilestoneArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QuerymilestonesArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Milestone_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<Milestone_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryprofileIdToAnchorArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryprofileIdToAnchorsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<ProfileIdToAnchor_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<ProfileIdToAnchor_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryprofileMemberGroupArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryprofileMemberGroupsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<ProfileMemberGroup_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<ProfileMemberGroup_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QuerytransactionArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QuerytransactionsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Transaction_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<Transaction_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryrawMetadataArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QueryrawMetadata_collectionArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<RawMetadata_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<RawMetadata_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QuerylogArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QuerylogsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Log_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<Log_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QuerygmVersionArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QuerygmVersionsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<GmVersion_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<GmVersion_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QuerygmDeploymentArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type QuerygmDeploymentsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<GmDeployment_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<GmDeployment_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type Query_metaArgs = {
+  block?: InputMaybe<Block_height>;
 };
 
 
@@ -555,354 +900,47 @@ export type Queryraw_events_by_pkArgs = {
   event_id: Scalars['numeric'];
 };
 
-
-export type QueryprojectArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QueryprojectsArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Project_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<Project_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QueryfeedItemArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QueryfeedItemsArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<FeedItem_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<FeedItem_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QueryfeedItemEntityArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QueryfeedItemEntitiesArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<FeedItemEntity_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<FeedItemEntity_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QueryfeedItemEmbedArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QueryfeedItemEmbedsArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<FeedItemEmbed_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<FeedItemEmbed_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QueryupdateArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QueryupdatesArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Update_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<Update_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QuerygrantShipArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QuerygrantShipsArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<GrantShip_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<GrantShip_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QuerypoolIdLookupArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QuerypoolIdLookupsArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<PoolIdLookup_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<PoolIdLookup_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QuerygameManagerArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QuerygameManagersArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<GameManager_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<GameManager_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QuerygameRoundArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QuerygameRoundsArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<GameRound_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<GameRound_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QueryapplicationHistoryArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QueryapplicationHistoriesArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<ApplicationHistory_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<ApplicationHistory_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QuerygrantArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QuerygrantsArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Grant_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<Grant_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QuerymilestoneArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QuerymilestonesArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Milestone_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<Milestone_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QueryprofileIdToAnchorArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QueryprofileIdToAnchorsArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<ProfileIdToAnchor_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<ProfileIdToAnchor_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QueryprofileMemberGroupArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QueryprofileMemberGroupsArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<ProfileMemberGroup_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<ProfileMemberGroup_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QuerytransactionArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QuerytransactionsArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Transaction_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<Transaction_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QueryrawMetadataArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QueryrawMetadata_collectionArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<RawMetadata_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<RawMetadata_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QuerylogArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QuerylogsArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Log_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<Log_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QuerygmVersionArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QuerygmVersionsArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<GmVersion_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<GmVersion_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QuerygmDeploymentArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type QuerygmDeploymentsArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<GmDeployment_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<GmDeployment_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type Query_metaArgs = {
-  block?: InputMaybe<Block_height>;
-};
-
 export type Subscription = {
+  project?: Maybe<Project>;
+  projects: Array<Project>;
+  feedItem?: Maybe<FeedItem>;
+  feedItems: Array<FeedItem>;
+  feedItemEntity?: Maybe<FeedItemEntity>;
+  feedItemEntities: Array<FeedItemEntity>;
+  feedItemEmbed?: Maybe<FeedItemEmbed>;
+  feedItemEmbeds: Array<FeedItemEmbed>;
+  update?: Maybe<Update>;
+  updates: Array<Update>;
+  grantShip?: Maybe<GrantShip>;
+  grantShips: Array<GrantShip>;
+  poolIdLookup?: Maybe<PoolIdLookup>;
+  poolIdLookups: Array<PoolIdLookup>;
+  gameManager?: Maybe<GameManager>;
+  gameManagers: Array<GameManager>;
+  gameRound?: Maybe<GameRound>;
+  gameRounds: Array<GameRound>;
+  applicationHistory?: Maybe<ApplicationHistory>;
+  applicationHistories: Array<ApplicationHistory>;
+  grant?: Maybe<Grant>;
+  grants: Array<Grant>;
+  milestone?: Maybe<Milestone>;
+  milestones: Array<Milestone>;
+  profileIdToAnchor?: Maybe<ProfileIdToAnchor>;
+  profileIdToAnchors: Array<ProfileIdToAnchor>;
+  profileMemberGroup?: Maybe<ProfileMemberGroup>;
+  profileMemberGroups: Array<ProfileMemberGroup>;
+  transaction?: Maybe<Transaction>;
+  transactions: Array<Transaction>;
+  rawMetadata?: Maybe<RawMetadata>;
+  rawMetadata_collection: Array<RawMetadata>;
+  log?: Maybe<Log>;
+  logs: Array<Log>;
+  gmVersion?: Maybe<GmVersion>;
+  gmVersions: Array<GmVersion>;
+  gmDeployment?: Maybe<GmDeployment>;
+  gmDeployments: Array<GmDeployment>;
+  /** Access to subgraph metadata */
+  _meta?: Maybe<_Meta_>;
   /** fetch data from the table: "Contest" */
   Contest: Array<Contest>;
   /** fetch data from the table: "ContestClone" */
@@ -1049,46 +1087,353 @@ export type Subscription = {
   raw_events_by_pk?: Maybe<raw_events>;
   /** fetch data from the table in a streaming manner: "raw_events" */
   raw_events_stream: Array<raw_events>;
-  project?: Maybe<Project>;
-  projects: Array<Project>;
-  feedItem?: Maybe<FeedItem>;
-  feedItems: Array<FeedItem>;
-  feedItemEntity?: Maybe<FeedItemEntity>;
-  feedItemEntities: Array<FeedItemEntity>;
-  feedItemEmbed?: Maybe<FeedItemEmbed>;
-  feedItemEmbeds: Array<FeedItemEmbed>;
-  update?: Maybe<Update>;
-  updates: Array<Update>;
-  grantShip?: Maybe<GrantShip>;
-  grantShips: Array<GrantShip>;
-  poolIdLookup?: Maybe<PoolIdLookup>;
-  poolIdLookups: Array<PoolIdLookup>;
-  gameManager?: Maybe<GameManager>;
-  gameManagers: Array<GameManager>;
-  gameRound?: Maybe<GameRound>;
-  gameRounds: Array<GameRound>;
-  applicationHistory?: Maybe<ApplicationHistory>;
-  applicationHistories: Array<ApplicationHistory>;
-  grant?: Maybe<Grant>;
-  grants: Array<Grant>;
-  milestone?: Maybe<Milestone>;
-  milestones: Array<Milestone>;
-  profileIdToAnchor?: Maybe<ProfileIdToAnchor>;
-  profileIdToAnchors: Array<ProfileIdToAnchor>;
-  profileMemberGroup?: Maybe<ProfileMemberGroup>;
-  profileMemberGroups: Array<ProfileMemberGroup>;
-  transaction?: Maybe<Transaction>;
-  transactions: Array<Transaction>;
-  rawMetadata?: Maybe<RawMetadata>;
-  rawMetadata_collection: Array<RawMetadata>;
-  log?: Maybe<Log>;
-  logs: Array<Log>;
-  gmVersion?: Maybe<GmVersion>;
-  gmVersions: Array<GmVersion>;
-  gmDeployment?: Maybe<GmDeployment>;
-  gmDeployments: Array<GmDeployment>;
-  /** Access to subgraph metadata */
-  _meta?: Maybe<_Meta_>;
+};
+
+
+export type SubscriptionprojectArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionprojectsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Project_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<Project_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionfeedItemArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionfeedItemsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<FeedItem_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<FeedItem_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionfeedItemEntityArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionfeedItemEntitiesArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<FeedItemEntity_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<FeedItemEntity_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionfeedItemEmbedArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionfeedItemEmbedsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<FeedItemEmbed_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<FeedItemEmbed_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionupdateArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionupdatesArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Update_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<Update_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptiongrantShipArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptiongrantShipsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<GrantShip_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<GrantShip_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionpoolIdLookupArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionpoolIdLookupsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<PoolIdLookup_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<PoolIdLookup_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptiongameManagerArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptiongameManagersArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<GameManager_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<GameManager_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptiongameRoundArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptiongameRoundsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<GameRound_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<GameRound_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionapplicationHistoryArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionapplicationHistoriesArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<ApplicationHistory_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<ApplicationHistory_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptiongrantArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptiongrantsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Grant_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<Grant_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionmilestoneArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionmilestonesArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Milestone_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<Milestone_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionprofileIdToAnchorArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionprofileIdToAnchorsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<ProfileIdToAnchor_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<ProfileIdToAnchor_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionprofileMemberGroupArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionprofileMemberGroupsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<ProfileMemberGroup_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<ProfileMemberGroup_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptiontransactionArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptiontransactionsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Transaction_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<Transaction_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionrawMetadataArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionrawMetadata_collectionArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<RawMetadata_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<RawMetadata_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionlogArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptionlogsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<Log_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<Log_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptiongmVersionArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptiongmVersionsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<GmVersion_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<GmVersion_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptiongmDeploymentArgs = {
+  id: Scalars['ID'];
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type SubscriptiongmDeploymentsArgs = {
+  skip?: InputMaybe<Scalars['Int']>;
+  first?: InputMaybe<Scalars['Int']>;
+  orderBy?: InputMaybe<GmDeployment_orderBy>;
+  orderDirection?: InputMaybe<OrderDirection>;
+  where?: InputMaybe<GmDeployment_filter>;
+  block?: InputMaybe<Block_height>;
+  subgraphError?: _SubgraphErrorPolicy_;
+};
+
+
+export type Subscription_metaArgs = {
+  block?: InputMaybe<Block_height>;
 };
 
 
@@ -1615,2985 +1960,6 @@ export type Subscriptionraw_events_streamArgs = {
   batch_size: Scalars['Int'];
   cursor: Array<InputMaybe<raw_events_stream_cursor_input>>;
   where?: InputMaybe<raw_events_bool_exp>;
-};
-
-
-export type SubscriptionprojectArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionprojectsArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Project_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<Project_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionfeedItemArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionfeedItemsArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<FeedItem_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<FeedItem_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionfeedItemEntityArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionfeedItemEntitiesArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<FeedItemEntity_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<FeedItemEntity_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionfeedItemEmbedArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionfeedItemEmbedsArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<FeedItemEmbed_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<FeedItemEmbed_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionupdateArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionupdatesArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Update_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<Update_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptiongrantShipArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptiongrantShipsArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<GrantShip_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<GrantShip_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionpoolIdLookupArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionpoolIdLookupsArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<PoolIdLookup_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<PoolIdLookup_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptiongameManagerArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptiongameManagersArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<GameManager_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<GameManager_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptiongameRoundArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptiongameRoundsArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<GameRound_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<GameRound_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionapplicationHistoryArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionapplicationHistoriesArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<ApplicationHistory_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<ApplicationHistory_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptiongrantArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptiongrantsArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Grant_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<Grant_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionmilestoneArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionmilestonesArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Milestone_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<Milestone_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionprofileIdToAnchorArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionprofileIdToAnchorsArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<ProfileIdToAnchor_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<ProfileIdToAnchor_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionprofileMemberGroupArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionprofileMemberGroupsArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<ProfileMemberGroup_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<ProfileMemberGroup_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptiontransactionArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptiontransactionsArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Transaction_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<Transaction_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionrawMetadataArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionrawMetadata_collectionArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<RawMetadata_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<RawMetadata_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionlogArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptionlogsArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<Log_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<Log_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptiongmVersionArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptiongmVersionsArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<GmVersion_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<GmVersion_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptiongmDeploymentArgs = {
-  id: Scalars['ID'];
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type SubscriptiongmDeploymentsArgs = {
-  skip?: InputMaybe<Scalars['Int']>;
-  first?: InputMaybe<Scalars['Int']>;
-  orderBy?: InputMaybe<GmDeployment_orderBy>;
-  orderDirection?: InputMaybe<OrderDirection>;
-  where?: InputMaybe<GmDeployment_filter>;
-  block?: InputMaybe<Block_height>;
-  subgraphError?: _SubgraphErrorPolicy_;
-};
-
-
-export type Subscription_metaArgs = {
-  block?: InputMaybe<Block_height>;
-};
-
-/** Boolean expression to compare columns of type "Boolean". All fields are combined with logical 'AND'. */
-export type Boolean_comparison_exp = {
-  _eq?: InputMaybe<Scalars['Boolean']>;
-  _gt?: InputMaybe<Scalars['Boolean']>;
-  _gte?: InputMaybe<Scalars['Boolean']>;
-  _in?: InputMaybe<Array<Scalars['Boolean']>>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
-  _lt?: InputMaybe<Scalars['Boolean']>;
-  _lte?: InputMaybe<Scalars['Boolean']>;
-  _neq?: InputMaybe<Scalars['Boolean']>;
-  _nin?: InputMaybe<Array<Scalars['Boolean']>>;
-};
-
-/** columns and relationships of "Contest" */
-export type Contest = {
-  /** An object relationship */
-  choicesModule?: Maybe<StemModule>;
-  choicesModule_id: Scalars['String'];
-  contestAddress: Scalars['String'];
-  contestStatus: Scalars['numeric'];
-  contestVersion: Scalars['String'];
-  db_write_timestamp?: Maybe<Scalars['timestamp']>;
-  /** An object relationship */
-  executionModule?: Maybe<StemModule>;
-  executionModule_id: Scalars['String'];
-  filterTag: Scalars['String'];
-  id: Scalars['String'];
-  isContinuous: Scalars['Boolean'];
-  isRetractable: Scalars['Boolean'];
-  /** An object relationship */
-  pointsModule?: Maybe<StemModule>;
-  pointsModule_id: Scalars['String'];
-  /** An object relationship */
-  votesModule?: Maybe<StemModule>;
-  votesModule_id: Scalars['String'];
-};
-
-/** columns and relationships of "ContestClone" */
-export type ContestClone = {
-  contestAddress: Scalars['String'];
-  contestVersion: Scalars['String'];
-  db_write_timestamp?: Maybe<Scalars['timestamp']>;
-  filterTag: Scalars['String'];
-  id: Scalars['String'];
-};
-
-/** Boolean expression to filter rows from the table "ContestClone". All fields are combined with a logical 'AND'. */
-export type ContestClone_bool_exp = {
-  _and?: InputMaybe<Array<ContestClone_bool_exp>>;
-  _not?: InputMaybe<ContestClone_bool_exp>;
-  _or?: InputMaybe<Array<ContestClone_bool_exp>>;
-  contestAddress?: InputMaybe<String_comparison_exp>;
-  contestVersion?: InputMaybe<String_comparison_exp>;
-  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
-  filterTag?: InputMaybe<String_comparison_exp>;
-  id?: InputMaybe<String_comparison_exp>;
-};
-
-/** Ordering options when selecting data from "ContestClone". */
-export type ContestClone_order_by = {
-  contestAddress?: InputMaybe<order_by>;
-  contestVersion?: InputMaybe<order_by>;
-  db_write_timestamp?: InputMaybe<order_by>;
-  filterTag?: InputMaybe<order_by>;
-  id?: InputMaybe<order_by>;
-};
-
-/** select columns of table "ContestClone" */
-export type ContestClone_select_column =
-  /** column name */
-  | 'contestAddress'
-  /** column name */
-  | 'contestVersion'
-  /** column name */
-  | 'db_write_timestamp'
-  /** column name */
-  | 'filterTag'
-  /** column name */
-  | 'id';
-
-/** Streaming cursor of the table "ContestClone" */
-export type ContestClone_stream_cursor_input = {
-  /** Stream column input with initial value */
-  initial_value: ContestClone_stream_cursor_value_input;
-  /** cursor ordering */
-  ordering?: InputMaybe<cursor_ordering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type ContestClone_stream_cursor_value_input = {
-  contestAddress?: InputMaybe<Scalars['String']>;
-  contestVersion?: InputMaybe<Scalars['String']>;
-  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
-  filterTag?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['String']>;
-};
-
-/** columns and relationships of "ContestTemplate" */
-export type ContestTemplate = {
-  active: Scalars['Boolean'];
-  contestAddress: Scalars['String'];
-  contestVersion: Scalars['String'];
-  db_write_timestamp?: Maybe<Scalars['timestamp']>;
-  id: Scalars['String'];
-  mdPointer: Scalars['String'];
-  mdProtocol: Scalars['numeric'];
-};
-
-/** Boolean expression to filter rows from the table "ContestTemplate". All fields are combined with a logical 'AND'. */
-export type ContestTemplate_bool_exp = {
-  _and?: InputMaybe<Array<ContestTemplate_bool_exp>>;
-  _not?: InputMaybe<ContestTemplate_bool_exp>;
-  _or?: InputMaybe<Array<ContestTemplate_bool_exp>>;
-  active?: InputMaybe<Boolean_comparison_exp>;
-  contestAddress?: InputMaybe<String_comparison_exp>;
-  contestVersion?: InputMaybe<String_comparison_exp>;
-  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
-  id?: InputMaybe<String_comparison_exp>;
-  mdPointer?: InputMaybe<String_comparison_exp>;
-  mdProtocol?: InputMaybe<numeric_comparison_exp>;
-};
-
-/** Ordering options when selecting data from "ContestTemplate". */
-export type ContestTemplate_order_by = {
-  active?: InputMaybe<order_by>;
-  contestAddress?: InputMaybe<order_by>;
-  contestVersion?: InputMaybe<order_by>;
-  db_write_timestamp?: InputMaybe<order_by>;
-  id?: InputMaybe<order_by>;
-  mdPointer?: InputMaybe<order_by>;
-  mdProtocol?: InputMaybe<order_by>;
-};
-
-/** select columns of table "ContestTemplate" */
-export type ContestTemplate_select_column =
-  /** column name */
-  | 'active'
-  /** column name */
-  | 'contestAddress'
-  /** column name */
-  | 'contestVersion'
-  /** column name */
-  | 'db_write_timestamp'
-  /** column name */
-  | 'id'
-  /** column name */
-  | 'mdPointer'
-  /** column name */
-  | 'mdProtocol';
-
-/** Streaming cursor of the table "ContestTemplate" */
-export type ContestTemplate_stream_cursor_input = {
-  /** Stream column input with initial value */
-  initial_value: ContestTemplate_stream_cursor_value_input;
-  /** cursor ordering */
-  ordering?: InputMaybe<cursor_ordering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type ContestTemplate_stream_cursor_value_input = {
-  active?: InputMaybe<Scalars['Boolean']>;
-  contestAddress?: InputMaybe<Scalars['String']>;
-  contestVersion?: InputMaybe<Scalars['String']>;
-  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
-  id?: InputMaybe<Scalars['String']>;
-  mdPointer?: InputMaybe<Scalars['String']>;
-  mdProtocol?: InputMaybe<Scalars['numeric']>;
-};
-
-/** Boolean expression to filter rows from the table "Contest". All fields are combined with a logical 'AND'. */
-export type Contest_bool_exp = {
-  _and?: InputMaybe<Array<Contest_bool_exp>>;
-  _not?: InputMaybe<Contest_bool_exp>;
-  _or?: InputMaybe<Array<Contest_bool_exp>>;
-  choicesModule?: InputMaybe<StemModule_bool_exp>;
-  choicesModule_id?: InputMaybe<String_comparison_exp>;
-  contestAddress?: InputMaybe<String_comparison_exp>;
-  contestStatus?: InputMaybe<numeric_comparison_exp>;
-  contestVersion?: InputMaybe<String_comparison_exp>;
-  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
-  executionModule?: InputMaybe<StemModule_bool_exp>;
-  executionModule_id?: InputMaybe<String_comparison_exp>;
-  filterTag?: InputMaybe<String_comparison_exp>;
-  id?: InputMaybe<String_comparison_exp>;
-  isContinuous?: InputMaybe<Boolean_comparison_exp>;
-  isRetractable?: InputMaybe<Boolean_comparison_exp>;
-  pointsModule?: InputMaybe<StemModule_bool_exp>;
-  pointsModule_id?: InputMaybe<String_comparison_exp>;
-  votesModule?: InputMaybe<StemModule_bool_exp>;
-  votesModule_id?: InputMaybe<String_comparison_exp>;
-};
-
-/** Ordering options when selecting data from "Contest". */
-export type Contest_order_by = {
-  choicesModule?: InputMaybe<StemModule_order_by>;
-  choicesModule_id?: InputMaybe<order_by>;
-  contestAddress?: InputMaybe<order_by>;
-  contestStatus?: InputMaybe<order_by>;
-  contestVersion?: InputMaybe<order_by>;
-  db_write_timestamp?: InputMaybe<order_by>;
-  executionModule?: InputMaybe<StemModule_order_by>;
-  executionModule_id?: InputMaybe<order_by>;
-  filterTag?: InputMaybe<order_by>;
-  id?: InputMaybe<order_by>;
-  isContinuous?: InputMaybe<order_by>;
-  isRetractable?: InputMaybe<order_by>;
-  pointsModule?: InputMaybe<StemModule_order_by>;
-  pointsModule_id?: InputMaybe<order_by>;
-  votesModule?: InputMaybe<StemModule_order_by>;
-  votesModule_id?: InputMaybe<order_by>;
-};
-
-/** select columns of table "Contest" */
-export type Contest_select_column =
-  /** column name */
-  | 'choicesModule_id'
-  /** column name */
-  | 'contestAddress'
-  /** column name */
-  | 'contestStatus'
-  /** column name */
-  | 'contestVersion'
-  /** column name */
-  | 'db_write_timestamp'
-  /** column name */
-  | 'executionModule_id'
-  /** column name */
-  | 'filterTag'
-  /** column name */
-  | 'id'
-  /** column name */
-  | 'isContinuous'
-  /** column name */
-  | 'isRetractable'
-  /** column name */
-  | 'pointsModule_id'
-  /** column name */
-  | 'votesModule_id';
-
-/** Streaming cursor of the table "Contest" */
-export type Contest_stream_cursor_input = {
-  /** Stream column input with initial value */
-  initial_value: Contest_stream_cursor_value_input;
-  /** cursor ordering */
-  ordering?: InputMaybe<cursor_ordering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type Contest_stream_cursor_value_input = {
-  choicesModule_id?: InputMaybe<Scalars['String']>;
-  contestAddress?: InputMaybe<Scalars['String']>;
-  contestStatus?: InputMaybe<Scalars['numeric']>;
-  contestVersion?: InputMaybe<Scalars['String']>;
-  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
-  executionModule_id?: InputMaybe<Scalars['String']>;
-  filterTag?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['String']>;
-  isContinuous?: InputMaybe<Scalars['Boolean']>;
-  isRetractable?: InputMaybe<Scalars['Boolean']>;
-  pointsModule_id?: InputMaybe<Scalars['String']>;
-  votesModule_id?: InputMaybe<Scalars['String']>;
-};
-
-/** columns and relationships of "ERCPointParams" */
-export type ERCPointParams = {
-  db_write_timestamp?: Maybe<Scalars['timestamp']>;
-  id: Scalars['String'];
-  voteTokenAddress: Scalars['String'];
-  votingCheckpoint: Scalars['numeric'];
-};
-
-/** Boolean expression to filter rows from the table "ERCPointParams". All fields are combined with a logical 'AND'. */
-export type ERCPointParams_bool_exp = {
-  _and?: InputMaybe<Array<ERCPointParams_bool_exp>>;
-  _not?: InputMaybe<ERCPointParams_bool_exp>;
-  _or?: InputMaybe<Array<ERCPointParams_bool_exp>>;
-  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
-  id?: InputMaybe<String_comparison_exp>;
-  voteTokenAddress?: InputMaybe<String_comparison_exp>;
-  votingCheckpoint?: InputMaybe<numeric_comparison_exp>;
-};
-
-/** Ordering options when selecting data from "ERCPointParams". */
-export type ERCPointParams_order_by = {
-  db_write_timestamp?: InputMaybe<order_by>;
-  id?: InputMaybe<order_by>;
-  voteTokenAddress?: InputMaybe<order_by>;
-  votingCheckpoint?: InputMaybe<order_by>;
-};
-
-/** select columns of table "ERCPointParams" */
-export type ERCPointParams_select_column =
-  /** column name */
-  | 'db_write_timestamp'
-  /** column name */
-  | 'id'
-  /** column name */
-  | 'voteTokenAddress'
-  /** column name */
-  | 'votingCheckpoint';
-
-/** Streaming cursor of the table "ERCPointParams" */
-export type ERCPointParams_stream_cursor_input = {
-  /** Stream column input with initial value */
-  initial_value: ERCPointParams_stream_cursor_value_input;
-  /** cursor ordering */
-  ordering?: InputMaybe<cursor_ordering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type ERCPointParams_stream_cursor_value_input = {
-  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
-  id?: InputMaybe<Scalars['String']>;
-  voteTokenAddress?: InputMaybe<Scalars['String']>;
-  votingCheckpoint?: InputMaybe<Scalars['numeric']>;
-};
-
-/** columns and relationships of "EnvioTX" */
-export type EnvioTX = {
-  blockNumber: Scalars['numeric'];
-  db_write_timestamp?: Maybe<Scalars['timestamp']>;
-  id: Scalars['String'];
-  srcAddress: Scalars['String'];
-  txHash: Scalars['String'];
-  txOrigin?: Maybe<Scalars['String']>;
-};
-
-/** Boolean expression to filter rows from the table "EnvioTX". All fields are combined with a logical 'AND'. */
-export type EnvioTX_bool_exp = {
-  _and?: InputMaybe<Array<EnvioTX_bool_exp>>;
-  _not?: InputMaybe<EnvioTX_bool_exp>;
-  _or?: InputMaybe<Array<EnvioTX_bool_exp>>;
-  blockNumber?: InputMaybe<numeric_comparison_exp>;
-  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
-  id?: InputMaybe<String_comparison_exp>;
-  srcAddress?: InputMaybe<String_comparison_exp>;
-  txHash?: InputMaybe<String_comparison_exp>;
-  txOrigin?: InputMaybe<String_comparison_exp>;
-};
-
-/** Ordering options when selecting data from "EnvioTX". */
-export type EnvioTX_order_by = {
-  blockNumber?: InputMaybe<order_by>;
-  db_write_timestamp?: InputMaybe<order_by>;
-  id?: InputMaybe<order_by>;
-  srcAddress?: InputMaybe<order_by>;
-  txHash?: InputMaybe<order_by>;
-  txOrigin?: InputMaybe<order_by>;
-};
-
-/** select columns of table "EnvioTX" */
-export type EnvioTX_select_column =
-  /** column name */
-  | 'blockNumber'
-  /** column name */
-  | 'db_write_timestamp'
-  /** column name */
-  | 'id'
-  /** column name */
-  | 'srcAddress'
-  /** column name */
-  | 'txHash'
-  /** column name */
-  | 'txOrigin';
-
-/** Streaming cursor of the table "EnvioTX" */
-export type EnvioTX_stream_cursor_input = {
-  /** Stream column input with initial value */
-  initial_value: EnvioTX_stream_cursor_value_input;
-  /** cursor ordering */
-  ordering?: InputMaybe<cursor_ordering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type EnvioTX_stream_cursor_value_input = {
-  blockNumber?: InputMaybe<Scalars['numeric']>;
-  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
-  id?: InputMaybe<Scalars['String']>;
-  srcAddress?: InputMaybe<Scalars['String']>;
-  txHash?: InputMaybe<Scalars['String']>;
-  txOrigin?: InputMaybe<Scalars['String']>;
-};
-
-/** columns and relationships of "EventPost" */
-export type EventPost = {
-  db_write_timestamp?: Maybe<Scalars['timestamp']>;
-  hatId: Scalars['numeric'];
-  /** An object relationship */
-  hatsPoster?: Maybe<HatsPoster>;
-  hatsPoster_id: Scalars['String'];
-  id: Scalars['String'];
-  mdPointer: Scalars['String'];
-  mdProtocol: Scalars['numeric'];
-  tag: Scalars['String'];
-};
-
-/** order by aggregate values of table "EventPost" */
-export type EventPost_aggregate_order_by = {
-  avg?: InputMaybe<EventPost_avg_order_by>;
-  count?: InputMaybe<order_by>;
-  max?: InputMaybe<EventPost_max_order_by>;
-  min?: InputMaybe<EventPost_min_order_by>;
-  stddev?: InputMaybe<EventPost_stddev_order_by>;
-  stddev_pop?: InputMaybe<EventPost_stddev_pop_order_by>;
-  stddev_samp?: InputMaybe<EventPost_stddev_samp_order_by>;
-  sum?: InputMaybe<EventPost_sum_order_by>;
-  var_pop?: InputMaybe<EventPost_var_pop_order_by>;
-  var_samp?: InputMaybe<EventPost_var_samp_order_by>;
-  variance?: InputMaybe<EventPost_variance_order_by>;
-};
-
-/** order by avg() on columns of table "EventPost" */
-export type EventPost_avg_order_by = {
-  hatId?: InputMaybe<order_by>;
-  mdProtocol?: InputMaybe<order_by>;
-};
-
-/** Boolean expression to filter rows from the table "EventPost". All fields are combined with a logical 'AND'. */
-export type EventPost_bool_exp = {
-  _and?: InputMaybe<Array<EventPost_bool_exp>>;
-  _not?: InputMaybe<EventPost_bool_exp>;
-  _or?: InputMaybe<Array<EventPost_bool_exp>>;
-  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
-  hatId?: InputMaybe<numeric_comparison_exp>;
-  hatsPoster?: InputMaybe<HatsPoster_bool_exp>;
-  hatsPoster_id?: InputMaybe<String_comparison_exp>;
-  id?: InputMaybe<String_comparison_exp>;
-  mdPointer?: InputMaybe<String_comparison_exp>;
-  mdProtocol?: InputMaybe<numeric_comparison_exp>;
-  tag?: InputMaybe<String_comparison_exp>;
-};
-
-/** order by max() on columns of table "EventPost" */
-export type EventPost_max_order_by = {
-  db_write_timestamp?: InputMaybe<order_by>;
-  hatId?: InputMaybe<order_by>;
-  hatsPoster_id?: InputMaybe<order_by>;
-  id?: InputMaybe<order_by>;
-  mdPointer?: InputMaybe<order_by>;
-  mdProtocol?: InputMaybe<order_by>;
-  tag?: InputMaybe<order_by>;
-};
-
-/** order by min() on columns of table "EventPost" */
-export type EventPost_min_order_by = {
-  db_write_timestamp?: InputMaybe<order_by>;
-  hatId?: InputMaybe<order_by>;
-  hatsPoster_id?: InputMaybe<order_by>;
-  id?: InputMaybe<order_by>;
-  mdPointer?: InputMaybe<order_by>;
-  mdProtocol?: InputMaybe<order_by>;
-  tag?: InputMaybe<order_by>;
-};
-
-/** Ordering options when selecting data from "EventPost". */
-export type EventPost_order_by = {
-  db_write_timestamp?: InputMaybe<order_by>;
-  hatId?: InputMaybe<order_by>;
-  hatsPoster?: InputMaybe<HatsPoster_order_by>;
-  hatsPoster_id?: InputMaybe<order_by>;
-  id?: InputMaybe<order_by>;
-  mdPointer?: InputMaybe<order_by>;
-  mdProtocol?: InputMaybe<order_by>;
-  tag?: InputMaybe<order_by>;
-};
-
-/** select columns of table "EventPost" */
-export type EventPost_select_column =
-  /** column name */
-  | 'db_write_timestamp'
-  /** column name */
-  | 'hatId'
-  /** column name */
-  | 'hatsPoster_id'
-  /** column name */
-  | 'id'
-  /** column name */
-  | 'mdPointer'
-  /** column name */
-  | 'mdProtocol'
-  /** column name */
-  | 'tag';
-
-/** order by stddev() on columns of table "EventPost" */
-export type EventPost_stddev_order_by = {
-  hatId?: InputMaybe<order_by>;
-  mdProtocol?: InputMaybe<order_by>;
-};
-
-/** order by stddev_pop() on columns of table "EventPost" */
-export type EventPost_stddev_pop_order_by = {
-  hatId?: InputMaybe<order_by>;
-  mdProtocol?: InputMaybe<order_by>;
-};
-
-/** order by stddev_samp() on columns of table "EventPost" */
-export type EventPost_stddev_samp_order_by = {
-  hatId?: InputMaybe<order_by>;
-  mdProtocol?: InputMaybe<order_by>;
-};
-
-/** Streaming cursor of the table "EventPost" */
-export type EventPost_stream_cursor_input = {
-  /** Stream column input with initial value */
-  initial_value: EventPost_stream_cursor_value_input;
-  /** cursor ordering */
-  ordering?: InputMaybe<cursor_ordering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type EventPost_stream_cursor_value_input = {
-  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
-  hatId?: InputMaybe<Scalars['numeric']>;
-  hatsPoster_id?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['String']>;
-  mdPointer?: InputMaybe<Scalars['String']>;
-  mdProtocol?: InputMaybe<Scalars['numeric']>;
-  tag?: InputMaybe<Scalars['String']>;
-};
-
-/** order by sum() on columns of table "EventPost" */
-export type EventPost_sum_order_by = {
-  hatId?: InputMaybe<order_by>;
-  mdProtocol?: InputMaybe<order_by>;
-};
-
-/** order by var_pop() on columns of table "EventPost" */
-export type EventPost_var_pop_order_by = {
-  hatId?: InputMaybe<order_by>;
-  mdProtocol?: InputMaybe<order_by>;
-};
-
-/** order by var_samp() on columns of table "EventPost" */
-export type EventPost_var_samp_order_by = {
-  hatId?: InputMaybe<order_by>;
-  mdProtocol?: InputMaybe<order_by>;
-};
-
-/** order by variance() on columns of table "EventPost" */
-export type EventPost_variance_order_by = {
-  hatId?: InputMaybe<order_by>;
-  mdProtocol?: InputMaybe<order_by>;
-};
-
-/** columns and relationships of "FactoryEventsSummary" */
-export type FactoryEventsSummary = {
-  address: Scalars['String'];
-  admins: Scalars['_text'];
-  contestBuiltCount: Scalars['numeric'];
-  contestCloneCount: Scalars['numeric'];
-  contestTemplateCount: Scalars['numeric'];
-  db_write_timestamp?: Maybe<Scalars['timestamp']>;
-  id: Scalars['String'];
-  moduleCloneCount: Scalars['numeric'];
-  moduleTemplateCount: Scalars['numeric'];
-};
-
-/** Boolean expression to filter rows from the table "FactoryEventsSummary". All fields are combined with a logical 'AND'. */
-export type FactoryEventsSummary_bool_exp = {
-  _and?: InputMaybe<Array<FactoryEventsSummary_bool_exp>>;
-  _not?: InputMaybe<FactoryEventsSummary_bool_exp>;
-  _or?: InputMaybe<Array<FactoryEventsSummary_bool_exp>>;
-  address?: InputMaybe<String_comparison_exp>;
-  admins?: InputMaybe<_text_comparison_exp>;
-  contestBuiltCount?: InputMaybe<numeric_comparison_exp>;
-  contestCloneCount?: InputMaybe<numeric_comparison_exp>;
-  contestTemplateCount?: InputMaybe<numeric_comparison_exp>;
-  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
-  id?: InputMaybe<String_comparison_exp>;
-  moduleCloneCount?: InputMaybe<numeric_comparison_exp>;
-  moduleTemplateCount?: InputMaybe<numeric_comparison_exp>;
-};
-
-/** Ordering options when selecting data from "FactoryEventsSummary". */
-export type FactoryEventsSummary_order_by = {
-  address?: InputMaybe<order_by>;
-  admins?: InputMaybe<order_by>;
-  contestBuiltCount?: InputMaybe<order_by>;
-  contestCloneCount?: InputMaybe<order_by>;
-  contestTemplateCount?: InputMaybe<order_by>;
-  db_write_timestamp?: InputMaybe<order_by>;
-  id?: InputMaybe<order_by>;
-  moduleCloneCount?: InputMaybe<order_by>;
-  moduleTemplateCount?: InputMaybe<order_by>;
-};
-
-/** select columns of table "FactoryEventsSummary" */
-export type FactoryEventsSummary_select_column =
-  /** column name */
-  | 'address'
-  /** column name */
-  | 'admins'
-  /** column name */
-  | 'contestBuiltCount'
-  /** column name */
-  | 'contestCloneCount'
-  /** column name */
-  | 'contestTemplateCount'
-  /** column name */
-  | 'db_write_timestamp'
-  /** column name */
-  | 'id'
-  /** column name */
-  | 'moduleCloneCount'
-  /** column name */
-  | 'moduleTemplateCount';
-
-/** Streaming cursor of the table "FactoryEventsSummary" */
-export type FactoryEventsSummary_stream_cursor_input = {
-  /** Stream column input with initial value */
-  initial_value: FactoryEventsSummary_stream_cursor_value_input;
-  /** cursor ordering */
-  ordering?: InputMaybe<cursor_ordering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type FactoryEventsSummary_stream_cursor_value_input = {
-  address?: InputMaybe<Scalars['String']>;
-  admins?: InputMaybe<Scalars['_text']>;
-  contestBuiltCount?: InputMaybe<Scalars['numeric']>;
-  contestCloneCount?: InputMaybe<Scalars['numeric']>;
-  contestTemplateCount?: InputMaybe<Scalars['numeric']>;
-  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
-  id?: InputMaybe<Scalars['String']>;
-  moduleCloneCount?: InputMaybe<Scalars['numeric']>;
-  moduleTemplateCount?: InputMaybe<Scalars['numeric']>;
-};
-
-/** columns and relationships of "GrantShipsVoting" */
-export type GrantShipsVoting = {
-  /** An array relationship */
-  choices: Array<ShipChoice>;
-  /** An object relationship */
-  contest?: Maybe<Contest>;
-  contest_id: Scalars['String'];
-  db_write_timestamp?: Maybe<Scalars['timestamp']>;
-  endTime?: Maybe<Scalars['numeric']>;
-  hatId: Scalars['numeric'];
-  hatsAddress: Scalars['String'];
-  id: Scalars['String'];
-  isVotingActive: Scalars['Boolean'];
-  startTime?: Maybe<Scalars['numeric']>;
-  totalVotes: Scalars['numeric'];
-  voteDuration: Scalars['numeric'];
-  voteTokenAddress: Scalars['String'];
-  /** An array relationship */
-  votes: Array<ShipVote>;
-  votingCheckpoint: Scalars['numeric'];
-};
-
-
-/** columns and relationships of "GrantShipsVoting" */
-export type GrantShipsVotingchoicesArgs = {
-  distinct_on?: InputMaybe<Array<ShipChoice_select_column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<ShipChoice_order_by>>;
-  where?: InputMaybe<ShipChoice_bool_exp>;
-};
-
-
-/** columns and relationships of "GrantShipsVoting" */
-export type GrantShipsVotingvotesArgs = {
-  distinct_on?: InputMaybe<Array<ShipVote_select_column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<ShipVote_order_by>>;
-  where?: InputMaybe<ShipVote_bool_exp>;
-};
-
-/** Boolean expression to filter rows from the table "GrantShipsVoting". All fields are combined with a logical 'AND'. */
-export type GrantShipsVoting_bool_exp = {
-  _and?: InputMaybe<Array<GrantShipsVoting_bool_exp>>;
-  _not?: InputMaybe<GrantShipsVoting_bool_exp>;
-  _or?: InputMaybe<Array<GrantShipsVoting_bool_exp>>;
-  choices?: InputMaybe<ShipChoice_bool_exp>;
-  contest?: InputMaybe<Contest_bool_exp>;
-  contest_id?: InputMaybe<String_comparison_exp>;
-  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
-  endTime?: InputMaybe<numeric_comparison_exp>;
-  hatId?: InputMaybe<numeric_comparison_exp>;
-  hatsAddress?: InputMaybe<String_comparison_exp>;
-  id?: InputMaybe<String_comparison_exp>;
-  isVotingActive?: InputMaybe<Boolean_comparison_exp>;
-  startTime?: InputMaybe<numeric_comparison_exp>;
-  totalVotes?: InputMaybe<numeric_comparison_exp>;
-  voteDuration?: InputMaybe<numeric_comparison_exp>;
-  voteTokenAddress?: InputMaybe<String_comparison_exp>;
-  votes?: InputMaybe<ShipVote_bool_exp>;
-  votingCheckpoint?: InputMaybe<numeric_comparison_exp>;
-};
-
-/** Ordering options when selecting data from "GrantShipsVoting". */
-export type GrantShipsVoting_order_by = {
-  choices_aggregate?: InputMaybe<ShipChoice_aggregate_order_by>;
-  contest?: InputMaybe<Contest_order_by>;
-  contest_id?: InputMaybe<order_by>;
-  db_write_timestamp?: InputMaybe<order_by>;
-  endTime?: InputMaybe<order_by>;
-  hatId?: InputMaybe<order_by>;
-  hatsAddress?: InputMaybe<order_by>;
-  id?: InputMaybe<order_by>;
-  isVotingActive?: InputMaybe<order_by>;
-  startTime?: InputMaybe<order_by>;
-  totalVotes?: InputMaybe<order_by>;
-  voteDuration?: InputMaybe<order_by>;
-  voteTokenAddress?: InputMaybe<order_by>;
-  votes_aggregate?: InputMaybe<ShipVote_aggregate_order_by>;
-  votingCheckpoint?: InputMaybe<order_by>;
-};
-
-/** select columns of table "GrantShipsVoting" */
-export type GrantShipsVoting_select_column =
-  /** column name */
-  | 'contest_id'
-  /** column name */
-  | 'db_write_timestamp'
-  /** column name */
-  | 'endTime'
-  /** column name */
-  | 'hatId'
-  /** column name */
-  | 'hatsAddress'
-  /** column name */
-  | 'id'
-  /** column name */
-  | 'isVotingActive'
-  /** column name */
-  | 'startTime'
-  /** column name */
-  | 'totalVotes'
-  /** column name */
-  | 'voteDuration'
-  /** column name */
-  | 'voteTokenAddress'
-  /** column name */
-  | 'votingCheckpoint';
-
-/** Streaming cursor of the table "GrantShipsVoting" */
-export type GrantShipsVoting_stream_cursor_input = {
-  /** Stream column input with initial value */
-  initial_value: GrantShipsVoting_stream_cursor_value_input;
-  /** cursor ordering */
-  ordering?: InputMaybe<cursor_ordering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type GrantShipsVoting_stream_cursor_value_input = {
-  contest_id?: InputMaybe<Scalars['String']>;
-  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
-  endTime?: InputMaybe<Scalars['numeric']>;
-  hatId?: InputMaybe<Scalars['numeric']>;
-  hatsAddress?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['String']>;
-  isVotingActive?: InputMaybe<Scalars['Boolean']>;
-  startTime?: InputMaybe<Scalars['numeric']>;
-  totalVotes?: InputMaybe<Scalars['numeric']>;
-  voteDuration?: InputMaybe<Scalars['numeric']>;
-  voteTokenAddress?: InputMaybe<Scalars['String']>;
-  votingCheckpoint?: InputMaybe<Scalars['numeric']>;
-};
-
-/** columns and relationships of "HALParams" */
-export type HALParams = {
-  db_write_timestamp?: Maybe<Scalars['timestamp']>;
-  hatId: Scalars['numeric'];
-  hatsAddress: Scalars['String'];
-  id: Scalars['String'];
-};
-
-/** Boolean expression to filter rows from the table "HALParams". All fields are combined with a logical 'AND'. */
-export type HALParams_bool_exp = {
-  _and?: InputMaybe<Array<HALParams_bool_exp>>;
-  _not?: InputMaybe<HALParams_bool_exp>;
-  _or?: InputMaybe<Array<HALParams_bool_exp>>;
-  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
-  hatId?: InputMaybe<numeric_comparison_exp>;
-  hatsAddress?: InputMaybe<String_comparison_exp>;
-  id?: InputMaybe<String_comparison_exp>;
-};
-
-/** Ordering options when selecting data from "HALParams". */
-export type HALParams_order_by = {
-  db_write_timestamp?: InputMaybe<order_by>;
-  hatId?: InputMaybe<order_by>;
-  hatsAddress?: InputMaybe<order_by>;
-  id?: InputMaybe<order_by>;
-};
-
-/** select columns of table "HALParams" */
-export type HALParams_select_column =
-  /** column name */
-  | 'db_write_timestamp'
-  /** column name */
-  | 'hatId'
-  /** column name */
-  | 'hatsAddress'
-  /** column name */
-  | 'id';
-
-/** Streaming cursor of the table "HALParams" */
-export type HALParams_stream_cursor_input = {
-  /** Stream column input with initial value */
-  initial_value: HALParams_stream_cursor_value_input;
-  /** cursor ordering */
-  ordering?: InputMaybe<cursor_ordering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type HALParams_stream_cursor_value_input = {
-  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
-  hatId?: InputMaybe<Scalars['numeric']>;
-  hatsAddress?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['String']>;
-};
-
-/** columns and relationships of "HatsPoster" */
-export type HatsPoster = {
-  db_write_timestamp?: Maybe<Scalars['timestamp']>;
-  /** An array relationship */
-  eventPosts: Array<EventPost>;
-  hatIds: Scalars['_numeric'];
-  hatsAddress: Scalars['String'];
-  id: Scalars['String'];
-  /** An array relationship */
-  record: Array<Record>;
-};
-
-
-/** columns and relationships of "HatsPoster" */
-export type HatsPostereventPostsArgs = {
-  distinct_on?: InputMaybe<Array<EventPost_select_column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<EventPost_order_by>>;
-  where?: InputMaybe<EventPost_bool_exp>;
-};
-
-
-/** columns and relationships of "HatsPoster" */
-export type HatsPosterrecordArgs = {
-  distinct_on?: InputMaybe<Array<Record_select_column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Record_order_by>>;
-  where?: InputMaybe<Record_bool_exp>;
-};
-
-/** Boolean expression to filter rows from the table "HatsPoster". All fields are combined with a logical 'AND'. */
-export type HatsPoster_bool_exp = {
-  _and?: InputMaybe<Array<HatsPoster_bool_exp>>;
-  _not?: InputMaybe<HatsPoster_bool_exp>;
-  _or?: InputMaybe<Array<HatsPoster_bool_exp>>;
-  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
-  eventPosts?: InputMaybe<EventPost_bool_exp>;
-  hatIds?: InputMaybe<_numeric_comparison_exp>;
-  hatsAddress?: InputMaybe<String_comparison_exp>;
-  id?: InputMaybe<String_comparison_exp>;
-  record?: InputMaybe<Record_bool_exp>;
-};
-
-/** Ordering options when selecting data from "HatsPoster". */
-export type HatsPoster_order_by = {
-  db_write_timestamp?: InputMaybe<order_by>;
-  eventPosts_aggregate?: InputMaybe<EventPost_aggregate_order_by>;
-  hatIds?: InputMaybe<order_by>;
-  hatsAddress?: InputMaybe<order_by>;
-  id?: InputMaybe<order_by>;
-  record_aggregate?: InputMaybe<Record_aggregate_order_by>;
-};
-
-/** select columns of table "HatsPoster" */
-export type HatsPoster_select_column =
-  /** column name */
-  | 'db_write_timestamp'
-  /** column name */
-  | 'hatIds'
-  /** column name */
-  | 'hatsAddress'
-  /** column name */
-  | 'id';
-
-/** Streaming cursor of the table "HatsPoster" */
-export type HatsPoster_stream_cursor_input = {
-  /** Stream column input with initial value */
-  initial_value: HatsPoster_stream_cursor_value_input;
-  /** cursor ordering */
-  ordering?: InputMaybe<cursor_ordering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type HatsPoster_stream_cursor_value_input = {
-  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
-  hatIds?: InputMaybe<Scalars['_numeric']>;
-  hatsAddress?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['String']>;
-};
-
-/** Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'. */
-export type Int_comparison_exp = {
-  _eq?: InputMaybe<Scalars['Int']>;
-  _gt?: InputMaybe<Scalars['Int']>;
-  _gte?: InputMaybe<Scalars['Int']>;
-  _in?: InputMaybe<Array<Scalars['Int']>>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
-  _lt?: InputMaybe<Scalars['Int']>;
-  _lte?: InputMaybe<Scalars['Int']>;
-  _neq?: InputMaybe<Scalars['Int']>;
-  _nin?: InputMaybe<Array<Scalars['Int']>>;
-};
-
-/** columns and relationships of "LocalLog" */
-export type LocalLog = {
-  db_write_timestamp?: Maybe<Scalars['timestamp']>;
-  id: Scalars['String'];
-  message?: Maybe<Scalars['String']>;
-};
-
-/** Boolean expression to filter rows from the table "LocalLog". All fields are combined with a logical 'AND'. */
-export type LocalLog_bool_exp = {
-  _and?: InputMaybe<Array<LocalLog_bool_exp>>;
-  _not?: InputMaybe<LocalLog_bool_exp>;
-  _or?: InputMaybe<Array<LocalLog_bool_exp>>;
-  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
-  id?: InputMaybe<String_comparison_exp>;
-  message?: InputMaybe<String_comparison_exp>;
-};
-
-/** Ordering options when selecting data from "LocalLog". */
-export type LocalLog_order_by = {
-  db_write_timestamp?: InputMaybe<order_by>;
-  id?: InputMaybe<order_by>;
-  message?: InputMaybe<order_by>;
-};
-
-/** select columns of table "LocalLog" */
-export type LocalLog_select_column =
-  /** column name */
-  | 'db_write_timestamp'
-  /** column name */
-  | 'id'
-  /** column name */
-  | 'message';
-
-/** Streaming cursor of the table "LocalLog" */
-export type LocalLog_stream_cursor_input = {
-  /** Stream column input with initial value */
-  initial_value: LocalLog_stream_cursor_value_input;
-  /** cursor ordering */
-  ordering?: InputMaybe<cursor_ordering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type LocalLog_stream_cursor_value_input = {
-  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
-  id?: InputMaybe<Scalars['String']>;
-  message?: InputMaybe<Scalars['String']>;
-};
-
-/** columns and relationships of "ModuleTemplate" */
-export type ModuleTemplate = {
-  active: Scalars['Boolean'];
-  db_write_timestamp?: Maybe<Scalars['timestamp']>;
-  id: Scalars['String'];
-  mdPointer: Scalars['String'];
-  mdProtocol: Scalars['numeric'];
-  moduleName: Scalars['String'];
-  templateAddress: Scalars['String'];
-};
-
-/** Boolean expression to filter rows from the table "ModuleTemplate". All fields are combined with a logical 'AND'. */
-export type ModuleTemplate_bool_exp = {
-  _and?: InputMaybe<Array<ModuleTemplate_bool_exp>>;
-  _not?: InputMaybe<ModuleTemplate_bool_exp>;
-  _or?: InputMaybe<Array<ModuleTemplate_bool_exp>>;
-  active?: InputMaybe<Boolean_comparison_exp>;
-  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
-  id?: InputMaybe<String_comparison_exp>;
-  mdPointer?: InputMaybe<String_comparison_exp>;
-  mdProtocol?: InputMaybe<numeric_comparison_exp>;
-  moduleName?: InputMaybe<String_comparison_exp>;
-  templateAddress?: InputMaybe<String_comparison_exp>;
-};
-
-/** Ordering options when selecting data from "ModuleTemplate". */
-export type ModuleTemplate_order_by = {
-  active?: InputMaybe<order_by>;
-  db_write_timestamp?: InputMaybe<order_by>;
-  id?: InputMaybe<order_by>;
-  mdPointer?: InputMaybe<order_by>;
-  mdProtocol?: InputMaybe<order_by>;
-  moduleName?: InputMaybe<order_by>;
-  templateAddress?: InputMaybe<order_by>;
-};
-
-/** select columns of table "ModuleTemplate" */
-export type ModuleTemplate_select_column =
-  /** column name */
-  | 'active'
-  /** column name */
-  | 'db_write_timestamp'
-  /** column name */
-  | 'id'
-  /** column name */
-  | 'mdPointer'
-  /** column name */
-  | 'mdProtocol'
-  /** column name */
-  | 'moduleName'
-  /** column name */
-  | 'templateAddress';
-
-/** Streaming cursor of the table "ModuleTemplate" */
-export type ModuleTemplate_stream_cursor_input = {
-  /** Stream column input with initial value */
-  initial_value: ModuleTemplate_stream_cursor_value_input;
-  /** cursor ordering */
-  ordering?: InputMaybe<cursor_ordering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type ModuleTemplate_stream_cursor_value_input = {
-  active?: InputMaybe<Scalars['Boolean']>;
-  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
-  id?: InputMaybe<Scalars['String']>;
-  mdPointer?: InputMaybe<Scalars['String']>;
-  mdProtocol?: InputMaybe<Scalars['numeric']>;
-  moduleName?: InputMaybe<Scalars['String']>;
-  templateAddress?: InputMaybe<Scalars['String']>;
-};
-
-/** columns and relationships of "Record" */
-export type Record = {
-  db_write_timestamp?: Maybe<Scalars['timestamp']>;
-  hatId: Scalars['numeric'];
-  /** An object relationship */
-  hatsPoster?: Maybe<HatsPoster>;
-  hatsPoster_id: Scalars['String'];
-  id: Scalars['String'];
-  mdPointer: Scalars['String'];
-  mdProtocol: Scalars['numeric'];
-  nonce: Scalars['String'];
-  tag: Scalars['String'];
-};
-
-/** order by aggregate values of table "Record" */
-export type Record_aggregate_order_by = {
-  avg?: InputMaybe<Record_avg_order_by>;
-  count?: InputMaybe<order_by>;
-  max?: InputMaybe<Record_max_order_by>;
-  min?: InputMaybe<Record_min_order_by>;
-  stddev?: InputMaybe<Record_stddev_order_by>;
-  stddev_pop?: InputMaybe<Record_stddev_pop_order_by>;
-  stddev_samp?: InputMaybe<Record_stddev_samp_order_by>;
-  sum?: InputMaybe<Record_sum_order_by>;
-  var_pop?: InputMaybe<Record_var_pop_order_by>;
-  var_samp?: InputMaybe<Record_var_samp_order_by>;
-  variance?: InputMaybe<Record_variance_order_by>;
-};
-
-/** order by avg() on columns of table "Record" */
-export type Record_avg_order_by = {
-  hatId?: InputMaybe<order_by>;
-  mdProtocol?: InputMaybe<order_by>;
-};
-
-/** Boolean expression to filter rows from the table "Record". All fields are combined with a logical 'AND'. */
-export type Record_bool_exp = {
-  _and?: InputMaybe<Array<Record_bool_exp>>;
-  _not?: InputMaybe<Record_bool_exp>;
-  _or?: InputMaybe<Array<Record_bool_exp>>;
-  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
-  hatId?: InputMaybe<numeric_comparison_exp>;
-  hatsPoster?: InputMaybe<HatsPoster_bool_exp>;
-  hatsPoster_id?: InputMaybe<String_comparison_exp>;
-  id?: InputMaybe<String_comparison_exp>;
-  mdPointer?: InputMaybe<String_comparison_exp>;
-  mdProtocol?: InputMaybe<numeric_comparison_exp>;
-  nonce?: InputMaybe<String_comparison_exp>;
-  tag?: InputMaybe<String_comparison_exp>;
-};
-
-/** order by max() on columns of table "Record" */
-export type Record_max_order_by = {
-  db_write_timestamp?: InputMaybe<order_by>;
-  hatId?: InputMaybe<order_by>;
-  hatsPoster_id?: InputMaybe<order_by>;
-  id?: InputMaybe<order_by>;
-  mdPointer?: InputMaybe<order_by>;
-  mdProtocol?: InputMaybe<order_by>;
-  nonce?: InputMaybe<order_by>;
-  tag?: InputMaybe<order_by>;
-};
-
-/** order by min() on columns of table "Record" */
-export type Record_min_order_by = {
-  db_write_timestamp?: InputMaybe<order_by>;
-  hatId?: InputMaybe<order_by>;
-  hatsPoster_id?: InputMaybe<order_by>;
-  id?: InputMaybe<order_by>;
-  mdPointer?: InputMaybe<order_by>;
-  mdProtocol?: InputMaybe<order_by>;
-  nonce?: InputMaybe<order_by>;
-  tag?: InputMaybe<order_by>;
-};
-
-/** Ordering options when selecting data from "Record". */
-export type Record_order_by = {
-  db_write_timestamp?: InputMaybe<order_by>;
-  hatId?: InputMaybe<order_by>;
-  hatsPoster?: InputMaybe<HatsPoster_order_by>;
-  hatsPoster_id?: InputMaybe<order_by>;
-  id?: InputMaybe<order_by>;
-  mdPointer?: InputMaybe<order_by>;
-  mdProtocol?: InputMaybe<order_by>;
-  nonce?: InputMaybe<order_by>;
-  tag?: InputMaybe<order_by>;
-};
-
-/** select columns of table "Record" */
-export type Record_select_column =
-  /** column name */
-  | 'db_write_timestamp'
-  /** column name */
-  | 'hatId'
-  /** column name */
-  | 'hatsPoster_id'
-  /** column name */
-  | 'id'
-  /** column name */
-  | 'mdPointer'
-  /** column name */
-  | 'mdProtocol'
-  /** column name */
-  | 'nonce'
-  /** column name */
-  | 'tag';
-
-/** order by stddev() on columns of table "Record" */
-export type Record_stddev_order_by = {
-  hatId?: InputMaybe<order_by>;
-  mdProtocol?: InputMaybe<order_by>;
-};
-
-/** order by stddev_pop() on columns of table "Record" */
-export type Record_stddev_pop_order_by = {
-  hatId?: InputMaybe<order_by>;
-  mdProtocol?: InputMaybe<order_by>;
-};
-
-/** order by stddev_samp() on columns of table "Record" */
-export type Record_stddev_samp_order_by = {
-  hatId?: InputMaybe<order_by>;
-  mdProtocol?: InputMaybe<order_by>;
-};
-
-/** Streaming cursor of the table "Record" */
-export type Record_stream_cursor_input = {
-  /** Stream column input with initial value */
-  initial_value: Record_stream_cursor_value_input;
-  /** cursor ordering */
-  ordering?: InputMaybe<cursor_ordering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type Record_stream_cursor_value_input = {
-  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
-  hatId?: InputMaybe<Scalars['numeric']>;
-  hatsPoster_id?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['String']>;
-  mdPointer?: InputMaybe<Scalars['String']>;
-  mdProtocol?: InputMaybe<Scalars['numeric']>;
-  nonce?: InputMaybe<Scalars['String']>;
-  tag?: InputMaybe<Scalars['String']>;
-};
-
-/** order by sum() on columns of table "Record" */
-export type Record_sum_order_by = {
-  hatId?: InputMaybe<order_by>;
-  mdProtocol?: InputMaybe<order_by>;
-};
-
-/** order by var_pop() on columns of table "Record" */
-export type Record_var_pop_order_by = {
-  hatId?: InputMaybe<order_by>;
-  mdProtocol?: InputMaybe<order_by>;
-};
-
-/** order by var_samp() on columns of table "Record" */
-export type Record_var_samp_order_by = {
-  hatId?: InputMaybe<order_by>;
-  mdProtocol?: InputMaybe<order_by>;
-};
-
-/** order by variance() on columns of table "Record" */
-export type Record_variance_order_by = {
-  hatId?: InputMaybe<order_by>;
-  mdProtocol?: InputMaybe<order_by>;
-};
-
-/** columns and relationships of "ShipChoice" */
-export type ShipChoice = {
-  active: Scalars['Boolean'];
-  choiceData: Scalars['String'];
-  /** An object relationship */
-  contest?: Maybe<GrantShipsVoting>;
-  contest_id: Scalars['String'];
-  db_write_timestamp?: Maybe<Scalars['timestamp']>;
-  id: Scalars['String'];
-  mdPointer: Scalars['String'];
-  mdProtocol: Scalars['numeric'];
-  voteTally: Scalars['numeric'];
-  /** An array relationship */
-  votes: Array<ShipVote>;
-};
-
-
-/** columns and relationships of "ShipChoice" */
-export type ShipChoicevotesArgs = {
-  distinct_on?: InputMaybe<Array<ShipVote_select_column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<ShipVote_order_by>>;
-  where?: InputMaybe<ShipVote_bool_exp>;
-};
-
-/** order by aggregate values of table "ShipChoice" */
-export type ShipChoice_aggregate_order_by = {
-  avg?: InputMaybe<ShipChoice_avg_order_by>;
-  count?: InputMaybe<order_by>;
-  max?: InputMaybe<ShipChoice_max_order_by>;
-  min?: InputMaybe<ShipChoice_min_order_by>;
-  stddev?: InputMaybe<ShipChoice_stddev_order_by>;
-  stddev_pop?: InputMaybe<ShipChoice_stddev_pop_order_by>;
-  stddev_samp?: InputMaybe<ShipChoice_stddev_samp_order_by>;
-  sum?: InputMaybe<ShipChoice_sum_order_by>;
-  var_pop?: InputMaybe<ShipChoice_var_pop_order_by>;
-  var_samp?: InputMaybe<ShipChoice_var_samp_order_by>;
-  variance?: InputMaybe<ShipChoice_variance_order_by>;
-};
-
-/** order by avg() on columns of table "ShipChoice" */
-export type ShipChoice_avg_order_by = {
-  mdProtocol?: InputMaybe<order_by>;
-  voteTally?: InputMaybe<order_by>;
-};
-
-/** Boolean expression to filter rows from the table "ShipChoice". All fields are combined with a logical 'AND'. */
-export type ShipChoice_bool_exp = {
-  _and?: InputMaybe<Array<ShipChoice_bool_exp>>;
-  _not?: InputMaybe<ShipChoice_bool_exp>;
-  _or?: InputMaybe<Array<ShipChoice_bool_exp>>;
-  active?: InputMaybe<Boolean_comparison_exp>;
-  choiceData?: InputMaybe<String_comparison_exp>;
-  contest?: InputMaybe<GrantShipsVoting_bool_exp>;
-  contest_id?: InputMaybe<String_comparison_exp>;
-  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
-  id?: InputMaybe<String_comparison_exp>;
-  mdPointer?: InputMaybe<String_comparison_exp>;
-  mdProtocol?: InputMaybe<numeric_comparison_exp>;
-  voteTally?: InputMaybe<numeric_comparison_exp>;
-  votes?: InputMaybe<ShipVote_bool_exp>;
-};
-
-/** order by max() on columns of table "ShipChoice" */
-export type ShipChoice_max_order_by = {
-  choiceData?: InputMaybe<order_by>;
-  contest_id?: InputMaybe<order_by>;
-  db_write_timestamp?: InputMaybe<order_by>;
-  id?: InputMaybe<order_by>;
-  mdPointer?: InputMaybe<order_by>;
-  mdProtocol?: InputMaybe<order_by>;
-  voteTally?: InputMaybe<order_by>;
-};
-
-/** order by min() on columns of table "ShipChoice" */
-export type ShipChoice_min_order_by = {
-  choiceData?: InputMaybe<order_by>;
-  contest_id?: InputMaybe<order_by>;
-  db_write_timestamp?: InputMaybe<order_by>;
-  id?: InputMaybe<order_by>;
-  mdPointer?: InputMaybe<order_by>;
-  mdProtocol?: InputMaybe<order_by>;
-  voteTally?: InputMaybe<order_by>;
-};
-
-/** Ordering options when selecting data from "ShipChoice". */
-export type ShipChoice_order_by = {
-  active?: InputMaybe<order_by>;
-  choiceData?: InputMaybe<order_by>;
-  contest?: InputMaybe<GrantShipsVoting_order_by>;
-  contest_id?: InputMaybe<order_by>;
-  db_write_timestamp?: InputMaybe<order_by>;
-  id?: InputMaybe<order_by>;
-  mdPointer?: InputMaybe<order_by>;
-  mdProtocol?: InputMaybe<order_by>;
-  voteTally?: InputMaybe<order_by>;
-  votes_aggregate?: InputMaybe<ShipVote_aggregate_order_by>;
-};
-
-/** select columns of table "ShipChoice" */
-export type ShipChoice_select_column =
-  /** column name */
-  | 'active'
-  /** column name */
-  | 'choiceData'
-  /** column name */
-  | 'contest_id'
-  /** column name */
-  | 'db_write_timestamp'
-  /** column name */
-  | 'id'
-  /** column name */
-  | 'mdPointer'
-  /** column name */
-  | 'mdProtocol'
-  /** column name */
-  | 'voteTally';
-
-/** order by stddev() on columns of table "ShipChoice" */
-export type ShipChoice_stddev_order_by = {
-  mdProtocol?: InputMaybe<order_by>;
-  voteTally?: InputMaybe<order_by>;
-};
-
-/** order by stddev_pop() on columns of table "ShipChoice" */
-export type ShipChoice_stddev_pop_order_by = {
-  mdProtocol?: InputMaybe<order_by>;
-  voteTally?: InputMaybe<order_by>;
-};
-
-/** order by stddev_samp() on columns of table "ShipChoice" */
-export type ShipChoice_stddev_samp_order_by = {
-  mdProtocol?: InputMaybe<order_by>;
-  voteTally?: InputMaybe<order_by>;
-};
-
-/** Streaming cursor of the table "ShipChoice" */
-export type ShipChoice_stream_cursor_input = {
-  /** Stream column input with initial value */
-  initial_value: ShipChoice_stream_cursor_value_input;
-  /** cursor ordering */
-  ordering?: InputMaybe<cursor_ordering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type ShipChoice_stream_cursor_value_input = {
-  active?: InputMaybe<Scalars['Boolean']>;
-  choiceData?: InputMaybe<Scalars['String']>;
-  contest_id?: InputMaybe<Scalars['String']>;
-  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
-  id?: InputMaybe<Scalars['String']>;
-  mdPointer?: InputMaybe<Scalars['String']>;
-  mdProtocol?: InputMaybe<Scalars['numeric']>;
-  voteTally?: InputMaybe<Scalars['numeric']>;
-};
-
-/** order by sum() on columns of table "ShipChoice" */
-export type ShipChoice_sum_order_by = {
-  mdProtocol?: InputMaybe<order_by>;
-  voteTally?: InputMaybe<order_by>;
-};
-
-/** order by var_pop() on columns of table "ShipChoice" */
-export type ShipChoice_var_pop_order_by = {
-  mdProtocol?: InputMaybe<order_by>;
-  voteTally?: InputMaybe<order_by>;
-};
-
-/** order by var_samp() on columns of table "ShipChoice" */
-export type ShipChoice_var_samp_order_by = {
-  mdProtocol?: InputMaybe<order_by>;
-  voteTally?: InputMaybe<order_by>;
-};
-
-/** order by variance() on columns of table "ShipChoice" */
-export type ShipChoice_variance_order_by = {
-  mdProtocol?: InputMaybe<order_by>;
-  voteTally?: InputMaybe<order_by>;
-};
-
-/** columns and relationships of "ShipVote" */
-export type ShipVote = {
-  amount: Scalars['numeric'];
-  /** An object relationship */
-  choice?: Maybe<ShipChoice>;
-  choice_id: Scalars['String'];
-  /** An object relationship */
-  contest?: Maybe<GrantShipsVoting>;
-  contest_id: Scalars['String'];
-  db_write_timestamp?: Maybe<Scalars['timestamp']>;
-  id: Scalars['String'];
-  isRectractVote: Scalars['Boolean'];
-  mdPointer: Scalars['String'];
-  mdProtocol: Scalars['numeric'];
-  voter: Scalars['String'];
-};
-
-/** order by aggregate values of table "ShipVote" */
-export type ShipVote_aggregate_order_by = {
-  avg?: InputMaybe<ShipVote_avg_order_by>;
-  count?: InputMaybe<order_by>;
-  max?: InputMaybe<ShipVote_max_order_by>;
-  min?: InputMaybe<ShipVote_min_order_by>;
-  stddev?: InputMaybe<ShipVote_stddev_order_by>;
-  stddev_pop?: InputMaybe<ShipVote_stddev_pop_order_by>;
-  stddev_samp?: InputMaybe<ShipVote_stddev_samp_order_by>;
-  sum?: InputMaybe<ShipVote_sum_order_by>;
-  var_pop?: InputMaybe<ShipVote_var_pop_order_by>;
-  var_samp?: InputMaybe<ShipVote_var_samp_order_by>;
-  variance?: InputMaybe<ShipVote_variance_order_by>;
-};
-
-/** order by avg() on columns of table "ShipVote" */
-export type ShipVote_avg_order_by = {
-  amount?: InputMaybe<order_by>;
-  mdProtocol?: InputMaybe<order_by>;
-};
-
-/** Boolean expression to filter rows from the table "ShipVote". All fields are combined with a logical 'AND'. */
-export type ShipVote_bool_exp = {
-  _and?: InputMaybe<Array<ShipVote_bool_exp>>;
-  _not?: InputMaybe<ShipVote_bool_exp>;
-  _or?: InputMaybe<Array<ShipVote_bool_exp>>;
-  amount?: InputMaybe<numeric_comparison_exp>;
-  choice?: InputMaybe<ShipChoice_bool_exp>;
-  choice_id?: InputMaybe<String_comparison_exp>;
-  contest?: InputMaybe<GrantShipsVoting_bool_exp>;
-  contest_id?: InputMaybe<String_comparison_exp>;
-  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
-  id?: InputMaybe<String_comparison_exp>;
-  isRectractVote?: InputMaybe<Boolean_comparison_exp>;
-  mdPointer?: InputMaybe<String_comparison_exp>;
-  mdProtocol?: InputMaybe<numeric_comparison_exp>;
-  voter?: InputMaybe<String_comparison_exp>;
-};
-
-/** order by max() on columns of table "ShipVote" */
-export type ShipVote_max_order_by = {
-  amount?: InputMaybe<order_by>;
-  choice_id?: InputMaybe<order_by>;
-  contest_id?: InputMaybe<order_by>;
-  db_write_timestamp?: InputMaybe<order_by>;
-  id?: InputMaybe<order_by>;
-  mdPointer?: InputMaybe<order_by>;
-  mdProtocol?: InputMaybe<order_by>;
-  voter?: InputMaybe<order_by>;
-};
-
-/** order by min() on columns of table "ShipVote" */
-export type ShipVote_min_order_by = {
-  amount?: InputMaybe<order_by>;
-  choice_id?: InputMaybe<order_by>;
-  contest_id?: InputMaybe<order_by>;
-  db_write_timestamp?: InputMaybe<order_by>;
-  id?: InputMaybe<order_by>;
-  mdPointer?: InputMaybe<order_by>;
-  mdProtocol?: InputMaybe<order_by>;
-  voter?: InputMaybe<order_by>;
-};
-
-/** Ordering options when selecting data from "ShipVote". */
-export type ShipVote_order_by = {
-  amount?: InputMaybe<order_by>;
-  choice?: InputMaybe<ShipChoice_order_by>;
-  choice_id?: InputMaybe<order_by>;
-  contest?: InputMaybe<GrantShipsVoting_order_by>;
-  contest_id?: InputMaybe<order_by>;
-  db_write_timestamp?: InputMaybe<order_by>;
-  id?: InputMaybe<order_by>;
-  isRectractVote?: InputMaybe<order_by>;
-  mdPointer?: InputMaybe<order_by>;
-  mdProtocol?: InputMaybe<order_by>;
-  voter?: InputMaybe<order_by>;
-};
-
-/** select columns of table "ShipVote" */
-export type ShipVote_select_column =
-  /** column name */
-  | 'amount'
-  /** column name */
-  | 'choice_id'
-  /** column name */
-  | 'contest_id'
-  /** column name */
-  | 'db_write_timestamp'
-  /** column name */
-  | 'id'
-  /** column name */
-  | 'isRectractVote'
-  /** column name */
-  | 'mdPointer'
-  /** column name */
-  | 'mdProtocol'
-  /** column name */
-  | 'voter';
-
-/** order by stddev() on columns of table "ShipVote" */
-export type ShipVote_stddev_order_by = {
-  amount?: InputMaybe<order_by>;
-  mdProtocol?: InputMaybe<order_by>;
-};
-
-/** order by stddev_pop() on columns of table "ShipVote" */
-export type ShipVote_stddev_pop_order_by = {
-  amount?: InputMaybe<order_by>;
-  mdProtocol?: InputMaybe<order_by>;
-};
-
-/** order by stddev_samp() on columns of table "ShipVote" */
-export type ShipVote_stddev_samp_order_by = {
-  amount?: InputMaybe<order_by>;
-  mdProtocol?: InputMaybe<order_by>;
-};
-
-/** Streaming cursor of the table "ShipVote" */
-export type ShipVote_stream_cursor_input = {
-  /** Stream column input with initial value */
-  initial_value: ShipVote_stream_cursor_value_input;
-  /** cursor ordering */
-  ordering?: InputMaybe<cursor_ordering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type ShipVote_stream_cursor_value_input = {
-  amount?: InputMaybe<Scalars['numeric']>;
-  choice_id?: InputMaybe<Scalars['String']>;
-  contest_id?: InputMaybe<Scalars['String']>;
-  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
-  id?: InputMaybe<Scalars['String']>;
-  isRectractVote?: InputMaybe<Scalars['Boolean']>;
-  mdPointer?: InputMaybe<Scalars['String']>;
-  mdProtocol?: InputMaybe<Scalars['numeric']>;
-  voter?: InputMaybe<Scalars['String']>;
-};
-
-/** order by sum() on columns of table "ShipVote" */
-export type ShipVote_sum_order_by = {
-  amount?: InputMaybe<order_by>;
-  mdProtocol?: InputMaybe<order_by>;
-};
-
-/** order by var_pop() on columns of table "ShipVote" */
-export type ShipVote_var_pop_order_by = {
-  amount?: InputMaybe<order_by>;
-  mdProtocol?: InputMaybe<order_by>;
-};
-
-/** order by var_samp() on columns of table "ShipVote" */
-export type ShipVote_var_samp_order_by = {
-  amount?: InputMaybe<order_by>;
-  mdProtocol?: InputMaybe<order_by>;
-};
-
-/** order by variance() on columns of table "ShipVote" */
-export type ShipVote_variance_order_by = {
-  amount?: InputMaybe<order_by>;
-  mdProtocol?: InputMaybe<order_by>;
-};
-
-/** columns and relationships of "StemModule" */
-export type StemModule = {
-  /** An object relationship */
-  contest?: Maybe<Contest>;
-  contestAddress?: Maybe<Scalars['String']>;
-  contest_id?: Maybe<Scalars['String']>;
-  db_write_timestamp?: Maybe<Scalars['timestamp']>;
-  filterTag: Scalars['String'];
-  id: Scalars['String'];
-  moduleAddress: Scalars['String'];
-  moduleName: Scalars['String'];
-  /** An object relationship */
-  moduleTemplate?: Maybe<ModuleTemplate>;
-  moduleTemplate_id: Scalars['String'];
-};
-
-/** Boolean expression to filter rows from the table "StemModule". All fields are combined with a logical 'AND'. */
-export type StemModule_bool_exp = {
-  _and?: InputMaybe<Array<StemModule_bool_exp>>;
-  _not?: InputMaybe<StemModule_bool_exp>;
-  _or?: InputMaybe<Array<StemModule_bool_exp>>;
-  contest?: InputMaybe<Contest_bool_exp>;
-  contestAddress?: InputMaybe<String_comparison_exp>;
-  contest_id?: InputMaybe<String_comparison_exp>;
-  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
-  filterTag?: InputMaybe<String_comparison_exp>;
-  id?: InputMaybe<String_comparison_exp>;
-  moduleAddress?: InputMaybe<String_comparison_exp>;
-  moduleName?: InputMaybe<String_comparison_exp>;
-  moduleTemplate?: InputMaybe<ModuleTemplate_bool_exp>;
-  moduleTemplate_id?: InputMaybe<String_comparison_exp>;
-};
-
-/** Ordering options when selecting data from "StemModule". */
-export type StemModule_order_by = {
-  contest?: InputMaybe<Contest_order_by>;
-  contestAddress?: InputMaybe<order_by>;
-  contest_id?: InputMaybe<order_by>;
-  db_write_timestamp?: InputMaybe<order_by>;
-  filterTag?: InputMaybe<order_by>;
-  id?: InputMaybe<order_by>;
-  moduleAddress?: InputMaybe<order_by>;
-  moduleName?: InputMaybe<order_by>;
-  moduleTemplate?: InputMaybe<ModuleTemplate_order_by>;
-  moduleTemplate_id?: InputMaybe<order_by>;
-};
-
-/** select columns of table "StemModule" */
-export type StemModule_select_column =
-  /** column name */
-  | 'contestAddress'
-  /** column name */
-  | 'contest_id'
-  /** column name */
-  | 'db_write_timestamp'
-  /** column name */
-  | 'filterTag'
-  /** column name */
-  | 'id'
-  /** column name */
-  | 'moduleAddress'
-  /** column name */
-  | 'moduleName'
-  /** column name */
-  | 'moduleTemplate_id';
-
-/** Streaming cursor of the table "StemModule" */
-export type StemModule_stream_cursor_input = {
-  /** Stream column input with initial value */
-  initial_value: StemModule_stream_cursor_value_input;
-  /** cursor ordering */
-  ordering?: InputMaybe<cursor_ordering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type StemModule_stream_cursor_value_input = {
-  contestAddress?: InputMaybe<Scalars['String']>;
-  contest_id?: InputMaybe<Scalars['String']>;
-  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
-  filterTag?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['String']>;
-  moduleAddress?: InputMaybe<Scalars['String']>;
-  moduleName?: InputMaybe<Scalars['String']>;
-  moduleTemplate_id?: InputMaybe<Scalars['String']>;
-};
-
-/** Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'. */
-export type String_comparison_exp = {
-  _eq?: InputMaybe<Scalars['String']>;
-  _gt?: InputMaybe<Scalars['String']>;
-  _gte?: InputMaybe<Scalars['String']>;
-  /** does the column match the given case-insensitive pattern */
-  _ilike?: InputMaybe<Scalars['String']>;
-  _in?: InputMaybe<Array<Scalars['String']>>;
-  /** does the column match the given POSIX regular expression, case insensitive */
-  _iregex?: InputMaybe<Scalars['String']>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
-  /** does the column match the given pattern */
-  _like?: InputMaybe<Scalars['String']>;
-  _lt?: InputMaybe<Scalars['String']>;
-  _lte?: InputMaybe<Scalars['String']>;
-  _neq?: InputMaybe<Scalars['String']>;
-  /** does the column NOT match the given case-insensitive pattern */
-  _nilike?: InputMaybe<Scalars['String']>;
-  _nin?: InputMaybe<Array<Scalars['String']>>;
-  /** does the column NOT match the given POSIX regular expression, case insensitive */
-  _niregex?: InputMaybe<Scalars['String']>;
-  /** does the column NOT match the given pattern */
-  _nlike?: InputMaybe<Scalars['String']>;
-  /** does the column NOT match the given POSIX regular expression, case sensitive */
-  _nregex?: InputMaybe<Scalars['String']>;
-  /** does the column NOT match the given SQL regular expression */
-  _nsimilar?: InputMaybe<Scalars['String']>;
-  /** does the column match the given POSIX regular expression, case sensitive */
-  _regex?: InputMaybe<Scalars['String']>;
-  /** does the column match the given SQL regular expression */
-  _similar?: InputMaybe<Scalars['String']>;
-};
-
-/** columns and relationships of "TVParams" */
-export type TVParams = {
-  db_write_timestamp?: Maybe<Scalars['timestamp']>;
-  id: Scalars['String'];
-  voteDuration: Scalars['numeric'];
-};
-
-/** Boolean expression to filter rows from the table "TVParams". All fields are combined with a logical 'AND'. */
-export type TVParams_bool_exp = {
-  _and?: InputMaybe<Array<TVParams_bool_exp>>;
-  _not?: InputMaybe<TVParams_bool_exp>;
-  _or?: InputMaybe<Array<TVParams_bool_exp>>;
-  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
-  id?: InputMaybe<String_comparison_exp>;
-  voteDuration?: InputMaybe<numeric_comparison_exp>;
-};
-
-/** Ordering options when selecting data from "TVParams". */
-export type TVParams_order_by = {
-  db_write_timestamp?: InputMaybe<order_by>;
-  id?: InputMaybe<order_by>;
-  voteDuration?: InputMaybe<order_by>;
-};
-
-/** select columns of table "TVParams" */
-export type TVParams_select_column =
-  /** column name */
-  | 'db_write_timestamp'
-  /** column name */
-  | 'id'
-  /** column name */
-  | 'voteDuration';
-
-/** Streaming cursor of the table "TVParams" */
-export type TVParams_stream_cursor_input = {
-  /** Stream column input with initial value */
-  initial_value: TVParams_stream_cursor_value_input;
-  /** cursor ordering */
-  ordering?: InputMaybe<cursor_ordering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type TVParams_stream_cursor_value_input = {
-  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
-  id?: InputMaybe<Scalars['String']>;
-  voteDuration?: InputMaybe<Scalars['numeric']>;
-};
-
-/** Boolean expression to compare columns of type "_numeric". All fields are combined with logical 'AND'. */
-export type _numeric_comparison_exp = {
-  _eq?: InputMaybe<Scalars['_numeric']>;
-  _gt?: InputMaybe<Scalars['_numeric']>;
-  _gte?: InputMaybe<Scalars['_numeric']>;
-  _in?: InputMaybe<Array<Scalars['_numeric']>>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
-  _lt?: InputMaybe<Scalars['_numeric']>;
-  _lte?: InputMaybe<Scalars['_numeric']>;
-  _neq?: InputMaybe<Scalars['_numeric']>;
-  _nin?: InputMaybe<Array<Scalars['_numeric']>>;
-};
-
-/** Boolean expression to compare columns of type "_text". All fields are combined with logical 'AND'. */
-export type _text_comparison_exp = {
-  _eq?: InputMaybe<Scalars['_text']>;
-  _gt?: InputMaybe<Scalars['_text']>;
-  _gte?: InputMaybe<Scalars['_text']>;
-  _in?: InputMaybe<Array<Scalars['_text']>>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
-  _lt?: InputMaybe<Scalars['_text']>;
-  _lte?: InputMaybe<Scalars['_text']>;
-  _neq?: InputMaybe<Scalars['_text']>;
-  _nin?: InputMaybe<Array<Scalars['_text']>>;
-};
-
-/** columns and relationships of "chain_metadata" */
-export type chain_metadata = {
-  block_height: Scalars['Int'];
-  chain_id: Scalars['Int'];
-  end_block?: Maybe<Scalars['Int']>;
-  first_event_block_number?: Maybe<Scalars['Int']>;
-  is_hyper_sync: Scalars['Boolean'];
-  latest_fetched_block_number: Scalars['Int'];
-  latest_processed_block?: Maybe<Scalars['Int']>;
-  num_batches_fetched: Scalars['Int'];
-  num_events_processed?: Maybe<Scalars['Int']>;
-  start_block: Scalars['Int'];
-  timestamp_caught_up_to_head_or_endblock?: Maybe<Scalars['timestamptz']>;
-};
-
-/** Boolean expression to filter rows from the table "chain_metadata". All fields are combined with a logical 'AND'. */
-export type chain_metadata_bool_exp = {
-  _and?: InputMaybe<Array<chain_metadata_bool_exp>>;
-  _not?: InputMaybe<chain_metadata_bool_exp>;
-  _or?: InputMaybe<Array<chain_metadata_bool_exp>>;
-  block_height?: InputMaybe<Int_comparison_exp>;
-  chain_id?: InputMaybe<Int_comparison_exp>;
-  end_block?: InputMaybe<Int_comparison_exp>;
-  first_event_block_number?: InputMaybe<Int_comparison_exp>;
-  is_hyper_sync?: InputMaybe<Boolean_comparison_exp>;
-  latest_fetched_block_number?: InputMaybe<Int_comparison_exp>;
-  latest_processed_block?: InputMaybe<Int_comparison_exp>;
-  num_batches_fetched?: InputMaybe<Int_comparison_exp>;
-  num_events_processed?: InputMaybe<Int_comparison_exp>;
-  start_block?: InputMaybe<Int_comparison_exp>;
-  timestamp_caught_up_to_head_or_endblock?: InputMaybe<timestamptz_comparison_exp>;
-};
-
-/** Ordering options when selecting data from "chain_metadata". */
-export type chain_metadata_order_by = {
-  block_height?: InputMaybe<order_by>;
-  chain_id?: InputMaybe<order_by>;
-  end_block?: InputMaybe<order_by>;
-  first_event_block_number?: InputMaybe<order_by>;
-  is_hyper_sync?: InputMaybe<order_by>;
-  latest_fetched_block_number?: InputMaybe<order_by>;
-  latest_processed_block?: InputMaybe<order_by>;
-  num_batches_fetched?: InputMaybe<order_by>;
-  num_events_processed?: InputMaybe<order_by>;
-  start_block?: InputMaybe<order_by>;
-  timestamp_caught_up_to_head_or_endblock?: InputMaybe<order_by>;
-};
-
-/** select columns of table "chain_metadata" */
-export type chain_metadata_select_column =
-  /** column name */
-  | 'block_height'
-  /** column name */
-  | 'chain_id'
-  /** column name */
-  | 'end_block'
-  /** column name */
-  | 'first_event_block_number'
-  /** column name */
-  | 'is_hyper_sync'
-  /** column name */
-  | 'latest_fetched_block_number'
-  /** column name */
-  | 'latest_processed_block'
-  /** column name */
-  | 'num_batches_fetched'
-  /** column name */
-  | 'num_events_processed'
-  /** column name */
-  | 'start_block'
-  /** column name */
-  | 'timestamp_caught_up_to_head_or_endblock';
-
-/** Streaming cursor of the table "chain_metadata" */
-export type chain_metadata_stream_cursor_input = {
-  /** Stream column input with initial value */
-  initial_value: chain_metadata_stream_cursor_value_input;
-  /** cursor ordering */
-  ordering?: InputMaybe<cursor_ordering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type chain_metadata_stream_cursor_value_input = {
-  block_height?: InputMaybe<Scalars['Int']>;
-  chain_id?: InputMaybe<Scalars['Int']>;
-  end_block?: InputMaybe<Scalars['Int']>;
-  first_event_block_number?: InputMaybe<Scalars['Int']>;
-  is_hyper_sync?: InputMaybe<Scalars['Boolean']>;
-  latest_fetched_block_number?: InputMaybe<Scalars['Int']>;
-  latest_processed_block?: InputMaybe<Scalars['Int']>;
-  num_batches_fetched?: InputMaybe<Scalars['Int']>;
-  num_events_processed?: InputMaybe<Scalars['Int']>;
-  start_block?: InputMaybe<Scalars['Int']>;
-  timestamp_caught_up_to_head_or_endblock?: InputMaybe<Scalars['timestamptz']>;
-};
-
-/** Boolean expression to compare columns of type "contract_type". All fields are combined with logical 'AND'. */
-export type contract_type_comparison_exp = {
-  _eq?: InputMaybe<Scalars['contract_type']>;
-  _gt?: InputMaybe<Scalars['contract_type']>;
-  _gte?: InputMaybe<Scalars['contract_type']>;
-  _in?: InputMaybe<Array<Scalars['contract_type']>>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
-  _lt?: InputMaybe<Scalars['contract_type']>;
-  _lte?: InputMaybe<Scalars['contract_type']>;
-  _neq?: InputMaybe<Scalars['contract_type']>;
-  _nin?: InputMaybe<Array<Scalars['contract_type']>>;
-};
-
-/** ordering argument of a cursor */
-export type cursor_ordering =
-  /** ascending ordering of the cursor */
-  | 'ASC'
-  /** descending ordering of the cursor */
-  | 'DESC';
-
-/** columns and relationships of "dynamic_contract_registry" */
-export type dynamic_contract_registry = {
-  block_timestamp: Scalars['Int'];
-  chain_id: Scalars['Int'];
-  contract_address: Scalars['String'];
-  contract_type: Scalars['contract_type'];
-  event_id: Scalars['numeric'];
-};
-
-/** Boolean expression to filter rows from the table "dynamic_contract_registry". All fields are combined with a logical 'AND'. */
-export type dynamic_contract_registry_bool_exp = {
-  _and?: InputMaybe<Array<dynamic_contract_registry_bool_exp>>;
-  _not?: InputMaybe<dynamic_contract_registry_bool_exp>;
-  _or?: InputMaybe<Array<dynamic_contract_registry_bool_exp>>;
-  block_timestamp?: InputMaybe<Int_comparison_exp>;
-  chain_id?: InputMaybe<Int_comparison_exp>;
-  contract_address?: InputMaybe<String_comparison_exp>;
-  contract_type?: InputMaybe<contract_type_comparison_exp>;
-  event_id?: InputMaybe<numeric_comparison_exp>;
-};
-
-/** Ordering options when selecting data from "dynamic_contract_registry". */
-export type dynamic_contract_registry_order_by = {
-  block_timestamp?: InputMaybe<order_by>;
-  chain_id?: InputMaybe<order_by>;
-  contract_address?: InputMaybe<order_by>;
-  contract_type?: InputMaybe<order_by>;
-  event_id?: InputMaybe<order_by>;
-};
-
-/** select columns of table "dynamic_contract_registry" */
-export type dynamic_contract_registry_select_column =
-  /** column name */
-  | 'block_timestamp'
-  /** column name */
-  | 'chain_id'
-  /** column name */
-  | 'contract_address'
-  /** column name */
-  | 'contract_type'
-  /** column name */
-  | 'event_id';
-
-/** Streaming cursor of the table "dynamic_contract_registry" */
-export type dynamic_contract_registry_stream_cursor_input = {
-  /** Stream column input with initial value */
-  initial_value: dynamic_contract_registry_stream_cursor_value_input;
-  /** cursor ordering */
-  ordering?: InputMaybe<cursor_ordering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type dynamic_contract_registry_stream_cursor_value_input = {
-  block_timestamp?: InputMaybe<Scalars['Int']>;
-  chain_id?: InputMaybe<Scalars['Int']>;
-  contract_address?: InputMaybe<Scalars['String']>;
-  contract_type?: InputMaybe<Scalars['contract_type']>;
-  event_id?: InputMaybe<Scalars['numeric']>;
-};
-
-/** columns and relationships of "entity_history" */
-export type entity_history = {
-  block_number: Scalars['Int'];
-  block_timestamp: Scalars['Int'];
-  chain_id: Scalars['Int'];
-  entity_id: Scalars['String'];
-  entity_type: Scalars['entity_type'];
-  /** An object relationship */
-  event?: Maybe<raw_events>;
-  log_index: Scalars['Int'];
-  params?: Maybe<Scalars['json']>;
-  previous_block_number?: Maybe<Scalars['Int']>;
-  previous_block_timestamp?: Maybe<Scalars['Int']>;
-  previous_chain_id?: Maybe<Scalars['Int']>;
-  previous_log_index?: Maybe<Scalars['Int']>;
-};
-
-
-/** columns and relationships of "entity_history" */
-export type entity_historyparamsArgs = {
-  path?: InputMaybe<Scalars['String']>;
-};
-
-/** order by aggregate values of table "entity_history" */
-export type entity_history_aggregate_order_by = {
-  avg?: InputMaybe<entity_history_avg_order_by>;
-  count?: InputMaybe<order_by>;
-  max?: InputMaybe<entity_history_max_order_by>;
-  min?: InputMaybe<entity_history_min_order_by>;
-  stddev?: InputMaybe<entity_history_stddev_order_by>;
-  stddev_pop?: InputMaybe<entity_history_stddev_pop_order_by>;
-  stddev_samp?: InputMaybe<entity_history_stddev_samp_order_by>;
-  sum?: InputMaybe<entity_history_sum_order_by>;
-  var_pop?: InputMaybe<entity_history_var_pop_order_by>;
-  var_samp?: InputMaybe<entity_history_var_samp_order_by>;
-  variance?: InputMaybe<entity_history_variance_order_by>;
-};
-
-/** order by avg() on columns of table "entity_history" */
-export type entity_history_avg_order_by = {
-  block_number?: InputMaybe<order_by>;
-  block_timestamp?: InputMaybe<order_by>;
-  chain_id?: InputMaybe<order_by>;
-  log_index?: InputMaybe<order_by>;
-  previous_block_number?: InputMaybe<order_by>;
-  previous_block_timestamp?: InputMaybe<order_by>;
-  previous_chain_id?: InputMaybe<order_by>;
-  previous_log_index?: InputMaybe<order_by>;
-};
-
-/** Boolean expression to filter rows from the table "entity_history". All fields are combined with a logical 'AND'. */
-export type entity_history_bool_exp = {
-  _and?: InputMaybe<Array<entity_history_bool_exp>>;
-  _not?: InputMaybe<entity_history_bool_exp>;
-  _or?: InputMaybe<Array<entity_history_bool_exp>>;
-  block_number?: InputMaybe<Int_comparison_exp>;
-  block_timestamp?: InputMaybe<Int_comparison_exp>;
-  chain_id?: InputMaybe<Int_comparison_exp>;
-  entity_id?: InputMaybe<String_comparison_exp>;
-  entity_type?: InputMaybe<entity_type_comparison_exp>;
-  event?: InputMaybe<raw_events_bool_exp>;
-  log_index?: InputMaybe<Int_comparison_exp>;
-  params?: InputMaybe<json_comparison_exp>;
-  previous_block_number?: InputMaybe<Int_comparison_exp>;
-  previous_block_timestamp?: InputMaybe<Int_comparison_exp>;
-  previous_chain_id?: InputMaybe<Int_comparison_exp>;
-  previous_log_index?: InputMaybe<Int_comparison_exp>;
-};
-
-/** columns and relationships of "entity_history_filter" */
-export type entity_history_filter = {
-  block_number: Scalars['Int'];
-  block_timestamp: Scalars['Int'];
-  chain_id: Scalars['Int'];
-  entity_id: Scalars['String'];
-  entity_type: Scalars['entity_type'];
-  /** An object relationship */
-  event?: Maybe<raw_events>;
-  log_index: Scalars['Int'];
-  new_val?: Maybe<Scalars['json']>;
-  old_val?: Maybe<Scalars['json']>;
-  previous_block_number: Scalars['Int'];
-  previous_log_index: Scalars['Int'];
-};
-
-
-/** columns and relationships of "entity_history_filter" */
-export type entity_history_filternew_valArgs = {
-  path?: InputMaybe<Scalars['String']>;
-};
-
-
-/** columns and relationships of "entity_history_filter" */
-export type entity_history_filterold_valArgs = {
-  path?: InputMaybe<Scalars['String']>;
-};
-
-/** Boolean expression to filter rows from the table "entity_history_filter". All fields are combined with a logical 'AND'. */
-export type entity_history_filter_bool_exp = {
-  _and?: InputMaybe<Array<entity_history_filter_bool_exp>>;
-  _not?: InputMaybe<entity_history_filter_bool_exp>;
-  _or?: InputMaybe<Array<entity_history_filter_bool_exp>>;
-  block_number?: InputMaybe<Int_comparison_exp>;
-  block_timestamp?: InputMaybe<Int_comparison_exp>;
-  chain_id?: InputMaybe<Int_comparison_exp>;
-  entity_id?: InputMaybe<String_comparison_exp>;
-  entity_type?: InputMaybe<entity_type_comparison_exp>;
-  event?: InputMaybe<raw_events_bool_exp>;
-  log_index?: InputMaybe<Int_comparison_exp>;
-  new_val?: InputMaybe<json_comparison_exp>;
-  old_val?: InputMaybe<json_comparison_exp>;
-  previous_block_number?: InputMaybe<Int_comparison_exp>;
-  previous_log_index?: InputMaybe<Int_comparison_exp>;
-};
-
-/** Ordering options when selecting data from "entity_history_filter". */
-export type entity_history_filter_order_by = {
-  block_number?: InputMaybe<order_by>;
-  block_timestamp?: InputMaybe<order_by>;
-  chain_id?: InputMaybe<order_by>;
-  entity_id?: InputMaybe<order_by>;
-  entity_type?: InputMaybe<order_by>;
-  event?: InputMaybe<raw_events_order_by>;
-  log_index?: InputMaybe<order_by>;
-  new_val?: InputMaybe<order_by>;
-  old_val?: InputMaybe<order_by>;
-  previous_block_number?: InputMaybe<order_by>;
-  previous_log_index?: InputMaybe<order_by>;
-};
-
-/** select columns of table "entity_history_filter" */
-export type entity_history_filter_select_column =
-  /** column name */
-  | 'block_number'
-  /** column name */
-  | 'block_timestamp'
-  /** column name */
-  | 'chain_id'
-  /** column name */
-  | 'entity_id'
-  /** column name */
-  | 'entity_type'
-  /** column name */
-  | 'log_index'
-  /** column name */
-  | 'new_val'
-  /** column name */
-  | 'old_val'
-  /** column name */
-  | 'previous_block_number'
-  /** column name */
-  | 'previous_log_index';
-
-/** Streaming cursor of the table "entity_history_filter" */
-export type entity_history_filter_stream_cursor_input = {
-  /** Stream column input with initial value */
-  initial_value: entity_history_filter_stream_cursor_value_input;
-  /** cursor ordering */
-  ordering?: InputMaybe<cursor_ordering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type entity_history_filter_stream_cursor_value_input = {
-  block_number?: InputMaybe<Scalars['Int']>;
-  block_timestamp?: InputMaybe<Scalars['Int']>;
-  chain_id?: InputMaybe<Scalars['Int']>;
-  entity_id?: InputMaybe<Scalars['String']>;
-  entity_type?: InputMaybe<Scalars['entity_type']>;
-  log_index?: InputMaybe<Scalars['Int']>;
-  new_val?: InputMaybe<Scalars['json']>;
-  old_val?: InputMaybe<Scalars['json']>;
-  previous_block_number?: InputMaybe<Scalars['Int']>;
-  previous_log_index?: InputMaybe<Scalars['Int']>;
-};
-
-/** order by max() on columns of table "entity_history" */
-export type entity_history_max_order_by = {
-  block_number?: InputMaybe<order_by>;
-  block_timestamp?: InputMaybe<order_by>;
-  chain_id?: InputMaybe<order_by>;
-  entity_id?: InputMaybe<order_by>;
-  entity_type?: InputMaybe<order_by>;
-  log_index?: InputMaybe<order_by>;
-  previous_block_number?: InputMaybe<order_by>;
-  previous_block_timestamp?: InputMaybe<order_by>;
-  previous_chain_id?: InputMaybe<order_by>;
-  previous_log_index?: InputMaybe<order_by>;
-};
-
-/** order by min() on columns of table "entity_history" */
-export type entity_history_min_order_by = {
-  block_number?: InputMaybe<order_by>;
-  block_timestamp?: InputMaybe<order_by>;
-  chain_id?: InputMaybe<order_by>;
-  entity_id?: InputMaybe<order_by>;
-  entity_type?: InputMaybe<order_by>;
-  log_index?: InputMaybe<order_by>;
-  previous_block_number?: InputMaybe<order_by>;
-  previous_block_timestamp?: InputMaybe<order_by>;
-  previous_chain_id?: InputMaybe<order_by>;
-  previous_log_index?: InputMaybe<order_by>;
-};
-
-/** Ordering options when selecting data from "entity_history". */
-export type entity_history_order_by = {
-  block_number?: InputMaybe<order_by>;
-  block_timestamp?: InputMaybe<order_by>;
-  chain_id?: InputMaybe<order_by>;
-  entity_id?: InputMaybe<order_by>;
-  entity_type?: InputMaybe<order_by>;
-  event?: InputMaybe<raw_events_order_by>;
-  log_index?: InputMaybe<order_by>;
-  params?: InputMaybe<order_by>;
-  previous_block_number?: InputMaybe<order_by>;
-  previous_block_timestamp?: InputMaybe<order_by>;
-  previous_chain_id?: InputMaybe<order_by>;
-  previous_log_index?: InputMaybe<order_by>;
-};
-
-/** select columns of table "entity_history" */
-export type entity_history_select_column =
-  /** column name */
-  | 'block_number'
-  /** column name */
-  | 'block_timestamp'
-  /** column name */
-  | 'chain_id'
-  /** column name */
-  | 'entity_id'
-  /** column name */
-  | 'entity_type'
-  /** column name */
-  | 'log_index'
-  /** column name */
-  | 'params'
-  /** column name */
-  | 'previous_block_number'
-  /** column name */
-  | 'previous_block_timestamp'
-  /** column name */
-  | 'previous_chain_id'
-  /** column name */
-  | 'previous_log_index';
-
-/** order by stddev() on columns of table "entity_history" */
-export type entity_history_stddev_order_by = {
-  block_number?: InputMaybe<order_by>;
-  block_timestamp?: InputMaybe<order_by>;
-  chain_id?: InputMaybe<order_by>;
-  log_index?: InputMaybe<order_by>;
-  previous_block_number?: InputMaybe<order_by>;
-  previous_block_timestamp?: InputMaybe<order_by>;
-  previous_chain_id?: InputMaybe<order_by>;
-  previous_log_index?: InputMaybe<order_by>;
-};
-
-/** order by stddev_pop() on columns of table "entity_history" */
-export type entity_history_stddev_pop_order_by = {
-  block_number?: InputMaybe<order_by>;
-  block_timestamp?: InputMaybe<order_by>;
-  chain_id?: InputMaybe<order_by>;
-  log_index?: InputMaybe<order_by>;
-  previous_block_number?: InputMaybe<order_by>;
-  previous_block_timestamp?: InputMaybe<order_by>;
-  previous_chain_id?: InputMaybe<order_by>;
-  previous_log_index?: InputMaybe<order_by>;
-};
-
-/** order by stddev_samp() on columns of table "entity_history" */
-export type entity_history_stddev_samp_order_by = {
-  block_number?: InputMaybe<order_by>;
-  block_timestamp?: InputMaybe<order_by>;
-  chain_id?: InputMaybe<order_by>;
-  log_index?: InputMaybe<order_by>;
-  previous_block_number?: InputMaybe<order_by>;
-  previous_block_timestamp?: InputMaybe<order_by>;
-  previous_chain_id?: InputMaybe<order_by>;
-  previous_log_index?: InputMaybe<order_by>;
-};
-
-/** Streaming cursor of the table "entity_history" */
-export type entity_history_stream_cursor_input = {
-  /** Stream column input with initial value */
-  initial_value: entity_history_stream_cursor_value_input;
-  /** cursor ordering */
-  ordering?: InputMaybe<cursor_ordering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type entity_history_stream_cursor_value_input = {
-  block_number?: InputMaybe<Scalars['Int']>;
-  block_timestamp?: InputMaybe<Scalars['Int']>;
-  chain_id?: InputMaybe<Scalars['Int']>;
-  entity_id?: InputMaybe<Scalars['String']>;
-  entity_type?: InputMaybe<Scalars['entity_type']>;
-  log_index?: InputMaybe<Scalars['Int']>;
-  params?: InputMaybe<Scalars['json']>;
-  previous_block_number?: InputMaybe<Scalars['Int']>;
-  previous_block_timestamp?: InputMaybe<Scalars['Int']>;
-  previous_chain_id?: InputMaybe<Scalars['Int']>;
-  previous_log_index?: InputMaybe<Scalars['Int']>;
-};
-
-/** order by sum() on columns of table "entity_history" */
-export type entity_history_sum_order_by = {
-  block_number?: InputMaybe<order_by>;
-  block_timestamp?: InputMaybe<order_by>;
-  chain_id?: InputMaybe<order_by>;
-  log_index?: InputMaybe<order_by>;
-  previous_block_number?: InputMaybe<order_by>;
-  previous_block_timestamp?: InputMaybe<order_by>;
-  previous_chain_id?: InputMaybe<order_by>;
-  previous_log_index?: InputMaybe<order_by>;
-};
-
-/** order by var_pop() on columns of table "entity_history" */
-export type entity_history_var_pop_order_by = {
-  block_number?: InputMaybe<order_by>;
-  block_timestamp?: InputMaybe<order_by>;
-  chain_id?: InputMaybe<order_by>;
-  log_index?: InputMaybe<order_by>;
-  previous_block_number?: InputMaybe<order_by>;
-  previous_block_timestamp?: InputMaybe<order_by>;
-  previous_chain_id?: InputMaybe<order_by>;
-  previous_log_index?: InputMaybe<order_by>;
-};
-
-/** order by var_samp() on columns of table "entity_history" */
-export type entity_history_var_samp_order_by = {
-  block_number?: InputMaybe<order_by>;
-  block_timestamp?: InputMaybe<order_by>;
-  chain_id?: InputMaybe<order_by>;
-  log_index?: InputMaybe<order_by>;
-  previous_block_number?: InputMaybe<order_by>;
-  previous_block_timestamp?: InputMaybe<order_by>;
-  previous_chain_id?: InputMaybe<order_by>;
-  previous_log_index?: InputMaybe<order_by>;
-};
-
-/** order by variance() on columns of table "entity_history" */
-export type entity_history_variance_order_by = {
-  block_number?: InputMaybe<order_by>;
-  block_timestamp?: InputMaybe<order_by>;
-  chain_id?: InputMaybe<order_by>;
-  log_index?: InputMaybe<order_by>;
-  previous_block_number?: InputMaybe<order_by>;
-  previous_block_timestamp?: InputMaybe<order_by>;
-  previous_chain_id?: InputMaybe<order_by>;
-  previous_log_index?: InputMaybe<order_by>;
-};
-
-/** Boolean expression to compare columns of type "entity_type". All fields are combined with logical 'AND'. */
-export type entity_type_comparison_exp = {
-  _eq?: InputMaybe<Scalars['entity_type']>;
-  _gt?: InputMaybe<Scalars['entity_type']>;
-  _gte?: InputMaybe<Scalars['entity_type']>;
-  _in?: InputMaybe<Array<Scalars['entity_type']>>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
-  _lt?: InputMaybe<Scalars['entity_type']>;
-  _lte?: InputMaybe<Scalars['entity_type']>;
-  _neq?: InputMaybe<Scalars['entity_type']>;
-  _nin?: InputMaybe<Array<Scalars['entity_type']>>;
-};
-
-/** columns and relationships of "event_sync_state" */
-export type event_sync_state = {
-  block_number: Scalars['Int'];
-  block_timestamp: Scalars['Int'];
-  chain_id: Scalars['Int'];
-  log_index: Scalars['Int'];
-  transaction_index: Scalars['Int'];
-};
-
-/** Boolean expression to filter rows from the table "event_sync_state". All fields are combined with a logical 'AND'. */
-export type event_sync_state_bool_exp = {
-  _and?: InputMaybe<Array<event_sync_state_bool_exp>>;
-  _not?: InputMaybe<event_sync_state_bool_exp>;
-  _or?: InputMaybe<Array<event_sync_state_bool_exp>>;
-  block_number?: InputMaybe<Int_comparison_exp>;
-  block_timestamp?: InputMaybe<Int_comparison_exp>;
-  chain_id?: InputMaybe<Int_comparison_exp>;
-  log_index?: InputMaybe<Int_comparison_exp>;
-  transaction_index?: InputMaybe<Int_comparison_exp>;
-};
-
-/** Ordering options when selecting data from "event_sync_state". */
-export type event_sync_state_order_by = {
-  block_number?: InputMaybe<order_by>;
-  block_timestamp?: InputMaybe<order_by>;
-  chain_id?: InputMaybe<order_by>;
-  log_index?: InputMaybe<order_by>;
-  transaction_index?: InputMaybe<order_by>;
-};
-
-/** select columns of table "event_sync_state" */
-export type event_sync_state_select_column =
-  /** column name */
-  | 'block_number'
-  /** column name */
-  | 'block_timestamp'
-  /** column name */
-  | 'chain_id'
-  /** column name */
-  | 'log_index'
-  /** column name */
-  | 'transaction_index';
-
-/** Streaming cursor of the table "event_sync_state" */
-export type event_sync_state_stream_cursor_input = {
-  /** Stream column input with initial value */
-  initial_value: event_sync_state_stream_cursor_value_input;
-  /** cursor ordering */
-  ordering?: InputMaybe<cursor_ordering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type event_sync_state_stream_cursor_value_input = {
-  block_number?: InputMaybe<Scalars['Int']>;
-  block_timestamp?: InputMaybe<Scalars['Int']>;
-  chain_id?: InputMaybe<Scalars['Int']>;
-  log_index?: InputMaybe<Scalars['Int']>;
-  transaction_index?: InputMaybe<Scalars['Int']>;
-};
-
-/** Boolean expression to compare columns of type "event_type". All fields are combined with logical 'AND'. */
-export type event_type_comparison_exp = {
-  _eq?: InputMaybe<Scalars['event_type']>;
-  _gt?: InputMaybe<Scalars['event_type']>;
-  _gte?: InputMaybe<Scalars['event_type']>;
-  _in?: InputMaybe<Array<Scalars['event_type']>>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
-  _lt?: InputMaybe<Scalars['event_type']>;
-  _lte?: InputMaybe<Scalars['event_type']>;
-  _neq?: InputMaybe<Scalars['event_type']>;
-  _nin?: InputMaybe<Array<Scalars['event_type']>>;
-};
-
-export type get_entity_history_filter_args = {
-  end_block?: InputMaybe<Scalars['Int']>;
-  end_chain_id?: InputMaybe<Scalars['Int']>;
-  end_log_index?: InputMaybe<Scalars['Int']>;
-  end_timestamp?: InputMaybe<Scalars['Int']>;
-  start_block?: InputMaybe<Scalars['Int']>;
-  start_chain_id?: InputMaybe<Scalars['Int']>;
-  start_log_index?: InputMaybe<Scalars['Int']>;
-  start_timestamp?: InputMaybe<Scalars['Int']>;
-};
-
-/** Boolean expression to compare columns of type "json". All fields are combined with logical 'AND'. */
-export type json_comparison_exp = {
-  _eq?: InputMaybe<Scalars['json']>;
-  _gt?: InputMaybe<Scalars['json']>;
-  _gte?: InputMaybe<Scalars['json']>;
-  _in?: InputMaybe<Array<Scalars['json']>>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
-  _lt?: InputMaybe<Scalars['json']>;
-  _lte?: InputMaybe<Scalars['json']>;
-  _neq?: InputMaybe<Scalars['json']>;
-  _nin?: InputMaybe<Array<Scalars['json']>>;
-};
-
-/** Boolean expression to compare columns of type "numeric". All fields are combined with logical 'AND'. */
-export type numeric_comparison_exp = {
-  _eq?: InputMaybe<Scalars['numeric']>;
-  _gt?: InputMaybe<Scalars['numeric']>;
-  _gte?: InputMaybe<Scalars['numeric']>;
-  _in?: InputMaybe<Array<Scalars['numeric']>>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
-  _lt?: InputMaybe<Scalars['numeric']>;
-  _lte?: InputMaybe<Scalars['numeric']>;
-  _neq?: InputMaybe<Scalars['numeric']>;
-  _nin?: InputMaybe<Array<Scalars['numeric']>>;
-};
-
-/** column ordering options */
-export type order_by =
-  /** in ascending order, nulls last */
-  | 'asc'
-  /** in ascending order, nulls first */
-  | 'asc_nulls_first'
-  /** in ascending order, nulls last */
-  | 'asc_nulls_last'
-  /** in descending order, nulls first */
-  | 'desc'
-  /** in descending order, nulls first */
-  | 'desc_nulls_first'
-  /** in descending order, nulls last */
-  | 'desc_nulls_last';
-
-/** columns and relationships of "persisted_state" */
-export type persisted_state = {
-  abi_files_hash: Scalars['String'];
-  config_hash: Scalars['String'];
-  envio_version: Scalars['String'];
-  handler_files_hash: Scalars['String'];
-  id: Scalars['Int'];
-  schema_hash: Scalars['String'];
-};
-
-/** Boolean expression to filter rows from the table "persisted_state". All fields are combined with a logical 'AND'. */
-export type persisted_state_bool_exp = {
-  _and?: InputMaybe<Array<persisted_state_bool_exp>>;
-  _not?: InputMaybe<persisted_state_bool_exp>;
-  _or?: InputMaybe<Array<persisted_state_bool_exp>>;
-  abi_files_hash?: InputMaybe<String_comparison_exp>;
-  config_hash?: InputMaybe<String_comparison_exp>;
-  envio_version?: InputMaybe<String_comparison_exp>;
-  handler_files_hash?: InputMaybe<String_comparison_exp>;
-  id?: InputMaybe<Int_comparison_exp>;
-  schema_hash?: InputMaybe<String_comparison_exp>;
-};
-
-/** Ordering options when selecting data from "persisted_state". */
-export type persisted_state_order_by = {
-  abi_files_hash?: InputMaybe<order_by>;
-  config_hash?: InputMaybe<order_by>;
-  envio_version?: InputMaybe<order_by>;
-  handler_files_hash?: InputMaybe<order_by>;
-  id?: InputMaybe<order_by>;
-  schema_hash?: InputMaybe<order_by>;
-};
-
-/** select columns of table "persisted_state" */
-export type persisted_state_select_column =
-  /** column name */
-  | 'abi_files_hash'
-  /** column name */
-  | 'config_hash'
-  /** column name */
-  | 'envio_version'
-  /** column name */
-  | 'handler_files_hash'
-  /** column name */
-  | 'id'
-  /** column name */
-  | 'schema_hash';
-
-/** Streaming cursor of the table "persisted_state" */
-export type persisted_state_stream_cursor_input = {
-  /** Stream column input with initial value */
-  initial_value: persisted_state_stream_cursor_value_input;
-  /** cursor ordering */
-  ordering?: InputMaybe<cursor_ordering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type persisted_state_stream_cursor_value_input = {
-  abi_files_hash?: InputMaybe<Scalars['String']>;
-  config_hash?: InputMaybe<Scalars['String']>;
-  envio_version?: InputMaybe<Scalars['String']>;
-  handler_files_hash?: InputMaybe<Scalars['String']>;
-  id?: InputMaybe<Scalars['Int']>;
-  schema_hash?: InputMaybe<Scalars['String']>;
-};
-
-/** columns and relationships of "raw_events" */
-export type raw_events = {
-  block_hash: Scalars['String'];
-  block_number: Scalars['Int'];
-  block_timestamp: Scalars['Int'];
-  chain_id: Scalars['Int'];
-  db_write_timestamp?: Maybe<Scalars['timestamp']>;
-  /** An array relationship */
-  event_history: Array<entity_history>;
-  event_id: Scalars['numeric'];
-  event_type: Scalars['event_type'];
-  log_index: Scalars['Int'];
-  params: Scalars['json'];
-  src_address: Scalars['String'];
-  transaction_hash: Scalars['String'];
-  transaction_index: Scalars['Int'];
-};
-
-
-/** columns and relationships of "raw_events" */
-export type raw_eventsevent_historyArgs = {
-  distinct_on?: InputMaybe<Array<entity_history_select_column>>;
-  limit?: InputMaybe<Scalars['Int']>;
-  offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<entity_history_order_by>>;
-  where?: InputMaybe<entity_history_bool_exp>;
-};
-
-
-/** columns and relationships of "raw_events" */
-export type raw_eventsparamsArgs = {
-  path?: InputMaybe<Scalars['String']>;
-};
-
-/** Boolean expression to filter rows from the table "raw_events". All fields are combined with a logical 'AND'. */
-export type raw_events_bool_exp = {
-  _and?: InputMaybe<Array<raw_events_bool_exp>>;
-  _not?: InputMaybe<raw_events_bool_exp>;
-  _or?: InputMaybe<Array<raw_events_bool_exp>>;
-  block_hash?: InputMaybe<String_comparison_exp>;
-  block_number?: InputMaybe<Int_comparison_exp>;
-  block_timestamp?: InputMaybe<Int_comparison_exp>;
-  chain_id?: InputMaybe<Int_comparison_exp>;
-  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
-  event_history?: InputMaybe<entity_history_bool_exp>;
-  event_id?: InputMaybe<numeric_comparison_exp>;
-  event_type?: InputMaybe<event_type_comparison_exp>;
-  log_index?: InputMaybe<Int_comparison_exp>;
-  params?: InputMaybe<json_comparison_exp>;
-  src_address?: InputMaybe<String_comparison_exp>;
-  transaction_hash?: InputMaybe<String_comparison_exp>;
-  transaction_index?: InputMaybe<Int_comparison_exp>;
-};
-
-/** Ordering options when selecting data from "raw_events". */
-export type raw_events_order_by = {
-  block_hash?: InputMaybe<order_by>;
-  block_number?: InputMaybe<order_by>;
-  block_timestamp?: InputMaybe<order_by>;
-  chain_id?: InputMaybe<order_by>;
-  db_write_timestamp?: InputMaybe<order_by>;
-  event_history_aggregate?: InputMaybe<entity_history_aggregate_order_by>;
-  event_id?: InputMaybe<order_by>;
-  event_type?: InputMaybe<order_by>;
-  log_index?: InputMaybe<order_by>;
-  params?: InputMaybe<order_by>;
-  src_address?: InputMaybe<order_by>;
-  transaction_hash?: InputMaybe<order_by>;
-  transaction_index?: InputMaybe<order_by>;
-};
-
-/** select columns of table "raw_events" */
-export type raw_events_select_column =
-  /** column name */
-  | 'block_hash'
-  /** column name */
-  | 'block_number'
-  /** column name */
-  | 'block_timestamp'
-  /** column name */
-  | 'chain_id'
-  /** column name */
-  | 'db_write_timestamp'
-  /** column name */
-  | 'event_id'
-  /** column name */
-  | 'event_type'
-  /** column name */
-  | 'log_index'
-  /** column name */
-  | 'params'
-  /** column name */
-  | 'src_address'
-  /** column name */
-  | 'transaction_hash'
-  /** column name */
-  | 'transaction_index';
-
-/** Streaming cursor of the table "raw_events" */
-export type raw_events_stream_cursor_input = {
-  /** Stream column input with initial value */
-  initial_value: raw_events_stream_cursor_value_input;
-  /** cursor ordering */
-  ordering?: InputMaybe<cursor_ordering>;
-};
-
-/** Initial value of the column from where the streaming should start */
-export type raw_events_stream_cursor_value_input = {
-  block_hash?: InputMaybe<Scalars['String']>;
-  block_number?: InputMaybe<Scalars['Int']>;
-  block_timestamp?: InputMaybe<Scalars['Int']>;
-  chain_id?: InputMaybe<Scalars['Int']>;
-  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
-  event_id?: InputMaybe<Scalars['numeric']>;
-  event_type?: InputMaybe<Scalars['event_type']>;
-  log_index?: InputMaybe<Scalars['Int']>;
-  params?: InputMaybe<Scalars['json']>;
-  src_address?: InputMaybe<Scalars['String']>;
-  transaction_hash?: InputMaybe<Scalars['String']>;
-  transaction_index?: InputMaybe<Scalars['Int']>;
-};
-
-/** Boolean expression to compare columns of type "timestamp". All fields are combined with logical 'AND'. */
-export type timestamp_comparison_exp = {
-  _eq?: InputMaybe<Scalars['timestamp']>;
-  _gt?: InputMaybe<Scalars['timestamp']>;
-  _gte?: InputMaybe<Scalars['timestamp']>;
-  _in?: InputMaybe<Array<Scalars['timestamp']>>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
-  _lt?: InputMaybe<Scalars['timestamp']>;
-  _lte?: InputMaybe<Scalars['timestamp']>;
-  _neq?: InputMaybe<Scalars['timestamp']>;
-  _nin?: InputMaybe<Array<Scalars['timestamp']>>;
-};
-
-/** Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'. */
-export type timestamptz_comparison_exp = {
-  _eq?: InputMaybe<Scalars['timestamptz']>;
-  _gt?: InputMaybe<Scalars['timestamptz']>;
-  _gte?: InputMaybe<Scalars['timestamptz']>;
-  _in?: InputMaybe<Array<Scalars['timestamptz']>>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
-  _lt?: InputMaybe<Scalars['timestamptz']>;
-  _lte?: InputMaybe<Scalars['timestamptz']>;
-  _neq?: InputMaybe<Scalars['timestamptz']>;
-  _nin?: InputMaybe<Array<Scalars['timestamptz']>>;
 };
 
 export type Aggregation_interval =
@@ -7078,6 +4444,2646 @@ export type _SubgraphErrorPolicy_ =
   /** If the subgraph has indexing errors, data will be omitted. The default. */
   | 'deny';
 
+/** Boolean expression to compare columns of type "Boolean". All fields are combined with logical 'AND'. */
+export type Boolean_comparison_exp = {
+  _eq?: InputMaybe<Scalars['Boolean']>;
+  _gt?: InputMaybe<Scalars['Boolean']>;
+  _gte?: InputMaybe<Scalars['Boolean']>;
+  _in?: InputMaybe<Array<Scalars['Boolean']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _lt?: InputMaybe<Scalars['Boolean']>;
+  _lte?: InputMaybe<Scalars['Boolean']>;
+  _neq?: InputMaybe<Scalars['Boolean']>;
+  _nin?: InputMaybe<Array<Scalars['Boolean']>>;
+};
+
+/** columns and relationships of "Contest" */
+export type Contest = {
+  /** An object relationship */
+  choicesModule?: Maybe<StemModule>;
+  choicesModule_id: Scalars['String'];
+  contestAddress: Scalars['String'];
+  contestStatus: Scalars['numeric'];
+  contestVersion: Scalars['String'];
+  db_write_timestamp?: Maybe<Scalars['timestamp']>;
+  /** An object relationship */
+  executionModule?: Maybe<StemModule>;
+  executionModule_id: Scalars['String'];
+  filterTag: Scalars['String'];
+  id: Scalars['String'];
+  isContinuous: Scalars['Boolean'];
+  isRetractable: Scalars['Boolean'];
+  /** An object relationship */
+  pointsModule?: Maybe<StemModule>;
+  pointsModule_id: Scalars['String'];
+  /** An object relationship */
+  votesModule?: Maybe<StemModule>;
+  votesModule_id: Scalars['String'];
+};
+
+/** columns and relationships of "ContestClone" */
+export type ContestClone = {
+  contestAddress: Scalars['String'];
+  contestVersion: Scalars['String'];
+  db_write_timestamp?: Maybe<Scalars['timestamp']>;
+  filterTag: Scalars['String'];
+  id: Scalars['String'];
+};
+
+/** Boolean expression to filter rows from the table "ContestClone". All fields are combined with a logical 'AND'. */
+export type ContestClone_bool_exp = {
+  _and?: InputMaybe<Array<ContestClone_bool_exp>>;
+  _not?: InputMaybe<ContestClone_bool_exp>;
+  _or?: InputMaybe<Array<ContestClone_bool_exp>>;
+  contestAddress?: InputMaybe<String_comparison_exp>;
+  contestVersion?: InputMaybe<String_comparison_exp>;
+  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
+  filterTag?: InputMaybe<String_comparison_exp>;
+  id?: InputMaybe<String_comparison_exp>;
+};
+
+/** Ordering options when selecting data from "ContestClone". */
+export type ContestClone_order_by = {
+  contestAddress?: InputMaybe<order_by>;
+  contestVersion?: InputMaybe<order_by>;
+  db_write_timestamp?: InputMaybe<order_by>;
+  filterTag?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+};
+
+/** select columns of table "ContestClone" */
+export type ContestClone_select_column =
+  /** column name */
+  | 'contestAddress'
+  /** column name */
+  | 'contestVersion'
+  /** column name */
+  | 'db_write_timestamp'
+  /** column name */
+  | 'filterTag'
+  /** column name */
+  | 'id';
+
+/** Streaming cursor of the table "ContestClone" */
+export type ContestClone_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: ContestClone_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type ContestClone_stream_cursor_value_input = {
+  contestAddress?: InputMaybe<Scalars['String']>;
+  contestVersion?: InputMaybe<Scalars['String']>;
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
+  filterTag?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['String']>;
+};
+
+/** columns and relationships of "ContestTemplate" */
+export type ContestTemplate = {
+  active: Scalars['Boolean'];
+  contestAddress: Scalars['String'];
+  contestVersion: Scalars['String'];
+  db_write_timestamp?: Maybe<Scalars['timestamp']>;
+  id: Scalars['String'];
+  mdPointer: Scalars['String'];
+  mdProtocol: Scalars['numeric'];
+};
+
+/** Boolean expression to filter rows from the table "ContestTemplate". All fields are combined with a logical 'AND'. */
+export type ContestTemplate_bool_exp = {
+  _and?: InputMaybe<Array<ContestTemplate_bool_exp>>;
+  _not?: InputMaybe<ContestTemplate_bool_exp>;
+  _or?: InputMaybe<Array<ContestTemplate_bool_exp>>;
+  active?: InputMaybe<Boolean_comparison_exp>;
+  contestAddress?: InputMaybe<String_comparison_exp>;
+  contestVersion?: InputMaybe<String_comparison_exp>;
+  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
+  id?: InputMaybe<String_comparison_exp>;
+  mdPointer?: InputMaybe<String_comparison_exp>;
+  mdProtocol?: InputMaybe<numeric_comparison_exp>;
+};
+
+/** Ordering options when selecting data from "ContestTemplate". */
+export type ContestTemplate_order_by = {
+  active?: InputMaybe<order_by>;
+  contestAddress?: InputMaybe<order_by>;
+  contestVersion?: InputMaybe<order_by>;
+  db_write_timestamp?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  mdPointer?: InputMaybe<order_by>;
+  mdProtocol?: InputMaybe<order_by>;
+};
+
+/** select columns of table "ContestTemplate" */
+export type ContestTemplate_select_column =
+  /** column name */
+  | 'active'
+  /** column name */
+  | 'contestAddress'
+  /** column name */
+  | 'contestVersion'
+  /** column name */
+  | 'db_write_timestamp'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'mdPointer'
+  /** column name */
+  | 'mdProtocol';
+
+/** Streaming cursor of the table "ContestTemplate" */
+export type ContestTemplate_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: ContestTemplate_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type ContestTemplate_stream_cursor_value_input = {
+  active?: InputMaybe<Scalars['Boolean']>;
+  contestAddress?: InputMaybe<Scalars['String']>;
+  contestVersion?: InputMaybe<Scalars['String']>;
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
+  id?: InputMaybe<Scalars['String']>;
+  mdPointer?: InputMaybe<Scalars['String']>;
+  mdProtocol?: InputMaybe<Scalars['numeric']>;
+};
+
+/** Boolean expression to filter rows from the table "Contest". All fields are combined with a logical 'AND'. */
+export type Contest_bool_exp = {
+  _and?: InputMaybe<Array<Contest_bool_exp>>;
+  _not?: InputMaybe<Contest_bool_exp>;
+  _or?: InputMaybe<Array<Contest_bool_exp>>;
+  choicesModule?: InputMaybe<StemModule_bool_exp>;
+  choicesModule_id?: InputMaybe<String_comparison_exp>;
+  contestAddress?: InputMaybe<String_comparison_exp>;
+  contestStatus?: InputMaybe<numeric_comparison_exp>;
+  contestVersion?: InputMaybe<String_comparison_exp>;
+  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
+  executionModule?: InputMaybe<StemModule_bool_exp>;
+  executionModule_id?: InputMaybe<String_comparison_exp>;
+  filterTag?: InputMaybe<String_comparison_exp>;
+  id?: InputMaybe<String_comparison_exp>;
+  isContinuous?: InputMaybe<Boolean_comparison_exp>;
+  isRetractable?: InputMaybe<Boolean_comparison_exp>;
+  pointsModule?: InputMaybe<StemModule_bool_exp>;
+  pointsModule_id?: InputMaybe<String_comparison_exp>;
+  votesModule?: InputMaybe<StemModule_bool_exp>;
+  votesModule_id?: InputMaybe<String_comparison_exp>;
+};
+
+/** Ordering options when selecting data from "Contest". */
+export type Contest_order_by = {
+  choicesModule?: InputMaybe<StemModule_order_by>;
+  choicesModule_id?: InputMaybe<order_by>;
+  contestAddress?: InputMaybe<order_by>;
+  contestStatus?: InputMaybe<order_by>;
+  contestVersion?: InputMaybe<order_by>;
+  db_write_timestamp?: InputMaybe<order_by>;
+  executionModule?: InputMaybe<StemModule_order_by>;
+  executionModule_id?: InputMaybe<order_by>;
+  filterTag?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  isContinuous?: InputMaybe<order_by>;
+  isRetractable?: InputMaybe<order_by>;
+  pointsModule?: InputMaybe<StemModule_order_by>;
+  pointsModule_id?: InputMaybe<order_by>;
+  votesModule?: InputMaybe<StemModule_order_by>;
+  votesModule_id?: InputMaybe<order_by>;
+};
+
+/** select columns of table "Contest" */
+export type Contest_select_column =
+  /** column name */
+  | 'choicesModule_id'
+  /** column name */
+  | 'contestAddress'
+  /** column name */
+  | 'contestStatus'
+  /** column name */
+  | 'contestVersion'
+  /** column name */
+  | 'db_write_timestamp'
+  /** column name */
+  | 'executionModule_id'
+  /** column name */
+  | 'filterTag'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'isContinuous'
+  /** column name */
+  | 'isRetractable'
+  /** column name */
+  | 'pointsModule_id'
+  /** column name */
+  | 'votesModule_id';
+
+/** Streaming cursor of the table "Contest" */
+export type Contest_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: Contest_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Contest_stream_cursor_value_input = {
+  choicesModule_id?: InputMaybe<Scalars['String']>;
+  contestAddress?: InputMaybe<Scalars['String']>;
+  contestStatus?: InputMaybe<Scalars['numeric']>;
+  contestVersion?: InputMaybe<Scalars['String']>;
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
+  executionModule_id?: InputMaybe<Scalars['String']>;
+  filterTag?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['String']>;
+  isContinuous?: InputMaybe<Scalars['Boolean']>;
+  isRetractable?: InputMaybe<Scalars['Boolean']>;
+  pointsModule_id?: InputMaybe<Scalars['String']>;
+  votesModule_id?: InputMaybe<Scalars['String']>;
+};
+
+/** columns and relationships of "ERCPointParams" */
+export type ERCPointParams = {
+  db_write_timestamp?: Maybe<Scalars['timestamp']>;
+  id: Scalars['String'];
+  voteTokenAddress: Scalars['String'];
+  votingCheckpoint: Scalars['numeric'];
+};
+
+/** Boolean expression to filter rows from the table "ERCPointParams". All fields are combined with a logical 'AND'. */
+export type ERCPointParams_bool_exp = {
+  _and?: InputMaybe<Array<ERCPointParams_bool_exp>>;
+  _not?: InputMaybe<ERCPointParams_bool_exp>;
+  _or?: InputMaybe<Array<ERCPointParams_bool_exp>>;
+  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
+  id?: InputMaybe<String_comparison_exp>;
+  voteTokenAddress?: InputMaybe<String_comparison_exp>;
+  votingCheckpoint?: InputMaybe<numeric_comparison_exp>;
+};
+
+/** Ordering options when selecting data from "ERCPointParams". */
+export type ERCPointParams_order_by = {
+  db_write_timestamp?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  voteTokenAddress?: InputMaybe<order_by>;
+  votingCheckpoint?: InputMaybe<order_by>;
+};
+
+/** select columns of table "ERCPointParams" */
+export type ERCPointParams_select_column =
+  /** column name */
+  | 'db_write_timestamp'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'voteTokenAddress'
+  /** column name */
+  | 'votingCheckpoint';
+
+/** Streaming cursor of the table "ERCPointParams" */
+export type ERCPointParams_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: ERCPointParams_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type ERCPointParams_stream_cursor_value_input = {
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
+  id?: InputMaybe<Scalars['String']>;
+  voteTokenAddress?: InputMaybe<Scalars['String']>;
+  votingCheckpoint?: InputMaybe<Scalars['numeric']>;
+};
+
+/** columns and relationships of "EnvioTX" */
+export type EnvioTX = {
+  blockNumber: Scalars['numeric'];
+  db_write_timestamp?: Maybe<Scalars['timestamp']>;
+  id: Scalars['String'];
+  srcAddress: Scalars['String'];
+  txHash: Scalars['String'];
+  txOrigin?: Maybe<Scalars['String']>;
+};
+
+/** Boolean expression to filter rows from the table "EnvioTX". All fields are combined with a logical 'AND'. */
+export type EnvioTX_bool_exp = {
+  _and?: InputMaybe<Array<EnvioTX_bool_exp>>;
+  _not?: InputMaybe<EnvioTX_bool_exp>;
+  _or?: InputMaybe<Array<EnvioTX_bool_exp>>;
+  blockNumber?: InputMaybe<numeric_comparison_exp>;
+  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
+  id?: InputMaybe<String_comparison_exp>;
+  srcAddress?: InputMaybe<String_comparison_exp>;
+  txHash?: InputMaybe<String_comparison_exp>;
+  txOrigin?: InputMaybe<String_comparison_exp>;
+};
+
+/** Ordering options when selecting data from "EnvioTX". */
+export type EnvioTX_order_by = {
+  blockNumber?: InputMaybe<order_by>;
+  db_write_timestamp?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  srcAddress?: InputMaybe<order_by>;
+  txHash?: InputMaybe<order_by>;
+  txOrigin?: InputMaybe<order_by>;
+};
+
+/** select columns of table "EnvioTX" */
+export type EnvioTX_select_column =
+  /** column name */
+  | 'blockNumber'
+  /** column name */
+  | 'db_write_timestamp'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'srcAddress'
+  /** column name */
+  | 'txHash'
+  /** column name */
+  | 'txOrigin';
+
+/** Streaming cursor of the table "EnvioTX" */
+export type EnvioTX_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: EnvioTX_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type EnvioTX_stream_cursor_value_input = {
+  blockNumber?: InputMaybe<Scalars['numeric']>;
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
+  id?: InputMaybe<Scalars['String']>;
+  srcAddress?: InputMaybe<Scalars['String']>;
+  txHash?: InputMaybe<Scalars['String']>;
+  txOrigin?: InputMaybe<Scalars['String']>;
+};
+
+/** columns and relationships of "EventPost" */
+export type EventPost = {
+  db_write_timestamp?: Maybe<Scalars['timestamp']>;
+  hatId: Scalars['numeric'];
+  /** An object relationship */
+  hatsPoster?: Maybe<HatsPoster>;
+  hatsPoster_id: Scalars['String'];
+  id: Scalars['String'];
+  mdPointer: Scalars['String'];
+  mdProtocol: Scalars['numeric'];
+  tag: Scalars['String'];
+};
+
+/** order by aggregate values of table "EventPost" */
+export type EventPost_aggregate_order_by = {
+  avg?: InputMaybe<EventPost_avg_order_by>;
+  count?: InputMaybe<order_by>;
+  max?: InputMaybe<EventPost_max_order_by>;
+  min?: InputMaybe<EventPost_min_order_by>;
+  stddev?: InputMaybe<EventPost_stddev_order_by>;
+  stddev_pop?: InputMaybe<EventPost_stddev_pop_order_by>;
+  stddev_samp?: InputMaybe<EventPost_stddev_samp_order_by>;
+  sum?: InputMaybe<EventPost_sum_order_by>;
+  var_pop?: InputMaybe<EventPost_var_pop_order_by>;
+  var_samp?: InputMaybe<EventPost_var_samp_order_by>;
+  variance?: InputMaybe<EventPost_variance_order_by>;
+};
+
+/** order by avg() on columns of table "EventPost" */
+export type EventPost_avg_order_by = {
+  hatId?: InputMaybe<order_by>;
+  mdProtocol?: InputMaybe<order_by>;
+};
+
+/** Boolean expression to filter rows from the table "EventPost". All fields are combined with a logical 'AND'. */
+export type EventPost_bool_exp = {
+  _and?: InputMaybe<Array<EventPost_bool_exp>>;
+  _not?: InputMaybe<EventPost_bool_exp>;
+  _or?: InputMaybe<Array<EventPost_bool_exp>>;
+  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
+  hatId?: InputMaybe<numeric_comparison_exp>;
+  hatsPoster?: InputMaybe<HatsPoster_bool_exp>;
+  hatsPoster_id?: InputMaybe<String_comparison_exp>;
+  id?: InputMaybe<String_comparison_exp>;
+  mdPointer?: InputMaybe<String_comparison_exp>;
+  mdProtocol?: InputMaybe<numeric_comparison_exp>;
+  tag?: InputMaybe<String_comparison_exp>;
+};
+
+/** order by max() on columns of table "EventPost" */
+export type EventPost_max_order_by = {
+  db_write_timestamp?: InputMaybe<order_by>;
+  hatId?: InputMaybe<order_by>;
+  hatsPoster_id?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  mdPointer?: InputMaybe<order_by>;
+  mdProtocol?: InputMaybe<order_by>;
+  tag?: InputMaybe<order_by>;
+};
+
+/** order by min() on columns of table "EventPost" */
+export type EventPost_min_order_by = {
+  db_write_timestamp?: InputMaybe<order_by>;
+  hatId?: InputMaybe<order_by>;
+  hatsPoster_id?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  mdPointer?: InputMaybe<order_by>;
+  mdProtocol?: InputMaybe<order_by>;
+  tag?: InputMaybe<order_by>;
+};
+
+/** Ordering options when selecting data from "EventPost". */
+export type EventPost_order_by = {
+  db_write_timestamp?: InputMaybe<order_by>;
+  hatId?: InputMaybe<order_by>;
+  hatsPoster?: InputMaybe<HatsPoster_order_by>;
+  hatsPoster_id?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  mdPointer?: InputMaybe<order_by>;
+  mdProtocol?: InputMaybe<order_by>;
+  tag?: InputMaybe<order_by>;
+};
+
+/** select columns of table "EventPost" */
+export type EventPost_select_column =
+  /** column name */
+  | 'db_write_timestamp'
+  /** column name */
+  | 'hatId'
+  /** column name */
+  | 'hatsPoster_id'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'mdPointer'
+  /** column name */
+  | 'mdProtocol'
+  /** column name */
+  | 'tag';
+
+/** order by stddev() on columns of table "EventPost" */
+export type EventPost_stddev_order_by = {
+  hatId?: InputMaybe<order_by>;
+  mdProtocol?: InputMaybe<order_by>;
+};
+
+/** order by stddev_pop() on columns of table "EventPost" */
+export type EventPost_stddev_pop_order_by = {
+  hatId?: InputMaybe<order_by>;
+  mdProtocol?: InputMaybe<order_by>;
+};
+
+/** order by stddev_samp() on columns of table "EventPost" */
+export type EventPost_stddev_samp_order_by = {
+  hatId?: InputMaybe<order_by>;
+  mdProtocol?: InputMaybe<order_by>;
+};
+
+/** Streaming cursor of the table "EventPost" */
+export type EventPost_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: EventPost_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type EventPost_stream_cursor_value_input = {
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
+  hatId?: InputMaybe<Scalars['numeric']>;
+  hatsPoster_id?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['String']>;
+  mdPointer?: InputMaybe<Scalars['String']>;
+  mdProtocol?: InputMaybe<Scalars['numeric']>;
+  tag?: InputMaybe<Scalars['String']>;
+};
+
+/** order by sum() on columns of table "EventPost" */
+export type EventPost_sum_order_by = {
+  hatId?: InputMaybe<order_by>;
+  mdProtocol?: InputMaybe<order_by>;
+};
+
+/** order by var_pop() on columns of table "EventPost" */
+export type EventPost_var_pop_order_by = {
+  hatId?: InputMaybe<order_by>;
+  mdProtocol?: InputMaybe<order_by>;
+};
+
+/** order by var_samp() on columns of table "EventPost" */
+export type EventPost_var_samp_order_by = {
+  hatId?: InputMaybe<order_by>;
+  mdProtocol?: InputMaybe<order_by>;
+};
+
+/** order by variance() on columns of table "EventPost" */
+export type EventPost_variance_order_by = {
+  hatId?: InputMaybe<order_by>;
+  mdProtocol?: InputMaybe<order_by>;
+};
+
+/** columns and relationships of "FactoryEventsSummary" */
+export type FactoryEventsSummary = {
+  address: Scalars['String'];
+  admins: Array<Scalars['String']>;
+  contestBuiltCount: Scalars['numeric'];
+  contestCloneCount: Scalars['numeric'];
+  contestTemplateCount: Scalars['numeric'];
+  db_write_timestamp?: Maybe<Scalars['timestamp']>;
+  id: Scalars['String'];
+  moduleCloneCount: Scalars['numeric'];
+  moduleTemplateCount: Scalars['numeric'];
+};
+
+/** Boolean expression to filter rows from the table "FactoryEventsSummary". All fields are combined with a logical 'AND'. */
+export type FactoryEventsSummary_bool_exp = {
+  _and?: InputMaybe<Array<FactoryEventsSummary_bool_exp>>;
+  _not?: InputMaybe<FactoryEventsSummary_bool_exp>;
+  _or?: InputMaybe<Array<FactoryEventsSummary_bool_exp>>;
+  address?: InputMaybe<String_comparison_exp>;
+  admins?: InputMaybe<String_array_comparison_exp>;
+  contestBuiltCount?: InputMaybe<numeric_comparison_exp>;
+  contestCloneCount?: InputMaybe<numeric_comparison_exp>;
+  contestTemplateCount?: InputMaybe<numeric_comparison_exp>;
+  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
+  id?: InputMaybe<String_comparison_exp>;
+  moduleCloneCount?: InputMaybe<numeric_comparison_exp>;
+  moduleTemplateCount?: InputMaybe<numeric_comparison_exp>;
+};
+
+/** Ordering options when selecting data from "FactoryEventsSummary". */
+export type FactoryEventsSummary_order_by = {
+  address?: InputMaybe<order_by>;
+  admins?: InputMaybe<order_by>;
+  contestBuiltCount?: InputMaybe<order_by>;
+  contestCloneCount?: InputMaybe<order_by>;
+  contestTemplateCount?: InputMaybe<order_by>;
+  db_write_timestamp?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  moduleCloneCount?: InputMaybe<order_by>;
+  moduleTemplateCount?: InputMaybe<order_by>;
+};
+
+/** select columns of table "FactoryEventsSummary" */
+export type FactoryEventsSummary_select_column =
+  /** column name */
+  | 'address'
+  /** column name */
+  | 'admins'
+  /** column name */
+  | 'contestBuiltCount'
+  /** column name */
+  | 'contestCloneCount'
+  /** column name */
+  | 'contestTemplateCount'
+  /** column name */
+  | 'db_write_timestamp'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'moduleCloneCount'
+  /** column name */
+  | 'moduleTemplateCount';
+
+/** Streaming cursor of the table "FactoryEventsSummary" */
+export type FactoryEventsSummary_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: FactoryEventsSummary_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type FactoryEventsSummary_stream_cursor_value_input = {
+  address?: InputMaybe<Scalars['String']>;
+  admins?: InputMaybe<Array<Scalars['String']>>;
+  contestBuiltCount?: InputMaybe<Scalars['numeric']>;
+  contestCloneCount?: InputMaybe<Scalars['numeric']>;
+  contestTemplateCount?: InputMaybe<Scalars['numeric']>;
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
+  id?: InputMaybe<Scalars['String']>;
+  moduleCloneCount?: InputMaybe<Scalars['numeric']>;
+  moduleTemplateCount?: InputMaybe<Scalars['numeric']>;
+};
+
+/** columns and relationships of "GrantShipsVoting" */
+export type GrantShipsVoting = {
+  /** An array relationship */
+  choices: Array<ShipChoice>;
+  /** An object relationship */
+  contest?: Maybe<Contest>;
+  contest_id: Scalars['String'];
+  db_write_timestamp?: Maybe<Scalars['timestamp']>;
+  endTime?: Maybe<Scalars['numeric']>;
+  hatId: Scalars['numeric'];
+  hatsAddress: Scalars['String'];
+  id: Scalars['String'];
+  isVotingActive: Scalars['Boolean'];
+  startTime?: Maybe<Scalars['numeric']>;
+  totalVotes: Scalars['numeric'];
+  voteDuration: Scalars['numeric'];
+  voteTokenAddress: Scalars['String'];
+  /** An array relationship */
+  votes: Array<ShipVote>;
+  votingCheckpoint: Scalars['numeric'];
+};
+
+
+/** columns and relationships of "GrantShipsVoting" */
+export type GrantShipsVotingchoicesArgs = {
+  distinct_on?: InputMaybe<Array<ShipChoice_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<ShipChoice_order_by>>;
+  where?: InputMaybe<ShipChoice_bool_exp>;
+};
+
+
+/** columns and relationships of "GrantShipsVoting" */
+export type GrantShipsVotingvotesArgs = {
+  distinct_on?: InputMaybe<Array<ShipVote_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<ShipVote_order_by>>;
+  where?: InputMaybe<ShipVote_bool_exp>;
+};
+
+/** Boolean expression to filter rows from the table "GrantShipsVoting". All fields are combined with a logical 'AND'. */
+export type GrantShipsVoting_bool_exp = {
+  _and?: InputMaybe<Array<GrantShipsVoting_bool_exp>>;
+  _not?: InputMaybe<GrantShipsVoting_bool_exp>;
+  _or?: InputMaybe<Array<GrantShipsVoting_bool_exp>>;
+  choices?: InputMaybe<ShipChoice_bool_exp>;
+  contest?: InputMaybe<Contest_bool_exp>;
+  contest_id?: InputMaybe<String_comparison_exp>;
+  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
+  endTime?: InputMaybe<numeric_comparison_exp>;
+  hatId?: InputMaybe<numeric_comparison_exp>;
+  hatsAddress?: InputMaybe<String_comparison_exp>;
+  id?: InputMaybe<String_comparison_exp>;
+  isVotingActive?: InputMaybe<Boolean_comparison_exp>;
+  startTime?: InputMaybe<numeric_comparison_exp>;
+  totalVotes?: InputMaybe<numeric_comparison_exp>;
+  voteDuration?: InputMaybe<numeric_comparison_exp>;
+  voteTokenAddress?: InputMaybe<String_comparison_exp>;
+  votes?: InputMaybe<ShipVote_bool_exp>;
+  votingCheckpoint?: InputMaybe<numeric_comparison_exp>;
+};
+
+/** Ordering options when selecting data from "GrantShipsVoting". */
+export type GrantShipsVoting_order_by = {
+  choices_aggregate?: InputMaybe<ShipChoice_aggregate_order_by>;
+  contest?: InputMaybe<Contest_order_by>;
+  contest_id?: InputMaybe<order_by>;
+  db_write_timestamp?: InputMaybe<order_by>;
+  endTime?: InputMaybe<order_by>;
+  hatId?: InputMaybe<order_by>;
+  hatsAddress?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  isVotingActive?: InputMaybe<order_by>;
+  startTime?: InputMaybe<order_by>;
+  totalVotes?: InputMaybe<order_by>;
+  voteDuration?: InputMaybe<order_by>;
+  voteTokenAddress?: InputMaybe<order_by>;
+  votes_aggregate?: InputMaybe<ShipVote_aggregate_order_by>;
+  votingCheckpoint?: InputMaybe<order_by>;
+};
+
+/** select columns of table "GrantShipsVoting" */
+export type GrantShipsVoting_select_column =
+  /** column name */
+  | 'contest_id'
+  /** column name */
+  | 'db_write_timestamp'
+  /** column name */
+  | 'endTime'
+  /** column name */
+  | 'hatId'
+  /** column name */
+  | 'hatsAddress'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'isVotingActive'
+  /** column name */
+  | 'startTime'
+  /** column name */
+  | 'totalVotes'
+  /** column name */
+  | 'voteDuration'
+  /** column name */
+  | 'voteTokenAddress'
+  /** column name */
+  | 'votingCheckpoint';
+
+/** Streaming cursor of the table "GrantShipsVoting" */
+export type GrantShipsVoting_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: GrantShipsVoting_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type GrantShipsVoting_stream_cursor_value_input = {
+  contest_id?: InputMaybe<Scalars['String']>;
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
+  endTime?: InputMaybe<Scalars['numeric']>;
+  hatId?: InputMaybe<Scalars['numeric']>;
+  hatsAddress?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['String']>;
+  isVotingActive?: InputMaybe<Scalars['Boolean']>;
+  startTime?: InputMaybe<Scalars['numeric']>;
+  totalVotes?: InputMaybe<Scalars['numeric']>;
+  voteDuration?: InputMaybe<Scalars['numeric']>;
+  voteTokenAddress?: InputMaybe<Scalars['String']>;
+  votingCheckpoint?: InputMaybe<Scalars['numeric']>;
+};
+
+/** columns and relationships of "HALParams" */
+export type HALParams = {
+  db_write_timestamp?: Maybe<Scalars['timestamp']>;
+  hatId: Scalars['numeric'];
+  hatsAddress: Scalars['String'];
+  id: Scalars['String'];
+};
+
+/** Boolean expression to filter rows from the table "HALParams". All fields are combined with a logical 'AND'. */
+export type HALParams_bool_exp = {
+  _and?: InputMaybe<Array<HALParams_bool_exp>>;
+  _not?: InputMaybe<HALParams_bool_exp>;
+  _or?: InputMaybe<Array<HALParams_bool_exp>>;
+  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
+  hatId?: InputMaybe<numeric_comparison_exp>;
+  hatsAddress?: InputMaybe<String_comparison_exp>;
+  id?: InputMaybe<String_comparison_exp>;
+};
+
+/** Ordering options when selecting data from "HALParams". */
+export type HALParams_order_by = {
+  db_write_timestamp?: InputMaybe<order_by>;
+  hatId?: InputMaybe<order_by>;
+  hatsAddress?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+};
+
+/** select columns of table "HALParams" */
+export type HALParams_select_column =
+  /** column name */
+  | 'db_write_timestamp'
+  /** column name */
+  | 'hatId'
+  /** column name */
+  | 'hatsAddress'
+  /** column name */
+  | 'id';
+
+/** Streaming cursor of the table "HALParams" */
+export type HALParams_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: HALParams_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type HALParams_stream_cursor_value_input = {
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
+  hatId?: InputMaybe<Scalars['numeric']>;
+  hatsAddress?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['String']>;
+};
+
+/** columns and relationships of "HatsPoster" */
+export type HatsPoster = {
+  db_write_timestamp?: Maybe<Scalars['timestamp']>;
+  /** An array relationship */
+  eventPosts: Array<EventPost>;
+  hatIds: Array<Scalars['numeric']>;
+  hatsAddress: Scalars['String'];
+  id: Scalars['String'];
+  /** An array relationship */
+  record: Array<Record>;
+};
+
+
+/** columns and relationships of "HatsPoster" */
+export type HatsPostereventPostsArgs = {
+  distinct_on?: InputMaybe<Array<EventPost_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<EventPost_order_by>>;
+  where?: InputMaybe<EventPost_bool_exp>;
+};
+
+
+/** columns and relationships of "HatsPoster" */
+export type HatsPosterrecordArgs = {
+  distinct_on?: InputMaybe<Array<Record_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Record_order_by>>;
+  where?: InputMaybe<Record_bool_exp>;
+};
+
+/** Boolean expression to filter rows from the table "HatsPoster". All fields are combined with a logical 'AND'. */
+export type HatsPoster_bool_exp = {
+  _and?: InputMaybe<Array<HatsPoster_bool_exp>>;
+  _not?: InputMaybe<HatsPoster_bool_exp>;
+  _or?: InputMaybe<Array<HatsPoster_bool_exp>>;
+  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
+  eventPosts?: InputMaybe<EventPost_bool_exp>;
+  hatIds?: InputMaybe<numeric_array_comparison_exp>;
+  hatsAddress?: InputMaybe<String_comparison_exp>;
+  id?: InputMaybe<String_comparison_exp>;
+  record?: InputMaybe<Record_bool_exp>;
+};
+
+/** Ordering options when selecting data from "HatsPoster". */
+export type HatsPoster_order_by = {
+  db_write_timestamp?: InputMaybe<order_by>;
+  eventPosts_aggregate?: InputMaybe<EventPost_aggregate_order_by>;
+  hatIds?: InputMaybe<order_by>;
+  hatsAddress?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  record_aggregate?: InputMaybe<Record_aggregate_order_by>;
+};
+
+/** select columns of table "HatsPoster" */
+export type HatsPoster_select_column =
+  /** column name */
+  | 'db_write_timestamp'
+  /** column name */
+  | 'hatIds'
+  /** column name */
+  | 'hatsAddress'
+  /** column name */
+  | 'id';
+
+/** Streaming cursor of the table "HatsPoster" */
+export type HatsPoster_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: HatsPoster_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type HatsPoster_stream_cursor_value_input = {
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
+  hatIds?: InputMaybe<Array<Scalars['numeric']>>;
+  hatsAddress?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['String']>;
+};
+
+/** Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'. */
+export type Int_comparison_exp = {
+  _eq?: InputMaybe<Scalars['Int']>;
+  _gt?: InputMaybe<Scalars['Int']>;
+  _gte?: InputMaybe<Scalars['Int']>;
+  _in?: InputMaybe<Array<Scalars['Int']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _lt?: InputMaybe<Scalars['Int']>;
+  _lte?: InputMaybe<Scalars['Int']>;
+  _neq?: InputMaybe<Scalars['Int']>;
+  _nin?: InputMaybe<Array<Scalars['Int']>>;
+};
+
+/** columns and relationships of "LocalLog" */
+export type LocalLog = {
+  db_write_timestamp?: Maybe<Scalars['timestamp']>;
+  id: Scalars['String'];
+  message?: Maybe<Scalars['String']>;
+};
+
+/** Boolean expression to filter rows from the table "LocalLog". All fields are combined with a logical 'AND'. */
+export type LocalLog_bool_exp = {
+  _and?: InputMaybe<Array<LocalLog_bool_exp>>;
+  _not?: InputMaybe<LocalLog_bool_exp>;
+  _or?: InputMaybe<Array<LocalLog_bool_exp>>;
+  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
+  id?: InputMaybe<String_comparison_exp>;
+  message?: InputMaybe<String_comparison_exp>;
+};
+
+/** Ordering options when selecting data from "LocalLog". */
+export type LocalLog_order_by = {
+  db_write_timestamp?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  message?: InputMaybe<order_by>;
+};
+
+/** select columns of table "LocalLog" */
+export type LocalLog_select_column =
+  /** column name */
+  | 'db_write_timestamp'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'message';
+
+/** Streaming cursor of the table "LocalLog" */
+export type LocalLog_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: LocalLog_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type LocalLog_stream_cursor_value_input = {
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
+  id?: InputMaybe<Scalars['String']>;
+  message?: InputMaybe<Scalars['String']>;
+};
+
+/** columns and relationships of "ModuleTemplate" */
+export type ModuleTemplate = {
+  active: Scalars['Boolean'];
+  db_write_timestamp?: Maybe<Scalars['timestamp']>;
+  id: Scalars['String'];
+  mdPointer: Scalars['String'];
+  mdProtocol: Scalars['numeric'];
+  moduleName: Scalars['String'];
+  templateAddress: Scalars['String'];
+};
+
+/** Boolean expression to filter rows from the table "ModuleTemplate". All fields are combined with a logical 'AND'. */
+export type ModuleTemplate_bool_exp = {
+  _and?: InputMaybe<Array<ModuleTemplate_bool_exp>>;
+  _not?: InputMaybe<ModuleTemplate_bool_exp>;
+  _or?: InputMaybe<Array<ModuleTemplate_bool_exp>>;
+  active?: InputMaybe<Boolean_comparison_exp>;
+  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
+  id?: InputMaybe<String_comparison_exp>;
+  mdPointer?: InputMaybe<String_comparison_exp>;
+  mdProtocol?: InputMaybe<numeric_comparison_exp>;
+  moduleName?: InputMaybe<String_comparison_exp>;
+  templateAddress?: InputMaybe<String_comparison_exp>;
+};
+
+/** Ordering options when selecting data from "ModuleTemplate". */
+export type ModuleTemplate_order_by = {
+  active?: InputMaybe<order_by>;
+  db_write_timestamp?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  mdPointer?: InputMaybe<order_by>;
+  mdProtocol?: InputMaybe<order_by>;
+  moduleName?: InputMaybe<order_by>;
+  templateAddress?: InputMaybe<order_by>;
+};
+
+/** select columns of table "ModuleTemplate" */
+export type ModuleTemplate_select_column =
+  /** column name */
+  | 'active'
+  /** column name */
+  | 'db_write_timestamp'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'mdPointer'
+  /** column name */
+  | 'mdProtocol'
+  /** column name */
+  | 'moduleName'
+  /** column name */
+  | 'templateAddress';
+
+/** Streaming cursor of the table "ModuleTemplate" */
+export type ModuleTemplate_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: ModuleTemplate_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type ModuleTemplate_stream_cursor_value_input = {
+  active?: InputMaybe<Scalars['Boolean']>;
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
+  id?: InputMaybe<Scalars['String']>;
+  mdPointer?: InputMaybe<Scalars['String']>;
+  mdProtocol?: InputMaybe<Scalars['numeric']>;
+  moduleName?: InputMaybe<Scalars['String']>;
+  templateAddress?: InputMaybe<Scalars['String']>;
+};
+
+/** columns and relationships of "Record" */
+export type Record = {
+  db_write_timestamp?: Maybe<Scalars['timestamp']>;
+  hatId: Scalars['numeric'];
+  /** An object relationship */
+  hatsPoster?: Maybe<HatsPoster>;
+  hatsPoster_id: Scalars['String'];
+  id: Scalars['String'];
+  mdPointer: Scalars['String'];
+  mdProtocol: Scalars['numeric'];
+  nonce: Scalars['String'];
+  tag: Scalars['String'];
+};
+
+/** order by aggregate values of table "Record" */
+export type Record_aggregate_order_by = {
+  avg?: InputMaybe<Record_avg_order_by>;
+  count?: InputMaybe<order_by>;
+  max?: InputMaybe<Record_max_order_by>;
+  min?: InputMaybe<Record_min_order_by>;
+  stddev?: InputMaybe<Record_stddev_order_by>;
+  stddev_pop?: InputMaybe<Record_stddev_pop_order_by>;
+  stddev_samp?: InputMaybe<Record_stddev_samp_order_by>;
+  sum?: InputMaybe<Record_sum_order_by>;
+  var_pop?: InputMaybe<Record_var_pop_order_by>;
+  var_samp?: InputMaybe<Record_var_samp_order_by>;
+  variance?: InputMaybe<Record_variance_order_by>;
+};
+
+/** order by avg() on columns of table "Record" */
+export type Record_avg_order_by = {
+  hatId?: InputMaybe<order_by>;
+  mdProtocol?: InputMaybe<order_by>;
+};
+
+/** Boolean expression to filter rows from the table "Record". All fields are combined with a logical 'AND'. */
+export type Record_bool_exp = {
+  _and?: InputMaybe<Array<Record_bool_exp>>;
+  _not?: InputMaybe<Record_bool_exp>;
+  _or?: InputMaybe<Array<Record_bool_exp>>;
+  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
+  hatId?: InputMaybe<numeric_comparison_exp>;
+  hatsPoster?: InputMaybe<HatsPoster_bool_exp>;
+  hatsPoster_id?: InputMaybe<String_comparison_exp>;
+  id?: InputMaybe<String_comparison_exp>;
+  mdPointer?: InputMaybe<String_comparison_exp>;
+  mdProtocol?: InputMaybe<numeric_comparison_exp>;
+  nonce?: InputMaybe<String_comparison_exp>;
+  tag?: InputMaybe<String_comparison_exp>;
+};
+
+/** order by max() on columns of table "Record" */
+export type Record_max_order_by = {
+  db_write_timestamp?: InputMaybe<order_by>;
+  hatId?: InputMaybe<order_by>;
+  hatsPoster_id?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  mdPointer?: InputMaybe<order_by>;
+  mdProtocol?: InputMaybe<order_by>;
+  nonce?: InputMaybe<order_by>;
+  tag?: InputMaybe<order_by>;
+};
+
+/** order by min() on columns of table "Record" */
+export type Record_min_order_by = {
+  db_write_timestamp?: InputMaybe<order_by>;
+  hatId?: InputMaybe<order_by>;
+  hatsPoster_id?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  mdPointer?: InputMaybe<order_by>;
+  mdProtocol?: InputMaybe<order_by>;
+  nonce?: InputMaybe<order_by>;
+  tag?: InputMaybe<order_by>;
+};
+
+/** Ordering options when selecting data from "Record". */
+export type Record_order_by = {
+  db_write_timestamp?: InputMaybe<order_by>;
+  hatId?: InputMaybe<order_by>;
+  hatsPoster?: InputMaybe<HatsPoster_order_by>;
+  hatsPoster_id?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  mdPointer?: InputMaybe<order_by>;
+  mdProtocol?: InputMaybe<order_by>;
+  nonce?: InputMaybe<order_by>;
+  tag?: InputMaybe<order_by>;
+};
+
+/** select columns of table "Record" */
+export type Record_select_column =
+  /** column name */
+  | 'db_write_timestamp'
+  /** column name */
+  | 'hatId'
+  /** column name */
+  | 'hatsPoster_id'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'mdPointer'
+  /** column name */
+  | 'mdProtocol'
+  /** column name */
+  | 'nonce'
+  /** column name */
+  | 'tag';
+
+/** order by stddev() on columns of table "Record" */
+export type Record_stddev_order_by = {
+  hatId?: InputMaybe<order_by>;
+  mdProtocol?: InputMaybe<order_by>;
+};
+
+/** order by stddev_pop() on columns of table "Record" */
+export type Record_stddev_pop_order_by = {
+  hatId?: InputMaybe<order_by>;
+  mdProtocol?: InputMaybe<order_by>;
+};
+
+/** order by stddev_samp() on columns of table "Record" */
+export type Record_stddev_samp_order_by = {
+  hatId?: InputMaybe<order_by>;
+  mdProtocol?: InputMaybe<order_by>;
+};
+
+/** Streaming cursor of the table "Record" */
+export type Record_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: Record_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Record_stream_cursor_value_input = {
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
+  hatId?: InputMaybe<Scalars['numeric']>;
+  hatsPoster_id?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['String']>;
+  mdPointer?: InputMaybe<Scalars['String']>;
+  mdProtocol?: InputMaybe<Scalars['numeric']>;
+  nonce?: InputMaybe<Scalars['String']>;
+  tag?: InputMaybe<Scalars['String']>;
+};
+
+/** order by sum() on columns of table "Record" */
+export type Record_sum_order_by = {
+  hatId?: InputMaybe<order_by>;
+  mdProtocol?: InputMaybe<order_by>;
+};
+
+/** order by var_pop() on columns of table "Record" */
+export type Record_var_pop_order_by = {
+  hatId?: InputMaybe<order_by>;
+  mdProtocol?: InputMaybe<order_by>;
+};
+
+/** order by var_samp() on columns of table "Record" */
+export type Record_var_samp_order_by = {
+  hatId?: InputMaybe<order_by>;
+  mdProtocol?: InputMaybe<order_by>;
+};
+
+/** order by variance() on columns of table "Record" */
+export type Record_variance_order_by = {
+  hatId?: InputMaybe<order_by>;
+  mdProtocol?: InputMaybe<order_by>;
+};
+
+/** columns and relationships of "ShipChoice" */
+export type ShipChoice = {
+  active: Scalars['Boolean'];
+  choiceData: Scalars['String'];
+  /** An object relationship */
+  contest?: Maybe<GrantShipsVoting>;
+  contest_id: Scalars['String'];
+  db_write_timestamp?: Maybe<Scalars['timestamp']>;
+  id: Scalars['String'];
+  mdPointer: Scalars['String'];
+  mdProtocol: Scalars['numeric'];
+  voteTally: Scalars['numeric'];
+  /** An array relationship */
+  votes: Array<ShipVote>;
+};
+
+
+/** columns and relationships of "ShipChoice" */
+export type ShipChoicevotesArgs = {
+  distinct_on?: InputMaybe<Array<ShipVote_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<ShipVote_order_by>>;
+  where?: InputMaybe<ShipVote_bool_exp>;
+};
+
+/** order by aggregate values of table "ShipChoice" */
+export type ShipChoice_aggregate_order_by = {
+  avg?: InputMaybe<ShipChoice_avg_order_by>;
+  count?: InputMaybe<order_by>;
+  max?: InputMaybe<ShipChoice_max_order_by>;
+  min?: InputMaybe<ShipChoice_min_order_by>;
+  stddev?: InputMaybe<ShipChoice_stddev_order_by>;
+  stddev_pop?: InputMaybe<ShipChoice_stddev_pop_order_by>;
+  stddev_samp?: InputMaybe<ShipChoice_stddev_samp_order_by>;
+  sum?: InputMaybe<ShipChoice_sum_order_by>;
+  var_pop?: InputMaybe<ShipChoice_var_pop_order_by>;
+  var_samp?: InputMaybe<ShipChoice_var_samp_order_by>;
+  variance?: InputMaybe<ShipChoice_variance_order_by>;
+};
+
+/** order by avg() on columns of table "ShipChoice" */
+export type ShipChoice_avg_order_by = {
+  mdProtocol?: InputMaybe<order_by>;
+  voteTally?: InputMaybe<order_by>;
+};
+
+/** Boolean expression to filter rows from the table "ShipChoice". All fields are combined with a logical 'AND'. */
+export type ShipChoice_bool_exp = {
+  _and?: InputMaybe<Array<ShipChoice_bool_exp>>;
+  _not?: InputMaybe<ShipChoice_bool_exp>;
+  _or?: InputMaybe<Array<ShipChoice_bool_exp>>;
+  active?: InputMaybe<Boolean_comparison_exp>;
+  choiceData?: InputMaybe<String_comparison_exp>;
+  contest?: InputMaybe<GrantShipsVoting_bool_exp>;
+  contest_id?: InputMaybe<String_comparison_exp>;
+  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
+  id?: InputMaybe<String_comparison_exp>;
+  mdPointer?: InputMaybe<String_comparison_exp>;
+  mdProtocol?: InputMaybe<numeric_comparison_exp>;
+  voteTally?: InputMaybe<numeric_comparison_exp>;
+  votes?: InputMaybe<ShipVote_bool_exp>;
+};
+
+/** order by max() on columns of table "ShipChoice" */
+export type ShipChoice_max_order_by = {
+  choiceData?: InputMaybe<order_by>;
+  contest_id?: InputMaybe<order_by>;
+  db_write_timestamp?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  mdPointer?: InputMaybe<order_by>;
+  mdProtocol?: InputMaybe<order_by>;
+  voteTally?: InputMaybe<order_by>;
+};
+
+/** order by min() on columns of table "ShipChoice" */
+export type ShipChoice_min_order_by = {
+  choiceData?: InputMaybe<order_by>;
+  contest_id?: InputMaybe<order_by>;
+  db_write_timestamp?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  mdPointer?: InputMaybe<order_by>;
+  mdProtocol?: InputMaybe<order_by>;
+  voteTally?: InputMaybe<order_by>;
+};
+
+/** Ordering options when selecting data from "ShipChoice". */
+export type ShipChoice_order_by = {
+  active?: InputMaybe<order_by>;
+  choiceData?: InputMaybe<order_by>;
+  contest?: InputMaybe<GrantShipsVoting_order_by>;
+  contest_id?: InputMaybe<order_by>;
+  db_write_timestamp?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  mdPointer?: InputMaybe<order_by>;
+  mdProtocol?: InputMaybe<order_by>;
+  voteTally?: InputMaybe<order_by>;
+  votes_aggregate?: InputMaybe<ShipVote_aggregate_order_by>;
+};
+
+/** select columns of table "ShipChoice" */
+export type ShipChoice_select_column =
+  /** column name */
+  | 'active'
+  /** column name */
+  | 'choiceData'
+  /** column name */
+  | 'contest_id'
+  /** column name */
+  | 'db_write_timestamp'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'mdPointer'
+  /** column name */
+  | 'mdProtocol'
+  /** column name */
+  | 'voteTally';
+
+/** order by stddev() on columns of table "ShipChoice" */
+export type ShipChoice_stddev_order_by = {
+  mdProtocol?: InputMaybe<order_by>;
+  voteTally?: InputMaybe<order_by>;
+};
+
+/** order by stddev_pop() on columns of table "ShipChoice" */
+export type ShipChoice_stddev_pop_order_by = {
+  mdProtocol?: InputMaybe<order_by>;
+  voteTally?: InputMaybe<order_by>;
+};
+
+/** order by stddev_samp() on columns of table "ShipChoice" */
+export type ShipChoice_stddev_samp_order_by = {
+  mdProtocol?: InputMaybe<order_by>;
+  voteTally?: InputMaybe<order_by>;
+};
+
+/** Streaming cursor of the table "ShipChoice" */
+export type ShipChoice_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: ShipChoice_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type ShipChoice_stream_cursor_value_input = {
+  active?: InputMaybe<Scalars['Boolean']>;
+  choiceData?: InputMaybe<Scalars['String']>;
+  contest_id?: InputMaybe<Scalars['String']>;
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
+  id?: InputMaybe<Scalars['String']>;
+  mdPointer?: InputMaybe<Scalars['String']>;
+  mdProtocol?: InputMaybe<Scalars['numeric']>;
+  voteTally?: InputMaybe<Scalars['numeric']>;
+};
+
+/** order by sum() on columns of table "ShipChoice" */
+export type ShipChoice_sum_order_by = {
+  mdProtocol?: InputMaybe<order_by>;
+  voteTally?: InputMaybe<order_by>;
+};
+
+/** order by var_pop() on columns of table "ShipChoice" */
+export type ShipChoice_var_pop_order_by = {
+  mdProtocol?: InputMaybe<order_by>;
+  voteTally?: InputMaybe<order_by>;
+};
+
+/** order by var_samp() on columns of table "ShipChoice" */
+export type ShipChoice_var_samp_order_by = {
+  mdProtocol?: InputMaybe<order_by>;
+  voteTally?: InputMaybe<order_by>;
+};
+
+/** order by variance() on columns of table "ShipChoice" */
+export type ShipChoice_variance_order_by = {
+  mdProtocol?: InputMaybe<order_by>;
+  voteTally?: InputMaybe<order_by>;
+};
+
+/** columns and relationships of "ShipVote" */
+export type ShipVote = {
+  amount: Scalars['numeric'];
+  /** An object relationship */
+  choice?: Maybe<ShipChoice>;
+  choice_id: Scalars['String'];
+  /** An object relationship */
+  contest?: Maybe<GrantShipsVoting>;
+  contest_id: Scalars['String'];
+  db_write_timestamp?: Maybe<Scalars['timestamp']>;
+  id: Scalars['String'];
+  isRectractVote: Scalars['Boolean'];
+  mdPointer: Scalars['String'];
+  mdProtocol: Scalars['numeric'];
+  voter: Scalars['String'];
+};
+
+/** order by aggregate values of table "ShipVote" */
+export type ShipVote_aggregate_order_by = {
+  avg?: InputMaybe<ShipVote_avg_order_by>;
+  count?: InputMaybe<order_by>;
+  max?: InputMaybe<ShipVote_max_order_by>;
+  min?: InputMaybe<ShipVote_min_order_by>;
+  stddev?: InputMaybe<ShipVote_stddev_order_by>;
+  stddev_pop?: InputMaybe<ShipVote_stddev_pop_order_by>;
+  stddev_samp?: InputMaybe<ShipVote_stddev_samp_order_by>;
+  sum?: InputMaybe<ShipVote_sum_order_by>;
+  var_pop?: InputMaybe<ShipVote_var_pop_order_by>;
+  var_samp?: InputMaybe<ShipVote_var_samp_order_by>;
+  variance?: InputMaybe<ShipVote_variance_order_by>;
+};
+
+/** order by avg() on columns of table "ShipVote" */
+export type ShipVote_avg_order_by = {
+  amount?: InputMaybe<order_by>;
+  mdProtocol?: InputMaybe<order_by>;
+};
+
+/** Boolean expression to filter rows from the table "ShipVote". All fields are combined with a logical 'AND'. */
+export type ShipVote_bool_exp = {
+  _and?: InputMaybe<Array<ShipVote_bool_exp>>;
+  _not?: InputMaybe<ShipVote_bool_exp>;
+  _or?: InputMaybe<Array<ShipVote_bool_exp>>;
+  amount?: InputMaybe<numeric_comparison_exp>;
+  choice?: InputMaybe<ShipChoice_bool_exp>;
+  choice_id?: InputMaybe<String_comparison_exp>;
+  contest?: InputMaybe<GrantShipsVoting_bool_exp>;
+  contest_id?: InputMaybe<String_comparison_exp>;
+  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
+  id?: InputMaybe<String_comparison_exp>;
+  isRectractVote?: InputMaybe<Boolean_comparison_exp>;
+  mdPointer?: InputMaybe<String_comparison_exp>;
+  mdProtocol?: InputMaybe<numeric_comparison_exp>;
+  voter?: InputMaybe<String_comparison_exp>;
+};
+
+/** order by max() on columns of table "ShipVote" */
+export type ShipVote_max_order_by = {
+  amount?: InputMaybe<order_by>;
+  choice_id?: InputMaybe<order_by>;
+  contest_id?: InputMaybe<order_by>;
+  db_write_timestamp?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  mdPointer?: InputMaybe<order_by>;
+  mdProtocol?: InputMaybe<order_by>;
+  voter?: InputMaybe<order_by>;
+};
+
+/** order by min() on columns of table "ShipVote" */
+export type ShipVote_min_order_by = {
+  amount?: InputMaybe<order_by>;
+  choice_id?: InputMaybe<order_by>;
+  contest_id?: InputMaybe<order_by>;
+  db_write_timestamp?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  mdPointer?: InputMaybe<order_by>;
+  mdProtocol?: InputMaybe<order_by>;
+  voter?: InputMaybe<order_by>;
+};
+
+/** Ordering options when selecting data from "ShipVote". */
+export type ShipVote_order_by = {
+  amount?: InputMaybe<order_by>;
+  choice?: InputMaybe<ShipChoice_order_by>;
+  choice_id?: InputMaybe<order_by>;
+  contest?: InputMaybe<GrantShipsVoting_order_by>;
+  contest_id?: InputMaybe<order_by>;
+  db_write_timestamp?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  isRectractVote?: InputMaybe<order_by>;
+  mdPointer?: InputMaybe<order_by>;
+  mdProtocol?: InputMaybe<order_by>;
+  voter?: InputMaybe<order_by>;
+};
+
+/** select columns of table "ShipVote" */
+export type ShipVote_select_column =
+  /** column name */
+  | 'amount'
+  /** column name */
+  | 'choice_id'
+  /** column name */
+  | 'contest_id'
+  /** column name */
+  | 'db_write_timestamp'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'isRectractVote'
+  /** column name */
+  | 'mdPointer'
+  /** column name */
+  | 'mdProtocol'
+  /** column name */
+  | 'voter';
+
+/** order by stddev() on columns of table "ShipVote" */
+export type ShipVote_stddev_order_by = {
+  amount?: InputMaybe<order_by>;
+  mdProtocol?: InputMaybe<order_by>;
+};
+
+/** order by stddev_pop() on columns of table "ShipVote" */
+export type ShipVote_stddev_pop_order_by = {
+  amount?: InputMaybe<order_by>;
+  mdProtocol?: InputMaybe<order_by>;
+};
+
+/** order by stddev_samp() on columns of table "ShipVote" */
+export type ShipVote_stddev_samp_order_by = {
+  amount?: InputMaybe<order_by>;
+  mdProtocol?: InputMaybe<order_by>;
+};
+
+/** Streaming cursor of the table "ShipVote" */
+export type ShipVote_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: ShipVote_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type ShipVote_stream_cursor_value_input = {
+  amount?: InputMaybe<Scalars['numeric']>;
+  choice_id?: InputMaybe<Scalars['String']>;
+  contest_id?: InputMaybe<Scalars['String']>;
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
+  id?: InputMaybe<Scalars['String']>;
+  isRectractVote?: InputMaybe<Scalars['Boolean']>;
+  mdPointer?: InputMaybe<Scalars['String']>;
+  mdProtocol?: InputMaybe<Scalars['numeric']>;
+  voter?: InputMaybe<Scalars['String']>;
+};
+
+/** order by sum() on columns of table "ShipVote" */
+export type ShipVote_sum_order_by = {
+  amount?: InputMaybe<order_by>;
+  mdProtocol?: InputMaybe<order_by>;
+};
+
+/** order by var_pop() on columns of table "ShipVote" */
+export type ShipVote_var_pop_order_by = {
+  amount?: InputMaybe<order_by>;
+  mdProtocol?: InputMaybe<order_by>;
+};
+
+/** order by var_samp() on columns of table "ShipVote" */
+export type ShipVote_var_samp_order_by = {
+  amount?: InputMaybe<order_by>;
+  mdProtocol?: InputMaybe<order_by>;
+};
+
+/** order by variance() on columns of table "ShipVote" */
+export type ShipVote_variance_order_by = {
+  amount?: InputMaybe<order_by>;
+  mdProtocol?: InputMaybe<order_by>;
+};
+
+/** columns and relationships of "StemModule" */
+export type StemModule = {
+  /** An object relationship */
+  contest?: Maybe<Contest>;
+  contestAddress?: Maybe<Scalars['String']>;
+  contest_id?: Maybe<Scalars['String']>;
+  db_write_timestamp?: Maybe<Scalars['timestamp']>;
+  filterTag: Scalars['String'];
+  id: Scalars['String'];
+  moduleAddress: Scalars['String'];
+  moduleName: Scalars['String'];
+  /** An object relationship */
+  moduleTemplate?: Maybe<ModuleTemplate>;
+  moduleTemplate_id: Scalars['String'];
+};
+
+/** Boolean expression to filter rows from the table "StemModule". All fields are combined with a logical 'AND'. */
+export type StemModule_bool_exp = {
+  _and?: InputMaybe<Array<StemModule_bool_exp>>;
+  _not?: InputMaybe<StemModule_bool_exp>;
+  _or?: InputMaybe<Array<StemModule_bool_exp>>;
+  contest?: InputMaybe<Contest_bool_exp>;
+  contestAddress?: InputMaybe<String_comparison_exp>;
+  contest_id?: InputMaybe<String_comparison_exp>;
+  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
+  filterTag?: InputMaybe<String_comparison_exp>;
+  id?: InputMaybe<String_comparison_exp>;
+  moduleAddress?: InputMaybe<String_comparison_exp>;
+  moduleName?: InputMaybe<String_comparison_exp>;
+  moduleTemplate?: InputMaybe<ModuleTemplate_bool_exp>;
+  moduleTemplate_id?: InputMaybe<String_comparison_exp>;
+};
+
+/** Ordering options when selecting data from "StemModule". */
+export type StemModule_order_by = {
+  contest?: InputMaybe<Contest_order_by>;
+  contestAddress?: InputMaybe<order_by>;
+  contest_id?: InputMaybe<order_by>;
+  db_write_timestamp?: InputMaybe<order_by>;
+  filterTag?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  moduleAddress?: InputMaybe<order_by>;
+  moduleName?: InputMaybe<order_by>;
+  moduleTemplate?: InputMaybe<ModuleTemplate_order_by>;
+  moduleTemplate_id?: InputMaybe<order_by>;
+};
+
+/** select columns of table "StemModule" */
+export type StemModule_select_column =
+  /** column name */
+  | 'contestAddress'
+  /** column name */
+  | 'contest_id'
+  /** column name */
+  | 'db_write_timestamp'
+  /** column name */
+  | 'filterTag'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'moduleAddress'
+  /** column name */
+  | 'moduleName'
+  /** column name */
+  | 'moduleTemplate_id';
+
+/** Streaming cursor of the table "StemModule" */
+export type StemModule_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: StemModule_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type StemModule_stream_cursor_value_input = {
+  contestAddress?: InputMaybe<Scalars['String']>;
+  contest_id?: InputMaybe<Scalars['String']>;
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
+  filterTag?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['String']>;
+  moduleAddress?: InputMaybe<Scalars['String']>;
+  moduleName?: InputMaybe<Scalars['String']>;
+  moduleTemplate_id?: InputMaybe<Scalars['String']>;
+};
+
+/** Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'. */
+export type String_array_comparison_exp = {
+  /** is the array contained in the given array value */
+  _contained_in?: InputMaybe<Array<Scalars['String']>>;
+  /** does the array contain the given value */
+  _contains?: InputMaybe<Array<Scalars['String']>>;
+  _eq?: InputMaybe<Array<Scalars['String']>>;
+  _gt?: InputMaybe<Array<Scalars['String']>>;
+  _gte?: InputMaybe<Array<Scalars['String']>>;
+  _in?: InputMaybe<Array<Array<Scalars['String']>>>;
+  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _lt?: InputMaybe<Array<Scalars['String']>>;
+  _lte?: InputMaybe<Array<Scalars['String']>>;
+  _neq?: InputMaybe<Array<Scalars['String']>>;
+  _nin?: InputMaybe<Array<Array<Scalars['String']>>>;
+};
+
+/** Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'. */
+export type String_comparison_exp = {
+  _eq?: InputMaybe<Scalars['String']>;
+  _gt?: InputMaybe<Scalars['String']>;
+  _gte?: InputMaybe<Scalars['String']>;
+  /** does the column match the given case-insensitive pattern */
+  _ilike?: InputMaybe<Scalars['String']>;
+  _in?: InputMaybe<Array<Scalars['String']>>;
+  /** does the column match the given POSIX regular expression, case insensitive */
+  _iregex?: InputMaybe<Scalars['String']>;
+  _is_null?: InputMaybe<Scalars['Boolean']>;
+  /** does the column match the given pattern */
+  _like?: InputMaybe<Scalars['String']>;
+  _lt?: InputMaybe<Scalars['String']>;
+  _lte?: InputMaybe<Scalars['String']>;
+  _neq?: InputMaybe<Scalars['String']>;
+  /** does the column NOT match the given case-insensitive pattern */
+  _nilike?: InputMaybe<Scalars['String']>;
+  _nin?: InputMaybe<Array<Scalars['String']>>;
+  /** does the column NOT match the given POSIX regular expression, case insensitive */
+  _niregex?: InputMaybe<Scalars['String']>;
+  /** does the column NOT match the given pattern */
+  _nlike?: InputMaybe<Scalars['String']>;
+  /** does the column NOT match the given POSIX regular expression, case sensitive */
+  _nregex?: InputMaybe<Scalars['String']>;
+  /** does the column NOT match the given SQL regular expression */
+  _nsimilar?: InputMaybe<Scalars['String']>;
+  /** does the column match the given POSIX regular expression, case sensitive */
+  _regex?: InputMaybe<Scalars['String']>;
+  /** does the column match the given SQL regular expression */
+  _similar?: InputMaybe<Scalars['String']>;
+};
+
+/** columns and relationships of "TVParams" */
+export type TVParams = {
+  db_write_timestamp?: Maybe<Scalars['timestamp']>;
+  id: Scalars['String'];
+  voteDuration: Scalars['numeric'];
+};
+
+/** Boolean expression to filter rows from the table "TVParams". All fields are combined with a logical 'AND'. */
+export type TVParams_bool_exp = {
+  _and?: InputMaybe<Array<TVParams_bool_exp>>;
+  _not?: InputMaybe<TVParams_bool_exp>;
+  _or?: InputMaybe<Array<TVParams_bool_exp>>;
+  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
+  id?: InputMaybe<String_comparison_exp>;
+  voteDuration?: InputMaybe<numeric_comparison_exp>;
+};
+
+/** Ordering options when selecting data from "TVParams". */
+export type TVParams_order_by = {
+  db_write_timestamp?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  voteDuration?: InputMaybe<order_by>;
+};
+
+/** select columns of table "TVParams" */
+export type TVParams_select_column =
+  /** column name */
+  | 'db_write_timestamp'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'voteDuration';
+
+/** Streaming cursor of the table "TVParams" */
+export type TVParams_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: TVParams_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type TVParams_stream_cursor_value_input = {
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
+  id?: InputMaybe<Scalars['String']>;
+  voteDuration?: InputMaybe<Scalars['numeric']>;
+};
+
+/** columns and relationships of "chain_metadata" */
+export type chain_metadata = {
+  block_height: Scalars['Int'];
+  chain_id: Scalars['Int'];
+  end_block?: Maybe<Scalars['Int']>;
+  first_event_block_number?: Maybe<Scalars['Int']>;
+  is_hyper_sync: Scalars['Boolean'];
+  latest_fetched_block_number: Scalars['Int'];
+  latest_processed_block?: Maybe<Scalars['Int']>;
+  num_batches_fetched: Scalars['Int'];
+  num_events_processed?: Maybe<Scalars['Int']>;
+  start_block: Scalars['Int'];
+  timestamp_caught_up_to_head_or_endblock?: Maybe<Scalars['timestamptz']>;
+};
+
+/** Boolean expression to filter rows from the table "chain_metadata". All fields are combined with a logical 'AND'. */
+export type chain_metadata_bool_exp = {
+  _and?: InputMaybe<Array<chain_metadata_bool_exp>>;
+  _not?: InputMaybe<chain_metadata_bool_exp>;
+  _or?: InputMaybe<Array<chain_metadata_bool_exp>>;
+  block_height?: InputMaybe<Int_comparison_exp>;
+  chain_id?: InputMaybe<Int_comparison_exp>;
+  end_block?: InputMaybe<Int_comparison_exp>;
+  first_event_block_number?: InputMaybe<Int_comparison_exp>;
+  is_hyper_sync?: InputMaybe<Boolean_comparison_exp>;
+  latest_fetched_block_number?: InputMaybe<Int_comparison_exp>;
+  latest_processed_block?: InputMaybe<Int_comparison_exp>;
+  num_batches_fetched?: InputMaybe<Int_comparison_exp>;
+  num_events_processed?: InputMaybe<Int_comparison_exp>;
+  start_block?: InputMaybe<Int_comparison_exp>;
+  timestamp_caught_up_to_head_or_endblock?: InputMaybe<timestamptz_comparison_exp>;
+};
+
+/** Ordering options when selecting data from "chain_metadata". */
+export type chain_metadata_order_by = {
+  block_height?: InputMaybe<order_by>;
+  chain_id?: InputMaybe<order_by>;
+  end_block?: InputMaybe<order_by>;
+  first_event_block_number?: InputMaybe<order_by>;
+  is_hyper_sync?: InputMaybe<order_by>;
+  latest_fetched_block_number?: InputMaybe<order_by>;
+  latest_processed_block?: InputMaybe<order_by>;
+  num_batches_fetched?: InputMaybe<order_by>;
+  num_events_processed?: InputMaybe<order_by>;
+  start_block?: InputMaybe<order_by>;
+  timestamp_caught_up_to_head_or_endblock?: InputMaybe<order_by>;
+};
+
+/** select columns of table "chain_metadata" */
+export type chain_metadata_select_column =
+  /** column name */
+  | 'block_height'
+  /** column name */
+  | 'chain_id'
+  /** column name */
+  | 'end_block'
+  /** column name */
+  | 'first_event_block_number'
+  /** column name */
+  | 'is_hyper_sync'
+  /** column name */
+  | 'latest_fetched_block_number'
+  /** column name */
+  | 'latest_processed_block'
+  /** column name */
+  | 'num_batches_fetched'
+  /** column name */
+  | 'num_events_processed'
+  /** column name */
+  | 'start_block'
+  /** column name */
+  | 'timestamp_caught_up_to_head_or_endblock';
+
+/** Streaming cursor of the table "chain_metadata" */
+export type chain_metadata_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: chain_metadata_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type chain_metadata_stream_cursor_value_input = {
+  block_height?: InputMaybe<Scalars['Int']>;
+  chain_id?: InputMaybe<Scalars['Int']>;
+  end_block?: InputMaybe<Scalars['Int']>;
+  first_event_block_number?: InputMaybe<Scalars['Int']>;
+  is_hyper_sync?: InputMaybe<Scalars['Boolean']>;
+  latest_fetched_block_number?: InputMaybe<Scalars['Int']>;
+  latest_processed_block?: InputMaybe<Scalars['Int']>;
+  num_batches_fetched?: InputMaybe<Scalars['Int']>;
+  num_events_processed?: InputMaybe<Scalars['Int']>;
+  start_block?: InputMaybe<Scalars['Int']>;
+  timestamp_caught_up_to_head_or_endblock?: InputMaybe<Scalars['timestamptz']>;
+};
+
+/** Boolean expression to compare columns of type "contract_type". All fields are combined with logical 'AND'. */
+export type contract_type_comparison_exp = {
+  _eq?: InputMaybe<Scalars['contract_type']>;
+  _gt?: InputMaybe<Scalars['contract_type']>;
+  _gte?: InputMaybe<Scalars['contract_type']>;
+  _in?: InputMaybe<Array<Scalars['contract_type']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _lt?: InputMaybe<Scalars['contract_type']>;
+  _lte?: InputMaybe<Scalars['contract_type']>;
+  _neq?: InputMaybe<Scalars['contract_type']>;
+  _nin?: InputMaybe<Array<Scalars['contract_type']>>;
+};
+
+/** ordering argument of a cursor */
+export type cursor_ordering =
+  /** ascending ordering of the cursor */
+  | 'ASC'
+  /** descending ordering of the cursor */
+  | 'DESC';
+
+/** columns and relationships of "dynamic_contract_registry" */
+export type dynamic_contract_registry = {
+  block_timestamp: Scalars['Int'];
+  chain_id: Scalars['Int'];
+  contract_address: Scalars['String'];
+  contract_type: Scalars['contract_type'];
+  event_id: Scalars['numeric'];
+};
+
+/** Boolean expression to filter rows from the table "dynamic_contract_registry". All fields are combined with a logical 'AND'. */
+export type dynamic_contract_registry_bool_exp = {
+  _and?: InputMaybe<Array<dynamic_contract_registry_bool_exp>>;
+  _not?: InputMaybe<dynamic_contract_registry_bool_exp>;
+  _or?: InputMaybe<Array<dynamic_contract_registry_bool_exp>>;
+  block_timestamp?: InputMaybe<Int_comparison_exp>;
+  chain_id?: InputMaybe<Int_comparison_exp>;
+  contract_address?: InputMaybe<String_comparison_exp>;
+  contract_type?: InputMaybe<contract_type_comparison_exp>;
+  event_id?: InputMaybe<numeric_comparison_exp>;
+};
+
+/** Ordering options when selecting data from "dynamic_contract_registry". */
+export type dynamic_contract_registry_order_by = {
+  block_timestamp?: InputMaybe<order_by>;
+  chain_id?: InputMaybe<order_by>;
+  contract_address?: InputMaybe<order_by>;
+  contract_type?: InputMaybe<order_by>;
+  event_id?: InputMaybe<order_by>;
+};
+
+/** select columns of table "dynamic_contract_registry" */
+export type dynamic_contract_registry_select_column =
+  /** column name */
+  | 'block_timestamp'
+  /** column name */
+  | 'chain_id'
+  /** column name */
+  | 'contract_address'
+  /** column name */
+  | 'contract_type'
+  /** column name */
+  | 'event_id';
+
+/** Streaming cursor of the table "dynamic_contract_registry" */
+export type dynamic_contract_registry_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: dynamic_contract_registry_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type dynamic_contract_registry_stream_cursor_value_input = {
+  block_timestamp?: InputMaybe<Scalars['Int']>;
+  chain_id?: InputMaybe<Scalars['Int']>;
+  contract_address?: InputMaybe<Scalars['String']>;
+  contract_type?: InputMaybe<Scalars['contract_type']>;
+  event_id?: InputMaybe<Scalars['numeric']>;
+};
+
+/** columns and relationships of "entity_history" */
+export type entity_history = {
+  block_number: Scalars['Int'];
+  block_timestamp: Scalars['Int'];
+  chain_id: Scalars['Int'];
+  entity_id: Scalars['String'];
+  entity_type: Scalars['entity_type'];
+  /** An object relationship */
+  event?: Maybe<raw_events>;
+  log_index: Scalars['Int'];
+  params?: Maybe<Scalars['json']>;
+  previous_block_number?: Maybe<Scalars['Int']>;
+  previous_block_timestamp?: Maybe<Scalars['Int']>;
+  previous_chain_id?: Maybe<Scalars['Int']>;
+  previous_log_index?: Maybe<Scalars['Int']>;
+};
+
+
+/** columns and relationships of "entity_history" */
+export type entity_historyparamsArgs = {
+  path?: InputMaybe<Scalars['String']>;
+};
+
+/** order by aggregate values of table "entity_history" */
+export type entity_history_aggregate_order_by = {
+  avg?: InputMaybe<entity_history_avg_order_by>;
+  count?: InputMaybe<order_by>;
+  max?: InputMaybe<entity_history_max_order_by>;
+  min?: InputMaybe<entity_history_min_order_by>;
+  stddev?: InputMaybe<entity_history_stddev_order_by>;
+  stddev_pop?: InputMaybe<entity_history_stddev_pop_order_by>;
+  stddev_samp?: InputMaybe<entity_history_stddev_samp_order_by>;
+  sum?: InputMaybe<entity_history_sum_order_by>;
+  var_pop?: InputMaybe<entity_history_var_pop_order_by>;
+  var_samp?: InputMaybe<entity_history_var_samp_order_by>;
+  variance?: InputMaybe<entity_history_variance_order_by>;
+};
+
+/** order by avg() on columns of table "entity_history" */
+export type entity_history_avg_order_by = {
+  block_number?: InputMaybe<order_by>;
+  block_timestamp?: InputMaybe<order_by>;
+  chain_id?: InputMaybe<order_by>;
+  log_index?: InputMaybe<order_by>;
+  previous_block_number?: InputMaybe<order_by>;
+  previous_block_timestamp?: InputMaybe<order_by>;
+  previous_chain_id?: InputMaybe<order_by>;
+  previous_log_index?: InputMaybe<order_by>;
+};
+
+/** Boolean expression to filter rows from the table "entity_history". All fields are combined with a logical 'AND'. */
+export type entity_history_bool_exp = {
+  _and?: InputMaybe<Array<entity_history_bool_exp>>;
+  _not?: InputMaybe<entity_history_bool_exp>;
+  _or?: InputMaybe<Array<entity_history_bool_exp>>;
+  block_number?: InputMaybe<Int_comparison_exp>;
+  block_timestamp?: InputMaybe<Int_comparison_exp>;
+  chain_id?: InputMaybe<Int_comparison_exp>;
+  entity_id?: InputMaybe<String_comparison_exp>;
+  entity_type?: InputMaybe<entity_type_comparison_exp>;
+  event?: InputMaybe<raw_events_bool_exp>;
+  log_index?: InputMaybe<Int_comparison_exp>;
+  params?: InputMaybe<json_comparison_exp>;
+  previous_block_number?: InputMaybe<Int_comparison_exp>;
+  previous_block_timestamp?: InputMaybe<Int_comparison_exp>;
+  previous_chain_id?: InputMaybe<Int_comparison_exp>;
+  previous_log_index?: InputMaybe<Int_comparison_exp>;
+};
+
+/** columns and relationships of "entity_history_filter" */
+export type entity_history_filter = {
+  block_number: Scalars['Int'];
+  block_timestamp: Scalars['Int'];
+  chain_id: Scalars['Int'];
+  entity_id: Scalars['String'];
+  entity_type: Scalars['entity_type'];
+  /** An object relationship */
+  event?: Maybe<raw_events>;
+  log_index: Scalars['Int'];
+  new_val?: Maybe<Scalars['json']>;
+  old_val?: Maybe<Scalars['json']>;
+  previous_block_number: Scalars['Int'];
+  previous_log_index: Scalars['Int'];
+};
+
+
+/** columns and relationships of "entity_history_filter" */
+export type entity_history_filternew_valArgs = {
+  path?: InputMaybe<Scalars['String']>;
+};
+
+
+/** columns and relationships of "entity_history_filter" */
+export type entity_history_filterold_valArgs = {
+  path?: InputMaybe<Scalars['String']>;
+};
+
+/** Boolean expression to filter rows from the table "entity_history_filter". All fields are combined with a logical 'AND'. */
+export type entity_history_filter_bool_exp = {
+  _and?: InputMaybe<Array<entity_history_filter_bool_exp>>;
+  _not?: InputMaybe<entity_history_filter_bool_exp>;
+  _or?: InputMaybe<Array<entity_history_filter_bool_exp>>;
+  block_number?: InputMaybe<Int_comparison_exp>;
+  block_timestamp?: InputMaybe<Int_comparison_exp>;
+  chain_id?: InputMaybe<Int_comparison_exp>;
+  entity_id?: InputMaybe<String_comparison_exp>;
+  entity_type?: InputMaybe<entity_type_comparison_exp>;
+  event?: InputMaybe<raw_events_bool_exp>;
+  log_index?: InputMaybe<Int_comparison_exp>;
+  new_val?: InputMaybe<json_comparison_exp>;
+  old_val?: InputMaybe<json_comparison_exp>;
+  previous_block_number?: InputMaybe<Int_comparison_exp>;
+  previous_log_index?: InputMaybe<Int_comparison_exp>;
+};
+
+/** Ordering options when selecting data from "entity_history_filter". */
+export type entity_history_filter_order_by = {
+  block_number?: InputMaybe<order_by>;
+  block_timestamp?: InputMaybe<order_by>;
+  chain_id?: InputMaybe<order_by>;
+  entity_id?: InputMaybe<order_by>;
+  entity_type?: InputMaybe<order_by>;
+  event?: InputMaybe<raw_events_order_by>;
+  log_index?: InputMaybe<order_by>;
+  new_val?: InputMaybe<order_by>;
+  old_val?: InputMaybe<order_by>;
+  previous_block_number?: InputMaybe<order_by>;
+  previous_log_index?: InputMaybe<order_by>;
+};
+
+/** select columns of table "entity_history_filter" */
+export type entity_history_filter_select_column =
+  /** column name */
+  | 'block_number'
+  /** column name */
+  | 'block_timestamp'
+  /** column name */
+  | 'chain_id'
+  /** column name */
+  | 'entity_id'
+  /** column name */
+  | 'entity_type'
+  /** column name */
+  | 'log_index'
+  /** column name */
+  | 'new_val'
+  /** column name */
+  | 'old_val'
+  /** column name */
+  | 'previous_block_number'
+  /** column name */
+  | 'previous_log_index';
+
+/** Streaming cursor of the table "entity_history_filter" */
+export type entity_history_filter_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: entity_history_filter_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type entity_history_filter_stream_cursor_value_input = {
+  block_number?: InputMaybe<Scalars['Int']>;
+  block_timestamp?: InputMaybe<Scalars['Int']>;
+  chain_id?: InputMaybe<Scalars['Int']>;
+  entity_id?: InputMaybe<Scalars['String']>;
+  entity_type?: InputMaybe<Scalars['entity_type']>;
+  log_index?: InputMaybe<Scalars['Int']>;
+  new_val?: InputMaybe<Scalars['json']>;
+  old_val?: InputMaybe<Scalars['json']>;
+  previous_block_number?: InputMaybe<Scalars['Int']>;
+  previous_log_index?: InputMaybe<Scalars['Int']>;
+};
+
+/** order by max() on columns of table "entity_history" */
+export type entity_history_max_order_by = {
+  block_number?: InputMaybe<order_by>;
+  block_timestamp?: InputMaybe<order_by>;
+  chain_id?: InputMaybe<order_by>;
+  entity_id?: InputMaybe<order_by>;
+  entity_type?: InputMaybe<order_by>;
+  log_index?: InputMaybe<order_by>;
+  previous_block_number?: InputMaybe<order_by>;
+  previous_block_timestamp?: InputMaybe<order_by>;
+  previous_chain_id?: InputMaybe<order_by>;
+  previous_log_index?: InputMaybe<order_by>;
+};
+
+/** order by min() on columns of table "entity_history" */
+export type entity_history_min_order_by = {
+  block_number?: InputMaybe<order_by>;
+  block_timestamp?: InputMaybe<order_by>;
+  chain_id?: InputMaybe<order_by>;
+  entity_id?: InputMaybe<order_by>;
+  entity_type?: InputMaybe<order_by>;
+  log_index?: InputMaybe<order_by>;
+  previous_block_number?: InputMaybe<order_by>;
+  previous_block_timestamp?: InputMaybe<order_by>;
+  previous_chain_id?: InputMaybe<order_by>;
+  previous_log_index?: InputMaybe<order_by>;
+};
+
+/** Ordering options when selecting data from "entity_history". */
+export type entity_history_order_by = {
+  block_number?: InputMaybe<order_by>;
+  block_timestamp?: InputMaybe<order_by>;
+  chain_id?: InputMaybe<order_by>;
+  entity_id?: InputMaybe<order_by>;
+  entity_type?: InputMaybe<order_by>;
+  event?: InputMaybe<raw_events_order_by>;
+  log_index?: InputMaybe<order_by>;
+  params?: InputMaybe<order_by>;
+  previous_block_number?: InputMaybe<order_by>;
+  previous_block_timestamp?: InputMaybe<order_by>;
+  previous_chain_id?: InputMaybe<order_by>;
+  previous_log_index?: InputMaybe<order_by>;
+};
+
+/** select columns of table "entity_history" */
+export type entity_history_select_column =
+  /** column name */
+  | 'block_number'
+  /** column name */
+  | 'block_timestamp'
+  /** column name */
+  | 'chain_id'
+  /** column name */
+  | 'entity_id'
+  /** column name */
+  | 'entity_type'
+  /** column name */
+  | 'log_index'
+  /** column name */
+  | 'params'
+  /** column name */
+  | 'previous_block_number'
+  /** column name */
+  | 'previous_block_timestamp'
+  /** column name */
+  | 'previous_chain_id'
+  /** column name */
+  | 'previous_log_index';
+
+/** order by stddev() on columns of table "entity_history" */
+export type entity_history_stddev_order_by = {
+  block_number?: InputMaybe<order_by>;
+  block_timestamp?: InputMaybe<order_by>;
+  chain_id?: InputMaybe<order_by>;
+  log_index?: InputMaybe<order_by>;
+  previous_block_number?: InputMaybe<order_by>;
+  previous_block_timestamp?: InputMaybe<order_by>;
+  previous_chain_id?: InputMaybe<order_by>;
+  previous_log_index?: InputMaybe<order_by>;
+};
+
+/** order by stddev_pop() on columns of table "entity_history" */
+export type entity_history_stddev_pop_order_by = {
+  block_number?: InputMaybe<order_by>;
+  block_timestamp?: InputMaybe<order_by>;
+  chain_id?: InputMaybe<order_by>;
+  log_index?: InputMaybe<order_by>;
+  previous_block_number?: InputMaybe<order_by>;
+  previous_block_timestamp?: InputMaybe<order_by>;
+  previous_chain_id?: InputMaybe<order_by>;
+  previous_log_index?: InputMaybe<order_by>;
+};
+
+/** order by stddev_samp() on columns of table "entity_history" */
+export type entity_history_stddev_samp_order_by = {
+  block_number?: InputMaybe<order_by>;
+  block_timestamp?: InputMaybe<order_by>;
+  chain_id?: InputMaybe<order_by>;
+  log_index?: InputMaybe<order_by>;
+  previous_block_number?: InputMaybe<order_by>;
+  previous_block_timestamp?: InputMaybe<order_by>;
+  previous_chain_id?: InputMaybe<order_by>;
+  previous_log_index?: InputMaybe<order_by>;
+};
+
+/** Streaming cursor of the table "entity_history" */
+export type entity_history_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: entity_history_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type entity_history_stream_cursor_value_input = {
+  block_number?: InputMaybe<Scalars['Int']>;
+  block_timestamp?: InputMaybe<Scalars['Int']>;
+  chain_id?: InputMaybe<Scalars['Int']>;
+  entity_id?: InputMaybe<Scalars['String']>;
+  entity_type?: InputMaybe<Scalars['entity_type']>;
+  log_index?: InputMaybe<Scalars['Int']>;
+  params?: InputMaybe<Scalars['json']>;
+  previous_block_number?: InputMaybe<Scalars['Int']>;
+  previous_block_timestamp?: InputMaybe<Scalars['Int']>;
+  previous_chain_id?: InputMaybe<Scalars['Int']>;
+  previous_log_index?: InputMaybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "entity_history" */
+export type entity_history_sum_order_by = {
+  block_number?: InputMaybe<order_by>;
+  block_timestamp?: InputMaybe<order_by>;
+  chain_id?: InputMaybe<order_by>;
+  log_index?: InputMaybe<order_by>;
+  previous_block_number?: InputMaybe<order_by>;
+  previous_block_timestamp?: InputMaybe<order_by>;
+  previous_chain_id?: InputMaybe<order_by>;
+  previous_log_index?: InputMaybe<order_by>;
+};
+
+/** order by var_pop() on columns of table "entity_history" */
+export type entity_history_var_pop_order_by = {
+  block_number?: InputMaybe<order_by>;
+  block_timestamp?: InputMaybe<order_by>;
+  chain_id?: InputMaybe<order_by>;
+  log_index?: InputMaybe<order_by>;
+  previous_block_number?: InputMaybe<order_by>;
+  previous_block_timestamp?: InputMaybe<order_by>;
+  previous_chain_id?: InputMaybe<order_by>;
+  previous_log_index?: InputMaybe<order_by>;
+};
+
+/** order by var_samp() on columns of table "entity_history" */
+export type entity_history_var_samp_order_by = {
+  block_number?: InputMaybe<order_by>;
+  block_timestamp?: InputMaybe<order_by>;
+  chain_id?: InputMaybe<order_by>;
+  log_index?: InputMaybe<order_by>;
+  previous_block_number?: InputMaybe<order_by>;
+  previous_block_timestamp?: InputMaybe<order_by>;
+  previous_chain_id?: InputMaybe<order_by>;
+  previous_log_index?: InputMaybe<order_by>;
+};
+
+/** order by variance() on columns of table "entity_history" */
+export type entity_history_variance_order_by = {
+  block_number?: InputMaybe<order_by>;
+  block_timestamp?: InputMaybe<order_by>;
+  chain_id?: InputMaybe<order_by>;
+  log_index?: InputMaybe<order_by>;
+  previous_block_number?: InputMaybe<order_by>;
+  previous_block_timestamp?: InputMaybe<order_by>;
+  previous_chain_id?: InputMaybe<order_by>;
+  previous_log_index?: InputMaybe<order_by>;
+};
+
+/** Boolean expression to compare columns of type "entity_type". All fields are combined with logical 'AND'. */
+export type entity_type_comparison_exp = {
+  _eq?: InputMaybe<Scalars['entity_type']>;
+  _gt?: InputMaybe<Scalars['entity_type']>;
+  _gte?: InputMaybe<Scalars['entity_type']>;
+  _in?: InputMaybe<Array<Scalars['entity_type']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _lt?: InputMaybe<Scalars['entity_type']>;
+  _lte?: InputMaybe<Scalars['entity_type']>;
+  _neq?: InputMaybe<Scalars['entity_type']>;
+  _nin?: InputMaybe<Array<Scalars['entity_type']>>;
+};
+
+/** columns and relationships of "event_sync_state" */
+export type event_sync_state = {
+  block_number: Scalars['Int'];
+  block_timestamp: Scalars['Int'];
+  chain_id: Scalars['Int'];
+  log_index: Scalars['Int'];
+  transaction_index: Scalars['Int'];
+};
+
+/** Boolean expression to filter rows from the table "event_sync_state". All fields are combined with a logical 'AND'. */
+export type event_sync_state_bool_exp = {
+  _and?: InputMaybe<Array<event_sync_state_bool_exp>>;
+  _not?: InputMaybe<event_sync_state_bool_exp>;
+  _or?: InputMaybe<Array<event_sync_state_bool_exp>>;
+  block_number?: InputMaybe<Int_comparison_exp>;
+  block_timestamp?: InputMaybe<Int_comparison_exp>;
+  chain_id?: InputMaybe<Int_comparison_exp>;
+  log_index?: InputMaybe<Int_comparison_exp>;
+  transaction_index?: InputMaybe<Int_comparison_exp>;
+};
+
+/** Ordering options when selecting data from "event_sync_state". */
+export type event_sync_state_order_by = {
+  block_number?: InputMaybe<order_by>;
+  block_timestamp?: InputMaybe<order_by>;
+  chain_id?: InputMaybe<order_by>;
+  log_index?: InputMaybe<order_by>;
+  transaction_index?: InputMaybe<order_by>;
+};
+
+/** select columns of table "event_sync_state" */
+export type event_sync_state_select_column =
+  /** column name */
+  | 'block_number'
+  /** column name */
+  | 'block_timestamp'
+  /** column name */
+  | 'chain_id'
+  /** column name */
+  | 'log_index'
+  /** column name */
+  | 'transaction_index';
+
+/** Streaming cursor of the table "event_sync_state" */
+export type event_sync_state_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: event_sync_state_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type event_sync_state_stream_cursor_value_input = {
+  block_number?: InputMaybe<Scalars['Int']>;
+  block_timestamp?: InputMaybe<Scalars['Int']>;
+  chain_id?: InputMaybe<Scalars['Int']>;
+  log_index?: InputMaybe<Scalars['Int']>;
+  transaction_index?: InputMaybe<Scalars['Int']>;
+};
+
+/** Boolean expression to compare columns of type "event_type". All fields are combined with logical 'AND'. */
+export type event_type_comparison_exp = {
+  _eq?: InputMaybe<Scalars['event_type']>;
+  _gt?: InputMaybe<Scalars['event_type']>;
+  _gte?: InputMaybe<Scalars['event_type']>;
+  _in?: InputMaybe<Array<Scalars['event_type']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _lt?: InputMaybe<Scalars['event_type']>;
+  _lte?: InputMaybe<Scalars['event_type']>;
+  _neq?: InputMaybe<Scalars['event_type']>;
+  _nin?: InputMaybe<Array<Scalars['event_type']>>;
+};
+
+export type get_entity_history_filter_args = {
+  end_block?: InputMaybe<Scalars['Int']>;
+  end_chain_id?: InputMaybe<Scalars['Int']>;
+  end_log_index?: InputMaybe<Scalars['Int']>;
+  end_timestamp?: InputMaybe<Scalars['Int']>;
+  start_block?: InputMaybe<Scalars['Int']>;
+  start_chain_id?: InputMaybe<Scalars['Int']>;
+  start_log_index?: InputMaybe<Scalars['Int']>;
+  start_timestamp?: InputMaybe<Scalars['Int']>;
+};
+
+/** Boolean expression to compare columns of type "json". All fields are combined with logical 'AND'. */
+export type json_comparison_exp = {
+  _eq?: InputMaybe<Scalars['json']>;
+  _gt?: InputMaybe<Scalars['json']>;
+  _gte?: InputMaybe<Scalars['json']>;
+  _in?: InputMaybe<Array<Scalars['json']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _lt?: InputMaybe<Scalars['json']>;
+  _lte?: InputMaybe<Scalars['json']>;
+  _neq?: InputMaybe<Scalars['json']>;
+  _nin?: InputMaybe<Array<Scalars['json']>>;
+};
+
+/** Boolean expression to compare columns of type "numeric". All fields are combined with logical 'AND'. */
+export type numeric_array_comparison_exp = {
+  /** is the array contained in the given array value */
+  _contained_in?: InputMaybe<Array<Scalars['numeric']>>;
+  /** does the array contain the given value */
+  _contains?: InputMaybe<Array<Scalars['numeric']>>;
+  _eq?: InputMaybe<Array<Scalars['numeric']>>;
+  _gt?: InputMaybe<Array<Scalars['numeric']>>;
+  _gte?: InputMaybe<Array<Scalars['numeric']>>;
+  _in?: InputMaybe<Array<Array<Scalars['numeric']>>>;
+  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _lt?: InputMaybe<Array<Scalars['numeric']>>;
+  _lte?: InputMaybe<Array<Scalars['numeric']>>;
+  _neq?: InputMaybe<Array<Scalars['numeric']>>;
+  _nin?: InputMaybe<Array<Array<Scalars['numeric']>>>;
+};
+
+/** Boolean expression to compare columns of type "numeric". All fields are combined with logical 'AND'. */
+export type numeric_comparison_exp = {
+  _eq?: InputMaybe<Scalars['numeric']>;
+  _gt?: InputMaybe<Scalars['numeric']>;
+  _gte?: InputMaybe<Scalars['numeric']>;
+  _in?: InputMaybe<Array<Scalars['numeric']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _lt?: InputMaybe<Scalars['numeric']>;
+  _lte?: InputMaybe<Scalars['numeric']>;
+  _neq?: InputMaybe<Scalars['numeric']>;
+  _nin?: InputMaybe<Array<Scalars['numeric']>>;
+};
+
+/** column ordering options */
+export type order_by =
+  /** in ascending order, nulls last */
+  | 'asc'
+  /** in ascending order, nulls first */
+  | 'asc_nulls_first'
+  /** in ascending order, nulls last */
+  | 'asc_nulls_last'
+  /** in descending order, nulls first */
+  | 'desc'
+  /** in descending order, nulls first */
+  | 'desc_nulls_first'
+  /** in descending order, nulls last */
+  | 'desc_nulls_last';
+
+/** columns and relationships of "persisted_state" */
+export type persisted_state = {
+  abi_files_hash: Scalars['String'];
+  config_hash: Scalars['String'];
+  envio_version: Scalars['String'];
+  handler_files_hash: Scalars['String'];
+  id: Scalars['Int'];
+  schema_hash: Scalars['String'];
+};
+
+/** Boolean expression to filter rows from the table "persisted_state". All fields are combined with a logical 'AND'. */
+export type persisted_state_bool_exp = {
+  _and?: InputMaybe<Array<persisted_state_bool_exp>>;
+  _not?: InputMaybe<persisted_state_bool_exp>;
+  _or?: InputMaybe<Array<persisted_state_bool_exp>>;
+  abi_files_hash?: InputMaybe<String_comparison_exp>;
+  config_hash?: InputMaybe<String_comparison_exp>;
+  envio_version?: InputMaybe<String_comparison_exp>;
+  handler_files_hash?: InputMaybe<String_comparison_exp>;
+  id?: InputMaybe<Int_comparison_exp>;
+  schema_hash?: InputMaybe<String_comparison_exp>;
+};
+
+/** Ordering options when selecting data from "persisted_state". */
+export type persisted_state_order_by = {
+  abi_files_hash?: InputMaybe<order_by>;
+  config_hash?: InputMaybe<order_by>;
+  envio_version?: InputMaybe<order_by>;
+  handler_files_hash?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  schema_hash?: InputMaybe<order_by>;
+};
+
+/** select columns of table "persisted_state" */
+export type persisted_state_select_column =
+  /** column name */
+  | 'abi_files_hash'
+  /** column name */
+  | 'config_hash'
+  /** column name */
+  | 'envio_version'
+  /** column name */
+  | 'handler_files_hash'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'schema_hash';
+
+/** Streaming cursor of the table "persisted_state" */
+export type persisted_state_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: persisted_state_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type persisted_state_stream_cursor_value_input = {
+  abi_files_hash?: InputMaybe<Scalars['String']>;
+  config_hash?: InputMaybe<Scalars['String']>;
+  envio_version?: InputMaybe<Scalars['String']>;
+  handler_files_hash?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['Int']>;
+  schema_hash?: InputMaybe<Scalars['String']>;
+};
+
+/** columns and relationships of "raw_events" */
+export type raw_events = {
+  block_hash: Scalars['String'];
+  block_number: Scalars['Int'];
+  block_timestamp: Scalars['Int'];
+  chain_id: Scalars['Int'];
+  db_write_timestamp?: Maybe<Scalars['timestamp']>;
+  /** An array relationship */
+  event_history: Array<entity_history>;
+  event_id: Scalars['numeric'];
+  event_type: Scalars['event_type'];
+  log_index: Scalars['Int'];
+  params: Scalars['json'];
+  src_address: Scalars['String'];
+  transaction_hash: Scalars['String'];
+  transaction_index: Scalars['Int'];
+};
+
+
+/** columns and relationships of "raw_events" */
+export type raw_eventsevent_historyArgs = {
+  distinct_on?: InputMaybe<Array<entity_history_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<entity_history_order_by>>;
+  where?: InputMaybe<entity_history_bool_exp>;
+};
+
+
+/** columns and relationships of "raw_events" */
+export type raw_eventsparamsArgs = {
+  path?: InputMaybe<Scalars['String']>;
+};
+
+/** Boolean expression to filter rows from the table "raw_events". All fields are combined with a logical 'AND'. */
+export type raw_events_bool_exp = {
+  _and?: InputMaybe<Array<raw_events_bool_exp>>;
+  _not?: InputMaybe<raw_events_bool_exp>;
+  _or?: InputMaybe<Array<raw_events_bool_exp>>;
+  block_hash?: InputMaybe<String_comparison_exp>;
+  block_number?: InputMaybe<Int_comparison_exp>;
+  block_timestamp?: InputMaybe<Int_comparison_exp>;
+  chain_id?: InputMaybe<Int_comparison_exp>;
+  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
+  event_history?: InputMaybe<entity_history_bool_exp>;
+  event_id?: InputMaybe<numeric_comparison_exp>;
+  event_type?: InputMaybe<event_type_comparison_exp>;
+  log_index?: InputMaybe<Int_comparison_exp>;
+  params?: InputMaybe<json_comparison_exp>;
+  src_address?: InputMaybe<String_comparison_exp>;
+  transaction_hash?: InputMaybe<String_comparison_exp>;
+  transaction_index?: InputMaybe<Int_comparison_exp>;
+};
+
+/** Ordering options when selecting data from "raw_events". */
+export type raw_events_order_by = {
+  block_hash?: InputMaybe<order_by>;
+  block_number?: InputMaybe<order_by>;
+  block_timestamp?: InputMaybe<order_by>;
+  chain_id?: InputMaybe<order_by>;
+  db_write_timestamp?: InputMaybe<order_by>;
+  event_history_aggregate?: InputMaybe<entity_history_aggregate_order_by>;
+  event_id?: InputMaybe<order_by>;
+  event_type?: InputMaybe<order_by>;
+  log_index?: InputMaybe<order_by>;
+  params?: InputMaybe<order_by>;
+  src_address?: InputMaybe<order_by>;
+  transaction_hash?: InputMaybe<order_by>;
+  transaction_index?: InputMaybe<order_by>;
+};
+
+/** select columns of table "raw_events" */
+export type raw_events_select_column =
+  /** column name */
+  | 'block_hash'
+  /** column name */
+  | 'block_number'
+  /** column name */
+  | 'block_timestamp'
+  /** column name */
+  | 'chain_id'
+  /** column name */
+  | 'db_write_timestamp'
+  /** column name */
+  | 'event_id'
+  /** column name */
+  | 'event_type'
+  /** column name */
+  | 'log_index'
+  /** column name */
+  | 'params'
+  /** column name */
+  | 'src_address'
+  /** column name */
+  | 'transaction_hash'
+  /** column name */
+  | 'transaction_index';
+
+/** Streaming cursor of the table "raw_events" */
+export type raw_events_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: raw_events_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type raw_events_stream_cursor_value_input = {
+  block_hash?: InputMaybe<Scalars['String']>;
+  block_number?: InputMaybe<Scalars['Int']>;
+  block_timestamp?: InputMaybe<Scalars['Int']>;
+  chain_id?: InputMaybe<Scalars['Int']>;
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
+  event_id?: InputMaybe<Scalars['numeric']>;
+  event_type?: InputMaybe<Scalars['event_type']>;
+  log_index?: InputMaybe<Scalars['Int']>;
+  params?: InputMaybe<Scalars['json']>;
+  src_address?: InputMaybe<Scalars['String']>;
+  transaction_hash?: InputMaybe<Scalars['String']>;
+  transaction_index?: InputMaybe<Scalars['Int']>;
+};
+
+/** Boolean expression to compare columns of type "timestamp". All fields are combined with logical 'AND'. */
+export type timestamp_comparison_exp = {
+  _eq?: InputMaybe<Scalars['timestamp']>;
+  _gt?: InputMaybe<Scalars['timestamp']>;
+  _gte?: InputMaybe<Scalars['timestamp']>;
+  _in?: InputMaybe<Array<Scalars['timestamp']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _lt?: InputMaybe<Scalars['timestamp']>;
+  _lte?: InputMaybe<Scalars['timestamp']>;
+  _neq?: InputMaybe<Scalars['timestamp']>;
+  _nin?: InputMaybe<Array<Scalars['timestamp']>>;
+};
+
+/** Boolean expression to compare columns of type "timestamptz". All fields are combined with logical 'AND'. */
+export type timestamptz_comparison_exp = {
+  _eq?: InputMaybe<Scalars['timestamptz']>;
+  _gt?: InputMaybe<Scalars['timestamptz']>;
+  _gte?: InputMaybe<Scalars['timestamptz']>;
+  _in?: InputMaybe<Array<Scalars['timestamptz']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _lt?: InputMaybe<Scalars['timestamptz']>;
+  _lte?: InputMaybe<Scalars['timestamptz']>;
+  _neq?: InputMaybe<Scalars['timestamptz']>;
+  _nin?: InputMaybe<Array<Scalars['timestamptz']>>;
+};
+
 export type WithIndex<TObject> = TObject & Record<string, any>;
 export type ResolversObject<TObject> = WithIndex<TObject>;
 
@@ -7166,7 +7172,80 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 export type ResolversTypes = ResolversObject<{
   Query: ResolverTypeWrapper<{}>;
   Subscription: ResolverTypeWrapper<{}>;
+  Aggregation_interval: Aggregation_interval;
+  ApplicationHistory: ResolverTypeWrapper<ApplicationHistory>;
+  ApplicationHistory_filter: ApplicationHistory_filter;
+  ApplicationHistory_orderBy: ApplicationHistory_orderBy;
+  BigDecimal: ResolverTypeWrapper<Scalars['BigDecimal']>;
+  BigInt: ResolverTypeWrapper<Scalars['BigInt']>;
+  BlockChangedFilter: BlockChangedFilter;
+  Block_height: Block_height;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
+  Bytes: ResolverTypeWrapper<Scalars['Bytes']>;
+  FeedItem: ResolverTypeWrapper<FeedItem>;
+  FeedItemEmbed: ResolverTypeWrapper<FeedItemEmbed>;
+  FeedItemEmbed_filter: FeedItemEmbed_filter;
+  FeedItemEmbed_orderBy: FeedItemEmbed_orderBy;
+  FeedItemEntity: ResolverTypeWrapper<FeedItemEntity>;
+  FeedItemEntity_filter: FeedItemEntity_filter;
+  FeedItemEntity_orderBy: FeedItemEntity_orderBy;
+  FeedItem_filter: FeedItem_filter;
+  FeedItem_orderBy: FeedItem_orderBy;
+  Float: ResolverTypeWrapper<Scalars['Float']>;
+  GameManager: ResolverTypeWrapper<GameManager>;
+  GameManager_filter: GameManager_filter;
+  GameManager_orderBy: GameManager_orderBy;
+  GameRound: ResolverTypeWrapper<GameRound>;
+  GameRound_filter: GameRound_filter;
+  GameRound_orderBy: GameRound_orderBy;
+  GmDeployment: ResolverTypeWrapper<GmDeployment>;
+  GmDeployment_filter: GmDeployment_filter;
+  GmDeployment_orderBy: GmDeployment_orderBy;
+  GmVersion: ResolverTypeWrapper<GmVersion>;
+  GmVersion_filter: GmVersion_filter;
+  GmVersion_orderBy: GmVersion_orderBy;
+  Grant: ResolverTypeWrapper<Grant>;
+  GrantShip: ResolverTypeWrapper<GrantShip>;
+  GrantShip_filter: GrantShip_filter;
+  GrantShip_orderBy: GrantShip_orderBy;
+  Grant_filter: Grant_filter;
+  Grant_orderBy: Grant_orderBy;
+  ID: ResolverTypeWrapper<Scalars['ID']>;
+  Int: ResolverTypeWrapper<Scalars['Int']>;
+  Int8: ResolverTypeWrapper<Scalars['Int8']>;
+  Log: ResolverTypeWrapper<Log>;
+  Log_filter: Log_filter;
+  Log_orderBy: Log_orderBy;
+  Milestone: ResolverTypeWrapper<Milestone>;
+  Milestone_filter: Milestone_filter;
+  Milestone_orderBy: Milestone_orderBy;
+  OrderDirection: OrderDirection;
+  PoolIdLookup: ResolverTypeWrapper<PoolIdLookup>;
+  PoolIdLookup_filter: PoolIdLookup_filter;
+  PoolIdLookup_orderBy: PoolIdLookup_orderBy;
+  ProfileIdToAnchor: ResolverTypeWrapper<ProfileIdToAnchor>;
+  ProfileIdToAnchor_filter: ProfileIdToAnchor_filter;
+  ProfileIdToAnchor_orderBy: ProfileIdToAnchor_orderBy;
+  ProfileMemberGroup: ResolverTypeWrapper<ProfileMemberGroup>;
+  ProfileMemberGroup_filter: ProfileMemberGroup_filter;
+  ProfileMemberGroup_orderBy: ProfileMemberGroup_orderBy;
+  Project: ResolverTypeWrapper<Project>;
+  Project_filter: Project_filter;
+  Project_orderBy: Project_orderBy;
+  RawMetadata: ResolverTypeWrapper<RawMetadata>;
+  RawMetadata_filter: RawMetadata_filter;
+  RawMetadata_orderBy: RawMetadata_orderBy;
+  String: ResolverTypeWrapper<Scalars['String']>;
+  Timestamp: ResolverTypeWrapper<Scalars['Timestamp']>;
+  Transaction: ResolverTypeWrapper<Transaction>;
+  Transaction_filter: Transaction_filter;
+  Transaction_orderBy: Transaction_orderBy;
+  Update: ResolverTypeWrapper<Update>;
+  Update_filter: Update_filter;
+  Update_orderBy: Update_orderBy;
+  _Block_: ResolverTypeWrapper<_Block_>;
+  _Meta_: ResolverTypeWrapper<_Meta_>;
+  _SubgraphErrorPolicy_: _SubgraphErrorPolicy_;
   Boolean_comparison_exp: Boolean_comparison_exp;
   Contest: ResolverTypeWrapper<Contest>;
   ContestClone: ResolverTypeWrapper<ContestClone>;
@@ -7239,7 +7318,6 @@ export type ResolversTypes = ResolversObject<{
   HatsPoster_select_column: HatsPoster_select_column;
   HatsPoster_stream_cursor_input: HatsPoster_stream_cursor_input;
   HatsPoster_stream_cursor_value_input: HatsPoster_stream_cursor_value_input;
-  Int: ResolverTypeWrapper<Scalars['Int']>;
   Int_comparison_exp: Int_comparison_exp;
   LocalLog: ResolverTypeWrapper<LocalLog>;
   LocalLog_bool_exp: LocalLog_bool_exp;
@@ -7310,7 +7388,7 @@ export type ResolversTypes = ResolversObject<{
   StemModule_select_column: StemModule_select_column;
   StemModule_stream_cursor_input: StemModule_stream_cursor_input;
   StemModule_stream_cursor_value_input: StemModule_stream_cursor_value_input;
-  String: ResolverTypeWrapper<Scalars['String']>;
+  String_array_comparison_exp: String_array_comparison_exp;
   String_comparison_exp: String_comparison_exp;
   TVParams: ResolverTypeWrapper<TVParams>;
   TVParams_bool_exp: TVParams_bool_exp;
@@ -7318,10 +7396,6 @@ export type ResolversTypes = ResolversObject<{
   TVParams_select_column: TVParams_select_column;
   TVParams_stream_cursor_input: TVParams_stream_cursor_input;
   TVParams_stream_cursor_value_input: TVParams_stream_cursor_value_input;
-  _numeric: ResolverTypeWrapper<Scalars['_numeric']>;
-  _numeric_comparison_exp: _numeric_comparison_exp;
-  _text: ResolverTypeWrapper<Scalars['_text']>;
-  _text_comparison_exp: _text_comparison_exp;
   chain_metadata: ResolverTypeWrapper<chain_metadata>;
   chain_metadata_bool_exp: chain_metadata_bool_exp;
   chain_metadata_order_by: chain_metadata_order_by;
@@ -7374,6 +7448,7 @@ export type ResolversTypes = ResolversObject<{
   json: ResolverTypeWrapper<Scalars['json']>;
   json_comparison_exp: json_comparison_exp;
   numeric: ResolverTypeWrapper<Scalars['numeric']>;
+  numeric_array_comparison_exp: numeric_array_comparison_exp;
   numeric_comparison_exp: numeric_comparison_exp;
   order_by: order_by;
   persisted_state: ResolverTypeWrapper<persisted_state>;
@@ -7392,84 +7467,64 @@ export type ResolversTypes = ResolversObject<{
   timestamp_comparison_exp: timestamp_comparison_exp;
   timestamptz: ResolverTypeWrapper<Scalars['timestamptz']>;
   timestamptz_comparison_exp: timestamptz_comparison_exp;
-  Aggregation_interval: Aggregation_interval;
-  ApplicationHistory: ResolverTypeWrapper<ApplicationHistory>;
-  ApplicationHistory_filter: ApplicationHistory_filter;
-  ApplicationHistory_orderBy: ApplicationHistory_orderBy;
-  BigDecimal: ResolverTypeWrapper<Scalars['BigDecimal']>;
-  BigInt: ResolverTypeWrapper<Scalars['BigInt']>;
-  BlockChangedFilter: BlockChangedFilter;
-  Block_height: Block_height;
-  Bytes: ResolverTypeWrapper<Scalars['Bytes']>;
-  FeedItem: ResolverTypeWrapper<FeedItem>;
-  FeedItemEmbed: ResolverTypeWrapper<FeedItemEmbed>;
-  FeedItemEmbed_filter: FeedItemEmbed_filter;
-  FeedItemEmbed_orderBy: FeedItemEmbed_orderBy;
-  FeedItemEntity: ResolverTypeWrapper<FeedItemEntity>;
-  FeedItemEntity_filter: FeedItemEntity_filter;
-  FeedItemEntity_orderBy: FeedItemEntity_orderBy;
-  FeedItem_filter: FeedItem_filter;
-  FeedItem_orderBy: FeedItem_orderBy;
-  Float: ResolverTypeWrapper<Scalars['Float']>;
-  GameManager: ResolverTypeWrapper<GameManager>;
-  GameManager_filter: GameManager_filter;
-  GameManager_orderBy: GameManager_orderBy;
-  GameRound: ResolverTypeWrapper<GameRound>;
-  GameRound_filter: GameRound_filter;
-  GameRound_orderBy: GameRound_orderBy;
-  GmDeployment: ResolverTypeWrapper<GmDeployment>;
-  GmDeployment_filter: GmDeployment_filter;
-  GmDeployment_orderBy: GmDeployment_orderBy;
-  GmVersion: ResolverTypeWrapper<GmVersion>;
-  GmVersion_filter: GmVersion_filter;
-  GmVersion_orderBy: GmVersion_orderBy;
-  Grant: ResolverTypeWrapper<Grant>;
-  GrantShip: ResolverTypeWrapper<GrantShip>;
-  GrantShip_filter: GrantShip_filter;
-  GrantShip_orderBy: GrantShip_orderBy;
-  Grant_filter: Grant_filter;
-  Grant_orderBy: Grant_orderBy;
-  ID: ResolverTypeWrapper<Scalars['ID']>;
-  Int8: ResolverTypeWrapper<Scalars['Int8']>;
-  Log: ResolverTypeWrapper<Log>;
-  Log_filter: Log_filter;
-  Log_orderBy: Log_orderBy;
-  Milestone: ResolverTypeWrapper<Milestone>;
-  Milestone_filter: Milestone_filter;
-  Milestone_orderBy: Milestone_orderBy;
-  OrderDirection: OrderDirection;
-  PoolIdLookup: ResolverTypeWrapper<PoolIdLookup>;
-  PoolIdLookup_filter: PoolIdLookup_filter;
-  PoolIdLookup_orderBy: PoolIdLookup_orderBy;
-  ProfileIdToAnchor: ResolverTypeWrapper<ProfileIdToAnchor>;
-  ProfileIdToAnchor_filter: ProfileIdToAnchor_filter;
-  ProfileIdToAnchor_orderBy: ProfileIdToAnchor_orderBy;
-  ProfileMemberGroup: ResolverTypeWrapper<ProfileMemberGroup>;
-  ProfileMemberGroup_filter: ProfileMemberGroup_filter;
-  ProfileMemberGroup_orderBy: ProfileMemberGroup_orderBy;
-  Project: ResolverTypeWrapper<Project>;
-  Project_filter: Project_filter;
-  Project_orderBy: Project_orderBy;
-  RawMetadata: ResolverTypeWrapper<RawMetadata>;
-  RawMetadata_filter: RawMetadata_filter;
-  RawMetadata_orderBy: RawMetadata_orderBy;
-  Timestamp: ResolverTypeWrapper<Scalars['Timestamp']>;
-  Transaction: ResolverTypeWrapper<Transaction>;
-  Transaction_filter: Transaction_filter;
-  Transaction_orderBy: Transaction_orderBy;
-  Update: ResolverTypeWrapper<Update>;
-  Update_filter: Update_filter;
-  Update_orderBy: Update_orderBy;
-  _Block_: ResolverTypeWrapper<_Block_>;
-  _Meta_: ResolverTypeWrapper<_Meta_>;
-  _SubgraphErrorPolicy_: _SubgraphErrorPolicy_;
 }>;
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = ResolversObject<{
   Query: {};
   Subscription: {};
+  ApplicationHistory: ApplicationHistory;
+  ApplicationHistory_filter: ApplicationHistory_filter;
+  BigDecimal: Scalars['BigDecimal'];
+  BigInt: Scalars['BigInt'];
+  BlockChangedFilter: BlockChangedFilter;
+  Block_height: Block_height;
   Boolean: Scalars['Boolean'];
+  Bytes: Scalars['Bytes'];
+  FeedItem: FeedItem;
+  FeedItemEmbed: FeedItemEmbed;
+  FeedItemEmbed_filter: FeedItemEmbed_filter;
+  FeedItemEntity: FeedItemEntity;
+  FeedItemEntity_filter: FeedItemEntity_filter;
+  FeedItem_filter: FeedItem_filter;
+  Float: Scalars['Float'];
+  GameManager: GameManager;
+  GameManager_filter: GameManager_filter;
+  GameRound: GameRound;
+  GameRound_filter: GameRound_filter;
+  GmDeployment: GmDeployment;
+  GmDeployment_filter: GmDeployment_filter;
+  GmVersion: GmVersion;
+  GmVersion_filter: GmVersion_filter;
+  Grant: Grant;
+  GrantShip: GrantShip;
+  GrantShip_filter: GrantShip_filter;
+  Grant_filter: Grant_filter;
+  ID: Scalars['ID'];
+  Int: Scalars['Int'];
+  Int8: Scalars['Int8'];
+  Log: Log;
+  Log_filter: Log_filter;
+  Milestone: Milestone;
+  Milestone_filter: Milestone_filter;
+  PoolIdLookup: PoolIdLookup;
+  PoolIdLookup_filter: PoolIdLookup_filter;
+  ProfileIdToAnchor: ProfileIdToAnchor;
+  ProfileIdToAnchor_filter: ProfileIdToAnchor_filter;
+  ProfileMemberGroup: ProfileMemberGroup;
+  ProfileMemberGroup_filter: ProfileMemberGroup_filter;
+  Project: Project;
+  Project_filter: Project_filter;
+  RawMetadata: RawMetadata;
+  RawMetadata_filter: RawMetadata_filter;
+  String: Scalars['String'];
+  Timestamp: Scalars['Timestamp'];
+  Transaction: Transaction;
+  Transaction_filter: Transaction_filter;
+  Update: Update;
+  Update_filter: Update_filter;
+  _Block_: _Block_;
+  _Meta_: _Meta_;
   Boolean_comparison_exp: Boolean_comparison_exp;
   Contest: Contest;
   ContestClone: ContestClone;
@@ -7532,7 +7587,6 @@ export type ResolversParentTypes = ResolversObject<{
   HatsPoster_order_by: HatsPoster_order_by;
   HatsPoster_stream_cursor_input: HatsPoster_stream_cursor_input;
   HatsPoster_stream_cursor_value_input: HatsPoster_stream_cursor_value_input;
-  Int: Scalars['Int'];
   Int_comparison_exp: Int_comparison_exp;
   LocalLog: LocalLog;
   LocalLog_bool_exp: LocalLog_bool_exp;
@@ -7597,17 +7651,13 @@ export type ResolversParentTypes = ResolversObject<{
   StemModule_order_by: StemModule_order_by;
   StemModule_stream_cursor_input: StemModule_stream_cursor_input;
   StemModule_stream_cursor_value_input: StemModule_stream_cursor_value_input;
-  String: Scalars['String'];
+  String_array_comparison_exp: String_array_comparison_exp;
   String_comparison_exp: String_comparison_exp;
   TVParams: TVParams;
   TVParams_bool_exp: TVParams_bool_exp;
   TVParams_order_by: TVParams_order_by;
   TVParams_stream_cursor_input: TVParams_stream_cursor_input;
   TVParams_stream_cursor_value_input: TVParams_stream_cursor_value_input;
-  _numeric: Scalars['_numeric'];
-  _numeric_comparison_exp: _numeric_comparison_exp;
-  _text: Scalars['_text'];
-  _text_comparison_exp: _text_comparison_exp;
   chain_metadata: chain_metadata;
   chain_metadata_bool_exp: chain_metadata_bool_exp;
   chain_metadata_order_by: chain_metadata_order_by;
@@ -7654,6 +7704,7 @@ export type ResolversParentTypes = ResolversObject<{
   json: Scalars['json'];
   json_comparison_exp: json_comparison_exp;
   numeric: Scalars['numeric'];
+  numeric_array_comparison_exp: numeric_array_comparison_exp;
   numeric_comparison_exp: numeric_comparison_exp;
   persisted_state: persisted_state;
   persisted_state_bool_exp: persisted_state_bool_exp;
@@ -7669,63 +7720,7 @@ export type ResolversParentTypes = ResolversObject<{
   timestamp_comparison_exp: timestamp_comparison_exp;
   timestamptz: Scalars['timestamptz'];
   timestamptz_comparison_exp: timestamptz_comparison_exp;
-  ApplicationHistory: ApplicationHistory;
-  ApplicationHistory_filter: ApplicationHistory_filter;
-  BigDecimal: Scalars['BigDecimal'];
-  BigInt: Scalars['BigInt'];
-  BlockChangedFilter: BlockChangedFilter;
-  Block_height: Block_height;
-  Bytes: Scalars['Bytes'];
-  FeedItem: FeedItem;
-  FeedItemEmbed: FeedItemEmbed;
-  FeedItemEmbed_filter: FeedItemEmbed_filter;
-  FeedItemEntity: FeedItemEntity;
-  FeedItemEntity_filter: FeedItemEntity_filter;
-  FeedItem_filter: FeedItem_filter;
-  Float: Scalars['Float'];
-  GameManager: GameManager;
-  GameManager_filter: GameManager_filter;
-  GameRound: GameRound;
-  GameRound_filter: GameRound_filter;
-  GmDeployment: GmDeployment;
-  GmDeployment_filter: GmDeployment_filter;
-  GmVersion: GmVersion;
-  GmVersion_filter: GmVersion_filter;
-  Grant: Grant;
-  GrantShip: GrantShip;
-  GrantShip_filter: GrantShip_filter;
-  Grant_filter: Grant_filter;
-  ID: Scalars['ID'];
-  Int8: Scalars['Int8'];
-  Log: Log;
-  Log_filter: Log_filter;
-  Milestone: Milestone;
-  Milestone_filter: Milestone_filter;
-  PoolIdLookup: PoolIdLookup;
-  PoolIdLookup_filter: PoolIdLookup_filter;
-  ProfileIdToAnchor: ProfileIdToAnchor;
-  ProfileIdToAnchor_filter: ProfileIdToAnchor_filter;
-  ProfileMemberGroup: ProfileMemberGroup;
-  ProfileMemberGroup_filter: ProfileMemberGroup_filter;
-  Project: Project;
-  Project_filter: Project_filter;
-  RawMetadata: RawMetadata;
-  RawMetadata_filter: RawMetadata_filter;
-  Timestamp: Scalars['Timestamp'];
-  Transaction: Transaction;
-  Transaction_filter: Transaction_filter;
-  Update: Update;
-  Update_filter: Update_filter;
-  _Block_: _Block_;
-  _Meta_: _Meta_;
 }>;
-
-export type cachedDirectiveArgs = {
-  ttl?: Scalars['Int'];
-  refresh?: Scalars['Boolean'];
-};
-
-export type cachedDirectiveResolver<Result, Parent, ContextType = MeshContext, Args = cachedDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export type entityDirectiveArgs = { };
 
@@ -7743,7 +7738,53 @@ export type derivedFromDirectiveArgs = {
 
 export type derivedFromDirectiveResolver<Result, Parent, ContextType = MeshContext, Args = derivedFromDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
+export type cachedDirectiveArgs = {
+  ttl?: Scalars['Int'];
+  refresh?: Scalars['Boolean'];
+};
+
+export type cachedDirectiveResolver<Result, Parent, ContextType = MeshContext, Args = cachedDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
+
 export type QueryResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
+  project?: Resolver<Maybe<ResolversTypes['Project']>, ParentType, ContextType, RequireFields<QueryprojectArgs, 'id' | 'subgraphError'>>;
+  projects?: Resolver<Array<ResolversTypes['Project']>, ParentType, ContextType, RequireFields<QueryprojectsArgs, 'skip' | 'first' | 'subgraphError'>>;
+  feedItem?: Resolver<Maybe<ResolversTypes['FeedItem']>, ParentType, ContextType, RequireFields<QueryfeedItemArgs, 'id' | 'subgraphError'>>;
+  feedItems?: Resolver<Array<ResolversTypes['FeedItem']>, ParentType, ContextType, RequireFields<QueryfeedItemsArgs, 'skip' | 'first' | 'subgraphError'>>;
+  feedItemEntity?: Resolver<Maybe<ResolversTypes['FeedItemEntity']>, ParentType, ContextType, RequireFields<QueryfeedItemEntityArgs, 'id' | 'subgraphError'>>;
+  feedItemEntities?: Resolver<Array<ResolversTypes['FeedItemEntity']>, ParentType, ContextType, RequireFields<QueryfeedItemEntitiesArgs, 'skip' | 'first' | 'subgraphError'>>;
+  feedItemEmbed?: Resolver<Maybe<ResolversTypes['FeedItemEmbed']>, ParentType, ContextType, RequireFields<QueryfeedItemEmbedArgs, 'id' | 'subgraphError'>>;
+  feedItemEmbeds?: Resolver<Array<ResolversTypes['FeedItemEmbed']>, ParentType, ContextType, RequireFields<QueryfeedItemEmbedsArgs, 'skip' | 'first' | 'subgraphError'>>;
+  update?: Resolver<Maybe<ResolversTypes['Update']>, ParentType, ContextType, RequireFields<QueryupdateArgs, 'id' | 'subgraphError'>>;
+  updates?: Resolver<Array<ResolversTypes['Update']>, ParentType, ContextType, RequireFields<QueryupdatesArgs, 'skip' | 'first' | 'subgraphError'>>;
+  grantShip?: Resolver<Maybe<ResolversTypes['GrantShip']>, ParentType, ContextType, RequireFields<QuerygrantShipArgs, 'id' | 'subgraphError'>>;
+  grantShips?: Resolver<Array<ResolversTypes['GrantShip']>, ParentType, ContextType, RequireFields<QuerygrantShipsArgs, 'skip' | 'first' | 'subgraphError'>>;
+  poolIdLookup?: Resolver<Maybe<ResolversTypes['PoolIdLookup']>, ParentType, ContextType, RequireFields<QuerypoolIdLookupArgs, 'id' | 'subgraphError'>>;
+  poolIdLookups?: Resolver<Array<ResolversTypes['PoolIdLookup']>, ParentType, ContextType, RequireFields<QuerypoolIdLookupsArgs, 'skip' | 'first' | 'subgraphError'>>;
+  gameManager?: Resolver<Maybe<ResolversTypes['GameManager']>, ParentType, ContextType, RequireFields<QuerygameManagerArgs, 'id' | 'subgraphError'>>;
+  gameManagers?: Resolver<Array<ResolversTypes['GameManager']>, ParentType, ContextType, RequireFields<QuerygameManagersArgs, 'skip' | 'first' | 'subgraphError'>>;
+  gameRound?: Resolver<Maybe<ResolversTypes['GameRound']>, ParentType, ContextType, RequireFields<QuerygameRoundArgs, 'id' | 'subgraphError'>>;
+  gameRounds?: Resolver<Array<ResolversTypes['GameRound']>, ParentType, ContextType, RequireFields<QuerygameRoundsArgs, 'skip' | 'first' | 'subgraphError'>>;
+  applicationHistory?: Resolver<Maybe<ResolversTypes['ApplicationHistory']>, ParentType, ContextType, RequireFields<QueryapplicationHistoryArgs, 'id' | 'subgraphError'>>;
+  applicationHistories?: Resolver<Array<ResolversTypes['ApplicationHistory']>, ParentType, ContextType, RequireFields<QueryapplicationHistoriesArgs, 'skip' | 'first' | 'subgraphError'>>;
+  grant?: Resolver<Maybe<ResolversTypes['Grant']>, ParentType, ContextType, RequireFields<QuerygrantArgs, 'id' | 'subgraphError'>>;
+  grants?: Resolver<Array<ResolversTypes['Grant']>, ParentType, ContextType, RequireFields<QuerygrantsArgs, 'skip' | 'first' | 'subgraphError'>>;
+  milestone?: Resolver<Maybe<ResolversTypes['Milestone']>, ParentType, ContextType, RequireFields<QuerymilestoneArgs, 'id' | 'subgraphError'>>;
+  milestones?: Resolver<Array<ResolversTypes['Milestone']>, ParentType, ContextType, RequireFields<QuerymilestonesArgs, 'skip' | 'first' | 'subgraphError'>>;
+  profileIdToAnchor?: Resolver<Maybe<ResolversTypes['ProfileIdToAnchor']>, ParentType, ContextType, RequireFields<QueryprofileIdToAnchorArgs, 'id' | 'subgraphError'>>;
+  profileIdToAnchors?: Resolver<Array<ResolversTypes['ProfileIdToAnchor']>, ParentType, ContextType, RequireFields<QueryprofileIdToAnchorsArgs, 'skip' | 'first' | 'subgraphError'>>;
+  profileMemberGroup?: Resolver<Maybe<ResolversTypes['ProfileMemberGroup']>, ParentType, ContextType, RequireFields<QueryprofileMemberGroupArgs, 'id' | 'subgraphError'>>;
+  profileMemberGroups?: Resolver<Array<ResolversTypes['ProfileMemberGroup']>, ParentType, ContextType, RequireFields<QueryprofileMemberGroupsArgs, 'skip' | 'first' | 'subgraphError'>>;
+  transaction?: Resolver<Maybe<ResolversTypes['Transaction']>, ParentType, ContextType, RequireFields<QuerytransactionArgs, 'id' | 'subgraphError'>>;
+  transactions?: Resolver<Array<ResolversTypes['Transaction']>, ParentType, ContextType, RequireFields<QuerytransactionsArgs, 'skip' | 'first' | 'subgraphError'>>;
+  rawMetadata?: Resolver<Maybe<ResolversTypes['RawMetadata']>, ParentType, ContextType, RequireFields<QueryrawMetadataArgs, 'id' | 'subgraphError'>>;
+  rawMetadata_collection?: Resolver<Array<ResolversTypes['RawMetadata']>, ParentType, ContextType, RequireFields<QueryrawMetadata_collectionArgs, 'skip' | 'first' | 'subgraphError'>>;
+  log?: Resolver<Maybe<ResolversTypes['Log']>, ParentType, ContextType, RequireFields<QuerylogArgs, 'id' | 'subgraphError'>>;
+  logs?: Resolver<Array<ResolversTypes['Log']>, ParentType, ContextType, RequireFields<QuerylogsArgs, 'skip' | 'first' | 'subgraphError'>>;
+  gmVersion?: Resolver<Maybe<ResolversTypes['GmVersion']>, ParentType, ContextType, RequireFields<QuerygmVersionArgs, 'id' | 'subgraphError'>>;
+  gmVersions?: Resolver<Array<ResolversTypes['GmVersion']>, ParentType, ContextType, RequireFields<QuerygmVersionsArgs, 'skip' | 'first' | 'subgraphError'>>;
+  gmDeployment?: Resolver<Maybe<ResolversTypes['GmDeployment']>, ParentType, ContextType, RequireFields<QuerygmDeploymentArgs, 'id' | 'subgraphError'>>;
+  gmDeployments?: Resolver<Array<ResolversTypes['GmDeployment']>, ParentType, ContextType, RequireFields<QuerygmDeploymentsArgs, 'skip' | 'first' | 'subgraphError'>>;
+  _meta?: Resolver<Maybe<ResolversTypes['_Meta_']>, ParentType, ContextType, Partial<Query_metaArgs>>;
   Contest?: Resolver<Array<ResolversTypes['Contest']>, ParentType, ContextType, Partial<QueryContestArgs>>;
   ContestClone?: Resolver<Array<ResolversTypes['ContestClone']>, ParentType, ContextType, Partial<QueryContestCloneArgs>>;
   ContestClone_by_pk?: Resolver<Maybe<ResolversTypes['ContestClone']>, ParentType, ContextType, RequireFields<QueryContestClone_by_pkArgs, 'id'>>;
@@ -7793,48 +7834,48 @@ export type QueryResolvers<ContextType = MeshContext, ParentType extends Resolve
   persisted_state_by_pk?: Resolver<Maybe<ResolversTypes['persisted_state']>, ParentType, ContextType, RequireFields<Querypersisted_state_by_pkArgs, 'id'>>;
   raw_events?: Resolver<Array<ResolversTypes['raw_events']>, ParentType, ContextType, Partial<Queryraw_eventsArgs>>;
   raw_events_by_pk?: Resolver<Maybe<ResolversTypes['raw_events']>, ParentType, ContextType, RequireFields<Queryraw_events_by_pkArgs, 'chain_id' | 'event_id'>>;
-  project?: Resolver<Maybe<ResolversTypes['Project']>, ParentType, ContextType, RequireFields<QueryprojectArgs, 'id' | 'subgraphError'>>;
-  projects?: Resolver<Array<ResolversTypes['Project']>, ParentType, ContextType, RequireFields<QueryprojectsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  feedItem?: Resolver<Maybe<ResolversTypes['FeedItem']>, ParentType, ContextType, RequireFields<QueryfeedItemArgs, 'id' | 'subgraphError'>>;
-  feedItems?: Resolver<Array<ResolversTypes['FeedItem']>, ParentType, ContextType, RequireFields<QueryfeedItemsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  feedItemEntity?: Resolver<Maybe<ResolversTypes['FeedItemEntity']>, ParentType, ContextType, RequireFields<QueryfeedItemEntityArgs, 'id' | 'subgraphError'>>;
-  feedItemEntities?: Resolver<Array<ResolversTypes['FeedItemEntity']>, ParentType, ContextType, RequireFields<QueryfeedItemEntitiesArgs, 'skip' | 'first' | 'subgraphError'>>;
-  feedItemEmbed?: Resolver<Maybe<ResolversTypes['FeedItemEmbed']>, ParentType, ContextType, RequireFields<QueryfeedItemEmbedArgs, 'id' | 'subgraphError'>>;
-  feedItemEmbeds?: Resolver<Array<ResolversTypes['FeedItemEmbed']>, ParentType, ContextType, RequireFields<QueryfeedItemEmbedsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  update?: Resolver<Maybe<ResolversTypes['Update']>, ParentType, ContextType, RequireFields<QueryupdateArgs, 'id' | 'subgraphError'>>;
-  updates?: Resolver<Array<ResolversTypes['Update']>, ParentType, ContextType, RequireFields<QueryupdatesArgs, 'skip' | 'first' | 'subgraphError'>>;
-  grantShip?: Resolver<Maybe<ResolversTypes['GrantShip']>, ParentType, ContextType, RequireFields<QuerygrantShipArgs, 'id' | 'subgraphError'>>;
-  grantShips?: Resolver<Array<ResolversTypes['GrantShip']>, ParentType, ContextType, RequireFields<QuerygrantShipsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  poolIdLookup?: Resolver<Maybe<ResolversTypes['PoolIdLookup']>, ParentType, ContextType, RequireFields<QuerypoolIdLookupArgs, 'id' | 'subgraphError'>>;
-  poolIdLookups?: Resolver<Array<ResolversTypes['PoolIdLookup']>, ParentType, ContextType, RequireFields<QuerypoolIdLookupsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  gameManager?: Resolver<Maybe<ResolversTypes['GameManager']>, ParentType, ContextType, RequireFields<QuerygameManagerArgs, 'id' | 'subgraphError'>>;
-  gameManagers?: Resolver<Array<ResolversTypes['GameManager']>, ParentType, ContextType, RequireFields<QuerygameManagersArgs, 'skip' | 'first' | 'subgraphError'>>;
-  gameRound?: Resolver<Maybe<ResolversTypes['GameRound']>, ParentType, ContextType, RequireFields<QuerygameRoundArgs, 'id' | 'subgraphError'>>;
-  gameRounds?: Resolver<Array<ResolversTypes['GameRound']>, ParentType, ContextType, RequireFields<QuerygameRoundsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  applicationHistory?: Resolver<Maybe<ResolversTypes['ApplicationHistory']>, ParentType, ContextType, RequireFields<QueryapplicationHistoryArgs, 'id' | 'subgraphError'>>;
-  applicationHistories?: Resolver<Array<ResolversTypes['ApplicationHistory']>, ParentType, ContextType, RequireFields<QueryapplicationHistoriesArgs, 'skip' | 'first' | 'subgraphError'>>;
-  grant?: Resolver<Maybe<ResolversTypes['Grant']>, ParentType, ContextType, RequireFields<QuerygrantArgs, 'id' | 'subgraphError'>>;
-  grants?: Resolver<Array<ResolversTypes['Grant']>, ParentType, ContextType, RequireFields<QuerygrantsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  milestone?: Resolver<Maybe<ResolversTypes['Milestone']>, ParentType, ContextType, RequireFields<QuerymilestoneArgs, 'id' | 'subgraphError'>>;
-  milestones?: Resolver<Array<ResolversTypes['Milestone']>, ParentType, ContextType, RequireFields<QuerymilestonesArgs, 'skip' | 'first' | 'subgraphError'>>;
-  profileIdToAnchor?: Resolver<Maybe<ResolversTypes['ProfileIdToAnchor']>, ParentType, ContextType, RequireFields<QueryprofileIdToAnchorArgs, 'id' | 'subgraphError'>>;
-  profileIdToAnchors?: Resolver<Array<ResolversTypes['ProfileIdToAnchor']>, ParentType, ContextType, RequireFields<QueryprofileIdToAnchorsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  profileMemberGroup?: Resolver<Maybe<ResolversTypes['ProfileMemberGroup']>, ParentType, ContextType, RequireFields<QueryprofileMemberGroupArgs, 'id' | 'subgraphError'>>;
-  profileMemberGroups?: Resolver<Array<ResolversTypes['ProfileMemberGroup']>, ParentType, ContextType, RequireFields<QueryprofileMemberGroupsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  transaction?: Resolver<Maybe<ResolversTypes['Transaction']>, ParentType, ContextType, RequireFields<QuerytransactionArgs, 'id' | 'subgraphError'>>;
-  transactions?: Resolver<Array<ResolversTypes['Transaction']>, ParentType, ContextType, RequireFields<QuerytransactionsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  rawMetadata?: Resolver<Maybe<ResolversTypes['RawMetadata']>, ParentType, ContextType, RequireFields<QueryrawMetadataArgs, 'id' | 'subgraphError'>>;
-  rawMetadata_collection?: Resolver<Array<ResolversTypes['RawMetadata']>, ParentType, ContextType, RequireFields<QueryrawMetadata_collectionArgs, 'skip' | 'first' | 'subgraphError'>>;
-  log?: Resolver<Maybe<ResolversTypes['Log']>, ParentType, ContextType, RequireFields<QuerylogArgs, 'id' | 'subgraphError'>>;
-  logs?: Resolver<Array<ResolversTypes['Log']>, ParentType, ContextType, RequireFields<QuerylogsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  gmVersion?: Resolver<Maybe<ResolversTypes['GmVersion']>, ParentType, ContextType, RequireFields<QuerygmVersionArgs, 'id' | 'subgraphError'>>;
-  gmVersions?: Resolver<Array<ResolversTypes['GmVersion']>, ParentType, ContextType, RequireFields<QuerygmVersionsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  gmDeployment?: Resolver<Maybe<ResolversTypes['GmDeployment']>, ParentType, ContextType, RequireFields<QuerygmDeploymentArgs, 'id' | 'subgraphError'>>;
-  gmDeployments?: Resolver<Array<ResolversTypes['GmDeployment']>, ParentType, ContextType, RequireFields<QuerygmDeploymentsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  _meta?: Resolver<Maybe<ResolversTypes['_Meta_']>, ParentType, ContextType, Partial<Query_metaArgs>>;
 }>;
 
 export type SubscriptionResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = ResolversObject<{
+  project?: SubscriptionResolver<Maybe<ResolversTypes['Project']>, "project", ParentType, ContextType, RequireFields<SubscriptionprojectArgs, 'id' | 'subgraphError'>>;
+  projects?: SubscriptionResolver<Array<ResolversTypes['Project']>, "projects", ParentType, ContextType, RequireFields<SubscriptionprojectsArgs, 'skip' | 'first' | 'subgraphError'>>;
+  feedItem?: SubscriptionResolver<Maybe<ResolversTypes['FeedItem']>, "feedItem", ParentType, ContextType, RequireFields<SubscriptionfeedItemArgs, 'id' | 'subgraphError'>>;
+  feedItems?: SubscriptionResolver<Array<ResolversTypes['FeedItem']>, "feedItems", ParentType, ContextType, RequireFields<SubscriptionfeedItemsArgs, 'skip' | 'first' | 'subgraphError'>>;
+  feedItemEntity?: SubscriptionResolver<Maybe<ResolversTypes['FeedItemEntity']>, "feedItemEntity", ParentType, ContextType, RequireFields<SubscriptionfeedItemEntityArgs, 'id' | 'subgraphError'>>;
+  feedItemEntities?: SubscriptionResolver<Array<ResolversTypes['FeedItemEntity']>, "feedItemEntities", ParentType, ContextType, RequireFields<SubscriptionfeedItemEntitiesArgs, 'skip' | 'first' | 'subgraphError'>>;
+  feedItemEmbed?: SubscriptionResolver<Maybe<ResolversTypes['FeedItemEmbed']>, "feedItemEmbed", ParentType, ContextType, RequireFields<SubscriptionfeedItemEmbedArgs, 'id' | 'subgraphError'>>;
+  feedItemEmbeds?: SubscriptionResolver<Array<ResolversTypes['FeedItemEmbed']>, "feedItemEmbeds", ParentType, ContextType, RequireFields<SubscriptionfeedItemEmbedsArgs, 'skip' | 'first' | 'subgraphError'>>;
+  update?: SubscriptionResolver<Maybe<ResolversTypes['Update']>, "update", ParentType, ContextType, RequireFields<SubscriptionupdateArgs, 'id' | 'subgraphError'>>;
+  updates?: SubscriptionResolver<Array<ResolversTypes['Update']>, "updates", ParentType, ContextType, RequireFields<SubscriptionupdatesArgs, 'skip' | 'first' | 'subgraphError'>>;
+  grantShip?: SubscriptionResolver<Maybe<ResolversTypes['GrantShip']>, "grantShip", ParentType, ContextType, RequireFields<SubscriptiongrantShipArgs, 'id' | 'subgraphError'>>;
+  grantShips?: SubscriptionResolver<Array<ResolversTypes['GrantShip']>, "grantShips", ParentType, ContextType, RequireFields<SubscriptiongrantShipsArgs, 'skip' | 'first' | 'subgraphError'>>;
+  poolIdLookup?: SubscriptionResolver<Maybe<ResolversTypes['PoolIdLookup']>, "poolIdLookup", ParentType, ContextType, RequireFields<SubscriptionpoolIdLookupArgs, 'id' | 'subgraphError'>>;
+  poolIdLookups?: SubscriptionResolver<Array<ResolversTypes['PoolIdLookup']>, "poolIdLookups", ParentType, ContextType, RequireFields<SubscriptionpoolIdLookupsArgs, 'skip' | 'first' | 'subgraphError'>>;
+  gameManager?: SubscriptionResolver<Maybe<ResolversTypes['GameManager']>, "gameManager", ParentType, ContextType, RequireFields<SubscriptiongameManagerArgs, 'id' | 'subgraphError'>>;
+  gameManagers?: SubscriptionResolver<Array<ResolversTypes['GameManager']>, "gameManagers", ParentType, ContextType, RequireFields<SubscriptiongameManagersArgs, 'skip' | 'first' | 'subgraphError'>>;
+  gameRound?: SubscriptionResolver<Maybe<ResolversTypes['GameRound']>, "gameRound", ParentType, ContextType, RequireFields<SubscriptiongameRoundArgs, 'id' | 'subgraphError'>>;
+  gameRounds?: SubscriptionResolver<Array<ResolversTypes['GameRound']>, "gameRounds", ParentType, ContextType, RequireFields<SubscriptiongameRoundsArgs, 'skip' | 'first' | 'subgraphError'>>;
+  applicationHistory?: SubscriptionResolver<Maybe<ResolversTypes['ApplicationHistory']>, "applicationHistory", ParentType, ContextType, RequireFields<SubscriptionapplicationHistoryArgs, 'id' | 'subgraphError'>>;
+  applicationHistories?: SubscriptionResolver<Array<ResolversTypes['ApplicationHistory']>, "applicationHistories", ParentType, ContextType, RequireFields<SubscriptionapplicationHistoriesArgs, 'skip' | 'first' | 'subgraphError'>>;
+  grant?: SubscriptionResolver<Maybe<ResolversTypes['Grant']>, "grant", ParentType, ContextType, RequireFields<SubscriptiongrantArgs, 'id' | 'subgraphError'>>;
+  grants?: SubscriptionResolver<Array<ResolversTypes['Grant']>, "grants", ParentType, ContextType, RequireFields<SubscriptiongrantsArgs, 'skip' | 'first' | 'subgraphError'>>;
+  milestone?: SubscriptionResolver<Maybe<ResolversTypes['Milestone']>, "milestone", ParentType, ContextType, RequireFields<SubscriptionmilestoneArgs, 'id' | 'subgraphError'>>;
+  milestones?: SubscriptionResolver<Array<ResolversTypes['Milestone']>, "milestones", ParentType, ContextType, RequireFields<SubscriptionmilestonesArgs, 'skip' | 'first' | 'subgraphError'>>;
+  profileIdToAnchor?: SubscriptionResolver<Maybe<ResolversTypes['ProfileIdToAnchor']>, "profileIdToAnchor", ParentType, ContextType, RequireFields<SubscriptionprofileIdToAnchorArgs, 'id' | 'subgraphError'>>;
+  profileIdToAnchors?: SubscriptionResolver<Array<ResolversTypes['ProfileIdToAnchor']>, "profileIdToAnchors", ParentType, ContextType, RequireFields<SubscriptionprofileIdToAnchorsArgs, 'skip' | 'first' | 'subgraphError'>>;
+  profileMemberGroup?: SubscriptionResolver<Maybe<ResolversTypes['ProfileMemberGroup']>, "profileMemberGroup", ParentType, ContextType, RequireFields<SubscriptionprofileMemberGroupArgs, 'id' | 'subgraphError'>>;
+  profileMemberGroups?: SubscriptionResolver<Array<ResolversTypes['ProfileMemberGroup']>, "profileMemberGroups", ParentType, ContextType, RequireFields<SubscriptionprofileMemberGroupsArgs, 'skip' | 'first' | 'subgraphError'>>;
+  transaction?: SubscriptionResolver<Maybe<ResolversTypes['Transaction']>, "transaction", ParentType, ContextType, RequireFields<SubscriptiontransactionArgs, 'id' | 'subgraphError'>>;
+  transactions?: SubscriptionResolver<Array<ResolversTypes['Transaction']>, "transactions", ParentType, ContextType, RequireFields<SubscriptiontransactionsArgs, 'skip' | 'first' | 'subgraphError'>>;
+  rawMetadata?: SubscriptionResolver<Maybe<ResolversTypes['RawMetadata']>, "rawMetadata", ParentType, ContextType, RequireFields<SubscriptionrawMetadataArgs, 'id' | 'subgraphError'>>;
+  rawMetadata_collection?: SubscriptionResolver<Array<ResolversTypes['RawMetadata']>, "rawMetadata_collection", ParentType, ContextType, RequireFields<SubscriptionrawMetadata_collectionArgs, 'skip' | 'first' | 'subgraphError'>>;
+  log?: SubscriptionResolver<Maybe<ResolversTypes['Log']>, "log", ParentType, ContextType, RequireFields<SubscriptionlogArgs, 'id' | 'subgraphError'>>;
+  logs?: SubscriptionResolver<Array<ResolversTypes['Log']>, "logs", ParentType, ContextType, RequireFields<SubscriptionlogsArgs, 'skip' | 'first' | 'subgraphError'>>;
+  gmVersion?: SubscriptionResolver<Maybe<ResolversTypes['GmVersion']>, "gmVersion", ParentType, ContextType, RequireFields<SubscriptiongmVersionArgs, 'id' | 'subgraphError'>>;
+  gmVersions?: SubscriptionResolver<Array<ResolversTypes['GmVersion']>, "gmVersions", ParentType, ContextType, RequireFields<SubscriptiongmVersionsArgs, 'skip' | 'first' | 'subgraphError'>>;
+  gmDeployment?: SubscriptionResolver<Maybe<ResolversTypes['GmDeployment']>, "gmDeployment", ParentType, ContextType, RequireFields<SubscriptiongmDeploymentArgs, 'id' | 'subgraphError'>>;
+  gmDeployments?: SubscriptionResolver<Array<ResolversTypes['GmDeployment']>, "gmDeployments", ParentType, ContextType, RequireFields<SubscriptiongmDeploymentsArgs, 'skip' | 'first' | 'subgraphError'>>;
+  _meta?: SubscriptionResolver<Maybe<ResolversTypes['_Meta_']>, "_meta", ParentType, ContextType, Partial<Subscription_metaArgs>>;
   Contest?: SubscriptionResolver<Array<ResolversTypes['Contest']>, "Contest", ParentType, ContextType, Partial<SubscriptionContestArgs>>;
   ContestClone?: SubscriptionResolver<Array<ResolversTypes['ContestClone']>, "ContestClone", ParentType, ContextType, Partial<SubscriptionContestCloneArgs>>;
   ContestClone_by_pk?: SubscriptionResolver<Maybe<ResolversTypes['ContestClone']>, "ContestClone_by_pk", ParentType, ContextType, RequireFields<SubscriptionContestClone_by_pkArgs, 'id'>>;
@@ -7908,374 +7949,7 @@ export type SubscriptionResolvers<ContextType = MeshContext, ParentType extends 
   raw_events?: SubscriptionResolver<Array<ResolversTypes['raw_events']>, "raw_events", ParentType, ContextType, Partial<Subscriptionraw_eventsArgs>>;
   raw_events_by_pk?: SubscriptionResolver<Maybe<ResolversTypes['raw_events']>, "raw_events_by_pk", ParentType, ContextType, RequireFields<Subscriptionraw_events_by_pkArgs, 'chain_id' | 'event_id'>>;
   raw_events_stream?: SubscriptionResolver<Array<ResolversTypes['raw_events']>, "raw_events_stream", ParentType, ContextType, RequireFields<Subscriptionraw_events_streamArgs, 'batch_size' | 'cursor'>>;
-  project?: SubscriptionResolver<Maybe<ResolversTypes['Project']>, "project", ParentType, ContextType, RequireFields<SubscriptionprojectArgs, 'id' | 'subgraphError'>>;
-  projects?: SubscriptionResolver<Array<ResolversTypes['Project']>, "projects", ParentType, ContextType, RequireFields<SubscriptionprojectsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  feedItem?: SubscriptionResolver<Maybe<ResolversTypes['FeedItem']>, "feedItem", ParentType, ContextType, RequireFields<SubscriptionfeedItemArgs, 'id' | 'subgraphError'>>;
-  feedItems?: SubscriptionResolver<Array<ResolversTypes['FeedItem']>, "feedItems", ParentType, ContextType, RequireFields<SubscriptionfeedItemsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  feedItemEntity?: SubscriptionResolver<Maybe<ResolversTypes['FeedItemEntity']>, "feedItemEntity", ParentType, ContextType, RequireFields<SubscriptionfeedItemEntityArgs, 'id' | 'subgraphError'>>;
-  feedItemEntities?: SubscriptionResolver<Array<ResolversTypes['FeedItemEntity']>, "feedItemEntities", ParentType, ContextType, RequireFields<SubscriptionfeedItemEntitiesArgs, 'skip' | 'first' | 'subgraphError'>>;
-  feedItemEmbed?: SubscriptionResolver<Maybe<ResolversTypes['FeedItemEmbed']>, "feedItemEmbed", ParentType, ContextType, RequireFields<SubscriptionfeedItemEmbedArgs, 'id' | 'subgraphError'>>;
-  feedItemEmbeds?: SubscriptionResolver<Array<ResolversTypes['FeedItemEmbed']>, "feedItemEmbeds", ParentType, ContextType, RequireFields<SubscriptionfeedItemEmbedsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  update?: SubscriptionResolver<Maybe<ResolversTypes['Update']>, "update", ParentType, ContextType, RequireFields<SubscriptionupdateArgs, 'id' | 'subgraphError'>>;
-  updates?: SubscriptionResolver<Array<ResolversTypes['Update']>, "updates", ParentType, ContextType, RequireFields<SubscriptionupdatesArgs, 'skip' | 'first' | 'subgraphError'>>;
-  grantShip?: SubscriptionResolver<Maybe<ResolversTypes['GrantShip']>, "grantShip", ParentType, ContextType, RequireFields<SubscriptiongrantShipArgs, 'id' | 'subgraphError'>>;
-  grantShips?: SubscriptionResolver<Array<ResolversTypes['GrantShip']>, "grantShips", ParentType, ContextType, RequireFields<SubscriptiongrantShipsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  poolIdLookup?: SubscriptionResolver<Maybe<ResolversTypes['PoolIdLookup']>, "poolIdLookup", ParentType, ContextType, RequireFields<SubscriptionpoolIdLookupArgs, 'id' | 'subgraphError'>>;
-  poolIdLookups?: SubscriptionResolver<Array<ResolversTypes['PoolIdLookup']>, "poolIdLookups", ParentType, ContextType, RequireFields<SubscriptionpoolIdLookupsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  gameManager?: SubscriptionResolver<Maybe<ResolversTypes['GameManager']>, "gameManager", ParentType, ContextType, RequireFields<SubscriptiongameManagerArgs, 'id' | 'subgraphError'>>;
-  gameManagers?: SubscriptionResolver<Array<ResolversTypes['GameManager']>, "gameManagers", ParentType, ContextType, RequireFields<SubscriptiongameManagersArgs, 'skip' | 'first' | 'subgraphError'>>;
-  gameRound?: SubscriptionResolver<Maybe<ResolversTypes['GameRound']>, "gameRound", ParentType, ContextType, RequireFields<SubscriptiongameRoundArgs, 'id' | 'subgraphError'>>;
-  gameRounds?: SubscriptionResolver<Array<ResolversTypes['GameRound']>, "gameRounds", ParentType, ContextType, RequireFields<SubscriptiongameRoundsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  applicationHistory?: SubscriptionResolver<Maybe<ResolversTypes['ApplicationHistory']>, "applicationHistory", ParentType, ContextType, RequireFields<SubscriptionapplicationHistoryArgs, 'id' | 'subgraphError'>>;
-  applicationHistories?: SubscriptionResolver<Array<ResolversTypes['ApplicationHistory']>, "applicationHistories", ParentType, ContextType, RequireFields<SubscriptionapplicationHistoriesArgs, 'skip' | 'first' | 'subgraphError'>>;
-  grant?: SubscriptionResolver<Maybe<ResolversTypes['Grant']>, "grant", ParentType, ContextType, RequireFields<SubscriptiongrantArgs, 'id' | 'subgraphError'>>;
-  grants?: SubscriptionResolver<Array<ResolversTypes['Grant']>, "grants", ParentType, ContextType, RequireFields<SubscriptiongrantsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  milestone?: SubscriptionResolver<Maybe<ResolversTypes['Milestone']>, "milestone", ParentType, ContextType, RequireFields<SubscriptionmilestoneArgs, 'id' | 'subgraphError'>>;
-  milestones?: SubscriptionResolver<Array<ResolversTypes['Milestone']>, "milestones", ParentType, ContextType, RequireFields<SubscriptionmilestonesArgs, 'skip' | 'first' | 'subgraphError'>>;
-  profileIdToAnchor?: SubscriptionResolver<Maybe<ResolversTypes['ProfileIdToAnchor']>, "profileIdToAnchor", ParentType, ContextType, RequireFields<SubscriptionprofileIdToAnchorArgs, 'id' | 'subgraphError'>>;
-  profileIdToAnchors?: SubscriptionResolver<Array<ResolversTypes['ProfileIdToAnchor']>, "profileIdToAnchors", ParentType, ContextType, RequireFields<SubscriptionprofileIdToAnchorsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  profileMemberGroup?: SubscriptionResolver<Maybe<ResolversTypes['ProfileMemberGroup']>, "profileMemberGroup", ParentType, ContextType, RequireFields<SubscriptionprofileMemberGroupArgs, 'id' | 'subgraphError'>>;
-  profileMemberGroups?: SubscriptionResolver<Array<ResolversTypes['ProfileMemberGroup']>, "profileMemberGroups", ParentType, ContextType, RequireFields<SubscriptionprofileMemberGroupsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  transaction?: SubscriptionResolver<Maybe<ResolversTypes['Transaction']>, "transaction", ParentType, ContextType, RequireFields<SubscriptiontransactionArgs, 'id' | 'subgraphError'>>;
-  transactions?: SubscriptionResolver<Array<ResolversTypes['Transaction']>, "transactions", ParentType, ContextType, RequireFields<SubscriptiontransactionsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  rawMetadata?: SubscriptionResolver<Maybe<ResolversTypes['RawMetadata']>, "rawMetadata", ParentType, ContextType, RequireFields<SubscriptionrawMetadataArgs, 'id' | 'subgraphError'>>;
-  rawMetadata_collection?: SubscriptionResolver<Array<ResolversTypes['RawMetadata']>, "rawMetadata_collection", ParentType, ContextType, RequireFields<SubscriptionrawMetadata_collectionArgs, 'skip' | 'first' | 'subgraphError'>>;
-  log?: SubscriptionResolver<Maybe<ResolversTypes['Log']>, "log", ParentType, ContextType, RequireFields<SubscriptionlogArgs, 'id' | 'subgraphError'>>;
-  logs?: SubscriptionResolver<Array<ResolversTypes['Log']>, "logs", ParentType, ContextType, RequireFields<SubscriptionlogsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  gmVersion?: SubscriptionResolver<Maybe<ResolversTypes['GmVersion']>, "gmVersion", ParentType, ContextType, RequireFields<SubscriptiongmVersionArgs, 'id' | 'subgraphError'>>;
-  gmVersions?: SubscriptionResolver<Array<ResolversTypes['GmVersion']>, "gmVersions", ParentType, ContextType, RequireFields<SubscriptiongmVersionsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  gmDeployment?: SubscriptionResolver<Maybe<ResolversTypes['GmDeployment']>, "gmDeployment", ParentType, ContextType, RequireFields<SubscriptiongmDeploymentArgs, 'id' | 'subgraphError'>>;
-  gmDeployments?: SubscriptionResolver<Array<ResolversTypes['GmDeployment']>, "gmDeployments", ParentType, ContextType, RequireFields<SubscriptiongmDeploymentsArgs, 'skip' | 'first' | 'subgraphError'>>;
-  _meta?: SubscriptionResolver<Maybe<ResolversTypes['_Meta_']>, "_meta", ParentType, ContextType, Partial<Subscription_metaArgs>>;
 }>;
-
-export type ContestResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Contest'] = ResolversParentTypes['Contest']> = ResolversObject<{
-  choicesModule?: Resolver<Maybe<ResolversTypes['StemModule']>, ParentType, ContextType>;
-  choicesModule_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  contestAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  contestStatus?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
-  contestVersion?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
-  executionModule?: Resolver<Maybe<ResolversTypes['StemModule']>, ParentType, ContextType>;
-  executionModule_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  filterTag?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  isContinuous?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  isRetractable?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  pointsModule?: Resolver<Maybe<ResolversTypes['StemModule']>, ParentType, ContextType>;
-  pointsModule_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  votesModule?: Resolver<Maybe<ResolversTypes['StemModule']>, ParentType, ContextType>;
-  votesModule_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type ContestCloneResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['ContestClone'] = ResolversParentTypes['ContestClone']> = ResolversObject<{
-  contestAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  contestVersion?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
-  filterTag?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type ContestTemplateResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['ContestTemplate'] = ResolversParentTypes['ContestTemplate']> = ResolversObject<{
-  active?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  contestAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  contestVersion?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  mdPointer?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  mdProtocol?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type ERCPointParamsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['ERCPointParams'] = ResolversParentTypes['ERCPointParams']> = ResolversObject<{
-  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  voteTokenAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  votingCheckpoint?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type EnvioTXResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['EnvioTX'] = ResolversParentTypes['EnvioTX']> = ResolversObject<{
-  blockNumber?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
-  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  srcAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  txHash?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  txOrigin?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type EventPostResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['EventPost'] = ResolversParentTypes['EventPost']> = ResolversObject<{
-  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
-  hatId?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
-  hatsPoster?: Resolver<Maybe<ResolversTypes['HatsPoster']>, ParentType, ContextType>;
-  hatsPoster_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  mdPointer?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  mdProtocol?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
-  tag?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type FactoryEventsSummaryResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['FactoryEventsSummary'] = ResolversParentTypes['FactoryEventsSummary']> = ResolversObject<{
-  address?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  admins?: Resolver<ResolversTypes['_text'], ParentType, ContextType>;
-  contestBuiltCount?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
-  contestCloneCount?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
-  contestTemplateCount?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
-  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  moduleCloneCount?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
-  moduleTemplateCount?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type GrantShipsVotingResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['GrantShipsVoting'] = ResolversParentTypes['GrantShipsVoting']> = ResolversObject<{
-  choices?: Resolver<Array<ResolversTypes['ShipChoice']>, ParentType, ContextType, Partial<GrantShipsVotingchoicesArgs>>;
-  contest?: Resolver<Maybe<ResolversTypes['Contest']>, ParentType, ContextType>;
-  contest_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
-  endTime?: Resolver<Maybe<ResolversTypes['numeric']>, ParentType, ContextType>;
-  hatId?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
-  hatsAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  isVotingActive?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  startTime?: Resolver<Maybe<ResolversTypes['numeric']>, ParentType, ContextType>;
-  totalVotes?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
-  voteDuration?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
-  voteTokenAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  votes?: Resolver<Array<ResolversTypes['ShipVote']>, ParentType, ContextType, Partial<GrantShipsVotingvotesArgs>>;
-  votingCheckpoint?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type HALParamsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['HALParams'] = ResolversParentTypes['HALParams']> = ResolversObject<{
-  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
-  hatId?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
-  hatsAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type HatsPosterResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['HatsPoster'] = ResolversParentTypes['HatsPoster']> = ResolversObject<{
-  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
-  eventPosts?: Resolver<Array<ResolversTypes['EventPost']>, ParentType, ContextType, Partial<HatsPostereventPostsArgs>>;
-  hatIds?: Resolver<ResolversTypes['_numeric'], ParentType, ContextType>;
-  hatsAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  record?: Resolver<Array<ResolversTypes['Record']>, ParentType, ContextType, Partial<HatsPosterrecordArgs>>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type LocalLogResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['LocalLog'] = ResolversParentTypes['LocalLog']> = ResolversObject<{
-  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  message?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type ModuleTemplateResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['ModuleTemplate'] = ResolversParentTypes['ModuleTemplate']> = ResolversObject<{
-  active?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  mdPointer?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  mdProtocol?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
-  moduleName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  templateAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type RecordResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Record'] = ResolversParentTypes['Record']> = ResolversObject<{
-  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
-  hatId?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
-  hatsPoster?: Resolver<Maybe<ResolversTypes['HatsPoster']>, ParentType, ContextType>;
-  hatsPoster_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  mdPointer?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  mdProtocol?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
-  nonce?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  tag?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type ShipChoiceResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['ShipChoice'] = ResolversParentTypes['ShipChoice']> = ResolversObject<{
-  active?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  choiceData?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  contest?: Resolver<Maybe<ResolversTypes['GrantShipsVoting']>, ParentType, ContextType>;
-  contest_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  mdPointer?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  mdProtocol?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
-  voteTally?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
-  votes?: Resolver<Array<ResolversTypes['ShipVote']>, ParentType, ContextType, Partial<ShipChoicevotesArgs>>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type ShipVoteResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['ShipVote'] = ResolversParentTypes['ShipVote']> = ResolversObject<{
-  amount?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
-  choice?: Resolver<Maybe<ResolversTypes['ShipChoice']>, ParentType, ContextType>;
-  choice_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  contest?: Resolver<Maybe<ResolversTypes['GrantShipsVoting']>, ParentType, ContextType>;
-  contest_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  isRectractVote?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  mdPointer?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  mdProtocol?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
-  voter?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type StemModuleResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['StemModule'] = ResolversParentTypes['StemModule']> = ResolversObject<{
-  contest?: Resolver<Maybe<ResolversTypes['Contest']>, ParentType, ContextType>;
-  contestAddress?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  contest_id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
-  filterTag?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  moduleAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  moduleName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  moduleTemplate?: Resolver<Maybe<ResolversTypes['ModuleTemplate']>, ParentType, ContextType>;
-  moduleTemplate_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type TVParamsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['TVParams'] = ResolversParentTypes['TVParams']> = ResolversObject<{
-  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  voteDuration?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export interface _numericScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['_numeric'], any> {
-  name: '_numeric';
-}
-
-export interface _textScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['_text'], any> {
-  name: '_text';
-}
-
-export type chain_metadataResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['chain_metadata'] = ResolversParentTypes['chain_metadata']> = ResolversObject<{
-  block_height?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  chain_id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  end_block?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  first_event_block_number?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  is_hyper_sync?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  latest_fetched_block_number?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  latest_processed_block?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  num_batches_fetched?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  num_events_processed?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  start_block?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  timestamp_caught_up_to_head_or_endblock?: Resolver<Maybe<ResolversTypes['timestamptz']>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export interface contract_typeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['contract_type'], any> {
-  name: 'contract_type';
-}
-
-export type dynamic_contract_registryResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['dynamic_contract_registry'] = ResolversParentTypes['dynamic_contract_registry']> = ResolversObject<{
-  block_timestamp?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  chain_id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  contract_address?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  contract_type?: Resolver<ResolversTypes['contract_type'], ParentType, ContextType>;
-  event_id?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type entity_historyResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['entity_history'] = ResolversParentTypes['entity_history']> = ResolversObject<{
-  block_number?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  block_timestamp?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  chain_id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  entity_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  entity_type?: Resolver<ResolversTypes['entity_type'], ParentType, ContextType>;
-  event?: Resolver<Maybe<ResolversTypes['raw_events']>, ParentType, ContextType>;
-  log_index?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  params?: Resolver<Maybe<ResolversTypes['json']>, ParentType, ContextType, Partial<entity_historyparamsArgs>>;
-  previous_block_number?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  previous_block_timestamp?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  previous_chain_id?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  previous_log_index?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type entity_history_filterResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['entity_history_filter'] = ResolversParentTypes['entity_history_filter']> = ResolversObject<{
-  block_number?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  block_timestamp?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  chain_id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  entity_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  entity_type?: Resolver<ResolversTypes['entity_type'], ParentType, ContextType>;
-  event?: Resolver<Maybe<ResolversTypes['raw_events']>, ParentType, ContextType>;
-  log_index?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  new_val?: Resolver<Maybe<ResolversTypes['json']>, ParentType, ContextType, Partial<entity_history_filternew_valArgs>>;
-  old_val?: Resolver<Maybe<ResolversTypes['json']>, ParentType, ContextType, Partial<entity_history_filterold_valArgs>>;
-  previous_block_number?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  previous_log_index?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export interface entity_typeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['entity_type'], any> {
-  name: 'entity_type';
-}
-
-export type event_sync_stateResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['event_sync_state'] = ResolversParentTypes['event_sync_state']> = ResolversObject<{
-  block_number?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  block_timestamp?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  chain_id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  log_index?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  transaction_index?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export interface event_typeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['event_type'], any> {
-  name: 'event_type';
-}
-
-export interface jsonScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['json'], any> {
-  name: 'json';
-}
-
-export interface numericScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['numeric'], any> {
-  name: 'numeric';
-}
-
-export type persisted_stateResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['persisted_state'] = ResolversParentTypes['persisted_state']> = ResolversObject<{
-  abi_files_hash?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  config_hash?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  envio_version?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  handler_files_hash?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  schema_hash?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export type raw_eventsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['raw_events'] = ResolversParentTypes['raw_events']> = ResolversObject<{
-  block_hash?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  block_number?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  block_timestamp?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  chain_id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
-  event_history?: Resolver<Array<ResolversTypes['entity_history']>, ParentType, ContextType, Partial<raw_eventsevent_historyArgs>>;
-  event_id?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
-  event_type?: Resolver<ResolversTypes['event_type'], ParentType, ContextType>;
-  log_index?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  params?: Resolver<ResolversTypes['json'], ParentType, ContextType, Partial<raw_eventsparamsArgs>>;
-  src_address?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  transaction_hash?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  transaction_index?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
-}>;
-
-export interface timestampScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['timestamp'], any> {
-  name: 'timestamp';
-}
-
-export interface timestamptzScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['timestamptz'], any> {
-  name: 'timestamptz';
-}
 
 export type ApplicationHistoryResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['ApplicationHistory'] = ResolversParentTypes['ApplicationHistory']> = ResolversObject<{
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
@@ -8549,42 +8223,329 @@ export type _Meta_Resolvers<ContextType = MeshContext, ParentType extends Resolv
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type ContestResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Contest'] = ResolversParentTypes['Contest']> = ResolversObject<{
+  choicesModule?: Resolver<Maybe<ResolversTypes['StemModule']>, ParentType, ContextType>;
+  choicesModule_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  contestAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  contestStatus?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
+  contestVersion?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
+  executionModule?: Resolver<Maybe<ResolversTypes['StemModule']>, ParentType, ContextType>;
+  executionModule_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  filterTag?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  isContinuous?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  isRetractable?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  pointsModule?: Resolver<Maybe<ResolversTypes['StemModule']>, ParentType, ContextType>;
+  pointsModule_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  votesModule?: Resolver<Maybe<ResolversTypes['StemModule']>, ParentType, ContextType>;
+  votesModule_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type ContestCloneResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['ContestClone'] = ResolversParentTypes['ContestClone']> = ResolversObject<{
+  contestAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  contestVersion?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
+  filterTag?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type ContestTemplateResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['ContestTemplate'] = ResolversParentTypes['ContestTemplate']> = ResolversObject<{
+  active?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  contestAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  contestVersion?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  mdPointer?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  mdProtocol?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type ERCPointParamsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['ERCPointParams'] = ResolversParentTypes['ERCPointParams']> = ResolversObject<{
+  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  voteTokenAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  votingCheckpoint?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type EnvioTXResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['EnvioTX'] = ResolversParentTypes['EnvioTX']> = ResolversObject<{
+  blockNumber?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
+  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  srcAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  txHash?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  txOrigin?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type EventPostResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['EventPost'] = ResolversParentTypes['EventPost']> = ResolversObject<{
+  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
+  hatId?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
+  hatsPoster?: Resolver<Maybe<ResolversTypes['HatsPoster']>, ParentType, ContextType>;
+  hatsPoster_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  mdPointer?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  mdProtocol?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
+  tag?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type FactoryEventsSummaryResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['FactoryEventsSummary'] = ResolversParentTypes['FactoryEventsSummary']> = ResolversObject<{
+  address?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  admins?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
+  contestBuiltCount?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
+  contestCloneCount?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
+  contestTemplateCount?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
+  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  moduleCloneCount?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
+  moduleTemplateCount?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type GrantShipsVotingResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['GrantShipsVoting'] = ResolversParentTypes['GrantShipsVoting']> = ResolversObject<{
+  choices?: Resolver<Array<ResolversTypes['ShipChoice']>, ParentType, ContextType, Partial<GrantShipsVotingchoicesArgs>>;
+  contest?: Resolver<Maybe<ResolversTypes['Contest']>, ParentType, ContextType>;
+  contest_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
+  endTime?: Resolver<Maybe<ResolversTypes['numeric']>, ParentType, ContextType>;
+  hatId?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
+  hatsAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  isVotingActive?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  startTime?: Resolver<Maybe<ResolversTypes['numeric']>, ParentType, ContextType>;
+  totalVotes?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
+  voteDuration?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
+  voteTokenAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  votes?: Resolver<Array<ResolversTypes['ShipVote']>, ParentType, ContextType, Partial<GrantShipsVotingvotesArgs>>;
+  votingCheckpoint?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type HALParamsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['HALParams'] = ResolversParentTypes['HALParams']> = ResolversObject<{
+  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
+  hatId?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
+  hatsAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type HatsPosterResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['HatsPoster'] = ResolversParentTypes['HatsPoster']> = ResolversObject<{
+  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
+  eventPosts?: Resolver<Array<ResolversTypes['EventPost']>, ParentType, ContextType, Partial<HatsPostereventPostsArgs>>;
+  hatIds?: Resolver<Array<ResolversTypes['numeric']>, ParentType, ContextType>;
+  hatsAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  record?: Resolver<Array<ResolversTypes['Record']>, ParentType, ContextType, Partial<HatsPosterrecordArgs>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type LocalLogResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['LocalLog'] = ResolversParentTypes['LocalLog']> = ResolversObject<{
+  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  message?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type ModuleTemplateResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['ModuleTemplate'] = ResolversParentTypes['ModuleTemplate']> = ResolversObject<{
+  active?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  mdPointer?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  mdProtocol?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
+  moduleName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  templateAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type RecordResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Record'] = ResolversParentTypes['Record']> = ResolversObject<{
+  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
+  hatId?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
+  hatsPoster?: Resolver<Maybe<ResolversTypes['HatsPoster']>, ParentType, ContextType>;
+  hatsPoster_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  mdPointer?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  mdProtocol?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
+  nonce?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  tag?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type ShipChoiceResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['ShipChoice'] = ResolversParentTypes['ShipChoice']> = ResolversObject<{
+  active?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  choiceData?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  contest?: Resolver<Maybe<ResolversTypes['GrantShipsVoting']>, ParentType, ContextType>;
+  contest_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  mdPointer?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  mdProtocol?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
+  voteTally?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
+  votes?: Resolver<Array<ResolversTypes['ShipVote']>, ParentType, ContextType, Partial<ShipChoicevotesArgs>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type ShipVoteResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['ShipVote'] = ResolversParentTypes['ShipVote']> = ResolversObject<{
+  amount?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
+  choice?: Resolver<Maybe<ResolversTypes['ShipChoice']>, ParentType, ContextType>;
+  choice_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  contest?: Resolver<Maybe<ResolversTypes['GrantShipsVoting']>, ParentType, ContextType>;
+  contest_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  isRectractVote?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  mdPointer?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  mdProtocol?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
+  voter?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type StemModuleResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['StemModule'] = ResolversParentTypes['StemModule']> = ResolversObject<{
+  contest?: Resolver<Maybe<ResolversTypes['Contest']>, ParentType, ContextType>;
+  contestAddress?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  contest_id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
+  filterTag?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  moduleAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  moduleName?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  moduleTemplate?: Resolver<Maybe<ResolversTypes['ModuleTemplate']>, ParentType, ContextType>;
+  moduleTemplate_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type TVParamsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['TVParams'] = ResolversParentTypes['TVParams']> = ResolversObject<{
+  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  voteDuration?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type chain_metadataResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['chain_metadata'] = ResolversParentTypes['chain_metadata']> = ResolversObject<{
+  block_height?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  chain_id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  end_block?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  first_event_block_number?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  is_hyper_sync?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  latest_fetched_block_number?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  latest_processed_block?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  num_batches_fetched?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  num_events_processed?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  start_block?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  timestamp_caught_up_to_head_or_endblock?: Resolver<Maybe<ResolversTypes['timestamptz']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export interface contract_typeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['contract_type'], any> {
+  name: 'contract_type';
+}
+
+export type dynamic_contract_registryResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['dynamic_contract_registry'] = ResolversParentTypes['dynamic_contract_registry']> = ResolversObject<{
+  block_timestamp?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  chain_id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  contract_address?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  contract_type?: Resolver<ResolversTypes['contract_type'], ParentType, ContextType>;
+  event_id?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type entity_historyResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['entity_history'] = ResolversParentTypes['entity_history']> = ResolversObject<{
+  block_number?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  block_timestamp?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  chain_id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  entity_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  entity_type?: Resolver<ResolversTypes['entity_type'], ParentType, ContextType>;
+  event?: Resolver<Maybe<ResolversTypes['raw_events']>, ParentType, ContextType>;
+  log_index?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  params?: Resolver<Maybe<ResolversTypes['json']>, ParentType, ContextType, Partial<entity_historyparamsArgs>>;
+  previous_block_number?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  previous_block_timestamp?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  previous_chain_id?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  previous_log_index?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type entity_history_filterResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['entity_history_filter'] = ResolversParentTypes['entity_history_filter']> = ResolversObject<{
+  block_number?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  block_timestamp?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  chain_id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  entity_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  entity_type?: Resolver<ResolversTypes['entity_type'], ParentType, ContextType>;
+  event?: Resolver<Maybe<ResolversTypes['raw_events']>, ParentType, ContextType>;
+  log_index?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  new_val?: Resolver<Maybe<ResolversTypes['json']>, ParentType, ContextType, Partial<entity_history_filternew_valArgs>>;
+  old_val?: Resolver<Maybe<ResolversTypes['json']>, ParentType, ContextType, Partial<entity_history_filterold_valArgs>>;
+  previous_block_number?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  previous_log_index?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export interface entity_typeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['entity_type'], any> {
+  name: 'entity_type';
+}
+
+export type event_sync_stateResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['event_sync_state'] = ResolversParentTypes['event_sync_state']> = ResolversObject<{
+  block_number?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  block_timestamp?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  chain_id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  log_index?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  transaction_index?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export interface event_typeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['event_type'], any> {
+  name: 'event_type';
+}
+
+export interface jsonScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['json'], any> {
+  name: 'json';
+}
+
+export interface numericScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['numeric'], any> {
+  name: 'numeric';
+}
+
+export type persisted_stateResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['persisted_state'] = ResolversParentTypes['persisted_state']> = ResolversObject<{
+  abi_files_hash?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  config_hash?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  envio_version?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  handler_files_hash?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  schema_hash?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type raw_eventsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['raw_events'] = ResolversParentTypes['raw_events']> = ResolversObject<{
+  block_hash?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  block_number?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  block_timestamp?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  chain_id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
+  event_history?: Resolver<Array<ResolversTypes['entity_history']>, ParentType, ContextType, Partial<raw_eventsevent_historyArgs>>;
+  event_id?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
+  event_type?: Resolver<ResolversTypes['event_type'], ParentType, ContextType>;
+  log_index?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  params?: Resolver<ResolversTypes['json'], ParentType, ContextType, Partial<raw_eventsparamsArgs>>;
+  src_address?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  transaction_hash?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  transaction_index?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export interface timestampScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['timestamp'], any> {
+  name: 'timestamp';
+}
+
+export interface timestamptzScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['timestamptz'], any> {
+  name: 'timestamptz';
+}
+
 export type Resolvers<ContextType = MeshContext> = ResolversObject<{
   Query?: QueryResolvers<ContextType>;
   Subscription?: SubscriptionResolvers<ContextType>;
-  Contest?: ContestResolvers<ContextType>;
-  ContestClone?: ContestCloneResolvers<ContextType>;
-  ContestTemplate?: ContestTemplateResolvers<ContextType>;
-  ERCPointParams?: ERCPointParamsResolvers<ContextType>;
-  EnvioTX?: EnvioTXResolvers<ContextType>;
-  EventPost?: EventPostResolvers<ContextType>;
-  FactoryEventsSummary?: FactoryEventsSummaryResolvers<ContextType>;
-  GrantShipsVoting?: GrantShipsVotingResolvers<ContextType>;
-  HALParams?: HALParamsResolvers<ContextType>;
-  HatsPoster?: HatsPosterResolvers<ContextType>;
-  LocalLog?: LocalLogResolvers<ContextType>;
-  ModuleTemplate?: ModuleTemplateResolvers<ContextType>;
-  Record?: RecordResolvers<ContextType>;
-  ShipChoice?: ShipChoiceResolvers<ContextType>;
-  ShipVote?: ShipVoteResolvers<ContextType>;
-  StemModule?: StemModuleResolvers<ContextType>;
-  TVParams?: TVParamsResolvers<ContextType>;
-  _numeric?: GraphQLScalarType;
-  _text?: GraphQLScalarType;
-  chain_metadata?: chain_metadataResolvers<ContextType>;
-  contract_type?: GraphQLScalarType;
-  dynamic_contract_registry?: dynamic_contract_registryResolvers<ContextType>;
-  entity_history?: entity_historyResolvers<ContextType>;
-  entity_history_filter?: entity_history_filterResolvers<ContextType>;
-  entity_type?: GraphQLScalarType;
-  event_sync_state?: event_sync_stateResolvers<ContextType>;
-  event_type?: GraphQLScalarType;
-  json?: GraphQLScalarType;
-  numeric?: GraphQLScalarType;
-  persisted_state?: persisted_stateResolvers<ContextType>;
-  raw_events?: raw_eventsResolvers<ContextType>;
-  timestamp?: GraphQLScalarType;
-  timestamptz?: GraphQLScalarType;
   ApplicationHistory?: ApplicationHistoryResolvers<ContextType>;
   BigDecimal?: GraphQLScalarType;
   BigInt?: GraphQLScalarType;
@@ -8611,16 +8572,47 @@ export type Resolvers<ContextType = MeshContext> = ResolversObject<{
   Update?: UpdateResolvers<ContextType>;
   _Block_?: _Block_Resolvers<ContextType>;
   _Meta_?: _Meta_Resolvers<ContextType>;
+  Contest?: ContestResolvers<ContextType>;
+  ContestClone?: ContestCloneResolvers<ContextType>;
+  ContestTemplate?: ContestTemplateResolvers<ContextType>;
+  ERCPointParams?: ERCPointParamsResolvers<ContextType>;
+  EnvioTX?: EnvioTXResolvers<ContextType>;
+  EventPost?: EventPostResolvers<ContextType>;
+  FactoryEventsSummary?: FactoryEventsSummaryResolvers<ContextType>;
+  GrantShipsVoting?: GrantShipsVotingResolvers<ContextType>;
+  HALParams?: HALParamsResolvers<ContextType>;
+  HatsPoster?: HatsPosterResolvers<ContextType>;
+  LocalLog?: LocalLogResolvers<ContextType>;
+  ModuleTemplate?: ModuleTemplateResolvers<ContextType>;
+  Record?: RecordResolvers<ContextType>;
+  ShipChoice?: ShipChoiceResolvers<ContextType>;
+  ShipVote?: ShipVoteResolvers<ContextType>;
+  StemModule?: StemModuleResolvers<ContextType>;
+  TVParams?: TVParamsResolvers<ContextType>;
+  chain_metadata?: chain_metadataResolvers<ContextType>;
+  contract_type?: GraphQLScalarType;
+  dynamic_contract_registry?: dynamic_contract_registryResolvers<ContextType>;
+  entity_history?: entity_historyResolvers<ContextType>;
+  entity_history_filter?: entity_history_filterResolvers<ContextType>;
+  entity_type?: GraphQLScalarType;
+  event_sync_state?: event_sync_stateResolvers<ContextType>;
+  event_type?: GraphQLScalarType;
+  json?: GraphQLScalarType;
+  numeric?: GraphQLScalarType;
+  persisted_state?: persisted_stateResolvers<ContextType>;
+  raw_events?: raw_eventsResolvers<ContextType>;
+  timestamp?: GraphQLScalarType;
+  timestamptz?: GraphQLScalarType;
 }>;
 
 export type DirectiveResolvers<ContextType = MeshContext> = ResolversObject<{
-  cached?: cachedDirectiveResolver<any, any, ContextType>;
   entity?: entityDirectiveResolver<any, any, ContextType>;
   subgraphId?: subgraphIdDirectiveResolver<any, any, ContextType>;
   derivedFrom?: derivedFromDirectiveResolver<any, any, ContextType>;
+  cached?: cachedDirectiveResolver<any, any, ContextType>;
 }>;
 
-export type MeshContext = GsVotingTypes.Context & GrantShipsTypes.Context & BaseMeshContext;
+export type MeshContext = GrantShipsTypes.Context & GsVotingTypes.Context & BaseMeshContext;
 
 
 import { fileURLToPath } from '@graphql-mesh/utils';
@@ -8629,10 +8621,10 @@ const baseDir = pathModule.join(pathModule.dirname(fileURLToPath(import.meta.url
 const importFn: ImportFn = <T>(moduleId: string) => {
   const relativeModuleId = (pathModule.isAbsolute(moduleId) ? pathModule.relative(baseDir, moduleId) : moduleId).split('\\').join('/').replace(baseDir + '/', '');
   switch(relativeModuleId) {
-    case ".graphclient/sources/gs-voting/introspectionSchema":
+    case ".graphclient/sources/grant-ships/introspectionSchema":
       return Promise.resolve(importedModule$0) as T;
     
-    case ".graphclient/sources/grant-ships/introspectionSchema":
+    case ".graphclient/sources/gs-voting/introspectionSchema":
       return Promise.resolve(importedModule$1) as T;
     
     default:
@@ -8680,7 +8672,7 @@ const grantShipsHandler = new GraphqlHandler({
             });
 const gsVotingHandler = new GraphqlHandler({
               name: "gs-voting",
-              config: {"endpoint":"http://localhost:8080/v1/graphql"},
+              config: {"endpoint":"https://indexer.bigdevenergy.link/c8f8ea8/v1/graphql"},
               baseDir,
               cache,
               pubsub,

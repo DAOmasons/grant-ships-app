@@ -6,6 +6,6 @@ sources:
   - name: gs-voting
     handler: 
       graphql: 
-        endpoint: http://localhost:8080/v1/graphql      
+        endpoint: https://indexer.bigdevenergy.link/c8f8ea8/v1/graphql 
 documents: 
   - './src/**/*.graphql'

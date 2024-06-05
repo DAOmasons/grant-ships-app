@@ -6,6 +6,8 @@ import { resolvePortfolioReport } from '../resolvers/grantResolvers';
 export type PostedRecord = {
   roundReview: string;
   grantReviews: Record<string, string>;
+  grantDemos: Record<string, string>;
+  grantExtras: Record<string, string>;
 };
 
 export const getAllRecordsByTag = async (tag: string) => {
