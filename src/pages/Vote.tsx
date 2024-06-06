@@ -6,10 +6,13 @@ import {
   Divider,
   Flex,
   Group,
+  Paper,
   Progress,
+  Spoiler,
   Stack,
   Stepper,
   Text,
+  useMantineTheme,
 } from '@mantine/core';
 import { useQuery } from '@tanstack/react-query';
 import { getShipsPageData } from '../queries/getShipsPage';
@@ -25,6 +28,9 @@ import { useVoting } from '../hooks/useVoting';
 import { ShipsCardUI } from '../types/ui';
 import { formatBigIntPercentage } from '../utils/helpers';
 import { formatEther } from 'viem';
+import classes from '../components/feed/FeedStyles.module.css';
+import { IconChevronDown, IconChevronUp } from '@tabler/icons-react';
+import { getContestVoters } from '../queries/getVoters';
 
 export type VotingFormValues = z.infer<typeof votingSchema>;
 
@@ -135,6 +141,14 @@ export const Vote = () => {
 const VoteConfirmationPanel = ({ ships }: { ships: ShipsCardUI[] }) => {
   const { contest, userVotes, tokenData } = useVoting();
 
+  const { data: voters } = useQuery({
+    queryKey: ['gs-voters'],
+    queryFn: () => getContestVoters(contest?.id as string),
+    enabled: !!contest,
+  });
+
+  const theme = useMantineTheme();
+
   const consolidated = useMemo(() => {
     if (!ships || !userVotes || !contest) return [];
 
@@ -168,18 +182,24 @@ const VoteConfirmationPanel = ({ ships }: { ships: ShipsCardUI[] }) => {
       totalVotes,
     };
   }, [consolidated, contest]);
+
+  const colors = [
+    theme.colors.blue[5],
+    theme.colors.violet[5],
+    theme.colors.pink[5],
+  ];
   return (
-    <MainSection maw={780}>
+    <MainSection maw={850}>
       <PageTitle title="Vote" />
       <Text fz={32} fw={600} mt="xl">
         Your vote has been submitted!
       </Text>
       <Flex w="100%" justify="space-between" wrap="wrap" mt={40}>
-        <Stack w={298} gap="lg" mb={40}>
+        <Stack w={350} gap="lg" mb={40}>
           <Text fz="xl" fw={500}>
             Your Vote
           </Text>
-          {consolidated.map((ship) => {
+          {consolidated.map((ship, index) => {
             const percentage = totals?.totalUserVotes
               ? formatBigIntPercentage(
                   BigInt(ship.vote?.amount),
@@ -196,7 +216,7 @@ const VoteConfirmationPanel = ({ ships }: { ships: ShipsCardUI[] }) => {
                     {ship.name}
                   </Text>
                 </Group>
-                <Progress value={Number(percentage)} />
+                <Progress value={Number(percentage)} color={colors[index]} />
                 <Text fz="sm" mt="xs">
                   {Number(percentage)}% Voted ({tokenAmount}{' '}
                   {tokenData.tokenSymbol})
@@ -204,12 +224,18 @@ const VoteConfirmationPanel = ({ ships }: { ships: ShipsCardUI[] }) => {
               </Box>
             );
           })}
+          <Text fz="sm" mt="xs">
+            <Text fz="sm" component="span" fw={600}>
+              Total:{' '}
+            </Text>
+            {formatEther(totals?.totalUserVotes || 0n)} {tokenData.tokenSymbol}
+          </Text>
         </Stack>
-        <Stack w={298} mb={40} gap="lg">
+        <Stack w={350} mb={40} gap="lg">
           <Text fz="xl" fw={500}>
             Total Vote Results
           </Text>
-          {consolidated?.map((ship) => {
+          {consolidated?.map((ship, index) => {
             const percentage = totals?.totalVotes
               ? formatBigIntPercentage(
                   BigInt(ship.choice?.voteTally),
@@ -225,16 +251,120 @@ const VoteConfirmationPanel = ({ ships }: { ships: ShipsCardUI[] }) => {
                     {ship.name}
                   </Text>
                 </Group>
-                <Progress value={Number(percentage)} />
+                <Progress value={Number(percentage)} color={colors[index]} />
                 <Text fz="sm" mt="xs">
                   {Number(percentage)}% ({tokenAmount} {tokenData.tokenSymbol})
                 </Text>
               </Box>
             );
           })}
+          <Text fz="sm" mt="xs">
+            <Text fz="sm" component="span" fw={600}>
+              Total:{' '}
+            </Text>
+            {formatEther(totals?.totalVotes || 0n)} {tokenData.tokenSymbol}
+          </Text>
         </Stack>
       </Flex>
       <Divider />
+      <Text fz="xl" my="xl" fw={500}>
+        All Votes
+      </Text>
+      <Flex w={'100%'} wrap="wrap" justify={'space-between'}>
+        <VoteCard />
+        <VoteCard />
+        <VoteCard />
+        <VoteCard />
+        <VoteCard />
+        <VoteCard />
+      </Flex>
     </MainSection>
+  );
+};
+
+const VoteCard = () => {
+  const theme = useMantineTheme();
+  const colors = [
+    theme.colors.blue[5],
+    theme.colors.violet[5],
+    theme.colors.pink[5],
+  ];
+
+  return (
+    <Paper w={350} mb="xl" bg={theme.colors.dark[6]} p={'md'}>
+      <Group mb="md">
+        <Avatar size={48} />
+        <Text>0x000...0000</Text>
+      </Group>
+      <Group w={'100%'} mb="sm">
+        <Avatar size={32} />
+        <Box maw={250} w="100%">
+          <Progress value={30} color={colors[0]} opacity={0.7} />
+        </Box>
+      </Group>
+      <Spoiler
+        mb={'xs'}
+        maw={300}
+        hideLabel={<IconChevronUp stroke={1} />}
+        showLabel={<IconChevronDown stroke={1} />}
+        classNames={{
+          root: classes.embedTextBox,
+          control: classes.embedTextControl,
+        }}
+        maxHeight={48}
+      >
+        <Text fz="sm" className="ws-pre-wrap">
+          The challenge sdfs sd fs sdf sd fs dfsdfsdfajsl;dkfjas;ldkfj
+          asdflkja;l df asdl;fj asldkfjlskdfj ;lasd asdfas dfjl;kj as;dlfk asdf
+          lkj;a sdf
+        </Text>
+      </Spoiler>
+      <Group w={'100%'} mb="sm">
+        <Avatar size={32} />
+        <Box maw={250} w="100%">
+          <Progress value={20} color={colors[1]} opacity={0.7} />
+        </Box>
+      </Group>
+      <Spoiler
+        mb={'xs'}
+        maw={300}
+        hideLabel={<IconChevronUp stroke={1} />}
+        showLabel={<IconChevronDown stroke={1} />}
+        classNames={{
+          root: classes.embedTextBox,
+          control: classes.embedTextControl,
+        }}
+        maxHeight={48}
+      >
+        <Text fz="sm" className="ws-pre-wrap">
+          The challenge sdfs sd fs sdf sd fs dfsdfsdfajsl;dkfjas;ldkfj
+          asdflkja;l df asdl;fj asldkfjlskdfj ;lasd asdfas dfjl;kj as;dlfk asdf
+          lkj;a sdf
+        </Text>
+      </Spoiler>
+      <Group w={'100%'} mb="sm">
+        <Avatar size={32} />
+        <Box maw={250} w="100%">
+          <Progress value={50} color={colors[2]} opacity={0.7} />
+        </Box>
+      </Group>
+      <Spoiler
+        mb={'xs'}
+        maw={300}
+        hideLabel={<IconChevronUp stroke={1} />}
+        showLabel={<IconChevronDown stroke={1} />}
+        classNames={{
+          root: classes.embedTextBox,
+          control: classes.embedTextControl,
+        }}
+        maxHeight={48}
+      >
+        <Text fz="sm" className="ws-pre-wrap">
+          The challenge sdfs sd fs sdf sd fs dfsdfsdfajsl;dkfjas;ldkfj
+          asdflkja;l df asdl;fj asldkfjlskdfj ;lasd asdfas dfjl;kj as;dlfk asdf
+          lkj;a sdf
+        </Text>
+      </Spoiler>
+    </Paper>
   );
 };

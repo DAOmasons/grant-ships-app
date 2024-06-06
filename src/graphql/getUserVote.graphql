@@ -1,6 +1,6 @@
 query getUserVotes($contestId: String!, $voterAddress: String!) {
   ShipVote(
-    where: { voter: { _eq: $voterAddress }, contest_id: { _eq: $contestId } }
+    where: { voter_id: { _eq: $voterAddress }, contest_id: { _eq: $contestId } }
   ) {
     id
     choice_id

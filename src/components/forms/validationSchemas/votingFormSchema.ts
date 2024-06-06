@@ -9,3 +9,6 @@ export const votingSchema = z.object({
     })
   ),
 });
+export const voteReasonsSchema = z.object({
+  voteReason: z.string().min(1, { message: 'Vote reason is required' }),
+});
