@@ -27,10 +27,11 @@ import { ConfirmationPanel } from '../components/voting/ConfirmationPanel';
 import { useVoting } from '../hooks/useVoting';
 import { ShipsCardUI } from '../types/ui';
 import { formatBigIntPercentage } from '../utils/helpers';
-import { formatEther } from 'viem';
+import { Address, formatEther } from 'viem';
 import classes from '../components/feed/FeedStyles.module.css';
 import { IconChevronDown, IconChevronUp } from '@tabler/icons-react';
-import { getContestVoters } from '../queries/getVoters';
+import { GsVoter, getContestVoters } from '../queries/getVoters';
+import { AddressAvatar } from '../components/AddressAvatar';
 
 export type VotingFormValues = z.infer<typeof votingSchema>;
 
@@ -141,12 +142,6 @@ export const Vote = () => {
 const VoteConfirmationPanel = ({ ships }: { ships: ShipsCardUI[] }) => {
   const { contest, userVotes, tokenData } = useVoting();
 
-  const { data: voters } = useQuery({
-    queryKey: ['gs-voters'],
-    queryFn: () => getContestVoters(contest?.id as string),
-    enabled: !!contest,
-  });
-
   const theme = useMantineTheme();
 
   const consolidated = useMemo(() => {
@@ -182,6 +177,14 @@ const VoteConfirmationPanel = ({ ships }: { ships: ShipsCardUI[] }) => {
       totalVotes,
     };
   }, [consolidated, contest]);
+
+  const condensed = useMemo(() => {
+    return consolidated?.map((ship) => ({
+      shipImg: ship.imgUrl,
+      shipName: ship.name,
+      id: ship.choice?.id as string,
+    }));
+  }, [consolidated]);
 
   const colors = [
     theme.colors.blue[5],
@@ -270,19 +273,41 @@ const VoteConfirmationPanel = ({ ships }: { ships: ShipsCardUI[] }) => {
       <Text fz="xl" my="xl" fw={500}>
         All Votes
       </Text>
-      <Flex w={'100%'} wrap="wrap" justify={'space-between'}>
-        <VoteCard />
-        <VoteCard />
-        <VoteCard />
-        <VoteCard />
-        <VoteCard />
-        <VoteCard />
-      </Flex>
+      <AllVotes choices={condensed} />
     </MainSection>
   );
 };
 
-const VoteCard = () => {
+type CondensedChoiceData = {
+  id: string;
+  shipName: string;
+  shipImg: string;
+};
+
+const AllVotes = ({ choices }: { choices: CondensedChoiceData[] }) => {
+  const { contest } = useVoting();
+  const { data: voters } = useQuery({
+    queryKey: ['gs-voters'],
+    queryFn: () => getContestVoters(contest?.id as string),
+    enabled: !!contest,
+  });
+
+  return (
+    <Flex w={'100%'} wrap="wrap" justify={'space-between'}>
+      {voters?.map((voter) => (
+        <VoteCard key={voter.id} voter={voter} choices={choices} />
+      ))}
+    </Flex>
+  );
+};
+
+const VoteCard = ({
+  voter,
+  choices,
+}: {
+  voter: GsVoter;
+  choices: CondensedChoiceData[];
+}) => {
   const theme = useMantineTheme();
   const colors = [
     theme.colors.blue[5],
@@ -290,81 +315,86 @@ const VoteCard = () => {
     theme.colors.pink[5],
   ];
 
+  const totalUserVotes = useMemo(() => {
+    return voter.votes.reduce((acc, vote) => {
+      return acc + BigInt(vote.amount);
+    }, 0n);
+  }, [voter]);
+
+  const consolidated = useMemo(() => {
+    return choices.map((choice) => {
+      const vote = voter.votes.find((vote) => choice.id === vote.choice.id);
+      return { ...choice, vote };
+    });
+  }, [voter, choices]);
+
   return (
-    <Paper w={350} mb="xl" bg={theme.colors.dark[6]} p={'md'}>
-      <Group mb="md">
-        <Avatar size={48} />
-        <Text>0x000...0000</Text>
-      </Group>
-      <Group w={'100%'} mb="sm">
-        <Avatar size={32} />
-        <Box maw={250} w="100%">
-          <Progress value={30} color={colors[0]} opacity={0.7} />
-        </Box>
-      </Group>
-      <Spoiler
-        mb={'xs'}
-        maw={300}
-        hideLabel={<IconChevronUp stroke={1} />}
-        showLabel={<IconChevronDown stroke={1} />}
-        classNames={{
-          root: classes.embedTextBox,
-          control: classes.embedTextControl,
-        }}
-        maxHeight={48}
-      >
-        <Text fz="sm" className="ws-pre-wrap">
-          The challenge sdfs sd fs sdf sd fs dfsdfsdfajsl;dkfjas;ldkfj
-          asdflkja;l df asdl;fj asldkfjlskdfj ;lasd asdfas dfjl;kj as;dlfk asdf
-          lkj;a sdf
-        </Text>
-      </Spoiler>
-      <Group w={'100%'} mb="sm">
-        <Avatar size={32} />
-        <Box maw={250} w="100%">
-          <Progress value={20} color={colors[1]} opacity={0.7} />
-        </Box>
-      </Group>
-      <Spoiler
-        mb={'xs'}
-        maw={300}
-        hideLabel={<IconChevronUp stroke={1} />}
-        showLabel={<IconChevronDown stroke={1} />}
-        classNames={{
-          root: classes.embedTextBox,
-          control: classes.embedTextControl,
-        }}
-        maxHeight={48}
-      >
-        <Text fz="sm" className="ws-pre-wrap">
-          The challenge sdfs sd fs sdf sd fs dfsdfsdfajsl;dkfjas;ldkfj
-          asdflkja;l df asdl;fj asldkfjlskdfj ;lasd asdfas dfjl;kj as;dlfk asdf
-          lkj;a sdf
-        </Text>
-      </Spoiler>
-      <Group w={'100%'} mb="sm">
-        <Avatar size={32} />
-        <Box maw={250} w="100%">
-          <Progress value={50} color={colors[2]} opacity={0.7} />
-        </Box>
-      </Group>
-      <Spoiler
-        mb={'xs'}
-        maw={300}
-        hideLabel={<IconChevronUp stroke={1} />}
-        showLabel={<IconChevronDown stroke={1} />}
-        classNames={{
-          root: classes.embedTextBox,
-          control: classes.embedTextControl,
-        }}
-        maxHeight={48}
-      >
-        <Text fz="sm" className="ws-pre-wrap">
-          The challenge sdfs sd fs sdf sd fs dfsdfsdfajsl;dkfjas;ldkfj
-          asdflkja;l df asdl;fj asldkfjlskdfj ;lasd asdfas dfjl;kj as;dlfk asdf
-          lkj;a sdf
-        </Text>
-      </Spoiler>
+    <Paper w={350} mb="xl" bg={theme.colors.dark[6]} p={'lg'}>
+      <Box mb="xl">
+        <AddressAvatar address={voter.id as Address} size={32} />
+      </Box>
+
+      {consolidated.map((choice, index) => {
+        return (
+          <ShipChoiceVoteBar
+            key={`${voter.id}-${choice.id}`}
+            choice={{
+              shipImg: choice.shipImg,
+              shipName: choice.shipName,
+              id: choice.id,
+            }}
+            totalVotes={totalUserVotes}
+            reason={choice.vote?.reason || 'Did not vote'}
+            voteAmount={BigInt(choice.vote?.amount || 0)}
+            color={colors[index]}
+          />
+        );
+      })}
     </Paper>
+  );
+};
+
+const ShipChoiceVoteBar = ({
+  choice,
+  totalVotes,
+  voteAmount,
+  reason,
+  color,
+}: {
+  choice: CondensedChoiceData;
+  totalVotes: bigint;
+  voteAmount: bigint;
+  reason: string;
+  color: string;
+}) => {
+  const votePercentage = formatBigIntPercentage(voteAmount, totalVotes);
+  return (
+    <Box mb="md">
+      <Group w={'100%'} mb="sm">
+        <Avatar size={24} src={choice.shipImg} />
+        <Box maw={250} w="100%">
+          <Progress
+            value={Number(votePercentage)}
+            color={color}
+            opacity={0.7}
+          />
+        </Box>
+      </Group>
+      <Spoiler
+        mb={'xs'}
+        maw={300}
+        hideLabel={<IconChevronUp stroke={1} />}
+        showLabel={<IconChevronDown stroke={1} />}
+        classNames={{
+          root: classes.embedTextBox,
+          control: classes.embedTextControl,
+        }}
+        maxHeight={24}
+      >
+        <Text fz="sm" className="ws-pre-wrap" h={24}>
+          {reason}
+        </Text>
+      </Spoiler>
+    </Box>
   );
 };
