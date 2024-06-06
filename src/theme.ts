@@ -1,4 +1,4 @@
-import { Loader, Tooltip, createTheme } from '@mantine/core';
+import { Loader, Modal, Tooltip, createTheme } from '@mantine/core';
 import { RingLoader } from './components/loader/RingLoader';
 import { BreakPoint } from './constants/style';
 
@@ -25,6 +25,11 @@ export const theme = createTheme({
     Tooltip: Tooltip.extend({
       defaultProps: {
         color: 'dark.6',
+      },
+    }),
+    Modal: Modal.extend({
+      defaultProps: {
+        lockScroll: false,
       },
     }),
   },

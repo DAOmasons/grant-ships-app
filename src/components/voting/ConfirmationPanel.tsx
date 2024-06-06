@@ -2,6 +2,7 @@ import {
   Avatar,
   Box,
   Group,
+  NumberInput,
   Progress,
   Text,
   TextInput,
@@ -21,6 +22,10 @@ import { notifications } from '@mantine/notifications';
 import { useTx } from '../../hooks/useTx';
 import ContestABI from '../../abi/Contest.json';
 import { ADDR } from '../../constants/addresses';
+import { useMemo } from 'react';
+import { validateNumberWithMaxDecimals } from '../forms/validationSchemas/votingFormSchema';
+import { FormValidationResult } from '@mantine/form/lib/types';
+import { object } from 'zod';
 
 export const ConfirmationPanel = ({
   ships,
@@ -43,107 +48,161 @@ export const ConfirmationPanel = ({
   ];
   const isVotingActive = votingStage === VotingStage.Active;
 
+  const exceeds100percent = useMemo(() => {
+    return (
+      form.values.ships.reduce((acc, curr) => {
+        return acc + Number(curr.shipPerc);
+      }, 0) > 100
+    );
+  }, [form.values]);
+
+  const userHasVotes = userTokenData.totalUserTokenBalance > 0n;
+
   const handleBatchVote = async () => {
-    if (!contest) {
-      notifications.show({
-        title: 'Error',
-        message: 'Failed to submit vote',
-        color: 'red',
-      });
-      return;
-    }
-
-    if (form.values.ships.length !== ships.length) {
-      notifications.show({
-        title: 'Error',
-        message: 'Please fill out all fields',
-        color: 'red',
-      });
-      return;
-    }
-
-    const withParams = await Promise.all(
-      form.values.ships.map(async (ship) => {
-        const choiceId = contest.choices.find(
-          (choice) => choice.shipId === ship.shipId
-        )?.id;
-
-        const tokenAmount =
-          (userTokenData.totalUserTokenBalance *
-            BigInt(Number(ship.shipPerc) * 1e6)) /
-          BigInt(100 * 1e6);
-
-        const pinRes = await pinJSONToIPFS({
-          voteReason: ship.shipComment,
+    try {
+      if (!contest) {
+        notifications.show({
+          title: 'Error',
+          message: 'Failed to submit vote',
+          color: 'red',
         });
+        return;
+      }
 
-        if (!pinRes) {
-          throw new Error('Failed to pin to IPFS');
-        }
+      if (form.values.ships.length !== ships.length) {
+        notifications.show({
+          title: 'Error',
+          message: 'Please fill out all fields',
+          color: 'red',
+        });
+        return;
+      }
 
-        return {
-          ...ship,
-          ipfsPointer: pinRes.IpfsHash,
-          choiceId,
-          tokenAmount,
-        };
-      })
-    );
+      if (exceeds100percent) {
+        notifications.show({
+          title: 'Error',
+          message: 'Total vote allocation exceeds 100%',
+          color: 'red',
+        });
+        return;
+      }
 
-    const choiceIds = withParams.map((ship) => {
-      return ship.choiceId?.split('-')[1];
-    });
-    const tokenAmounts = withParams.map((ship) => ship.tokenAmount);
-    const metadataBytes = withParams.map((ship) =>
-      encodeAbiParameters(parseAbiParameters('(uint256, string)'), [
-        [1n, ship.ipfsPointer],
-      ])
-    );
-    const tokenSum = tokenAmounts.reduce((acc, curr) => acc + curr, 0n);
+      const validationResult: FormValidationResult = form.validate();
 
-    if (tokenSum > userTokenData.totalUserTokenBalance) {
-      notifications.show({
-        title: 'Error',
-        message: 'Voting amounts exceeds balance',
-        color: 'red',
+      if (validationResult.hasErrors) {
+        notifications.show({
+          title: 'Error',
+          message: `Form Validation error `,
+          color: 'red',
+        });
+        return;
+      }
+
+      const hasFilledInAllRequiredFields = form.values.ships.every(
+        (ship) => ship.shipId && ship.shipPerc
+      );
+
+      if (!hasFilledInAllRequiredFields) {
+        notifications.show({
+          title: 'Error',
+          message: 'Please fill out all required fields',
+          color: 'red',
+        });
+        return;
+      }
+
+      const withParams = await Promise.all(
+        form.values.ships
+          .filter((ship) => ship.shipPerc !== 0)
+          .map(async (ship) => {
+            const choiceId = contest.choices.find(
+              (choice) => choice.shipId === ship.shipId
+            )?.id;
+
+            const tokenAmount =
+              (userTokenData.totalUserTokenBalance *
+                BigInt(Number(ship.shipPerc) * 1e6)) /
+              BigInt(100 * 1e6);
+
+            const pinRes = await pinJSONToIPFS({
+              voteReason: ship.shipComment,
+            });
+
+            if (!pinRes) {
+              throw new Error('Failed to pin to IPFS');
+            }
+
+            return {
+              ...ship,
+              ipfsPointer: pinRes.IpfsHash,
+              choiceId,
+              tokenAmount,
+            };
+          })
+      );
+
+      const choiceIds = withParams.map((ship) => {
+        return ship.choiceId?.split('-')[1];
       });
-      return;
-    }
+      const tokenAmounts = withParams.map((ship) => ship.tokenAmount);
+      const metadataBytes = withParams.map((ship) =>
+        encodeAbiParameters(parseAbiParameters('(uint256, string)'), [
+          [1n, ship.ipfsPointer],
+        ])
+      );
 
-    if (
-      choiceIds.length !== tokenAmounts.length ||
-      tokenAmounts.length !== metadataBytes.length
-    ) {
-      notifications.show({
-        title: 'Error',
-        message: 'data length mismatch',
-        color: 'red',
-      });
-      return;
-    }
+      const tokenSum = tokenAmounts.reduce((acc, curr) => acc + curr, 0n);
 
-    tx({
-      viewParams: {
-        awaitEnvioPoll: true,
-      },
-      writeContractParams: {
-        abi: ContestABI,
-        address: ADDR.VOTE_CONTEST,
-        functionName: 'batchVote',
-        args: [choiceIds, tokenAmounts, metadataBytes, tokenSum],
-      },
-      writeContractOptions: {
-        onPollSuccess() {
-          refetchGsVotes();
+      if (tokenSum > userTokenData.totalUserTokenBalance) {
+        notifications.show({
+          title: 'Error',
+          message: 'Voting amounts exceeds balance',
+          color: 'red',
+        });
+        return;
+      }
+
+      if (
+        choiceIds.length !== tokenAmounts.length ||
+        tokenAmounts.length !== metadataBytes.length
+      ) {
+        notifications.show({
+          title: 'Error',
+          message: 'data length mismatch',
+          color: 'red',
+        });
+        return;
+      }
+
+      tx({
+        viewParams: {
+          awaitEnvioPoll: true,
         },
-      },
-    });
+        writeContractParams: {
+          abi: ContestABI,
+          address: ADDR.VOTE_CONTEST,
+          functionName: 'batchVote',
+          args: [choiceIds, tokenAmounts, metadataBytes, tokenSum],
+        },
+        writeContractOptions: {
+          onPollSuccess() {
+            refetchGsVotes();
+          },
+        },
+      });
+    } catch (error: any) {
+      notifications.show({
+        title: 'Error',
+        message: `Vote submission failed: ${error.message}`,
+        color: 'red',
+      });
+    }
   };
 
   return (
     <Box mt="md">
       {ships.map((ship, index) => {
-        const shipPerc = form.values.ships[index].shipPerc || 0;
+        const shipPerc = form.values.ships[index].shipPerc || '0';
         const voteAmount =
           userTokenData.totalUserTokenBalance && shipPerc
             ? formatEther(
@@ -152,6 +211,7 @@ export const ConfirmationPanel = ({
                   BigInt(100 * 1e6)
               )
             : 0n;
+
         return (
           <Box key={ship.id} mb="xl">
             <Group mb={'sm'}>
@@ -159,11 +219,18 @@ export const ConfirmationPanel = ({
               <Text fz="md">{ship.name}</Text>
             </Group>
             <Box ml={48}>
-              <TextInput
+              <NumberInput
                 maw={430}
                 mb="xs"
                 label="Amount (%)"
+                required
+                clampBehavior="strict"
                 placeholder="22%"
+                suffix="%"
+                hideControls
+                min={0}
+                max={100}
+                decimalScale={2}
                 disabled={!isVotingActive}
                 {...form.getInputProps(`ships.${index}.shipPerc`)}
               />
@@ -192,11 +259,19 @@ export const ConfirmationPanel = ({
           </Box>
         );
       })}
+
       <Group justify="flex-end" maw={480}>
+        <Box>
+          {!userHasVotes && (
+            <Text fz="sm" c="red">
+              You have no votes to allocate
+            </Text>
+          )}
+        </Box>
         <TxButton
           size="md"
           onClick={handleBatchVote}
-          disabled={!isVotingActive}
+          disabled={!isVotingActive || exceeds100percent || !userHasVotes}
         >
           Submit
         </TxButton>

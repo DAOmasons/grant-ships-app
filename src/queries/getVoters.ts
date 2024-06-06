@@ -11,7 +11,7 @@ export type GsVote = {
   isRetractVote: boolean;
   mdPointer: string;
   mdProtocol: number;
-  reason: string;
+  reason: string | null;
 };
 
 export type GsVoter = {

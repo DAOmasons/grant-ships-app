@@ -20,8 +20,9 @@ export const VotingFooter = ({
   isVotingActive: boolean;
 }) => {
   const shipPercs = form.values.ships.map((s) => s.shipPerc);
-  const totalPercLeft =
-    100 - shipPercs.reduce((acc, perc) => acc + Number(perc), 0);
+  const totalPercLeft = Number(
+    (100 - shipPercs.reduce((acc, perc) => acc + Number(perc), 0)).toFixed(2)
+  );
   return (
     <Box mt="xl">
       <Text fz="md" mb="xs" fw={600}>

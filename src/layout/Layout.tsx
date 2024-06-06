@@ -7,7 +7,6 @@ import { MobileNav } from './MobileNav/MobileNav';
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {
   const isMobile = useMobile();
-
   return (
     <MantineProvider theme={theme} defaultColorScheme="dark">
       <Notifications />

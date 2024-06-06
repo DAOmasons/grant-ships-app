@@ -55,6 +55,7 @@ export const Vote = () => {
       ships: [],
     } as VotingFormValues,
     validate: zodResolver(votingSchema),
+    validateInputOnBlur: true,
   });
 
   useEffect(
@@ -62,7 +63,7 @@ export const Vote = () => {
       if (!ships) return;
       const updatedShips = ships?.map((ship) => ({
         shipId: ship.id,
-        shipPerc: '',
+        shipPerc: 0,
         shipComment: '',
       }));
       form.setValues((prev) => ({ ...prev, ships: updatedShips }));
@@ -205,11 +206,11 @@ const VoteConfirmationPanel = ({ ships }: { ships: ShipsCardUI[] }) => {
           {consolidated.map((ship, index) => {
             const percentage = totals?.totalUserVotes
               ? formatBigIntPercentage(
-                  BigInt(ship.vote?.amount),
+                  BigInt(ship.vote?.amount || 0),
                   totals?.totalUserVotes
                 )
               : '0';
-            const tokenAmount = formatEther(BigInt(ship.vote?.amount));
+            const tokenAmount = formatEther(BigInt(ship.vote?.amount || 0));
 
             return (
               <Box key={`total_v_${ship.id}`}>
@@ -285,7 +286,7 @@ type CondensedChoiceData = {
 };
 
 const AllVotes = ({ choices }: { choices: CondensedChoiceData[] }) => {
-  const { contest } = useVoting();
+  const { contest, tokenData } = useVoting();
   const { data: voters } = useQuery({
     queryKey: ['gs-voters'],
     queryFn: () => getContestVoters(contest?.id as string),
@@ -295,7 +296,12 @@ const AllVotes = ({ choices }: { choices: CondensedChoiceData[] }) => {
   return (
     <Flex w={'100%'} wrap="wrap" justify={'space-between'}>
       {voters?.map((voter) => (
-        <VoteCard key={voter.id} voter={voter} choices={choices} />
+        <VoteCard
+          key={voter.id}
+          voter={voter}
+          choices={choices}
+          tokenSymbol={tokenData?.tokenSymbol || undefined}
+        />
       ))}
     </Flex>
   );
@@ -304,9 +310,11 @@ const AllVotes = ({ choices }: { choices: CondensedChoiceData[] }) => {
 const VoteCard = ({
   voter,
   choices,
+  tokenSymbol,
 }: {
   voter: GsVoter;
   choices: CondensedChoiceData[];
+  tokenSymbol?: string;
 }) => {
   const theme = useMantineTheme();
   const colors = [
@@ -317,7 +325,7 @@ const VoteCard = ({
 
   const totalUserVotes = useMemo(() => {
     return voter.votes.reduce((acc, vote) => {
-      return acc + BigInt(vote.amount);
+      return acc + BigInt(vote?.amount ? vote.amount : 0);
     }, 0n);
   }, [voter]);
 
@@ -329,14 +337,15 @@ const VoteCard = ({
   }, [voter, choices]);
 
   return (
-    <Paper w={350} mb="xl" bg={theme.colors.dark[6]} p={'lg'}>
+    <Paper w={350} mb="lg" bg={theme.colors.dark[6]} p={'lg'}>
       <Box mb="xl">
-        <AddressAvatar address={voter.id as Address} size={32} />
+        <AddressAvatar address={voter.id as Address} size={36} />
       </Box>
 
       {consolidated.map((choice, index) => {
         return (
           <ShipChoiceVoteBar
+            tokenSymbol={tokenSymbol}
             key={`${voter.id}-${choice.id}`}
             choice={{
               shipImg: choice.shipImg,
@@ -344,9 +353,10 @@ const VoteCard = ({
               id: choice.id,
             }}
             totalVotes={totalUserVotes}
-            reason={choice.vote?.reason || 'Did not vote'}
+            reason={choice?.vote?.reason}
             voteAmount={BigInt(choice.vote?.amount || 0)}
             color={colors[index]}
+            didVote={!!choice.vote}
           />
         );
       })}
@@ -360,24 +370,33 @@ const ShipChoiceVoteBar = ({
   voteAmount,
   reason,
   color,
+  tokenSymbol,
+  didVote,
 }: {
   choice: CondensedChoiceData;
   totalVotes: bigint;
   voteAmount: bigint;
-  reason: string;
+  reason?: string | null;
   color: string;
+  tokenSymbol?: string;
+  didVote?: boolean;
 }) => {
   const votePercentage = formatBigIntPercentage(voteAmount, totalVotes);
   return (
     <Box mb="md">
-      <Group w={'100%'} mb="sm">
-        <Avatar size={24} src={choice.shipImg} />
+      <Group w={'100%'} mb="sm" align="flex-end">
+        <Avatar size={32} src={choice.shipImg} />
         <Box maw={250} w="100%">
           <Progress
             value={Number(votePercentage)}
             color={color}
             opacity={0.7}
+            mb={2}
           />
+          <Text fz="xs">
+            {votePercentage}% Voted ({formatEther(voteAmount)}){' '}
+            {tokenSymbol || ''}
+          </Text>
         </Box>
       </Group>
       <Spoiler
@@ -391,9 +410,21 @@ const ShipChoiceVoteBar = ({
         }}
         maxHeight={24}
       >
-        <Text fz="sm" className="ws-pre-wrap" h={24}>
-          {reason}
-        </Text>
+        {!didVote && (
+          <Text fz="sm" className="ws-pre-wrap">
+            Did not vote
+          </Text>
+        )}
+        {didVote && !reason && (
+          <Text fz="sm" className="ws-pre-wrap">
+            No reason given
+          </Text>
+        )}
+        {didVote && reason && (
+          <Text fz="sm" className="ws-pre-wrap">
+            {reason}
+          </Text>
+        )}
       </Spoiler>
     </Box>
   );
