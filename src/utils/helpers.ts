@@ -57,3 +57,23 @@ export const addressToBytes32 = (address: string): string => {
 export const bytes32toAddress = (bytes32: string): string => {
   return `0x${bytes32.slice(26)}`;
 };
+
+// export const formatPercentage = (
+//   numerator: bigint,
+//   denominator: bigint,
+//   scale: bigint = 1000000000000000n // Scale factor to determine decimal places in output
+// ): string => {
+//   const percentage = (numerator * 100n * scale) / denominator / scale;
+//   return `${Number(percentage) / 100}%`;
+// };
+export const formatBigIntPercentage = (
+  numerator: bigint,
+  denominator: bigint,
+  displayDecimals: number = 2
+) => {
+  if (numerator === 0n || denominator === 0n) return '0';
+
+  return ((Number(numerator) / Number(denominator)) * 100).toFixed(
+    displayDecimals
+  );
+};

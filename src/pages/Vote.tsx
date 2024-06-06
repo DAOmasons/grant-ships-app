@@ -1,6 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { MainSection, PageTitle } from '../layout/Sections';
-import { Flex, Stack, Stepper } from '@mantine/core';
+import {
+  Avatar,
+  Box,
+  Divider,
+  Flex,
+  Group,
+  Progress,
+  Stack,
+  Stepper,
+  Text,
+} from '@mantine/core';
 import { useQuery } from '@tanstack/react-query';
 import { getShipsPageData } from '../queries/getShipsPage';
 import { useLaptop, useMobile, useTablet } from '../hooks/useBreakpoint';
@@ -11,6 +21,10 @@ import { VoteAffix } from '../components/voting/VoteAffix';
 import { VoteTimesIndicator } from '../components/voting/VoteTimesIndicator';
 import { ShipVotingPanel } from '../components/voting/ShipVotingPanel';
 import { ConfirmationPanel } from '../components/voting/ConfirmationPanel';
+import { useVoting } from '../hooks/useVoting';
+import { ShipsCardUI } from '../types/ui';
+import { formatBigIntPercentage } from '../utils/helpers';
+import { formatEther } from 'viem';
 
 export type VotingFormValues = z.infer<typeof votingSchema>;
 
@@ -20,6 +34,8 @@ export const Vote = () => {
     queryKey: ['ships-page'],
     queryFn: getShipsPageData,
   });
+
+  const { userVotes } = useVoting();
 
   const isLaptop = useLaptop();
 
@@ -50,6 +66,12 @@ export const Vote = () => {
 
   if (!ships) {
     return null;
+  }
+
+  const hasVotes = userVotes && userVotes.length > 0;
+
+  if (hasVotes) {
+    return <VoteConfirmationPanel ships={ships} />;
   }
 
   const nextStep = () =>
@@ -107,5 +129,112 @@ export const Vote = () => {
         </Stack>
       )}
     </Flex>
+  );
+};
+
+const VoteConfirmationPanel = ({ ships }: { ships: ShipsCardUI[] }) => {
+  const { contest, userVotes, tokenData } = useVoting();
+
+  const consolidated = useMemo(() => {
+    if (!ships || !userVotes || !contest) return [];
+
+    return ships.map((ship) => {
+      const shipChoice = contest?.choices.find((c) => c.shipId === ship.id);
+
+      const userVote = userVotes.find((v) => v.choice_id === shipChoice?.id);
+
+      return { ...ship, vote: userVote, choice: shipChoice };
+    });
+  }, [ships, userVotes, contest]);
+
+  const totals = useMemo(() => {
+    if (!consolidated || !contest) return null;
+
+    const totalUserVotes =
+      consolidated && consolidated.length > 0
+        ? consolidated.reduce((acc, ship) => {
+            if (!ship.vote) return acc;
+            return acc + BigInt(ship.vote.amount);
+          }, 0n)
+        : 0n;
+    const totalVotes = contest?.choices?.length
+      ? contest?.choices.reduce((acc, choice) => {
+          return acc + BigInt(choice.voteTally);
+        }, 0n)
+      : 0n;
+
+    return {
+      totalUserVotes,
+      totalVotes,
+    };
+  }, [consolidated, contest]);
+  return (
+    <MainSection maw={780}>
+      <PageTitle title="Vote" />
+      <Text fz={32} fw={600} mt="xl">
+        Your vote has been submitted!
+      </Text>
+      <Flex w="100%" justify="space-between" wrap="wrap" mt={40}>
+        <Stack w={298} gap="lg" mb={40}>
+          <Text fz="xl" fw={500}>
+            Your Vote
+          </Text>
+          {consolidated.map((ship) => {
+            const percentage = totals?.totalUserVotes
+              ? formatBigIntPercentage(
+                  BigInt(ship.vote?.amount),
+                  totals?.totalUserVotes
+                )
+              : '0';
+            const tokenAmount = formatEther(BigInt(ship.vote?.amount));
+
+            return (
+              <Box key={`total_v_${ship.id}`}>
+                <Group gap="xs" mb="sm">
+                  <Avatar size={32} src={ship.imgUrl} />
+                  <Text fz="md" fw={600}>
+                    {ship.name}
+                  </Text>
+                </Group>
+                <Progress value={Number(percentage)} />
+                <Text fz="sm" mt="xs">
+                  {Number(percentage)}% Voted ({tokenAmount}{' '}
+                  {tokenData.tokenSymbol})
+                </Text>
+              </Box>
+            );
+          })}
+        </Stack>
+        <Stack w={298} mb={40} gap="lg">
+          <Text fz="xl" fw={500}>
+            Total Vote Results
+          </Text>
+          {consolidated?.map((ship) => {
+            const percentage = totals?.totalVotes
+              ? formatBigIntPercentage(
+                  BigInt(ship.choice?.voteTally),
+                  totals?.totalVotes
+                )
+              : '0';
+            const tokenAmount = formatEther(BigInt(ship.choice?.voteTally));
+            return (
+              <Box key={`total_v_${ship.id}`}>
+                <Group gap="xs" mb="sm">
+                  <Avatar size={32} src={ship.imgUrl} />
+                  <Text fz="md" fw={600}>
+                    {ship.name}
+                  </Text>
+                </Group>
+                <Progress value={Number(percentage)} />
+                <Text fz="sm" mt="xs">
+                  {Number(percentage)}% ({tokenAmount} {tokenData.tokenSymbol})
+                </Text>
+              </Box>
+            );
+          })}
+        </Stack>
+      </Flex>
+      <Divider />
+    </MainSection>
   );
 };
