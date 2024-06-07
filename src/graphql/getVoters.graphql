@@ -1,0 +1,17 @@
+query getVoters($contestId: String!) {
+  GSVoter(where: { votes: { contest_id: { _eq: $contestId } } }) {
+    id
+    votes(
+      where: { contest_id: { _eq: $contestId }, isRetractVote: { _eq: false } }
+    ) {
+      id
+      amount
+      mdPointer
+      mdProtocol
+      isRetractVote
+      choice {
+        id
+      }
+    }
+  }
+}

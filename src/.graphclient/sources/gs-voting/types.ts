@@ -653,6 +653,68 @@ export type FactoryEventsSummary_stream_cursor_value_input = {
   moduleTemplateCount?: InputMaybe<Scalars['numeric']>;
 };
 
+/** columns and relationships of "GSVoter" */
+export type GSVoter = {
+  address: Scalars['String'];
+  db_write_timestamp?: Maybe<Scalars['timestamp']>;
+  id: Scalars['String'];
+  /** An array relationship */
+  votes: Array<ShipVote>;
+};
+
+
+/** columns and relationships of "GSVoter" */
+export type GSVotervotesArgs = {
+  distinct_on?: InputMaybe<Array<ShipVote_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<ShipVote_order_by>>;
+  where?: InputMaybe<ShipVote_bool_exp>;
+};
+
+/** Boolean expression to filter rows from the table "GSVoter". All fields are combined with a logical 'AND'. */
+export type GSVoter_bool_exp = {
+  _and?: InputMaybe<Array<GSVoter_bool_exp>>;
+  _not?: InputMaybe<GSVoter_bool_exp>;
+  _or?: InputMaybe<Array<GSVoter_bool_exp>>;
+  address?: InputMaybe<String_comparison_exp>;
+  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
+  id?: InputMaybe<String_comparison_exp>;
+  votes?: InputMaybe<ShipVote_bool_exp>;
+};
+
+/** Ordering options when selecting data from "GSVoter". */
+export type GSVoter_order_by = {
+  address?: InputMaybe<order_by>;
+  db_write_timestamp?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  votes_aggregate?: InputMaybe<ShipVote_aggregate_order_by>;
+};
+
+/** select columns of table "GSVoter" */
+export type GSVoter_select_column =
+  /** column name */
+  | 'address'
+  /** column name */
+  | 'db_write_timestamp'
+  /** column name */
+  | 'id';
+
+/** Streaming cursor of the table "GSVoter" */
+export type GSVoter_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: GSVoter_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type GSVoter_stream_cursor_value_input = {
+  address?: InputMaybe<Scalars['String']>;
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
+  id?: InputMaybe<Scalars['String']>;
+};
+
 /** columns and relationships of "GrantShipsVoting" */
 export type GrantShipsVoting = {
   /** An array relationship */
@@ -1417,10 +1479,12 @@ export type ShipVote = {
   contest_id: Scalars['String'];
   db_write_timestamp?: Maybe<Scalars['timestamp']>;
   id: Scalars['String'];
-  isRectractVote: Scalars['Boolean'];
+  isRetractVote: Scalars['Boolean'];
   mdPointer: Scalars['String'];
   mdProtocol: Scalars['numeric'];
-  voter: Scalars['String'];
+  /** An object relationship */
+  voter?: Maybe<GSVoter>;
+  voter_id: Scalars['String'];
 };
 
 /** order by aggregate values of table "ShipVote" */
@@ -1456,10 +1520,11 @@ export type ShipVote_bool_exp = {
   contest_id?: InputMaybe<String_comparison_exp>;
   db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
   id?: InputMaybe<String_comparison_exp>;
-  isRectractVote?: InputMaybe<Boolean_comparison_exp>;
+  isRetractVote?: InputMaybe<Boolean_comparison_exp>;
   mdPointer?: InputMaybe<String_comparison_exp>;
   mdProtocol?: InputMaybe<numeric_comparison_exp>;
-  voter?: InputMaybe<String_comparison_exp>;
+  voter?: InputMaybe<GSVoter_bool_exp>;
+  voter_id?: InputMaybe<String_comparison_exp>;
 };
 
 /** order by max() on columns of table "ShipVote" */
@@ -1471,7 +1536,7 @@ export type ShipVote_max_order_by = {
   id?: InputMaybe<order_by>;
   mdPointer?: InputMaybe<order_by>;
   mdProtocol?: InputMaybe<order_by>;
-  voter?: InputMaybe<order_by>;
+  voter_id?: InputMaybe<order_by>;
 };
 
 /** order by min() on columns of table "ShipVote" */
@@ -1483,7 +1548,7 @@ export type ShipVote_min_order_by = {
   id?: InputMaybe<order_by>;
   mdPointer?: InputMaybe<order_by>;
   mdProtocol?: InputMaybe<order_by>;
-  voter?: InputMaybe<order_by>;
+  voter_id?: InputMaybe<order_by>;
 };
 
 /** Ordering options when selecting data from "ShipVote". */
@@ -1495,10 +1560,11 @@ export type ShipVote_order_by = {
   contest_id?: InputMaybe<order_by>;
   db_write_timestamp?: InputMaybe<order_by>;
   id?: InputMaybe<order_by>;
-  isRectractVote?: InputMaybe<order_by>;
+  isRetractVote?: InputMaybe<order_by>;
   mdPointer?: InputMaybe<order_by>;
   mdProtocol?: InputMaybe<order_by>;
-  voter?: InputMaybe<order_by>;
+  voter?: InputMaybe<GSVoter_order_by>;
+  voter_id?: InputMaybe<order_by>;
 };
 
 /** select columns of table "ShipVote" */
@@ -1514,13 +1580,13 @@ export type ShipVote_select_column =
   /** column name */
   | 'id'
   /** column name */
-  | 'isRectractVote'
+  | 'isRetractVote'
   /** column name */
   | 'mdPointer'
   /** column name */
   | 'mdProtocol'
   /** column name */
-  | 'voter';
+  | 'voter_id';
 
 /** order by stddev() on columns of table "ShipVote" */
 export type ShipVote_stddev_order_by = {
@@ -1555,10 +1621,10 @@ export type ShipVote_stream_cursor_value_input = {
   contest_id?: InputMaybe<Scalars['String']>;
   db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
   id?: InputMaybe<Scalars['String']>;
-  isRectractVote?: InputMaybe<Scalars['Boolean']>;
+  isRetractVote?: InputMaybe<Scalars['Boolean']>;
   mdPointer?: InputMaybe<Scalars['String']>;
   mdProtocol?: InputMaybe<Scalars['numeric']>;
-  voter?: InputMaybe<Scalars['String']>;
+  voter_id?: InputMaybe<Scalars['String']>;
 };
 
 /** order by sum() on columns of table "ShipVote" */
@@ -2546,6 +2612,10 @@ export type query_root = {
   FactoryEventsSummary: Array<FactoryEventsSummary>;
   /** fetch data from the table: "FactoryEventsSummary" using primary key columns */
   FactoryEventsSummary_by_pk?: Maybe<FactoryEventsSummary>;
+  /** fetch data from the table: "GSVoter" */
+  GSVoter: Array<GSVoter>;
+  /** fetch data from the table: "GSVoter" using primary key columns */
+  GSVoter_by_pk?: Maybe<GSVoter>;
   /** fetch data from the table: "GrantShipsVoting" */
   GrantShipsVoting: Array<GrantShipsVoting>;
   /** fetch data from the table: "GrantShipsVoting" using primary key columns */
@@ -2713,6 +2783,20 @@ export type query_rootFactoryEventsSummaryArgs = {
 
 
 export type query_rootFactoryEventsSummary_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type query_rootGSVoterArgs = {
+  distinct_on?: InputMaybe<Array<GSVoter_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<GSVoter_order_by>>;
+  where?: InputMaybe<GSVoter_bool_exp>;
+};
+
+
+export type query_rootGSVoter_by_pkArgs = {
   id: Scalars['String'];
 };
 
@@ -3141,6 +3225,12 @@ export type subscription_root = {
   FactoryEventsSummary_by_pk?: Maybe<FactoryEventsSummary>;
   /** fetch data from the table in a streaming manner: "FactoryEventsSummary" */
   FactoryEventsSummary_stream: Array<FactoryEventsSummary>;
+  /** fetch data from the table: "GSVoter" */
+  GSVoter: Array<GSVoter>;
+  /** fetch data from the table: "GSVoter" using primary key columns */
+  GSVoter_by_pk?: Maybe<GSVoter>;
+  /** fetch data from the table in a streaming manner: "GSVoter" */
+  GSVoter_stream: Array<GSVoter>;
   /** fetch data from the table: "GrantShipsVoting" */
   GrantShipsVoting: Array<GrantShipsVoting>;
   /** fetch data from the table: "GrantShipsVoting" using primary key columns */
@@ -3392,6 +3482,27 @@ export type subscription_rootFactoryEventsSummary_streamArgs = {
   batch_size: Scalars['Int'];
   cursor: Array<InputMaybe<FactoryEventsSummary_stream_cursor_input>>;
   where?: InputMaybe<FactoryEventsSummary_bool_exp>;
+};
+
+
+export type subscription_rootGSVoterArgs = {
+  distinct_on?: InputMaybe<Array<GSVoter_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<GSVoter_order_by>>;
+  where?: InputMaybe<GSVoter_bool_exp>;
+};
+
+
+export type subscription_rootGSVoter_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type subscription_rootGSVoter_streamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<GSVoter_stream_cursor_input>>;
+  where?: InputMaybe<GSVoter_bool_exp>;
 };
 
 
@@ -3828,6 +3939,10 @@ export type timestamptz_comparison_exp = {
   FactoryEventsSummary: InContextSdkMethod<query_root['FactoryEventsSummary'], query_rootFactoryEventsSummaryArgs, MeshContext>,
   /** fetch data from the table: "FactoryEventsSummary" using primary key columns **/
   FactoryEventsSummary_by_pk: InContextSdkMethod<query_root['FactoryEventsSummary_by_pk'], query_rootFactoryEventsSummary_by_pkArgs, MeshContext>,
+  /** fetch data from the table: "GSVoter" **/
+  GSVoter: InContextSdkMethod<query_root['GSVoter'], query_rootGSVoterArgs, MeshContext>,
+  /** fetch data from the table: "GSVoter" using primary key columns **/
+  GSVoter_by_pk: InContextSdkMethod<query_root['GSVoter_by_pk'], query_rootGSVoter_by_pkArgs, MeshContext>,
   /** fetch data from the table: "GrantShipsVoting" **/
   GrantShipsVoting: InContextSdkMethod<query_root['GrantShipsVoting'], query_rootGrantShipsVotingArgs, MeshContext>,
   /** fetch data from the table: "GrantShipsVoting" using primary key columns **/
@@ -3947,6 +4062,12 @@ export type timestamptz_comparison_exp = {
   FactoryEventsSummary_by_pk: InContextSdkMethod<subscription_root['FactoryEventsSummary_by_pk'], subscription_rootFactoryEventsSummary_by_pkArgs, MeshContext>,
   /** fetch data from the table in a streaming manner: "FactoryEventsSummary" **/
   FactoryEventsSummary_stream: InContextSdkMethod<subscription_root['FactoryEventsSummary_stream'], subscription_rootFactoryEventsSummary_streamArgs, MeshContext>,
+  /** fetch data from the table: "GSVoter" **/
+  GSVoter: InContextSdkMethod<subscription_root['GSVoter'], subscription_rootGSVoterArgs, MeshContext>,
+  /** fetch data from the table: "GSVoter" using primary key columns **/
+  GSVoter_by_pk: InContextSdkMethod<subscription_root['GSVoter_by_pk'], subscription_rootGSVoter_by_pkArgs, MeshContext>,
+  /** fetch data from the table in a streaming manner: "GSVoter" **/
+  GSVoter_stream: InContextSdkMethod<subscription_root['GSVoter_stream'], subscription_rootGSVoter_streamArgs, MeshContext>,
   /** fetch data from the table: "GrantShipsVoting" **/
   GrantShipsVoting: InContextSdkMethod<subscription_root['GrantShipsVoting'], subscription_rootGrantShipsVotingArgs, MeshContext>,
   /** fetch data from the table: "GrantShipsVoting" using primary key columns **/

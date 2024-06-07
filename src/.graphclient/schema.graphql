@@ -639,6 +639,23 @@ type Query {
   """
   FactoryEventsSummary_by_pk(id: String!): FactoryEventsSummary
   """
+  fetch data from the table: "GSVoter"
+  """
+  GSVoter(
+    """distinct select on columns"""
+    distinct_on: [GSVoter_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [GSVoter_order_by!]
+    """filter the rows returned"""
+    where: GSVoter_bool_exp
+  ): [GSVoter!]!
+  """fetch data from the table: "GSVoter" using primary key columns"""
+  GSVoter_by_pk(id: String!): GSVoter
+  """
   fetch data from the table: "GrantShipsVoting"
   """
   GrantShipsVoting(
@@ -1649,6 +1666,34 @@ type Subscription {
     """filter the rows returned"""
     where: FactoryEventsSummary_bool_exp
   ): [FactoryEventsSummary!]!
+  """
+  fetch data from the table: "GSVoter"
+  """
+  GSVoter(
+    """distinct select on columns"""
+    distinct_on: [GSVoter_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [GSVoter_order_by!]
+    """filter the rows returned"""
+    where: GSVoter_bool_exp
+  ): [GSVoter!]!
+  """fetch data from the table: "GSVoter" using primary key columns"""
+  GSVoter_by_pk(id: String!): GSVoter
+  """
+  fetch data from the table in a streaming manner: "GSVoter"
+  """
+  GSVoter_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [GSVoter_stream_cursor_input]!
+    """filter the rows returned"""
+    where: GSVoter_bool_exp
+  ): [GSVoter!]!
   """
   fetch data from the table: "GrantShipsVoting"
   """
@@ -5347,6 +5392,78 @@ input FactoryEventsSummary_stream_cursor_value_input {
 }
 
 """
+columns and relationships of "GSVoter"
+"""
+type GSVoter {
+  address: String!
+  db_write_timestamp: timestamp
+  id: String!
+  """An array relationship"""
+  votes(
+    """distinct select on columns"""
+    distinct_on: [ShipVote_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [ShipVote_order_by!]
+    """filter the rows returned"""
+    where: ShipVote_bool_exp
+  ): [ShipVote!]!
+}
+
+"""
+Boolean expression to filter rows from the table "GSVoter". All fields are combined with a logical 'AND'.
+"""
+input GSVoter_bool_exp {
+  _and: [GSVoter_bool_exp!]
+  _not: GSVoter_bool_exp
+  _or: [GSVoter_bool_exp!]
+  address: String_comparison_exp
+  db_write_timestamp: timestamp_comparison_exp
+  id: String_comparison_exp
+  votes: ShipVote_bool_exp
+}
+
+"""Ordering options when selecting data from "GSVoter"."""
+input GSVoter_order_by {
+  address: order_by
+  db_write_timestamp: order_by
+  id: order_by
+  votes_aggregate: ShipVote_aggregate_order_by
+}
+
+"""
+select columns of table "GSVoter"
+"""
+enum GSVoter_select_column {
+  """column name"""
+  address
+  """column name"""
+  db_write_timestamp
+  """column name"""
+  id
+}
+
+"""
+Streaming cursor of the table "GSVoter"
+"""
+input GSVoter_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: GSVoter_stream_cursor_value_input!
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input GSVoter_stream_cursor_value_input {
+  address: String
+  db_write_timestamp: timestamp
+  id: String
+}
+
+"""
 columns and relationships of "GrantShipsVoting"
 """
 type GrantShipsVoting {
@@ -6226,10 +6343,12 @@ type ShipVote {
   contest_id: String!
   db_write_timestamp: timestamp
   id: String!
-  isRectractVote: Boolean!
+  isRetractVote: Boolean!
   mdPointer: String!
   mdProtocol: numeric!
-  voter: String!
+  """An object relationship"""
+  voter: GSVoter
+  voter_id: String!
 }
 
 """
@@ -6271,10 +6390,11 @@ input ShipVote_bool_exp {
   contest_id: String_comparison_exp
   db_write_timestamp: timestamp_comparison_exp
   id: String_comparison_exp
-  isRectractVote: Boolean_comparison_exp
+  isRetractVote: Boolean_comparison_exp
   mdPointer: String_comparison_exp
   mdProtocol: numeric_comparison_exp
-  voter: String_comparison_exp
+  voter: GSVoter_bool_exp
+  voter_id: String_comparison_exp
 }
 
 """
@@ -6288,7 +6408,7 @@ input ShipVote_max_order_by {
   id: order_by
   mdPointer: order_by
   mdProtocol: order_by
-  voter: order_by
+  voter_id: order_by
 }
 
 """
@@ -6302,7 +6422,7 @@ input ShipVote_min_order_by {
   id: order_by
   mdPointer: order_by
   mdProtocol: order_by
-  voter: order_by
+  voter_id: order_by
 }
 
 """Ordering options when selecting data from "ShipVote"."""
@@ -6314,10 +6434,11 @@ input ShipVote_order_by {
   contest_id: order_by
   db_write_timestamp: order_by
   id: order_by
-  isRectractVote: order_by
+  isRetractVote: order_by
   mdPointer: order_by
   mdProtocol: order_by
-  voter: order_by
+  voter: GSVoter_order_by
+  voter_id: order_by
 }
 
 """
@@ -6335,13 +6456,13 @@ enum ShipVote_select_column {
   """column name"""
   id
   """column name"""
-  isRectractVote
+  isRetractVote
   """column name"""
   mdPointer
   """column name"""
   mdProtocol
   """column name"""
-  voter
+  voter_id
 }
 
 """
@@ -6385,10 +6506,10 @@ input ShipVote_stream_cursor_value_input {
   contest_id: String
   db_write_timestamp: timestamp
   id: String
-  isRectractVote: Boolean
+  isRetractVote: Boolean
   mdPointer: String
   mdProtocol: numeric
-  voter: String
+  voter_id: String
 }
 
 """

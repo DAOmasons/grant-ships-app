@@ -4,9 +4,9 @@ import { ComponentProps, useMemo } from 'react';
 export const VotingWeightProgress = (
   props: Omit<ComponentProps<typeof RingProgress>, 'sections'> & {
     shipVotePercs: {
-      ship1: string;
-      ship2: string;
-      ship3: string;
+      ship1: number;
+      ship2: number;
+      ship3: number;
     };
   }
 ) => {

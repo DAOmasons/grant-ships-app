@@ -27,9 +27,9 @@ export const VoteAffix = ({ formValues }: { formValues: VotingFormValues }) => {
         <Group>
           <VotingWeightProgress
             shipVotePercs={{
-              ship1: shipPercs[0] || '0',
-              ship2: shipPercs[1] || '0',
-              ship3: shipPercs[2] || '0',
+              ship1: shipPercs[0] || 0,
+              ship2: shipPercs[1] || 0,
+              ship3: shipPercs[2] || 0,
             }}
           />
           <Text>
@@ -47,7 +47,9 @@ export const VoteAffix = ({ formValues }: { formValues: VotingFormValues }) => {
               }
             >
               <Text c={theme.colors.blue[3]} component="span">
-                {formatEther(userTokenData.totalUserTokenBalance)}{' '}
+                {Number(
+                  formatEther(userTokenData.totalUserTokenBalance)
+                ).toFixed(2)}{' '}
                 {tokenData.tokenSymbol}{' '}
               </Text>
             </Tooltip>

@@ -123,6 +123,10 @@ export type Query = {
   FactoryEventsSummary: Array<FactoryEventsSummary>;
   /** fetch data from the table: "FactoryEventsSummary" using primary key columns */
   FactoryEventsSummary_by_pk?: Maybe<FactoryEventsSummary>;
+  /** fetch data from the table: "GSVoter" */
+  GSVoter: Array<GSVoter>;
+  /** fetch data from the table: "GSVoter" using primary key columns */
+  GSVoter_by_pk?: Maybe<GSVoter>;
   /** fetch data from the table: "GrantShipsVoting" */
   GrantShipsVoting: Array<GrantShipsVoting>;
   /** fetch data from the table: "GrantShipsVoting" using primary key columns */
@@ -641,6 +645,20 @@ export type QueryFactoryEventsSummary_by_pkArgs = {
 };
 
 
+export type QueryGSVoterArgs = {
+  distinct_on?: InputMaybe<Array<GSVoter_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<GSVoter_order_by>>;
+  where?: InputMaybe<GSVoter_bool_exp>;
+};
+
+
+export type QueryGSVoter_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
 export type QueryGrantShipsVotingArgs = {
   distinct_on?: InputMaybe<Array<GrantShipsVoting_select_column>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -983,6 +1001,12 @@ export type Subscription = {
   FactoryEventsSummary_by_pk?: Maybe<FactoryEventsSummary>;
   /** fetch data from the table in a streaming manner: "FactoryEventsSummary" */
   FactoryEventsSummary_stream: Array<FactoryEventsSummary>;
+  /** fetch data from the table: "GSVoter" */
+  GSVoter: Array<GSVoter>;
+  /** fetch data from the table: "GSVoter" using primary key columns */
+  GSVoter_by_pk?: Maybe<GSVoter>;
+  /** fetch data from the table in a streaming manner: "GSVoter" */
+  GSVoter_stream: Array<GSVoter>;
   /** fetch data from the table: "GrantShipsVoting" */
   GrantShipsVoting: Array<GrantShipsVoting>;
   /** fetch data from the table: "GrantShipsVoting" using primary key columns */
@@ -1581,6 +1605,27 @@ export type SubscriptionFactoryEventsSummary_streamArgs = {
   batch_size: Scalars['Int'];
   cursor: Array<InputMaybe<FactoryEventsSummary_stream_cursor_input>>;
   where?: InputMaybe<FactoryEventsSummary_bool_exp>;
+};
+
+
+export type SubscriptionGSVoterArgs = {
+  distinct_on?: InputMaybe<Array<GSVoter_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<GSVoter_order_by>>;
+  where?: InputMaybe<GSVoter_bool_exp>;
+};
+
+
+export type SubscriptionGSVoter_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type SubscriptionGSVoter_streamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<GSVoter_stream_cursor_input>>;
+  where?: InputMaybe<GSVoter_bool_exp>;
 };
 
 
@@ -5072,6 +5117,68 @@ export type FactoryEventsSummary_stream_cursor_value_input = {
   moduleTemplateCount?: InputMaybe<Scalars['numeric']>;
 };
 
+/** columns and relationships of "GSVoter" */
+export type GSVoter = {
+  address: Scalars['String'];
+  db_write_timestamp?: Maybe<Scalars['timestamp']>;
+  id: Scalars['String'];
+  /** An array relationship */
+  votes: Array<ShipVote>;
+};
+
+
+/** columns and relationships of "GSVoter" */
+export type GSVotervotesArgs = {
+  distinct_on?: InputMaybe<Array<ShipVote_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<ShipVote_order_by>>;
+  where?: InputMaybe<ShipVote_bool_exp>;
+};
+
+/** Boolean expression to filter rows from the table "GSVoter". All fields are combined with a logical 'AND'. */
+export type GSVoter_bool_exp = {
+  _and?: InputMaybe<Array<GSVoter_bool_exp>>;
+  _not?: InputMaybe<GSVoter_bool_exp>;
+  _or?: InputMaybe<Array<GSVoter_bool_exp>>;
+  address?: InputMaybe<String_comparison_exp>;
+  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
+  id?: InputMaybe<String_comparison_exp>;
+  votes?: InputMaybe<ShipVote_bool_exp>;
+};
+
+/** Ordering options when selecting data from "GSVoter". */
+export type GSVoter_order_by = {
+  address?: InputMaybe<order_by>;
+  db_write_timestamp?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  votes_aggregate?: InputMaybe<ShipVote_aggregate_order_by>;
+};
+
+/** select columns of table "GSVoter" */
+export type GSVoter_select_column =
+  /** column name */
+  | 'address'
+  /** column name */
+  | 'db_write_timestamp'
+  /** column name */
+  | 'id';
+
+/** Streaming cursor of the table "GSVoter" */
+export type GSVoter_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: GSVoter_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type GSVoter_stream_cursor_value_input = {
+  address?: InputMaybe<Scalars['String']>;
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
+  id?: InputMaybe<Scalars['String']>;
+};
+
 /** columns and relationships of "GrantShipsVoting" */
 export type GrantShipsVoting = {
   /** An array relationship */
@@ -5836,10 +5943,12 @@ export type ShipVote = {
   contest_id: Scalars['String'];
   db_write_timestamp?: Maybe<Scalars['timestamp']>;
   id: Scalars['String'];
-  isRectractVote: Scalars['Boolean'];
+  isRetractVote: Scalars['Boolean'];
   mdPointer: Scalars['String'];
   mdProtocol: Scalars['numeric'];
-  voter: Scalars['String'];
+  /** An object relationship */
+  voter?: Maybe<GSVoter>;
+  voter_id: Scalars['String'];
 };
 
 /** order by aggregate values of table "ShipVote" */
@@ -5875,10 +5984,11 @@ export type ShipVote_bool_exp = {
   contest_id?: InputMaybe<String_comparison_exp>;
   db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
   id?: InputMaybe<String_comparison_exp>;
-  isRectractVote?: InputMaybe<Boolean_comparison_exp>;
+  isRetractVote?: InputMaybe<Boolean_comparison_exp>;
   mdPointer?: InputMaybe<String_comparison_exp>;
   mdProtocol?: InputMaybe<numeric_comparison_exp>;
-  voter?: InputMaybe<String_comparison_exp>;
+  voter?: InputMaybe<GSVoter_bool_exp>;
+  voter_id?: InputMaybe<String_comparison_exp>;
 };
 
 /** order by max() on columns of table "ShipVote" */
@@ -5890,7 +6000,7 @@ export type ShipVote_max_order_by = {
   id?: InputMaybe<order_by>;
   mdPointer?: InputMaybe<order_by>;
   mdProtocol?: InputMaybe<order_by>;
-  voter?: InputMaybe<order_by>;
+  voter_id?: InputMaybe<order_by>;
 };
 
 /** order by min() on columns of table "ShipVote" */
@@ -5902,7 +6012,7 @@ export type ShipVote_min_order_by = {
   id?: InputMaybe<order_by>;
   mdPointer?: InputMaybe<order_by>;
   mdProtocol?: InputMaybe<order_by>;
-  voter?: InputMaybe<order_by>;
+  voter_id?: InputMaybe<order_by>;
 };
 
 /** Ordering options when selecting data from "ShipVote". */
@@ -5914,10 +6024,11 @@ export type ShipVote_order_by = {
   contest_id?: InputMaybe<order_by>;
   db_write_timestamp?: InputMaybe<order_by>;
   id?: InputMaybe<order_by>;
-  isRectractVote?: InputMaybe<order_by>;
+  isRetractVote?: InputMaybe<order_by>;
   mdPointer?: InputMaybe<order_by>;
   mdProtocol?: InputMaybe<order_by>;
-  voter?: InputMaybe<order_by>;
+  voter?: InputMaybe<GSVoter_order_by>;
+  voter_id?: InputMaybe<order_by>;
 };
 
 /** select columns of table "ShipVote" */
@@ -5933,13 +6044,13 @@ export type ShipVote_select_column =
   /** column name */
   | 'id'
   /** column name */
-  | 'isRectractVote'
+  | 'isRetractVote'
   /** column name */
   | 'mdPointer'
   /** column name */
   | 'mdProtocol'
   /** column name */
-  | 'voter';
+  | 'voter_id';
 
 /** order by stddev() on columns of table "ShipVote" */
 export type ShipVote_stddev_order_by = {
@@ -5974,10 +6085,10 @@ export type ShipVote_stream_cursor_value_input = {
   contest_id?: InputMaybe<Scalars['String']>;
   db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
   id?: InputMaybe<Scalars['String']>;
-  isRectractVote?: InputMaybe<Scalars['Boolean']>;
+  isRetractVote?: InputMaybe<Scalars['Boolean']>;
   mdPointer?: InputMaybe<Scalars['String']>;
   mdProtocol?: InputMaybe<Scalars['numeric']>;
-  voter?: InputMaybe<Scalars['String']>;
+  voter_id?: InputMaybe<Scalars['String']>;
 };
 
 /** order by sum() on columns of table "ShipVote" */
@@ -7300,6 +7411,12 @@ export type ResolversTypes = ResolversObject<{
   FactoryEventsSummary_select_column: FactoryEventsSummary_select_column;
   FactoryEventsSummary_stream_cursor_input: FactoryEventsSummary_stream_cursor_input;
   FactoryEventsSummary_stream_cursor_value_input: FactoryEventsSummary_stream_cursor_value_input;
+  GSVoter: ResolverTypeWrapper<GSVoter>;
+  GSVoter_bool_exp: GSVoter_bool_exp;
+  GSVoter_order_by: GSVoter_order_by;
+  GSVoter_select_column: GSVoter_select_column;
+  GSVoter_stream_cursor_input: GSVoter_stream_cursor_input;
+  GSVoter_stream_cursor_value_input: GSVoter_stream_cursor_value_input;
   GrantShipsVoting: ResolverTypeWrapper<GrantShipsVoting>;
   GrantShipsVoting_bool_exp: GrantShipsVoting_bool_exp;
   GrantShipsVoting_order_by: GrantShipsVoting_order_by;
@@ -7572,6 +7689,11 @@ export type ResolversParentTypes = ResolversObject<{
   FactoryEventsSummary_order_by: FactoryEventsSummary_order_by;
   FactoryEventsSummary_stream_cursor_input: FactoryEventsSummary_stream_cursor_input;
   FactoryEventsSummary_stream_cursor_value_input: FactoryEventsSummary_stream_cursor_value_input;
+  GSVoter: GSVoter;
+  GSVoter_bool_exp: GSVoter_bool_exp;
+  GSVoter_order_by: GSVoter_order_by;
+  GSVoter_stream_cursor_input: GSVoter_stream_cursor_input;
+  GSVoter_stream_cursor_value_input: GSVoter_stream_cursor_value_input;
   GrantShipsVoting: GrantShipsVoting;
   GrantShipsVoting_bool_exp: GrantShipsVoting_bool_exp;
   GrantShipsVoting_order_by: GrantShipsVoting_order_by;
@@ -7799,6 +7921,8 @@ export type QueryResolvers<ContextType = MeshContext, ParentType extends Resolve
   EventPost_by_pk?: Resolver<Maybe<ResolversTypes['EventPost']>, ParentType, ContextType, RequireFields<QueryEventPost_by_pkArgs, 'id'>>;
   FactoryEventsSummary?: Resolver<Array<ResolversTypes['FactoryEventsSummary']>, ParentType, ContextType, Partial<QueryFactoryEventsSummaryArgs>>;
   FactoryEventsSummary_by_pk?: Resolver<Maybe<ResolversTypes['FactoryEventsSummary']>, ParentType, ContextType, RequireFields<QueryFactoryEventsSummary_by_pkArgs, 'id'>>;
+  GSVoter?: Resolver<Array<ResolversTypes['GSVoter']>, ParentType, ContextType, Partial<QueryGSVoterArgs>>;
+  GSVoter_by_pk?: Resolver<Maybe<ResolversTypes['GSVoter']>, ParentType, ContextType, RequireFields<QueryGSVoter_by_pkArgs, 'id'>>;
   GrantShipsVoting?: Resolver<Array<ResolversTypes['GrantShipsVoting']>, ParentType, ContextType, Partial<QueryGrantShipsVotingArgs>>;
   GrantShipsVoting_by_pk?: Resolver<Maybe<ResolversTypes['GrantShipsVoting']>, ParentType, ContextType, RequireFields<QueryGrantShipsVoting_by_pkArgs, 'id'>>;
   HALParams?: Resolver<Array<ResolversTypes['HALParams']>, ParentType, ContextType, Partial<QueryHALParamsArgs>>;
@@ -7897,6 +8021,9 @@ export type SubscriptionResolvers<ContextType = MeshContext, ParentType extends 
   FactoryEventsSummary?: SubscriptionResolver<Array<ResolversTypes['FactoryEventsSummary']>, "FactoryEventsSummary", ParentType, ContextType, Partial<SubscriptionFactoryEventsSummaryArgs>>;
   FactoryEventsSummary_by_pk?: SubscriptionResolver<Maybe<ResolversTypes['FactoryEventsSummary']>, "FactoryEventsSummary_by_pk", ParentType, ContextType, RequireFields<SubscriptionFactoryEventsSummary_by_pkArgs, 'id'>>;
   FactoryEventsSummary_stream?: SubscriptionResolver<Array<ResolversTypes['FactoryEventsSummary']>, "FactoryEventsSummary_stream", ParentType, ContextType, RequireFields<SubscriptionFactoryEventsSummary_streamArgs, 'batch_size' | 'cursor'>>;
+  GSVoter?: SubscriptionResolver<Array<ResolversTypes['GSVoter']>, "GSVoter", ParentType, ContextType, Partial<SubscriptionGSVoterArgs>>;
+  GSVoter_by_pk?: SubscriptionResolver<Maybe<ResolversTypes['GSVoter']>, "GSVoter_by_pk", ParentType, ContextType, RequireFields<SubscriptionGSVoter_by_pkArgs, 'id'>>;
+  GSVoter_stream?: SubscriptionResolver<Array<ResolversTypes['GSVoter']>, "GSVoter_stream", ParentType, ContextType, RequireFields<SubscriptionGSVoter_streamArgs, 'batch_size' | 'cursor'>>;
   GrantShipsVoting?: SubscriptionResolver<Array<ResolversTypes['GrantShipsVoting']>, "GrantShipsVoting", ParentType, ContextType, Partial<SubscriptionGrantShipsVotingArgs>>;
   GrantShipsVoting_by_pk?: SubscriptionResolver<Maybe<ResolversTypes['GrantShipsVoting']>, "GrantShipsVoting_by_pk", ParentType, ContextType, RequireFields<SubscriptionGrantShipsVoting_by_pkArgs, 'id'>>;
   GrantShipsVoting_stream?: SubscriptionResolver<Array<ResolversTypes['GrantShipsVoting']>, "GrantShipsVoting_stream", ParentType, ContextType, RequireFields<SubscriptionGrantShipsVoting_streamArgs, 'batch_size' | 'cursor'>>;
@@ -8306,6 +8433,14 @@ export type FactoryEventsSummaryResolvers<ContextType = MeshContext, ParentType 
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type GSVoterResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['GSVoter'] = ResolversParentTypes['GSVoter']> = ResolversObject<{
+  address?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  votes?: Resolver<Array<ResolversTypes['ShipVote']>, ParentType, ContextType, Partial<GSVotervotesArgs>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type GrantShipsVotingResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['GrantShipsVoting'] = ResolversParentTypes['GrantShipsVoting']> = ResolversObject<{
   choices?: Resolver<Array<ResolversTypes['ShipChoice']>, ParentType, ContextType, Partial<GrantShipsVotingchoicesArgs>>;
   contest?: Resolver<Maybe<ResolversTypes['Contest']>, ParentType, ContextType>;
@@ -8396,10 +8531,11 @@ export type ShipVoteResolvers<ContextType = MeshContext, ParentType extends Reso
   contest_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  isRectractVote?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  isRetractVote?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   mdPointer?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   mdProtocol?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
-  voter?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  voter?: Resolver<Maybe<ResolversTypes['GSVoter']>, ParentType, ContextType>;
+  voter_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -8579,6 +8715,7 @@ export type Resolvers<ContextType = MeshContext> = ResolversObject<{
   EnvioTX?: EnvioTXResolvers<ContextType>;
   EventPost?: EventPostResolvers<ContextType>;
   FactoryEventsSummary?: FactoryEventsSummaryResolvers<ContextType>;
+  GSVoter?: GSVoterResolvers<ContextType>;
   GrantShipsVoting?: GrantShipsVotingResolvers<ContextType>;
   HALParams?: HALParamsResolvers<ContextType>;
   HatsPoster?: HatsPosterResolvers<ContextType>;
@@ -8672,7 +8809,7 @@ const grantShipsHandler = new GraphqlHandler({
             });
 const gsVotingHandler = new GraphqlHandler({
               name: "gs-voting",
-              config: {"endpoint":"https://indexer.bigdevenergy.link/c8f8ea8/v1/graphql"},
+              config: {"endpoint":"https://indexer.bigdevenergy.link/6b18ba8/v1/graphql"},
               baseDir,
               cache,
               pubsub,
@@ -8848,6 +8985,12 @@ const merger = new(StitchingMerger as any)({
           return printWithCache(GetUserVotesDocument);
         },
         location: 'GetUserVotesDocument.graphql'
+      },{
+        document: GetVotersDocument,
+        get rawSDL() {
+          return printWithCache(GetVotersDocument);
+        },
+        location: 'GetVotersDocument.graphql'
       },{
         document: ProjectPageQueryDocument,
         get rawSDL() {
@@ -9229,6 +9372,19 @@ export type getUserVotesQueryVariables = Exact<{
 
 
 export type getUserVotesQuery = { ShipVote: Array<Pick<ShipVote, 'id' | 'choice_id' | 'mdPointer' | 'mdProtocol' | 'amount'>> };
+
+export type getVotersQueryVariables = Exact<{
+  contestId: Scalars['String'];
+}>;
+
+
+export type getVotersQuery = { GSVoter: Array<(
+    Pick<GSVoter, 'id'>
+    & { votes: Array<(
+      Pick<ShipVote, 'id' | 'amount' | 'mdPointer' | 'mdProtocol' | 'isRetractVote'>
+      & { choice?: Maybe<Pick<ShipChoice, 'id'>> }
+    )> }
+  )> };
 
 export type projectPageQueryQueryVariables = Exact<{
   id: Scalars['ID'];
@@ -9706,7 +9862,7 @@ ${RawMetadataFragmentDoc}
 ${FacShipDataFragmentDoc}` as unknown as DocumentNode<getUserDataQuery, getUserDataQueryVariables>;
 export const getUserVotesDocument = gql`
     query getUserVotes($contestId: String!, $voterAddress: String!) {
-  ShipVote(where: {voter: {_eq: $voterAddress}, contest_id: {_eq: $contestId}}) {
+  ShipVote(where: {voter_id: {_eq: $voterAddress}, contest_id: {_eq: $contestId}}) {
     id
     choice_id
     mdPointer
@@ -9715,6 +9871,23 @@ export const getUserVotesDocument = gql`
   }
 }
     ` as unknown as DocumentNode<getUserVotesQuery, getUserVotesQueryVariables>;
+export const getVotersDocument = gql`
+    query getVoters($contestId: String!) {
+  GSVoter(where: {votes: {contest_id: {_eq: $contestId}}}) {
+    id
+    votes(where: {contest_id: {_eq: $contestId}, isRetractVote: {_eq: false}}) {
+      id
+      amount
+      mdPointer
+      mdProtocol
+      isRetractVote
+      choice {
+        id
+      }
+    }
+  }
+}
+    ` as unknown as DocumentNode<getVotersQuery, getVotersQueryVariables>;
 export const projectPageQueryDocument = gql`
     query projectPageQuery($id: ID!) {
   project(id: $id) {
@@ -9746,6 +9919,7 @@ export const ShipsPageQueryDocument = gql`
   }
 }
     ${BaseShipDataFragmentDoc}` as unknown as DocumentNode<ShipsPageQueryQuery, ShipsPageQueryQueryVariables>;
+
 
 
 
@@ -9844,6 +10018,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     getUserVotes(variables: getUserVotesQueryVariables, options?: C): Promise<getUserVotesQuery> {
       return requester<getUserVotesQuery, getUserVotesQueryVariables>(getUserVotesDocument, variables, options) as Promise<getUserVotesQuery>;
+    },
+    getVoters(variables: getVotersQueryVariables, options?: C): Promise<getVotersQuery> {
+      return requester<getVotersQuery, getVotersQueryVariables>(getVotersDocument, variables, options) as Promise<getVotersQuery>;
     },
     projectPageQuery(variables: projectPageQueryQueryVariables, options?: C): Promise<projectPageQueryQuery> {
       return requester<projectPageQueryQuery, projectPageQueryQueryVariables>(projectPageQueryDocument, variables, options) as Promise<projectPageQueryQuery>;
