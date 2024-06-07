@@ -5,7 +5,6 @@ import {
   NumberInput,
   Progress,
   Text,
-  TextInput,
   Textarea,
   useMantineTheme,
 } from '@mantine/core';
@@ -23,9 +22,7 @@ import { useTx } from '../../hooks/useTx';
 import ContestABI from '../../abi/Contest.json';
 import { ADDR } from '../../constants/addresses';
 import { useMemo } from 'react';
-import { validateNumberWithMaxDecimals } from '../forms/validationSchemas/votingFormSchema';
 import { FormValidationResult } from '@mantine/form/lib/types';
-import { object } from 'zod';
 
 export const ConfirmationPanel = ({
   ships,
