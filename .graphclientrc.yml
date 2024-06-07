@@ -3,5 +3,9 @@ sources:
     handler: 
       graphql: 
         endpoint: https://{context.apiEndpoint:api.studio.thegraph.com/query/41101/grant-ships-arb/version/latest}
+  - name: gs-voting
+    handler: 
+      graphql: 
+        endpoint: https://indexer.bigdevenergy.link/c8f8ea8/v1/graphql 
 documents: 
   - './src/**/*.graphql'

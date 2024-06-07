@@ -11,6 +11,7 @@ import { publicClient } from '../utils/config';
 import GrantShipAbi from '../abi/GrantShip.json';
 import { GrantStatus } from '../types/common';
 import { ProjectMetadata, resolveProjectMetadata } from './projectResolvers';
+import { portfolioReportSchema } from '../components/forms/validationSchemas/portfolioReportSchema';
 
 export type ApplicationMetadata = z.infer<typeof grantApplicationMetadata> & {
   projectId: string;
@@ -163,6 +164,9 @@ export const resolveMilestoneReviewReason = async (pointer?: string) => {
   const validated = reasonSchema.safeParse(data);
 
   if (!validated.success) {
+    if (pointer === 'NULL') {
+      return;
+    }
     console.error('Invalid metadata', validated.error);
     return null;
   }
@@ -240,4 +244,15 @@ export const resolveGrants = async (grants: GrantDashFragment[]) => {
   );
 
   return resolvedGrants;
+};
+
+export const resolvePortfolioReport = async (pointer: string) => {
+  const json = await getIpfsJson(pointer);
+
+  const validated = portfolioReportSchema.safeParse(json);
+
+  if (!validated.success) {
+    throw new Error('Invalid metadata: Data does not match the schema');
+  }
+  return validated.data;
 };

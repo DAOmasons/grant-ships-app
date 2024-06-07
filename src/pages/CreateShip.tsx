@@ -22,7 +22,7 @@ export type ProfileData = {
 export const CreateShip = () => {
   const { address } = useAccount();
 
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(0);
   const [profileData, setProfileData, removeProfileStorage] = useLocalStorage<
     ProfileData | ''
   >({

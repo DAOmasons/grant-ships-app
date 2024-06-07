@@ -14,6 +14,16 @@ export const generateRandomUint256 = (): bigint => {
   return randomBigInt;
 };
 
+export const generateRandomBytes32 = (): string => {
+  return `0x${crypto.randomBytes(32).toString('hex')}`;
+  // const randomBytes = crypto.getRandomValues(new Uint8Array(32));
+  // const bytes32 = Array.from(randomBytes)
+  //   .map((b) => b.toString(16).padStart(2, '0'))
+  //   .join('');
+
+  // return `0x${bytes32}`;
+};
+
 export function findValueByKey(obj: any, key: string): any {
   let result: any;
 
@@ -38,4 +48,12 @@ export function findValueByKey(obj: any, key: string): any {
 
 export const isFieldNumber = (value: string): boolean => {
   return !isNaN(+value) && value.trim() !== '';
+};
+
+export const addressToBytes32 = (address: string): string => {
+  return `0x${address.slice(2).padStart(64, '0')}`;
+};
+
+export const bytes32toAddress = (bytes32: string): string => {
+  return `0x${bytes32.slice(26)}`;
 };

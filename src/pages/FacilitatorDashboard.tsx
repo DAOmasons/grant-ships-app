@@ -11,9 +11,10 @@ import { useMemo } from 'react';
 import { NETWORK_ID, SHIP_AMOUNT } from '../constants/gameSetup';
 import { useReadContract } from 'wagmi';
 import { ADDR } from '../constants/addresses';
-import { GameStatus } from '../types/common';
+import { ContestStatus, GameStatus } from '../types/common';
 import { ProjectApproval } from '../components/dashboard/facilitator/ProjectApproval';
 import { FacPostUpdatePanel } from '../components/dashboard/facilitator/FacPostUpdatePanel';
+import { useVoting } from '../hooks/useVoting';
 
 export const FacilitatorDashboard = () => {
   const { data: shipData, isLoading: shipsLoading } = useQuery({
@@ -29,6 +30,9 @@ export const FacilitatorDashboard = () => {
     functionName: 'getPoolAmount',
     address: ADDR.GAME_MANAGER,
   });
+
+  const { contestStatus, votingExists, isVotingActive, isLoadingVoting } =
+    useVoting();
 
   const gameOperationStage = useMemo(() => {
     if (!gm || !shipData || typeof poolBalance !== 'bigint') {
@@ -83,17 +87,35 @@ export const FacilitatorDashboard = () => {
       return 6;
     }
 
-    // Game Complete Ready
-    // If the gameStatus is 7, then the game is complete and and we can reset the game, stage === 6
-    if (gm.currentRound.gameStatus === GameStatus.Completed) {
+    // Populating Ready
+    // Checks to see if the voting contracts exists, if it does, then we await choices and approve them
+    if (votingExists && contestStatus === ContestStatus.Populating) {
       return 7;
     }
-  }, [shipData, gm, poolBalance]);
+
+    // Voting Ready
+    // Voting is ready to be initiated
+    if (contestStatus === ContestStatus.Voting) {
+      return 8;
+    }
+
+    // Voting is active
+    // Awaiting the end of the voting period
+    if (isVotingActive) {
+      return 9;
+    }
+
+    // Finalized
+    // The contest is finalized
+    if (contestStatus === ContestStatus.Finalized) {
+      return 10;
+    }
+  }, [shipData, gm, poolBalance, votingExists, contestStatus, isVotingActive]);
 
   return (
     <MainSection>
       <PageTitle title="Facilitator Dashboard" />
-      <Tabs defaultValue="ships">
+      <Tabs defaultValue="game-manager">
         <Tabs.List mb="xl" grow>
           <Tabs.Tab value="game-manager">Game</Tabs.Tab>
           <Tabs.Tab value="ships">Ships</Tabs.Tab>
@@ -110,6 +132,7 @@ export const FacilitatorDashboard = () => {
         <Tabs.Panel value="game-manager">
           <FacilitatorGameDash
             gm={gm}
+            isLoadingVoting={isLoadingVoting}
             gameStatusNumber={gameOperationStage}
             isLoading={shipsLoading || isLoadingGm || poolLoading}
             poolBalance={poolBalance as bigint | undefined}

@@ -206,7 +206,6 @@ export const Project = () => {
                       <MilestoneProgress
                         key={`milestone-progress-bar-${i}`}
                         grant={grant}
-                        fundedBy={grant.shipId.id}
                       />
                     ))}
                   </Stack>
@@ -363,7 +362,6 @@ export const Project = () => {
                   <MilestoneProgress
                     key={`milestone-progress-bar-${i}`}
                     grant={grant}
-                    fundedBy={grant.shipId.id}
                   />
                 ))}
               </Stack>

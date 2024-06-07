@@ -1,0 +1,11 @@
+query getUserVotes($contestId: String!, $voterAddress: String!) {
+  ShipVote(
+    where: { voter: { _eq: $voterAddress }, contest_id: { _eq: $contestId } }
+  ) {
+    id
+    choice_id
+    mdPointer
+    mdProtocol
+    amount
+  }
+}

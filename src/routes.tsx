@@ -14,6 +14,7 @@ import { Facilitators } from './pages/Faciltiators';
 import { ShipOpDashboard } from './pages/ShipOpDashboard';
 import { MyProjects } from './pages/MyProjects';
 import { DevPanel } from './pages/DevPanel';
+import { Vote } from './pages/Vote';
 
 export const ClientRoutes = () => {
   return (
@@ -38,6 +39,7 @@ export const ClientRoutes = () => {
       <Route path="ship-operator-dashboard/:id" element={<ShipOpDashboard />} />
       <Route path="my-projects/:id" element={<MyProjects />} />
       <Route path="dev-panel" element={<DevPanel />} />
+      <Route path="vote" element={<Vote />} />
     </Routes>
   );
 };

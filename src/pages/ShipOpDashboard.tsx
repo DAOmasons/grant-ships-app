@@ -24,6 +24,10 @@ import ShipAbi from '../abi/GrantShip.json';
 import { Tag } from '../constants/tags';
 import { Address } from 'viem';
 import { ZER0_ADDRESS } from '../constants/gameSetup';
+import { PortfolioReport } from '../components/dashboard/ship/PortfolioReport';
+import { ReportStatus } from '../types/common';
+import { getRecentPortfolioReport } from '../queries/getRecordsByTag';
+import { ADDR } from '../constants/addresses';
 
 export const ShipOpDashboard = () => {
   const { id } = useParams();
@@ -38,10 +42,24 @@ export const ShipOpDashboard = () => {
     enabled: !!id,
   });
 
+  const { data: recentRecord, refetch: refetchRecentRecord } = useQuery({
+    queryKey: [`ship-portfolio-${id}`],
+    queryFn: () =>
+      getRecentPortfolioReport(
+        `${Tag.ShipSubmitReport}-${ADDR.VOTE_CONTEST}-${id}`
+      ),
+    enabled: !!id,
+  });
+
+  const porfolioGrants = shipData?.grants
+    ? shipData.grants.filter((grant) => grant.grantStatus >= 5)
+    : undefined;
+
+  const reportStatus = recentRecord ? ReportStatus.Review : ReportStatus.Submit;
+
   return (
     <MainSection>
       <PageTitle title="Ship Dashboard" />
-
       <Link
         to={`/ship/${shipData?.id}`}
         style={{
@@ -59,7 +77,7 @@ export const ShipOpDashboard = () => {
       <Tabs defaultValue="grants">
         <Tabs.List mb="xl" grow>
           <Tabs.Tab value="grants">Grants</Tabs.Tab>
-          <Tabs.Tab value="application">Ship Application</Tabs.Tab>
+          <Tabs.Tab value="application">Portfolio Report</Tabs.Tab>
           <Tabs.Tab value="postUpdate">Post</Tabs.Tab>
         </Tabs.List>
         <Tabs.Panel value="grants">
@@ -70,10 +88,20 @@ export const ShipOpDashboard = () => {
           />
         </Tabs.Panel>
         <Tabs.Panel value="application">
-          <AppAlert
-            title={'Under Construction'}
-            description={"This feature isn't built yet. Check back soon."}
-          />
+          {id && (
+            <PortfolioReport
+              grants={porfolioGrants}
+              isLoading={shipLoading}
+              error={shipError}
+              shipId={id}
+              reportStatus={reportStatus}
+              shipHatId={shipData?.hatId}
+              onReportSubmit={() => {
+                refetchRecentRecord();
+              }}
+              reportData={recentRecord}
+            />
+          )}
         </Tabs.Panel>
         <Tabs.Panel value="postUpdate">
           <PostUpdatePanel ship={shipData} />

@@ -70,3 +70,26 @@ export enum AlloStatus {
   InReview,
   Canceled,
 }
+export enum ReportStatus {
+  Submit,
+  Review,
+  Vote,
+}
+
+export enum ContestStatus {
+  None,
+  Populating,
+  Voting,
+  Continuous,
+  Finalized,
+  Executed,
+}
+
+export enum VotingStage {
+  None,
+  Initiated,
+  Active,
+  Closed,
+  Finalized,
+  Unknown,
+}
