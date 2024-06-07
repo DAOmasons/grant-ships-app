@@ -1,6 +1,7 @@
 import {
   Avatar,
   Box,
+  Divider,
   Group,
   NumberInput,
   Progress,
@@ -45,13 +46,23 @@ export const ConfirmationPanel = ({
   ];
   const isVotingActive = votingStage === VotingStage.Active;
 
-  const exceeds100percent = useMemo(() => {
-    return (
+  const totalPercent = useMemo(
+    () =>
       form.values.ships.reduce((acc, curr) => {
         return acc + Number(curr.shipPerc);
-      }, 0) > 100
-    );
-  }, [form.values]);
+      }, 0),
+    [form.values]
+  );
+
+  const exceeds100percent = totalPercent > 100;
+  const totalVoteAmount =
+    userTokenData.totalUserTokenBalance && totalPercent
+      ? formatEther(
+          (userTokenData.totalUserTokenBalance *
+            BigInt(Math.floor(Number(totalPercent) * 1e6))) /
+            BigInt(100 * 1e6)
+        )
+      : 0;
 
   const userHasVotes = userTokenData.totalUserTokenBalance > 0n;
 
@@ -199,7 +210,7 @@ export const ConfirmationPanel = ({
   return (
     <Box mt="md">
       {ships.map((ship, index) => {
-        const shipPerc = form.values.ships[index].shipPerc || '0';
+        const shipPerc = form.values.ships[index].shipPerc || 0;
         const voteAmount =
           userTokenData.totalUserTokenBalance && shipPerc
             ? formatEther(
@@ -228,7 +239,7 @@ export const ConfirmationPanel = ({
                 min={0}
                 max={100}
                 decimalScale={2}
-                disabled={!isVotingActive}
+                // disabled={!isVotingActive}
                 {...form.getInputProps(`ships.${index}.shipPerc`)}
               />
               <Progress
@@ -256,16 +267,28 @@ export const ConfirmationPanel = ({
           </Box>
         );
       })}
-
+      <Text fz="md" mb="xs">
+        <Text component="span" fw={600} fz="inherit">
+          Total Vote:{' '}
+        </Text>
+        {totalPercent}%
+      </Text>
+      <Text fz="md">
+        <Text component="span" fw={600} fz="inherit">
+          Total Vote Amount:{' '}
+        </Text>
+        {totalVoteAmount} {tokenData.tokenSymbol}
+      </Text>
+      <Divider mb="xl" mt="xl" />
       <Group justify="flex-end" maw={480}>
         <Box>
           {!userHasVotes && (
-            <Text fz="sm" c="red">
+            <Text fz="sm" c={theme.colors.red[7]}>
               You have no votes to allocate
             </Text>
           )}
           {exceeds100percent && (
-            <Text fz="sm" c="red">
+            <Text fz="sm" c={theme.colors.red[7]}>
               Total vote allocation exceeds 100%
             </Text>
           )}
