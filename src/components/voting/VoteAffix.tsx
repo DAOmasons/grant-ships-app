@@ -47,7 +47,9 @@ export const VoteAffix = ({ formValues }: { formValues: VotingFormValues }) => {
               }
             >
               <Text c={theme.colors.blue[3]} component="span">
-                {formatEther(userTokenData.totalUserTokenBalance)}{' '}
+                {Number(
+                  formatEther(userTokenData.totalUserTokenBalance)
+                ).toFixed(2)}{' '}
                 {tokenData.tokenSymbol}{' '}
               </Text>
             </Tooltip>
