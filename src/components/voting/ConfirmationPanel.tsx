@@ -99,7 +99,7 @@ export const ConfirmationPanel = ({
       }
 
       const hasFilledInAllRequiredFields = form.values.ships.every(
-        (ship) => ship.shipId && ship.shipPerc
+        (ship) => ship.shipId && ship.shipPerc != null
       );
 
       if (!hasFilledInAllRequiredFields) {
@@ -207,7 +207,7 @@ export const ConfirmationPanel = ({
           userTokenData.totalUserTokenBalance && shipPerc
             ? formatEther(
                 (userTokenData.totalUserTokenBalance *
-                  BigInt(Number(shipPerc) * 1e6)) /
+                  BigInt(Math.floor(Number(shipPerc) * 1e6))) /
                   BigInt(100 * 1e6)
               )
             : 0n;
@@ -227,7 +227,6 @@ export const ConfirmationPanel = ({
                 clampBehavior="strict"
                 placeholder="22%"
                 suffix="%"
-                hideControls
                 min={0}
                 max={100}
                 decimalScale={2}

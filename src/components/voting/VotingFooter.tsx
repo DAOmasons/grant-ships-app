@@ -40,6 +40,9 @@ export const VotingFooter = ({
           maw={298}
           min={0}
           max={100}
+          decimalScale={2}
+          suffix="%"
+          clampBehavior="strict"
           placeholder="30%"
           disabled={!isVotingActive}
           {...form.getInputProps(`ships.${index}.shipPerc`)}
