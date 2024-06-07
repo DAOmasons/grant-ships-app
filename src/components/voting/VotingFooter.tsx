@@ -42,6 +42,7 @@ export const VotingFooter = ({
           max={100}
           decimalScale={2}
           suffix="%"
+          allowNegative={false}
           clampBehavior="strict"
           placeholder="30%"
           disabled={!isVotingActive}

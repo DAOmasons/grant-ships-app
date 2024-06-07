@@ -222,6 +222,7 @@ export const ConfirmationPanel = ({
               <NumberInput
                 maw={430}
                 mb="xs"
+                allowNegative={false}
                 label="Amount (%)"
                 required
                 clampBehavior="strict"
@@ -264,6 +265,11 @@ export const ConfirmationPanel = ({
           {!userHasVotes && (
             <Text fz="sm" c="red">
               You have no votes to allocate
+            </Text>
+          )}
+          {exceeds100percent && (
+            <Text fz="sm" c="red">
+              Total vote allocation exceeds 100%
             </Text>
           )}
         </Box>
