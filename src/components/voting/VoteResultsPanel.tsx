@@ -72,49 +72,55 @@ export const VoteResultsPanel = ({ ships }: { ships: ShipsCardUI[] }) => {
     theme.colors.violet[5],
     theme.colors.pink[5],
   ];
+
+  const hasUserVoted = userVotes && userVotes.length > 0;
+
   return (
     <MainSection maw={850}>
       <PageTitle title="Vote" />
       <Text fz={32} fw={600} mt="xl">
-        Your vote has been submitted!
+        {hasUserVoted ? 'Your vote has been submitted!' : 'Voting is Complete!'}
       </Text>
       <Flex w="100%" justify="space-between" wrap="wrap" mt={40}>
-        <Stack w={350} gap="lg" mb={40}>
-          <Text fz="xl" fw={500}>
-            Your Vote
-          </Text>
-          {consolidated.map((ship, index) => {
-            const percentage = totals?.totalUserVotes
-              ? formatBigIntPercentage(
-                  BigInt(ship.vote?.amount || 0),
-                  totals?.totalUserVotes
-                )
-              : '0';
-            const tokenAmount = formatEther(BigInt(ship.vote?.amount || 0));
-
-            return (
-              <Box key={`total_v_${ship.id}`}>
-                <Group gap="xs" mb="sm">
-                  <Avatar size={32} src={ship.imgUrl} />
-                  <Text fz="md" fw={600}>
-                    {ship.name}
-                  </Text>
-                </Group>
-                <Progress value={Number(percentage)} color={colors[index]} />
-                <Text fz="sm" mt="xs">
-                  {Number(percentage)}% Voted ({tokenAmount}{' '}
-                  {tokenData.tokenSymbol})
-                </Text>
-              </Box>
-            );
-          })}
-          <Text fz="sm" mt="xs">
-            <Text fz="sm" component="span" fw={600}>
-              Total:{' '}
+        {hasUserVoted && (
+          <Stack w={350} gap="lg" mb={40}>
+            <Text fz="xl" fw={500}>
+              Your Vote
             </Text>
-            {formatEther(totals?.totalUserVotes || 0n)} {tokenData.tokenSymbol}
-          </Text>
-        </Stack>
+            {consolidated.map((ship, index) => {
+              const percentage = totals?.totalUserVotes
+                ? formatBigIntPercentage(
+                    BigInt(ship.vote?.amount || 0),
+                    totals?.totalUserVotes
+                  )
+                : '0';
+              const tokenAmount = formatEther(BigInt(ship.vote?.amount || 0));
+
+              return (
+                <Box key={`total_v_${ship.id}`}>
+                  <Group gap="xs" mb="sm">
+                    <Avatar size={32} src={ship.imgUrl} />
+                    <Text fz="md" fw={600}>
+                      {ship.name}
+                    </Text>
+                  </Group>
+                  <Progress value={Number(percentage)} color={colors[index]} />
+                  <Text fz="sm" mt="xs">
+                    {Number(percentage)}% Voted ({tokenAmount}{' '}
+                    {tokenData.tokenSymbol})
+                  </Text>
+                </Box>
+              );
+            })}
+            <Text fz="sm" mt="xs">
+              <Text fz="sm" component="span" fw={600}>
+                Total:{' '}
+              </Text>
+              {formatEther(totals?.totalUserVotes || 0n)}{' '}
+              {tokenData.tokenSymbol}
+            </Text>
+          </Stack>
+        )}
         <Stack w={350} mb={40} gap="lg">
           <Text fz="xl" fw={500}>
             Total Vote Results
