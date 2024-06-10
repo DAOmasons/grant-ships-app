@@ -1,13 +1,13 @@
 import { useEffect, useState } from 'react';
 import { MainSection, PageTitle } from '../layout/Sections';
 import {
+  Box,
+  Divider,
   Flex,
-  Loader,
   Skeleton,
   Stack,
   Stepper,
   Text,
-  Transition,
 } from '@mantine/core';
 import { useQuery } from '@tanstack/react-query';
 import { getShipsPageData } from '../queries/getShipsPage';
@@ -95,6 +95,53 @@ export const Vote = () => {
     [ships]
   );
 
+  if (isLoading) {
+    return (
+      <Flex w="100%">
+        <MainSection>
+          <PageTitle title="Vote" />
+          <Stepper
+            active={0}
+            maw={600}
+            miw={300}
+            size="xs"
+            w={'100%'}
+            mt={'lg'}
+            mb="xl"
+          >
+            <Stepper.Step label="Ship 1">
+              <Text fz="xl" fw={600} mb="md">
+                Ship Portfolio Report
+              </Text>
+              <Skeleton w={'100%'} h={120} mb="xl" />
+              <Skeleton h={16} w="50%" mb={'md'} />
+              <Skeleton h={89} w="100%" mb="xl" />
+              <Skeleton h={16} w="50%" mb={'md'} />
+              <Flex h={69} align="center">
+                <Skeleton circle h={32} w={32} mr="sm" />
+                <Skeleton h={20} w="70%" />
+              </Flex>
+              <Skeleton h={1} w="100%" />
+              <Flex h={69} align="center">
+                <Skeleton circle h={32} w={32} mr="sm" />
+                <Skeleton h={20} w="70%" />
+              </Flex>
+              <Skeleton h={1} w="100%" />
+              <Flex h={69} align="center">
+                <Skeleton circle h={32} w={32} mr="sm" />
+                <Skeleton h={20} w="70%" />
+              </Flex>
+              <Skeleton h={1} w="100%" />
+            </Stepper.Step>
+            <Stepper.Step label="Ship 2" />
+            <Stepper.Step label="Ship 3" />
+            <Stepper.Step label="Final" />
+          </Stepper>
+        </MainSection>
+      </Flex>
+    );
+  }
+
   if (error) {
     return (
       <AppAlert
@@ -105,7 +152,7 @@ export const Vote = () => {
   }
 
   if (!ships) {
-    return null;
+    return <AppAlert title="No Ships Found" description="No ships found" />;
   }
 
   const hasVotes = userVotes && userVotes.length > 0;
@@ -144,7 +191,6 @@ export const Vote = () => {
                 alignItems: 'center',
               }}
             >
-              {/* <FadeIn isLoaded key={`fade-${ship.id}`}> */}
               <ShipVotingPanel
                 ship={ship}
                 form={form}
@@ -154,7 +200,6 @@ export const Vote = () => {
                 nextStep={nextStep}
                 prevStep={prevStep}
               />
-              {/* </FadeIn> */}
             </Stepper.Step>
           ))}
           <Stepper.Step
