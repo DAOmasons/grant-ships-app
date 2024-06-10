@@ -342,7 +342,7 @@ const InfoModalContent = ({ closeModal }: { closeModal: () => void }) => {
           the following round.
         </Text>
         <Text fz="sm" c={theme.colors.dark[2]} mb="sm">
-          If you have any questions or need help, please reach out to us on
+          If you have any questions or need help, please reach out to us on{' '}
           <a href="https://discord.gg/sqVzFKCf">Discord</a> or{' '}
           <a href="https://t.me/grantships">Telegram.</a>
         </Text>
