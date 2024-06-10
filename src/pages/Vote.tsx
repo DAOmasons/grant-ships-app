@@ -1,6 +1,14 @@
 import { useEffect, useState } from 'react';
 import { MainSection, PageTitle } from '../layout/Sections';
-import { Flex, Stack, Stepper } from '@mantine/core';
+import {
+  Flex,
+  Loader,
+  Skeleton,
+  Stack,
+  Stepper,
+  Text,
+  Transition,
+} from '@mantine/core';
 import { useQuery } from '@tanstack/react-query';
 import { getShipsPageData } from '../queries/getShipsPage';
 import { useLaptop, useMobile, useTablet } from '../hooks/useBreakpoint';
@@ -13,6 +21,11 @@ import { ShipVotingPanel } from '../components/voting/ShipVotingPanel';
 import { ConfirmationPanel } from '../components/voting/ConfirmationPanel';
 import { useVoting } from '../hooks/useVoting';
 import { VoteResultsPanel } from '../components/voting/VoteResultsPanel';
+import { AppAlert } from '../components/UnderContruction';
+import { getShipGrants } from '../queries/getShipGrants';
+import { getRecentPortfolioReport } from '../queries/getRecordsByTag';
+import { Tag } from '../constants/tags';
+import { ADDR } from '../constants/addresses';
 
 export type VotingFormValues = z.infer<typeof votingSchema>;
 
@@ -22,11 +35,34 @@ export type CondensedChoiceData = {
   shipImg: string;
 };
 
+const bigVoteQuery = async () => {
+  const ships = await getShipsPageData();
+
+  const shipVoteData = await Promise.all(
+    ships.map(async (ship) => {
+      const [grants, recentRecord] = await Promise.all([
+        getShipGrants(ship.id),
+        getRecentPortfolioReport(
+          `${Tag.ShipSubmitReport}-${ADDR.VOTE_CONTEST}-${ship.id}`
+        ),
+      ]);
+
+      return { ...ship, grants, recentRecord };
+    })
+  );
+
+  return shipVoteData;
+};
+
 export const Vote = () => {
   const [step, setStep] = useState(0);
-  const { data: ships } = useQuery({
+  const {
+    data: ships,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ['ships-page'],
-    queryFn: getShipsPageData,
+    queryFn: bigVoteQuery,
   });
 
   const { userVotes } = useVoting();
@@ -59,6 +95,15 @@ export const Vote = () => {
     [ships]
   );
 
+  if (error) {
+    return (
+      <AppAlert
+        title="Error loading Ships"
+        description={error.message || 'Unknown error message'}
+      />
+    );
+  }
+
   if (!ships) {
     return null;
   }
@@ -69,8 +114,9 @@ export const Vote = () => {
     return <VoteResultsPanel ships={ships} />;
   }
 
-  const nextStep = () =>
+  const nextStep = () => {
     setStep((current) => (current < 3 ? current + 1 : current));
+  };
   const prevStep = () =>
     setStep((current) => (current > 0 ? current - 1 : current));
 
@@ -98,13 +144,17 @@ export const Vote = () => {
                 alignItems: 'center',
               }}
             >
+              {/* <FadeIn isLoaded key={`fade-${ship.id}`}> */}
               <ShipVotingPanel
                 ship={ship}
                 form={form}
                 index={index}
+                grants={ship.grants}
+                recentRecord={ship.recentRecord}
                 nextStep={nextStep}
                 prevStep={prevStep}
               />
+              {/* </FadeIn> */}
             </Stepper.Step>
           ))}
           <Stepper.Step

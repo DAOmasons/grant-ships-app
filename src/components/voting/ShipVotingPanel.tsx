@@ -1,20 +1,17 @@
 import { UseFormReturnType } from '@mantine/form';
 import { ShipsCardUI } from '../../types/ui';
 import { VotingFormValues } from '../../pages/Vote';
-import { useQuery } from '@tanstack/react-query';
-import { getShipGrants } from '../../queries/getShipGrants';
 import { useUserData } from '../../hooks/useUserState';
 import { useVoting } from '../../hooks/useVoting';
 import { useMemo } from 'react';
-import { getRecentPortfolioReport } from '../../queries/getRecordsByTag';
-import { ADDR } from '../../constants/addresses';
+import { PostedRecord } from '../../queries/getRecordsByTag';
 import { formatEther } from 'viem';
 import { Avatar, Box, Flex, Paper, Text, useMantineTheme } from '@mantine/core';
 import { PortfolioReport } from '../dashboard/ship/PortfolioReport';
 import { ContestStatus, ReportStatus, VotingStage } from '../../types/common';
-import { Tag } from '../../constants/tags';
 import { VotingFooter } from './VotingFooter';
 import { FacilitatorFooter } from './FacilitatorFooter';
+import { DashGrant } from '../../resolvers/grantResolvers';
 
 export const ShipVotingPanel = ({
   ship,
@@ -22,7 +19,11 @@ export const ShipVotingPanel = ({
   index,
   nextStep,
   prevStep,
+  grants,
+  recentRecord,
 }: {
+  grants: DashGrant[] | null;
+  recentRecord?: PostedRecord | null;
   ship: ShipsCardUI;
   form: UseFormReturnType<
     VotingFormValues,
@@ -32,38 +33,13 @@ export const ShipVotingPanel = ({
   nextStep: () => void;
   prevStep: () => void;
 }) => {
-  const {
-    data: grants,
-    error,
-    isLoading: isLoadingGrants,
-  } = useQuery({
-    queryKey: [`portfolio-${ship.id}`],
-    queryFn: () => getShipGrants(ship.id as string),
-    enabled: !!ship.id,
-  });
-
-  const {
-    contest,
-    contestStatus,
-    isLoadingVoting,
-    refetchGsVotes,
-    votingStage,
-  } = useVoting();
+  const { contest, contestStatus, refetchGsVotes, votingStage } = useVoting();
   const theme = useMantineTheme();
-  const { userData, userLoading } = useUserData();
+  const { userData } = useUserData();
 
   const shipChoiceId = useMemo(() => {
     return contest?.choices.find((choice) => choice.shipId === ship.id)?.id;
   }, [contest?.choices, ship]);
-
-  const { data: recentRecord, isLoading: isLoadingRecord } = useQuery({
-    queryKey: [`ship-portfolio-${ship.id}`],
-    queryFn: () =>
-      getRecentPortfolioReport(
-        `${Tag.ShipSubmitReport}-${ADDR.VOTE_CONTEST}-${ship.id}`
-      ),
-    enabled: !!ship.id,
-  });
 
   const totalAmount = formatEther(
     BigInt(ship.amtAllocated) +
@@ -71,8 +47,6 @@ export const ShipVotingPanel = ({
       BigInt(ship.amtDistributed)
   );
 
-  const isLoading =
-    isLoadingRecord || isLoadingVoting || isLoadingGrants || userLoading;
   return (
     <Box>
       <Text fz="xl" fw={600} mb="md">
@@ -103,14 +77,14 @@ export const ShipVotingPanel = ({
 
       <PortfolioReport
         grants={grants}
-        isLoading={isLoading}
-        error={error}
+        error={null}
+        isLoading={false}
         reportStatus={ReportStatus.Review}
         reportData={recentRecord}
         shipId={ship.id}
       />
 
-      {contestStatus === ContestStatus.Populating && !isLoading && (
+      {contestStatus === ContestStatus.Populating && (
         <FacilitatorFooter
           isFacilitator={userData?.isFacilitator}
           recentRecord={recentRecord}
