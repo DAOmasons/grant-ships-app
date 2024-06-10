@@ -212,14 +212,10 @@ export const Banner = () => {
     return (
       <BannerBG>
         <Innards
-          statusText="Voting is Live! "
-          ctaText="Vote Now."
+          statusText="Grant Ships voting is live! "
+          ctaText="Cast your vote now."
           ctaButton={
-            <Button
-              component={Link}
-              to="create-project"
-              size={isMobile ? 'xs' : 'sm'}
-            >
+            <Button component={Link} to="/vote" size={isMobile ? 'xs' : 'sm'}>
               Vote Now
             </Button>
           }

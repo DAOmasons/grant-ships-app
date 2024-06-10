@@ -36,7 +36,7 @@ export const VotingFooter = ({
 
       <Group align="flex-end" mb="md">
         <NumberInput
-          label="Amount (%)"
+          label="Estimated Amount (%)"
           maw={298}
           min={0}
           max={100}
