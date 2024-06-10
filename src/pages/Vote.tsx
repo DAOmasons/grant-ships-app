@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { MainSection, PageTitle } from '../layout/Sections';
 import {
-  ActionIcon,
   Box,
   Button,
   Flex,
@@ -11,6 +10,7 @@ import {
   Stack,
   Stepper,
   Text,
+  useMantineTheme,
 } from '@mantine/core';
 import { useQuery } from '@tanstack/react-query';
 import { getShipsPageData } from '../queries/getShipsPage';
@@ -26,17 +26,19 @@ import { useVoting } from '../hooks/useVoting';
 import { VoteResultsPanel } from '../components/voting/VoteResultsPanel';
 import { AppAlert } from '../components/UnderContruction';
 import { getShipGrants } from '../queries/getShipGrants';
-import { getRecentPortfolioReport } from '../queries/getRecordsByTag';
+import {
+  PostedRecord,
+  getRecentPortfolioReport,
+} from '../queries/getRecordsByTag';
 import { Tag } from '../constants/tags';
 import { ADDR } from '../constants/addresses';
 import { ContestStatus, GameStatus, VotingStage } from '../types/common';
 import { PreVoting } from '../components/voting/PreVoting';
 import { useGameManager } from '../hooks/useGameMangers';
-import {
-  IconExclamationCircle,
-  IconEyeQuestion,
-  IconQuestionMark,
-} from '@tabler/icons-react';
+import Logo from '../assets/Logo.svg?react';
+
+import { IconExclamationCircle } from '@tabler/icons-react';
+import { DashGrant } from '../resolvers/grantResolvers';
 
 export type VotingFormValues = z.infer<typeof votingSchema>;
 
@@ -66,7 +68,6 @@ const bigVoteQuery = async () => {
 };
 
 export const Vote = () => {
-  const [step, setStep] = useState(0);
   const {
     data: ships,
     isLoading,
@@ -77,36 +78,7 @@ export const Vote = () => {
   });
 
   const { userVotes, votingStage, contestStatus } = useVoting();
-  const [modalOpen, setModalOpen] = useState(false);
   const { currentRound } = useGameManager();
-
-  const isLaptop = useLaptop();
-
-  const isTablet = useTablet();
-
-  const isMobile = useMobile();
-
-  const form = useForm({
-    initialValues: {
-      ships: [],
-    } as VotingFormValues,
-    validate: zodResolver(votingSchema),
-    validateInputOnBlur: true,
-  });
-
-  useEffect(
-    () => {
-      if (!ships) return;
-      const updatedShips = ships?.map((ship) => ({
-        shipId: ship.id,
-        shipPerc: 0,
-        shipComment: '',
-      }));
-      form.setValues((prev) => ({ ...prev, ships: updatedShips }));
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [ships]
-  );
 
   if (isLoading) {
     return <LoadingSkeleton />;
@@ -142,14 +114,76 @@ export const Vote = () => {
     return <VoteResultsPanel ships={ships} />;
   }
 
+  return <VotingOpen ships={ships} />;
+};
+
+const VotingOpen = ({
+  ships,
+}: {
+  ships: {
+    grants: DashGrant[] | null;
+    recentRecord: PostedRecord | null;
+    id: string;
+    name: string;
+    status: GameStatus;
+    imgUrl: string;
+    description: string;
+    amtAllocated: string;
+    amtDistributed: string;
+    amtAvailable: string;
+    balance: string;
+  }[];
+}) => {
+  const form = useForm({
+    initialValues: {
+      ships: [],
+    } as VotingFormValues,
+    validate: zodResolver(votingSchema),
+    validateInputOnBlur: true,
+  });
+
+  const [step, setStep] = useState(0);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const isLaptop = useLaptop();
+
+  const isTablet = useTablet();
+
+  const isMobile = useMobile();
+
+  useEffect(
+    () => {
+      if (!ships) return;
+      const updatedShips = ships?.map((ship) => ({
+        shipId: ship.id,
+        shipPerc: 0,
+        shipComment: '',
+      }));
+      form.setValues((prev) => ({ ...prev, ships: updatedShips }));
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [ships]
+  );
+
+  useEffect(() => {
+    const hasSeenHelp = JSON.parse(
+      localStorage.getItem('has-seen-help') || 'false'
+    );
+    if (!hasSeenHelp) {
+      setModalOpen(true);
+    }
+  }, []);
+
   const nextStep = () => {
     setStep((current) => (current < 3 ? current + 1 : current));
   };
   const prevStep = () =>
     setStep((current) => (current > 0 ? current - 1 : current));
 
-  const closeModal = () => setModalOpen(false);
-
+  const closeModal = () => {
+    localStorage.setItem('has-seen-help', JSON.stringify(true));
+    setModalOpen(false);
+  };
   return (
     <Flex w="100%">
       <MainSection>
@@ -218,9 +252,14 @@ export const Vote = () => {
         opened={modalOpen}
         onClose={closeModal}
         centered
-        title="Welcome to Grant Ships Voting!"
+        w={'50%'}
+        title={
+          <Text fz="lg" fw={600}>
+            Grant Ships Voting
+          </Text>
+        }
       >
-        <Text>We are excited to </Text>
+        <InfoModalContent closeModal={closeModal} />
       </Modal>
     </Flex>
   );
@@ -270,3 +309,47 @@ const LoadingSkeleton = () => (
     </MainSection>
   </Flex>
 );
+
+const InfoModalContent = ({ closeModal }: { closeModal: () => void }) => {
+  const theme = useMantineTheme();
+  return (
+    <Box>
+      <Flex w="100%" justify="center" mb="md">
+        <Logo height={80} width={80} />
+      </Flex>
+      <Box mb="lg">
+        <Text fw={600} mb={'sm'} fz="sm">
+          Welcome!
+        </Text>
+        <Text fz="sm" c={theme.colors.dark[2]}>
+          We are excited to have you here for the first "Gaming on Arbitrum"
+          Voting Round
+        </Text>
+      </Box>
+      <Box mb="lg">
+        <Text fz="sm" fw={600} mb={'sm'}>
+          How to vote
+        </Text>
+        <Text fz="sm" c={theme.colors.dark[2]} mb="sm">
+          Read through each ship's (grant program) portfolio and evaluate the
+          projects funded. Leave a comment and an estimated %. When you reach
+          the final stage, you will be able to review your votes and submit
+          them.
+        </Text>
+        <Text fz="sm" c={theme.colors.dark[2]} mb="sm"></Text>
+        <Text fz="sm" c={theme.colors.dark[2]} mb="sm">
+          The total percentages will determine the funding each ship receives in
+          the following round.
+        </Text>
+        <Text fz="sm" c={theme.colors.dark[2]} mb="sm">
+          If you have any questions or need help, please reach out to us on
+          <a href="https://discord.gg/sqVzFKCf">Discord</a> or{' '}
+          <a href="https://t.me/grantships">Telegram.</a>
+        </Text>
+        <Group justify="flex-end" w="100%">
+          <Button onClick={closeModal}>Got it!</Button>
+        </Group>
+      </Box>
+    </Box>
+  );
+};

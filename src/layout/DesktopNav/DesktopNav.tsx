@@ -7,7 +7,7 @@ import {
   IconInfoCircle,
 } from '@tabler/icons-react';
 import classes from './DesktoNavStyles.module.css';
-import Logo from '../../assets/Logo.svg';
+import Logo from '../../assets/Logo.svg?react';
 import { ConnectButton } from './ConnectButton';
 import { Link, useLocation } from 'react-router-dom';
 
@@ -147,7 +147,7 @@ export function DesktopNav() {
       <div className={classes.navbarMain}>
         <Group className={classes.header}>
           <Link to="/">
-            <Logo />
+            <Logo height={42} width={42} />
           </Link>
           {!isTablet && (
             <Title order={1} fw={100} fz={32}>
