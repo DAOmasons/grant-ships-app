@@ -267,7 +267,17 @@ export const ConfirmationPanel = ({
           </Box>
         );
       })}
-      <Text fz="md" mb="xs">
+      <Text
+        fz="md"
+        mb="xs"
+        c={
+          totalPercent < 100
+            ? theme.colors.yellow[6]
+            : exceeds100percent
+              ? theme.colors.red[7]
+              : 'inherit'
+        }
+      >
         <Text component="span" fw={600} fz="inherit">
           Total Vote:{' '}
         </Text>

@@ -3,12 +3,15 @@ import { Link } from 'react-router-dom';
 
 import classes from '../pages/PageStyles.module.css';
 import { useGameManager } from '../hooks/useGameMangers';
-import { GameStatus } from '../types/common';
+import { ContestStatus, GameStatus, VotingStage } from '../types/common';
 import { ReactNode } from 'react';
 import { useMobile } from '../hooks/useBreakpoint';
+import { useVoting } from '../hooks/useVoting';
+import { secondsToLongDate } from '../utils/time';
 
 export const Banner = () => {
   const { gm, isLoadingGm, gmError } = useGameManager();
+  const { contestStatus, contest, votingStage } = useVoting();
   const isMobile = useMobile();
 
   if (isLoadingGm) return <BannerBG />;
@@ -119,12 +122,67 @@ export const Banner = () => {
     );
   }
 
-  if (gm.currentRound.gameStatus === GameStatus.Completed) {
+  const roundOver = gm.currentRound.gameStatus === GameStatus.Completed;
+
+  if (
+    (roundOver && contestStatus === ContestStatus.Populating) ||
+    (roundOver && contestStatus === ContestStatus.None)
+  ) {
     return (
       <BannerBG>
         <Innards
           statusText="Round Complete."
-          ctaText="Stay tuned for election details."
+          ctaText="Stay tuned for voting details."
+          ctaButton={
+            <Button component={Link} to="/vote" size={isMobile ? 'xs' : 'sm'}>
+              Preview Portfolios
+            </Button>
+          }
+          infoBtn={
+            <Button
+              component="a"
+              href="https://rules.grantships.fun/how-to-play/as-a-dao-mem.html"
+              variant="transparent"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              Vote details
+            </Button>
+          }
+        />
+      </BannerBG>
+    );
+  }
+
+  const voteIsIdle =
+    roundOver &&
+    contestStatus === ContestStatus.None &&
+    votingStage === VotingStage.None;
+
+  const voteIsSetup =
+    roundOver &&
+    contestStatus === ContestStatus.Voting &&
+    votingStage === VotingStage.Initiated;
+
+  const voteIsActive =
+    roundOver &&
+    contestStatus === ContestStatus.Voting &&
+    votingStage === VotingStage.Active;
+
+  const voteIsClosed =
+    votingStage >= VotingStage.Closed ||
+    contestStatus >= ContestStatus.Finalized;
+
+  if (voteIsIdle || voteIsSetup) {
+    return (
+      <BannerBG>
+        <Innards
+          statusText=""
+          ctaText={
+            voteIsSetup && contest?.startTime
+              ? `Vote Starts on ${secondsToLongDate(contest.startTime)}`
+              : 'Vote Starts Soon'
+          }
           ctaButton={
             <Button
               component={Link}
@@ -137,12 +195,70 @@ export const Banner = () => {
           infoBtn={
             <Button
               component="a"
-              href="https://rules.grantships.fun/"
+              href="https://rules.grantships.fun/how-to-play/as-a-dao-mem.html"
               variant="transparent"
               rel="noopener noreferrer"
               target="_blank"
             >
-              What are we electing?
+              Vote details
+            </Button>
+          }
+        />
+      </BannerBG>
+    );
+  }
+
+  if (voteIsActive) {
+    return (
+      <BannerBG>
+        <Innards
+          statusText="Grant Ships voting is live! "
+          ctaText="Cast your vote now."
+          ctaButton={
+            <Button component={Link} to="/vote" size={isMobile ? 'xs' : 'sm'}>
+              Vote Now
+            </Button>
+          }
+          infoBtn={
+            <Button
+              component="a"
+              href="https://rules.grantships.fun/how-to-play/as-a-dao-mem.html"
+              variant="transparent"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              What am I voting on?
+            </Button>
+          }
+        />
+      </BannerBG>
+    );
+  }
+
+  if (voteIsClosed) {
+    return (
+      <BannerBG>
+        <Innards
+          statusText="Voting is Closed. "
+          ctaText="Stay tuned for the next round."
+          ctaButton={
+            <Button
+              component={Link}
+              to="create-project"
+              size={isMobile ? 'xs' : 'sm'}
+            >
+              See Results
+            </Button>
+          }
+          infoBtn={
+            <Button
+              component="a"
+              href="https://rules.grantships.fun/how-to-play/as-a-dao-mem.html"
+              variant="transparent"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              More info.
             </Button>
           }
         />

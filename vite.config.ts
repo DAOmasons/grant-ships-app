@@ -11,10 +11,7 @@ export default defineConfig({
     nodePolyfills({
       protocolImports: true,
     }),
-    svgr({
-      svgrOptions: { exportType: 'default', ref: true },
-      include: '**/*.svg',
-    }),
+    svgr(),
   ],
   define: {
     // globalThis: 'window',

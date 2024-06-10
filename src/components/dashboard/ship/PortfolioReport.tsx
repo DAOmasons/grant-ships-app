@@ -19,7 +19,6 @@ import { GAME_TOKEN } from '../../../constants/gameSetup';
 import {
   IconChevronDown,
   IconChevronUp,
-  IconExclamationCircle,
   IconExternalLink,
   IconSquare,
   IconSquareCheck,
@@ -76,8 +75,6 @@ export const PortfolioReport = ({
   onReportSubmit?: () => void;
   reportData?: ReportData | null;
 }) => {
-  const theme = useMantineTheme();
-
   const form = useForm({
     initialValues: defaultValues,
     validate: zodResolver(portfolioReportSchema),
@@ -93,15 +90,7 @@ export const PortfolioReport = ({
       </Stack>
     );
 
-  if (error || !grants)
-    return (
-      <AppAlert
-        title="Error"
-        icon={<IconExclamationCircle />}
-        description={error?.message || 'Grant Data failed to load'}
-        bg={theme.colors.pink[8]}
-      />
-    );
+  if (error || !grants) return null;
 
   if (grants.length === 0)
     return (

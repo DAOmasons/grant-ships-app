@@ -155,7 +155,7 @@ export const resolveMilestones = async (
 };
 
 export const resolveMilestoneReviewReason = async (pointer?: string) => {
-  if (!pointer) {
+  if (!pointer || pointer === 'NULL') {
     return null;
   }
 

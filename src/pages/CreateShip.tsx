@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { useAccount, useWatchContractEvent } from 'wagmi';
+import { useAccount, useChainId, useWatchContractEvent } from 'wagmi';
 
 import Registry from '../abi/Registry.json';
 import { ADDR } from '../constants/addresses';
@@ -21,6 +21,7 @@ export type ProfileData = {
 
 export const CreateShip = () => {
   const { address } = useAccount();
+  const chainId = useChainId();
 
   const [step, setStep] = useState(0);
   const [profileData, setProfileData, removeProfileStorage] = useLocalStorage<
@@ -34,9 +35,9 @@ export const CreateShip = () => {
 
   useWatchContractEvent({
     abi: Registry,
-    address: ADDR.Registry,
+    address: ADDR.REGISTRY,
     eventName: 'ProfileCreated',
-    syncConnectedChain: true,
+    chainId,
     pollingInterval: 100,
     onError: (error) => {
       console.error('error', error);
