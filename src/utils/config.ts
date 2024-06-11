@@ -31,5 +31,5 @@ export const ensConfig = createConfig({
 
 export const publicClient = createPublicClient({
   chain: appNetwork,
-  transport: http(appRpc),
+  transport: http(appRpc, { batch: true }),
 });
