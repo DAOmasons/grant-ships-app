@@ -162,7 +162,7 @@ export const Banner = () => {
   const voteIsSetup =
     roundOver &&
     contestStatus === ContestStatus.Voting &&
-    votingStage === VotingStage.Initiated;
+    (votingStage === VotingStage.Initiated || votingStage === VotingStage.None);
 
   const voteIsActive =
     roundOver &&
@@ -177,11 +177,11 @@ export const Banner = () => {
     return (
       <BannerBG>
         <Innards
-          statusText=""
+          statusText="Voting is almost ready! "
           ctaText={
             voteIsSetup && contest?.startTime
-              ? `Vote Starts on ${secondsToLongDate(contest.startTime)}`
-              : 'Vote Starts Soon'
+              ? `Starts: ${secondsToLongDate(contest.startTime)}`
+              : 'Stay tuned'
           }
           ctaButton={
             <Button
