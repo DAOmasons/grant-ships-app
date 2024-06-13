@@ -49,7 +49,7 @@ export const ConfirmationPanel = ({
   const totalPercent = useMemo(
     () =>
       form.values.ships.reduce((acc, curr) => {
-        return acc + Number(curr.shipPerc);
+        return Number((acc + Number(curr.shipPerc.toFixed(2))).toFixed(2));
       }, 0),
     [form.values]
   );
@@ -127,10 +127,19 @@ export const ConfirmationPanel = ({
               (choice) => choice.shipId === ship.shipId
             )?.id;
 
+            const perc = ship.shipPerc || 0;
+
+            console.log('perc', perc);
+
+            const percToInt = parseFloat((perc * 1e6).toFixed());
+
+            console.log('percToInt', percToInt);
+
             const tokenAmount =
-              (userTokenData.totalUserTokenBalance *
-                BigInt(Number(ship.shipPerc) * 1e6)) /
+              (userTokenData.totalUserTokenBalance * BigInt(percToInt)) /
               BigInt(100 * 1e6);
+
+            console.log('tokenAmount', tokenAmount);
 
             const pinRes = await pinJSONToIPFS({
               voteReason: ship.shipComment,
@@ -199,6 +208,7 @@ export const ConfirmationPanel = ({
         },
       });
     } catch (error: any) {
+      console.error(error);
       notifications.show({
         title: 'Error',
         message: `Vote submission failed: ${error.message}`,
