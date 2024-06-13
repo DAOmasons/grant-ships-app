@@ -39,6 +39,7 @@ import Logo from '../assets/Logo.svg?react';
 
 import { IconExclamationCircle } from '@tabler/icons-react';
 import { DashGrant } from '../resolvers/grantResolvers';
+import { useAccount } from 'wagmi';
 
 export type VotingFormValues = z.infer<typeof votingSchema>;
 
@@ -151,6 +152,8 @@ const VotingOpen = ({
 
   const isMobile = useMobile();
 
+  const { isConnected } = useAccount();
+
   useEffect(
     () => {
       if (!ships) return;
@@ -188,7 +191,7 @@ const VotingOpen = ({
     <Flex w="100%">
       <MainSection>
         <Box pos="relative">
-          <VoteAffix formValues={form.values} />
+          {isConnected && <VoteAffix formValues={form.values} />}
 
           <PageTitle title="Vote" />
           <Button

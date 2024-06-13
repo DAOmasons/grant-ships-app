@@ -6,12 +6,26 @@ import { useVoting } from '../../hooks/useVoting';
 import { useMemo } from 'react';
 import { PostedRecord } from '../../queries/getRecordsByTag';
 import { formatEther } from 'viem';
-import { Avatar, Box, Flex, Paper, Text, useMantineTheme } from '@mantine/core';
+import {
+  Avatar,
+  Box,
+  Button,
+  Flex,
+  Group,
+  Modal,
+  Paper,
+  Stack,
+  Text,
+  useMantineTheme,
+} from '@mantine/core';
 import { PortfolioReport } from '../dashboard/ship/PortfolioReport';
 import { ContestStatus, ReportStatus, VotingStage } from '../../types/common';
 import { VotingFooter } from './VotingFooter';
 import { FacilitatorFooter } from './FacilitatorFooter';
 import { DashGrant } from '../../resolvers/grantResolvers';
+import { useAccount, useConnect } from 'wagmi';
+import { useDisclosure } from '@mantine/hooks';
+import { IconExclamationCircle } from '@tabler/icons-react';
 
 export const ShipVotingPanel = ({
   ship,
@@ -36,6 +50,7 @@ export const ShipVotingPanel = ({
   const { contest, contestStatus, refetchGsVotes, votingStage } = useVoting();
   const theme = useMantineTheme();
   const { userData } = useUserData();
+  const { isConnected } = useAccount();
 
   const shipChoiceId = useMemo(() => {
     return contest?.choices.find((choice) => choice.shipId === ship.id)?.id;
@@ -103,6 +118,42 @@ export const ShipVotingPanel = ({
           isVotingActive={votingStage === VotingStage.Active}
         />
       )}
+      {!isConnected && <IsNotConnected />}
+    </Box>
+  );
+};
+
+const IsNotConnected = () => {
+  const [opened, { open, close }] = useDisclosure(false);
+  const { connect, connectors } = useConnect();
+
+  return (
+    <Box>
+      <Group justify="flex-end" w="100%" mt="xl">
+        <Button
+          onClick={open}
+          variant="light"
+          size="md"
+          leftSection={<IconExclamationCircle />}
+        >
+          Connect Wallet
+        </Button>
+      </Group>
+      <Modal opened={opened} onClose={close} centered title="Connect Wallet">
+        <Stack>
+          {[...connectors]?.reverse()?.map((connector) => (
+            <Button
+              key={connector.uid}
+              onClick={() => {
+                close();
+                connect({ connector });
+              }}
+            >
+              {connector.name}
+            </Button>
+          ))}
+        </Stack>
+      </Modal>
     </Box>
   );
 };
