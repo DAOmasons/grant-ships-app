@@ -14,7 +14,6 @@ import { ShipsCardUI } from '../../types/ui';
 import { useMemo } from 'react';
 import { MainSection, PageTitle } from '../../layout/Sections';
 import { formatBigIntPercentage } from '../../utils/helpers';
-import { formatEther } from 'viem';
 import { CondensedChoiceData } from '../../pages/Vote';
 import { getContestVoters } from '../../queries/getVoters';
 import { VoteCard } from './VoteCard';
