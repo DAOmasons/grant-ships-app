@@ -49,7 +49,9 @@ export const ConfirmationPanel = ({
   const totalPercent = useMemo(
     () =>
       form.values.ships.reduce((acc, curr) => {
-        return Number((acc + Number(curr.shipPerc.toFixed(2))).toFixed(2));
+        return Number(
+          (acc + Number((curr?.shipPerc || 0).toFixed(2))).toFixed(2)
+        );
       }, 0),
     [form.values]
   );
