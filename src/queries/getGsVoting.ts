@@ -113,20 +113,47 @@ const getVoteTokenUserData = async ({
   };
 };
 
-export const getGsVoting = async ({
+export const fetchGsVoting = async ({
   contestId,
   userAddress,
 }: {
   contestId: Address;
-  userAddress: Address;
+  userAddress: string | undefined;
 }): Promise<VoteData> => {
-  if (!contestId || !userAddress) {
+  if (!contestId && !userAddress) {
     return {
       contest: null,
       userVotes: null,
       userTokenData: null,
     };
   }
+
+  if (!userAddress) {
+    const { getGsVoting } = getBuiltGraphSDK();
+    const contestRes = await getGsVoting({ id: contestId });
+    const currentContest = contestRes?.GrantShipsVoting?.[0];
+
+    if (!currentContest) {
+      return {
+        contest: null,
+        userVotes: null,
+        userTokenData: null,
+      };
+    }
+
+    return {
+      contest:
+        ({
+          ...currentContest,
+          choices: handleShipIds(
+            currentContest.choices as RawChoice[]
+          ) as (RawChoice & { shipId: string })[],
+        } as GsVoting) || null,
+      userVotes: null,
+      userTokenData: null,
+    };
+  }
+
   const { getGsVoting, getUserVotes } = getBuiltGraphSDK();
 
   const contestRes = await getGsVoting({ id: contestId });

@@ -4,8 +4,7 @@ import { GameManager, getGameManger } from '../queries/getGameManger';
 import { useAccount } from 'wagmi';
 import { UserData, getUserData } from '../queries/getUserData';
 import { ADDR } from '../constants/addresses';
-import { VoteData, getGsVoting } from '../queries/getGsVoting';
-import { Address } from 'viem';
+import { VoteData, fetchGsVoting } from '../queries/getGsVoting';
 
 type GlobalStateContext = {
   gameManager?: GameManager;
@@ -70,11 +69,10 @@ export const GlobalStateProvider = ({
   } = useQuery({
     queryKey: ['gsVoting', ADDR.VOTE_CONTEST, address],
     queryFn: () =>
-      getGsVoting({
+      fetchGsVoting({
         contestId: ADDR.VOTE_CONTEST,
-        userAddress: address as Address,
+        userAddress: address as string | undefined,
       }),
-    enabled: !!address,
   });
 
   return (

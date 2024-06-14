@@ -109,7 +109,7 @@ export const ShipVotingPanel = ({
           choicesAddress={contest?.contest?.choicesModule_id}
         />
       )}
-      {shipChoiceId && (
+      {shipChoiceId && isConnected && (
         <VotingFooter
           form={form}
           index={index}
