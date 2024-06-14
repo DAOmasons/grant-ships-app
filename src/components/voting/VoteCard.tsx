@@ -12,10 +12,11 @@ import { CondensedChoiceData } from '../../pages/Vote';
 import { GsVoter } from '../../queries/getVoters';
 import { useMemo } from 'react';
 import { AddressAvatar } from '../AddressAvatar';
-import { Address, formatEther } from 'viem';
+import { Address } from 'viem';
 import { formatBigIntPercentage } from '../../utils/helpers';
 import { IconChevronDown, IconChevronUp } from '@tabler/icons-react';
 import classes from '../feed/FeedStyles.module.css';
+import { formatBalance } from '../../types/common';
 
 export const VoteCard = ({
   voter,
@@ -91,6 +92,7 @@ const ShipChoiceVoteBar = ({
   tokenSymbol?: string;
   didVote?: boolean;
 }) => {
+  const voteAmountDisplay = formatBalance(voteAmount);
   const votePercentage = formatBigIntPercentage(voteAmount, totalVotes);
   return (
     <Box mb="md">
@@ -104,8 +106,7 @@ const ShipChoiceVoteBar = ({
             mb={2}
           />
           <Text fz="xs">
-            {votePercentage}% Voted ({formatEther(voteAmount)}){' '}
-            {tokenSymbol || ''}
+            {votePercentage}% Voted ({voteAmountDisplay}) {tokenSymbol || ''}
           </Text>
         </Box>
       </Group>

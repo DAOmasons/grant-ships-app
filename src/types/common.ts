@@ -1,5 +1,7 @@
 // Arbitrary JSON type to ensure that non-JSON serializable types are not used
 
+import { formatEther } from 'viem';
+
 export type Json =
   | string
   | number
@@ -93,3 +95,8 @@ export enum VotingStage {
   Finalized,
   Unknown,
 }
+
+export const formatBalance = (balance?: bigint) => {
+  if (!balance || typeof balance !== 'bigint') return 0;
+  return Number(Number(formatEther(balance)).toFixed(2));
+};

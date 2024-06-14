@@ -14,11 +14,11 @@ import { ShipsCardUI } from '../../types/ui';
 import { useMemo } from 'react';
 import { MainSection, PageTitle } from '../../layout/Sections';
 import { formatBigIntPercentage } from '../../utils/helpers';
-import { formatEther } from 'viem';
 import { CondensedChoiceData } from '../../pages/Vote';
 import { getContestVoters } from '../../queries/getVoters';
 import { VoteCard } from './VoteCard';
 import { useQuery } from '@tanstack/react-query';
+import { formatBalance } from '../../types/common';
 
 export const VoteResultsPanel = ({ ships }: { ships: ShipsCardUI[] }) => {
   const { contest, userVotes, tokenData } = useVoting();
@@ -94,7 +94,8 @@ export const VoteResultsPanel = ({ ships }: { ships: ShipsCardUI[] }) => {
                     totals?.totalUserVotes
                   )
                 : '0';
-              const tokenAmount = formatEther(BigInt(ship.vote?.amount || 0));
+
+              const tokenAmount = formatBalance(BigInt(ship.vote?.amount || 0));
 
               return (
                 <Box key={`total_v_${ship.id}`}>
@@ -116,7 +117,7 @@ export const VoteResultsPanel = ({ ships }: { ships: ShipsCardUI[] }) => {
               <Text fz="sm" component="span" fw={600}>
                 Total:{' '}
               </Text>
-              {formatEther(totals?.totalUserVotes || 0n)}{' '}
+              {formatBalance(totals?.totalUserVotes || 0n)}{' '}
               {tokenData.tokenSymbol}
             </Text>
           </Stack>
@@ -132,7 +133,8 @@ export const VoteResultsPanel = ({ ships }: { ships: ShipsCardUI[] }) => {
                   totals?.totalVotes
                 )
               : '0';
-            const tokenAmount = formatEther(BigInt(ship.choice?.voteTally));
+            const tokenAmount = formatBalance(BigInt(ship.choice?.voteTally));
+
             return (
               <Box key={`total_v_${ship.id}`}>
                 <Group gap="xs" mb="sm">
@@ -152,7 +154,7 @@ export const VoteResultsPanel = ({ ships }: { ships: ShipsCardUI[] }) => {
             <Text fz="sm" component="span" fw={600}>
               Total:{' '}
             </Text>
-            {formatEther(totals?.totalVotes || 0n)} {tokenData.tokenSymbol}
+            {formatBalance(totals?.totalVotes || 0n)} {tokenData.tokenSymbol}
           </Text>
         </Stack>
       </Flex>
