@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import classes from '../pages/PageStyles.module.css';
 import { useGameManager } from '../hooks/useGameMangers';
 import { ContestStatus, GameStatus, VotingStage } from '../types/common';
-import { ReactNode } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { useMobile } from '../hooks/useBreakpoint';
 import { useVoting } from '../hooks/useVoting';
 import { secondsToLongDate } from '../utils/time';
@@ -211,26 +211,7 @@ export const Banner = () => {
   if (voteIsActive) {
     return (
       <BannerBG>
-        <Innards
-          statusText="Grant Ships voting is live! "
-          ctaText="Cast your vote now."
-          ctaButton={
-            <Button component={Link} to="/vote" size={isMobile ? 'xs' : 'sm'}>
-              Vote Now
-            </Button>
-          }
-          infoBtn={
-            <Button
-              component="a"
-              href="https://rules.grantships.fun/how-to-play/as-a-dao-mem.html"
-              variant="transparent"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              What am I voting on?
-            </Button>
-          }
-        />
+        <VoteCountdown />
       </BannerBG>
     );
   }
@@ -320,19 +301,83 @@ export const Innards = ({
           <Text fz={fz} fw={700} c="white" mr={8}>
             {statusText}
           </Text>
-          <Text fz={fz} fw={700} c="white">
+          <Text fz={fz} fw={400} c="white">
             {ctaText}
           </Text>
         </>
       ) : (
-        <Text fz={fz} fw={700} c="white" mr={8}>
-          {statusText} {ctaText}
-        </Text>
+        <Group>
+          <Text fz={fz} fw={700} c="white">
+            {statusText}
+          </Text>
+          <Text fz={fz} fw={400} c="white">
+            {ctaText}
+          </Text>
+        </Group>
       )}
       <Group mt={isMobile ? 8 : 'md'} gap={isMobile ? 4 : 'md'}>
         {ctaButton}
         {infoBtn}
       </Group>
     </>
+  );
+};
+
+const VoteCountdown = () => {
+  const { contest } = useVoting();
+  const [timeLeft, setTimeLeft] = useState<string | null>(null);
+  const isMobile = useMobile();
+
+  useEffect(() => {
+    const postTime = (futureDate: Date, onComplete: () => void) => {
+      const now = new Date().getTime();
+
+      const distance = futureDate.getTime() - now;
+
+      if (distance < 0) {
+        onComplete();
+      } else {
+        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const hours = Math.floor((distance / (1000 * 60 * 60)) % 24);
+        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        setTimeLeft(`${days}d ${hours}h ${minutes}m ${seconds}s`);
+      }
+    };
+
+    if (contest?.endTime) {
+      const futureDate = new Date(contest.endTime * 1000);
+
+      postTime(futureDate, () => setTimeLeft(null));
+
+      const interval = setInterval(() => {
+        postTime(futureDate, () => setTimeLeft(null));
+      }, 1000);
+
+      return () => clearInterval(interval);
+    }
+  }, [contest]);
+  return (
+    <Innards
+      statusText="Voting is live! "
+      ctaText={timeLeft ? `Vote Ends in ${timeLeft}` : ''}
+      ctaButton={
+        <Button component={Link} to="/vote" size={isMobile ? 'xs' : 'sm'}>
+          Vote Now
+        </Button>
+      }
+      infoBtn={
+        <Button
+          component="a"
+          href="https://rules.grantships.fun/how-to-play/as-a-dao-mem.html"
+          variant="transparent"
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          What am I voting on?
+        </Button>
+      }
+    />
   );
 };
