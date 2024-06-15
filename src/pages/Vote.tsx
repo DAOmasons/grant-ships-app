@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { MainSection, PageTitle } from '../layout/Sections';
 import {
+  ActionIcon,
   Box,
   Button,
   Flex,
@@ -10,6 +11,7 @@ import {
   Stack,
   Stepper,
   Text,
+  Tooltip,
   useMantineTheme,
 } from '@mantine/core';
 import { useQuery } from '@tanstack/react-query';
@@ -37,7 +39,7 @@ import { PreVoting } from '../components/voting/PreVoting';
 import { useGameManager } from '../hooks/useGameMangers';
 import Logo from '../assets/Logo.svg?react';
 
-import { IconExclamationCircle } from '@tabler/icons-react';
+import { IconExclamationCircle, IconEye } from '@tabler/icons-react';
 import { DashGrant } from '../resolvers/grantResolvers';
 import { useAccount } from 'wagmi';
 
@@ -77,7 +79,7 @@ export const Vote = () => {
     queryKey: ['ships-page'],
     queryFn: bigVoteQuery,
   });
-
+  const [seeResults, setSeeResults] = useState(false);
   const { userVotes, votingStage, contestStatus } = useVoting();
   const { currentRound } = useGameManager();
 
@@ -111,16 +113,24 @@ export const Vote = () => {
     return <AppAlert title="No Ships Found" description="No ships found" />;
   }
 
-  if (hasVotes || votingStage >= VotingStage.Closed) {
-    return <VoteResultsPanel ships={ships} />;
+  if (hasVotes || votingStage >= VotingStage.Closed || seeResults) {
+    return (
+      <VoteResultsPanel
+        ships={ships}
+        isPeeking={seeResults}
+        setSeeResults={setSeeResults}
+      />
+    );
   }
 
-  return <VotingOpen ships={ships} />;
+  return <VotingOpen ships={ships} setSeeResults={setSeeResults} />;
 };
 
 const VotingOpen = ({
   ships,
+  setSeeResults,
 }: {
+  setSeeResults: (value: boolean) => void;
   ships: {
     grants: DashGrant[] | null;
     recentRecord: PostedRecord | null;
@@ -194,16 +204,25 @@ const VotingOpen = ({
           {isConnected && <VoteAffix formValues={form.values} />}
 
           <PageTitle title="Vote" />
-          <Button
-            variant="light"
-            pos="absolute"
-            top={0}
-            right={0}
-            rightSection={<IconExclamationCircle size={20} />}
-            onClick={() => setModalOpen(true)}
-          >
-            Help
-          </Button>
+          <Group pos="absolute" top={0} right={0} gap={'sm'}>
+            <Tooltip label="See Results">
+              <ActionIcon
+                variant="light"
+                h={36}
+                w={36}
+                onClick={() => setSeeResults(true)}
+              >
+                <IconEye size={20} />
+              </ActionIcon>
+            </Tooltip>
+            <Button
+              variant="light"
+              rightSection={<IconExclamationCircle size={20} />}
+              onClick={() => setModalOpen(true)}
+            >
+              Help
+            </Button>
+          </Group>
           <Stepper
             active={step}
             maw={600}

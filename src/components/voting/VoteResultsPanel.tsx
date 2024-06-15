@@ -1,4 +1,5 @@
 import {
+  ActionIcon,
   Avatar,
   Box,
   Divider,
@@ -19,8 +20,17 @@ import { getContestVoters } from '../../queries/getVoters';
 import { VoteCard } from './VoteCard';
 import { useQuery } from '@tanstack/react-query';
 import { formatBalance } from '../../types/common';
+import { IconArrowNarrowLeft } from '@tabler/icons-react';
 
-export const VoteResultsPanel = ({ ships }: { ships: ShipsCardUI[] }) => {
+export const VoteResultsPanel = ({
+  ships,
+  isPeeking,
+  setSeeResults,
+}: {
+  ships: ShipsCardUI[];
+  isPeeking: boolean;
+  setSeeResults: (see: boolean) => void;
+}) => {
   const { contest, userVotes, tokenData } = useVoting();
 
   const theme = useMantineTheme();
@@ -77,7 +87,18 @@ export const VoteResultsPanel = ({ ships }: { ships: ShipsCardUI[] }) => {
 
   return (
     <MainSection maw={850}>
-      <PageTitle title="Vote" />
+      {isPeeking ? (
+        <Group w="100%" mb="lg">
+          <ActionIcon variant="subtle" onClick={() => setSeeResults(false)}>
+            <IconArrowNarrowLeft />
+          </ActionIcon>
+          <Text fz={20} fw={500}>
+            See Portfolios
+          </Text>
+        </Group>
+      ) : (
+        <PageTitle title="Vote" />
+      )}
       <Text fz={32} fw={600} mt="xl">
         {hasUserVoted ? 'Your vote has been submitted!' : 'Voting is Complete!'}
       </Text>
