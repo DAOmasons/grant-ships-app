@@ -153,6 +153,8 @@ const VotingOpen = ({
     validateInputOnBlur: true,
   });
 
+  const { votingStage } = useVoting();
+
   const [step, setStep] = useState(0);
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -205,16 +207,18 @@ const VotingOpen = ({
 
           <PageTitle title="Vote" />
           <Group pos="absolute" top={0} right={0} gap={'sm'}>
-            <Tooltip label="See Results">
-              <ActionIcon
-                variant="light"
-                h={36}
-                w={36}
-                onClick={() => setSeeResults(true)}
-              >
-                <IconEye size={20} />
-              </ActionIcon>
-            </Tooltip>
+            {votingStage === VotingStage.Active && (
+              <Tooltip label="See Results">
+                <ActionIcon
+                  variant="light"
+                  h={36}
+                  w={36}
+                  onClick={() => setSeeResults(true)}
+                >
+                  <IconEye size={20} />
+                </ActionIcon>
+              </Tooltip>
+            )}
             <Button
               variant="light"
               rightSection={<IconExclamationCircle size={20} />}

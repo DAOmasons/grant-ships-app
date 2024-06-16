@@ -100,7 +100,11 @@ export const VoteResultsPanel = ({
         <PageTitle title="Vote" />
       )}
       <Text fz={32} fw={600} mt="xl">
-        {hasUserVoted ? 'Your vote has been submitted!' : 'Voting is Complete!'}
+        {hasUserVoted
+          ? 'Your vote has been submitted!'
+          : isPeeking
+            ? 'Voting Results so far'
+            : 'Voting is Complete!'}
       </Text>
       <Flex w="100%" justify="space-between" wrap="wrap" mt={40}>
         {hasUserVoted && (
