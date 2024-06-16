@@ -36,12 +36,14 @@ export const VoteResultsPanel = ({
   const theme = useMantineTheme();
 
   const consolidated = useMemo(() => {
-    if (!ships || !userVotes || !contest) return [];
+    if (!ships || !contest) return [];
 
     return ships.map((ship) => {
       const shipChoice = contest?.choices.find((c) => c.shipId === ship.id);
 
-      const userVote = userVotes.find((v) => v.choice_id === shipChoice?.id);
+      const userVote = userVotes
+        ? userVotes.find((v) => v.choice_id === shipChoice?.id)
+        : null;
 
       return { ...ship, vote: userVote, choice: shipChoice };
     });
@@ -100,7 +102,11 @@ export const VoteResultsPanel = ({
         <PageTitle title="Vote" />
       )}
       <Text fz={32} fw={600} mt="xl">
-        {hasUserVoted ? 'Your vote has been submitted!' : 'Voting is Complete!'}
+        {hasUserVoted
+          ? 'Your vote has been submitted!'
+          : isPeeking
+            ? 'Voting Results so far'
+            : 'Voting is Complete!'}
       </Text>
       <Flex w="100%" justify="space-between" wrap="wrap" mt={40}>
         {hasUserVoted && (
