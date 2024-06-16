@@ -36,12 +36,14 @@ export const VoteResultsPanel = ({
   const theme = useMantineTheme();
 
   const consolidated = useMemo(() => {
-    if (!ships || !userVotes || !contest) return [];
+    if (!ships || !contest) return [];
 
     return ships.map((ship) => {
       const shipChoice = contest?.choices.find((c) => c.shipId === ship.id);
 
-      const userVote = userVotes.find((v) => v.choice_id === shipChoice?.id);
+      const userVote = userVotes
+        ? userVotes.find((v) => v.choice_id === shipChoice?.id)
+        : null;
 
       return { ...ship, vote: userVote, choice: shipChoice };
     });
