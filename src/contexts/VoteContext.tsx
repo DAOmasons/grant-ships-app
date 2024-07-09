@@ -34,7 +34,7 @@ export const VoteProvider = ({
     error: votesError,
     refetch: refetchVotes,
   } = useQuery({
-    queryKey: ['gsVoting', ADDR.VOTE_CONTEST, address],
+    queryKey: ['gsVoting', contestAddress, address],
     queryFn: () =>
       fetchGsVoting({
         contestId: contestAddress,

@@ -113,24 +113,25 @@ const getVoteTokenUserData = async ({
     });
 
     if (isSBTVoting) {
-      console.log('isSBTVoting', isSBTVoting);
-      console.log('pointModuleAddress', pointsModuleAddress);
-      console.log('userAddress', userAddress);
       const pointsContract = getContract({
         address: pointsModuleAddress as Address,
         abi: SBTBalancePoints,
         client: publicClient,
       });
 
-      const [userPoints, tokenName, tokenSymbol] = await Promise.all([
-        pointsContract.read.getPoints([userAddress]),
-        tokenContract.read.name(),
-        tokenContract.read.symbol(),
-      ]);
+      const [userPoints, totalUserPoints, tokenName, tokenSymbol] =
+        await Promise.all([
+          pointsContract.read.getPoints([userAddress]),
+          tokenContract.read.balanceOf([userAddress]),
+          tokenContract.read.name(),
+          tokenContract.read.symbol(),
+        ]);
+
+      console.log('userPoints', userPoints);
 
       return {
         userPoints: userPoints as bigint,
-        totalUserPoints: null,
+        totalUserPoints: totalUserPoints as bigint,
         tokenName: tokenName as string,
         tokenSymbol: tokenSymbol as string,
       };
@@ -201,11 +202,6 @@ export const fetchGsVoting = async ({
       userVotes: null,
       userTokenData: null,
     };
-  }
-
-  if (contestId === ADDR.SBT_VOTE_CONTEST) {
-    console.log('contestId', contestId);
-    console.log('userAddress', userAddress);
   }
 
   const { getGsVoting, getUserVotes } = getBuiltGraphSDK();

@@ -104,7 +104,7 @@ export const VoteResultsPanel = ({
       ) : (
         <>
           <PageTitle title="Vote" />
-          <Link to="/dao-vote" />
+          {!isHistory && <Link to="/dao-vote">See previous DAO Vote </Link>}
         </>
       )}
       <Text fz={32} fw={600} mt="xl">

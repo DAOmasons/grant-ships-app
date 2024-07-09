@@ -16,7 +16,12 @@ import { VotingFormValues } from '../../pages/Vote';
 import { useVoting } from '../../hooks/useVoting';
 import { VotingStage } from '../../types/common';
 import { TxButton } from '../TxButton';
-import { encodeAbiParameters, formatEther, parseAbiParameters } from 'viem';
+import {
+  Address,
+  encodeAbiParameters,
+  formatEther,
+  parseAbiParameters,
+} from 'viem';
 import { pinJSONToIPFS } from '../../utils/ipfs/pin';
 import { notifications } from '@mantine/notifications';
 import { useTx } from '../../hooks/useTx';
@@ -131,17 +136,11 @@ export const ConfirmationPanel = ({
 
             const perc = ship.shipPerc || 0;
 
-            console.log('perc', perc);
-
             const percToInt = parseFloat((perc * 1e6).toFixed());
-
-            console.log('percToInt', percToInt);
 
             const tokenAmount =
               (userTokenData.totalUserTokenBalance * BigInt(percToInt)) /
               BigInt(100 * 1e6);
-
-            console.log('tokenAmount', tokenAmount);
 
             const pinRes = await pinJSONToIPFS({
               voteReason: ship.shipComment,
@@ -199,7 +198,7 @@ export const ConfirmationPanel = ({
         },
         writeContractParams: {
           abi: ContestABI,
-          address: ADDR.VOTE_CONTEST,
+          address: contest.id as Address,
           functionName: 'batchVote',
           args: [choiceIds, tokenAmounts, metadataBytes, tokenSum],
         },
