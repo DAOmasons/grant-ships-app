@@ -378,7 +378,7 @@ const InfoModalContent = ({ closeModal }: { closeModal: () => void }) => {
           Welcome!
         </Text>
         <Text fz="sm" c={theme.colors.dark[2]}>
-          We are excited to have you here for the first "Gaming on Arbitrum"
+          We are excited to have you here for the "Gaming on Arbitrum" Community
           Voting Round
         </Text>
       </Box>
