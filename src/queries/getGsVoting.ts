@@ -128,8 +128,6 @@ const getVoteTokenUserData = async ({
           tokenContract.read.symbol(),
         ]);
 
-      console.log('userPoints', userPoints);
-
       return {
         userPoints: userPoints as bigint,
         totalUserPoints: totalUserPoints as bigint,

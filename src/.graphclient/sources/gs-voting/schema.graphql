@@ -638,7 +638,7 @@ columns and relationships of "FactoryEventsSummary"
 """
 type FactoryEventsSummary {
   address: String!
-  admins: _text!
+  admins: [String!]!
   contestBuiltCount: numeric!
   contestCloneCount: numeric!
   contestTemplateCount: numeric!
@@ -656,7 +656,7 @@ input FactoryEventsSummary_bool_exp {
   _not: FactoryEventsSummary_bool_exp
   _or: [FactoryEventsSummary_bool_exp!]
   address: String_comparison_exp
-  admins: _text_comparison_exp
+  admins: String_array_comparison_exp
   contestBuiltCount: numeric_comparison_exp
   contestCloneCount: numeric_comparison_exp
   contestTemplateCount: numeric_comparison_exp
@@ -716,7 +716,7 @@ input FactoryEventsSummary_stream_cursor_input {
 """Initial value of the column from where the streaming should start"""
 input FactoryEventsSummary_stream_cursor_value_input {
   address: String
-  admins: _text
+  admins: [String!]
   contestBuiltCount: numeric
   contestCloneCount: numeric
   contestTemplateCount: numeric
@@ -1030,7 +1030,7 @@ type HatsPoster {
     """filter the rows returned"""
     where: EventPost_bool_exp
   ): [EventPost!]!
-  hatIds: _numeric!
+  hatIds: [numeric!]!
   hatsAddress: String!
   id: String!
   """An array relationship"""
@@ -1057,7 +1057,7 @@ input HatsPoster_bool_exp {
   _or: [HatsPoster_bool_exp!]
   db_write_timestamp: timestamp_comparison_exp
   eventPosts: EventPost_bool_exp
-  hatIds: _numeric_comparison_exp
+  hatIds: numeric_array_comparison_exp
   hatsAddress: String_comparison_exp
   id: String_comparison_exp
   record: Record_bool_exp
@@ -1100,7 +1100,7 @@ input HatsPoster_stream_cursor_input {
 """Initial value of the column from where the streaming should start"""
 input HatsPoster_stream_cursor_value_input {
   db_write_timestamp: timestamp
-  hatIds: _numeric
+  hatIds: [numeric!]
   hatsAddress: String
   id: String
 }
@@ -2040,6 +2040,25 @@ input StemModule_stream_cursor_value_input {
 """
 Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'.
 """
+input String_array_comparison_exp {
+  """is the array contained in the given array value"""
+  _contained_in: [String!]
+  """does the array contain the given value"""
+  _contains: [String!]
+  _eq: [String!]
+  _gt: [String!]
+  _gte: [String!]
+  _in: [[String!]!]
+  _is_null: Boolean
+  _lt: [String!]
+  _lte: [String!]
+  _neq: [String!]
+  _nin: [[String!]!]
+}
+
+"""
+Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'.
+"""
 input String_comparison_exp {
   _eq: String
   _gt: String
@@ -2135,40 +2154,6 @@ input TVParams_stream_cursor_value_input {
   db_write_timestamp: timestamp
   id: String
   voteDuration: numeric
-}
-
-scalar _numeric
-
-"""
-Boolean expression to compare columns of type "_numeric". All fields are combined with logical 'AND'.
-"""
-input _numeric_comparison_exp {
-  _eq: _numeric
-  _gt: _numeric
-  _gte: _numeric
-  _in: [_numeric!]
-  _is_null: Boolean
-  _lt: _numeric
-  _lte: _numeric
-  _neq: _numeric
-  _nin: [_numeric!]
-}
-
-scalar _text
-
-"""
-Boolean expression to compare columns of type "_text". All fields are combined with logical 'AND'.
-"""
-input _text_comparison_exp {
-  _eq: _text
-  _gt: _text
-  _gte: _text
-  _in: [_text!]
-  _is_null: Boolean
-  _lt: _text
-  _lte: _text
-  _neq: _text
-  _nin: [_text!]
 }
 
 """
@@ -2884,6 +2869,25 @@ input json_comparison_exp {
 }
 
 scalar numeric
+
+"""
+Boolean expression to compare columns of type "numeric". All fields are combined with logical 'AND'.
+"""
+input numeric_array_comparison_exp {
+  """is the array contained in the given array value"""
+  _contained_in: [numeric!]
+  """does the array contain the given value"""
+  _contains: [numeric!]
+  _eq: [numeric!]
+  _gt: [numeric!]
+  _gte: [numeric!]
+  _in: [[numeric!]!]
+  _is_null: Boolean
+  _lt: [numeric!]
+  _lte: [numeric!]
+  _neq: [numeric!]
+  _nin: [[numeric!]!]
+}
 
 """
 Boolean expression to compare columns of type "numeric". All fields are combined with logical 'AND'.
