@@ -21,6 +21,7 @@ import { VoteCard } from './VoteCard';
 import { useQuery } from '@tanstack/react-query';
 import { formatBalance } from '../../types/common';
 import { IconArrowNarrowLeft } from '@tabler/icons-react';
+import { Link } from 'react-router-dom';
 
 export const VoteResultsPanel = ({
   ships,
@@ -101,7 +102,10 @@ export const VoteResultsPanel = ({
           </Text>
         </Group>
       ) : (
-        <PageTitle title="Vote" />
+        <>
+          <PageTitle title="Vote" />
+          <Link to="/dao-vote" />
+        </>
       )}
       <Text fz={32} fw={600} mt="xl">
         {hasUserVoted

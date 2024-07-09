@@ -39,7 +39,11 @@ import { PreVoting } from '../components/voting/PreVoting';
 import { useGameManager } from '../hooks/useGameMangers';
 import Logo from '../assets/Logo.svg?react';
 
-import { IconExclamationCircle, IconEye } from '@tabler/icons-react';
+import {
+  IconExclamationCircle,
+  IconEye,
+  IconHistory,
+} from '@tabler/icons-react';
 import { DashGrant } from '../resolvers/grantResolvers';
 import { useAccount } from 'wagmi';
 import { Link } from 'react-router-dom';
@@ -88,8 +92,6 @@ export const Vote = ({ isHistory }: { isHistory?: boolean }) => {
     return <LoadingSkeleton />;
   }
 
-  console.log('contest', contest);
-
   if (error) {
     return (
       <AppAlert
@@ -115,10 +117,6 @@ export const Vote = ({ isHistory }: { isHistory?: boolean }) => {
   if (!ships) {
     return <AppAlert title="No Ships Found" description="No ships found" />;
   }
-
-  console.log('hasVotes', hasVotes);
-  console.log('votingStage', votingStage);
-  console.log('seeResults', seeResults);
 
   if (hasVotes || votingStage >= VotingStage.Closed || seeResults) {
     return (
@@ -226,6 +224,19 @@ const VotingOpen = ({
             See Previous Vote
           </Text>
           <Group pos="absolute" top={0} right={0} gap={'sm'}>
+            {!isHistory && (
+              <Tooltip label="See past Arbitrum DAO vote">
+                <ActionIcon
+                  variant="light"
+                  h={36}
+                  w={36}
+                  component={Link}
+                  to="/dao-vote"
+                >
+                  <IconHistory size={20} />
+                </ActionIcon>
+              </Tooltip>
+            )}
             {votingStage === VotingStage.Active && (
               <Tooltip label="See Results">
                 <ActionIcon

@@ -15,7 +15,7 @@ import { ShipOpDashboard } from './pages/ShipOpDashboard';
 import { MyProjects } from './pages/MyProjects';
 import { DevPanel } from './pages/DevPanel';
 import { Vote } from './pages/Vote';
-import { VoteContext, VoteProvider } from './contexts/VoteContext';
+import { VoteProvider } from './contexts/VoteContext';
 import { ADDR } from './constants/addresses';
 
 export const ClientRoutes = () => {
@@ -69,7 +69,7 @@ export const ClientRoutes = () => {
             contestAddress={ADDR.VOTE_CONTEST}
             key={ADDR.VOTE_CONTEST}
           >
-            <Vote />
+            <Vote isHistory />
           </VoteProvider>
         }
       />
