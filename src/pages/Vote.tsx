@@ -87,6 +87,9 @@ export const Vote = () => {
     return <LoadingSkeleton />;
   }
 
+  console.log('currentRound', currentRound);
+  console.log('contestStatus', contestStatus);
+
   if (error) {
     return (
       <AppAlert
@@ -112,6 +115,10 @@ export const Vote = () => {
   if (!ships) {
     return <AppAlert title="No Ships Found" description="No ships found" />;
   }
+
+  console.log('hasVotes', hasVotes);
+  console.log('votingStage', votingStage);
+  console.log('seeResults', seeResults);
 
   if (hasVotes || votingStage >= VotingStage.Closed || seeResults) {
     return (

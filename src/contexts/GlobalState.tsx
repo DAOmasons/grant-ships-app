@@ -72,26 +72,10 @@ export const GlobalStateProvider = ({
     queryKey: ['gsVoting', ADDR.VOTE_CONTEST, address],
     queryFn: () =>
       fetchGsVoting({
-        contestId: ADDR.VOTE_CONTEST,
-        userAddress: address as string | undefined,
-      }),
-  });
-
-  const {
-    data: gsSBTVotes,
-    isLoading: isLoadingSBTVotes,
-    error: sbtVotesError,
-    refetch: refetchSBTVotes,
-  } = useQuery({
-    queryKey: ['gsSBTVoting', ADDR.VOTE_CONTEST, address],
-    queryFn: () =>
-      fetchGsVoting({
         contestId: ADDR.SBT_VOTE_CONTEST,
         userAddress: address as string | undefined,
       }),
   });
-
-  console.log('gsSbtVotes', gsSBTVotes);
 
   return (
     <GlobalContext.Provider

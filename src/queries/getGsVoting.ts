@@ -212,7 +212,6 @@ export const fetchGsVoting = async ({
 
   const contestRes = await getGsVoting({ id: contestId });
 
-  console.log('contestRes', contestRes);
   const voterRes = await getUserVotes({ contestId, voterAddress: userAddress });
   const currentContest = contestRes?.GrantShipsVoting?.[0];
 

@@ -12,7 +12,11 @@ export const useVoting = () => {
     const nowInSeconds = Math.floor(Date.now() / 1000);
 
     // isNotActive, and not set yet
-    if (!gsContest) {
+    if (
+      !gsContest ||
+      (!gsContest.isVotingActive &&
+        Number(gsContest.contest.contestStatus) < ContestStatus.Finalized)
+    ) {
       return VotingStage.None;
     }
     // isActive, but before start time
