@@ -40,6 +40,7 @@ export type GsVoting = Pick<
   | 'voteTokenAddress'
   | 'votingCheckpoint'
   | 'isVotingActive'
+  | 'isSBTVoting'
 > & {
   contest: Pick<
     Contest,
