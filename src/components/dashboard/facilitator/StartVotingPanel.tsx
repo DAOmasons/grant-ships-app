@@ -7,8 +7,14 @@ import { useTx } from '../../../hooks/useTx';
 import { useVoting } from '../../../hooks/useVoting';
 import { notifications } from '@mantine/notifications';
 import { Address } from 'viem';
+import { secondsToLongDate, secondsToLongDateTime } from '../../../utils/time';
 
-export const StartVotingPanel = () => {
+export const StartVotingPanel = ({
+  gameStatusNumber,
+}: {
+  gameStatusNumber: number;
+}) => {
+  const isComplete = gameStatusNumber > 8;
   const { contest, refetchGsVotes } = useVoting();
 
   const { tx } = useTx();
@@ -61,6 +67,23 @@ export const StartVotingPanel = () => {
       },
     });
   };
+
+  if (isComplete) {
+    return (
+      <Box>
+        <Text mb="md">Voting period has been initiated</Text>
+
+        <Text fz="sm" mb="sm">
+          Vote Start:{' '}
+          {contest?.startTime ? secondsToLongDateTime(contest.startTime) : '--'}
+        </Text>
+        <Text fz="sm" mb="sm">
+          Vote End:{' '}
+          {contest?.endTime ? secondsToLongDateTime(contest.endTime) : '--'}
+        </Text>
+      </Box>
+    );
+  }
 
   return (
     <Box>

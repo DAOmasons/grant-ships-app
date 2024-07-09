@@ -16,6 +16,8 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  _numeric: any;
+  _text: any;
   contract_type: any;
   entity_type: any;
   event_type: any;
@@ -572,7 +574,7 @@ export type EventPost_variance_order_by = {
 /** columns and relationships of "FactoryEventsSummary" */
 export type FactoryEventsSummary = {
   address: Scalars['String'];
-  admins: Array<Scalars['String']>;
+  admins: Scalars['_text'];
   contestBuiltCount: Scalars['numeric'];
   contestCloneCount: Scalars['numeric'];
   contestTemplateCount: Scalars['numeric'];
@@ -588,7 +590,7 @@ export type FactoryEventsSummary_bool_exp = {
   _not?: InputMaybe<FactoryEventsSummary_bool_exp>;
   _or?: InputMaybe<Array<FactoryEventsSummary_bool_exp>>;
   address?: InputMaybe<String_comparison_exp>;
-  admins?: InputMaybe<String_array_comparison_exp>;
+  admins?: InputMaybe<_text_comparison_exp>;
   contestBuiltCount?: InputMaybe<numeric_comparison_exp>;
   contestCloneCount?: InputMaybe<numeric_comparison_exp>;
   contestTemplateCount?: InputMaybe<numeric_comparison_exp>;
@@ -643,7 +645,7 @@ export type FactoryEventsSummary_stream_cursor_input = {
 /** Initial value of the column from where the streaming should start */
 export type FactoryEventsSummary_stream_cursor_value_input = {
   address?: InputMaybe<Scalars['String']>;
-  admins?: InputMaybe<Array<Scalars['String']>>;
+  admins?: InputMaybe<Scalars['_text']>;
   contestBuiltCount?: InputMaybe<Scalars['numeric']>;
   contestCloneCount?: InputMaybe<Scalars['numeric']>;
   contestTemplateCount?: InputMaybe<Scalars['numeric']>;
@@ -727,6 +729,7 @@ export type GrantShipsVoting = {
   hatId: Scalars['numeric'];
   hatsAddress: Scalars['String'];
   id: Scalars['String'];
+  isSBTVoting: Scalars['Boolean'];
   isVotingActive: Scalars['Boolean'];
   startTime?: Maybe<Scalars['numeric']>;
   totalVotes: Scalars['numeric'];
@@ -770,6 +773,7 @@ export type GrantShipsVoting_bool_exp = {
   hatId?: InputMaybe<numeric_comparison_exp>;
   hatsAddress?: InputMaybe<String_comparison_exp>;
   id?: InputMaybe<String_comparison_exp>;
+  isSBTVoting?: InputMaybe<Boolean_comparison_exp>;
   isVotingActive?: InputMaybe<Boolean_comparison_exp>;
   startTime?: InputMaybe<numeric_comparison_exp>;
   totalVotes?: InputMaybe<numeric_comparison_exp>;
@@ -789,6 +793,7 @@ export type GrantShipsVoting_order_by = {
   hatId?: InputMaybe<order_by>;
   hatsAddress?: InputMaybe<order_by>;
   id?: InputMaybe<order_by>;
+  isSBTVoting?: InputMaybe<order_by>;
   isVotingActive?: InputMaybe<order_by>;
   startTime?: InputMaybe<order_by>;
   totalVotes?: InputMaybe<order_by>;
@@ -812,6 +817,8 @@ export type GrantShipsVoting_select_column =
   | 'hatsAddress'
   /** column name */
   | 'id'
+  /** column name */
+  | 'isSBTVoting'
   /** column name */
   | 'isVotingActive'
   /** column name */
@@ -841,6 +848,7 @@ export type GrantShipsVoting_stream_cursor_value_input = {
   hatId?: InputMaybe<Scalars['numeric']>;
   hatsAddress?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['String']>;
+  isSBTVoting?: InputMaybe<Scalars['Boolean']>;
   isVotingActive?: InputMaybe<Scalars['Boolean']>;
   startTime?: InputMaybe<Scalars['numeric']>;
   totalVotes?: InputMaybe<Scalars['numeric']>;
@@ -908,7 +916,7 @@ export type HatsPoster = {
   db_write_timestamp?: Maybe<Scalars['timestamp']>;
   /** An array relationship */
   eventPosts: Array<EventPost>;
-  hatIds: Array<Scalars['numeric']>;
+  hatIds: Scalars['_numeric'];
   hatsAddress: Scalars['String'];
   id: Scalars['String'];
   /** An array relationship */
@@ -942,7 +950,7 @@ export type HatsPoster_bool_exp = {
   _or?: InputMaybe<Array<HatsPoster_bool_exp>>;
   db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
   eventPosts?: InputMaybe<EventPost_bool_exp>;
-  hatIds?: InputMaybe<numeric_array_comparison_exp>;
+  hatIds?: InputMaybe<_numeric_comparison_exp>;
   hatsAddress?: InputMaybe<String_comparison_exp>;
   id?: InputMaybe<String_comparison_exp>;
   record?: InputMaybe<Record_bool_exp>;
@@ -980,7 +988,7 @@ export type HatsPoster_stream_cursor_input = {
 /** Initial value of the column from where the streaming should start */
 export type HatsPoster_stream_cursor_value_input = {
   db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
-  hatIds?: InputMaybe<Array<Scalars['numeric']>>;
+  hatIds?: InputMaybe<Scalars['_numeric']>;
   hatsAddress?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['String']>;
 };
@@ -1285,6 +1293,54 @@ export type Record_var_samp_order_by = {
 export type Record_variance_order_by = {
   hatId?: InputMaybe<order_by>;
   mdProtocol?: InputMaybe<order_by>;
+};
+
+/** columns and relationships of "SBTBalParams" */
+export type SBTBalParams = {
+  db_write_timestamp?: Maybe<Scalars['timestamp']>;
+  id: Scalars['String'];
+  voteTokenAddress: Scalars['String'];
+};
+
+/** Boolean expression to filter rows from the table "SBTBalParams". All fields are combined with a logical 'AND'. */
+export type SBTBalParams_bool_exp = {
+  _and?: InputMaybe<Array<SBTBalParams_bool_exp>>;
+  _not?: InputMaybe<SBTBalParams_bool_exp>;
+  _or?: InputMaybe<Array<SBTBalParams_bool_exp>>;
+  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
+  id?: InputMaybe<String_comparison_exp>;
+  voteTokenAddress?: InputMaybe<String_comparison_exp>;
+};
+
+/** Ordering options when selecting data from "SBTBalParams". */
+export type SBTBalParams_order_by = {
+  db_write_timestamp?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  voteTokenAddress?: InputMaybe<order_by>;
+};
+
+/** select columns of table "SBTBalParams" */
+export type SBTBalParams_select_column =
+  /** column name */
+  | 'db_write_timestamp'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'voteTokenAddress';
+
+/** Streaming cursor of the table "SBTBalParams" */
+export type SBTBalParams_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: SBTBalParams_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type SBTBalParams_stream_cursor_value_input = {
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
+  id?: InputMaybe<Scalars['String']>;
+  voteTokenAddress?: InputMaybe<Scalars['String']>;
 };
 
 /** columns and relationships of "ShipChoice" */
@@ -1738,23 +1794,6 @@ export type StemModule_stream_cursor_value_input = {
 };
 
 /** Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'. */
-export type String_array_comparison_exp = {
-  /** is the array contained in the given array value */
-  _contained_in?: InputMaybe<Array<Scalars['String']>>;
-  /** does the array contain the given value */
-  _contains?: InputMaybe<Array<Scalars['String']>>;
-  _eq?: InputMaybe<Array<Scalars['String']>>;
-  _gt?: InputMaybe<Array<Scalars['String']>>;
-  _gte?: InputMaybe<Array<Scalars['String']>>;
-  _in?: InputMaybe<Array<Array<Scalars['String']>>>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
-  _lt?: InputMaybe<Array<Scalars['String']>>;
-  _lte?: InputMaybe<Array<Scalars['String']>>;
-  _neq?: InputMaybe<Array<Scalars['String']>>;
-  _nin?: InputMaybe<Array<Array<Scalars['String']>>>;
-};
-
-/** Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'. */
 export type String_comparison_exp = {
   _eq?: InputMaybe<Scalars['String']>;
   _gt?: InputMaybe<Scalars['String']>;
@@ -1833,6 +1872,32 @@ export type TVParams_stream_cursor_value_input = {
   db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
   id?: InputMaybe<Scalars['String']>;
   voteDuration?: InputMaybe<Scalars['numeric']>;
+};
+
+/** Boolean expression to compare columns of type "_numeric". All fields are combined with logical 'AND'. */
+export type _numeric_comparison_exp = {
+  _eq?: InputMaybe<Scalars['_numeric']>;
+  _gt?: InputMaybe<Scalars['_numeric']>;
+  _gte?: InputMaybe<Scalars['_numeric']>;
+  _in?: InputMaybe<Array<Scalars['_numeric']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _lt?: InputMaybe<Scalars['_numeric']>;
+  _lte?: InputMaybe<Scalars['_numeric']>;
+  _neq?: InputMaybe<Scalars['_numeric']>;
+  _nin?: InputMaybe<Array<Scalars['_numeric']>>;
+};
+
+/** Boolean expression to compare columns of type "_text". All fields are combined with logical 'AND'. */
+export type _text_comparison_exp = {
+  _eq?: InputMaybe<Scalars['_text']>;
+  _gt?: InputMaybe<Scalars['_text']>;
+  _gte?: InputMaybe<Scalars['_text']>;
+  _in?: InputMaybe<Array<Scalars['_text']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _lt?: InputMaybe<Scalars['_text']>;
+  _lte?: InputMaybe<Scalars['_text']>;
+  _neq?: InputMaybe<Scalars['_text']>;
+  _nin?: InputMaybe<Array<Scalars['_text']>>;
 };
 
 /** columns and relationships of "chain_metadata" */
@@ -2473,23 +2538,6 @@ export type json_comparison_exp = {
 };
 
 /** Boolean expression to compare columns of type "numeric". All fields are combined with logical 'AND'. */
-export type numeric_array_comparison_exp = {
-  /** is the array contained in the given array value */
-  _contained_in?: InputMaybe<Array<Scalars['numeric']>>;
-  /** does the array contain the given value */
-  _contains?: InputMaybe<Array<Scalars['numeric']>>;
-  _eq?: InputMaybe<Array<Scalars['numeric']>>;
-  _gt?: InputMaybe<Array<Scalars['numeric']>>;
-  _gte?: InputMaybe<Array<Scalars['numeric']>>;
-  _in?: InputMaybe<Array<Array<Scalars['numeric']>>>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
-  _lt?: InputMaybe<Array<Scalars['numeric']>>;
-  _lte?: InputMaybe<Array<Scalars['numeric']>>;
-  _neq?: InputMaybe<Array<Scalars['numeric']>>;
-  _nin?: InputMaybe<Array<Array<Scalars['numeric']>>>;
-};
-
-/** Boolean expression to compare columns of type "numeric". All fields are combined with logical 'AND'. */
 export type numeric_comparison_exp = {
   _eq?: InputMaybe<Scalars['numeric']>;
   _gt?: InputMaybe<Scalars['numeric']>;
@@ -2640,6 +2688,10 @@ export type query_root = {
   Record: Array<Record>;
   /** fetch data from the table: "Record" using primary key columns */
   Record_by_pk?: Maybe<Record>;
+  /** fetch data from the table: "SBTBalParams" */
+  SBTBalParams: Array<SBTBalParams>;
+  /** fetch data from the table: "SBTBalParams" using primary key columns */
+  SBTBalParams_by_pk?: Maybe<SBTBalParams>;
   /** fetch data from the table: "ShipChoice" */
   ShipChoice: Array<ShipChoice>;
   /** fetch data from the table: "ShipChoice" using primary key columns */
@@ -2881,6 +2933,20 @@ export type query_rootRecordArgs = {
 
 
 export type query_rootRecord_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type query_rootSBTBalParamsArgs = {
+  distinct_on?: InputMaybe<Array<SBTBalParams_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<SBTBalParams_order_by>>;
+  where?: InputMaybe<SBTBalParams_bool_exp>;
+};
+
+
+export type query_rootSBTBalParams_by_pkArgs = {
   id: Scalars['String'];
 };
 
@@ -3267,6 +3333,12 @@ export type subscription_root = {
   Record_by_pk?: Maybe<Record>;
   /** fetch data from the table in a streaming manner: "Record" */
   Record_stream: Array<Record>;
+  /** fetch data from the table: "SBTBalParams" */
+  SBTBalParams: Array<SBTBalParams>;
+  /** fetch data from the table: "SBTBalParams" using primary key columns */
+  SBTBalParams_by_pk?: Maybe<SBTBalParams>;
+  /** fetch data from the table in a streaming manner: "SBTBalParams" */
+  SBTBalParams_stream: Array<SBTBalParams>;
   /** fetch data from the table: "ShipChoice" */
   ShipChoice: Array<ShipChoice>;
   /** fetch data from the table: "ShipChoice" using primary key columns */
@@ -3632,6 +3704,27 @@ export type subscription_rootRecord_streamArgs = {
 };
 
 
+export type subscription_rootSBTBalParamsArgs = {
+  distinct_on?: InputMaybe<Array<SBTBalParams_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<SBTBalParams_order_by>>;
+  where?: InputMaybe<SBTBalParams_bool_exp>;
+};
+
+
+export type subscription_rootSBTBalParams_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type subscription_rootSBTBalParams_streamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<SBTBalParams_stream_cursor_input>>;
+  where?: InputMaybe<SBTBalParams_bool_exp>;
+};
+
+
 export type subscription_rootShipChoiceArgs = {
   distinct_on?: InputMaybe<Array<ShipChoice_select_column>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -3967,6 +4060,10 @@ export type timestamptz_comparison_exp = {
   Record: InContextSdkMethod<query_root['Record'], query_rootRecordArgs, MeshContext>,
   /** fetch data from the table: "Record" using primary key columns **/
   Record_by_pk: InContextSdkMethod<query_root['Record_by_pk'], query_rootRecord_by_pkArgs, MeshContext>,
+  /** fetch data from the table: "SBTBalParams" **/
+  SBTBalParams: InContextSdkMethod<query_root['SBTBalParams'], query_rootSBTBalParamsArgs, MeshContext>,
+  /** fetch data from the table: "SBTBalParams" using primary key columns **/
+  SBTBalParams_by_pk: InContextSdkMethod<query_root['SBTBalParams_by_pk'], query_rootSBTBalParams_by_pkArgs, MeshContext>,
   /** fetch data from the table: "ShipChoice" **/
   ShipChoice: InContextSdkMethod<query_root['ShipChoice'], query_rootShipChoiceArgs, MeshContext>,
   /** fetch data from the table: "ShipChoice" using primary key columns **/
@@ -4104,6 +4201,12 @@ export type timestamptz_comparison_exp = {
   Record_by_pk: InContextSdkMethod<subscription_root['Record_by_pk'], subscription_rootRecord_by_pkArgs, MeshContext>,
   /** fetch data from the table in a streaming manner: "Record" **/
   Record_stream: InContextSdkMethod<subscription_root['Record_stream'], subscription_rootRecord_streamArgs, MeshContext>,
+  /** fetch data from the table: "SBTBalParams" **/
+  SBTBalParams: InContextSdkMethod<subscription_root['SBTBalParams'], subscription_rootSBTBalParamsArgs, MeshContext>,
+  /** fetch data from the table: "SBTBalParams" using primary key columns **/
+  SBTBalParams_by_pk: InContextSdkMethod<subscription_root['SBTBalParams_by_pk'], subscription_rootSBTBalParams_by_pkArgs, MeshContext>,
+  /** fetch data from the table in a streaming manner: "SBTBalParams" **/
+  SBTBalParams_stream: InContextSdkMethod<subscription_root['SBTBalParams_stream'], subscription_rootSBTBalParams_streamArgs, MeshContext>,
   /** fetch data from the table: "ShipChoice" **/
   ShipChoice: InContextSdkMethod<subscription_root['ShipChoice'], subscription_rootShipChoiceArgs, MeshContext>,
   /** fetch data from the table: "ShipChoice" using primary key columns **/

@@ -12,7 +12,7 @@ export const useVoting = () => {
     const nowInSeconds = Math.floor(Date.now() / 1000);
 
     // isNotActive, and not set yet
-    if (!gsContest || !gsContest.isVotingActive) {
+    if (!gsContest) {
       return VotingStage.None;
     }
     // isActive, but before start time
@@ -31,8 +31,10 @@ export const useVoting = () => {
     if (gsContest.isVotingActive && nowInSeconds > gsContest.endTime) {
       return VotingStage.Closed;
     }
+
     // isNotActive, but after end time
-    if (!gsContest.isVotingActive && nowInSeconds > gsContest.endTime) {
+    if (Number(gsContest.contest.contestStatus) === ContestStatus.Finalized) {
+      console.log('gsContest', gsContest);
       return VotingStage.Finalized;
     }
     return VotingStage.Unknown;

@@ -95,7 +95,7 @@ export const FacilitatorDashboard = () => {
 
     // Voting Ready
     // Voting is ready to be initiated
-    if (contestStatus === ContestStatus.Voting) {
+    if (contestStatus === ContestStatus.Voting && !isVotingActive) {
       return 8;
     }
 

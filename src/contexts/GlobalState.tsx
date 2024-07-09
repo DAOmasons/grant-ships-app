@@ -16,6 +16,7 @@ type GlobalStateContext = {
   userDataError: Error | null;
   refetchUserData: () => void;
   gsVotes?: VoteData;
+  gsSBTVotes?: VoteData;
   isLoadingVotes: boolean;
   votesError: Error | null;
   refetchVotes: () => void;
@@ -31,6 +32,7 @@ export const GlobalContext = createContext<GlobalStateContext>({
   refetchUserData: () => {},
   refetchGameManager: () => {},
   gsVotes: undefined,
+  gsSBTVotes: undefined,
   isLoadingVotes: false,
   votesError: null,
   refetchVotes: () => {},
@@ -74,6 +76,22 @@ export const GlobalStateProvider = ({
         userAddress: address as string | undefined,
       }),
   });
+
+  const {
+    data: gsSBTVotes,
+    isLoading: isLoadingSBTVotes,
+    error: sbtVotesError,
+    refetch: refetchSBTVotes,
+  } = useQuery({
+    queryKey: ['gsSBTVoting', ADDR.VOTE_CONTEST, address],
+    queryFn: () =>
+      fetchGsVoting({
+        contestId: ADDR.SBT_VOTE_CONTEST,
+        userAddress: address as string | undefined,
+      }),
+  });
+
+  console.log('gsSbtVotes', gsSBTVotes);
 
   return (
     <GlobalContext.Provider
