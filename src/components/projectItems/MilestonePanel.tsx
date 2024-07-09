@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { AppAlert } from '../UnderContruction';
 import { Box, Select, Text, Timeline, useMantineTheme } from '@mantine/core';
 import { IconCheck, IconEye, IconX } from '@tabler/icons-react';
 import { GrantUI, MilestoneStatus } from '../../types/ui';
-import { toEther } from '@thirdweb-dev/react';
 import { GAME_TOKEN } from '../../constants/gameSetup';
+import { formatEther } from 'viem';
 
 export const MilestonePanel = ({ grants }: { grants: GrantUI[] }) => {
   if (grants.length === 0) {
@@ -84,7 +84,7 @@ const MilestoneDetails = ({
           <Text fw={600} component="span">
             Milestone {i + 1}
           </Text>{' '}
-          ({toEther(milestone.amount)} {GAME_TOKEN.SYMBOL})
+          ({formatEther(milestone.amount)} {GAME_TOKEN.SYMBOL})
           <Text fz="sm" mt="sm" mb="sm" opacity={0.8}>
             {milestone.description}
           </Text>
