@@ -26,7 +26,9 @@ export const VoteResultsPanel = ({
   ships,
   isPeeking,
   setSeeResults,
+  isHistory,
 }: {
+  isHistory?: boolean;
   ships: ShipsCardUI[];
   isPeeking: boolean;
   setSeeResults: (see: boolean) => void;

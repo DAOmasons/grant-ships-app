@@ -1,9 +1,9 @@
 import { useContext, useMemo } from 'react';
-import { GlobalContext } from '../contexts/GlobalState';
+import { VoteContext } from '../contexts/VoteContext';
 import { ContestStatus, VotingStage } from '../types/common';
 
 export const useVoting = () => {
-  const context = useContext(GlobalContext);
+  const context = useContext(VoteContext);
 
   const gsVotes = context.gsVotes || null;
   const gsContest = gsVotes?.contest || null;

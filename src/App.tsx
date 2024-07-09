@@ -10,6 +10,8 @@ import { BrowserRouter } from 'react-router-dom';
 import { TxProvider } from './contexts/TxContext';
 import { ClientRoutes } from './routes';
 import { GlobalStateProvider } from './contexts/GlobalState';
+import { VoteProvider } from './contexts/VoteContext';
+import { ADDR } from './constants/addresses';
 
 const queryClient = new QueryClient();
 export default function App() {

@@ -19,7 +19,7 @@ export const VoteContext = createContext<VoteContextType>({
   refetchVotes: () => {},
 });
 
-export const GlobalStateProvider = ({
+export const VoteProvider = ({
   children,
   contestAddress,
 }: {
@@ -37,19 +37,21 @@ export const GlobalStateProvider = ({
     queryKey: ['gsVoting', ADDR.VOTE_CONTEST, address],
     queryFn: () =>
       fetchGsVoting({
-        contestId: ADDR.SBT_VOTE_CONTEST,
+        contestId: contestAddress,
         userAddress: address as string | undefined,
       }),
   });
 
-  <VoteContext.Provider
-    value={{
-      gsVotes,
-      isLoadingVotes,
-      votesError,
-      refetchVotes,
-    }}
-  >
-    {children}
-  </VoteContext.Provider>;
+  return (
+    <VoteContext.Provider
+      value={{
+        gsVotes,
+        isLoadingVotes,
+        votesError,
+        refetchVotes,
+      }}
+    >
+      {children}
+    </VoteContext.Provider>
+  );
 };

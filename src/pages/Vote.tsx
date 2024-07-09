@@ -42,6 +42,7 @@ import Logo from '../assets/Logo.svg?react';
 import { IconExclamationCircle, IconEye } from '@tabler/icons-react';
 import { DashGrant } from '../resolvers/grantResolvers';
 import { useAccount } from 'wagmi';
+import { Link } from 'react-router-dom';
 
 export type VotingFormValues = z.infer<typeof votingSchema>;
 
@@ -70,7 +71,7 @@ const bigVoteQuery = async () => {
   return shipVoteData;
 };
 
-export const Vote = () => {
+export const Vote = ({ isHistory }: { isHistory?: boolean }) => {
   const {
     data: ships,
     isLoading,
@@ -80,15 +81,14 @@ export const Vote = () => {
     queryFn: bigVoteQuery,
   });
   const [seeResults, setSeeResults] = useState(false);
-  const { userVotes, votingStage, contestStatus } = useVoting();
+  const { userVotes, votingStage, contestStatus, contest } = useVoting();
   const { currentRound } = useGameManager();
 
   if (isLoading) {
     return <LoadingSkeleton />;
   }
 
-  console.log('currentRound', currentRound);
-  console.log('contestStatus', contestStatus);
+  console.log('contest', contest);
 
   if (error) {
     return (
@@ -126,17 +126,26 @@ export const Vote = () => {
         ships={ships}
         isPeeking={seeResults}
         setSeeResults={setSeeResults}
+        isHistory={isHistory}
       />
     );
   }
 
-  return <VotingOpen ships={ships} setSeeResults={setSeeResults} />;
+  return (
+    <VotingOpen
+      ships={ships}
+      setSeeResults={setSeeResults}
+      isHistory={isHistory}
+    />
+  );
 };
 
 const VotingOpen = ({
   ships,
   setSeeResults,
+  isHistory,
 }: {
+  isHistory?: boolean;
   setSeeResults: (value: boolean) => void;
   ships: {
     grants: DashGrant[] | null;
@@ -213,6 +222,9 @@ const VotingOpen = ({
           {isConnected && <VoteAffix formValues={form.values} />}
 
           <PageTitle title="Vote" />
+          <Text component={Link} to="/dao-vote">
+            See Previous Vote
+          </Text>
           <Group pos="absolute" top={0} right={0} gap={'sm'}>
             {votingStage === VotingStage.Active && (
               <Tooltip label="See Results">
