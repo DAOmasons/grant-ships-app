@@ -11,6 +11,7 @@ import { publicClient } from '../utils/config';
 import ERC20VotesPoints from '../abi/ERC20VotesPoints.json';
 import SBTBalancePoints from '../abi/SBTBalancePoints.json';
 import ERC20Votes from '../abi/Erc20Votes.json';
+import { ADDR } from '../constants/addresses';
 
 export type UserVote = Pick<
   ShipVote,
@@ -100,7 +101,6 @@ const getVoteTokenUserData = async ({
   votingCheckpoint?: string;
   isSBTVoting: boolean;
 }) => {
-  console.log('isSBTVoting', isSBTVoting);
   if (!pointsModuleAddress || !userAddress || !pointsModuleAddress) {
     return null;
   }
@@ -113,7 +113,9 @@ const getVoteTokenUserData = async ({
     });
 
     if (isSBTVoting) {
+      console.log('isSBTVoting', isSBTVoting);
       console.log('pointModuleAddress', pointsModuleAddress);
+      console.log('userAddress', userAddress);
       const pointsContract = getContract({
         address: pointsModuleAddress as Address,
         abi: SBTBalancePoints,
@@ -200,12 +202,17 @@ export const fetchGsVoting = async ({
       userTokenData: null,
     };
   }
-  console.log('contestId', contestId);
-  console.log('userAddress', userAddress);
+
+  if (contestId === ADDR.SBT_VOTE_CONTEST) {
+    console.log('contestId', contestId);
+    console.log('userAddress', userAddress);
+  }
 
   const { getGsVoting, getUserVotes } = getBuiltGraphSDK();
 
   const contestRes = await getGsVoting({ id: contestId });
+
+  console.log('contestRes', contestRes);
   const voterRes = await getUserVotes({ contestId, voterAddress: userAddress });
   const currentContest = contestRes?.GrantShipsVoting?.[0];
 
