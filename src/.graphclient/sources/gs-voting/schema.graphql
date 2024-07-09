@@ -638,7 +638,7 @@ columns and relationships of "FactoryEventsSummary"
 """
 type FactoryEventsSummary {
   address: String!
-  admins: [String!]!
+  admins: _text!
   contestBuiltCount: numeric!
   contestCloneCount: numeric!
   contestTemplateCount: numeric!
@@ -656,7 +656,7 @@ input FactoryEventsSummary_bool_exp {
   _not: FactoryEventsSummary_bool_exp
   _or: [FactoryEventsSummary_bool_exp!]
   address: String_comparison_exp
-  admins: String_array_comparison_exp
+  admins: _text_comparison_exp
   contestBuiltCount: numeric_comparison_exp
   contestCloneCount: numeric_comparison_exp
   contestTemplateCount: numeric_comparison_exp
@@ -716,7 +716,7 @@ input FactoryEventsSummary_stream_cursor_input {
 """Initial value of the column from where the streaming should start"""
 input FactoryEventsSummary_stream_cursor_value_input {
   address: String
-  admins: [String!]
+  admins: _text
   contestBuiltCount: numeric
   contestCloneCount: numeric
   contestTemplateCount: numeric
@@ -823,6 +823,7 @@ type GrantShipsVoting {
   hatId: numeric!
   hatsAddress: String!
   id: String!
+  isSBTVoting: Boolean!
   isVotingActive: Boolean!
   startTime: numeric
   totalVotes: numeric!
@@ -859,6 +860,7 @@ input GrantShipsVoting_bool_exp {
   hatId: numeric_comparison_exp
   hatsAddress: String_comparison_exp
   id: String_comparison_exp
+  isSBTVoting: Boolean_comparison_exp
   isVotingActive: Boolean_comparison_exp
   startTime: numeric_comparison_exp
   totalVotes: numeric_comparison_exp
@@ -878,6 +880,7 @@ input GrantShipsVoting_order_by {
   hatId: order_by
   hatsAddress: order_by
   id: order_by
+  isSBTVoting: order_by
   isVotingActive: order_by
   startTime: order_by
   totalVotes: order_by
@@ -903,6 +906,8 @@ enum GrantShipsVoting_select_column {
   hatsAddress
   """column name"""
   id
+  """column name"""
+  isSBTVoting
   """column name"""
   isVotingActive
   """column name"""
@@ -935,6 +940,7 @@ input GrantShipsVoting_stream_cursor_value_input {
   hatId: numeric
   hatsAddress: String
   id: String
+  isSBTVoting: Boolean
   isVotingActive: Boolean
   startTime: numeric
   totalVotes: numeric
@@ -1024,7 +1030,7 @@ type HatsPoster {
     """filter the rows returned"""
     where: EventPost_bool_exp
   ): [EventPost!]!
-  hatIds: [numeric!]!
+  hatIds: _numeric!
   hatsAddress: String!
   id: String!
   """An array relationship"""
@@ -1051,7 +1057,7 @@ input HatsPoster_bool_exp {
   _or: [HatsPoster_bool_exp!]
   db_write_timestamp: timestamp_comparison_exp
   eventPosts: EventPost_bool_exp
-  hatIds: numeric_array_comparison_exp
+  hatIds: _numeric_comparison_exp
   hatsAddress: String_comparison_exp
   id: String_comparison_exp
   record: Record_bool_exp
@@ -1094,7 +1100,7 @@ input HatsPoster_stream_cursor_input {
 """Initial value of the column from where the streaming should start"""
 input HatsPoster_stream_cursor_value_input {
   db_write_timestamp: timestamp
-  hatIds: [numeric!]
+  hatIds: _numeric
   hatsAddress: String
   id: String
 }
@@ -1450,6 +1456,63 @@ order by variance() on columns of table "Record"
 input Record_variance_order_by {
   hatId: order_by
   mdProtocol: order_by
+}
+
+"""
+columns and relationships of "SBTBalParams"
+"""
+type SBTBalParams {
+  db_write_timestamp: timestamp
+  id: String!
+  voteTokenAddress: String!
+}
+
+"""
+Boolean expression to filter rows from the table "SBTBalParams". All fields are combined with a logical 'AND'.
+"""
+input SBTBalParams_bool_exp {
+  _and: [SBTBalParams_bool_exp!]
+  _not: SBTBalParams_bool_exp
+  _or: [SBTBalParams_bool_exp!]
+  db_write_timestamp: timestamp_comparison_exp
+  id: String_comparison_exp
+  voteTokenAddress: String_comparison_exp
+}
+
+"""Ordering options when selecting data from "SBTBalParams"."""
+input SBTBalParams_order_by {
+  db_write_timestamp: order_by
+  id: order_by
+  voteTokenAddress: order_by
+}
+
+"""
+select columns of table "SBTBalParams"
+"""
+enum SBTBalParams_select_column {
+  """column name"""
+  db_write_timestamp
+  """column name"""
+  id
+  """column name"""
+  voteTokenAddress
+}
+
+"""
+Streaming cursor of the table "SBTBalParams"
+"""
+input SBTBalParams_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: SBTBalParams_stream_cursor_value_input!
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input SBTBalParams_stream_cursor_value_input {
+  db_write_timestamp: timestamp
+  id: String
+  voteTokenAddress: String
 }
 
 """
@@ -1977,25 +2040,6 @@ input StemModule_stream_cursor_value_input {
 """
 Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'.
 """
-input String_array_comparison_exp {
-  """is the array contained in the given array value"""
-  _contained_in: [String!]
-  """does the array contain the given value"""
-  _contains: [String!]
-  _eq: [String!]
-  _gt: [String!]
-  _gte: [String!]
-  _in: [[String!]!]
-  _is_null: Boolean
-  _lt: [String!]
-  _lte: [String!]
-  _neq: [String!]
-  _nin: [[String!]!]
-}
-
-"""
-Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'.
-"""
 input String_comparison_exp {
   _eq: String
   _gt: String
@@ -2091,6 +2135,40 @@ input TVParams_stream_cursor_value_input {
   db_write_timestamp: timestamp
   id: String
   voteDuration: numeric
+}
+
+scalar _numeric
+
+"""
+Boolean expression to compare columns of type "_numeric". All fields are combined with logical 'AND'.
+"""
+input _numeric_comparison_exp {
+  _eq: _numeric
+  _gt: _numeric
+  _gte: _numeric
+  _in: [_numeric!]
+  _is_null: Boolean
+  _lt: _numeric
+  _lte: _numeric
+  _neq: _numeric
+  _nin: [_numeric!]
+}
+
+scalar _text
+
+"""
+Boolean expression to compare columns of type "_text". All fields are combined with logical 'AND'.
+"""
+input _text_comparison_exp {
+  _eq: _text
+  _gt: _text
+  _gte: _text
+  _in: [_text!]
+  _is_null: Boolean
+  _lt: _text
+  _lte: _text
+  _neq: _text
+  _nin: [_text!]
 }
 
 """
@@ -2810,25 +2888,6 @@ scalar numeric
 """
 Boolean expression to compare columns of type "numeric". All fields are combined with logical 'AND'.
 """
-input numeric_array_comparison_exp {
-  """is the array contained in the given array value"""
-  _contained_in: [numeric!]
-  """does the array contain the given value"""
-  _contains: [numeric!]
-  _eq: [numeric!]
-  _gt: [numeric!]
-  _gte: [numeric!]
-  _in: [[numeric!]!]
-  _is_null: Boolean
-  _lt: [numeric!]
-  _lte: [numeric!]
-  _neq: [numeric!]
-  _nin: [[numeric!]!]
-}
-
-"""
-Boolean expression to compare columns of type "numeric". All fields are combined with logical 'AND'.
-"""
 input numeric_comparison_exp {
   _eq: numeric
   _gt: numeric
@@ -3175,6 +3234,23 @@ type query_root {
   ): [Record!]!
   """fetch data from the table: "Record" using primary key columns"""
   Record_by_pk(id: String!): Record
+  """
+  fetch data from the table: "SBTBalParams"
+  """
+  SBTBalParams(
+    """distinct select on columns"""
+    distinct_on: [SBTBalParams_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [SBTBalParams_order_by!]
+    """filter the rows returned"""
+    where: SBTBalParams_bool_exp
+  ): [SBTBalParams!]!
+  """fetch data from the table: "SBTBalParams" using primary key columns"""
+  SBTBalParams_by_pk(id: String!): SBTBalParams
   """
   fetch data from the table: "ShipChoice"
   """
@@ -3913,6 +3989,34 @@ type subscription_root {
     """filter the rows returned"""
     where: Record_bool_exp
   ): [Record!]!
+  """
+  fetch data from the table: "SBTBalParams"
+  """
+  SBTBalParams(
+    """distinct select on columns"""
+    distinct_on: [SBTBalParams_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [SBTBalParams_order_by!]
+    """filter the rows returned"""
+    where: SBTBalParams_bool_exp
+  ): [SBTBalParams!]!
+  """fetch data from the table: "SBTBalParams" using primary key columns"""
+  SBTBalParams_by_pk(id: String!): SBTBalParams
+  """
+  fetch data from the table in a streaming manner: "SBTBalParams"
+  """
+  SBTBalParams_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [SBTBalParams_stream_cursor_input]!
+    """filter the rows returned"""
+    where: SBTBalParams_bool_exp
+  ): [SBTBalParams!]!
   """
   fetch data from the table: "ShipChoice"
   """

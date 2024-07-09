@@ -22,5 +22,6 @@ query getGsVoting($id: String!) {
     voteTokenAddress
     votingCheckpoint
     isVotingActive
+    isSBTVoting
   }
 }
