@@ -2,11 +2,14 @@ import {
   Avatar,
   Box,
   Divider,
+  Flex,
   Group,
+  HoverCard,
   NumberInput,
   Progress,
   Text,
   Textarea,
+  Tooltip,
   useMantineTheme,
 } from '@mantine/core';
 
@@ -29,6 +32,7 @@ import ContestABI from '../../abi/Contest.json';
 import { ADDR } from '../../constants/addresses';
 import { useMemo } from 'react';
 import { FormValidationResult } from '@mantine/form/lib/types';
+import { IconFlame } from '@tabler/icons-react';
 
 export const ConfirmationPanel = ({
   ships,
@@ -221,6 +225,8 @@ export const ConfirmationPanel = ({
   return (
     <Box mt="md">
       {ships.map((ship, index) => {
+        const isJadeShadow =
+          ship.id === '0x6f4cf0f097144570fae9e62ce5c2e8095a5ea1d0';
         const shipPerc = form.values.ships[index].shipPerc || 0;
         const voteAmount =
           userTokenData.totalUserTokenBalance && shipPerc
@@ -235,7 +241,32 @@ export const ConfirmationPanel = ({
           <Box key={ship.id} mb="xl">
             <Group mb={'sm'}>
               <Avatar src={ship.imgUrl} alt={ship.name} size={32} />
-              <Text fz="md">{ship.name}</Text>
+              {!isJadeShadow ? (
+                <Text fz="md">{ship.name}</Text>
+              ) : (
+                <Group gap="xs">
+                  <Text fz="md">{ship.name}</Text>
+                  <HoverCard>
+                    <HoverCard.Target>
+                      <IconFlame color={theme.colors.yellow[6]} size={18} />
+                    </HoverCard.Target>
+                    <HoverCard.Dropdown>
+                      <Box maw={300}>
+                        <Text fz="sm" mb="sm">
+                          Jade Shadow's ship has crashed and is disqualified for
+                          Round 2 due to poor performance in the Arbitrum
+                          delegate voting round.
+                        </Text>
+                        <Text fz="sm">
+                          Votes for Jade Shadow are symbolic; funds will be
+                          proportionally distributed to the remaining two ships
+                          based on final vote totals.
+                        </Text>
+                      </Box>
+                    </HoverCard.Dropdown>
+                  </HoverCard>
+                </Group>
+              )}
             </Group>
             <Box ml={48}>
               <NumberInput
