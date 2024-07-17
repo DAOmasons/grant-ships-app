@@ -15,6 +15,8 @@ import { ShipOpDashboard } from './pages/ShipOpDashboard';
 import { MyProjects } from './pages/MyProjects';
 import { DevPanel } from './pages/DevPanel';
 import { Vote } from './pages/Vote';
+import { VoteProvider } from './contexts/VoteContext';
+import { ADDR } from './constants/addresses';
 
 export const ClientRoutes = () => {
   return (
@@ -35,11 +37,42 @@ export const ClientRoutes = () => {
       <Route path="ship/:id" element={<Ship />} />
       <Route path="project/:id" element={<Project />} />
       <Route path="facilitators" element={<Facilitators />} />
-      <Route path="facilitator-dashboard" element={<FacilitatorDashboard />} />
+      <Route
+        path="facilitator-dashboard"
+        element={
+          <VoteProvider
+            contestAddress={ADDR.SBT_VOTE_CONTEST}
+            key={ADDR.SBT_VOTE_CONTEST}
+          >
+            <FacilitatorDashboard />
+          </VoteProvider>
+        }
+      />
       <Route path="ship-operator-dashboard/:id" element={<ShipOpDashboard />} />
       <Route path="my-projects/:id" element={<MyProjects />} />
       <Route path="dev-panel" element={<DevPanel />} />
-      <Route path="vote" element={<Vote />} />
+      <Route
+        path="vote"
+        element={
+          <VoteProvider
+            contestAddress={ADDR.SBT_VOTE_CONTEST}
+            key={ADDR.SBT_VOTE_CONTEST}
+          >
+            <Vote />
+          </VoteProvider>
+        }
+      />
+      <Route
+        path="dao-vote"
+        element={
+          <VoteProvider
+            contestAddress={ADDR.VOTE_CONTEST}
+            key={ADDR.VOTE_CONTEST}
+          >
+            <Vote isHistory />
+          </VoteProvider>
+        }
+      />
     </Routes>
   );
 };

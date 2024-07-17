@@ -1,9 +1,9 @@
 import { useContext, useMemo } from 'react';
-import { GlobalContext } from '../contexts/GlobalState';
+import { VoteContext } from '../contexts/VoteContext';
 import { ContestStatus, VotingStage } from '../types/common';
 
 export const useVoting = () => {
-  const context = useContext(GlobalContext);
+  const context = useContext(VoteContext);
 
   const gsVotes = context.gsVotes || null;
   const gsContest = gsVotes?.contest || null;
@@ -12,7 +12,11 @@ export const useVoting = () => {
     const nowInSeconds = Math.floor(Date.now() / 1000);
 
     // isNotActive, and not set yet
-    if (!gsContest || !gsContest.isVotingActive) {
+    if (
+      !gsContest ||
+      (!gsContest.isVotingActive &&
+        Number(gsContest.contest.contestStatus) < ContestStatus.Finalized)
+    ) {
       return VotingStage.None;
     }
     // isActive, but before start time
@@ -31,8 +35,10 @@ export const useVoting = () => {
     if (gsContest.isVotingActive && nowInSeconds > gsContest.endTime) {
       return VotingStage.Closed;
     }
+
     // isNotActive, but after end time
-    if (!gsContest.isVotingActive && nowInSeconds > gsContest.endTime) {
+    if (Number(gsContest.contest.contestStatus) === ContestStatus.Finalized) {
+      console.log('gsContest', gsContest);
       return VotingStage.Finalized;
     }
     return VotingStage.Unknown;

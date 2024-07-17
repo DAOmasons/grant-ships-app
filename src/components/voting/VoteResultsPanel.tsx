@@ -21,12 +21,15 @@ import { VoteCard } from './VoteCard';
 import { useQuery } from '@tanstack/react-query';
 import { formatBalance } from '../../types/common';
 import { IconArrowNarrowLeft } from '@tabler/icons-react';
+import { Link } from 'react-router-dom';
 
 export const VoteResultsPanel = ({
   ships,
   isPeeking,
   setSeeResults,
+  isHistory,
 }: {
+  isHistory?: boolean;
   ships: ShipsCardUI[];
   isPeeking: boolean;
   setSeeResults: (see: boolean) => void;
@@ -99,7 +102,14 @@ export const VoteResultsPanel = ({
           </Text>
         </Group>
       ) : (
-        <PageTitle title="Vote" />
+        <>
+          <PageTitle title="Vote" />
+          {isHistory ? (
+            <Link to="/vote">See Community DAO Vote</Link>
+          ) : (
+            <Link to="/dao-vote">See previous DAO Vote </Link>
+          )}
+        </>
       )}
       <Text fz={32} fw={600} mt="xl">
         {hasUserVoted

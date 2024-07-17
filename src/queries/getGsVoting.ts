@@ -9,7 +9,9 @@ import {
 import { bytes32toAddress } from '../utils/helpers';
 import { publicClient } from '../utils/config';
 import ERC20VotesPoints from '../abi/ERC20VotesPoints.json';
+import SBTBalancePoints from '../abi/SBTBalancePoints.json';
 import ERC20Votes from '../abi/Erc20Votes.json';
+import { ADDR } from '../constants/addresses';
 
 export type UserVote = Pick<
   ShipVote,
@@ -23,7 +25,7 @@ export type RawChoice = Pick<
 
 type UserTokenData = {
   userPoints: bigint;
-  totalUserPoints: bigint;
+  totalUserPoints: bigint | null;
   tokenName: string;
   tokenSymbol: string;
 };
@@ -38,6 +40,7 @@ export type GsVoting = Pick<
   | 'voteTokenAddress'
   | 'votingCheckpoint'
   | 'isVotingActive'
+  | 'isSBTVoting'
 > & {
   contest: Pick<
     Contest,
@@ -75,42 +78,72 @@ const getVoteTokenUserData = async ({
   pointsModuleAddress,
   tokenAddress,
   votingCheckpoint,
+  isSBTVoting,
 }: {
   userAddress: string;
   pointsModuleAddress?: string;
   tokenAddress?: string;
   votingCheckpoint?: string;
+  isSBTVoting: boolean;
 }) => {
   if (!pointsModuleAddress || !userAddress || !pointsModuleAddress) {
     return null;
   }
 
-  const pointsContract = getContract({
-    address: pointsModuleAddress as Address,
-    abi: ERC20VotesPoints,
-    client: publicClient,
-  });
+  try {
+    const tokenContract = getContract({
+      address: tokenAddress as Address,
+      abi: ERC20Votes,
+      client: publicClient,
+    });
 
-  const tokenContract = getContract({
-    address: tokenAddress as Address,
-    abi: ERC20Votes,
-    client: publicClient,
-  });
+    if (isSBTVoting) {
+      const pointsContract = getContract({
+        address: pointsModuleAddress as Address,
+        abi: SBTBalancePoints,
+        client: publicClient,
+      });
 
-  const [userPoints, totalUserPoints, tokenName, tokenSymbol] =
-    await Promise.all([
-      pointsContract.read.getPoints([userAddress]),
-      tokenContract.read.getPastVotes([userAddress, votingCheckpoint]),
-      tokenContract.read.name(),
-      tokenContract.read.symbol(),
-    ]);
+      const [userPoints, totalUserPoints, tokenName, tokenSymbol] =
+        await Promise.all([
+          pointsContract.read.getPoints([userAddress]),
+          tokenContract.read.balanceOf([userAddress]),
+          tokenContract.read.name(),
+          tokenContract.read.symbol(),
+        ]);
 
-  return {
-    userPoints: userPoints as bigint,
-    totalUserPoints: totalUserPoints as bigint,
-    tokenName: tokenName as string,
-    tokenSymbol: tokenSymbol as string,
-  };
+      return {
+        userPoints: userPoints as bigint,
+        totalUserPoints: totalUserPoints as bigint,
+        tokenName: tokenName as string,
+        tokenSymbol: tokenSymbol as string,
+      };
+    }
+
+    const pointsContract = getContract({
+      address: pointsModuleAddress as Address,
+      abi: ERC20VotesPoints,
+      client: publicClient,
+    });
+
+    const [userPoints, totalUserPoints, tokenName, tokenSymbol] =
+      await Promise.all([
+        pointsContract.read.getPoints([userAddress]),
+        tokenContract.read.getPastVotes([userAddress, votingCheckpoint]),
+        tokenContract.read.name(),
+        tokenContract.read.symbol(),
+      ]);
+
+    return {
+      userPoints: userPoints as bigint,
+      totalUserPoints: totalUserPoints as bigint,
+      tokenName: tokenName as string,
+      tokenSymbol: tokenSymbol as string,
+    };
+  } catch (error) {
+    console.error('Error fetching user token data', error);
+    throw new Error('Error fetching user token data');
+  }
 };
 
 export const fetchGsVoting = async ({
@@ -157,6 +190,7 @@ export const fetchGsVoting = async ({
   const { getGsVoting, getUserVotes } = getBuiltGraphSDK();
 
   const contestRes = await getGsVoting({ id: contestId });
+
   const voterRes = await getUserVotes({ contestId, voterAddress: userAddress });
   const currentContest = contestRes?.GrantShipsVoting?.[0];
 
@@ -173,6 +207,7 @@ export const fetchGsVoting = async ({
     pointsModuleAddress: currentContest.contest?.pointsModule_id,
     tokenAddress: currentContest.voteTokenAddress,
     votingCheckpoint: currentContest.votingCheckpoint,
+    isSBTVoting: currentContest.isSBTVoting,
   });
 
   return {

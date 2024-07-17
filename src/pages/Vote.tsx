@@ -39,9 +39,14 @@ import { PreVoting } from '../components/voting/PreVoting';
 import { useGameManager } from '../hooks/useGameMangers';
 import Logo from '../assets/Logo.svg?react';
 
-import { IconExclamationCircle, IconEye } from '@tabler/icons-react';
+import {
+  IconExclamationCircle,
+  IconEye,
+  IconHistory,
+} from '@tabler/icons-react';
 import { DashGrant } from '../resolvers/grantResolvers';
 import { useAccount } from 'wagmi';
+import { Link } from 'react-router-dom';
 
 export type VotingFormValues = z.infer<typeof votingSchema>;
 
@@ -70,7 +75,7 @@ const bigVoteQuery = async () => {
   return shipVoteData;
 };
 
-export const Vote = () => {
+export const Vote = ({ isHistory }: { isHistory?: boolean }) => {
   const {
     data: ships,
     isLoading,
@@ -80,7 +85,7 @@ export const Vote = () => {
     queryFn: bigVoteQuery,
   });
   const [seeResults, setSeeResults] = useState(false);
-  const { userVotes, votingStage, contestStatus } = useVoting();
+  const { userVotes, votingStage, contestStatus, contest } = useVoting();
   const { currentRound } = useGameManager();
 
   if (isLoading) {
@@ -119,17 +124,26 @@ export const Vote = () => {
         ships={ships}
         isPeeking={seeResults}
         setSeeResults={setSeeResults}
+        isHistory={isHistory}
       />
     );
   }
 
-  return <VotingOpen ships={ships} setSeeResults={setSeeResults} />;
+  return (
+    <VotingOpen
+      ships={ships}
+      setSeeResults={setSeeResults}
+      isHistory={isHistory}
+    />
+  );
 };
 
 const VotingOpen = ({
   ships,
   setSeeResults,
+  isHistory,
 }: {
+  isHistory?: boolean;
   setSeeResults: (value: boolean) => void;
   ships: {
     grants: DashGrant[] | null;
@@ -206,7 +220,23 @@ const VotingOpen = ({
           {isConnected && <VoteAffix formValues={form.values} />}
 
           <PageTitle title="Vote" />
+          <Text component={Link} to="/dao-vote">
+            See Previous Vote
+          </Text>
           <Group pos="absolute" top={0} right={0} gap={'sm'}>
+            {!isHistory && (
+              <Tooltip label="See past Arbitrum DAO vote">
+                <ActionIcon
+                  variant="light"
+                  h={36}
+                  w={36}
+                  component={Link}
+                  to="/dao-vote"
+                >
+                  <IconHistory size={20} />
+                </ActionIcon>
+              </Tooltip>
+            )}
             {votingStage === VotingStage.Active && (
               <Tooltip label="See Results">
                 <ActionIcon
@@ -348,7 +378,7 @@ const InfoModalContent = ({ closeModal }: { closeModal: () => void }) => {
           Welcome!
         </Text>
         <Text fz="sm" c={theme.colors.dark[2]}>
-          We are excited to have you here for the first "Gaming on Arbitrum"
+          We are excited to have you here for the "Gaming on Arbitrum" Community
           Voting Round
         </Text>
       </Box>

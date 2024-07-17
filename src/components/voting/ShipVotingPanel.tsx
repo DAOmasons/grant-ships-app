@@ -7,6 +7,7 @@ import { useMemo } from 'react';
 import { PostedRecord } from '../../queries/getRecordsByTag';
 import { formatEther } from 'viem';
 import {
+  Alert,
   Avatar,
   Box,
   Button,
@@ -25,7 +26,7 @@ import { FacilitatorFooter } from './FacilitatorFooter';
 import { DashGrant } from '../../resolvers/grantResolvers';
 import { useAccount, useConnect } from 'wagmi';
 import { useDisclosure } from '@mantine/hooks';
-import { IconExclamationCircle } from '@tabler/icons-react';
+import { IconExclamationCircle, IconFlame } from '@tabler/icons-react';
 
 export const ShipVotingPanel = ({
   ship,
@@ -62,8 +63,26 @@ export const ShipVotingPanel = ({
       BigInt(ship.amtDistributed)
   );
 
+  const isJadeShadow = ship.id === '0x6f4cf0f097144570fae9e62ce5c2e8095a5ea1d0';
+
   return (
     <Box>
+      {isJadeShadow && (
+        <Alert
+          mb="md"
+          icon={<IconFlame size={120} />}
+          color={theme.colors.yellow[6]}
+        >
+          <Text size="sm" mb="sm">
+            Jade Shadow's ship has crashed and is disqualified for Round 2 due
+            to poor performance in the Arbitrum delegate voting round.
+          </Text>
+          <Text size="sm">
+            Votes for Jade Shadow are symbolic; funds will be proportionally
+            distributed to the remaining two ships based on final vote totals.
+          </Text>
+        </Alert>
+      )}
       <Text fz="xl" fw={600} mb="md">
         Ship Portfolio Report
       </Text>

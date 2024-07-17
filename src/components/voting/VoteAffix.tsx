@@ -14,12 +14,18 @@ import { formatEther } from 'viem';
 import { VotingWeightProgress } from './VotingWeightProgress';
 
 export const VoteAffix = ({ formValues }: { formValues: VotingFormValues }) => {
-  const { userTokenData, tokenData } = useVoting();
+  const { userTokenData, tokenData, contest } = useVoting();
   const theme = useMantineTheme();
 
   const isMobile = useMobile();
 
   const shipPercs = formValues.ships.map((s) => s.shipPerc);
+
+  const tooltipText = contest?.isSBTVoting
+    ? `${tokenData.tokenSymbol} is a community voting SBT airdropped to help review GrantShips! Your voting power is equal to the amount of ${tokenData.tokenSymbol} that you hold.`
+    : `Your voting power is equal to the amount of{' '}
+                    ${tokenData.tokenSymbol} delegated to your address before
+                    snapshot`;
 
   return (
     <Affix bottom={isMobile ? 54 : 32} right={isMobile ? 0 : 30}>
@@ -39,9 +45,7 @@ export const VoteAffix = ({ formValues }: { formValues: VotingFormValues }) => {
               label={
                 <Box w={200} p={'sm'}>
                   <Text className="ws-pre-wrap" fz="sm">
-                    Your voting power is equal to the amount of{' '}
-                    {tokenData.tokenSymbol} delegated to your address before
-                    snapshot
+                    {tooltipText}
                   </Text>
                 </Box>
               }

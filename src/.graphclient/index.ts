@@ -151,6 +151,10 @@ export type Query = {
   Record: Array<Record>;
   /** fetch data from the table: "Record" using primary key columns */
   Record_by_pk?: Maybe<Record>;
+  /** fetch data from the table: "SBTBalParams" */
+  SBTBalParams: Array<SBTBalParams>;
+  /** fetch data from the table: "SBTBalParams" using primary key columns */
+  SBTBalParams_by_pk?: Maybe<SBTBalParams>;
   /** fetch data from the table: "ShipChoice" */
   ShipChoice: Array<ShipChoice>;
   /** fetch data from the table: "ShipChoice" using primary key columns */
@@ -743,6 +747,20 @@ export type QueryRecord_by_pkArgs = {
 };
 
 
+export type QuerySBTBalParamsArgs = {
+  distinct_on?: InputMaybe<Array<SBTBalParams_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<SBTBalParams_order_by>>;
+  where?: InputMaybe<SBTBalParams_bool_exp>;
+};
+
+
+export type QuerySBTBalParams_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
 export type QueryShipChoiceArgs = {
   distinct_on?: InputMaybe<Array<ShipChoice_select_column>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -1043,6 +1061,12 @@ export type Subscription = {
   Record_by_pk?: Maybe<Record>;
   /** fetch data from the table in a streaming manner: "Record" */
   Record_stream: Array<Record>;
+  /** fetch data from the table: "SBTBalParams" */
+  SBTBalParams: Array<SBTBalParams>;
+  /** fetch data from the table: "SBTBalParams" using primary key columns */
+  SBTBalParams_by_pk?: Maybe<SBTBalParams>;
+  /** fetch data from the table in a streaming manner: "SBTBalParams" */
+  SBTBalParams_stream: Array<SBTBalParams>;
   /** fetch data from the table: "ShipChoice" */
   ShipChoice: Array<ShipChoice>;
   /** fetch data from the table: "ShipChoice" using primary key columns */
@@ -1752,6 +1776,27 @@ export type SubscriptionRecord_streamArgs = {
   batch_size: Scalars['Int'];
   cursor: Array<InputMaybe<Record_stream_cursor_input>>;
   where?: InputMaybe<Record_bool_exp>;
+};
+
+
+export type SubscriptionSBTBalParamsArgs = {
+  distinct_on?: InputMaybe<Array<SBTBalParams_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<SBTBalParams_order_by>>;
+  where?: InputMaybe<SBTBalParams_bool_exp>;
+};
+
+
+export type SubscriptionSBTBalParams_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type SubscriptionSBTBalParams_streamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<SBTBalParams_stream_cursor_input>>;
+  where?: InputMaybe<SBTBalParams_bool_exp>;
 };
 
 
@@ -5191,6 +5236,7 @@ export type GrantShipsVoting = {
   hatId: Scalars['numeric'];
   hatsAddress: Scalars['String'];
   id: Scalars['String'];
+  isSBTVoting: Scalars['Boolean'];
   isVotingActive: Scalars['Boolean'];
   startTime?: Maybe<Scalars['numeric']>;
   totalVotes: Scalars['numeric'];
@@ -5234,6 +5280,7 @@ export type GrantShipsVoting_bool_exp = {
   hatId?: InputMaybe<numeric_comparison_exp>;
   hatsAddress?: InputMaybe<String_comparison_exp>;
   id?: InputMaybe<String_comparison_exp>;
+  isSBTVoting?: InputMaybe<Boolean_comparison_exp>;
   isVotingActive?: InputMaybe<Boolean_comparison_exp>;
   startTime?: InputMaybe<numeric_comparison_exp>;
   totalVotes?: InputMaybe<numeric_comparison_exp>;
@@ -5253,6 +5300,7 @@ export type GrantShipsVoting_order_by = {
   hatId?: InputMaybe<order_by>;
   hatsAddress?: InputMaybe<order_by>;
   id?: InputMaybe<order_by>;
+  isSBTVoting?: InputMaybe<order_by>;
   isVotingActive?: InputMaybe<order_by>;
   startTime?: InputMaybe<order_by>;
   totalVotes?: InputMaybe<order_by>;
@@ -5276,6 +5324,8 @@ export type GrantShipsVoting_select_column =
   | 'hatsAddress'
   /** column name */
   | 'id'
+  /** column name */
+  | 'isSBTVoting'
   /** column name */
   | 'isVotingActive'
   /** column name */
@@ -5305,6 +5355,7 @@ export type GrantShipsVoting_stream_cursor_value_input = {
   hatId?: InputMaybe<Scalars['numeric']>;
   hatsAddress?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['String']>;
+  isSBTVoting?: InputMaybe<Scalars['Boolean']>;
   isVotingActive?: InputMaybe<Scalars['Boolean']>;
   startTime?: InputMaybe<Scalars['numeric']>;
   totalVotes?: InputMaybe<Scalars['numeric']>;
@@ -5749,6 +5800,54 @@ export type Record_var_samp_order_by = {
 export type Record_variance_order_by = {
   hatId?: InputMaybe<order_by>;
   mdProtocol?: InputMaybe<order_by>;
+};
+
+/** columns and relationships of "SBTBalParams" */
+export type SBTBalParams = {
+  db_write_timestamp?: Maybe<Scalars['timestamp']>;
+  id: Scalars['String'];
+  voteTokenAddress: Scalars['String'];
+};
+
+/** Boolean expression to filter rows from the table "SBTBalParams". All fields are combined with a logical 'AND'. */
+export type SBTBalParams_bool_exp = {
+  _and?: InputMaybe<Array<SBTBalParams_bool_exp>>;
+  _not?: InputMaybe<SBTBalParams_bool_exp>;
+  _or?: InputMaybe<Array<SBTBalParams_bool_exp>>;
+  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
+  id?: InputMaybe<String_comparison_exp>;
+  voteTokenAddress?: InputMaybe<String_comparison_exp>;
+};
+
+/** Ordering options when selecting data from "SBTBalParams". */
+export type SBTBalParams_order_by = {
+  db_write_timestamp?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  voteTokenAddress?: InputMaybe<order_by>;
+};
+
+/** select columns of table "SBTBalParams" */
+export type SBTBalParams_select_column =
+  /** column name */
+  | 'db_write_timestamp'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'voteTokenAddress';
+
+/** Streaming cursor of the table "SBTBalParams" */
+export type SBTBalParams_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: SBTBalParams_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type SBTBalParams_stream_cursor_value_input = {
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
+  id?: InputMaybe<Scalars['String']>;
+  voteTokenAddress?: InputMaybe<Scalars['String']>;
 };
 
 /** columns and relationships of "ShipChoice" */
@@ -7465,6 +7564,12 @@ export type ResolversTypes = ResolversObject<{
   Record_var_pop_order_by: Record_var_pop_order_by;
   Record_var_samp_order_by: Record_var_samp_order_by;
   Record_variance_order_by: Record_variance_order_by;
+  SBTBalParams: ResolverTypeWrapper<SBTBalParams>;
+  SBTBalParams_bool_exp: SBTBalParams_bool_exp;
+  SBTBalParams_order_by: SBTBalParams_order_by;
+  SBTBalParams_select_column: SBTBalParams_select_column;
+  SBTBalParams_stream_cursor_input: SBTBalParams_stream_cursor_input;
+  SBTBalParams_stream_cursor_value_input: SBTBalParams_stream_cursor_value_input;
   ShipChoice: ResolverTypeWrapper<ShipChoice>;
   ShipChoice_aggregate_order_by: ShipChoice_aggregate_order_by;
   ShipChoice_avg_order_by: ShipChoice_avg_order_by;
@@ -7736,6 +7841,11 @@ export type ResolversParentTypes = ResolversObject<{
   Record_var_pop_order_by: Record_var_pop_order_by;
   Record_var_samp_order_by: Record_var_samp_order_by;
   Record_variance_order_by: Record_variance_order_by;
+  SBTBalParams: SBTBalParams;
+  SBTBalParams_bool_exp: SBTBalParams_bool_exp;
+  SBTBalParams_order_by: SBTBalParams_order_by;
+  SBTBalParams_stream_cursor_input: SBTBalParams_stream_cursor_input;
+  SBTBalParams_stream_cursor_value_input: SBTBalParams_stream_cursor_value_input;
   ShipChoice: ShipChoice;
   ShipChoice_aggregate_order_by: ShipChoice_aggregate_order_by;
   ShipChoice_avg_order_by: ShipChoice_avg_order_by;
@@ -7935,6 +8045,8 @@ export type QueryResolvers<ContextType = MeshContext, ParentType extends Resolve
   ModuleTemplate_by_pk?: Resolver<Maybe<ResolversTypes['ModuleTemplate']>, ParentType, ContextType, RequireFields<QueryModuleTemplate_by_pkArgs, 'id'>>;
   Record?: Resolver<Array<ResolversTypes['Record']>, ParentType, ContextType, Partial<QueryRecordArgs>>;
   Record_by_pk?: Resolver<Maybe<ResolversTypes['Record']>, ParentType, ContextType, RequireFields<QueryRecord_by_pkArgs, 'id'>>;
+  SBTBalParams?: Resolver<Array<ResolversTypes['SBTBalParams']>, ParentType, ContextType, Partial<QuerySBTBalParamsArgs>>;
+  SBTBalParams_by_pk?: Resolver<Maybe<ResolversTypes['SBTBalParams']>, ParentType, ContextType, RequireFields<QuerySBTBalParams_by_pkArgs, 'id'>>;
   ShipChoice?: Resolver<Array<ResolversTypes['ShipChoice']>, ParentType, ContextType, Partial<QueryShipChoiceArgs>>;
   ShipChoice_by_pk?: Resolver<Maybe<ResolversTypes['ShipChoice']>, ParentType, ContextType, RequireFields<QueryShipChoice_by_pkArgs, 'id'>>;
   ShipVote?: Resolver<Array<ResolversTypes['ShipVote']>, ParentType, ContextType, Partial<QueryShipVoteArgs>>;
@@ -8042,6 +8154,9 @@ export type SubscriptionResolvers<ContextType = MeshContext, ParentType extends 
   Record?: SubscriptionResolver<Array<ResolversTypes['Record']>, "Record", ParentType, ContextType, Partial<SubscriptionRecordArgs>>;
   Record_by_pk?: SubscriptionResolver<Maybe<ResolversTypes['Record']>, "Record_by_pk", ParentType, ContextType, RequireFields<SubscriptionRecord_by_pkArgs, 'id'>>;
   Record_stream?: SubscriptionResolver<Array<ResolversTypes['Record']>, "Record_stream", ParentType, ContextType, RequireFields<SubscriptionRecord_streamArgs, 'batch_size' | 'cursor'>>;
+  SBTBalParams?: SubscriptionResolver<Array<ResolversTypes['SBTBalParams']>, "SBTBalParams", ParentType, ContextType, Partial<SubscriptionSBTBalParamsArgs>>;
+  SBTBalParams_by_pk?: SubscriptionResolver<Maybe<ResolversTypes['SBTBalParams']>, "SBTBalParams_by_pk", ParentType, ContextType, RequireFields<SubscriptionSBTBalParams_by_pkArgs, 'id'>>;
+  SBTBalParams_stream?: SubscriptionResolver<Array<ResolversTypes['SBTBalParams']>, "SBTBalParams_stream", ParentType, ContextType, RequireFields<SubscriptionSBTBalParams_streamArgs, 'batch_size' | 'cursor'>>;
   ShipChoice?: SubscriptionResolver<Array<ResolversTypes['ShipChoice']>, "ShipChoice", ParentType, ContextType, Partial<SubscriptionShipChoiceArgs>>;
   ShipChoice_by_pk?: SubscriptionResolver<Maybe<ResolversTypes['ShipChoice']>, "ShipChoice_by_pk", ParentType, ContextType, RequireFields<SubscriptionShipChoice_by_pkArgs, 'id'>>;
   ShipChoice_stream?: SubscriptionResolver<Array<ResolversTypes['ShipChoice']>, "ShipChoice_stream", ParentType, ContextType, RequireFields<SubscriptionShipChoice_streamArgs, 'batch_size' | 'cursor'>>;
@@ -8450,6 +8565,7 @@ export type GrantShipsVotingResolvers<ContextType = MeshContext, ParentType exte
   hatId?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
   hatsAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  isSBTVoting?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   isVotingActive?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   startTime?: Resolver<Maybe<ResolversTypes['numeric']>, ParentType, ContextType>;
   totalVotes?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
@@ -8506,6 +8622,13 @@ export type RecordResolvers<ContextType = MeshContext, ParentType extends Resolv
   mdProtocol?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
   nonce?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   tag?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type SBTBalParamsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['SBTBalParams'] = ResolversParentTypes['SBTBalParams']> = ResolversObject<{
+  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  voteTokenAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -8722,6 +8845,7 @@ export type Resolvers<ContextType = MeshContext> = ResolversObject<{
   LocalLog?: LocalLogResolvers<ContextType>;
   ModuleTemplate?: ModuleTemplateResolvers<ContextType>;
   Record?: RecordResolvers<ContextType>;
+  SBTBalParams?: SBTBalParamsResolvers<ContextType>;
   ShipChoice?: ShipChoiceResolvers<ContextType>;
   ShipVote?: ShipVoteResolvers<ContextType>;
   StemModule?: StemModuleResolvers<ContextType>;
@@ -8809,7 +8933,7 @@ const grantShipsHandler = new GraphqlHandler({
             });
 const gsVotingHandler = new GraphqlHandler({
               name: "gs-voting",
-              config: {"endpoint":"https://indexer.bigdevenergy.link/6b18ba8/v1/graphql"},
+              config: {"endpoint":"https://indexer.bigdevenergy.link/d18cda9/v1/graphql"},
               baseDir,
               cache,
               pubsub,
@@ -9215,7 +9339,7 @@ export type getGsVotingQueryVariables = Exact<{
 
 
 export type getGsVotingQuery = { GrantShipsVoting: Array<(
-    Pick<GrantShipsVoting, 'id' | 'endTime' | 'startTime' | 'totalVotes' | 'voteDuration' | 'voteTokenAddress' | 'votingCheckpoint' | 'isVotingActive'>
+    Pick<GrantShipsVoting, 'id' | 'endTime' | 'startTime' | 'totalVotes' | 'voteDuration' | 'voteTokenAddress' | 'votingCheckpoint' | 'isVotingActive' | 'isSBTVoting'>
     & { choices: Array<Pick<ShipChoice, 'active' | 'id' | 'mdPointer' | 'mdProtocol' | 'voteTally'>>, contest?: Maybe<Pick<Contest, 'votesModule_id' | 'choicesModule_id' | 'pointsModule_id' | 'executionModule_id' | 'contestStatus'>> }
   )> };
 
@@ -9728,6 +9852,7 @@ export const getGsVotingDocument = gql`
     voteTokenAddress
     votingCheckpoint
     isVotingActive
+    isSBTVoting
   }
 }
     ` as unknown as DocumentNode<getGsVotingQuery, getGsVotingQueryVariables>;

@@ -3,8 +3,6 @@ import { createContext } from 'react';
 import { GameManager, getGameManger } from '../queries/getGameManger';
 import { useAccount } from 'wagmi';
 import { UserData, getUserData } from '../queries/getUserData';
-import { ADDR } from '../constants/addresses';
-import { VoteData, fetchGsVoting } from '../queries/getGsVoting';
 
 type GlobalStateContext = {
   gameManager?: GameManager;
@@ -15,10 +13,6 @@ type GlobalStateContext = {
   isLoadingUserData: boolean;
   userDataError: Error | null;
   refetchUserData: () => void;
-  gsVotes?: VoteData;
-  isLoadingVotes: boolean;
-  votesError: Error | null;
-  refetchVotes: () => void;
 };
 
 export const GlobalContext = createContext<GlobalStateContext>({
@@ -30,10 +24,6 @@ export const GlobalContext = createContext<GlobalStateContext>({
   userDataError: null,
   refetchUserData: () => {},
   refetchGameManager: () => {},
-  gsVotes: undefined,
-  isLoadingVotes: false,
-  votesError: null,
-  refetchVotes: () => {},
 });
 
 export const GlobalStateProvider = ({
@@ -61,20 +51,6 @@ export const GlobalStateProvider = ({
     enabled: !!address,
   });
 
-  const {
-    data: gsVotes,
-    isLoading: isLoadingVotes,
-    error: votesError,
-    refetch: refetchVotes,
-  } = useQuery({
-    queryKey: ['gsVoting', ADDR.VOTE_CONTEST, address],
-    queryFn: () =>
-      fetchGsVoting({
-        contestId: ADDR.VOTE_CONTEST,
-        userAddress: address as string | undefined,
-      }),
-  });
-
   return (
     <GlobalContext.Provider
       value={{
@@ -86,10 +62,6 @@ export const GlobalStateProvider = ({
         userDataError: userStateError,
         refetchUserData: refetchUserState,
         refetchGameManager,
-        gsVotes,
-        isLoadingVotes,
-        votesError,
-        refetchVotes,
       }}
     >
       {children}

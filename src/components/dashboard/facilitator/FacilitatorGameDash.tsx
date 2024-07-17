@@ -14,6 +14,7 @@ import { StopGamePanel } from './StopGamePanel';
 import { GameManager } from '../../../queries/getGameManger';
 import { PopulateChoicesPanel } from './PopulateChoicesPanel';
 import { StartVotingPanel } from './StartVotingPanel';
+import { CompleteVotePanel } from './CompleteVotePanel';
 
 export const FacilitatorGameDash = ({
   isLoading,
@@ -40,6 +41,8 @@ export const FacilitatorGameDash = ({
     ) {
       return null;
     }
+
+    console.log('gameStatusNumber', gameStatusNumber);
 
     return [
       {
@@ -113,19 +116,18 @@ export const FacilitatorGameDash = ({
         content: <PopulateChoicesPanel ships={shipData.approvedShips} />,
       },
       {
-        title: 'Initiate Voting',
+        title: 'Initiate DAO Voting',
         description:
           gameStatusNumber > 8
-            ? 'Voting parameters initiated'
-            : 'Voting parameters not initiated',
-        content: <StartVotingPanel />,
+            ? 'DAO Vote started'
+            : 'DAO Voting has not started',
+        content: <StartVotingPanel gameStatusNumber={gameStatusNumber} />,
       },
       {
-        title: 'Start Voting',
+        title: 'Finalize Voting',
         description:
-          gameStatusNumber > 9
-            ? 'Voting round is active'
-            : 'Voting has not started',
+          gameStatusNumber > 9 ? 'DAO vote is complete' : 'DAO vote is ongoing',
+        content: <CompleteVotePanel />,
       },
       {
         title: 'End Voting',
