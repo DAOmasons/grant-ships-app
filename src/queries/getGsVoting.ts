@@ -73,22 +73,6 @@ export const handleShipIds = (
   });
 };
 
-const getBalanceOf = async (tokenAddress: string, userAddress: string) => {
-  const tokenContract = getContract({
-    address: tokenAddress as Address,
-    abi: ERC20Votes,
-    client: publicClient,
-  });
-
-  try {
-    const balance = await tokenContract.read.balanceOf([userAddress]);
-    return balance as bigint;
-  } catch (error) {
-    console.error('Error fetching user token balance', error);
-    throw new Error('Error fetching user token balance');
-  }
-};
-
 const getVoteTokenUserData = async ({
   userAddress,
   pointsModuleAddress,
