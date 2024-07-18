@@ -64,7 +64,7 @@ export type ShipPageUI = {
   amtAvailable: string;
   totalRoundAmount: string;
   balance: string;
-  shipContractAddress: string;
+  shipContractAddress?: string | null;
   members: string[];
   details: {
     thesis?: string;

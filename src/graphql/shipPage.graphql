@@ -1,5 +1,0 @@
-query shipPageQuery($id: ID!) {
-  grantShip(id: $id) {
-    ...BaseShipData
-  }
-}

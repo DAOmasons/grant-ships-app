@@ -20,8 +20,8 @@ import { getMesh, ExecuteMeshFn, SubscribeMeshFn, MeshContext as BaseMeshContext
 import { MeshStore, FsStoreStorageAdapter } from '@graphql-mesh/store';
 import { path as pathModule } from '@graphql-mesh/cross-helpers';
 import { ImportFn } from '@graphql-mesh/types';
-import type { GrantShipsTypes } from './sources/grant-ships/types';
 import type { GsVotingTypes } from './sources/gs-voting/types';
+import type { GrantShipsTypes } from './sources/grant-ships/types';
 import * as importedModule$0 from "./sources/grant-ships/introspectionSchema";
 import * as importedModule$1 from "./sources/gs-voting/introspectionSchema";
 export type Maybe<T> = T | null;
@@ -2442,6 +2442,9 @@ export type Grant = {
 
 /** columns and relationships of "GrantShip" */
 export type GrantShip = {
+  /** An object relationship */
+  alloProfileMembers?: Maybe<ProfileMemberGroup>;
+  alloProfileMembers_id?: Maybe<Scalars['String']>;
   anchor: Scalars['String'];
   /** An object relationship */
   applicationReviewReason?: Maybe<RawMetadata>;
@@ -2539,6 +2542,8 @@ export type GrantShip_bool_exp = {
   _and?: InputMaybe<Array<GrantShip_bool_exp>>;
   _not?: InputMaybe<GrantShip_bool_exp>;
   _or?: InputMaybe<Array<GrantShip_bool_exp>>;
+  alloProfileMembers?: InputMaybe<ProfileMemberGroup_bool_exp>;
+  alloProfileMembers_id?: InputMaybe<String_comparison_exp>;
   anchor?: InputMaybe<String_comparison_exp>;
   applicationReviewReason?: InputMaybe<RawMetadata_bool_exp>;
   applicationReviewReason_id?: InputMaybe<String_comparison_exp>;
@@ -2586,6 +2591,7 @@ export type GrantShip_bool_exp = {
 
 /** order by max() on columns of table "GrantShip" */
 export type GrantShip_max_order_by = {
+  alloProfileMembers_id?: InputMaybe<order_by>;
   anchor?: InputMaybe<order_by>;
   applicationReviewReason_id?: InputMaybe<order_by>;
   applicationSubmittedTime?: InputMaybe<order_by>;
@@ -2616,6 +2622,7 @@ export type GrantShip_max_order_by = {
 
 /** order by min() on columns of table "GrantShip" */
 export type GrantShip_min_order_by = {
+  alloProfileMembers_id?: InputMaybe<order_by>;
   anchor?: InputMaybe<order_by>;
   applicationReviewReason_id?: InputMaybe<order_by>;
   applicationSubmittedTime?: InputMaybe<order_by>;
@@ -2646,6 +2653,8 @@ export type GrantShip_min_order_by = {
 
 /** Ordering options when selecting data from "GrantShip". */
 export type GrantShip_order_by = {
+  alloProfileMembers?: InputMaybe<ProfileMemberGroup_order_by>;
+  alloProfileMembers_id?: InputMaybe<order_by>;
   anchor?: InputMaybe<order_by>;
   applicationReviewReason?: InputMaybe<RawMetadata_order_by>;
   applicationReviewReason_id?: InputMaybe<order_by>;
@@ -2693,6 +2702,8 @@ export type GrantShip_order_by = {
 
 /** select columns of table "GrantShip" */
 export type GrantShip_select_column =
+  /** column name */
+  | 'alloProfileMembers_id'
   /** column name */
   | 'anchor'
   /** column name */
@@ -2831,6 +2842,7 @@ export type GrantShip_stream_cursor_input = {
 
 /** Initial value of the column from where the streaming should start */
 export type GrantShip_stream_cursor_value_input = {
+  alloProfileMembers_id?: InputMaybe<Scalars['String']>;
   anchor?: InputMaybe<Scalars['String']>;
   applicationReviewReason_id?: InputMaybe<Scalars['String']>;
   applicationSubmittedTime?: InputMaybe<Scalars['Int']>;
@@ -7136,6 +7148,8 @@ export type GrantResolvers<ContextType = MeshContext, ParentType extends Resolve
 }>;
 
 export type GrantShipResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['GrantShip'] = ResolversParentTypes['GrantShip']> = ResolversObject<{
+  alloProfileMembers?: Resolver<Maybe<ResolversTypes['ProfileMemberGroup']>, ParentType, ContextType>;
+  alloProfileMembers_id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   anchor?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   applicationReviewReason?: Resolver<Maybe<ResolversTypes['RawMetadata']>, ParentType, ContextType>;
   applicationReviewReason_id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -7783,6 +7797,12 @@ const merger = new(StitchingMerger as any)({
           return printWithCache(ProjectPageQueryDocument);
         },
         location: 'ProjectPageQueryDocument.graphql'
+      },{
+        document: ShipPageQueryDocument,
+        get rawSDL() {
+          return printWithCache(ShipPageQueryDocument);
+        },
+        location: 'ShipPageQueryDocument.graphql'
       }
     ];
     },
@@ -7821,6 +7841,11 @@ export function getBuiltGraphSDK<TGlobalContext = any, TOperationContext = any>(
   const sdkRequester$ = getBuiltGraphClient().then(({ sdkRequesterFactory }) => sdkRequesterFactory(globalContext));
   return getSdk<TOperationContext, TGlobalContext>((...args) => sdkRequester$.then(sdkRequester => sdkRequester(...args)));
 }
+export type BaseShipDataFragment = (
+  Pick<GrantShip, 'id' | 'name' | 'status' | 'shipContractAddress' | 'shipApplicationBytesData' | 'owner' | 'balance' | 'totalAvailableFunds' | 'totalAllocated' | 'totalDistributed' | 'totalRoundAmount'>
+  & { profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>>, alloProfileMembers?: Maybe<Pick<ProfileMemberGroup, 'addresses'>> }
+);
+
 export type FacShipDataFragment = (
   Pick<GrantShip, 'id' | 'name' | 'status' | 'applicationSubmittedTime' | 'shipApplicationBytesData'>
   & { profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
@@ -7929,6 +7954,37 @@ export type projectPageQueryQuery = { Project: Array<(
     & { metadata?: Maybe<Pick<RawMetadata, 'pointer'>>, members?: Maybe<Pick<ProfileMemberGroup, 'addresses'>> }
   )> };
 
+export type shipPageQueryQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type shipPageQueryQuery = { GrantShip: Array<(
+    Pick<GrantShip, 'id' | 'name' | 'status' | 'shipContractAddress' | 'shipApplicationBytesData' | 'owner' | 'balance' | 'totalAvailableFunds' | 'totalAllocated' | 'totalDistributed' | 'totalRoundAmount'>
+    & { profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>>, alloProfileMembers?: Maybe<Pick<ProfileMemberGroup, 'addresses'>> }
+  )> };
+
+export const BaseShipDataFragmentDoc = gql`
+    fragment BaseShipData on GrantShip {
+  id
+  name
+  status
+  shipContractAddress
+  shipApplicationBytesData
+  profileMetadata {
+    pointer
+  }
+  owner
+  alloProfileMembers {
+    addresses
+  }
+  balance
+  totalAvailableFunds
+  totalAllocated
+  totalDistributed
+  totalRoundAmount
+}
+    ` as unknown as DocumentNode<BaseShipDataFragment, unknown>;
 export const FacShipDataFragmentDoc = gql`
     fragment FacShipData on GrantShip {
   id
@@ -8089,6 +8145,14 @@ export const projectPageQueryDocument = gql`
   }
 }
     ` as unknown as DocumentNode<projectPageQueryQuery, projectPageQueryQueryVariables>;
+export const shipPageQueryDocument = gql`
+    query shipPageQuery($id: String!) {
+  GrantShip(where: {id: {_eq: $id}}) {
+    ...BaseShipData
+  }
+}
+    ${BaseShipDataFragmentDoc}` as unknown as DocumentNode<shipPageQueryQuery, shipPageQueryQueryVariables>;
+
 
 
 
@@ -8128,6 +8192,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     projectPageQuery(variables: projectPageQueryQueryVariables, options?: C): Promise<projectPageQueryQuery> {
       return requester<projectPageQueryQuery, projectPageQueryQueryVariables>(projectPageQueryDocument, variables, options) as Promise<projectPageQueryQuery>;
+    },
+    shipPageQuery(variables: shipPageQueryQueryVariables, options?: C): Promise<shipPageQueryQuery> {
+      return requester<shipPageQueryQuery, shipPageQueryQueryVariables>(shipPageQueryDocument, variables, options) as Promise<shipPageQueryQuery>;
     }
   };
 }

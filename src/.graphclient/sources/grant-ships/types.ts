@@ -654,6 +654,9 @@ export type Grant = {
 
 /** columns and relationships of "GrantShip" */
 export type GrantShip = {
+  /** An object relationship */
+  alloProfileMembers?: Maybe<ProfileMemberGroup>;
+  alloProfileMembers_id?: Maybe<Scalars['String']>;
   anchor: Scalars['String'];
   /** An object relationship */
   applicationReviewReason?: Maybe<RawMetadata>;
@@ -751,6 +754,8 @@ export type GrantShip_bool_exp = {
   _and?: InputMaybe<Array<GrantShip_bool_exp>>;
   _not?: InputMaybe<GrantShip_bool_exp>;
   _or?: InputMaybe<Array<GrantShip_bool_exp>>;
+  alloProfileMembers?: InputMaybe<ProfileMemberGroup_bool_exp>;
+  alloProfileMembers_id?: InputMaybe<String_comparison_exp>;
   anchor?: InputMaybe<String_comparison_exp>;
   applicationReviewReason?: InputMaybe<RawMetadata_bool_exp>;
   applicationReviewReason_id?: InputMaybe<String_comparison_exp>;
@@ -798,6 +803,7 @@ export type GrantShip_bool_exp = {
 
 /** order by max() on columns of table "GrantShip" */
 export type GrantShip_max_order_by = {
+  alloProfileMembers_id?: InputMaybe<order_by>;
   anchor?: InputMaybe<order_by>;
   applicationReviewReason_id?: InputMaybe<order_by>;
   applicationSubmittedTime?: InputMaybe<order_by>;
@@ -828,6 +834,7 @@ export type GrantShip_max_order_by = {
 
 /** order by min() on columns of table "GrantShip" */
 export type GrantShip_min_order_by = {
+  alloProfileMembers_id?: InputMaybe<order_by>;
   anchor?: InputMaybe<order_by>;
   applicationReviewReason_id?: InputMaybe<order_by>;
   applicationSubmittedTime?: InputMaybe<order_by>;
@@ -858,6 +865,8 @@ export type GrantShip_min_order_by = {
 
 /** Ordering options when selecting data from "GrantShip". */
 export type GrantShip_order_by = {
+  alloProfileMembers?: InputMaybe<ProfileMemberGroup_order_by>;
+  alloProfileMembers_id?: InputMaybe<order_by>;
   anchor?: InputMaybe<order_by>;
   applicationReviewReason?: InputMaybe<RawMetadata_order_by>;
   applicationReviewReason_id?: InputMaybe<order_by>;
@@ -905,6 +914,8 @@ export type GrantShip_order_by = {
 
 /** select columns of table "GrantShip" */
 export type GrantShip_select_column =
+  /** column name */
+  | 'alloProfileMembers_id'
   /** column name */
   | 'anchor'
   /** column name */
@@ -1043,6 +1054,7 @@ export type GrantShip_stream_cursor_input = {
 
 /** Initial value of the column from where the streaming should start */
 export type GrantShip_stream_cursor_value_input = {
+  alloProfileMembers_id?: InputMaybe<Scalars['String']>;
   anchor?: InputMaybe<Scalars['String']>;
   applicationReviewReason_id?: InputMaybe<Scalars['String']>;
   applicationSubmittedTime?: InputMaybe<Scalars['Int']>;

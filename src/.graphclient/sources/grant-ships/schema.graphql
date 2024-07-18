@@ -714,6 +714,9 @@ type Grant {
 columns and relationships of "GrantShip"
 """
 type GrantShip {
+  """An object relationship"""
+  alloProfileMembers: ProfileMemberGroup
+  alloProfileMembers_id: String
   anchor: String!
   """An object relationship"""
   applicationReviewReason: RawMetadata
@@ -818,6 +821,8 @@ input GrantShip_bool_exp {
   _and: [GrantShip_bool_exp!]
   _not: GrantShip_bool_exp
   _or: [GrantShip_bool_exp!]
+  alloProfileMembers: ProfileMemberGroup_bool_exp
+  alloProfileMembers_id: String_comparison_exp
   anchor: String_comparison_exp
   applicationReviewReason: RawMetadata_bool_exp
   applicationReviewReason_id: String_comparison_exp
@@ -867,6 +872,7 @@ input GrantShip_bool_exp {
 order by max() on columns of table "GrantShip"
 """
 input GrantShip_max_order_by {
+  alloProfileMembers_id: order_by
   anchor: order_by
   applicationReviewReason_id: order_by
   applicationSubmittedTime: order_by
@@ -899,6 +905,7 @@ input GrantShip_max_order_by {
 order by min() on columns of table "GrantShip"
 """
 input GrantShip_min_order_by {
+  alloProfileMembers_id: order_by
   anchor: order_by
   applicationReviewReason_id: order_by
   applicationSubmittedTime: order_by
@@ -929,6 +936,8 @@ input GrantShip_min_order_by {
 
 """Ordering options when selecting data from "GrantShip"."""
 input GrantShip_order_by {
+  alloProfileMembers: ProfileMemberGroup_order_by
+  alloProfileMembers_id: order_by
   anchor: order_by
   applicationReviewReason: RawMetadata_order_by
   applicationReviewReason_id: order_by
@@ -978,6 +987,8 @@ input GrantShip_order_by {
 select columns of table "GrantShip"
 """
 enum GrantShip_select_column {
+  """column name"""
+  alloProfileMembers_id
   """column name"""
   anchor
   """column name"""
@@ -1125,6 +1136,7 @@ input GrantShip_stream_cursor_input {
 
 """Initial value of the column from where the streaming should start"""
 input GrantShip_stream_cursor_value_input {
+  alloProfileMembers_id: String
   anchor: String
   applicationReviewReason_id: String
   applicationSubmittedTime: Int
