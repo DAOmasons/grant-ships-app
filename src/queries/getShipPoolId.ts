@@ -8,7 +8,7 @@ export const getShipPoolId = async (address: string): Promise<string> => {
     });
     const data = await getShipPoolId({ id: address });
 
-    return data.grantShip?.poolId;
+    return data.GrantShip?.[0]?.poolId;
   } catch (error) {
     console.error('Error in getPoolId', error);
     throw error;

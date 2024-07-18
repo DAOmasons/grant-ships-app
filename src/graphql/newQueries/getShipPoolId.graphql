@@ -1,0 +1,5 @@
+query getShipPoolId($id: String!) {
+  GrantShip(where: { id: { _eq: $id } }) {
+    poolId
+  }
+}

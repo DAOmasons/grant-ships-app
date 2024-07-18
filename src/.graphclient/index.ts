@@ -20,8 +20,8 @@ import { getMesh, ExecuteMeshFn, SubscribeMeshFn, MeshContext as BaseMeshContext
 import { MeshStore, FsStoreStorageAdapter } from '@graphql-mesh/store';
 import { path as pathModule } from '@graphql-mesh/cross-helpers';
 import { ImportFn } from '@graphql-mesh/types';
-import type { GrantShipsTypes } from './sources/grant-ships/types';
 import type { GsVotingTypes } from './sources/gs-voting/types';
+import type { GrantShipsTypes } from './sources/grant-ships/types';
 import * as importedModule$0 from "./sources/grant-ships/introspectionSchema";
 import * as importedModule$1 from "./sources/gs-voting/introspectionSchema";
 export type Maybe<T> = T | null;
@@ -7766,6 +7766,12 @@ const merger = new(StitchingMerger as any)({
         },
         location: 'GetShipIdByHatIdDocument.graphql'
       },{
+        document: GetShipPoolIdDocument,
+        get rawSDL() {
+          return printWithCache(GetShipPoolIdDocument);
+        },
+        location: 'GetShipPoolIdDocument.graphql'
+      },{
         document: GetUserDataDocument,
         get rawSDL() {
           return printWithCache(GetUserDataDocument);
@@ -7886,6 +7892,13 @@ export type getShipIdByHatIdQueryVariables = Exact<{
 
 
 export type getShipIdByHatIdQuery = { GrantShip: Array<Pick<GrantShip, 'id'>> };
+
+export type getShipPoolIdQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type getShipPoolIdQuery = { GrantShip: Array<Pick<GrantShip, 'poolId'>> };
 
 export type getUserDataQueryVariables = Exact<{
   id?: InputMaybe<Scalars['String']>;
@@ -8019,6 +8032,13 @@ export const getShipIdByHatIdDocument = gql`
   }
 }
     ` as unknown as DocumentNode<getShipIdByHatIdQuery, getShipIdByHatIdQueryVariables>;
+export const getShipPoolIdDocument = gql`
+    query getShipPoolId($id: String!) {
+  GrantShip(where: {id: {_eq: $id}}) {
+    poolId
+  }
+}
+    ` as unknown as DocumentNode<getShipPoolIdQuery, getShipPoolIdQueryVariables>;
 export const getUserDataDocument = gql`
     query getUserData($id: String) {
   projects: Project(where: {owner: {_eq: $id}}) {
@@ -8036,6 +8056,7 @@ export const getUserDataDocument = gql`
     ${ProjectDetailsFragmentDoc}
 ${RawMetadataFragmentDoc}
 ${FacShipDataFragmentDoc}` as unknown as DocumentNode<getUserDataQuery, getUserDataQueryVariables>;
+
 
 
 
@@ -8064,6 +8085,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     getShipIdByHatId(variables: getShipIdByHatIdQueryVariables, options?: C): Promise<getShipIdByHatIdQuery> {
       return requester<getShipIdByHatIdQuery, getShipIdByHatIdQueryVariables>(getShipIdByHatIdDocument, variables, options) as Promise<getShipIdByHatIdQuery>;
+    },
+    getShipPoolId(variables: getShipPoolIdQueryVariables, options?: C): Promise<getShipPoolIdQuery> {
+      return requester<getShipPoolIdQuery, getShipPoolIdQueryVariables>(getShipPoolIdDocument, variables, options) as Promise<getShipPoolIdQuery>;
     },
     getUserData(variables?: getUserDataQueryVariables, options?: C): Promise<getUserDataQuery> {
       return requester<getUserDataQuery, getUserDataQueryVariables>(getUserDataDocument, variables, options) as Promise<getUserDataQuery>;
