@@ -2177,8 +2177,8 @@ export type GameRound = {
   gameStatus: Scalars['Int'];
   id: Scalars['String'];
   isGameActive: Scalars['Boolean'];
-  realEndTime?: Maybe<Scalars['numeric']>;
-  realStartTime?: Maybe<Scalars['numeric']>;
+  realEndTime?: Maybe<Scalars['Int']>;
+  realStartTime?: Maybe<Scalars['Int']>;
   /** An array relationship */
   ships: Array<GrantShip>;
   startTime: Scalars['numeric'];
@@ -2236,8 +2236,8 @@ export type GameRound_bool_exp = {
   gameStatus?: InputMaybe<Int_comparison_exp>;
   id?: InputMaybe<String_comparison_exp>;
   isGameActive?: InputMaybe<Boolean_comparison_exp>;
-  realEndTime?: InputMaybe<numeric_comparison_exp>;
-  realStartTime?: InputMaybe<numeric_comparison_exp>;
+  realEndTime?: InputMaybe<Int_comparison_exp>;
+  realStartTime?: InputMaybe<Int_comparison_exp>;
   ships?: InputMaybe<GrantShip_bool_exp>;
   startTime?: InputMaybe<numeric_comparison_exp>;
   totalAllocatedAmount?: InputMaybe<numeric_comparison_exp>;
@@ -2372,8 +2372,8 @@ export type GameRound_stream_cursor_value_input = {
   gameStatus?: InputMaybe<Scalars['Int']>;
   id?: InputMaybe<Scalars['String']>;
   isGameActive?: InputMaybe<Scalars['Boolean']>;
-  realEndTime?: InputMaybe<Scalars['numeric']>;
-  realStartTime?: InputMaybe<Scalars['numeric']>;
+  realEndTime?: InputMaybe<Scalars['Int']>;
+  realStartTime?: InputMaybe<Scalars['Int']>;
   startTime?: InputMaybe<Scalars['numeric']>;
   totalAllocatedAmount?: InputMaybe<Scalars['numeric']>;
   totalDistributedAmount?: InputMaybe<Scalars['numeric']>;
@@ -7115,8 +7115,8 @@ export type GameRoundResolvers<ContextType = MeshContext, ParentType extends Res
   gameStatus?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   isGameActive?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  realEndTime?: Resolver<Maybe<ResolversTypes['numeric']>, ParentType, ContextType>;
-  realStartTime?: Resolver<Maybe<ResolversTypes['numeric']>, ParentType, ContextType>;
+  realEndTime?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  realStartTime?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   ships?: Resolver<Array<ResolversTypes['GrantShip']>, ParentType, ContextType, Partial<GameRoundshipsArgs>>;
   startTime?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
   totalAllocatedAmount?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
@@ -7730,6 +7730,12 @@ const merger = new(StitchingMerger as any)({
     get documents() {
       return [
       {
+        document: FacDashShipDataDocument,
+        get rawSDL() {
+          return printWithCache(FacDashShipDataDocument);
+        },
+        location: 'FacDashShipDataDocument.graphql'
+      },{
         document: GetGameManagerDocument,
         get rawSDL() {
           return printWithCache(GetGameManagerDocument);
@@ -7741,6 +7747,24 @@ const merger = new(StitchingMerger as any)({
           return printWithCache(GetProjectsDocument);
         },
         location: 'GetProjectsDocument.graphql'
+      },{
+        document: GetUserProjectsDocument,
+        get rawSDL() {
+          return printWithCache(GetUserProjectsDocument);
+        },
+        location: 'GetUserProjectsDocument.graphql'
+      },{
+        document: GetShipIdByHatIdDocument,
+        get rawSDL() {
+          return printWithCache(GetShipIdByHatIdDocument);
+        },
+        location: 'GetShipIdByHatIdDocument.graphql'
+      },{
+        document: GetUserDataDocument,
+        get rawSDL() {
+          return printWithCache(GetUserDataDocument);
+        },
+        location: 'GetUserDataDocument.graphql'
       }
     ];
     },
@@ -7779,6 +7803,25 @@ export function getBuiltGraphSDK<TGlobalContext = any, TOperationContext = any>(
   const sdkRequester$ = getBuiltGraphClient().then(({ sdkRequesterFactory }) => sdkRequesterFactory(globalContext));
   return getSdk<TOperationContext, TGlobalContext>((...args) => sdkRequester$.then(sdkRequester => sdkRequester(...args)));
 }
+export type FacShipDataFragment = (
+  Pick<GrantShip, 'id' | 'name' | 'status' | 'applicationSubmittedTime' | 'shipApplicationBytesData'>
+  & { profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
+);
+
+export type facDashShipDataQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type facDashShipDataQuery = { shipApplicants: Array<(
+    Pick<GrantShip, 'id' | 'name' | 'status' | 'applicationSubmittedTime' | 'shipApplicationBytesData'>
+    & { profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
+  )>, approvedShips: Array<(
+    Pick<GrantShip, 'approvedTime' | 'shipAllocation' | 'totalAvailableFunds' | 'id' | 'name' | 'status' | 'applicationSubmittedTime' | 'shipApplicationBytesData'>
+    & { applicationReviewReason?: Maybe<Pick<RawMetadata, 'pointer'>>, profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
+  )>, rejectedShips: Array<(
+    Pick<GrantShip, 'rejectedTime' | 'id' | 'name' | 'status' | 'applicationSubmittedTime' | 'shipApplicationBytesData'>
+    & { applicationReviewReason?: Maybe<Pick<RawMetadata, 'pointer'>>, profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
+  )> };
+
 export type GameManagerDataFragment = (
   Pick<GameManager, 'id' | 'gameFacilitatorId' | 'gmRootAccount' | 'tokenAddress' | 'currentRound_id' | 'poolFunds' | 'poolId' | 'profileId'>
   & { currentRound?: Maybe<(
@@ -7804,7 +7847,9 @@ export type ProjectDetailsFragment = Pick<Project, 'id' | 'name' | 'profileId' |
 
 export type RawMetadataFragment = Pick<RawMetadata, 'protocol' | 'pointer'>;
 
-export type GetProjectsQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetProjectsQueryVariables = Exact<{
+  chainId: Scalars['Int'];
+}>;
 
 
 export type GetProjectsQuery = { Project: Array<(
@@ -7812,6 +7857,48 @@ export type GetProjectsQuery = { Project: Array<(
     & { metadata?: Maybe<Pick<RawMetadata, 'protocol' | 'pointer'>> }
   )> };
 
+export type GetUserProjectsQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type GetUserProjectsQuery = { Project: Array<(
+    Pick<Project, 'id' | 'name' | 'profileId' | 'nonce' | 'anchor' | 'owner'>
+    & { metadata?: Maybe<Pick<RawMetadata, 'protocol' | 'pointer'>> }
+  )> };
+
+export type getShipIdByHatIdQueryVariables = Exact<{
+  hatId: Scalars['String'];
+}>;
+
+
+export type getShipIdByHatIdQuery = { GrantShip: Array<Pick<GrantShip, 'id'>> };
+
+export type getUserDataQueryVariables = Exact<{
+  id?: InputMaybe<Scalars['String']>;
+}>;
+
+
+export type getUserDataQuery = { projects: Array<(
+    Pick<Project, 'id' | 'name' | 'profileId' | 'nonce' | 'anchor' | 'owner'>
+    & { metadata?: Maybe<Pick<RawMetadata, 'protocol' | 'pointer'>> }
+  )>, shipApplicants: Array<(
+    Pick<GrantShip, 'id' | 'name' | 'status' | 'applicationSubmittedTime' | 'shipApplicationBytesData'>
+    & { profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
+  )> };
+
+export const FacShipDataFragmentDoc = gql`
+    fragment FacShipData on GrantShip {
+  id
+  name
+  status
+  applicationSubmittedTime
+  shipApplicationBytesData
+  profileMetadata {
+    pointer
+  }
+}
+    ` as unknown as DocumentNode<FacShipDataFragment, unknown>;
 export const GameManagerDataFragmentDoc = gql`
     fragment GameManagerData on GameManager {
   id
@@ -7851,6 +7938,31 @@ export const RawMetadataFragmentDoc = gql`
   pointer
 }
     ` as unknown as DocumentNode<RawMetadataFragment, unknown>;
+export const facDashShipDataDocument = gql`
+    query facDashShipData {
+  shipApplicants: GrantShip(where: {isAwaitingApproval: {_eq: true}}) {
+    ...FacShipData
+  }
+  approvedShips: GrantShip(
+    where: {isApproved: {_eq: true}, hasSubmittedApplication: {_eq: true}}
+  ) {
+    ...FacShipData
+    approvedTime
+    shipAllocation
+    totalAvailableFunds
+    applicationReviewReason {
+      pointer
+    }
+  }
+  rejectedShips: GrantShip(where: {isRejected: {_eq: true}}) {
+    ...FacShipData
+    rejectedTime
+    applicationReviewReason {
+      pointer
+    }
+  }
+}
+    ${FacShipDataFragmentDoc}` as unknown as DocumentNode<facDashShipDataQuery, facDashShipDataQueryVariables>;
 export const getGameManagerDocument = gql`
     query getGameManager($id: String!) {
   GameManager(where: {id: {_eq: $id}}) {
@@ -7859,8 +7971,8 @@ export const getGameManagerDocument = gql`
 }
     ${GameManagerDataFragmentDoc}` as unknown as DocumentNode<getGameManagerQuery, getGameManagerQueryVariables>;
 export const GetProjectsDocument = gql`
-    query GetProjects {
-  Project {
+    query GetProjects($chainId: Int!) {
+  Project(where: {chainId: {_eq: $chainId}}) {
     ...ProjectDetails
     metadata {
       ...RawMetadata
@@ -7869,17 +7981,68 @@ export const GetProjectsDocument = gql`
 }
     ${ProjectDetailsFragmentDoc}
 ${RawMetadataFragmentDoc}` as unknown as DocumentNode<GetProjectsQuery, GetProjectsQueryVariables>;
+export const GetUserProjectsDocument = gql`
+    query GetUserProjects($id: String!) {
+  Project(where: {owner: {_eq: $id}}) {
+    ...ProjectDetails
+    metadata {
+      ...RawMetadata
+    }
+  }
+}
+    ${ProjectDetailsFragmentDoc}
+${RawMetadataFragmentDoc}` as unknown as DocumentNode<GetUserProjectsQuery, GetUserProjectsQueryVariables>;
+export const getShipIdByHatIdDocument = gql`
+    query getShipIdByHatId($hatId: String!) {
+  GrantShip(where: {hatId: {_eq: $hatId}}) {
+    id
+  }
+}
+    ` as unknown as DocumentNode<getShipIdByHatIdQuery, getShipIdByHatIdQueryVariables>;
+export const getUserDataDocument = gql`
+    query getUserData($id: String) {
+  projects: Project(where: {owner: {_eq: $id}}) {
+    ...ProjectDetails
+    metadata {
+      ...RawMetadata
+    }
+  }
+  shipApplicants: GrantShip(
+    where: {isAwaitingApproval: {_eq: true}, owner: {_eq: $id}}
+  ) {
+    ...FacShipData
+  }
+}
+    ${ProjectDetailsFragmentDoc}
+${RawMetadataFragmentDoc}
+${FacShipDataFragmentDoc}` as unknown as DocumentNode<getUserDataQuery, getUserDataQueryVariables>;
+
+
+
+
 
 
 
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
+    facDashShipData(variables?: facDashShipDataQueryVariables, options?: C): Promise<facDashShipDataQuery> {
+      return requester<facDashShipDataQuery, facDashShipDataQueryVariables>(facDashShipDataDocument, variables, options) as Promise<facDashShipDataQuery>;
+    },
     getGameManager(variables: getGameManagerQueryVariables, options?: C): Promise<getGameManagerQuery> {
       return requester<getGameManagerQuery, getGameManagerQueryVariables>(getGameManagerDocument, variables, options) as Promise<getGameManagerQuery>;
     },
-    GetProjects(variables?: GetProjectsQueryVariables, options?: C): Promise<GetProjectsQuery> {
+    GetProjects(variables: GetProjectsQueryVariables, options?: C): Promise<GetProjectsQuery> {
       return requester<GetProjectsQuery, GetProjectsQueryVariables>(GetProjectsDocument, variables, options) as Promise<GetProjectsQuery>;
+    },
+    GetUserProjects(variables: GetUserProjectsQueryVariables, options?: C): Promise<GetUserProjectsQuery> {
+      return requester<GetUserProjectsQuery, GetUserProjectsQueryVariables>(GetUserProjectsDocument, variables, options) as Promise<GetUserProjectsQuery>;
+    },
+    getShipIdByHatId(variables: getShipIdByHatIdQueryVariables, options?: C): Promise<getShipIdByHatIdQuery> {
+      return requester<getShipIdByHatIdQuery, getShipIdByHatIdQueryVariables>(getShipIdByHatIdDocument, variables, options) as Promise<getShipIdByHatIdQuery>;
+    },
+    getUserData(variables?: getUserDataQueryVariables, options?: C): Promise<getUserDataQuery> {
+      return requester<getUserDataQuery, getUserDataQueryVariables>(getUserDataDocument, variables, options) as Promise<getUserDataQuery>;
     }
   };
 }

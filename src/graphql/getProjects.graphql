@@ -12,8 +12,8 @@ fragment RawMetadata on RawMetadata {
   pointer
 }
 
-query GetProjects {
-  projects {
+query GetProjects($chainId: Int!) {
+  Projects(where: { chainId: { _eq: $chainId } }) {
     ...ProjectDetails
     metadata {
       ...RawMetadata
@@ -22,7 +22,7 @@ query GetProjects {
 }
 
 query GetUserProjects($id: Bytes!) {
-  projects(where: { owner: $id }) {
+  Projects(where: { owner: $id }) {
     ...ProjectDetails
     metadata {
       ...RawMetadata

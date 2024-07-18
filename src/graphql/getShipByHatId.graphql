@@ -1,5 +1,0 @@
-query getShipIdByHatId($hatId: String!) {
-  grantShips(where: { hatId: $hatId }) {
-    id
-  }
-}

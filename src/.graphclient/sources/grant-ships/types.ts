@@ -389,8 +389,8 @@ export type GameRound = {
   gameStatus: Scalars['Int'];
   id: Scalars['String'];
   isGameActive: Scalars['Boolean'];
-  realEndTime?: Maybe<Scalars['numeric']>;
-  realStartTime?: Maybe<Scalars['numeric']>;
+  realEndTime?: Maybe<Scalars['Int']>;
+  realStartTime?: Maybe<Scalars['Int']>;
   /** An array relationship */
   ships: Array<GrantShip>;
   startTime: Scalars['numeric'];
@@ -448,8 +448,8 @@ export type GameRound_bool_exp = {
   gameStatus?: InputMaybe<Int_comparison_exp>;
   id?: InputMaybe<String_comparison_exp>;
   isGameActive?: InputMaybe<Boolean_comparison_exp>;
-  realEndTime?: InputMaybe<numeric_comparison_exp>;
-  realStartTime?: InputMaybe<numeric_comparison_exp>;
+  realEndTime?: InputMaybe<Int_comparison_exp>;
+  realStartTime?: InputMaybe<Int_comparison_exp>;
   ships?: InputMaybe<GrantShip_bool_exp>;
   startTime?: InputMaybe<numeric_comparison_exp>;
   totalAllocatedAmount?: InputMaybe<numeric_comparison_exp>;
@@ -584,8 +584,8 @@ export type GameRound_stream_cursor_value_input = {
   gameStatus?: InputMaybe<Scalars['Int']>;
   id?: InputMaybe<Scalars['String']>;
   isGameActive?: InputMaybe<Scalars['Boolean']>;
-  realEndTime?: InputMaybe<Scalars['numeric']>;
-  realStartTime?: InputMaybe<Scalars['numeric']>;
+  realEndTime?: InputMaybe<Scalars['Int']>;
+  realStartTime?: InputMaybe<Scalars['Int']>;
   startTime?: InputMaybe<Scalars['numeric']>;
   totalAllocatedAmount?: InputMaybe<Scalars['numeric']>;
   totalDistributedAmount?: InputMaybe<Scalars['numeric']>;

@@ -3973,7 +3973,7 @@ const schemaAST = {
             "kind": "NamedType",
             "name": {
               "kind": "Name",
-              "value": "numeric"
+              "value": "Int"
             }
           },
           "directives": []
@@ -3989,7 +3989,7 @@ const schemaAST = {
             "kind": "NamedType",
             "name": {
               "kind": "Name",
-              "value": "numeric"
+              "value": "Int"
             }
           },
           "directives": []
@@ -4716,7 +4716,7 @@ const schemaAST = {
             "kind": "NamedType",
             "name": {
               "kind": "Name",
-              "value": "numeric_comparison_exp"
+              "value": "Int_comparison_exp"
             }
           },
           "directives": []
@@ -4731,7 +4731,7 @@ const schemaAST = {
             "kind": "NamedType",
             "name": {
               "kind": "Name",
-              "value": "numeric_comparison_exp"
+              "value": "Int_comparison_exp"
             }
           },
           "directives": []
@@ -6145,7 +6145,7 @@ const schemaAST = {
             "kind": "NamedType",
             "name": {
               "kind": "Name",
-              "value": "numeric"
+              "value": "Int"
             }
           },
           "directives": []
@@ -6160,7 +6160,7 @@ const schemaAST = {
             "kind": "NamedType",
             "name": {
               "kind": "Name",
-              "value": "numeric"
+              "value": "Int"
             }
           },
           "directives": []

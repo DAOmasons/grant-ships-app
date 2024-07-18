@@ -415,8 +415,8 @@ type GameRound {
   gameStatus: Int!
   id: String!
   isGameActive: Boolean!
-  realEndTime: numeric
-  realStartTime: numeric
+  realEndTime: Int
+  realStartTime: Int
   """An array relationship"""
   ships(
     """distinct select on columns"""
@@ -481,8 +481,8 @@ input GameRound_bool_exp {
   gameStatus: Int_comparison_exp
   id: String_comparison_exp
   isGameActive: Boolean_comparison_exp
-  realEndTime: numeric_comparison_exp
-  realStartTime: numeric_comparison_exp
+  realEndTime: Int_comparison_exp
+  realStartTime: Int_comparison_exp
   ships: GrantShip_bool_exp
   startTime: numeric_comparison_exp
   totalAllocatedAmount: numeric_comparison_exp
@@ -632,8 +632,8 @@ input GameRound_stream_cursor_value_input {
   gameStatus: Int
   id: String
   isGameActive: Boolean
-  realEndTime: numeric
-  realStartTime: numeric
+  realEndTime: Int
+  realStartTime: Int
   startTime: numeric
   totalAllocatedAmount: numeric
   totalDistributedAmount: numeric

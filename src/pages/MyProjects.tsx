@@ -26,6 +26,7 @@ import {
   ProjectCardFromQuery,
 } from '../queries/getProjectCards';
 import { PINATA_GATEWAY } from '../utils/ipfs/get';
+import { useChainId } from 'wagmi';
 
 const getUserProjects = async (projects: ProjectCardFromQuery[]) => {
   const res = await Promise.all(
@@ -42,6 +43,7 @@ const getUserProjects = async (projects: ProjectCardFromQuery[]) => {
 };
 
 export const MyProjects = () => {
+  const chainId = useChainId();
   const { id } = useParams();
   const theme = useMantineTheme();
 

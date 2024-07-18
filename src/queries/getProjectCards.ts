@@ -8,6 +8,7 @@ import { getGatewayUrl, getIpfsJson } from '../utils/ipfs/get';
 import { ProjectProfileMetadata } from '../utils/ipfs/metadataValidation';
 import { SUBGRAPH_URL } from '../constants/gameSetup';
 import { PROJECT_FILTER_LIST } from '../constants/filterLists';
+import { Chain } from 'viem';
 
 type ProjectMetadataType = z.infer<typeof ProjectProfileMetadata>;
 
@@ -37,20 +38,22 @@ const projectMetadataResolver = async (project: ProjectCardFromQuery) => {
   };
 };
 
-export const getProjectCards = async () => {
+export const getProjectCards = async ({ chainId }: { chainId: number }) => {
   try {
     const { GetProjects } = getBuiltGraphSDK({
       apiEndpoint: SUBGRAPH_URL,
     });
 
-    const { projects } = await GetProjects();
+    const result = await GetProjects({ chainId });
 
-    const filteredProjects = projects?.filter(
+    const filteredProjects = result.Project?.filter(
       (project) => !PROJECT_FILTER_LIST.includes(project.id)
     );
 
     const resolvedProjects = await Promise.all(
-      filteredProjects?.map((project) => projectMetadataResolver(project))
+      filteredProjects?.map((project) =>
+        projectMetadataResolver(project as ProjectCardFromQuery)
+      )
     );
 
     return resolvedProjects as ProjectCard[];
@@ -60,27 +63,27 @@ export const getProjectCards = async () => {
   }
 };
 
-export const getUserProjects = async (userId: string) => {
-  try {
-    const { GetUserProjects } = getBuiltGraphSDK({
-      apiEndpoint: SUBGRAPH_URL,
-    });
+// export const getUserProjects = async (userId: string) => {
+//   try {
+//     const { GetUserProjects } = getBuiltGraphSDK({
+//       apiEndpoint: SUBGRAPH_URL,
+//     });
 
-    const { projects } = await GetUserProjects({ id: userId });
+//     const { projects } = await GetUserProjects({ id: userId });
 
-    const filteredProjects = projects?.filter(
-      (project) => !PROJECT_FILTER_LIST.includes(project.id)
-    );
+//     const filteredProjects = projects?.filter(
+//       (project) => !PROJECT_FILTER_LIST.includes(project.id)
+//     );
 
-    console.log('filteredProjects', filteredProjects);
+//     console.log('filteredProjects', filteredProjects);
 
-    const resolvedProjects = await Promise.all(
-      filteredProjects?.map((project) => projectMetadataResolver(project))
-    );
+//     const resolvedProjects = await Promise.all(
+//       filteredProjects?.map((project) => projectMetadataResolver(project))
+//     );
 
-    return resolvedProjects as ProjectCard[];
-  } catch (error: any) {
-    console.error(error);
-    throw new Error(error?.mesasge || 'Error fetching projects');
-  }
-};
+//     return resolvedProjects as ProjectCard[];
+//   } catch (error: any) {
+//     console.error(error);
+//     throw new Error(error?.mesasge || 'Error fetching projects');
+//   }
+// };
