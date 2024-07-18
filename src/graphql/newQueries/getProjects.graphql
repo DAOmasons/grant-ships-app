@@ -1,0 +1,31 @@
+fragment ProjectDetails on Project {
+  id
+  name
+  profileId
+  nonce
+  anchor
+  owner
+}
+
+fragment RawMetadata on RawMetadata {
+  protocol
+  pointer
+}
+
+query GetProjects {
+  Project {
+    ...ProjectDetails
+    metadata {
+      ...RawMetadata
+    }
+  }
+}
+
+# query GetUserProjects($id: Bytes!) {
+#   projects(where: { owner: $id }) {
+#     ...ProjectDetails
+#     metadata {
+#       ...RawMetadata
+#     }
+#   }
+# }

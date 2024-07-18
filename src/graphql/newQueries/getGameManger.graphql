@@ -1,0 +1,27 @@
+fragment GameManagerData on GameManager {
+  id
+  gameFacilitatorId
+  gmRootAccount
+  tokenAddress
+  currentRound_id
+  poolFunds
+  poolId
+  profileId
+  tokenAddress
+  currentRound {
+    id
+    startTime
+    endTime
+    totalRoundAmount
+    gameStatus
+    ships {
+      anchor
+    }
+  }
+}
+
+query getGameManager($id: String!) {
+  GameManager(where: { id: { _eq: $id } }) {
+    ...GameManagerData
+  }
+}

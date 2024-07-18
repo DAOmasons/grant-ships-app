@@ -11,7 +11,6 @@ import { publicClient } from '../utils/config';
 import ERC20VotesPoints from '../abi/ERC20VotesPoints.json';
 import SBTBalancePoints from '../abi/SBTBalancePoints.json';
 import ERC20Votes from '../abi/Erc20Votes.json';
-import { ADDR } from '../constants/addresses';
 
 export type UserVote = Pick<
   ShipVote,

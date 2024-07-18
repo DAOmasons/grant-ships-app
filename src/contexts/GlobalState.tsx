@@ -9,20 +9,20 @@ type GlobalStateContext = {
   isLoadingGameManager: boolean;
   gameManagerError: Error | null;
   refetchGameManager: () => void;
-  userData?: UserData;
-  isLoadingUserData: boolean;
-  userDataError: Error | null;
-  refetchUserData: () => void;
+  // userData?: UserData;
+  // isLoadingUserData: boolean;
+  // userDataError: Error | null;
+  // refetchUserData: () => void;
 };
 
 export const GlobalContext = createContext<GlobalStateContext>({
   gameManager: undefined,
   isLoadingGameManager: false,
   gameManagerError: null,
-  userData: undefined,
-  isLoadingUserData: false,
-  userDataError: null,
-  refetchUserData: () => {},
+  // userData: undefined,
+  // isLoadingUserData: false,
+  // userDataError: null,
+  // refetchUserData: () => {},
   refetchGameManager: () => {},
 });
 
@@ -40,16 +40,18 @@ export const GlobalStateProvider = ({
     refetch: refetchGameManager,
   } = useQuery({ queryKey: ['game-manager-state'], queryFn: getGameManger });
 
-  const {
-    data: userState,
-    isLoading: isLoadingUserState,
-    error: userStateError,
-    refetch: refetchUserState,
-  } = useQuery({
-    queryKey: [`user-state-${address}`],
-    queryFn: () => getUserData(address as string),
-    enabled: !!address,
-  });
+  // const {
+  //   data: userState,
+  //   isLoading: isLoadingUserState,
+  //   error: userStateError,
+  //   refetch: refetchUserState,
+  // } = useQuery({
+  //   queryKey: [`user-state-${address}`],
+  //   queryFn: () => getUserData(address as string),
+  //   enabled: !!address,
+  // });
+
+  console.log('gameManager', gameManager);
 
   return (
     <GlobalContext.Provider
@@ -57,10 +59,10 @@ export const GlobalStateProvider = ({
         gameManager: (gameManager as GameManager) || null,
         isLoadingGameManager,
         gameManagerError,
-        userData: userState,
-        isLoadingUserData: isLoadingUserState,
-        userDataError: userStateError,
-        refetchUserData: refetchUserState,
+        // userData: userState,
+        // isLoadingUserData: isLoadingUserState,
+        // userDataError: userStateError,
+        // refetchUserData: refetchUserState,
         refetchGameManager,
       }}
     >
