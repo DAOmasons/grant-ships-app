@@ -20,8 +20,8 @@ import { getMesh, ExecuteMeshFn, SubscribeMeshFn, MeshContext as BaseMeshContext
 import { MeshStore, FsStoreStorageAdapter } from '@graphql-mesh/store';
 import { path as pathModule } from '@graphql-mesh/cross-helpers';
 import { ImportFn } from '@graphql-mesh/types';
-import type { GsVotingTypes } from './sources/gs-voting/types';
 import type { GrantShipsTypes } from './sources/grant-ships/types';
+import type { GsVotingTypes } from './sources/gs-voting/types';
 import * as importedModule$0 from "./sources/grant-ships/introspectionSchema";
 import * as importedModule$1 from "./sources/gs-voting/introspectionSchema";
 export type Maybe<T> = T | null;
@@ -7803,6 +7803,12 @@ const merger = new(StitchingMerger as any)({
           return printWithCache(ShipPageQueryDocument);
         },
         location: 'ShipPageQueryDocument.graphql'
+      },{
+        document: ShipsPageQueryDocument,
+        get rawSDL() {
+          return printWithCache(ShipsPageQueryDocument);
+        },
+        location: 'ShipsPageQueryDocument.graphql'
       }
     ];
     },
@@ -7960,6 +7966,16 @@ export type shipPageQueryQueryVariables = Exact<{
 
 
 export type shipPageQueryQuery = { GrantShip: Array<(
+    Pick<GrantShip, 'id' | 'name' | 'status' | 'shipContractAddress' | 'shipApplicationBytesData' | 'owner' | 'balance' | 'totalAvailableFunds' | 'totalAllocated' | 'totalDistributed' | 'totalRoundAmount'>
+    & { profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>>, alloProfileMembers?: Maybe<Pick<ProfileMemberGroup, 'addresses'>> }
+  )> };
+
+export type ShipsPageQueryQueryVariables = Exact<{
+  gmId: Scalars['String'];
+}>;
+
+
+export type ShipsPageQueryQuery = { GrantShip: Array<(
     Pick<GrantShip, 'id' | 'name' | 'status' | 'shipContractAddress' | 'shipApplicationBytesData' | 'owner' | 'balance' | 'totalAvailableFunds' | 'totalAllocated' | 'totalDistributed' | 'totalRoundAmount'>
     & { profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>>, alloProfileMembers?: Maybe<Pick<ProfileMemberGroup, 'addresses'>> }
   )> };
@@ -8152,6 +8168,14 @@ export const shipPageQueryDocument = gql`
   }
 }
     ${BaseShipDataFragmentDoc}` as unknown as DocumentNode<shipPageQueryQuery, shipPageQueryQueryVariables>;
+export const ShipsPageQueryDocument = gql`
+    query ShipsPageQuery($gmId: String!) {
+  GrantShip(where: {isApproved: {_eq: true}, gameManager_id: {_eq: $gmId}}) {
+    ...BaseShipData
+  }
+}
+    ${BaseShipDataFragmentDoc}` as unknown as DocumentNode<ShipsPageQueryQuery, ShipsPageQueryQueryVariables>;
+
 
 
 
@@ -8195,6 +8219,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     shipPageQuery(variables: shipPageQueryQueryVariables, options?: C): Promise<shipPageQueryQuery> {
       return requester<shipPageQueryQuery, shipPageQueryQueryVariables>(shipPageQueryDocument, variables, options) as Promise<shipPageQueryQuery>;
+    },
+    ShipsPageQuery(variables: ShipsPageQueryQueryVariables, options?: C): Promise<ShipsPageQueryQuery> {
+      return requester<ShipsPageQueryQuery, ShipsPageQueryQueryVariables>(ShipsPageQueryDocument, variables, options) as Promise<ShipsPageQueryQuery>;
     }
   };
 }

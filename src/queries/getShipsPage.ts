@@ -2,7 +2,7 @@ import { ShipProfileMetadata } from '../utils/ipfs/metadataValidation';
 import { BaseShipDataFragment, getBuiltGraphSDK } from '../.graphclient';
 import { getGatewayUrl, getIpfsJson } from '../utils/ipfs/get';
 import { ShipsCardUI } from '../types/ui';
-import { SUBGRAPH_URL } from '../constants/gameSetup';
+import { GAME_MANAGER, SUBGRAPH_URL } from '../constants/gameSetup';
 
 const resolveProfileMetadata = async (
   shipCard: BaseShipDataFragment
@@ -38,10 +38,10 @@ export const getShipsPageData = async () => {
       apiEndpoint: SUBGRAPH_URL,
     });
 
-    const { grantShips } = await ShipsPageQuery();
+    const { GrantShip } = await ShipsPageQuery({ gmId: GAME_MANAGER.ADDRESS });
 
     const resolvedShips = await Promise.all(
-      grantShips?.map((ship) => resolveProfileMetadata(ship))
+      GrantShip?.map((ship) => resolveProfileMetadata(ship))
     );
 
     return resolvedShips as ShipsCardUI[];

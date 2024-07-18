@@ -1,5 +1,0 @@
-query ShipsPageQuery {
-  grantShips(where: { isApproved: true }) {
-    ...BaseShipData
-  }
-}

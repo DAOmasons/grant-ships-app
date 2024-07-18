@@ -1,0 +1,7 @@
+query ShipsPageQuery($gmId: String!) {
+  GrantShip(
+    where: { isApproved: { _eq: true }, gameManager_id: { _eq: $gmId } }
+  ) {
+    ...BaseShipData
+  }
+}
