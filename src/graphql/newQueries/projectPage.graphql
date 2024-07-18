@@ -1,5 +1,5 @@
-query projectPageQuery($id: ID!) {
-  project(id: $id) {
+query projectPageQuery($id: String!) {
+  Project(where: { id: { _eq: $id } }) {
     id
     profileId
     name

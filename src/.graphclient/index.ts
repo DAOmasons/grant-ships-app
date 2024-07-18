@@ -20,8 +20,8 @@ import { getMesh, ExecuteMeshFn, SubscribeMeshFn, MeshContext as BaseMeshContext
 import { MeshStore, FsStoreStorageAdapter } from '@graphql-mesh/store';
 import { path as pathModule } from '@graphql-mesh/cross-helpers';
 import { ImportFn } from '@graphql-mesh/types';
-import type { GsVotingTypes } from './sources/gs-voting/types';
 import type { GrantShipsTypes } from './sources/grant-ships/types';
+import type { GsVotingTypes } from './sources/gs-voting/types';
 import * as importedModule$0 from "./sources/grant-ships/introspectionSchema";
 import * as importedModule$1 from "./sources/gs-voting/introspectionSchema";
 export type Maybe<T> = T | null;
@@ -7777,6 +7777,12 @@ const merger = new(StitchingMerger as any)({
           return printWithCache(GetUserDataDocument);
         },
         location: 'GetUserDataDocument.graphql'
+      },{
+        document: ProjectPageQueryDocument,
+        get rawSDL() {
+          return printWithCache(ProjectPageQueryDocument);
+        },
+        location: 'ProjectPageQueryDocument.graphql'
       }
     ];
     },
@@ -7911,6 +7917,16 @@ export type getUserDataQuery = { projects: Array<(
   )>, shipApplicants: Array<(
     Pick<GrantShip, 'id' | 'name' | 'status' | 'applicationSubmittedTime' | 'shipApplicationBytesData'>
     & { profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
+  )> };
+
+export type projectPageQueryQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type projectPageQueryQuery = { Project: Array<(
+    Pick<Project, 'id' | 'profileId' | 'name' | 'status' | 'owner'>
+    & { metadata?: Maybe<Pick<RawMetadata, 'pointer'>>, members?: Maybe<Pick<ProfileMemberGroup, 'addresses'>> }
   )> };
 
 export const FacShipDataFragmentDoc = gql`
@@ -8056,6 +8072,24 @@ export const getUserDataDocument = gql`
     ${ProjectDetailsFragmentDoc}
 ${RawMetadataFragmentDoc}
 ${FacShipDataFragmentDoc}` as unknown as DocumentNode<getUserDataQuery, getUserDataQueryVariables>;
+export const projectPageQueryDocument = gql`
+    query projectPageQuery($id: String!) {
+  Project(where: {id: {_eq: $id}}) {
+    id
+    profileId
+    name
+    status
+    owner
+    metadata {
+      pointer
+    }
+    members {
+      addresses
+    }
+  }
+}
+    ` as unknown as DocumentNode<projectPageQueryQuery, projectPageQueryQueryVariables>;
+
 
 
 
@@ -8091,6 +8125,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     getUserData(variables?: getUserDataQueryVariables, options?: C): Promise<getUserDataQuery> {
       return requester<getUserDataQuery, getUserDataQueryVariables>(getUserDataDocument, variables, options) as Promise<getUserDataQuery>;
+    },
+    projectPageQuery(variables: projectPageQueryQueryVariables, options?: C): Promise<projectPageQueryQuery> {
+      return requester<projectPageQueryQuery, projectPageQueryQueryVariables>(projectPageQueryDocument, variables, options) as Promise<projectPageQueryQuery>;
     }
   };
 }

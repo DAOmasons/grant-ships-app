@@ -10,11 +10,13 @@ export const getProjectPage = async (id: string): Promise<ProjectPageUI> => {
       apiEndpoint: SUBGRAPH_URL,
     });
 
-    const { project } = await projectPageQuery({ id });
+    const { Project } = await projectPageQuery({ id });
 
-    if (!project) {
-      throw new Error('No project found');
+    if (!Project[0]) {
+      throw new Error('No Project found');
     }
+
+    const project = Project[0];
 
     const pointer = project.metadata?.pointer;
 
