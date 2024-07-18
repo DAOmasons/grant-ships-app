@@ -7754,6 +7754,12 @@ const merger = new(StitchingMerger as any)({
         },
         location: 'GetUserProjectsDocument.graphql'
       },{
+        document: GetShipFundsAvailableDocument,
+        get rawSDL() {
+          return printWithCache(GetShipFundsAvailableDocument);
+        },
+        location: 'GetShipFundsAvailableDocument.graphql'
+      },{
         document: GetShipIdByHatIdDocument,
         get rawSDL() {
           return printWithCache(GetShipIdByHatIdDocument);
@@ -7866,6 +7872,13 @@ export type GetUserProjectsQuery = { Project: Array<(
     Pick<Project, 'id' | 'name' | 'profileId' | 'nonce' | 'anchor' | 'owner'>
     & { metadata?: Maybe<Pick<RawMetadata, 'protocol' | 'pointer'>> }
   )> };
+
+export type getShipFundsAvailableQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type getShipFundsAvailableQuery = { GrantShip: Array<Pick<GrantShip, 'totalAvailableFunds'>> };
 
 export type getShipIdByHatIdQueryVariables = Exact<{
   hatId: Scalars['String'];
@@ -7992,6 +8005,13 @@ export const GetUserProjectsDocument = gql`
 }
     ${ProjectDetailsFragmentDoc}
 ${RawMetadataFragmentDoc}` as unknown as DocumentNode<GetUserProjectsQuery, GetUserProjectsQueryVariables>;
+export const getShipFundsAvailableDocument = gql`
+    query getShipFundsAvailable($id: String!) {
+  GrantShip(where: {id: {_eq: $id}}) {
+    totalAvailableFunds
+  }
+}
+    ` as unknown as DocumentNode<getShipFundsAvailableQuery, getShipFundsAvailableQueryVariables>;
 export const getShipIdByHatIdDocument = gql`
     query getShipIdByHatId($hatId: String!) {
   GrantShip(where: {hatId: {_eq: $hatId}}) {
@@ -8023,6 +8043,7 @@ ${FacShipDataFragmentDoc}` as unknown as DocumentNode<getUserDataQuery, getUserD
 
 
 
+
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
@@ -8037,6 +8058,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetUserProjects(variables: GetUserProjectsQueryVariables, options?: C): Promise<GetUserProjectsQuery> {
       return requester<GetUserProjectsQuery, GetUserProjectsQueryVariables>(GetUserProjectsDocument, variables, options) as Promise<GetUserProjectsQuery>;
+    },
+    getShipFundsAvailable(variables: getShipFundsAvailableQueryVariables, options?: C): Promise<getShipFundsAvailableQuery> {
+      return requester<getShipFundsAvailableQuery, getShipFundsAvailableQueryVariables>(getShipFundsAvailableDocument, variables, options) as Promise<getShipFundsAvailableQuery>;
     },
     getShipIdByHatId(variables: getShipIdByHatIdQueryVariables, options?: C): Promise<getShipIdByHatIdQuery> {
       return requester<getShipIdByHatIdQuery, getShipIdByHatIdQueryVariables>(getShipIdByHatIdDocument, variables, options) as Promise<getShipIdByHatIdQuery>;

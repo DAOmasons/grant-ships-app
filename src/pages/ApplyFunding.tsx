@@ -72,7 +72,7 @@ const getShipFunds = async (id: string) => {
 
   const res = await getShipFundsAvailable({ id });
 
-  return res.grantShip?.totalAvailableFunds;
+  return res.GrantShip?.[0].totalAvailableFunds;
 };
 
 export const ApplyFunding = () => {
