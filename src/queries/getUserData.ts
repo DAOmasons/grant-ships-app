@@ -16,7 +16,7 @@ import { PROJECT_FILTER_LIST } from '../constants/filterLists';
 type ShipMetadataType = z.infer<typeof ShipProfileMetadata>;
 
 type UserProjectData = ProjectDetailsFragment & {
-  metadata: RawMetadataFragment;
+  metadata: RawMetadataFragment | null;
   grants: { grantStatus: number; shipId: { id: string } }[];
 };
 
@@ -75,7 +75,7 @@ const checkIsShipOperator = async (address: string) => {
         hatId: isOperator.hatId.toString(),
       });
 
-      const shipAddress = result?.grantShips?.[0]?.id;
+      const shipAddress = result?.GrantShip?.[0]?.id;
 
       if (!shipAddress) {
         return false;
@@ -134,7 +134,7 @@ export const getUserData = async (address: string): Promise<UserData> => {
     if (isShipOperator) {
       return {
         ...data,
-        projects: filteredProjects,
+        projects: filteredProjects as UserProjectData[],
         isFacilitator,
         isShipOperator: true,
         shipAddress: isShipOperator.shipAddress,
@@ -153,7 +153,7 @@ export const getUserData = async (address: string): Promise<UserData> => {
 
       return {
         ...data,
-        projects: filteredProjects,
+        projects: filteredProjects as UserProjectData[],
         isFacilitator,
         isShipOperator: false,
         shipApplicants: resolved as ShipApplicantData[],
@@ -162,7 +162,7 @@ export const getUserData = async (address: string): Promise<UserData> => {
 
     return {
       ...data,
-      projects: filteredProjects,
+      projects: filteredProjects as UserProjectData[],
       isFacilitator,
       isShipOperator,
       shipApplicants: [],
