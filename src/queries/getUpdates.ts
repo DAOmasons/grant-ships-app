@@ -10,11 +10,11 @@ export const getUpdates = async (entityAddress: string) => {
 
     const result = await getUpdates({ entityAddress: entityAddress });
 
-    if (!result.updates) {
+    if (!result.Update) {
       throw new Error('No updates found');
     }
 
-    const resolvedUpdates = await resolveUpdates(result.updates);
+    const resolvedUpdates = await resolveUpdates(result.Update);
 
     return resolvedUpdates;
   } catch (error) {

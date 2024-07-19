@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { UpdateFragment } from '../.graphclient';
+import { UpdateBodyFragment } from '../.graphclient';
 import {
   ContentSchema,
   basicUpdateSchema,
@@ -8,14 +8,14 @@ import { getIpfsJson } from '../utils/ipfs/get';
 
 type BasicUpdate = z.infer<typeof basicUpdateSchema>;
 
-type ResolvedUpdate = UpdateFragment & {
+type ResolvedUpdate = UpdateBodyFragment & {
   content: BasicUpdate;
 };
 
-export const resolveUpdates = async (updateData: UpdateFragment[]) => {
+export const resolveUpdates = async (updateData: UpdateBodyFragment[]) => {
   const resolved = await Promise.all(
     updateData.map(async (update) => {
-      const res = await getIpfsJson(update.content.pointer);
+      const res = await getIpfsJson(update.content!!.pointer);
 
       if (res.contentSchema === ContentSchema.BasicUpdate) {
         const validated = basicUpdateSchema.safeParse(res);
