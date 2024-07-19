@@ -20,8 +20,8 @@ import { getMesh, ExecuteMeshFn, SubscribeMeshFn, MeshContext as BaseMeshContext
 import { MeshStore, FsStoreStorageAdapter } from '@graphql-mesh/store';
 import { path as pathModule } from '@graphql-mesh/cross-helpers';
 import { ImportFn } from '@graphql-mesh/types';
-import type { GrantShipsTypes } from './sources/grant-ships/types';
 import type { GsVotingTypes } from './sources/gs-voting/types';
+import type { GrantShipsTypes } from './sources/grant-ships/types';
 import * as importedModule$0 from "./sources/grant-ships/introspectionSchema";
 import * as importedModule$1 from "./sources/gs-voting/introspectionSchema";
 export type Maybe<T> = T | null;
@@ -8465,6 +8465,18 @@ const merger = new(StitchingMerger as any)({
         },
         location: 'GetUserProjectsDocument.graphql'
       },{
+        document: GetRecentTransactionDocument,
+        get rawSDL() {
+          return printWithCache(GetRecentTransactionDocument);
+        },
+        location: 'GetRecentTransactionDocument.graphql'
+      },{
+        document: GetRecentEnvioDocument,
+        get rawSDL() {
+          return printWithCache(GetRecentEnvioDocument);
+        },
+        location: 'GetRecentEnvioDocument.graphql'
+      },{
         document: GetShipFundsAvailableDocument,
         get rawSDL() {
           return printWithCache(GetShipFundsAvailableDocument);
@@ -8675,6 +8687,20 @@ export type GetUserProjectsQuery = { Project: Array<(
     Pick<Project, 'id' | 'name' | 'profileId' | 'nonce' | 'anchor' | 'owner'>
     & { metadata?: Maybe<Pick<RawMetadata, 'protocol' | 'pointer'>> }
   )> };
+
+export type getRecentTransactionQueryVariables = Exact<{
+  txHash: Scalars['String'];
+}>;
+
+
+export type getRecentTransactionQuery = { Transaction: Array<Pick<Transaction, 'id'>> };
+
+export type getRecentEnvioQueryVariables = Exact<{
+  txHash: Scalars['String'];
+}>;
+
+
+export type getRecentEnvioQuery = { EnvioTX: Array<Pick<EnvioTX, 'id'>> };
 
 export type getShipFundsAvailableQueryVariables = Exact<{
   id: Scalars['String'];
@@ -8927,6 +8953,20 @@ export const GetUserProjectsDocument = gql`
 }
     ${ProjectDetailsFragmentDoc}
 ${RawMetadataFragmentDoc}` as unknown as DocumentNode<GetUserProjectsQuery, GetUserProjectsQueryVariables>;
+export const getRecentTransactionDocument = gql`
+    query getRecentTransaction($txHash: String!) {
+  Transaction(where: {id: {_eq: $txHash}}) {
+    id
+  }
+}
+    ` as unknown as DocumentNode<getRecentTransactionQuery, getRecentTransactionQueryVariables>;
+export const getRecentEnvioDocument = gql`
+    query getRecentEnvio($txHash: String!) {
+  EnvioTX(where: {id: {_eq: $txHash}}) {
+    id
+  }
+}
+    ` as unknown as DocumentNode<getRecentEnvioQuery, getRecentEnvioQueryVariables>;
 export const getShipFundsAvailableDocument = gql`
     query getShipFundsAvailable($id: String!) {
   GrantShip(where: {id: {_eq: $id}}) {
@@ -9010,6 +9050,8 @@ export const ShipsPageQueryDocument = gql`
 
 
 
+
+
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
@@ -9030,6 +9072,12 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetUserProjects(variables: GetUserProjectsQueryVariables, options?: C): Promise<GetUserProjectsQuery> {
       return requester<GetUserProjectsQuery, GetUserProjectsQueryVariables>(GetUserProjectsDocument, variables, options) as Promise<GetUserProjectsQuery>;
+    },
+    getRecentTransaction(variables: getRecentTransactionQueryVariables, options?: C): Promise<getRecentTransactionQuery> {
+      return requester<getRecentTransactionQuery, getRecentTransactionQueryVariables>(getRecentTransactionDocument, variables, options) as Promise<getRecentTransactionQuery>;
+    },
+    getRecentEnvio(variables: getRecentEnvioQueryVariables, options?: C): Promise<getRecentEnvioQuery> {
+      return requester<getRecentEnvioQuery, getRecentEnvioQueryVariables>(getRecentEnvioDocument, variables, options) as Promise<getRecentEnvioQuery>;
     },
     getShipFundsAvailable(variables: getShipFundsAvailableQueryVariables, options?: C): Promise<getShipFundsAvailableQuery> {
       return requester<getShipFundsAvailableQuery, getShipFundsAvailableQueryVariables>(getShipFundsAvailableDocument, variables, options) as Promise<getShipFundsAvailableQuery>;
