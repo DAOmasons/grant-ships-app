@@ -20,8 +20,8 @@ import { getMesh, ExecuteMeshFn, SubscribeMeshFn, MeshContext as BaseMeshContext
 import { MeshStore, FsStoreStorageAdapter } from '@graphql-mesh/store';
 import { path as pathModule } from '@graphql-mesh/cross-helpers';
 import { ImportFn } from '@graphql-mesh/types';
-import type { GrantShipsTypes } from './sources/grant-ships/types';
 import type { GsVotingTypes } from './sources/gs-voting/types';
+import type { GrantShipsTypes } from './sources/grant-ships/types';
 import * as importedModule$0 from "./sources/grant-ships/introspectionSchema";
 import * as importedModule$1 from "./sources/gs-voting/introspectionSchema";
 export type Maybe<T> = T | null;
@@ -51,6 +51,18 @@ export type Scalars = {
 };
 
 export type Query = {
+  /** fetch data from the table: "FeedCard" */
+  FeedCard: Array<FeedCard>;
+  /** fetch data from the table: "FeedCard" using primary key columns */
+  FeedCard_by_pk?: Maybe<FeedCard>;
+  /** fetch data from the table: "FeedItemEmbed" */
+  FeedItemEmbed: Array<FeedItemEmbed>;
+  /** fetch data from the table: "FeedItemEmbed" using primary key columns */
+  FeedItemEmbed_by_pk?: Maybe<FeedItemEmbed>;
+  /** fetch data from the table: "FeedItemEntity" */
+  FeedItemEntity: Array<FeedItemEntity>;
+  /** fetch data from the table: "FeedItemEntity" using primary key columns */
+  FeedItemEntity_by_pk?: Maybe<FeedItemEntity>;
   /** fetch data from the table: "GMInitParams" */
   GMInitParams: Array<GMInitParams>;
   /** fetch data from the table: "GMInitParams" using primary key columns */
@@ -95,10 +107,14 @@ export type Query = {
   RawMetadata: Array<RawMetadata>;
   /** fetch data from the table: "RawMetadata" using primary key columns */
   RawMetadata_by_pk?: Maybe<RawMetadata>;
-  /** fetch data from the table: "Test" */
-  Test: Array<Test>;
-  /** fetch data from the table: "Test" using primary key columns */
-  Test_by_pk?: Maybe<Test>;
+  /** fetch data from the table: "Transaction" */
+  Transaction: Array<Transaction>;
+  /** fetch data from the table: "Transaction" using primary key columns */
+  Transaction_by_pk?: Maybe<Transaction>;
+  /** fetch data from the table: "Update" */
+  Update: Array<Update>;
+  /** fetch data from the table: "Update" using primary key columns */
+  Update_by_pk?: Maybe<Update>;
   /** fetch data from the table: "chain_metadata" */
   chain_metadata: Array<chain_metadata>;
   /** fetch data from the table: "chain_metadata" using primary key columns */
@@ -205,6 +221,48 @@ export type Query = {
   TVParams: Array<TVParams>;
   /** fetch data from the table: "TVParams" using primary key columns */
   TVParams_by_pk?: Maybe<TVParams>;
+};
+
+
+export type QueryFeedCardArgs = {
+  distinct_on?: InputMaybe<Array<FeedCard_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<FeedCard_order_by>>;
+  where?: InputMaybe<FeedCard_bool_exp>;
+};
+
+
+export type QueryFeedCard_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type QueryFeedItemEmbedArgs = {
+  distinct_on?: InputMaybe<Array<FeedItemEmbed_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<FeedItemEmbed_order_by>>;
+  where?: InputMaybe<FeedItemEmbed_bool_exp>;
+};
+
+
+export type QueryFeedItemEmbed_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type QueryFeedItemEntityArgs = {
+  distinct_on?: InputMaybe<Array<FeedItemEntity_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<FeedItemEntity_order_by>>;
+  where?: InputMaybe<FeedItemEntity_bool_exp>;
+};
+
+
+export type QueryFeedItemEntity_by_pkArgs = {
+  id: Scalars['String'];
 };
 
 
@@ -362,16 +420,30 @@ export type QueryRawMetadata_by_pkArgs = {
 };
 
 
-export type QueryTestArgs = {
-  distinct_on?: InputMaybe<Array<Test_select_column>>;
+export type QueryTransactionArgs = {
+  distinct_on?: InputMaybe<Array<Transaction_select_column>>;
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Test_order_by>>;
-  where?: InputMaybe<Test_bool_exp>;
+  order_by?: InputMaybe<Array<Transaction_order_by>>;
+  where?: InputMaybe<Transaction_bool_exp>;
 };
 
 
-export type QueryTest_by_pkArgs = {
+export type QueryTransaction_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type QueryUpdateArgs = {
+  distinct_on?: InputMaybe<Array<Update_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Update_order_by>>;
+  where?: InputMaybe<Update_bool_exp>;
+};
+
+
+export type QueryUpdate_by_pkArgs = {
   id: Scalars['String'];
 };
 
@@ -762,6 +834,24 @@ export type QueryTVParams_by_pkArgs = {
 };
 
 export type Subscription = {
+  /** fetch data from the table: "FeedCard" */
+  FeedCard: Array<FeedCard>;
+  /** fetch data from the table: "FeedCard" using primary key columns */
+  FeedCard_by_pk?: Maybe<FeedCard>;
+  /** fetch data from the table in a streaming manner: "FeedCard" */
+  FeedCard_stream: Array<FeedCard>;
+  /** fetch data from the table: "FeedItemEmbed" */
+  FeedItemEmbed: Array<FeedItemEmbed>;
+  /** fetch data from the table: "FeedItemEmbed" using primary key columns */
+  FeedItemEmbed_by_pk?: Maybe<FeedItemEmbed>;
+  /** fetch data from the table in a streaming manner: "FeedItemEmbed" */
+  FeedItemEmbed_stream: Array<FeedItemEmbed>;
+  /** fetch data from the table: "FeedItemEntity" */
+  FeedItemEntity: Array<FeedItemEntity>;
+  /** fetch data from the table: "FeedItemEntity" using primary key columns */
+  FeedItemEntity_by_pk?: Maybe<FeedItemEntity>;
+  /** fetch data from the table in a streaming manner: "FeedItemEntity" */
+  FeedItemEntity_stream: Array<FeedItemEntity>;
   /** fetch data from the table: "GMInitParams" */
   GMInitParams: Array<GMInitParams>;
   /** fetch data from the table: "GMInitParams" using primary key columns */
@@ -828,12 +918,18 @@ export type Subscription = {
   RawMetadata_by_pk?: Maybe<RawMetadata>;
   /** fetch data from the table in a streaming manner: "RawMetadata" */
   RawMetadata_stream: Array<RawMetadata>;
-  /** fetch data from the table: "Test" */
-  Test: Array<Test>;
-  /** fetch data from the table: "Test" using primary key columns */
-  Test_by_pk?: Maybe<Test>;
-  /** fetch data from the table in a streaming manner: "Test" */
-  Test_stream: Array<Test>;
+  /** fetch data from the table: "Transaction" */
+  Transaction: Array<Transaction>;
+  /** fetch data from the table: "Transaction" using primary key columns */
+  Transaction_by_pk?: Maybe<Transaction>;
+  /** fetch data from the table in a streaming manner: "Transaction" */
+  Transaction_stream: Array<Transaction>;
+  /** fetch data from the table: "Update" */
+  Update: Array<Update>;
+  /** fetch data from the table: "Update" using primary key columns */
+  Update_by_pk?: Maybe<Update>;
+  /** fetch data from the table in a streaming manner: "Update" */
+  Update_stream: Array<Update>;
   /** fetch data from the table: "chain_metadata" */
   chain_metadata: Array<chain_metadata>;
   /** fetch data from the table: "chain_metadata" using primary key columns */
@@ -992,6 +1088,69 @@ export type Subscription = {
   TVParams_by_pk?: Maybe<TVParams>;
   /** fetch data from the table in a streaming manner: "TVParams" */
   TVParams_stream: Array<TVParams>;
+};
+
+
+export type SubscriptionFeedCardArgs = {
+  distinct_on?: InputMaybe<Array<FeedCard_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<FeedCard_order_by>>;
+  where?: InputMaybe<FeedCard_bool_exp>;
+};
+
+
+export type SubscriptionFeedCard_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type SubscriptionFeedCard_streamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<FeedCard_stream_cursor_input>>;
+  where?: InputMaybe<FeedCard_bool_exp>;
+};
+
+
+export type SubscriptionFeedItemEmbedArgs = {
+  distinct_on?: InputMaybe<Array<FeedItemEmbed_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<FeedItemEmbed_order_by>>;
+  where?: InputMaybe<FeedItemEmbed_bool_exp>;
+};
+
+
+export type SubscriptionFeedItemEmbed_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type SubscriptionFeedItemEmbed_streamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<FeedItemEmbed_stream_cursor_input>>;
+  where?: InputMaybe<FeedItemEmbed_bool_exp>;
+};
+
+
+export type SubscriptionFeedItemEntityArgs = {
+  distinct_on?: InputMaybe<Array<FeedItemEntity_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<FeedItemEntity_order_by>>;
+  where?: InputMaybe<FeedItemEntity_bool_exp>;
+};
+
+
+export type SubscriptionFeedItemEntity_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type SubscriptionFeedItemEntity_streamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<FeedItemEntity_stream_cursor_input>>;
+  where?: InputMaybe<FeedItemEntity_bool_exp>;
 };
 
 
@@ -1226,24 +1385,45 @@ export type SubscriptionRawMetadata_streamArgs = {
 };
 
 
-export type SubscriptionTestArgs = {
-  distinct_on?: InputMaybe<Array<Test_select_column>>;
+export type SubscriptionTransactionArgs = {
+  distinct_on?: InputMaybe<Array<Transaction_select_column>>;
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Test_order_by>>;
-  where?: InputMaybe<Test_bool_exp>;
+  order_by?: InputMaybe<Array<Transaction_order_by>>;
+  where?: InputMaybe<Transaction_bool_exp>;
 };
 
 
-export type SubscriptionTest_by_pkArgs = {
+export type SubscriptionTransaction_by_pkArgs = {
   id: Scalars['String'];
 };
 
 
-export type SubscriptionTest_streamArgs = {
+export type SubscriptionTransaction_streamArgs = {
   batch_size: Scalars['Int'];
-  cursor: Array<InputMaybe<Test_stream_cursor_input>>;
-  where?: InputMaybe<Test_bool_exp>;
+  cursor: Array<InputMaybe<Transaction_stream_cursor_input>>;
+  where?: InputMaybe<Transaction_bool_exp>;
+};
+
+
+export type SubscriptionUpdateArgs = {
+  distinct_on?: InputMaybe<Array<Update_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Update_order_by>>;
+  where?: InputMaybe<Update_bool_exp>;
+};
+
+
+export type SubscriptionUpdate_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type SubscriptionUpdate_streamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Update_stream_cursor_input>>;
+  where?: InputMaybe<Update_bool_exp>;
 };
 
 
@@ -1825,6 +2005,260 @@ export type Boolean_comparison_exp = {
   _lte?: InputMaybe<Scalars['Boolean']>;
   _neq?: InputMaybe<Scalars['Boolean']>;
   _nin?: InputMaybe<Array<Scalars['Boolean']>>;
+};
+
+/** columns and relationships of "FeedCard" */
+export type FeedCard = {
+  /** An object relationship */
+  content?: Maybe<RawMetadata>;
+  content_id?: Maybe<Scalars['String']>;
+  db_write_timestamp?: Maybe<Scalars['timestamp']>;
+  /** An object relationship */
+  domain?: Maybe<GameManager>;
+  domain_id?: Maybe<Scalars['String']>;
+  /** An object relationship */
+  embed?: Maybe<FeedItemEmbed>;
+  embed_id?: Maybe<Scalars['String']>;
+  externalLink?: Maybe<Scalars['String']>;
+  id: Scalars['String'];
+  internalLink?: Maybe<Scalars['String']>;
+  message?: Maybe<Scalars['String']>;
+  /** An object relationship */
+  object?: Maybe<FeedItemEntity>;
+  object_id?: Maybe<Scalars['String']>;
+  sender?: Maybe<Scalars['String']>;
+  /** An object relationship */
+  subject?: Maybe<FeedItemEntity>;
+  subjectMetadataPointer: Scalars['String'];
+  subject_id: Scalars['String'];
+  tag: Scalars['String'];
+  timestamp: Scalars['Int'];
+};
+
+/** Boolean expression to filter rows from the table "FeedCard". All fields are combined with a logical 'AND'. */
+export type FeedCard_bool_exp = {
+  _and?: InputMaybe<Array<FeedCard_bool_exp>>;
+  _not?: InputMaybe<FeedCard_bool_exp>;
+  _or?: InputMaybe<Array<FeedCard_bool_exp>>;
+  content?: InputMaybe<RawMetadata_bool_exp>;
+  content_id?: InputMaybe<String_comparison_exp>;
+  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
+  domain?: InputMaybe<GameManager_bool_exp>;
+  domain_id?: InputMaybe<String_comparison_exp>;
+  embed?: InputMaybe<FeedItemEmbed_bool_exp>;
+  embed_id?: InputMaybe<String_comparison_exp>;
+  externalLink?: InputMaybe<String_comparison_exp>;
+  id?: InputMaybe<String_comparison_exp>;
+  internalLink?: InputMaybe<String_comparison_exp>;
+  message?: InputMaybe<String_comparison_exp>;
+  object?: InputMaybe<FeedItemEntity_bool_exp>;
+  object_id?: InputMaybe<String_comparison_exp>;
+  sender?: InputMaybe<String_comparison_exp>;
+  subject?: InputMaybe<FeedItemEntity_bool_exp>;
+  subjectMetadataPointer?: InputMaybe<String_comparison_exp>;
+  subject_id?: InputMaybe<String_comparison_exp>;
+  tag?: InputMaybe<String_comparison_exp>;
+  timestamp?: InputMaybe<Int_comparison_exp>;
+};
+
+/** Ordering options when selecting data from "FeedCard". */
+export type FeedCard_order_by = {
+  content?: InputMaybe<RawMetadata_order_by>;
+  content_id?: InputMaybe<order_by>;
+  db_write_timestamp?: InputMaybe<order_by>;
+  domain?: InputMaybe<GameManager_order_by>;
+  domain_id?: InputMaybe<order_by>;
+  embed?: InputMaybe<FeedItemEmbed_order_by>;
+  embed_id?: InputMaybe<order_by>;
+  externalLink?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  internalLink?: InputMaybe<order_by>;
+  message?: InputMaybe<order_by>;
+  object?: InputMaybe<FeedItemEntity_order_by>;
+  object_id?: InputMaybe<order_by>;
+  sender?: InputMaybe<order_by>;
+  subject?: InputMaybe<FeedItemEntity_order_by>;
+  subjectMetadataPointer?: InputMaybe<order_by>;
+  subject_id?: InputMaybe<order_by>;
+  tag?: InputMaybe<order_by>;
+  timestamp?: InputMaybe<order_by>;
+};
+
+/** select columns of table "FeedCard" */
+export type FeedCard_select_column =
+  /** column name */
+  | 'content_id'
+  /** column name */
+  | 'db_write_timestamp'
+  /** column name */
+  | 'domain_id'
+  /** column name */
+  | 'embed_id'
+  /** column name */
+  | 'externalLink'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'internalLink'
+  /** column name */
+  | 'message'
+  /** column name */
+  | 'object_id'
+  /** column name */
+  | 'sender'
+  /** column name */
+  | 'subjectMetadataPointer'
+  /** column name */
+  | 'subject_id'
+  /** column name */
+  | 'tag'
+  /** column name */
+  | 'timestamp';
+
+/** Streaming cursor of the table "FeedCard" */
+export type FeedCard_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: FeedCard_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type FeedCard_stream_cursor_value_input = {
+  content_id?: InputMaybe<Scalars['String']>;
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
+  domain_id?: InputMaybe<Scalars['String']>;
+  embed_id?: InputMaybe<Scalars['String']>;
+  externalLink?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['String']>;
+  internalLink?: InputMaybe<Scalars['String']>;
+  message?: InputMaybe<Scalars['String']>;
+  object_id?: InputMaybe<Scalars['String']>;
+  sender?: InputMaybe<Scalars['String']>;
+  subjectMetadataPointer?: InputMaybe<Scalars['String']>;
+  subject_id?: InputMaybe<Scalars['String']>;
+  tag?: InputMaybe<Scalars['String']>;
+  timestamp?: InputMaybe<Scalars['Int']>;
+};
+
+/** columns and relationships of "FeedItemEmbed" */
+export type FeedItemEmbed = {
+  content?: Maybe<Scalars['String']>;
+  db_write_timestamp?: Maybe<Scalars['timestamp']>;
+  id: Scalars['String'];
+  key?: Maybe<Scalars['String']>;
+  pointer?: Maybe<Scalars['String']>;
+  protocol?: Maybe<Scalars['numeric']>;
+};
+
+/** Boolean expression to filter rows from the table "FeedItemEmbed". All fields are combined with a logical 'AND'. */
+export type FeedItemEmbed_bool_exp = {
+  _and?: InputMaybe<Array<FeedItemEmbed_bool_exp>>;
+  _not?: InputMaybe<FeedItemEmbed_bool_exp>;
+  _or?: InputMaybe<Array<FeedItemEmbed_bool_exp>>;
+  content?: InputMaybe<String_comparison_exp>;
+  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
+  id?: InputMaybe<String_comparison_exp>;
+  key?: InputMaybe<String_comparison_exp>;
+  pointer?: InputMaybe<String_comparison_exp>;
+  protocol?: InputMaybe<numeric_comparison_exp>;
+};
+
+/** Ordering options when selecting data from "FeedItemEmbed". */
+export type FeedItemEmbed_order_by = {
+  content?: InputMaybe<order_by>;
+  db_write_timestamp?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  key?: InputMaybe<order_by>;
+  pointer?: InputMaybe<order_by>;
+  protocol?: InputMaybe<order_by>;
+};
+
+/** select columns of table "FeedItemEmbed" */
+export type FeedItemEmbed_select_column =
+  /** column name */
+  | 'content'
+  /** column name */
+  | 'db_write_timestamp'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'key'
+  /** column name */
+  | 'pointer'
+  /** column name */
+  | 'protocol';
+
+/** Streaming cursor of the table "FeedItemEmbed" */
+export type FeedItemEmbed_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: FeedItemEmbed_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type FeedItemEmbed_stream_cursor_value_input = {
+  content?: InputMaybe<Scalars['String']>;
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
+  id?: InputMaybe<Scalars['String']>;
+  key?: InputMaybe<Scalars['String']>;
+  pointer?: InputMaybe<Scalars['String']>;
+  protocol?: InputMaybe<Scalars['numeric']>;
+};
+
+/** columns and relationships of "FeedItemEntity" */
+export type FeedItemEntity = {
+  db_write_timestamp?: Maybe<Scalars['timestamp']>;
+  entityType: Scalars['String'];
+  id: Scalars['String'];
+  name: Scalars['String'];
+};
+
+/** Boolean expression to filter rows from the table "FeedItemEntity". All fields are combined with a logical 'AND'. */
+export type FeedItemEntity_bool_exp = {
+  _and?: InputMaybe<Array<FeedItemEntity_bool_exp>>;
+  _not?: InputMaybe<FeedItemEntity_bool_exp>;
+  _or?: InputMaybe<Array<FeedItemEntity_bool_exp>>;
+  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
+  entityType?: InputMaybe<String_comparison_exp>;
+  id?: InputMaybe<String_comparison_exp>;
+  name?: InputMaybe<String_comparison_exp>;
+};
+
+/** Ordering options when selecting data from "FeedItemEntity". */
+export type FeedItemEntity_order_by = {
+  db_write_timestamp?: InputMaybe<order_by>;
+  entityType?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  name?: InputMaybe<order_by>;
+};
+
+/** select columns of table "FeedItemEntity" */
+export type FeedItemEntity_select_column =
+  /** column name */
+  | 'db_write_timestamp'
+  /** column name */
+  | 'entityType'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'name';
+
+/** Streaming cursor of the table "FeedItemEntity" */
+export type FeedItemEntity_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: FeedItemEntity_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type FeedItemEntity_stream_cursor_value_input = {
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
+  entityType?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
 };
 
 /** columns and relationships of "GMInitParams" */
@@ -3374,52 +3808,174 @@ export type String_comparison_exp = {
   _similar?: InputMaybe<Scalars['String']>;
 };
 
-/** columns and relationships of "Test" */
-export type Test = {
+/** columns and relationships of "Transaction" */
+export type Transaction = {
+  blockNumber: Scalars['numeric'];
   db_write_timestamp?: Maybe<Scalars['timestamp']>;
   id: Scalars['String'];
-  name: Scalars['String'];
+  srcAddress: Scalars['String'];
+  txHash: Scalars['String'];
 };
 
-/** Boolean expression to filter rows from the table "Test". All fields are combined with a logical 'AND'. */
-export type Test_bool_exp = {
-  _and?: InputMaybe<Array<Test_bool_exp>>;
-  _not?: InputMaybe<Test_bool_exp>;
-  _or?: InputMaybe<Array<Test_bool_exp>>;
+/** Boolean expression to filter rows from the table "Transaction". All fields are combined with a logical 'AND'. */
+export type Transaction_bool_exp = {
+  _and?: InputMaybe<Array<Transaction_bool_exp>>;
+  _not?: InputMaybe<Transaction_bool_exp>;
+  _or?: InputMaybe<Array<Transaction_bool_exp>>;
+  blockNumber?: InputMaybe<numeric_comparison_exp>;
   db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
   id?: InputMaybe<String_comparison_exp>;
-  name?: InputMaybe<String_comparison_exp>;
+  srcAddress?: InputMaybe<String_comparison_exp>;
+  txHash?: InputMaybe<String_comparison_exp>;
 };
 
-/** Ordering options when selecting data from "Test". */
-export type Test_order_by = {
+/** Ordering options when selecting data from "Transaction". */
+export type Transaction_order_by = {
+  blockNumber?: InputMaybe<order_by>;
   db_write_timestamp?: InputMaybe<order_by>;
   id?: InputMaybe<order_by>;
-  name?: InputMaybe<order_by>;
+  srcAddress?: InputMaybe<order_by>;
+  txHash?: InputMaybe<order_by>;
 };
 
-/** select columns of table "Test" */
-export type Test_select_column =
+/** select columns of table "Transaction" */
+export type Transaction_select_column =
+  /** column name */
+  | 'blockNumber'
   /** column name */
   | 'db_write_timestamp'
   /** column name */
   | 'id'
   /** column name */
-  | 'name';
+  | 'srcAddress'
+  /** column name */
+  | 'txHash';
 
-/** Streaming cursor of the table "Test" */
-export type Test_stream_cursor_input = {
+/** Streaming cursor of the table "Transaction" */
+export type Transaction_stream_cursor_input = {
   /** Stream column input with initial value */
-  initial_value: Test_stream_cursor_value_input;
+  initial_value: Transaction_stream_cursor_value_input;
   /** cursor ordering */
   ordering?: InputMaybe<cursor_ordering>;
 };
 
 /** Initial value of the column from where the streaming should start */
-export type Test_stream_cursor_value_input = {
+export type Transaction_stream_cursor_value_input = {
+  blockNumber?: InputMaybe<Scalars['numeric']>;
   db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
   id?: InputMaybe<Scalars['String']>;
-  name?: InputMaybe<Scalars['String']>;
+  srcAddress?: InputMaybe<Scalars['String']>;
+  txHash?: InputMaybe<Scalars['String']>;
+};
+
+/** columns and relationships of "Update" */
+export type Update = {
+  /** An object relationship */
+  content?: Maybe<RawMetadata>;
+  contentSchema: Scalars['Int'];
+  content_id: Scalars['String'];
+  db_write_timestamp?: Maybe<Scalars['timestamp']>;
+  /** An object relationship */
+  domain?: Maybe<GameManager>;
+  domain_id: Scalars['String'];
+  entityAddress: Scalars['String'];
+  id: Scalars['String'];
+  postDecorator: Scalars['Int'];
+  postedBy: Scalars['String'];
+  posterRole: Scalars['numeric'];
+  scope: Scalars['Int'];
+  tag: Scalars['String'];
+  timestamp: Scalars['Int'];
+};
+
+/** Boolean expression to filter rows from the table "Update". All fields are combined with a logical 'AND'. */
+export type Update_bool_exp = {
+  _and?: InputMaybe<Array<Update_bool_exp>>;
+  _not?: InputMaybe<Update_bool_exp>;
+  _or?: InputMaybe<Array<Update_bool_exp>>;
+  content?: InputMaybe<RawMetadata_bool_exp>;
+  contentSchema?: InputMaybe<Int_comparison_exp>;
+  content_id?: InputMaybe<String_comparison_exp>;
+  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
+  domain?: InputMaybe<GameManager_bool_exp>;
+  domain_id?: InputMaybe<String_comparison_exp>;
+  entityAddress?: InputMaybe<String_comparison_exp>;
+  id?: InputMaybe<String_comparison_exp>;
+  postDecorator?: InputMaybe<Int_comparison_exp>;
+  postedBy?: InputMaybe<String_comparison_exp>;
+  posterRole?: InputMaybe<numeric_comparison_exp>;
+  scope?: InputMaybe<Int_comparison_exp>;
+  tag?: InputMaybe<String_comparison_exp>;
+  timestamp?: InputMaybe<Int_comparison_exp>;
+};
+
+/** Ordering options when selecting data from "Update". */
+export type Update_order_by = {
+  content?: InputMaybe<RawMetadata_order_by>;
+  contentSchema?: InputMaybe<order_by>;
+  content_id?: InputMaybe<order_by>;
+  db_write_timestamp?: InputMaybe<order_by>;
+  domain?: InputMaybe<GameManager_order_by>;
+  domain_id?: InputMaybe<order_by>;
+  entityAddress?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  postDecorator?: InputMaybe<order_by>;
+  postedBy?: InputMaybe<order_by>;
+  posterRole?: InputMaybe<order_by>;
+  scope?: InputMaybe<order_by>;
+  tag?: InputMaybe<order_by>;
+  timestamp?: InputMaybe<order_by>;
+};
+
+/** select columns of table "Update" */
+export type Update_select_column =
+  /** column name */
+  | 'contentSchema'
+  /** column name */
+  | 'content_id'
+  /** column name */
+  | 'db_write_timestamp'
+  /** column name */
+  | 'domain_id'
+  /** column name */
+  | 'entityAddress'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'postDecorator'
+  /** column name */
+  | 'postedBy'
+  /** column name */
+  | 'posterRole'
+  /** column name */
+  | 'scope'
+  /** column name */
+  | 'tag'
+  /** column name */
+  | 'timestamp';
+
+/** Streaming cursor of the table "Update" */
+export type Update_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: Update_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Update_stream_cursor_value_input = {
+  contentSchema?: InputMaybe<Scalars['Int']>;
+  content_id?: InputMaybe<Scalars['String']>;
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
+  domain_id?: InputMaybe<Scalars['String']>;
+  entityAddress?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['String']>;
+  postDecorator?: InputMaybe<Scalars['Int']>;
+  postedBy?: InputMaybe<Scalars['String']>;
+  posterRole?: InputMaybe<Scalars['numeric']>;
+  scope?: InputMaybe<Scalars['Int']>;
+  tag?: InputMaybe<Scalars['String']>;
+  timestamp?: InputMaybe<Scalars['Int']>;
 };
 
 /** Boolean expression to compare columns of type "_text". All fields are combined with logical 'AND'. */
@@ -6226,6 +6782,24 @@ export type ResolversTypes = ResolversObject<{
   Subscription: ResolverTypeWrapper<{}>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Boolean_comparison_exp: Boolean_comparison_exp;
+  FeedCard: ResolverTypeWrapper<FeedCard>;
+  FeedCard_bool_exp: FeedCard_bool_exp;
+  FeedCard_order_by: FeedCard_order_by;
+  FeedCard_select_column: FeedCard_select_column;
+  FeedCard_stream_cursor_input: FeedCard_stream_cursor_input;
+  FeedCard_stream_cursor_value_input: FeedCard_stream_cursor_value_input;
+  FeedItemEmbed: ResolverTypeWrapper<FeedItemEmbed>;
+  FeedItemEmbed_bool_exp: FeedItemEmbed_bool_exp;
+  FeedItemEmbed_order_by: FeedItemEmbed_order_by;
+  FeedItemEmbed_select_column: FeedItemEmbed_select_column;
+  FeedItemEmbed_stream_cursor_input: FeedItemEmbed_stream_cursor_input;
+  FeedItemEmbed_stream_cursor_value_input: FeedItemEmbed_stream_cursor_value_input;
+  FeedItemEntity: ResolverTypeWrapper<FeedItemEntity>;
+  FeedItemEntity_bool_exp: FeedItemEntity_bool_exp;
+  FeedItemEntity_order_by: FeedItemEntity_order_by;
+  FeedItemEntity_select_column: FeedItemEntity_select_column;
+  FeedItemEntity_stream_cursor_input: FeedItemEntity_stream_cursor_input;
+  FeedItemEntity_stream_cursor_value_input: FeedItemEntity_stream_cursor_value_input;
   GMInitParams: ResolverTypeWrapper<GMInitParams>;
   GMInitParams_bool_exp: GMInitParams_bool_exp;
   GMInitParams_order_by: GMInitParams_order_by;
@@ -6321,12 +6895,18 @@ export type ResolversTypes = ResolversObject<{
   RawMetadata_stream_cursor_value_input: RawMetadata_stream_cursor_value_input;
   String: ResolverTypeWrapper<Scalars['String']>;
   String_comparison_exp: String_comparison_exp;
-  Test: ResolverTypeWrapper<Test>;
-  Test_bool_exp: Test_bool_exp;
-  Test_order_by: Test_order_by;
-  Test_select_column: Test_select_column;
-  Test_stream_cursor_input: Test_stream_cursor_input;
-  Test_stream_cursor_value_input: Test_stream_cursor_value_input;
+  Transaction: ResolverTypeWrapper<Transaction>;
+  Transaction_bool_exp: Transaction_bool_exp;
+  Transaction_order_by: Transaction_order_by;
+  Transaction_select_column: Transaction_select_column;
+  Transaction_stream_cursor_input: Transaction_stream_cursor_input;
+  Transaction_stream_cursor_value_input: Transaction_stream_cursor_value_input;
+  Update: ResolverTypeWrapper<Update>;
+  Update_bool_exp: Update_bool_exp;
+  Update_order_by: Update_order_by;
+  Update_select_column: Update_select_column;
+  Update_stream_cursor_input: Update_stream_cursor_input;
+  Update_stream_cursor_value_input: Update_stream_cursor_value_input;
   _text: ResolverTypeWrapper<Scalars['_text']>;
   _text_comparison_exp: _text_comparison_exp;
   chain_metadata: ResolverTypeWrapper<chain_metadata>;
@@ -6567,6 +7147,21 @@ export type ResolversParentTypes = ResolversObject<{
   Subscription: {};
   Boolean: Scalars['Boolean'];
   Boolean_comparison_exp: Boolean_comparison_exp;
+  FeedCard: FeedCard;
+  FeedCard_bool_exp: FeedCard_bool_exp;
+  FeedCard_order_by: FeedCard_order_by;
+  FeedCard_stream_cursor_input: FeedCard_stream_cursor_input;
+  FeedCard_stream_cursor_value_input: FeedCard_stream_cursor_value_input;
+  FeedItemEmbed: FeedItemEmbed;
+  FeedItemEmbed_bool_exp: FeedItemEmbed_bool_exp;
+  FeedItemEmbed_order_by: FeedItemEmbed_order_by;
+  FeedItemEmbed_stream_cursor_input: FeedItemEmbed_stream_cursor_input;
+  FeedItemEmbed_stream_cursor_value_input: FeedItemEmbed_stream_cursor_value_input;
+  FeedItemEntity: FeedItemEntity;
+  FeedItemEntity_bool_exp: FeedItemEntity_bool_exp;
+  FeedItemEntity_order_by: FeedItemEntity_order_by;
+  FeedItemEntity_stream_cursor_input: FeedItemEntity_stream_cursor_input;
+  FeedItemEntity_stream_cursor_value_input: FeedItemEntity_stream_cursor_value_input;
   GMInitParams: GMInitParams;
   GMInitParams_bool_exp: GMInitParams_bool_exp;
   GMInitParams_order_by: GMInitParams_order_by;
@@ -6651,11 +7246,16 @@ export type ResolversParentTypes = ResolversObject<{
   RawMetadata_stream_cursor_value_input: RawMetadata_stream_cursor_value_input;
   String: Scalars['String'];
   String_comparison_exp: String_comparison_exp;
-  Test: Test;
-  Test_bool_exp: Test_bool_exp;
-  Test_order_by: Test_order_by;
-  Test_stream_cursor_input: Test_stream_cursor_input;
-  Test_stream_cursor_value_input: Test_stream_cursor_value_input;
+  Transaction: Transaction;
+  Transaction_bool_exp: Transaction_bool_exp;
+  Transaction_order_by: Transaction_order_by;
+  Transaction_stream_cursor_input: Transaction_stream_cursor_input;
+  Transaction_stream_cursor_value_input: Transaction_stream_cursor_value_input;
+  Update: Update;
+  Update_bool_exp: Update_bool_exp;
+  Update_order_by: Update_order_by;
+  Update_stream_cursor_input: Update_stream_cursor_input;
+  Update_stream_cursor_value_input: Update_stream_cursor_value_input;
   _text: Scalars['_text'];
   _text_comparison_exp: _text_comparison_exp;
   chain_metadata: chain_metadata;
@@ -6870,6 +7470,12 @@ export type cachedDirectiveArgs = {
 export type cachedDirectiveResolver<Result, Parent, ContextType = MeshContext, Args = cachedDirectiveArgs> = DirectiveResolverFn<Result, Parent, ContextType, Args>;
 
 export type QueryResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = ResolversObject<{
+  FeedCard?: Resolver<Array<ResolversTypes['FeedCard']>, ParentType, ContextType, Partial<QueryFeedCardArgs>>;
+  FeedCard_by_pk?: Resolver<Maybe<ResolversTypes['FeedCard']>, ParentType, ContextType, RequireFields<QueryFeedCard_by_pkArgs, 'id'>>;
+  FeedItemEmbed?: Resolver<Array<ResolversTypes['FeedItemEmbed']>, ParentType, ContextType, Partial<QueryFeedItemEmbedArgs>>;
+  FeedItemEmbed_by_pk?: Resolver<Maybe<ResolversTypes['FeedItemEmbed']>, ParentType, ContextType, RequireFields<QueryFeedItemEmbed_by_pkArgs, 'id'>>;
+  FeedItemEntity?: Resolver<Array<ResolversTypes['FeedItemEntity']>, ParentType, ContextType, Partial<QueryFeedItemEntityArgs>>;
+  FeedItemEntity_by_pk?: Resolver<Maybe<ResolversTypes['FeedItemEntity']>, ParentType, ContextType, RequireFields<QueryFeedItemEntity_by_pkArgs, 'id'>>;
   GMInitParams?: Resolver<Array<ResolversTypes['GMInitParams']>, ParentType, ContextType, Partial<QueryGMInitParamsArgs>>;
   GMInitParams_by_pk?: Resolver<Maybe<ResolversTypes['GMInitParams']>, ParentType, ContextType, RequireFields<QueryGMInitParams_by_pkArgs, 'id'>>;
   GameManager?: Resolver<Array<ResolversTypes['GameManager']>, ParentType, ContextType, Partial<QueryGameManagerArgs>>;
@@ -6892,8 +7498,10 @@ export type QueryResolvers<ContextType = MeshContext, ParentType extends Resolve
   Project_by_pk?: Resolver<Maybe<ResolversTypes['Project']>, ParentType, ContextType, RequireFields<QueryProject_by_pkArgs, 'id'>>;
   RawMetadata?: Resolver<Array<ResolversTypes['RawMetadata']>, ParentType, ContextType, Partial<QueryRawMetadataArgs>>;
   RawMetadata_by_pk?: Resolver<Maybe<ResolversTypes['RawMetadata']>, ParentType, ContextType, RequireFields<QueryRawMetadata_by_pkArgs, 'id'>>;
-  Test?: Resolver<Array<ResolversTypes['Test']>, ParentType, ContextType, Partial<QueryTestArgs>>;
-  Test_by_pk?: Resolver<Maybe<ResolversTypes['Test']>, ParentType, ContextType, RequireFields<QueryTest_by_pkArgs, 'id'>>;
+  Transaction?: Resolver<Array<ResolversTypes['Transaction']>, ParentType, ContextType, Partial<QueryTransactionArgs>>;
+  Transaction_by_pk?: Resolver<Maybe<ResolversTypes['Transaction']>, ParentType, ContextType, RequireFields<QueryTransaction_by_pkArgs, 'id'>>;
+  Update?: Resolver<Array<ResolversTypes['Update']>, ParentType, ContextType, Partial<QueryUpdateArgs>>;
+  Update_by_pk?: Resolver<Maybe<ResolversTypes['Update']>, ParentType, ContextType, RequireFields<QueryUpdate_by_pkArgs, 'id'>>;
   chain_metadata?: Resolver<Array<ResolversTypes['chain_metadata']>, ParentType, ContextType, Partial<Querychain_metadataArgs>>;
   chain_metadata_by_pk?: Resolver<Maybe<ResolversTypes['chain_metadata']>, ParentType, ContextType, RequireFields<Querychain_metadata_by_pkArgs, 'chain_id'>>;
   dynamic_contract_registry?: Resolver<Array<ResolversTypes['dynamic_contract_registry']>, ParentType, ContextType, Partial<Querydynamic_contract_registryArgs>>;
@@ -6950,6 +7558,15 @@ export type QueryResolvers<ContextType = MeshContext, ParentType extends Resolve
 }>;
 
 export type SubscriptionResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Subscription'] = ResolversParentTypes['Subscription']> = ResolversObject<{
+  FeedCard?: SubscriptionResolver<Array<ResolversTypes['FeedCard']>, "FeedCard", ParentType, ContextType, Partial<SubscriptionFeedCardArgs>>;
+  FeedCard_by_pk?: SubscriptionResolver<Maybe<ResolversTypes['FeedCard']>, "FeedCard_by_pk", ParentType, ContextType, RequireFields<SubscriptionFeedCard_by_pkArgs, 'id'>>;
+  FeedCard_stream?: SubscriptionResolver<Array<ResolversTypes['FeedCard']>, "FeedCard_stream", ParentType, ContextType, RequireFields<SubscriptionFeedCard_streamArgs, 'batch_size' | 'cursor'>>;
+  FeedItemEmbed?: SubscriptionResolver<Array<ResolversTypes['FeedItemEmbed']>, "FeedItemEmbed", ParentType, ContextType, Partial<SubscriptionFeedItemEmbedArgs>>;
+  FeedItemEmbed_by_pk?: SubscriptionResolver<Maybe<ResolversTypes['FeedItemEmbed']>, "FeedItemEmbed_by_pk", ParentType, ContextType, RequireFields<SubscriptionFeedItemEmbed_by_pkArgs, 'id'>>;
+  FeedItemEmbed_stream?: SubscriptionResolver<Array<ResolversTypes['FeedItemEmbed']>, "FeedItemEmbed_stream", ParentType, ContextType, RequireFields<SubscriptionFeedItemEmbed_streamArgs, 'batch_size' | 'cursor'>>;
+  FeedItemEntity?: SubscriptionResolver<Array<ResolversTypes['FeedItemEntity']>, "FeedItemEntity", ParentType, ContextType, Partial<SubscriptionFeedItemEntityArgs>>;
+  FeedItemEntity_by_pk?: SubscriptionResolver<Maybe<ResolversTypes['FeedItemEntity']>, "FeedItemEntity_by_pk", ParentType, ContextType, RequireFields<SubscriptionFeedItemEntity_by_pkArgs, 'id'>>;
+  FeedItemEntity_stream?: SubscriptionResolver<Array<ResolversTypes['FeedItemEntity']>, "FeedItemEntity_stream", ParentType, ContextType, RequireFields<SubscriptionFeedItemEntity_streamArgs, 'batch_size' | 'cursor'>>;
   GMInitParams?: SubscriptionResolver<Array<ResolversTypes['GMInitParams']>, "GMInitParams", ParentType, ContextType, Partial<SubscriptionGMInitParamsArgs>>;
   GMInitParams_by_pk?: SubscriptionResolver<Maybe<ResolversTypes['GMInitParams']>, "GMInitParams_by_pk", ParentType, ContextType, RequireFields<SubscriptionGMInitParams_by_pkArgs, 'id'>>;
   GMInitParams_stream?: SubscriptionResolver<Array<ResolversTypes['GMInitParams']>, "GMInitParams_stream", ParentType, ContextType, RequireFields<SubscriptionGMInitParams_streamArgs, 'batch_size' | 'cursor'>>;
@@ -6983,9 +7600,12 @@ export type SubscriptionResolvers<ContextType = MeshContext, ParentType extends 
   RawMetadata?: SubscriptionResolver<Array<ResolversTypes['RawMetadata']>, "RawMetadata", ParentType, ContextType, Partial<SubscriptionRawMetadataArgs>>;
   RawMetadata_by_pk?: SubscriptionResolver<Maybe<ResolversTypes['RawMetadata']>, "RawMetadata_by_pk", ParentType, ContextType, RequireFields<SubscriptionRawMetadata_by_pkArgs, 'id'>>;
   RawMetadata_stream?: SubscriptionResolver<Array<ResolversTypes['RawMetadata']>, "RawMetadata_stream", ParentType, ContextType, RequireFields<SubscriptionRawMetadata_streamArgs, 'batch_size' | 'cursor'>>;
-  Test?: SubscriptionResolver<Array<ResolversTypes['Test']>, "Test", ParentType, ContextType, Partial<SubscriptionTestArgs>>;
-  Test_by_pk?: SubscriptionResolver<Maybe<ResolversTypes['Test']>, "Test_by_pk", ParentType, ContextType, RequireFields<SubscriptionTest_by_pkArgs, 'id'>>;
-  Test_stream?: SubscriptionResolver<Array<ResolversTypes['Test']>, "Test_stream", ParentType, ContextType, RequireFields<SubscriptionTest_streamArgs, 'batch_size' | 'cursor'>>;
+  Transaction?: SubscriptionResolver<Array<ResolversTypes['Transaction']>, "Transaction", ParentType, ContextType, Partial<SubscriptionTransactionArgs>>;
+  Transaction_by_pk?: SubscriptionResolver<Maybe<ResolversTypes['Transaction']>, "Transaction_by_pk", ParentType, ContextType, RequireFields<SubscriptionTransaction_by_pkArgs, 'id'>>;
+  Transaction_stream?: SubscriptionResolver<Array<ResolversTypes['Transaction']>, "Transaction_stream", ParentType, ContextType, RequireFields<SubscriptionTransaction_streamArgs, 'batch_size' | 'cursor'>>;
+  Update?: SubscriptionResolver<Array<ResolversTypes['Update']>, "Update", ParentType, ContextType, Partial<SubscriptionUpdateArgs>>;
+  Update_by_pk?: SubscriptionResolver<Maybe<ResolversTypes['Update']>, "Update_by_pk", ParentType, ContextType, RequireFields<SubscriptionUpdate_by_pkArgs, 'id'>>;
+  Update_stream?: SubscriptionResolver<Array<ResolversTypes['Update']>, "Update_stream", ParentType, ContextType, RequireFields<SubscriptionUpdate_streamArgs, 'batch_size' | 'cursor'>>;
   chain_metadata?: SubscriptionResolver<Array<ResolversTypes['chain_metadata']>, "chain_metadata", ParentType, ContextType, Partial<Subscriptionchain_metadataArgs>>;
   chain_metadata_by_pk?: SubscriptionResolver<Maybe<ResolversTypes['chain_metadata']>, "chain_metadata_by_pk", ParentType, ContextType, RequireFields<Subscriptionchain_metadata_by_pkArgs, 'chain_id'>>;
   chain_metadata_stream?: SubscriptionResolver<Array<ResolversTypes['chain_metadata']>, "chain_metadata_stream", ParentType, ContextType, RequireFields<Subscriptionchain_metadata_streamArgs, 'batch_size' | 'cursor'>>;
@@ -7065,6 +7685,47 @@ export type SubscriptionResolvers<ContextType = MeshContext, ParentType extends 
   TVParams?: SubscriptionResolver<Array<ResolversTypes['TVParams']>, "TVParams", ParentType, ContextType, Partial<SubscriptionTVParamsArgs>>;
   TVParams_by_pk?: SubscriptionResolver<Maybe<ResolversTypes['TVParams']>, "TVParams_by_pk", ParentType, ContextType, RequireFields<SubscriptionTVParams_by_pkArgs, 'id'>>;
   TVParams_stream?: SubscriptionResolver<Array<ResolversTypes['TVParams']>, "TVParams_stream", ParentType, ContextType, RequireFields<SubscriptionTVParams_streamArgs, 'batch_size' | 'cursor'>>;
+}>;
+
+export type FeedCardResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['FeedCard'] = ResolversParentTypes['FeedCard']> = ResolversObject<{
+  content?: Resolver<Maybe<ResolversTypes['RawMetadata']>, ParentType, ContextType>;
+  content_id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
+  domain?: Resolver<Maybe<ResolversTypes['GameManager']>, ParentType, ContextType>;
+  domain_id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  embed?: Resolver<Maybe<ResolversTypes['FeedItemEmbed']>, ParentType, ContextType>;
+  embed_id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  externalLink?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  internalLink?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  message?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  object?: Resolver<Maybe<ResolversTypes['FeedItemEntity']>, ParentType, ContextType>;
+  object_id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  sender?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  subject?: Resolver<Maybe<ResolversTypes['FeedItemEntity']>, ParentType, ContextType>;
+  subjectMetadataPointer?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  subject_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  tag?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  timestamp?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type FeedItemEmbedResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['FeedItemEmbed'] = ResolversParentTypes['FeedItemEmbed']> = ResolversObject<{
+  content?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  key?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  pointer?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  protocol?: Resolver<Maybe<ResolversTypes['numeric']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type FeedItemEntityResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['FeedItemEntity'] = ResolversParentTypes['FeedItemEntity']> = ResolversObject<{
+  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
+  entityType?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
 export type GMInitParamsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['GMInitParams'] = ResolversParentTypes['GMInitParams']> = ResolversObject<{
@@ -7242,10 +7903,30 @@ export type RawMetadataResolvers<ContextType = MeshContext, ParentType extends R
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export type TestResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Test'] = ResolversParentTypes['Test']> = ResolversObject<{
+export type TransactionResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Transaction'] = ResolversParentTypes['Transaction']> = ResolversObject<{
+  blockNumber?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
   db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  srcAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  txHash?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type UpdateResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Update'] = ResolversParentTypes['Update']> = ResolversObject<{
+  content?: Resolver<Maybe<ResolversTypes['RawMetadata']>, ParentType, ContextType>;
+  contentSchema?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  content_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
+  domain?: Resolver<Maybe<ResolversTypes['GameManager']>, ParentType, ContextType>;
+  domain_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  entityAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  postDecorator?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  postedBy?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  posterRole?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
+  scope?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  tag?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  timestamp?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -7593,6 +8274,9 @@ export type TVParamsResolvers<ContextType = MeshContext, ParentType extends Reso
 export type Resolvers<ContextType = MeshContext> = ResolversObject<{
   Query?: QueryResolvers<ContextType>;
   Subscription?: SubscriptionResolvers<ContextType>;
+  FeedCard?: FeedCardResolvers<ContextType>;
+  FeedItemEmbed?: FeedItemEmbedResolvers<ContextType>;
+  FeedItemEntity?: FeedItemEntityResolvers<ContextType>;
   GMInitParams?: GMInitParamsResolvers<ContextType>;
   GameManager?: GameManagerResolvers<ContextType>;
   GameManagerFactory?: GameManagerFactoryResolvers<ContextType>;
@@ -7604,7 +8288,8 @@ export type Resolvers<ContextType = MeshContext> = ResolversObject<{
   ProfileMemberGroup?: ProfileMemberGroupResolvers<ContextType>;
   Project?: ProjectResolvers<ContextType>;
   RawMetadata?: RawMetadataResolvers<ContextType>;
-  Test?: TestResolvers<ContextType>;
+  Transaction?: TransactionResolvers<ContextType>;
+  Update?: UpdateResolvers<ContextType>;
   _text?: GraphQLScalarType;
   chain_metadata?: chain_metadataResolvers<ContextType>;
   contract_type?: GraphQLScalarType;
@@ -7750,6 +8435,12 @@ const merger = new(StitchingMerger as any)({
         },
         location: 'FacDashShipDataDocument.graphql'
       },{
+        document: GetFeedDocument,
+        get rawSDL() {
+          return printWithCache(GetFeedDocument);
+        },
+        location: 'GetFeedDocument.graphql'
+      },{
         document: GetGameManagerDocument,
         get rawSDL() {
           return printWithCache(GetGameManagerDocument);
@@ -7869,6 +8560,37 @@ export type facDashShipDataQuery = { shipApplicants: Array<(
   )>, rejectedShips: Array<(
     Pick<GrantShip, 'rejectedTime' | 'id' | 'name' | 'status' | 'applicationSubmittedTime' | 'shipApplicationBytesData'>
     & { applicationReviewReason?: Maybe<Pick<RawMetadata, 'pointer'>>, profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
+  )> };
+
+export type FeedDataFragment = (
+  Pick<FeedCard, 'id' | 'timestamp' | 'sender' | 'tag' | 'subjectMetadataPointer' | 'internalLink' | 'externalLink'>
+  & { content: FeedCard['message'] }
+  & { subject?: Maybe<(
+    Pick<FeedItemEntity, 'id' | 'name'>
+    & { type: FeedItemEntity['entityType'] }
+  )>, object?: Maybe<(
+    Pick<FeedItemEntity, 'id' | 'name'>
+    & { type: FeedItemEntity['entityType'] }
+  )>, embed?: Maybe<Pick<FeedItemEmbed, 'key' | 'pointer' | 'protocol' | 'content'>> }
+);
+
+export type getFeedQueryVariables = Exact<{
+  first: Scalars['Int'];
+  skip: Scalars['Int'];
+  orderBy?: InputMaybe<Array<FeedCard_order_by> | FeedCard_order_by>;
+}>;
+
+
+export type getFeedQuery = { FeedCard: Array<(
+    Pick<FeedCard, 'id' | 'timestamp' | 'sender' | 'tag' | 'subjectMetadataPointer' | 'internalLink' | 'externalLink'>
+    & { content: FeedCard['message'] }
+    & { subject?: Maybe<(
+      Pick<FeedItemEntity, 'id' | 'name'>
+      & { type: FeedItemEntity['entityType'] }
+    )>, object?: Maybe<(
+      Pick<FeedItemEntity, 'id' | 'name'>
+      & { type: FeedItemEntity['entityType'] }
+    )>, embed?: Maybe<Pick<FeedItemEmbed, 'key' | 'pointer' | 'protocol' | 'content'>> }
   )> };
 
 export type GameManagerDataFragment = (
@@ -8013,6 +8735,34 @@ export const FacShipDataFragmentDoc = gql`
   }
 }
     ` as unknown as DocumentNode<FacShipDataFragment, unknown>;
+export const FeedDataFragmentDoc = gql`
+    fragment FeedData on FeedCard {
+  id
+  content: message
+  timestamp
+  sender
+  tag
+  subjectMetadataPointer
+  subject {
+    id
+    name
+    type: entityType
+  }
+  object {
+    id
+    name
+    type: entityType
+  }
+  embed {
+    key
+    pointer
+    protocol
+    content
+  }
+  internalLink
+  externalLink
+}
+    ` as unknown as DocumentNode<FeedDataFragment, unknown>;
 export const GameManagerDataFragmentDoc = gql`
     fragment GameManagerData on GameManager {
   id
@@ -8077,6 +8827,13 @@ export const facDashShipDataDocument = gql`
   }
 }
     ${FacShipDataFragmentDoc}` as unknown as DocumentNode<facDashShipDataQuery, facDashShipDataQueryVariables>;
+export const getFeedDocument = gql`
+    query getFeed($first: Int!, $skip: Int!, $orderBy: [FeedCard_order_by!]) {
+  FeedCard(limit: $first, offset: $skip, order_by: $orderBy) {
+    ...FeedData
+  }
+}
+    ${FeedDataFragmentDoc}` as unknown as DocumentNode<getFeedQuery, getFeedQueryVariables>;
 export const getGameManagerDocument = gql`
     query getGameManager($id: String!) {
   GameManager(where: {id: {_eq: $id}}) {
@@ -8187,11 +8944,15 @@ export const ShipsPageQueryDocument = gql`
 
 
 
+
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
     facDashShipData(variables?: facDashShipDataQueryVariables, options?: C): Promise<facDashShipDataQuery> {
       return requester<facDashShipDataQuery, facDashShipDataQueryVariables>(facDashShipDataDocument, variables, options) as Promise<facDashShipDataQuery>;
+    },
+    getFeed(variables: getFeedQueryVariables, options?: C): Promise<getFeedQuery> {
+      return requester<getFeedQuery, getFeedQueryVariables>(getFeedDocument, variables, options) as Promise<getFeedQuery>;
     },
     getGameManager(variables: getGameManagerQueryVariables, options?: C): Promise<getGameManagerQuery> {
       return requester<getGameManagerQuery, getGameManagerQueryVariables>(getGameManagerDocument, variables, options) as Promise<getGameManagerQuery>;

@@ -39,6 +39,260 @@ export type Boolean_comparison_exp = {
   _nin?: InputMaybe<Array<Scalars['Boolean']>>;
 };
 
+/** columns and relationships of "FeedCard" */
+export type FeedCard = {
+  /** An object relationship */
+  content?: Maybe<RawMetadata>;
+  content_id?: Maybe<Scalars['String']>;
+  db_write_timestamp?: Maybe<Scalars['timestamp']>;
+  /** An object relationship */
+  domain?: Maybe<GameManager>;
+  domain_id?: Maybe<Scalars['String']>;
+  /** An object relationship */
+  embed?: Maybe<FeedItemEmbed>;
+  embed_id?: Maybe<Scalars['String']>;
+  externalLink?: Maybe<Scalars['String']>;
+  id: Scalars['String'];
+  internalLink?: Maybe<Scalars['String']>;
+  message?: Maybe<Scalars['String']>;
+  /** An object relationship */
+  object?: Maybe<FeedItemEntity>;
+  object_id?: Maybe<Scalars['String']>;
+  sender?: Maybe<Scalars['String']>;
+  /** An object relationship */
+  subject?: Maybe<FeedItemEntity>;
+  subjectMetadataPointer: Scalars['String'];
+  subject_id: Scalars['String'];
+  tag: Scalars['String'];
+  timestamp: Scalars['Int'];
+};
+
+/** Boolean expression to filter rows from the table "FeedCard". All fields are combined with a logical 'AND'. */
+export type FeedCard_bool_exp = {
+  _and?: InputMaybe<Array<FeedCard_bool_exp>>;
+  _not?: InputMaybe<FeedCard_bool_exp>;
+  _or?: InputMaybe<Array<FeedCard_bool_exp>>;
+  content?: InputMaybe<RawMetadata_bool_exp>;
+  content_id?: InputMaybe<String_comparison_exp>;
+  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
+  domain?: InputMaybe<GameManager_bool_exp>;
+  domain_id?: InputMaybe<String_comparison_exp>;
+  embed?: InputMaybe<FeedItemEmbed_bool_exp>;
+  embed_id?: InputMaybe<String_comparison_exp>;
+  externalLink?: InputMaybe<String_comparison_exp>;
+  id?: InputMaybe<String_comparison_exp>;
+  internalLink?: InputMaybe<String_comparison_exp>;
+  message?: InputMaybe<String_comparison_exp>;
+  object?: InputMaybe<FeedItemEntity_bool_exp>;
+  object_id?: InputMaybe<String_comparison_exp>;
+  sender?: InputMaybe<String_comparison_exp>;
+  subject?: InputMaybe<FeedItemEntity_bool_exp>;
+  subjectMetadataPointer?: InputMaybe<String_comparison_exp>;
+  subject_id?: InputMaybe<String_comparison_exp>;
+  tag?: InputMaybe<String_comparison_exp>;
+  timestamp?: InputMaybe<Int_comparison_exp>;
+};
+
+/** Ordering options when selecting data from "FeedCard". */
+export type FeedCard_order_by = {
+  content?: InputMaybe<RawMetadata_order_by>;
+  content_id?: InputMaybe<order_by>;
+  db_write_timestamp?: InputMaybe<order_by>;
+  domain?: InputMaybe<GameManager_order_by>;
+  domain_id?: InputMaybe<order_by>;
+  embed?: InputMaybe<FeedItemEmbed_order_by>;
+  embed_id?: InputMaybe<order_by>;
+  externalLink?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  internalLink?: InputMaybe<order_by>;
+  message?: InputMaybe<order_by>;
+  object?: InputMaybe<FeedItemEntity_order_by>;
+  object_id?: InputMaybe<order_by>;
+  sender?: InputMaybe<order_by>;
+  subject?: InputMaybe<FeedItemEntity_order_by>;
+  subjectMetadataPointer?: InputMaybe<order_by>;
+  subject_id?: InputMaybe<order_by>;
+  tag?: InputMaybe<order_by>;
+  timestamp?: InputMaybe<order_by>;
+};
+
+/** select columns of table "FeedCard" */
+export type FeedCard_select_column =
+  /** column name */
+  | 'content_id'
+  /** column name */
+  | 'db_write_timestamp'
+  /** column name */
+  | 'domain_id'
+  /** column name */
+  | 'embed_id'
+  /** column name */
+  | 'externalLink'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'internalLink'
+  /** column name */
+  | 'message'
+  /** column name */
+  | 'object_id'
+  /** column name */
+  | 'sender'
+  /** column name */
+  | 'subjectMetadataPointer'
+  /** column name */
+  | 'subject_id'
+  /** column name */
+  | 'tag'
+  /** column name */
+  | 'timestamp';
+
+/** Streaming cursor of the table "FeedCard" */
+export type FeedCard_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: FeedCard_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type FeedCard_stream_cursor_value_input = {
+  content_id?: InputMaybe<Scalars['String']>;
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
+  domain_id?: InputMaybe<Scalars['String']>;
+  embed_id?: InputMaybe<Scalars['String']>;
+  externalLink?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['String']>;
+  internalLink?: InputMaybe<Scalars['String']>;
+  message?: InputMaybe<Scalars['String']>;
+  object_id?: InputMaybe<Scalars['String']>;
+  sender?: InputMaybe<Scalars['String']>;
+  subjectMetadataPointer?: InputMaybe<Scalars['String']>;
+  subject_id?: InputMaybe<Scalars['String']>;
+  tag?: InputMaybe<Scalars['String']>;
+  timestamp?: InputMaybe<Scalars['Int']>;
+};
+
+/** columns and relationships of "FeedItemEmbed" */
+export type FeedItemEmbed = {
+  content?: Maybe<Scalars['String']>;
+  db_write_timestamp?: Maybe<Scalars['timestamp']>;
+  id: Scalars['String'];
+  key?: Maybe<Scalars['String']>;
+  pointer?: Maybe<Scalars['String']>;
+  protocol?: Maybe<Scalars['numeric']>;
+};
+
+/** Boolean expression to filter rows from the table "FeedItemEmbed". All fields are combined with a logical 'AND'. */
+export type FeedItemEmbed_bool_exp = {
+  _and?: InputMaybe<Array<FeedItemEmbed_bool_exp>>;
+  _not?: InputMaybe<FeedItemEmbed_bool_exp>;
+  _or?: InputMaybe<Array<FeedItemEmbed_bool_exp>>;
+  content?: InputMaybe<String_comparison_exp>;
+  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
+  id?: InputMaybe<String_comparison_exp>;
+  key?: InputMaybe<String_comparison_exp>;
+  pointer?: InputMaybe<String_comparison_exp>;
+  protocol?: InputMaybe<numeric_comparison_exp>;
+};
+
+/** Ordering options when selecting data from "FeedItemEmbed". */
+export type FeedItemEmbed_order_by = {
+  content?: InputMaybe<order_by>;
+  db_write_timestamp?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  key?: InputMaybe<order_by>;
+  pointer?: InputMaybe<order_by>;
+  protocol?: InputMaybe<order_by>;
+};
+
+/** select columns of table "FeedItemEmbed" */
+export type FeedItemEmbed_select_column =
+  /** column name */
+  | 'content'
+  /** column name */
+  | 'db_write_timestamp'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'key'
+  /** column name */
+  | 'pointer'
+  /** column name */
+  | 'protocol';
+
+/** Streaming cursor of the table "FeedItemEmbed" */
+export type FeedItemEmbed_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: FeedItemEmbed_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type FeedItemEmbed_stream_cursor_value_input = {
+  content?: InputMaybe<Scalars['String']>;
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
+  id?: InputMaybe<Scalars['String']>;
+  key?: InputMaybe<Scalars['String']>;
+  pointer?: InputMaybe<Scalars['String']>;
+  protocol?: InputMaybe<Scalars['numeric']>;
+};
+
+/** columns and relationships of "FeedItemEntity" */
+export type FeedItemEntity = {
+  db_write_timestamp?: Maybe<Scalars['timestamp']>;
+  entityType: Scalars['String'];
+  id: Scalars['String'];
+  name: Scalars['String'];
+};
+
+/** Boolean expression to filter rows from the table "FeedItemEntity". All fields are combined with a logical 'AND'. */
+export type FeedItemEntity_bool_exp = {
+  _and?: InputMaybe<Array<FeedItemEntity_bool_exp>>;
+  _not?: InputMaybe<FeedItemEntity_bool_exp>;
+  _or?: InputMaybe<Array<FeedItemEntity_bool_exp>>;
+  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
+  entityType?: InputMaybe<String_comparison_exp>;
+  id?: InputMaybe<String_comparison_exp>;
+  name?: InputMaybe<String_comparison_exp>;
+};
+
+/** Ordering options when selecting data from "FeedItemEntity". */
+export type FeedItemEntity_order_by = {
+  db_write_timestamp?: InputMaybe<order_by>;
+  entityType?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  name?: InputMaybe<order_by>;
+};
+
+/** select columns of table "FeedItemEntity" */
+export type FeedItemEntity_select_column =
+  /** column name */
+  | 'db_write_timestamp'
+  /** column name */
+  | 'entityType'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'name';
+
+/** Streaming cursor of the table "FeedItemEntity" */
+export type FeedItemEntity_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: FeedItemEntity_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type FeedItemEntity_stream_cursor_value_input = {
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
+  entityType?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+};
+
 /** columns and relationships of "GMInitParams" */
 export type GMInitParams = {
   db_write_timestamp?: Maybe<Scalars['timestamp']>;
@@ -1586,52 +1840,174 @@ export type String_comparison_exp = {
   _similar?: InputMaybe<Scalars['String']>;
 };
 
-/** columns and relationships of "Test" */
-export type Test = {
+/** columns and relationships of "Transaction" */
+export type Transaction = {
+  blockNumber: Scalars['numeric'];
   db_write_timestamp?: Maybe<Scalars['timestamp']>;
   id: Scalars['String'];
-  name: Scalars['String'];
+  srcAddress: Scalars['String'];
+  txHash: Scalars['String'];
 };
 
-/** Boolean expression to filter rows from the table "Test". All fields are combined with a logical 'AND'. */
-export type Test_bool_exp = {
-  _and?: InputMaybe<Array<Test_bool_exp>>;
-  _not?: InputMaybe<Test_bool_exp>;
-  _or?: InputMaybe<Array<Test_bool_exp>>;
+/** Boolean expression to filter rows from the table "Transaction". All fields are combined with a logical 'AND'. */
+export type Transaction_bool_exp = {
+  _and?: InputMaybe<Array<Transaction_bool_exp>>;
+  _not?: InputMaybe<Transaction_bool_exp>;
+  _or?: InputMaybe<Array<Transaction_bool_exp>>;
+  blockNumber?: InputMaybe<numeric_comparison_exp>;
   db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
   id?: InputMaybe<String_comparison_exp>;
-  name?: InputMaybe<String_comparison_exp>;
+  srcAddress?: InputMaybe<String_comparison_exp>;
+  txHash?: InputMaybe<String_comparison_exp>;
 };
 
-/** Ordering options when selecting data from "Test". */
-export type Test_order_by = {
+/** Ordering options when selecting data from "Transaction". */
+export type Transaction_order_by = {
+  blockNumber?: InputMaybe<order_by>;
   db_write_timestamp?: InputMaybe<order_by>;
   id?: InputMaybe<order_by>;
-  name?: InputMaybe<order_by>;
+  srcAddress?: InputMaybe<order_by>;
+  txHash?: InputMaybe<order_by>;
 };
 
-/** select columns of table "Test" */
-export type Test_select_column =
+/** select columns of table "Transaction" */
+export type Transaction_select_column =
+  /** column name */
+  | 'blockNumber'
   /** column name */
   | 'db_write_timestamp'
   /** column name */
   | 'id'
   /** column name */
-  | 'name';
+  | 'srcAddress'
+  /** column name */
+  | 'txHash';
 
-/** Streaming cursor of the table "Test" */
-export type Test_stream_cursor_input = {
+/** Streaming cursor of the table "Transaction" */
+export type Transaction_stream_cursor_input = {
   /** Stream column input with initial value */
-  initial_value: Test_stream_cursor_value_input;
+  initial_value: Transaction_stream_cursor_value_input;
   /** cursor ordering */
   ordering?: InputMaybe<cursor_ordering>;
 };
 
 /** Initial value of the column from where the streaming should start */
-export type Test_stream_cursor_value_input = {
+export type Transaction_stream_cursor_value_input = {
+  blockNumber?: InputMaybe<Scalars['numeric']>;
   db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
   id?: InputMaybe<Scalars['String']>;
-  name?: InputMaybe<Scalars['String']>;
+  srcAddress?: InputMaybe<Scalars['String']>;
+  txHash?: InputMaybe<Scalars['String']>;
+};
+
+/** columns and relationships of "Update" */
+export type Update = {
+  /** An object relationship */
+  content?: Maybe<RawMetadata>;
+  contentSchema: Scalars['Int'];
+  content_id: Scalars['String'];
+  db_write_timestamp?: Maybe<Scalars['timestamp']>;
+  /** An object relationship */
+  domain?: Maybe<GameManager>;
+  domain_id: Scalars['String'];
+  entityAddress: Scalars['String'];
+  id: Scalars['String'];
+  postDecorator: Scalars['Int'];
+  postedBy: Scalars['String'];
+  posterRole: Scalars['numeric'];
+  scope: Scalars['Int'];
+  tag: Scalars['String'];
+  timestamp: Scalars['Int'];
+};
+
+/** Boolean expression to filter rows from the table "Update". All fields are combined with a logical 'AND'. */
+export type Update_bool_exp = {
+  _and?: InputMaybe<Array<Update_bool_exp>>;
+  _not?: InputMaybe<Update_bool_exp>;
+  _or?: InputMaybe<Array<Update_bool_exp>>;
+  content?: InputMaybe<RawMetadata_bool_exp>;
+  contentSchema?: InputMaybe<Int_comparison_exp>;
+  content_id?: InputMaybe<String_comparison_exp>;
+  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
+  domain?: InputMaybe<GameManager_bool_exp>;
+  domain_id?: InputMaybe<String_comparison_exp>;
+  entityAddress?: InputMaybe<String_comparison_exp>;
+  id?: InputMaybe<String_comparison_exp>;
+  postDecorator?: InputMaybe<Int_comparison_exp>;
+  postedBy?: InputMaybe<String_comparison_exp>;
+  posterRole?: InputMaybe<numeric_comparison_exp>;
+  scope?: InputMaybe<Int_comparison_exp>;
+  tag?: InputMaybe<String_comparison_exp>;
+  timestamp?: InputMaybe<Int_comparison_exp>;
+};
+
+/** Ordering options when selecting data from "Update". */
+export type Update_order_by = {
+  content?: InputMaybe<RawMetadata_order_by>;
+  contentSchema?: InputMaybe<order_by>;
+  content_id?: InputMaybe<order_by>;
+  db_write_timestamp?: InputMaybe<order_by>;
+  domain?: InputMaybe<GameManager_order_by>;
+  domain_id?: InputMaybe<order_by>;
+  entityAddress?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  postDecorator?: InputMaybe<order_by>;
+  postedBy?: InputMaybe<order_by>;
+  posterRole?: InputMaybe<order_by>;
+  scope?: InputMaybe<order_by>;
+  tag?: InputMaybe<order_by>;
+  timestamp?: InputMaybe<order_by>;
+};
+
+/** select columns of table "Update" */
+export type Update_select_column =
+  /** column name */
+  | 'contentSchema'
+  /** column name */
+  | 'content_id'
+  /** column name */
+  | 'db_write_timestamp'
+  /** column name */
+  | 'domain_id'
+  /** column name */
+  | 'entityAddress'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'postDecorator'
+  /** column name */
+  | 'postedBy'
+  /** column name */
+  | 'posterRole'
+  /** column name */
+  | 'scope'
+  /** column name */
+  | 'tag'
+  /** column name */
+  | 'timestamp';
+
+/** Streaming cursor of the table "Update" */
+export type Update_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: Update_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Update_stream_cursor_value_input = {
+  contentSchema?: InputMaybe<Scalars['Int']>;
+  content_id?: InputMaybe<Scalars['String']>;
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
+  domain_id?: InputMaybe<Scalars['String']>;
+  entityAddress?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['String']>;
+  postDecorator?: InputMaybe<Scalars['Int']>;
+  postedBy?: InputMaybe<Scalars['String']>;
+  posterRole?: InputMaybe<Scalars['numeric']>;
+  scope?: InputMaybe<Scalars['Int']>;
+  tag?: InputMaybe<Scalars['String']>;
+  timestamp?: InputMaybe<Scalars['Int']>;
 };
 
 /** Boolean expression to compare columns of type "_text". All fields are combined with logical 'AND'. */
@@ -2379,6 +2755,18 @@ export type persisted_state_stream_cursor_value_input = {
 };
 
 export type query_root = {
+  /** fetch data from the table: "FeedCard" */
+  FeedCard: Array<FeedCard>;
+  /** fetch data from the table: "FeedCard" using primary key columns */
+  FeedCard_by_pk?: Maybe<FeedCard>;
+  /** fetch data from the table: "FeedItemEmbed" */
+  FeedItemEmbed: Array<FeedItemEmbed>;
+  /** fetch data from the table: "FeedItemEmbed" using primary key columns */
+  FeedItemEmbed_by_pk?: Maybe<FeedItemEmbed>;
+  /** fetch data from the table: "FeedItemEntity" */
+  FeedItemEntity: Array<FeedItemEntity>;
+  /** fetch data from the table: "FeedItemEntity" using primary key columns */
+  FeedItemEntity_by_pk?: Maybe<FeedItemEntity>;
   /** fetch data from the table: "GMInitParams" */
   GMInitParams: Array<GMInitParams>;
   /** fetch data from the table: "GMInitParams" using primary key columns */
@@ -2423,10 +2811,14 @@ export type query_root = {
   RawMetadata: Array<RawMetadata>;
   /** fetch data from the table: "RawMetadata" using primary key columns */
   RawMetadata_by_pk?: Maybe<RawMetadata>;
-  /** fetch data from the table: "Test" */
-  Test: Array<Test>;
-  /** fetch data from the table: "Test" using primary key columns */
-  Test_by_pk?: Maybe<Test>;
+  /** fetch data from the table: "Transaction" */
+  Transaction: Array<Transaction>;
+  /** fetch data from the table: "Transaction" using primary key columns */
+  Transaction_by_pk?: Maybe<Transaction>;
+  /** fetch data from the table: "Update" */
+  Update: Array<Update>;
+  /** fetch data from the table: "Update" using primary key columns */
+  Update_by_pk?: Maybe<Update>;
   /** fetch data from the table: "chain_metadata" */
   chain_metadata: Array<chain_metadata>;
   /** fetch data from the table: "chain_metadata" using primary key columns */
@@ -2457,6 +2849,48 @@ export type query_root = {
   raw_events: Array<raw_events>;
   /** fetch data from the table: "raw_events" using primary key columns */
   raw_events_by_pk?: Maybe<raw_events>;
+};
+
+
+export type query_rootFeedCardArgs = {
+  distinct_on?: InputMaybe<Array<FeedCard_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<FeedCard_order_by>>;
+  where?: InputMaybe<FeedCard_bool_exp>;
+};
+
+
+export type query_rootFeedCard_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type query_rootFeedItemEmbedArgs = {
+  distinct_on?: InputMaybe<Array<FeedItemEmbed_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<FeedItemEmbed_order_by>>;
+  where?: InputMaybe<FeedItemEmbed_bool_exp>;
+};
+
+
+export type query_rootFeedItemEmbed_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type query_rootFeedItemEntityArgs = {
+  distinct_on?: InputMaybe<Array<FeedItemEntity_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<FeedItemEntity_order_by>>;
+  where?: InputMaybe<FeedItemEntity_bool_exp>;
+};
+
+
+export type query_rootFeedItemEntity_by_pkArgs = {
+  id: Scalars['String'];
 };
 
 
@@ -2614,16 +3048,30 @@ export type query_rootRawMetadata_by_pkArgs = {
 };
 
 
-export type query_rootTestArgs = {
-  distinct_on?: InputMaybe<Array<Test_select_column>>;
+export type query_rootTransactionArgs = {
+  distinct_on?: InputMaybe<Array<Transaction_select_column>>;
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Test_order_by>>;
-  where?: InputMaybe<Test_bool_exp>;
+  order_by?: InputMaybe<Array<Transaction_order_by>>;
+  where?: InputMaybe<Transaction_bool_exp>;
 };
 
 
-export type query_rootTest_by_pkArgs = {
+export type query_rootTransaction_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type query_rootUpdateArgs = {
+  distinct_on?: InputMaybe<Array<Update_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Update_order_by>>;
+  where?: InputMaybe<Update_bool_exp>;
+};
+
+
+export type query_rootUpdate_by_pkArgs = {
   id: Scalars['String'];
 };
 
@@ -2870,6 +3318,24 @@ export type raw_events_stream_cursor_value_input = {
 };
 
 export type subscription_root = {
+  /** fetch data from the table: "FeedCard" */
+  FeedCard: Array<FeedCard>;
+  /** fetch data from the table: "FeedCard" using primary key columns */
+  FeedCard_by_pk?: Maybe<FeedCard>;
+  /** fetch data from the table in a streaming manner: "FeedCard" */
+  FeedCard_stream: Array<FeedCard>;
+  /** fetch data from the table: "FeedItemEmbed" */
+  FeedItemEmbed: Array<FeedItemEmbed>;
+  /** fetch data from the table: "FeedItemEmbed" using primary key columns */
+  FeedItemEmbed_by_pk?: Maybe<FeedItemEmbed>;
+  /** fetch data from the table in a streaming manner: "FeedItemEmbed" */
+  FeedItemEmbed_stream: Array<FeedItemEmbed>;
+  /** fetch data from the table: "FeedItemEntity" */
+  FeedItemEntity: Array<FeedItemEntity>;
+  /** fetch data from the table: "FeedItemEntity" using primary key columns */
+  FeedItemEntity_by_pk?: Maybe<FeedItemEntity>;
+  /** fetch data from the table in a streaming manner: "FeedItemEntity" */
+  FeedItemEntity_stream: Array<FeedItemEntity>;
   /** fetch data from the table: "GMInitParams" */
   GMInitParams: Array<GMInitParams>;
   /** fetch data from the table: "GMInitParams" using primary key columns */
@@ -2936,12 +3402,18 @@ export type subscription_root = {
   RawMetadata_by_pk?: Maybe<RawMetadata>;
   /** fetch data from the table in a streaming manner: "RawMetadata" */
   RawMetadata_stream: Array<RawMetadata>;
-  /** fetch data from the table: "Test" */
-  Test: Array<Test>;
-  /** fetch data from the table: "Test" using primary key columns */
-  Test_by_pk?: Maybe<Test>;
-  /** fetch data from the table in a streaming manner: "Test" */
-  Test_stream: Array<Test>;
+  /** fetch data from the table: "Transaction" */
+  Transaction: Array<Transaction>;
+  /** fetch data from the table: "Transaction" using primary key columns */
+  Transaction_by_pk?: Maybe<Transaction>;
+  /** fetch data from the table in a streaming manner: "Transaction" */
+  Transaction_stream: Array<Transaction>;
+  /** fetch data from the table: "Update" */
+  Update: Array<Update>;
+  /** fetch data from the table: "Update" using primary key columns */
+  Update_by_pk?: Maybe<Update>;
+  /** fetch data from the table in a streaming manner: "Update" */
+  Update_stream: Array<Update>;
   /** fetch data from the table: "chain_metadata" */
   chain_metadata: Array<chain_metadata>;
   /** fetch data from the table: "chain_metadata" using primary key columns */
@@ -2986,6 +3458,69 @@ export type subscription_root = {
   raw_events_by_pk?: Maybe<raw_events>;
   /** fetch data from the table in a streaming manner: "raw_events" */
   raw_events_stream: Array<raw_events>;
+};
+
+
+export type subscription_rootFeedCardArgs = {
+  distinct_on?: InputMaybe<Array<FeedCard_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<FeedCard_order_by>>;
+  where?: InputMaybe<FeedCard_bool_exp>;
+};
+
+
+export type subscription_rootFeedCard_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type subscription_rootFeedCard_streamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<FeedCard_stream_cursor_input>>;
+  where?: InputMaybe<FeedCard_bool_exp>;
+};
+
+
+export type subscription_rootFeedItemEmbedArgs = {
+  distinct_on?: InputMaybe<Array<FeedItemEmbed_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<FeedItemEmbed_order_by>>;
+  where?: InputMaybe<FeedItemEmbed_bool_exp>;
+};
+
+
+export type subscription_rootFeedItemEmbed_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type subscription_rootFeedItemEmbed_streamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<FeedItemEmbed_stream_cursor_input>>;
+  where?: InputMaybe<FeedItemEmbed_bool_exp>;
+};
+
+
+export type subscription_rootFeedItemEntityArgs = {
+  distinct_on?: InputMaybe<Array<FeedItemEntity_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<FeedItemEntity_order_by>>;
+  where?: InputMaybe<FeedItemEntity_bool_exp>;
+};
+
+
+export type subscription_rootFeedItemEntity_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type subscription_rootFeedItemEntity_streamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<FeedItemEntity_stream_cursor_input>>;
+  where?: InputMaybe<FeedItemEntity_bool_exp>;
 };
 
 
@@ -3220,24 +3755,45 @@ export type subscription_rootRawMetadata_streamArgs = {
 };
 
 
-export type subscription_rootTestArgs = {
-  distinct_on?: InputMaybe<Array<Test_select_column>>;
+export type subscription_rootTransactionArgs = {
+  distinct_on?: InputMaybe<Array<Transaction_select_column>>;
   limit?: InputMaybe<Scalars['Int']>;
   offset?: InputMaybe<Scalars['Int']>;
-  order_by?: InputMaybe<Array<Test_order_by>>;
-  where?: InputMaybe<Test_bool_exp>;
+  order_by?: InputMaybe<Array<Transaction_order_by>>;
+  where?: InputMaybe<Transaction_bool_exp>;
 };
 
 
-export type subscription_rootTest_by_pkArgs = {
+export type subscription_rootTransaction_by_pkArgs = {
   id: Scalars['String'];
 };
 
 
-export type subscription_rootTest_streamArgs = {
+export type subscription_rootTransaction_streamArgs = {
   batch_size: Scalars['Int'];
-  cursor: Array<InputMaybe<Test_stream_cursor_input>>;
-  where?: InputMaybe<Test_bool_exp>;
+  cursor: Array<InputMaybe<Transaction_stream_cursor_input>>;
+  where?: InputMaybe<Transaction_bool_exp>;
+};
+
+
+export type subscription_rootUpdateArgs = {
+  distinct_on?: InputMaybe<Array<Update_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Update_order_by>>;
+  where?: InputMaybe<Update_bool_exp>;
+};
+
+
+export type subscription_rootUpdate_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type subscription_rootUpdate_streamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Update_stream_cursor_input>>;
+  where?: InputMaybe<Update_bool_exp>;
 };
 
 
@@ -3436,7 +3992,19 @@ export type timestamptz_comparison_exp = {
 };
 
   export type QuerySdk = {
-      /** fetch data from the table: "GMInitParams" **/
+      /** fetch data from the table: "FeedCard" **/
+  FeedCard: InContextSdkMethod<query_root['FeedCard'], query_rootFeedCardArgs, MeshContext>,
+  /** fetch data from the table: "FeedCard" using primary key columns **/
+  FeedCard_by_pk: InContextSdkMethod<query_root['FeedCard_by_pk'], query_rootFeedCard_by_pkArgs, MeshContext>,
+  /** fetch data from the table: "FeedItemEmbed" **/
+  FeedItemEmbed: InContextSdkMethod<query_root['FeedItemEmbed'], query_rootFeedItemEmbedArgs, MeshContext>,
+  /** fetch data from the table: "FeedItemEmbed" using primary key columns **/
+  FeedItemEmbed_by_pk: InContextSdkMethod<query_root['FeedItemEmbed_by_pk'], query_rootFeedItemEmbed_by_pkArgs, MeshContext>,
+  /** fetch data from the table: "FeedItemEntity" **/
+  FeedItemEntity: InContextSdkMethod<query_root['FeedItemEntity'], query_rootFeedItemEntityArgs, MeshContext>,
+  /** fetch data from the table: "FeedItemEntity" using primary key columns **/
+  FeedItemEntity_by_pk: InContextSdkMethod<query_root['FeedItemEntity_by_pk'], query_rootFeedItemEntity_by_pkArgs, MeshContext>,
+  /** fetch data from the table: "GMInitParams" **/
   GMInitParams: InContextSdkMethod<query_root['GMInitParams'], query_rootGMInitParamsArgs, MeshContext>,
   /** fetch data from the table: "GMInitParams" using primary key columns **/
   GMInitParams_by_pk: InContextSdkMethod<query_root['GMInitParams_by_pk'], query_rootGMInitParams_by_pkArgs, MeshContext>,
@@ -3480,10 +4048,14 @@ export type timestamptz_comparison_exp = {
   RawMetadata: InContextSdkMethod<query_root['RawMetadata'], query_rootRawMetadataArgs, MeshContext>,
   /** fetch data from the table: "RawMetadata" using primary key columns **/
   RawMetadata_by_pk: InContextSdkMethod<query_root['RawMetadata_by_pk'], query_rootRawMetadata_by_pkArgs, MeshContext>,
-  /** fetch data from the table: "Test" **/
-  Test: InContextSdkMethod<query_root['Test'], query_rootTestArgs, MeshContext>,
-  /** fetch data from the table: "Test" using primary key columns **/
-  Test_by_pk: InContextSdkMethod<query_root['Test_by_pk'], query_rootTest_by_pkArgs, MeshContext>,
+  /** fetch data from the table: "Transaction" **/
+  Transaction: InContextSdkMethod<query_root['Transaction'], query_rootTransactionArgs, MeshContext>,
+  /** fetch data from the table: "Transaction" using primary key columns **/
+  Transaction_by_pk: InContextSdkMethod<query_root['Transaction_by_pk'], query_rootTransaction_by_pkArgs, MeshContext>,
+  /** fetch data from the table: "Update" **/
+  Update: InContextSdkMethod<query_root['Update'], query_rootUpdateArgs, MeshContext>,
+  /** fetch data from the table: "Update" using primary key columns **/
+  Update_by_pk: InContextSdkMethod<query_root['Update_by_pk'], query_rootUpdate_by_pkArgs, MeshContext>,
   /** fetch data from the table: "chain_metadata" **/
   chain_metadata: InContextSdkMethod<query_root['chain_metadata'], query_rootchain_metadataArgs, MeshContext>,
   /** fetch data from the table: "chain_metadata" using primary key columns **/
@@ -3521,7 +4093,25 @@ export type timestamptz_comparison_exp = {
   };
 
   export type SubscriptionSdk = {
-      /** fetch data from the table: "GMInitParams" **/
+      /** fetch data from the table: "FeedCard" **/
+  FeedCard: InContextSdkMethod<subscription_root['FeedCard'], subscription_rootFeedCardArgs, MeshContext>,
+  /** fetch data from the table: "FeedCard" using primary key columns **/
+  FeedCard_by_pk: InContextSdkMethod<subscription_root['FeedCard_by_pk'], subscription_rootFeedCard_by_pkArgs, MeshContext>,
+  /** fetch data from the table in a streaming manner: "FeedCard" **/
+  FeedCard_stream: InContextSdkMethod<subscription_root['FeedCard_stream'], subscription_rootFeedCard_streamArgs, MeshContext>,
+  /** fetch data from the table: "FeedItemEmbed" **/
+  FeedItemEmbed: InContextSdkMethod<subscription_root['FeedItemEmbed'], subscription_rootFeedItemEmbedArgs, MeshContext>,
+  /** fetch data from the table: "FeedItemEmbed" using primary key columns **/
+  FeedItemEmbed_by_pk: InContextSdkMethod<subscription_root['FeedItemEmbed_by_pk'], subscription_rootFeedItemEmbed_by_pkArgs, MeshContext>,
+  /** fetch data from the table in a streaming manner: "FeedItemEmbed" **/
+  FeedItemEmbed_stream: InContextSdkMethod<subscription_root['FeedItemEmbed_stream'], subscription_rootFeedItemEmbed_streamArgs, MeshContext>,
+  /** fetch data from the table: "FeedItemEntity" **/
+  FeedItemEntity: InContextSdkMethod<subscription_root['FeedItemEntity'], subscription_rootFeedItemEntityArgs, MeshContext>,
+  /** fetch data from the table: "FeedItemEntity" using primary key columns **/
+  FeedItemEntity_by_pk: InContextSdkMethod<subscription_root['FeedItemEntity_by_pk'], subscription_rootFeedItemEntity_by_pkArgs, MeshContext>,
+  /** fetch data from the table in a streaming manner: "FeedItemEntity" **/
+  FeedItemEntity_stream: InContextSdkMethod<subscription_root['FeedItemEntity_stream'], subscription_rootFeedItemEntity_streamArgs, MeshContext>,
+  /** fetch data from the table: "GMInitParams" **/
   GMInitParams: InContextSdkMethod<subscription_root['GMInitParams'], subscription_rootGMInitParamsArgs, MeshContext>,
   /** fetch data from the table: "GMInitParams" using primary key columns **/
   GMInitParams_by_pk: InContextSdkMethod<subscription_root['GMInitParams_by_pk'], subscription_rootGMInitParams_by_pkArgs, MeshContext>,
@@ -3587,12 +4177,18 @@ export type timestamptz_comparison_exp = {
   RawMetadata_by_pk: InContextSdkMethod<subscription_root['RawMetadata_by_pk'], subscription_rootRawMetadata_by_pkArgs, MeshContext>,
   /** fetch data from the table in a streaming manner: "RawMetadata" **/
   RawMetadata_stream: InContextSdkMethod<subscription_root['RawMetadata_stream'], subscription_rootRawMetadata_streamArgs, MeshContext>,
-  /** fetch data from the table: "Test" **/
-  Test: InContextSdkMethod<subscription_root['Test'], subscription_rootTestArgs, MeshContext>,
-  /** fetch data from the table: "Test" using primary key columns **/
-  Test_by_pk: InContextSdkMethod<subscription_root['Test_by_pk'], subscription_rootTest_by_pkArgs, MeshContext>,
-  /** fetch data from the table in a streaming manner: "Test" **/
-  Test_stream: InContextSdkMethod<subscription_root['Test_stream'], subscription_rootTest_streamArgs, MeshContext>,
+  /** fetch data from the table: "Transaction" **/
+  Transaction: InContextSdkMethod<subscription_root['Transaction'], subscription_rootTransactionArgs, MeshContext>,
+  /** fetch data from the table: "Transaction" using primary key columns **/
+  Transaction_by_pk: InContextSdkMethod<subscription_root['Transaction_by_pk'], subscription_rootTransaction_by_pkArgs, MeshContext>,
+  /** fetch data from the table in a streaming manner: "Transaction" **/
+  Transaction_stream: InContextSdkMethod<subscription_root['Transaction_stream'], subscription_rootTransaction_streamArgs, MeshContext>,
+  /** fetch data from the table: "Update" **/
+  Update: InContextSdkMethod<subscription_root['Update'], subscription_rootUpdateArgs, MeshContext>,
+  /** fetch data from the table: "Update" using primary key columns **/
+  Update_by_pk: InContextSdkMethod<subscription_root['Update_by_pk'], subscription_rootUpdate_by_pkArgs, MeshContext>,
+  /** fetch data from the table in a streaming manner: "Update" **/
+  Update_stream: InContextSdkMethod<subscription_root['Update_stream'], subscription_rootUpdate_streamArgs, MeshContext>,
   /** fetch data from the table: "chain_metadata" **/
   chain_metadata: InContextSdkMethod<subscription_root['chain_metadata'], subscription_rootchain_metadataArgs, MeshContext>,
   /** fetch data from the table: "chain_metadata" using primary key columns **/

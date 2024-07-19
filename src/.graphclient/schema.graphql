@@ -13,6 +13,57 @@ directive @cached(
 
 type Query {
   """
+  fetch data from the table: "FeedCard"
+  """
+  FeedCard(
+    """distinct select on columns"""
+    distinct_on: [FeedCard_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [FeedCard_order_by!]
+    """filter the rows returned"""
+    where: FeedCard_bool_exp
+  ): [FeedCard!]!
+  """fetch data from the table: "FeedCard" using primary key columns"""
+  FeedCard_by_pk(id: String!): FeedCard
+  """
+  fetch data from the table: "FeedItemEmbed"
+  """
+  FeedItemEmbed(
+    """distinct select on columns"""
+    distinct_on: [FeedItemEmbed_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [FeedItemEmbed_order_by!]
+    """filter the rows returned"""
+    where: FeedItemEmbed_bool_exp
+  ): [FeedItemEmbed!]!
+  """fetch data from the table: "FeedItemEmbed" using primary key columns"""
+  FeedItemEmbed_by_pk(id: String!): FeedItemEmbed
+  """
+  fetch data from the table: "FeedItemEntity"
+  """
+  FeedItemEntity(
+    """distinct select on columns"""
+    distinct_on: [FeedItemEntity_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [FeedItemEntity_order_by!]
+    """filter the rows returned"""
+    where: FeedItemEntity_bool_exp
+  ): [FeedItemEntity!]!
+  """fetch data from the table: "FeedItemEntity" using primary key columns"""
+  FeedItemEntity_by_pk(id: String!): FeedItemEntity
+  """
   fetch data from the table: "GMInitParams"
   """
   GMInitParams(
@@ -208,22 +259,39 @@ type Query {
   """fetch data from the table: "RawMetadata" using primary key columns"""
   RawMetadata_by_pk(id: String!): RawMetadata
   """
-  fetch data from the table: "Test"
+  fetch data from the table: "Transaction"
   """
-  Test(
+  Transaction(
     """distinct select on columns"""
-    distinct_on: [Test_select_column!]
+    distinct_on: [Transaction_select_column!]
     """limit the number of rows returned"""
     limit: Int
     """skip the first n rows. Use only with order_by"""
     offset: Int
     """sort the rows by one or more columns"""
-    order_by: [Test_order_by!]
+    order_by: [Transaction_order_by!]
     """filter the rows returned"""
-    where: Test_bool_exp
-  ): [Test!]!
-  """fetch data from the table: "Test" using primary key columns"""
-  Test_by_pk(id: String!): Test
+    where: Transaction_bool_exp
+  ): [Transaction!]!
+  """fetch data from the table: "Transaction" using primary key columns"""
+  Transaction_by_pk(id: String!): Transaction
+  """
+  fetch data from the table: "Update"
+  """
+  Update(
+    """distinct select on columns"""
+    distinct_on: [Update_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [Update_order_by!]
+    """filter the rows returned"""
+    where: Update_bool_exp
+  ): [Update!]!
+  """fetch data from the table: "Update" using primary key columns"""
+  Update_by_pk(id: String!): Update
   """
   fetch data from the table: "chain_metadata"
   """
@@ -697,6 +765,90 @@ type Query {
 
 type Subscription {
   """
+  fetch data from the table: "FeedCard"
+  """
+  FeedCard(
+    """distinct select on columns"""
+    distinct_on: [FeedCard_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [FeedCard_order_by!]
+    """filter the rows returned"""
+    where: FeedCard_bool_exp
+  ): [FeedCard!]!
+  """fetch data from the table: "FeedCard" using primary key columns"""
+  FeedCard_by_pk(id: String!): FeedCard
+  """
+  fetch data from the table in a streaming manner: "FeedCard"
+  """
+  FeedCard_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [FeedCard_stream_cursor_input]!
+    """filter the rows returned"""
+    where: FeedCard_bool_exp
+  ): [FeedCard!]!
+  """
+  fetch data from the table: "FeedItemEmbed"
+  """
+  FeedItemEmbed(
+    """distinct select on columns"""
+    distinct_on: [FeedItemEmbed_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [FeedItemEmbed_order_by!]
+    """filter the rows returned"""
+    where: FeedItemEmbed_bool_exp
+  ): [FeedItemEmbed!]!
+  """fetch data from the table: "FeedItemEmbed" using primary key columns"""
+  FeedItemEmbed_by_pk(id: String!): FeedItemEmbed
+  """
+  fetch data from the table in a streaming manner: "FeedItemEmbed"
+  """
+  FeedItemEmbed_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [FeedItemEmbed_stream_cursor_input]!
+    """filter the rows returned"""
+    where: FeedItemEmbed_bool_exp
+  ): [FeedItemEmbed!]!
+  """
+  fetch data from the table: "FeedItemEntity"
+  """
+  FeedItemEntity(
+    """distinct select on columns"""
+    distinct_on: [FeedItemEntity_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [FeedItemEntity_order_by!]
+    """filter the rows returned"""
+    where: FeedItemEntity_bool_exp
+  ): [FeedItemEntity!]!
+  """fetch data from the table: "FeedItemEntity" using primary key columns"""
+  FeedItemEntity_by_pk(id: String!): FeedItemEntity
+  """
+  fetch data from the table in a streaming manner: "FeedItemEntity"
+  """
+  FeedItemEntity_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [FeedItemEntity_stream_cursor_input]!
+    """filter the rows returned"""
+    where: FeedItemEntity_bool_exp
+  ): [FeedItemEntity!]!
+  """
   fetch data from the table: "GMInitParams"
   """
   GMInitParams(
@@ -1013,33 +1165,61 @@ type Subscription {
     where: RawMetadata_bool_exp
   ): [RawMetadata!]!
   """
-  fetch data from the table: "Test"
+  fetch data from the table: "Transaction"
   """
-  Test(
+  Transaction(
     """distinct select on columns"""
-    distinct_on: [Test_select_column!]
+    distinct_on: [Transaction_select_column!]
     """limit the number of rows returned"""
     limit: Int
     """skip the first n rows. Use only with order_by"""
     offset: Int
     """sort the rows by one or more columns"""
-    order_by: [Test_order_by!]
+    order_by: [Transaction_order_by!]
     """filter the rows returned"""
-    where: Test_bool_exp
-  ): [Test!]!
-  """fetch data from the table: "Test" using primary key columns"""
-  Test_by_pk(id: String!): Test
+    where: Transaction_bool_exp
+  ): [Transaction!]!
+  """fetch data from the table: "Transaction" using primary key columns"""
+  Transaction_by_pk(id: String!): Transaction
   """
-  fetch data from the table in a streaming manner: "Test"
+  fetch data from the table in a streaming manner: "Transaction"
   """
-  Test_stream(
+  Transaction_stream(
     """maximum number of rows returned in a single batch"""
     batch_size: Int!
     """cursor to stream the results returned by the query"""
-    cursor: [Test_stream_cursor_input]!
+    cursor: [Transaction_stream_cursor_input]!
     """filter the rows returned"""
-    where: Test_bool_exp
-  ): [Test!]!
+    where: Transaction_bool_exp
+  ): [Transaction!]!
+  """
+  fetch data from the table: "Update"
+  """
+  Update(
+    """distinct select on columns"""
+    distinct_on: [Update_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [Update_order_by!]
+    """filter the rows returned"""
+    where: Update_bool_exp
+  ): [Update!]!
+  """fetch data from the table: "Update" using primary key columns"""
+  Update_by_pk(id: String!): Update
+  """
+  fetch data from the table in a streaming manner: "Update"
+  """
+  Update_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [Update_stream_cursor_input]!
+    """filter the rows returned"""
+    where: Update_bool_exp
+  ): [Update!]!
   """
   fetch data from the table: "chain_metadata"
   """
@@ -1810,6 +1990,287 @@ input Boolean_comparison_exp {
   _lte: Boolean
   _neq: Boolean
   _nin: [Boolean!]
+}
+
+"""
+columns and relationships of "FeedCard"
+"""
+type FeedCard {
+  """An object relationship"""
+  content: RawMetadata
+  content_id: String
+  db_write_timestamp: timestamp
+  """An object relationship"""
+  domain: GameManager
+  domain_id: String
+  """An object relationship"""
+  embed: FeedItemEmbed
+  embed_id: String
+  externalLink: String
+  id: String!
+  internalLink: String
+  message: String
+  """An object relationship"""
+  object: FeedItemEntity
+  object_id: String
+  sender: String
+  """An object relationship"""
+  subject: FeedItemEntity
+  subjectMetadataPointer: String!
+  subject_id: String!
+  tag: String!
+  timestamp: Int!
+}
+
+"""
+Boolean expression to filter rows from the table "FeedCard". All fields are combined with a logical 'AND'.
+"""
+input FeedCard_bool_exp {
+  _and: [FeedCard_bool_exp!]
+  _not: FeedCard_bool_exp
+  _or: [FeedCard_bool_exp!]
+  content: RawMetadata_bool_exp
+  content_id: String_comparison_exp
+  db_write_timestamp: timestamp_comparison_exp
+  domain: GameManager_bool_exp
+  domain_id: String_comparison_exp
+  embed: FeedItemEmbed_bool_exp
+  embed_id: String_comparison_exp
+  externalLink: String_comparison_exp
+  id: String_comparison_exp
+  internalLink: String_comparison_exp
+  message: String_comparison_exp
+  object: FeedItemEntity_bool_exp
+  object_id: String_comparison_exp
+  sender: String_comparison_exp
+  subject: FeedItemEntity_bool_exp
+  subjectMetadataPointer: String_comparison_exp
+  subject_id: String_comparison_exp
+  tag: String_comparison_exp
+  timestamp: Int_comparison_exp
+}
+
+"""Ordering options when selecting data from "FeedCard"."""
+input FeedCard_order_by {
+  content: RawMetadata_order_by
+  content_id: order_by
+  db_write_timestamp: order_by
+  domain: GameManager_order_by
+  domain_id: order_by
+  embed: FeedItemEmbed_order_by
+  embed_id: order_by
+  externalLink: order_by
+  id: order_by
+  internalLink: order_by
+  message: order_by
+  object: FeedItemEntity_order_by
+  object_id: order_by
+  sender: order_by
+  subject: FeedItemEntity_order_by
+  subjectMetadataPointer: order_by
+  subject_id: order_by
+  tag: order_by
+  timestamp: order_by
+}
+
+"""
+select columns of table "FeedCard"
+"""
+enum FeedCard_select_column {
+  """column name"""
+  content_id
+  """column name"""
+  db_write_timestamp
+  """column name"""
+  domain_id
+  """column name"""
+  embed_id
+  """column name"""
+  externalLink
+  """column name"""
+  id
+  """column name"""
+  internalLink
+  """column name"""
+  message
+  """column name"""
+  object_id
+  """column name"""
+  sender
+  """column name"""
+  subjectMetadataPointer
+  """column name"""
+  subject_id
+  """column name"""
+  tag
+  """column name"""
+  timestamp
+}
+
+"""
+Streaming cursor of the table "FeedCard"
+"""
+input FeedCard_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: FeedCard_stream_cursor_value_input!
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input FeedCard_stream_cursor_value_input {
+  content_id: String
+  db_write_timestamp: timestamp
+  domain_id: String
+  embed_id: String
+  externalLink: String
+  id: String
+  internalLink: String
+  message: String
+  object_id: String
+  sender: String
+  subjectMetadataPointer: String
+  subject_id: String
+  tag: String
+  timestamp: Int
+}
+
+"""
+columns and relationships of "FeedItemEmbed"
+"""
+type FeedItemEmbed {
+  content: String
+  db_write_timestamp: timestamp
+  id: String!
+  key: String
+  pointer: String
+  protocol: numeric
+}
+
+"""
+Boolean expression to filter rows from the table "FeedItemEmbed". All fields are combined with a logical 'AND'.
+"""
+input FeedItemEmbed_bool_exp {
+  _and: [FeedItemEmbed_bool_exp!]
+  _not: FeedItemEmbed_bool_exp
+  _or: [FeedItemEmbed_bool_exp!]
+  content: String_comparison_exp
+  db_write_timestamp: timestamp_comparison_exp
+  id: String_comparison_exp
+  key: String_comparison_exp
+  pointer: String_comparison_exp
+  protocol: numeric_comparison_exp
+}
+
+"""Ordering options when selecting data from "FeedItemEmbed"."""
+input FeedItemEmbed_order_by {
+  content: order_by
+  db_write_timestamp: order_by
+  id: order_by
+  key: order_by
+  pointer: order_by
+  protocol: order_by
+}
+
+"""
+select columns of table "FeedItemEmbed"
+"""
+enum FeedItemEmbed_select_column {
+  """column name"""
+  content
+  """column name"""
+  db_write_timestamp
+  """column name"""
+  id
+  """column name"""
+  key
+  """column name"""
+  pointer
+  """column name"""
+  protocol
+}
+
+"""
+Streaming cursor of the table "FeedItemEmbed"
+"""
+input FeedItemEmbed_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: FeedItemEmbed_stream_cursor_value_input!
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input FeedItemEmbed_stream_cursor_value_input {
+  content: String
+  db_write_timestamp: timestamp
+  id: String
+  key: String
+  pointer: String
+  protocol: numeric
+}
+
+"""
+columns and relationships of "FeedItemEntity"
+"""
+type FeedItemEntity {
+  db_write_timestamp: timestamp
+  entityType: String!
+  id: String!
+  name: String!
+}
+
+"""
+Boolean expression to filter rows from the table "FeedItemEntity". All fields are combined with a logical 'AND'.
+"""
+input FeedItemEntity_bool_exp {
+  _and: [FeedItemEntity_bool_exp!]
+  _not: FeedItemEntity_bool_exp
+  _or: [FeedItemEntity_bool_exp!]
+  db_write_timestamp: timestamp_comparison_exp
+  entityType: String_comparison_exp
+  id: String_comparison_exp
+  name: String_comparison_exp
+}
+
+"""Ordering options when selecting data from "FeedItemEntity"."""
+input FeedItemEntity_order_by {
+  db_write_timestamp: order_by
+  entityType: order_by
+  id: order_by
+  name: order_by
+}
+
+"""
+select columns of table "FeedItemEntity"
+"""
+enum FeedItemEntity_select_column {
+  """column name"""
+  db_write_timestamp
+  """column name"""
+  entityType
+  """column name"""
+  id
+  """column name"""
+  name
+}
+
+"""
+Streaming cursor of the table "FeedItemEntity"
+"""
+input FeedItemEntity_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: FeedItemEntity_stream_cursor_value_input!
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input FeedItemEntity_stream_cursor_value_input {
+  db_write_timestamp: timestamp
+  entityType: String
+  id: String
+  name: String
 }
 
 """
@@ -3525,60 +3986,191 @@ input String_comparison_exp {
 }
 
 """
-columns and relationships of "Test"
+columns and relationships of "Transaction"
 """
-type Test {
+type Transaction {
+  blockNumber: numeric!
   db_write_timestamp: timestamp
   id: String!
-  name: String!
+  srcAddress: String!
+  txHash: String!
 }
 
 """
-Boolean expression to filter rows from the table "Test". All fields are combined with a logical 'AND'.
+Boolean expression to filter rows from the table "Transaction". All fields are combined with a logical 'AND'.
 """
-input Test_bool_exp {
-  _and: [Test_bool_exp!]
-  _not: Test_bool_exp
-  _or: [Test_bool_exp!]
+input Transaction_bool_exp {
+  _and: [Transaction_bool_exp!]
+  _not: Transaction_bool_exp
+  _or: [Transaction_bool_exp!]
+  blockNumber: numeric_comparison_exp
   db_write_timestamp: timestamp_comparison_exp
   id: String_comparison_exp
-  name: String_comparison_exp
+  srcAddress: String_comparison_exp
+  txHash: String_comparison_exp
 }
 
-"""Ordering options when selecting data from "Test"."""
-input Test_order_by {
+"""Ordering options when selecting data from "Transaction"."""
+input Transaction_order_by {
+  blockNumber: order_by
   db_write_timestamp: order_by
   id: order_by
-  name: order_by
+  srcAddress: order_by
+  txHash: order_by
 }
 
 """
-select columns of table "Test"
+select columns of table "Transaction"
 """
-enum Test_select_column {
+enum Transaction_select_column {
+  """column name"""
+  blockNumber
   """column name"""
   db_write_timestamp
   """column name"""
   id
   """column name"""
-  name
+  srcAddress
+  """column name"""
+  txHash
 }
 
 """
-Streaming cursor of the table "Test"
+Streaming cursor of the table "Transaction"
 """
-input Test_stream_cursor_input {
+input Transaction_stream_cursor_input {
   """Stream column input with initial value"""
-  initial_value: Test_stream_cursor_value_input!
+  initial_value: Transaction_stream_cursor_value_input!
   """cursor ordering"""
   ordering: cursor_ordering
 }
 
 """Initial value of the column from where the streaming should start"""
-input Test_stream_cursor_value_input {
+input Transaction_stream_cursor_value_input {
+  blockNumber: numeric
   db_write_timestamp: timestamp
   id: String
-  name: String
+  srcAddress: String
+  txHash: String
+}
+
+"""
+columns and relationships of "Update"
+"""
+type Update {
+  """An object relationship"""
+  content: RawMetadata
+  contentSchema: Int!
+  content_id: String!
+  db_write_timestamp: timestamp
+  """An object relationship"""
+  domain: GameManager
+  domain_id: String!
+  entityAddress: String!
+  id: String!
+  postDecorator: Int!
+  postedBy: String!
+  posterRole: numeric!
+  scope: Int!
+  tag: String!
+  timestamp: Int!
+}
+
+"""
+Boolean expression to filter rows from the table "Update". All fields are combined with a logical 'AND'.
+"""
+input Update_bool_exp {
+  _and: [Update_bool_exp!]
+  _not: Update_bool_exp
+  _or: [Update_bool_exp!]
+  content: RawMetadata_bool_exp
+  contentSchema: Int_comparison_exp
+  content_id: String_comparison_exp
+  db_write_timestamp: timestamp_comparison_exp
+  domain: GameManager_bool_exp
+  domain_id: String_comparison_exp
+  entityAddress: String_comparison_exp
+  id: String_comparison_exp
+  postDecorator: Int_comparison_exp
+  postedBy: String_comparison_exp
+  posterRole: numeric_comparison_exp
+  scope: Int_comparison_exp
+  tag: String_comparison_exp
+  timestamp: Int_comparison_exp
+}
+
+"""Ordering options when selecting data from "Update"."""
+input Update_order_by {
+  content: RawMetadata_order_by
+  contentSchema: order_by
+  content_id: order_by
+  db_write_timestamp: order_by
+  domain: GameManager_order_by
+  domain_id: order_by
+  entityAddress: order_by
+  id: order_by
+  postDecorator: order_by
+  postedBy: order_by
+  posterRole: order_by
+  scope: order_by
+  tag: order_by
+  timestamp: order_by
+}
+
+"""
+select columns of table "Update"
+"""
+enum Update_select_column {
+  """column name"""
+  contentSchema
+  """column name"""
+  content_id
+  """column name"""
+  db_write_timestamp
+  """column name"""
+  domain_id
+  """column name"""
+  entityAddress
+  """column name"""
+  id
+  """column name"""
+  postDecorator
+  """column name"""
+  postedBy
+  """column name"""
+  posterRole
+  """column name"""
+  scope
+  """column name"""
+  tag
+  """column name"""
+  timestamp
+}
+
+"""
+Streaming cursor of the table "Update"
+"""
+input Update_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: Update_stream_cursor_value_input!
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input Update_stream_cursor_value_input {
+  contentSchema: Int
+  content_id: String
+  db_write_timestamp: timestamp
+  domain_id: String
+  entityAddress: String
+  id: String
+  postDecorator: Int
+  postedBy: String
+  posterRole: numeric
+  scope: Int
+  tag: String
+  timestamp: Int
 }
 
 scalar _text

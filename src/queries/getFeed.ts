@@ -73,6 +73,11 @@ export const resolveFeedItem = async (
 ): Promise<FeedCardUI> => {
   //check entity type
 
+  if (!item.subject) {
+    console.warn('No subject found in feed item', item);
+    throw new Error(`No subject found in feed`);
+  }
+
   const { imgCID, description } = await handleSubjectMetadata(
     item.subject.type,
     item.subjectMetadataPointer
@@ -106,9 +111,9 @@ export const resolveFeedItem = async (
           entityType: (item.object?.type as Player) || '',
         }
       : undefined,
-    content: item.content,
+    content: item.content!!,
     timestamp: item.timestamp,
-    sender: item.sender,
+    sender: item.sender!!,
     embedText,
   };
 };
@@ -125,12 +130,17 @@ export const getFeed = async ({
       apiEndpoint: SUBGRAPH_URL,
     });
 
-    const { feedItems } = await getFeed({
+    const { FeedCard } = await getFeed({
       first,
       skip,
-      orderBy: 'timestamp',
-      orderDirection: 'desc',
+      orderBy: { timestamp: 'desc' },
     });
+
+    const feedItems = FeedCard;
+
+    if (!feedItems) {
+      throw new Error('No feed items found');
+    }
 
     const resolved = await Promise.all(
       feedItems.map(async (item) => await resolveFeedItem(item))

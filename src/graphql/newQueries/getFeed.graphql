@@ -1,0 +1,32 @@
+fragment FeedData on FeedCard {
+  id
+  content: message
+  timestamp
+  sender
+  tag
+  subjectMetadataPointer
+  subject {
+    id
+    name
+    type: entityType
+  }
+  object {
+    id
+    name
+    type: entityType
+  }
+  embed {
+    key
+    pointer
+    protocol
+    content
+  }
+  internalLink
+  externalLink
+}
+
+query getFeed($first: Int!, $skip: Int!, $orderBy: [FeedCard_order_by!]) {
+  FeedCard(limit: $first, offset: $skip, order_by: $orderBy) {
+    ...FeedData
+  }
+}
