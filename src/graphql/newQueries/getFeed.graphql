@@ -1,31 +1,3 @@
-fragment FeedData on FeedCard {
-  id
-  content: message
-  timestamp
-  sender
-  tag
-  subjectMetadataPointer
-  domain_id
-  subject {
-    id
-    name
-    type: entityType
-  }
-  object {
-    id
-    name
-    type: entityType
-  }
-  embed {
-    key
-    pointer
-    protocol
-    content
-  }
-  internalLink
-  externalLink
-}
-
 query getFeed(
   $first: Int!
   $skip: Int!

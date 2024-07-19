@@ -1,0 +1,24 @@
+query getEntityFeed(
+  $first: Int!
+  $skip: Int!
+  $orderBy: [FeedCard_order_by!]
+  $entityId: String!
+  $domainId: String!
+) {
+  subjectItems: FeedCard(
+    limit: $first
+    offset: $skip
+    order_by: $orderBy
+    where: { subject_id: { _eq: $entityId }, domain_id: { _eq: $domainId } }
+  ) {
+    ...FeedData
+  }
+  objectItems: FeedCard(
+    limit: $first
+    offset: $skip
+    order_by: $orderBy
+    where: { object_id: { _eq: $entityId }, domain_id: { _eq: $domainId } }
+  ) {
+    ...FeedData
+  }
+}

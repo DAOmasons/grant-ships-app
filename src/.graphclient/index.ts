@@ -20,8 +20,8 @@ import { getMesh, ExecuteMeshFn, SubscribeMeshFn, MeshContext as BaseMeshContext
 import { MeshStore, FsStoreStorageAdapter } from '@graphql-mesh/store';
 import { path as pathModule } from '@graphql-mesh/cross-helpers';
 import { ImportFn } from '@graphql-mesh/types';
-import type { GsVotingTypes } from './sources/gs-voting/types';
 import type { GrantShipsTypes } from './sources/grant-ships/types';
+import type { GsVotingTypes } from './sources/gs-voting/types';
 import * as importedModule$0 from "./sources/grant-ships/introspectionSchema";
 import * as importedModule$1 from "./sources/gs-voting/introspectionSchema";
 export type Maybe<T> = T | null;
@@ -8441,6 +8441,12 @@ const merger = new(StitchingMerger as any)({
         },
         location: 'GetFeedDocument.graphql'
       },{
+        document: GetEntityFeedDocument,
+        get rawSDL() {
+          return printWithCache(GetEntityFeedDocument);
+        },
+        location: 'GetEntityFeedDocument.graphql'
+      },{
         document: GetGameManagerDocument,
         get rawSDL() {
           return printWithCache(GetGameManagerDocument);
@@ -8543,6 +8549,18 @@ export type BaseShipDataFragment = (
   & { profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>>, alloProfileMembers?: Maybe<Pick<ProfileMemberGroup, 'addresses'>> }
 );
 
+export type FeedDataFragment = (
+  Pick<FeedCard, 'id' | 'timestamp' | 'sender' | 'tag' | 'subjectMetadataPointer' | 'domain_id' | 'internalLink' | 'externalLink'>
+  & { content: FeedCard['message'] }
+  & { subject?: Maybe<(
+    Pick<FeedItemEntity, 'id' | 'name'>
+    & { type: FeedItemEntity['entityType'] }
+  )>, object?: Maybe<(
+    Pick<FeedItemEntity, 'id' | 'name'>
+    & { type: FeedItemEntity['entityType'] }
+  )>, embed?: Maybe<Pick<FeedItemEmbed, 'key' | 'pointer' | 'protocol' | 'content'>> }
+);
+
 export type FacShipDataFragment = (
   Pick<GrantShip, 'id' | 'name' | 'status' | 'applicationSubmittedTime' | 'shipApplicationBytesData'>
   & { profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
@@ -8562,18 +8580,6 @@ export type facDashShipDataQuery = { shipApplicants: Array<(
     & { applicationReviewReason?: Maybe<Pick<RawMetadata, 'pointer'>>, profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
   )> };
 
-export type FeedDataFragment = (
-  Pick<FeedCard, 'id' | 'timestamp' | 'sender' | 'tag' | 'subjectMetadataPointer' | 'domain_id' | 'internalLink' | 'externalLink'>
-  & { content: FeedCard['message'] }
-  & { subject?: Maybe<(
-    Pick<FeedItemEntity, 'id' | 'name'>
-    & { type: FeedItemEntity['entityType'] }
-  )>, object?: Maybe<(
-    Pick<FeedItemEntity, 'id' | 'name'>
-    & { type: FeedItemEntity['entityType'] }
-  )>, embed?: Maybe<Pick<FeedItemEmbed, 'key' | 'pointer' | 'protocol' | 'content'>> }
-);
-
 export type getFeedQueryVariables = Exact<{
   first: Scalars['Int'];
   skip: Scalars['Int'];
@@ -8583,6 +8589,37 @@ export type getFeedQueryVariables = Exact<{
 
 
 export type getFeedQuery = { FeedCard: Array<(
+    Pick<FeedCard, 'id' | 'timestamp' | 'sender' | 'tag' | 'subjectMetadataPointer' | 'domain_id' | 'internalLink' | 'externalLink'>
+    & { content: FeedCard['message'] }
+    & { subject?: Maybe<(
+      Pick<FeedItemEntity, 'id' | 'name'>
+      & { type: FeedItemEntity['entityType'] }
+    )>, object?: Maybe<(
+      Pick<FeedItemEntity, 'id' | 'name'>
+      & { type: FeedItemEntity['entityType'] }
+    )>, embed?: Maybe<Pick<FeedItemEmbed, 'key' | 'pointer' | 'protocol' | 'content'>> }
+  )> };
+
+export type getEntityFeedQueryVariables = Exact<{
+  first: Scalars['Int'];
+  skip: Scalars['Int'];
+  orderBy?: InputMaybe<Array<FeedCard_order_by> | FeedCard_order_by>;
+  entityId: Scalars['String'];
+  domainId: Scalars['String'];
+}>;
+
+
+export type getEntityFeedQuery = { subjectItems: Array<(
+    Pick<FeedCard, 'id' | 'timestamp' | 'sender' | 'tag' | 'subjectMetadataPointer' | 'domain_id' | 'internalLink' | 'externalLink'>
+    & { content: FeedCard['message'] }
+    & { subject?: Maybe<(
+      Pick<FeedItemEntity, 'id' | 'name'>
+      & { type: FeedItemEntity['entityType'] }
+    )>, object?: Maybe<(
+      Pick<FeedItemEntity, 'id' | 'name'>
+      & { type: FeedItemEntity['entityType'] }
+    )>, embed?: Maybe<Pick<FeedItemEmbed, 'key' | 'pointer' | 'protocol' | 'content'>> }
+  )>, objectItems: Array<(
     Pick<FeedCard, 'id' | 'timestamp' | 'sender' | 'tag' | 'subjectMetadataPointer' | 'domain_id' | 'internalLink' | 'externalLink'>
     & { content: FeedCard['message'] }
     & { subject?: Maybe<(
@@ -8724,18 +8761,6 @@ export const BaseShipDataFragmentDoc = gql`
   totalRoundAmount
 }
     ` as unknown as DocumentNode<BaseShipDataFragment, unknown>;
-export const FacShipDataFragmentDoc = gql`
-    fragment FacShipData on GrantShip {
-  id
-  name
-  status
-  applicationSubmittedTime
-  shipApplicationBytesData
-  profileMetadata {
-    pointer
-  }
-}
-    ` as unknown as DocumentNode<FacShipDataFragment, unknown>;
 export const FeedDataFragmentDoc = gql`
     fragment FeedData on FeedCard {
   id
@@ -8765,6 +8790,18 @@ export const FeedDataFragmentDoc = gql`
   externalLink
 }
     ` as unknown as DocumentNode<FeedDataFragment, unknown>;
+export const FacShipDataFragmentDoc = gql`
+    fragment FacShipData on GrantShip {
+  id
+  name
+  status
+  applicationSubmittedTime
+  shipApplicationBytesData
+  profileMetadata {
+    pointer
+  }
+}
+    ` as unknown as DocumentNode<FacShipDataFragment, unknown>;
 export const GameManagerDataFragmentDoc = gql`
     fragment GameManagerData on GameManager {
   id
@@ -8841,6 +8878,26 @@ export const getFeedDocument = gql`
   }
 }
     ${FeedDataFragmentDoc}` as unknown as DocumentNode<getFeedQuery, getFeedQueryVariables>;
+export const getEntityFeedDocument = gql`
+    query getEntityFeed($first: Int!, $skip: Int!, $orderBy: [FeedCard_order_by!], $entityId: String!, $domainId: String!) {
+  subjectItems: FeedCard(
+    limit: $first
+    offset: $skip
+    order_by: $orderBy
+    where: {subject_id: {_eq: $entityId}, domain_id: {_eq: $domainId}}
+  ) {
+    ...FeedData
+  }
+  objectItems: FeedCard(
+    limit: $first
+    offset: $skip
+    order_by: $orderBy
+    where: {object_id: {_eq: $entityId}, domain_id: {_eq: $domainId}}
+  ) {
+    ...FeedData
+  }
+}
+    ${FeedDataFragmentDoc}` as unknown as DocumentNode<getEntityFeedQuery, getEntityFeedQueryVariables>;
 export const getGameManagerDocument = gql`
     query getGameManager($id: String!) {
   GameManager(where: {id: {_eq: $id}}) {
@@ -8952,6 +9009,7 @@ export const ShipsPageQueryDocument = gql`
 
 
 
+
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
@@ -8960,6 +9018,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     getFeed(variables: getFeedQueryVariables, options?: C): Promise<getFeedQuery> {
       return requester<getFeedQuery, getFeedQueryVariables>(getFeedDocument, variables, options) as Promise<getFeedQuery>;
+    },
+    getEntityFeed(variables: getEntityFeedQueryVariables, options?: C): Promise<getEntityFeedQuery> {
+      return requester<getEntityFeedQuery, getEntityFeedQueryVariables>(getEntityFeedDocument, variables, options) as Promise<getEntityFeedQuery>;
     },
     getGameManager(variables: getGameManagerQueryVariables, options?: C): Promise<getGameManagerQuery> {
       return requester<getGameManagerQuery, getGameManagerQueryVariables>(getGameManagerDocument, variables, options) as Promise<getGameManagerQuery>;

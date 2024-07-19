@@ -172,8 +172,8 @@ export const getEntityFeed = async ({
       first: first,
       skip: skip,
       entityId: entityId,
-      orderBy: 'timestamp',
-      orderDirection: 'desc',
+      orderBy: { timestamp: 'desc' },
+      domainId: GAME_MANAGER.ADDRESS,
     });
 
     const resolved = await Promise.all(
