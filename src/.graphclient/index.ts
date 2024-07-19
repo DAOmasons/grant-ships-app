@@ -8495,6 +8495,12 @@ const merger = new(StitchingMerger as any)({
         },
         location: 'GetShipPoolIdDocument.graphql'
       },{
+        document: GetUpdatesDocument,
+        get rawSDL() {
+          return printWithCache(GetUpdatesDocument);
+        },
+        location: 'GetUpdatesDocument.graphql'
+      },{
         document: GetUserDataDocument,
         get rawSDL() {
           return printWithCache(GetUserDataDocument);
@@ -8571,6 +8577,11 @@ export type FeedDataFragment = (
     Pick<FeedItemEntity, 'id' | 'name'>
     & { type: FeedItemEntity['entityType'] }
   )>, embed?: Maybe<Pick<FeedItemEmbed, 'key' | 'pointer' | 'protocol' | 'content'>> }
+);
+
+export type UpdateBodyFragment = (
+  Pick<Update, 'id' | 'postedBy' | 'entityAddress' | 'timestamp'>
+  & { content?: Maybe<Pick<RawMetadata, 'pointer'>> }
 );
 
 export type FacShipDataFragment = (
@@ -8723,6 +8734,16 @@ export type getShipPoolIdQueryVariables = Exact<{
 
 export type getShipPoolIdQuery = { GrantShip: Array<Pick<GrantShip, 'poolId'>> };
 
+export type getUpdatesQueryVariables = Exact<{
+  entityAddress: Scalars['String'];
+}>;
+
+
+export type getUpdatesQuery = { Update: Array<(
+    Pick<Update, 'id' | 'postedBy' | 'entityAddress' | 'timestamp'>
+    & { content?: Maybe<Pick<RawMetadata, 'pointer'>> }
+  )> };
+
 export type getUserDataQueryVariables = Exact<{
   id?: InputMaybe<Scalars['String']>;
 }>;
@@ -8816,6 +8837,17 @@ export const FeedDataFragmentDoc = gql`
   externalLink
 }
     ` as unknown as DocumentNode<FeedDataFragment, unknown>;
+export const UpdateBodyFragmentDoc = gql`
+    fragment UpdateBody on Update {
+  id
+  content {
+    pointer
+  }
+  postedBy
+  entityAddress
+  timestamp
+}
+    ` as unknown as DocumentNode<UpdateBodyFragment, unknown>;
 export const FacShipDataFragmentDoc = gql`
     fragment FacShipData on GrantShip {
   id
@@ -8988,6 +9020,16 @@ export const getShipPoolIdDocument = gql`
   }
 }
     ` as unknown as DocumentNode<getShipPoolIdQuery, getShipPoolIdQueryVariables>;
+export const getUpdatesDocument = gql`
+    query getUpdates($entityAddress: String!) {
+  Update(
+    where: {entityAddress: {_eq: $entityAddress}}
+    order_by: {timestamp: desc}
+  ) {
+    ...UpdateBody
+  }
+}
+    ${UpdateBodyFragmentDoc}` as unknown as DocumentNode<getUpdatesQuery, getUpdatesQueryVariables>;
 export const getUserDataDocument = gql`
     query getUserData($id: String) {
   projects: Project(where: {owner: {_eq: $id}}) {
@@ -9052,6 +9094,7 @@ export const ShipsPageQueryDocument = gql`
 
 
 
+
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
@@ -9087,6 +9130,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     getShipPoolId(variables: getShipPoolIdQueryVariables, options?: C): Promise<getShipPoolIdQuery> {
       return requester<getShipPoolIdQuery, getShipPoolIdQueryVariables>(getShipPoolIdDocument, variables, options) as Promise<getShipPoolIdQuery>;
+    },
+    getUpdates(variables: getUpdatesQueryVariables, options?: C): Promise<getUpdatesQuery> {
+      return requester<getUpdatesQuery, getUpdatesQueryVariables>(getUpdatesDocument, variables, options) as Promise<getUpdatesQuery>;
     },
     getUserData(variables?: getUserDataQueryVariables, options?: C): Promise<getUserDataQuery> {
       return requester<getUserDataQuery, getUserDataQueryVariables>(getUserDataDocument, variables, options) as Promise<getUserDataQuery>;

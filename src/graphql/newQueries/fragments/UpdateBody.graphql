@@ -1,4 +1,4 @@
-fragment Update on Update {
+fragment UpdateBody on Update {
   id
   content {
     pointer
