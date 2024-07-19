@@ -1,5 +1,5 @@
 import { FeedDataFragment, getBuiltGraphSDK } from '../.graphclient';
-import { DAO_MASONS, SUBGRAPH_URL } from '../constants/gameSetup';
+import { DAO_MASONS, GAME_MANAGER, SUBGRAPH_URL } from '../constants/gameSetup';
 import { FeedCardUI, Player } from '../types/ui';
 import { findValueByKey } from '../utils/helpers';
 import { getGatewayUrl, getIpfsJson, isCID } from '../utils/ipfs/get';
@@ -134,6 +134,7 @@ export const getFeed = async ({
       first,
       skip,
       orderBy: { timestamp: 'desc' },
+      domainId: GAME_MANAGER.ADDRESS,
     });
 
     const feedItems = FeedCard;

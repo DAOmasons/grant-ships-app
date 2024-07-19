@@ -32,7 +32,7 @@ export const Home = () => {
           </Tabs.List>
           <Tabs.Panel value="feed">
             <></>
-            {/* <FeedPanel /> */}
+            <FeedPanel />
           </Tabs.Panel>
           <Tabs.Panel value="stats">
             <AppAlert

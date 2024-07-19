@@ -8563,7 +8563,7 @@ export type facDashShipDataQuery = { shipApplicants: Array<(
   )> };
 
 export type FeedDataFragment = (
-  Pick<FeedCard, 'id' | 'timestamp' | 'sender' | 'tag' | 'subjectMetadataPointer' | 'internalLink' | 'externalLink'>
+  Pick<FeedCard, 'id' | 'timestamp' | 'sender' | 'tag' | 'subjectMetadataPointer' | 'domain_id' | 'internalLink' | 'externalLink'>
   & { content: FeedCard['message'] }
   & { subject?: Maybe<(
     Pick<FeedItemEntity, 'id' | 'name'>
@@ -8578,11 +8578,12 @@ export type getFeedQueryVariables = Exact<{
   first: Scalars['Int'];
   skip: Scalars['Int'];
   orderBy?: InputMaybe<Array<FeedCard_order_by> | FeedCard_order_by>;
+  domainId: Scalars['String'];
 }>;
 
 
 export type getFeedQuery = { FeedCard: Array<(
-    Pick<FeedCard, 'id' | 'timestamp' | 'sender' | 'tag' | 'subjectMetadataPointer' | 'internalLink' | 'externalLink'>
+    Pick<FeedCard, 'id' | 'timestamp' | 'sender' | 'tag' | 'subjectMetadataPointer' | 'domain_id' | 'internalLink' | 'externalLink'>
     & { content: FeedCard['message'] }
     & { subject?: Maybe<(
       Pick<FeedItemEntity, 'id' | 'name'>
@@ -8743,6 +8744,7 @@ export const FeedDataFragmentDoc = gql`
   sender
   tag
   subjectMetadataPointer
+  domain_id
   subject {
     id
     name
@@ -8828,8 +8830,13 @@ export const facDashShipDataDocument = gql`
 }
     ${FacShipDataFragmentDoc}` as unknown as DocumentNode<facDashShipDataQuery, facDashShipDataQueryVariables>;
 export const getFeedDocument = gql`
-    query getFeed($first: Int!, $skip: Int!, $orderBy: [FeedCard_order_by!]) {
-  FeedCard(limit: $first, offset: $skip, order_by: $orderBy) {
+    query getFeed($first: Int!, $skip: Int!, $orderBy: [FeedCard_order_by!], $domainId: String!) {
+  FeedCard(
+    limit: $first
+    offset: $skip
+    order_by: $orderBy
+    where: {domain_id: {_eq: $domainId}}
+  ) {
     ...FeedData
   }
 }
