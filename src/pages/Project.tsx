@@ -13,7 +13,7 @@ import {
   Tooltip,
   useMantineTheme,
 } from '@mantine/core';
-import { MainSection, PageTitle } from '../layout/Sections';
+import { MainSection, PageTitle, ProfileSection } from '../layout/Sections';
 import {
   IconAward,
   IconChevronDown,
@@ -44,6 +44,7 @@ import { ProjectUpdatesPanel } from '../components/projectItems/ProjectUpdatesPa
 import { useLaptop, useTablet } from '../hooks/useBreakpoint';
 import { useDisclosure } from '@mantine/hooks';
 import { ProjectBadge } from '../components/RoleBadges';
+import zIndex from '@mui/material/styles/zIndex';
 
 const infiniteWrapper = async ({ pageParam }: any) => {
   const result = await getEntityFeed(pageParam);
@@ -159,17 +160,16 @@ export const Project = () => {
 
   return (
     <Flex w="100%">
-      <MainSection maw={600}>
-        <PageTitle
-          title={
-            <Group gap={'sm'}>
-              <Text fz={20} fw={500}>
-                {project.name}
-              </Text>
-              <ProjectBadge size={24} />
-            </Group>
-          }
-        />
+      <ProfileSection
+        pageTitle={
+          <Group gap={'sm'} style={{ zIndex: 1 }}>
+            <Text fz={20} fw={500}>
+              {project.name}
+            </Text>
+            <ProjectBadge size={24} />
+          </Group>
+        }
+      >
         <Avatar size={160} mt={'xl'} mb="md" src={project.imgUrl} />
         <Group gap={'xs'} mb="md">
           <Text fz="lg" fw={600}>
@@ -325,9 +325,9 @@ export const Project = () => {
             />
           </Tabs.Panel>
         </Tabs>
-      </MainSection>
+      </ProfileSection>
       {!isLaptop && (
-        <Stack gap={'xs'} mt={72} w={270}>
+        <Stack gap={'xs'} mt={94} w={270}>
           <Paper p="md" bg={theme.colors.dark[6]}>
             <Text size="lg" mb={2}>
               {totalFundsAllocated} {GAME_TOKEN.SYMBOL}

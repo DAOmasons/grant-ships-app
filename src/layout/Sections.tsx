@@ -1,5 +1,6 @@
 import {
   ActionIcon,
+  BackgroundImage,
   Box,
   DefaultMantineColor,
   Group,
@@ -26,9 +27,9 @@ export const MainSection = ({
     <Box
       maw={maw}
       miw={320}
-      p={isMobile ? 'xs' : 'xl'}
       w={'100%'}
       bg={bg}
+      m={isMobile ? 'xs' : 'xl'}
       mb={isMobile ? 72 : 'xl'}
     >
       {children}
@@ -74,5 +75,37 @@ export const PageDescription = ({ description }: { description: string }) => {
     <Text fz="md" fw={400} c={theme.colors.dark[2]} mb="md">
       {description}
     </Text>
+  );
+};
+
+export const ProfileSection = ({
+  pageTitle,
+  children,
+}: {
+  pageTitle: ReactNode;
+  children: ReactNode;
+}) => {
+  const theme = useMantineTheme();
+  const isMobile = useMobile();
+
+  return (
+    <Box>
+      <Box mt="xl" ml="xl">
+        <PageTitle title={pageTitle} />
+      </Box>
+      <Box pos="relative" mr="xl">
+        <Box bg={theme.colors.dark[6]} h={152} pos="absolute" top={0} w="100%">
+          <BackgroundImage
+            src="https://picsum.photos/600/152"
+            w="100%"
+            h="100%"
+            opacity={0.6}
+          />
+        </Box>
+        <MainSection>
+          <Box pt={1}>{children}</Box>
+        </MainSection>
+      </Box>
+    </Box>
   );
 };
