@@ -77,7 +77,7 @@ export const FundPoolPanel = ({
         args: [ADDR.ALLO as Address, parseEther(roundAmount)],
       },
       viewParams: {
-        awaitGraphPoll: false,
+        awaitEnvioPoll: false,
       },
       writeContractOptions: {
         onSuccess: () => {
@@ -96,7 +96,7 @@ export const FundPoolPanel = ({
         args: [GAME_MANAGER.POOL.ID, parseEther(inputText.toString())],
       },
       viewParams: {
-        awaitGraphPoll: false,
+        awaitEnvioPoll: false,
       },
       writeContractOptions: {
         onSuccess: () => {

@@ -151,7 +151,7 @@ export const TimeoutState = ({ txHash }: { txHash?: string }) => {
     <Stack align="center" pb={'xl'}>
       <IconExclamationCircle size={80} color={theme.colors.violet[6]} />
       <Text size="lg" mb={'xs'}>
-        Subgraph Lagging
+        Indexer Lagging
       </Text>
       <Spoiler
         maxHeight={80}
@@ -164,7 +164,7 @@ export const TimeoutState = ({ txHash }: { txHash?: string }) => {
           c={theme.colors.dark[2]}
           style={{ wordBreak: 'break-word' }}
         >
-          The Subgraph poll has timed out. Your transaction is successful,
+          The Indexer poll has timed out. Your transaction is successful,
           however there may be a delay in updating the UI.
         </Text>
       </Spoiler>
