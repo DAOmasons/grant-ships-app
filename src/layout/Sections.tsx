@@ -2,16 +2,21 @@ import {
   ActionIcon,
   BackgroundImage,
   Box,
+  Button,
   DefaultMantineColor,
+  FileButton,
   Group,
+  Image,
+  Modal,
   StyleProp,
   Text,
   useMantineTheme,
 } from '@mantine/core';
 import { IconArrowNarrowLeft } from '@tabler/icons-react';
-import { ReactNode, useMemo } from 'react';
+import { ReactNode, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMobile } from '../hooks/useBreakpoint';
+import ReactCrop, { Crop } from 'react-image-crop';
 
 export const MainSection = ({
   children,
@@ -88,6 +93,15 @@ export const ProfileSection = ({
   const theme = useMantineTheme();
   const isMobile = useMobile();
 
+  const [img, setImg] = useState<File | undefined>(undefined);
+  const [modalOpened, setModalOpened] = useState(false);
+
+  const handleUpload = (file: File | null) => {
+    if (file) {
+      setImg(file);
+    }
+  };
+
   return (
     <Box>
       <Box mt="xl" ml="xl">
@@ -96,7 +110,7 @@ export const ProfileSection = ({
       <Box pos="relative" mr="xl">
         <Box bg={theme.colors.dark[6]} h={152} pos="absolute" top={0} w="100%">
           <BackgroundImage
-            src="https://picsum.photos/600/152"
+            src={img ? URL.createObjectURL(img) : ''}
             w="100%"
             h="100%"
             opacity={0.6}
