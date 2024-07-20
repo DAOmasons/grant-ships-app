@@ -1,6 +1,7 @@
 import '@mantine/core/styles.css';
 import '@mantine/notifications/styles.css';
 import '@mantine/dates/styles.css';
+import '@mantine/carousel/styles.css';
 
 import { Layout } from './layout/Layout';
 import { WagmiProvider } from 'wagmi';
@@ -10,8 +11,6 @@ import { BrowserRouter } from 'react-router-dom';
 import { TxProvider } from './contexts/TxContext';
 import { ClientRoutes } from './routes';
 import { GlobalStateProvider } from './contexts/GlobalState';
-import { VoteProvider } from './contexts/VoteContext';
-import { ADDR } from './constants/addresses';
 
 const queryClient = new QueryClient();
 export default function App() {

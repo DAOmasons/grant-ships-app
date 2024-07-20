@@ -5,6 +5,7 @@ import {
   Collapse,
   Flex,
   Group,
+  Image,
   Loader,
   Paper,
   Stack,
@@ -45,6 +46,7 @@ import { useLaptop, useTablet } from '../hooks/useBreakpoint';
 import { useDisclosure } from '@mantine/hooks';
 import { ProjectBadge } from '../components/RoleBadges';
 import zIndex from '@mui/material/styles/zIndex';
+import { Carousel } from '@mantine/carousel';
 
 const infiniteWrapper = async ({ pageParam }: any) => {
   const result = await getEntityFeed(pageParam);
@@ -96,15 +98,16 @@ export const Project = () => {
     [feedPages]
   );
 
-  const {
-    data: grants,
-    isLoading: grantsLoading,
-    error: grantsError,
-  } = useQuery({
-    queryKey: [`project-grants-${id}`],
-    queryFn: () => getProjectGrants(id as string),
-    enabled: !!id,
-  });
+  // const {
+  //   data: grants,
+  //   isLoading: grantsLoading,
+  //   error: grantsError,
+  // } = useQuery({
+  //   queryKey: [`project-grants-${id}`],
+  //   queryFn: () => getProjectGrants(id as string),
+  //   enabled: !!id,
+  // });
+  const grants = [] as const;
 
   const theme = useMantineTheme();
 
@@ -298,20 +301,22 @@ export const Project = () => {
             )}
           </Tabs.Panel>
           <Tabs.Panel value="grants">
-            {project.grants && (
+            {/* {project.grants && (
               <GrantsPanel
                 grants={grants}
                 isLoading={grantsLoading}
                 error={grantsError}
               />
-            )}
+            )} */}
+            <></>
           </Tabs.Panel>
           <Tabs.Panel value="updates">
-            <ProjectUpdatesPanel
+            {/* <ProjectUpdatesPanel
               grants={grants}
               project={project}
               isProjectMember={isProjectMember}
-            />
+            /> */}
+            <></>
           </Tabs.Panel>
           <Tabs.Panel value="details">
             <Contact
@@ -328,6 +333,29 @@ export const Project = () => {
       </ProfileSection>
       {!isLaptop && (
         <Stack gap={'xs'} mt={94} w={270}>
+          <Box>
+            <Carousel withIndicators w={270}>
+              <Carousel.Slide>
+                <Image
+                  src="https://picsum.photos/1000/800"
+                  fit="cover"
+                  h={170}
+                />
+              </Carousel.Slide>
+              <Carousel.Slide>
+                <iframe
+                  width="270"
+                  height="170"
+                  src="https://www.youtube.com/embed/ZXXd5TNjJIE"
+                  title="YouTube video player"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  allowFullScreen
+                ></iframe>
+              </Carousel.Slide>
+            </Carousel>
+          </Box>
           <Paper p="md" bg={theme.colors.dark[6]}>
             <Text size="lg" mb={2}>
               {totalFundsAllocated} {GAME_TOKEN.SYMBOL}

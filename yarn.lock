@@ -2546,6 +2546,19 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@mantine/carousel@npm:^7.11.2":
+  version: 7.11.2
+  resolution: "@mantine/carousel@npm:7.11.2"
+  peerDependencies:
+    "@mantine/core": 7.11.2
+    "@mantine/hooks": 7.11.2
+    embla-carousel-react: ">=7.0.0"
+    react: ^18.2.0
+    react-dom: ^18.2.0
+  checksum: 560c10bb4fa9cd270f4f74c74feb5fdcf3a3f03593e179f4aa8504ebaf99b6408e1d517e7f51842b3c5a79d80cff4461510a3393d95ff765148c0d3aa78bb46b
+  languageName: node
+  linkType: hard
+
 "@mantine/core@npm:^7.4.2":
   version: 7.4.2
   resolution: "@mantine/core@npm:7.4.2"
@@ -5969,6 +5982,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"embla-carousel-react@npm:^7.1.0":
+  version: 7.1.0
+  resolution: "embla-carousel-react@npm:7.1.0"
+  dependencies:
+    embla-carousel: "npm:7.1.0"
+  peerDependencies:
+    react: ^16.8.0 || ^17.0.1 || ^18.0.0
+  checksum: 05e33fdb1062fde0164a0685163a5212f8e8f343fbe28e9a8e2348c989d8825d80fdcecfed485c7617d27f8f5d72b393612a3dd13ef9cffc02ef0cf21109ba51
+  languageName: node
+  linkType: hard
+
+"embla-carousel@npm:7.1.0":
+  version: 7.1.0
+  resolution: "embla-carousel@npm:7.1.0"
+  checksum: 3fcfe5b287c5d09d35dac76b6612567cf6f15abdae0bbf7d10754db9f732dd90cdfdf5bc7405d8fb3f65542bdead09971e93e024a0db9b3f1fcc653a70e733bc
+  languageName: node
+  linkType: hard
+
 "emoji-regex@npm:^8.0.0":
   version: 8.0.0
   resolution: "emoji-regex@npm:8.0.0"
@@ -6887,6 +6918,7 @@ __metadata:
   resolution: "grant-ship-app@workspace:."
   dependencies:
     "@graphprotocol/client-cli": "npm:^3.0.0"
+    "@mantine/carousel": "npm:^7.11.2"
     "@mantine/core": "npm:^7.4.2"
     "@mantine/dates": "npm:^7.5.2"
     "@mantine/form": "npm:^7.4.2"
@@ -6901,6 +6933,7 @@ __metadata:
     "@typescript-eslint/parser": "npm:^6.9.1"
     "@vitejs/plugin-react": "npm:^4.2.1"
     axios: "npm:^1.6.5"
+    embla-carousel-react: "npm:^7.1.0"
     eslint: "npm:^8.53.0"
     eslint-plugin-react-hooks: "npm:^4.6.0"
     eslint-plugin-react-refresh: "npm:^0.4.4"

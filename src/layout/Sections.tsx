@@ -16,7 +16,6 @@ import { IconArrowNarrowLeft } from '@tabler/icons-react';
 import { ReactNode, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useMobile } from '../hooks/useBreakpoint';
-import ReactCrop, { Crop } from 'react-image-crop';
 
 export const MainSection = ({
   children,

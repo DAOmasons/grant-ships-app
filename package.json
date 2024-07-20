@@ -11,6 +11,7 @@
     "graph-dev": "graphclient serve-dev"
   },
   "dependencies": {
+    "@mantine/carousel": "^7.11.2",
     "@mantine/core": "^7.4.2",
     "@mantine/dates": "^7.5.2",
     "@mantine/form": "^7.4.2",
@@ -18,6 +19,7 @@
     "@mantine/notifications": "^7.4.2",
     "@tabler/icons-react": "^2.46.0",
     "@tanstack/react-query": "^5.17.19",
+    "embla-carousel-react": "^7.1.0",
     "localforage": "^1.10.0",
     "mantine-form-zod-resolver": "^1.1.0",
     "react": "^18.2.0",
