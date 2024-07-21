@@ -33,6 +33,7 @@ export const MediaCarousel = ({
     <Box {...containerProps}>
       <Carousel
         withIndicators
+        withControls={items.length > 1}
         w={w}
         h={h}
         controlSize="22"
@@ -52,7 +53,7 @@ export const MediaCarousel = ({
                 <iframe
                   width={w}
                   height={h}
-                  src={item.url}
+                  src={`${item.url}?rel=0&modestBranding=1&showinfo=0`}
                   title="YouTube video player"
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"

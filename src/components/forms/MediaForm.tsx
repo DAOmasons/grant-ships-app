@@ -13,7 +13,7 @@ import { useMobile } from '../../hooks/useBreakpoint';
 import { PageTitle } from '../../layout/Sections';
 import { IconPlus, IconWorld } from '@tabler/icons-react';
 import { MediaCarousel } from '../MediaCarousel';
-import { MediaType } from '../../utils/media';
+import { MediaType, detectMediaTypeFromUrl } from '../../utils/media';
 
 export const MediaForm = () => {
   const [links, setLinks] = React.useState([
@@ -40,7 +40,7 @@ export const MediaForm = () => {
     setLinks((prev) =>
       prev.map((link) =>
         link.id === id
-          ? { ...link, url: value, mediaType: MediaType.ImageLink }
+          ? { ...link, url: value, mediaType: detectMediaTypeFromUrl(value) }
           : link
       )
     );
