@@ -7,9 +7,10 @@ export enum MediaType {
 }
 
 const youtubeRegex =
-  /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+  /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
 
-const vimeoRegex = /(?:vimeo)\.com.*(?:video\/|clip\/|)(\d+).*/;
+const vimeoRegex =
+  /(?:https?:\/\/)?(?:www\.)?vimeo\.com(?:\/manage\/videos)?\/(\d+)\/([a-zA-Z0-9]+)(?:\?.*)?$/;
 
 const isYoutubeUrl = (url: string) => youtubeRegex.test(url);
 
@@ -32,10 +33,53 @@ export const detectMediaTypeFromUrl = (url: string): MediaType => {
   return MediaType.Unknown;
 };
 
-console.log(
-  detectMediaTypeFromUrl('https://www.youtube.com/watch?v=Sg-G1E1UwAY')
-);
+const transformYoutubeUrl = (url: string) => {
+  const match = url.match(youtubeRegex);
 
-console.log(
-  detectMediaTypeFromUrl('https://vimeo.com/959789512/56ef99baed?share=copy')
-);
+  if (match && match[2].length === 11) {
+    const videoId = match[2];
+    return `https://www.youtube.com/embed/${videoId}`;
+  }
+
+  return null;
+};
+
+const transformVimeoUrl = (url: string) => {
+  const match = url.match(vimeoRegex);
+
+  if (match && match?.length === 3) {
+    const videoId = match[1];
+    const h_id = match[2];
+
+    return `https://player.vimeo.com/video/${videoId}?h=${h_id}&badge=0&autopause=0&player_id=0&byline=0&title=0`;
+  }
+
+  return null;
+};
+
+export const parseShowcaseLink = (
+  link: string
+): { url: string | null; mediaType: MediaType } => {
+  const mediaType = detectMediaTypeFromUrl(link);
+
+  if (mediaType === MediaType.Youtube) {
+    return {
+      url: transformYoutubeUrl(link),
+      mediaType,
+    };
+  }
+
+  if (mediaType === MediaType.Vimeo) {
+    return {
+      url: transformVimeoUrl(link),
+      mediaType,
+    };
+  }
+
+  return {
+    url: link,
+    mediaType,
+  };
+};
+
+// https://vimeo.com/959789512/56ef99baed?share=copy

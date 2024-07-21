@@ -13,7 +13,17 @@ import { useMobile } from '../../hooks/useBreakpoint';
 import { PageTitle } from '../../layout/Sections';
 import { IconPlus, IconWorld } from '@tabler/icons-react';
 import { MediaCarousel } from '../MediaCarousel';
-import { MediaType, detectMediaTypeFromUrl } from '../../utils/media';
+import {
+  MediaType,
+  detectMediaTypeFromUrl,
+  parseShowcaseLink,
+} from '../../utils/media';
+
+type ShowcaseLink = {
+  id: string;
+  url: string;
+  mediaType: MediaType;
+};
 
 export const MediaForm = () => {
   const [links, setLinks] = React.useState([
@@ -35,14 +45,29 @@ export const MediaForm = () => {
       },
     ]);
   };
-  console.log('links', links);
+
   const handleLinkChange = (id: string, value: string) => {
     setLinks((prev) =>
-      prev.map((link) =>
-        link.id === id
-          ? { ...link, url: value, mediaType: detectMediaTypeFromUrl(value) }
-          : link
-      )
+      prev.map((link) => {
+        if (link.id === id) {
+          const { url, mediaType } = parseShowcaseLink(value);
+
+          if (url === null) {
+            return {
+              ...link,
+              url: '',
+              mediaType: MediaType.Unknown,
+            };
+          } else {
+            return {
+              ...link,
+              url,
+              mediaType,
+            };
+          }
+        }
+        return link;
+      })
     );
   };
 
