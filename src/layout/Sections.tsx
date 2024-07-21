@@ -15,7 +15,7 @@ import {
 import { IconArrowNarrowLeft } from '@tabler/icons-react';
 import { ReactNode, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useMobile } from '../hooks/useBreakpoint';
+import { useLaptop, useMobile } from '../hooks/useBreakpoint';
 
 export const MainSection = ({
   children,
@@ -33,7 +33,7 @@ export const MainSection = ({
       miw={320}
       w={'100%'}
       bg={bg}
-      m={isMobile ? 'xs' : 'xl'}
+      p={isMobile ? 'xs' : 'xl'}
       mb={isMobile ? 72 : 'xl'}
     >
       {children}
@@ -96,31 +96,24 @@ export const PageDescription = ({ description }: { description: string }) => {
 export const ProfileSection = ({
   pageTitle,
   children,
+  bannerImg,
 }: {
   pageTitle: ReactNode;
   children: ReactNode;
+  bannerImg?: string;
 }) => {
   const theme = useMantineTheme();
   const isMobile = useMobile();
-
-  const [img, setImg] = useState<File | undefined>(undefined);
-  const [modalOpened, setModalOpened] = useState(false);
-
-  const handleUpload = (file: File | null) => {
-    if (file) {
-      setImg(file);
-    }
-  };
-
+  const isLaptop = useLaptop();
   return (
-    <Box>
+    <Box miw={isLaptop ? undefined : 650}>
       <Box mt="xl" ml="xl">
         <PageTitle title={pageTitle} />
       </Box>
-      <Box pos="relative" mr="xl">
-        <Box bg={theme.colors.dark[6]} h={152} pos="absolute" top={0} w="100%">
+      <Box pos="relative" mr={isLaptop ? undefined : 'xl'}>
+        <Box bg={theme.colors.dark[6]} h={150} pos="absolute" top={0} w="100%">
           <BackgroundImage
-            src={img ? URL.createObjectURL(img) : ''}
+            src={bannerImg || ''}
             w="100%"
             h="100%"
             opacity={0.6}

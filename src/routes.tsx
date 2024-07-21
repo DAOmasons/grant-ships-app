@@ -17,13 +17,14 @@ import { DevPanel } from './pages/DevPanel';
 import { Vote } from './pages/Vote';
 import { VoteProvider } from './contexts/VoteContext';
 import { ADDR } from './constants/addresses';
+import { NewRegisterProject } from './components/forms/NewRegisterProject';
 
 export const ClientRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
       <Route path="projects" element={<Projects />} />
-      <Route path="create-project" element={<RegisterProject />} />
+      <Route path="create-project" element={<NewRegisterProject />} />
       <Route path="create-ship" element={<CreateShip />} />
       <Route path="ships" element={<Ships />} />
       <Route path="game-rules" element={<GameRules />} />

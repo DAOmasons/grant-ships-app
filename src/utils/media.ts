@@ -6,6 +6,12 @@ export enum MediaType {
   Vimeo = 'video/vimeo',
 }
 
+export type ShowcaseLink = {
+  id: string;
+  url: string;
+  mediaType: MediaType;
+};
+
 const youtubeRegex =
   /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
 
@@ -81,5 +87,3 @@ export const parseShowcaseLink = (
     mediaType,
   };
 };
-
-// https://vimeo.com/959789512/56ef99baed?share=copy

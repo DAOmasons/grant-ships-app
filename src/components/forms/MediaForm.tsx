@@ -19,17 +19,7 @@ import {
   IconWorld,
 } from '@tabler/icons-react';
 import { MediaCarousel } from '../MediaCarousel';
-import {
-  MediaType,
-  detectMediaTypeFromUrl,
-  parseShowcaseLink,
-} from '../../utils/media';
-
-type ShowcaseLink = {
-  id: string;
-  url: string;
-  mediaType: MediaType;
-};
+import { MediaType, parseShowcaseLink } from '../../utils/media';
 
 export const MediaForm = () => {
   const [links, setLinks] = React.useState([
@@ -133,7 +123,6 @@ export const MediaForm = () => {
       </Group>
 
       <Divider />
-      <Text>Demo Links</Text>
       <TextInput label="Demo Link" placeholder="ex. Public Goods Death Star" />
     </Stack>
   );

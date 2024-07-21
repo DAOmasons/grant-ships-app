@@ -179,7 +179,7 @@ export const Project = () => {
           </Group>
         }
       >
-        <Avatar size={160} mt={'xl'} mb="md" src={project.imgUrl} />
+        <Avatar size={160} mb="md" src={project.imgUrl} />
         <Group gap={'xs'} mb="md">
           <Text fz="lg" fw={600}>
             {project.name}
@@ -344,9 +344,9 @@ export const Project = () => {
         </Tabs>
       </ProfileSection>
       {!isLaptop && (
-        <Stack gap={'xs'} mt={94} w={270}>
+        <Stack gap={'xs'} mt={84} w={270}>
           {/* <MediaCarousel /> */}
-          <Paper p="md" bg={theme.colors.dark[6]}>
+          <Paper p="md" bg={theme.colors.dark[6]} w="100%">
             <Text size="lg" mb={2}>
               {totalFundsAllocated} {GAME_TOKEN.SYMBOL}
             </Text>

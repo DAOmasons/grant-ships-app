@@ -26,6 +26,7 @@ export const ShipProfileMetadata = z.object({
   discord: z.string(),
   telegram: z.string(),
   website: z.string(),
+  bannerImage: z.string().optional(),
 });
 
 export const ShipApplicationMetadata = z.object({

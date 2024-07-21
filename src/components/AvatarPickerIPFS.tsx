@@ -1,4 +1,11 @@
-import { ActionIcon, Avatar, Box, FileButton, Text } from '@mantine/core';
+import {
+  ActionIcon,
+  Avatar,
+  Box,
+  FileButton,
+  Text,
+  useMantineTheme,
+} from '@mantine/core';
 import { IconPencil, IconUser } from '@tabler/icons-react';
 import { pinFileToIPFS } from '../utils/ipfs/pin';
 import { ReactNode, useEffect, useState } from 'react';
@@ -23,6 +30,7 @@ export const AvatarPickerIPFS = ({
 }: PickerProps) => {
   const [pfpIpfsHash, setIpfsHash] = useState<string | null>(defaultValue);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const theme = useMantineTheme();
 
   const handleUpload = async (e: File | null) => {
     if (!e) {
@@ -54,8 +62,12 @@ export const AvatarPickerIPFS = ({
 
   return (
     <>
-      <Box pos="relative" mb="lg" mt="xl">
-        <Avatar size={120} src={canPreview ? avatarPreview : undefined}>
+      <Box pos="relative" mb="lg">
+        <Avatar
+          size={160}
+          src={canPreview ? avatarPreview : undefined}
+          bg={theme.colors.dark[5]}
+        >
           {canPreview || <IconUser size={80} />}
         </Avatar>
         <FileButton
@@ -67,7 +79,7 @@ export const AvatarPickerIPFS = ({
               {...props}
               pos={'absolute'}
               bottom={0}
-              left={85}
+              left={115}
               radius="xl"
               loading={isLoading}
               disabled={isLoading || disabled}
