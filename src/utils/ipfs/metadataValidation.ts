@@ -10,6 +10,10 @@ export const ProjectProfileMetadata = z.object({
   discord: z.string(),
   telegram: z.string(),
   website: z.string(),
+  showcaseLinks: z
+    .array(z.object({ id: z.string(), url: z.string(), mediaType: z.string() }))
+    .optional(),
+  bannerImage: z.string().optional(),
 });
 
 export const ShipProfileMetadata = z.object({
