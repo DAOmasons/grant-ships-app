@@ -79,7 +79,7 @@ export const MediaCarousel = ({
                       width: '100%',
                       height: '100%',
                     }}
-                    src="https://player.vimeo.com/video/959789512?h=56ef99baed&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                    src={item.url}
                     frameBorder="0"
                     allow="autoplay; fullscreen; picture-in-picture; clipboard-write"
                     title={item.url}

@@ -11,7 +11,14 @@ import {
 import React from 'react';
 import { useMobile } from '../../hooks/useBreakpoint';
 import { PageTitle } from '../../layout/Sections';
-import { IconPlus, IconWorld } from '@tabler/icons-react';
+import {
+  IconBrandVimeo,
+  IconBrandYoutube,
+  IconExclamationCircle,
+  IconPhoto,
+  IconPlus,
+  IconWorld,
+} from '@tabler/icons-react';
 import { MediaCarousel } from '../MediaCarousel';
 import {
   MediaType,
@@ -92,14 +99,28 @@ export const MediaForm = () => {
       </Box>
       <MediaCarousel items={links} containerProps={{ my: 'md' }} />
 
-      {links.map((link, index) => (
-        <TextInput
-          key={link.id}
-          leftSection={<IconWorld size={18} />}
-          placeholder="https://image-hosting/id.png"
-          onBlur={(e) => handleLinkChange(link.id, e.currentTarget.value)}
-        />
-      ))}
+      {links.map((link) => {
+        const icon =
+          link.mediaType === MediaType.ImageLink ? (
+            <IconPhoto size={18} />
+          ) : link.mediaType === MediaType.Youtube ? (
+            <IconBrandYoutube size={18} />
+          ) : link.mediaType === MediaType.Vimeo ? (
+            <IconBrandVimeo size={18} />
+          ) : link.mediaType === MediaType.Unknown ? (
+            <IconExclamationCircle size={18} />
+          ) : (
+            <IconWorld size={18} />
+          );
+        return (
+          <TextInput
+            key={link.id}
+            leftSection={icon}
+            placeholder="https://image-hosting/id.png"
+            onBlur={(e) => handleLinkChange(link.id, e.currentTarget.value)}
+          />
+        );
+      })}
 
       <Group w="100%" justify="center">
         <Button
