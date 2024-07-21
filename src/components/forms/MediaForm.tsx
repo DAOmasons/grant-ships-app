@@ -11,19 +11,16 @@ import {
 import React from 'react';
 import { useMobile } from '../../hooks/useBreakpoint';
 import { PageTitle } from '../../layout/Sections';
-import {
-  IconArrowNarrowLeft,
-  IconGlobe,
-  IconPlus,
-  IconWorld,
-} from '@tabler/icons-react';
+import { IconPlus, IconWorld } from '@tabler/icons-react';
+import { MediaCarousel } from '../MediaCarousel';
+import { MediaType } from '../../utils/media';
 
 export const MediaForm = () => {
   const [links, setLinks] = React.useState([
     {
       id: 'showcase-link-0',
       url: '',
-      mediaType: '',
+      mediaType: MediaType.None,
     },
   ]);
   const isMobile = useMobile();
@@ -34,9 +31,19 @@ export const MediaForm = () => {
       {
         id: `showcase-link-${prev.length}`,
         url: '',
-        mediaType: '',
+        mediaType: MediaType.None,
       },
     ]);
+  };
+  console.log('links', links);
+  const handleLinkChange = (id: string, value: string) => {
+    setLinks((prev) =>
+      prev.map((link) =>
+        link.id === id
+          ? { ...link, url: value, mediaType: MediaType.ImageLink }
+          : link
+      )
+    );
   };
 
   return (
@@ -58,12 +65,14 @@ export const MediaForm = () => {
           vimeo.
         </Text>
       </Box>
+      <MediaCarousel items={links} containerProps={{ my: 'md' }} />
 
       {links.map((link, index) => (
         <TextInput
           key={link.id}
           leftSection={<IconWorld size={18} />}
           placeholder="https://image-hosting/id.png"
+          onBlur={(e) => handleLinkChange(link.id, e.currentTarget.value)}
         />
       ))}
 

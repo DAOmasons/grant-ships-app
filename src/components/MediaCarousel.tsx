@@ -1,12 +1,7 @@
 import { Carousel } from '@mantine/carousel';
-import { Box, Image } from '@mantine/core';
+import { Box, Image, useMantineTheme } from '@mantine/core';
 import React from 'react';
-
-enum MediaType {
-  ImageLink = 'image/link',
-  Youtube = 'video/youtube',
-  Vimeo = 'video/vimeo',
-}
+import { MediaType } from '../utils/media';
 
 type CarouselContent = {
   url: string;
@@ -16,19 +11,33 @@ type CarouselContent = {
 
 const SIZES = {
   sm: { h: 152, w: 270 },
+  md: { h: 305, w: 540 },
 } as const;
 
 type MediaCarouselProps = {
   items: CarouselContent[];
   size?: keyof typeof SIZES;
+  containerProps?: React.ComponentProps<typeof Box>;
 };
 
-export const MediaCarousel = ({ items, size = 'sm' }: MediaCarouselProps) => {
+export const MediaCarousel = ({
+  items,
+  size = 'md',
+  containerProps,
+}: MediaCarouselProps) => {
   const { h, w } = SIZES[size];
 
+  const theme = useMantineTheme();
+
   return (
-    <Box>
-      <Carousel withIndicators w={w} h={h} controlSize="22">
+    <Box {...containerProps}>
+      <Carousel
+        withIndicators
+        w={w}
+        h={h}
+        controlSize="22"
+        bg={theme.colors.dark[5]}
+      >
         {items?.map((item) => {
           if (item.mediaType === MediaType.ImageLink) {
             return (
