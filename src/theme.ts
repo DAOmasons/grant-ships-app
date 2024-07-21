@@ -1,11 +1,4 @@
-import {
-  Button,
-  Drawer,
-  Loader,
-  Modal,
-  Tooltip,
-  createTheme,
-} from '@mantine/core';
+import { Button, Loader, Modal, Tooltip, createTheme } from '@mantine/core';
 import { RingLoader } from './components/loader/RingLoader';
 import { BreakPoint } from './constants/style';
 import btnExtend from './styles/extendButtonTheme.module.css';

@@ -11,49 +11,76 @@ import {
 import React from 'react';
 import { useMobile } from '../../hooks/useBreakpoint';
 import { PageTitle } from '../../layout/Sections';
-import { IconArrowNarrowLeft, IconGlobe, IconWorld } from '@tabler/icons-react';
-
-const links = [
-  {
-    id: 'showcase-link-0',
-    url: '',
-    mediaType: '',
-  },
-];
+import {
+  IconArrowNarrowLeft,
+  IconGlobe,
+  IconPlus,
+  IconWorld,
+} from '@tabler/icons-react';
 
 export const MediaForm = () => {
+  const [links, setLinks] = React.useState([
+    {
+      id: 'showcase-link-0',
+      url: '',
+      mediaType: '',
+    },
+  ]);
   const isMobile = useMobile();
 
+  const handleAddLink = () => {
+    setLinks((prev) => [
+      ...prev,
+      {
+        id: `showcase-link-${prev.length}`,
+        url: '',
+        mediaType: '',
+      },
+    ]);
+  };
+
   return (
-    <Box>
+    <Stack
+      maw={600}
+      miw={300}
+      w="100%"
+      p={isMobile ? 'xs' : 'xl'}
+      mb={isMobile ? 72 : 'xl'}
+    >
       <PageTitle title="Media" backAction={() => console.log('back')} />
-      <Stack
-        maw={600}
-        miw={300}
-        w="100%"
-        p={isMobile ? 'xs' : 'xl'}
-        mb={isMobile ? 72 : 'xl'}
-      >
-        <Text>Carousel Media</Text>
-        {links.map((link, index) => (
-          <TextInput
-            key={link.id}
-            leftSection={<IconWorld size={18} />}
-            placeholder="https://image-hosting/id.png"
-          />
-        ))}
+      <Box>
+        <Text fw={700} mb="xs">
+          Showcase Media
+        </Text>
+        <Text fz={'sm'} fs="italic" opacity={0.8}>
+          Add image or video links here to create a media showcase for your
+          project. The showcase supports links to png, jpg, webp, youtube, and
+          vimeo.
+        </Text>
+      </Box>
 
-        <Group>
-          <Button variant="secondary">Add Another Link</Button>
-        </Group>
-
-        <Divider />
-        <Text>Demo Links</Text>
+      {links.map((link, index) => (
         <TextInput
-          label="Demo Link"
-          placeholder="ex. Public Goods Death Star"
+          key={link.id}
+          leftSection={<IconWorld size={18} />}
+          placeholder="https://image-hosting/id.png"
         />
-      </Stack>
-    </Box>
+      ))}
+
+      <Group w="100%" justify="center">
+        <Button
+          variant="secondary"
+          leftSection={<IconPlus size={18} />}
+          onClick={handleAddLink}
+          disabled={links.length >= 4}
+        >
+          Add Another Link
+        </Button>
+      </Group>
+
+      <Divider />
+      <Text>Demo Links</Text>
+      <TextInput label="Demo Link" placeholder="ex. Public Goods Death Star" />
+    </Stack>
   );
 };

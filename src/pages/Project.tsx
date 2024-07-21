@@ -51,6 +51,7 @@ import { ProjectBadge } from '../components/RoleBadges';
 import zIndex from '@mui/material/styles/zIndex';
 import { Carousel } from '@mantine/carousel';
 import { MediaForm } from '../components/forms/MediaForm';
+import { MediaCarousel } from '../components/MediaCarousel';
 
 const infiniteWrapper = async ({ pageParam }: any) => {
   const result = await getEntityFeed(pageParam);
@@ -344,28 +345,7 @@ export const Project = () => {
       </ProfileSection>
       {!isLaptop && (
         <Stack gap={'xs'} mt={94} w={270}>
-          <Box>
-            <Carousel withIndicators w={270} controlSize="22">
-              <Carousel.Slide>
-                <Image
-                  src="https://picsum.photos/1000/800"
-                  fit="cover"
-                  h={152}
-                />
-              </Carousel.Slide>
-              <Carousel.Slide>
-                <iframe
-                  width="270"
-                  height="152"
-                  src="https://www.youtube.com/embed/ZXXd5TNjJIE?origin=http://localhost:5173&frel=0&modestbranding=1&autohide=1&showinfo=0"
-                  title="YouTube video player"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                  referrerPolicy="strict-origin-when-cross-origin"
-                ></iframe>
-              </Carousel.Slide>
-            </Carousel>
-          </Box>
+          {/* <MediaCarousel /> */}
           <Paper p="md" bg={theme.colors.dark[6]}>
             <Text size="lg" mb={2}>
               {totalFundsAllocated} {GAME_TOKEN.SYMBOL}
