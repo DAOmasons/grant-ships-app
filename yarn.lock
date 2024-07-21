@@ -5982,6 +5982,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"embla-carousel-autoplay@npm:^8.1.7":
+  version: 8.1.7
+  resolution: "embla-carousel-autoplay@npm:8.1.7"
+  peerDependencies:
+    embla-carousel: 8.1.7
+  checksum: ba3918081cec8a0e70eb925a4a83d09d334e3fccbbbdaff0049a4d3af5adb87b794a3e9ce30c4f6e1cc67025cdeb7d4d8a5ab2704454d0420f6e7c5fd16e74ab
+  languageName: node
+  linkType: hard
+
 "embla-carousel-react@npm:^7.1.0":
   version: 7.1.0
   resolution: "embla-carousel-react@npm:7.1.0"
@@ -6933,6 +6942,7 @@ __metadata:
     "@typescript-eslint/parser": "npm:^6.9.1"
     "@vitejs/plugin-react": "npm:^4.2.1"
     axios: "npm:^1.6.5"
+    embla-carousel-autoplay: "npm:^8.1.7"
     embla-carousel-react: "npm:^7.1.0"
     eslint: "npm:^8.53.0"
     eslint-plugin-react-hooks: "npm:^4.6.0"

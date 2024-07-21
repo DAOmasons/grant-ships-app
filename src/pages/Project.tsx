@@ -3,6 +3,7 @@ import {
   Avatar,
   Box,
   Collapse,
+  Drawer,
   Flex,
   Group,
   Image,
@@ -21,12 +22,14 @@ import {
   IconChevronUp,
   IconEdit,
   IconInfoCircle,
+  IconPencil,
 } from '@tabler/icons-react';
 import { FeedPanel } from '../components/shipItems/FeedPanel';
 import { GAME_TOKEN } from '../constants/gameSetup';
 import { MilestoneProgress } from '../components/projectItems/MilestoneProgress';
 import { GrantsPanel } from '../components/projectItems/GrantsPanel';
 import { Contact } from '../components/Contact';
+import classes from '../components/forms/DrawerStyles.module.css';
 
 import { formatEther } from 'viem';
 import { Link, useParams } from 'react-router-dom';
@@ -47,6 +50,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { ProjectBadge } from '../components/RoleBadges';
 import zIndex from '@mui/material/styles/zIndex';
 import { Carousel } from '@mantine/carousel';
+import { MediaForm } from '../components/forms/MediaForm';
 
 const infiniteWrapper = async ({ pageParam }: any) => {
   const result = await getEntityFeed(pageParam);
@@ -59,6 +63,7 @@ export const Project = () => {
   const isTablet = useTablet();
   const isLaptop = useLaptop();
   const [opened, { toggle }] = useDisclosure(false);
+  const [modalOpened, { close, open }] = useDisclosure(false);
 
   const {
     data: project,
@@ -258,8 +263,14 @@ export const Project = () => {
           />
           {isProjectMember && (
             <Tooltip label="Edit Profile" position="bottom">
-              <ActionIcon component={Link} to={`/edit-project/${id}`} size="md">
-                <IconEdit />
+              <ActionIcon
+                variant="secondary"
+                size="lg"
+                bg={theme.colors.dark[5]}
+                radius={100}
+                onClick={open}
+              >
+                <IconPencil size={16} />
               </ActionIcon>
             </Tooltip>
           )}
@@ -334,24 +345,23 @@ export const Project = () => {
       {!isLaptop && (
         <Stack gap={'xs'} mt={94} w={270}>
           <Box>
-            <Carousel withIndicators w={270}>
+            <Carousel withIndicators w={270} controlSize="22">
               <Carousel.Slide>
                 <Image
                   src="https://picsum.photos/1000/800"
                   fit="cover"
-                  h={170}
+                  h={152}
                 />
               </Carousel.Slide>
               <Carousel.Slide>
                 <iframe
                   width="270"
-                  height="170"
-                  src="https://www.youtube.com/embed/ZXXd5TNjJIE"
+                  height="152"
+                  src="https://www.youtube.com/embed/ZXXd5TNjJIE?origin=http://localhost:5173&frel=0&modestbranding=1&autohide=1&showinfo=0"
                   title="YouTube video player"
                   frameBorder="0"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   referrerPolicy="strict-origin-when-cross-origin"
-                  allowFullScreen
                 ></iframe>
               </Carousel.Slide>
             </Carousel>
@@ -397,6 +407,28 @@ export const Project = () => {
           )}
         </Stack>
       )}
+      <EditProfileDrawer opened={modalOpened} onClose={close} />
     </Flex>
+  );
+};
+
+type EditProfileDrawerProps = { opened: boolean; onClose: () => void };
+
+const EditProfileDrawer = ({ opened, onClose }: EditProfileDrawerProps) => {
+  const theme = useMantineTheme();
+
+  return (
+    <Drawer.Root
+      opened={opened}
+      size="lg"
+      onClose={onClose}
+      bg={'pink'}
+      className={classes.bg}
+    >
+      <Drawer.Overlay />
+      <Drawer.Content bg={theme.colors.dark[6]}>
+        <MediaForm />
+      </Drawer.Content>
+    </Drawer.Root>
   );
 };

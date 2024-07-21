@@ -44,9 +44,11 @@ export const MainSection = ({
 export const PageTitle = ({
   title,
   backBtn = true,
+  backAction,
 }: {
   title: string | ReactNode;
   backBtn?: boolean;
+  backAction?: () => void;
 }) => {
   const navigate = useNavigate();
 
@@ -64,7 +66,16 @@ export const PageTitle = ({
   return (
     <Group w="100%" mb="lg">
       {backBtn && (
-        <ActionIcon variant="subtle" onClick={() => navigate(-1)}>
+        <ActionIcon
+          variant="subtle"
+          onClick={() => {
+            if (backAction) {
+              backAction?.();
+            } else {
+              navigate(-1);
+            }
+          }}
+        >
           <IconArrowNarrowLeft />
         </ActionIcon>
       )}
