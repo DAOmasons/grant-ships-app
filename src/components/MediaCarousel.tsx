@@ -65,12 +65,24 @@ export const MediaCarousel = ({
           if (item.mediaType === MediaType.Vimeo) {
             return (
               <Carousel.Slide key={item.id}>
-                <div>
+                <div
+                  style={{
+                    paddingTop: '56.25%',
+                    position: 'relative',
+                  }}
+                >
                   <iframe
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      width: '100%',
+                      height: '100%',
+                    }}
                     src="https://player.vimeo.com/video/959789512?h=56ef99baed&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
                     frameBorder="0"
                     allow="autoplay; fullscreen; picture-in-picture; clipboard-write"
-                    title="Grant Ships Voting Demo for PublicHaus"
+                    title={item.url}
                   ></iframe>
                 </div>
               </Carousel.Slide>
