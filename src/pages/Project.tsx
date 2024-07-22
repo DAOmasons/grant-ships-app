@@ -435,9 +435,9 @@ const EditProfileDrawer = ({
     >
       <Drawer.Overlay />
       <Drawer.Content bg={theme.colors.dark[6]}>
-        {/* <ScrollArea h="100vh"> */}
-        <NewRegisterProject existingProject={project} />
-        {/* </ScrollArea> */}
+        <ScrollArea h="100vh">
+          <NewRegisterProject existingProject={project} />
+        </ScrollArea>
       </Drawer.Content>
     </Drawer.Root>
   );
