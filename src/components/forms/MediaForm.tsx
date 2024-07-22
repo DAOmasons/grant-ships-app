@@ -77,7 +77,7 @@ export const MediaForm = ({ form }: { form: UseFormReturnType<any> }) => {
   };
 
   const handleUpdate = () => {
-    navigate('/create-project');
+    navigate(-1);
   };
 
   return (

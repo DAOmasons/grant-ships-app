@@ -88,11 +88,7 @@ export const NewRegisterProject = ({
     validate: zodResolver(registerProjectSchema),
   });
 
-  useEffect(() => {
-    console.log('form.values', form.values);
-  }, [form.values]);
-
-  const handleFormSubmit = async (values: FormValues) => {
+  const handleSubmit = async (values: FormValues) => {
     try {
       const nonce = generateRandomUint256();
 
@@ -129,8 +125,6 @@ export const NewRegisterProject = ({
         return;
       }
 
-      console.log('validation.data', validation.data);
-
       const pinRes = await pinJSONToIPFS(validation.data);
 
       if (typeof pinRes.IpfsHash !== 'string' && pinRes.IpfsHash[0] !== 'Q') {
@@ -143,29 +137,58 @@ export const NewRegisterProject = ({
       }
 
       const schemaCode = projectProfileHash();
-
       const metadataStruct = createMetadata({
         protocol: schemaCode,
         ipfsHash: pinRes.IpfsHash,
       });
 
-      tx({
-        writeContractParams: {
-          abi: Registry,
-          address: ADDR.REGISTRY,
-          functionName: 'createProfile',
-          args: [nonce, values.name, metadataStruct, address, []],
-        },
-        viewParams: {
-          successButton: {
-            label: 'Go find some Grants!',
-            onClick: () => navigate('/ships'),
+      if (isEditing) {
+        if (!existingProject || !existingProject?.profileId) {
+          notifications.show({
+            title: 'Error',
+            message: 'Existing project not found',
+            color: 'red',
+          });
+          return;
+        }
+        console.log('IS EDITING!!!');
+        tx({
+          writeContractParams: {
+            abi: Registry,
+            address: ADDR.REGISTRY,
+            functionName: 'updateProfileMetadata',
+            args: [existingProject?.profileId, [1n, pinRes.IpfsHash]],
           },
-        },
-        onComplete() {
-          refetchUser();
-        },
-      });
+          viewParams: {
+            successButton: {
+              label: 'Go see your project!',
+              onClick: () => navigate(`/project/${existingProject.id}`),
+            },
+          },
+          onComplete() {
+            // refetch();
+            refetchUser();
+          },
+        });
+      } else {
+        tx({
+          writeContractParams: {
+            abi: Registry,
+            address: ADDR.REGISTRY,
+            functionName: 'createProfile',
+            args: [nonce, values.name, metadataStruct, address, []],
+          },
+          viewParams: {
+            successButton: {
+              label: 'Go find some Grants!',
+              onClick: () => navigate('/ships'),
+            },
+          },
+          onComplete() {
+            refetchUser();
+          },
+        });
+      }
     } catch (error: any) {
       console.error(error);
       notifications.show({
@@ -184,7 +207,7 @@ export const NewRegisterProject = ({
           element={
             <RegisterForm
               form={form}
-              onSubmit={handleFormSubmit}
+              onSubmit={handleSubmit}
               isEditing={isEditing}
               projectId={existingProject?.id}
             />
@@ -195,7 +218,7 @@ export const NewRegisterProject = ({
           element={
             <RegisterForm
               form={form}
-              onSubmit={handleFormSubmit}
+              onSubmit={handleSubmit}
               isEditing={isEditing}
               projectId={existingProject?.id}
             />
@@ -255,7 +278,9 @@ const RegisterForm = ({
   };
 
   const bannerPreview = form.values.bannerImage
-    ? getGatewayUrl(form.values.bannerImage)
+    ? form.values.bannerImage.startsWith('https://')
+      ? form.values.bannerImage
+      : getGatewayUrl(form.values.bannerImage)
     : null;
 
   return (
@@ -305,6 +330,7 @@ const RegisterForm = ({
           required
           maw={292}
           placeholder="Project Name"
+          disabled={isEditing}
           {...form.getInputProps('name')}
         />
         <Textarea
@@ -438,7 +464,7 @@ const RegisterForm = ({
             onClick={() => onSubmit(form.values)}
             disabled={!form.isValid()}
           >
-            Register Project
+            {isEditing ? 'Edit Project' : 'Register Project'}
           </TxButton>
         </Group>
       </Stack>

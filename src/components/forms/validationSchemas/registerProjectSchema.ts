@@ -37,13 +37,17 @@ export const registerProjectSchema = z.object({
     .array(
       z.object({
         id: z.string(),
-        url: z.string().url({ message: 'Invalid url' }),
+        url: z.string(),
         mediaType: z.string(),
       })
     )
     .optional(),
   bannerImage: z.string().optional(),
-  mainDemoLink: z.string().url({ message: 'Invalid url' }).optional(),
+  mainDemoLink: z
+    .string()
+    .url({ message: 'Invalid url' })
+    .or(z.literal(''))
+    .optional(),
 });
 
 export const registerShipSchema = z.object({

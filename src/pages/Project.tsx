@@ -411,11 +411,7 @@ type EditProfileDrawerProps = {
   project: ProjectPageUI;
 };
 
-const EditProfileDrawer = ({
-  opened,
-  // onClose,
-  project,
-}: EditProfileDrawerProps) => {
+const EditProfileDrawer = ({ opened, project }: EditProfileDrawerProps) => {
   const theme = useMantineTheme();
 
   const location = useLocation();

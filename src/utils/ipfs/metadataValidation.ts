@@ -11,10 +11,20 @@ export const ProjectProfileMetadata = z.object({
   telegram: z.string(),
   website: z.string(),
   showcaseLinks: z
-    .array(z.object({ id: z.string(), url: z.string(), mediaType: z.string() }))
+    .array(
+      z.object({
+        id: z.string(),
+        url: z.string(),
+        mediaType: z.string(),
+      })
+    )
     .optional(),
   bannerImage: z.string().optional(),
-  mainDemoLink: z.string().url({ message: 'Invalid url' }).optional(),
+  mainDemoLink: z
+    .string()
+    .url({ message: 'Invalid url' })
+    .or(z.literal(''))
+    .optional(),
 });
 
 export const ShipProfileMetadata = z.object({
