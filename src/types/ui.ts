@@ -117,5 +117,6 @@ export type ProjectPageUI = {
   members: string[];
   showcaseLinks?: ShowcaseLink[];
   bannerImage?: string;
+  bannerImgUrl?: string;
   mainDemoLink?: string;
 };

@@ -75,6 +75,7 @@ export const Project = () => {
     data: project,
     isLoading,
     error,
+    refetch: refetchProject,
   } = useQuery({
     queryKey: [`project-page-${id}`],
     queryFn: () => getProjectPage(id as string),
@@ -175,7 +176,7 @@ export const Project = () => {
   return (
     <Flex w="100%">
       <ProfileSection
-        bannerImg={project.bannerImage}
+        bannerImg={project.bannerImgUrl}
         pageTitle={
           <Group gap={'sm'} style={{ zIndex: 1 }}>
             <Text fz={20} fw={500}>
@@ -352,7 +353,7 @@ export const Project = () => {
       </ProfileSection>
       {!isLaptop && (
         <Stack gap={'xs'} mt={84} w={270}>
-          {project.showcaseLinks && (
+          {project.showcaseLinks && project.showcaseLinks?.length > 0 && (
             <MediaCarousel size="sm" items={project.showcaseLinks} />
           )}
           <Paper p="md" bg={theme.colors.dark[6]} w="100%">
@@ -400,6 +401,7 @@ export const Project = () => {
         opened={modalOpened}
         onClose={close}
         project={project}
+        refetchProject={refetchProject}
       />
     </Flex>
   );
@@ -409,9 +411,14 @@ type EditProfileDrawerProps = {
   opened: boolean;
   onClose: () => void;
   project: ProjectPageUI;
+  refetchProject: () => void;
 };
 
-const EditProfileDrawer = ({ opened, project }: EditProfileDrawerProps) => {
+const EditProfileDrawer = ({
+  opened,
+  project,
+  refetchProject,
+}: EditProfileDrawerProps) => {
   const theme = useMantineTheme();
 
   const location = useLocation();
@@ -432,7 +439,10 @@ const EditProfileDrawer = ({ opened, project }: EditProfileDrawerProps) => {
       <Drawer.Overlay />
       <Drawer.Content bg={theme.colors.dark[6]}>
         <ScrollArea h="100vh">
-          <NewRegisterProject existingProject={project} />
+          <NewRegisterProject
+            existingProject={project}
+            refetchOnEdit={refetchProject}
+          />
         </ScrollArea>
       </Drawer.Content>
     </Drawer.Root>

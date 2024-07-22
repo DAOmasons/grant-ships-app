@@ -51,8 +51,10 @@ type FormValues = z.infer<typeof registerProjectSchema>;
 
 export const NewRegisterProject = ({
   existingProject,
+  refetchOnEdit,
 }: {
   existingProject?: ProjectPageUI;
+  refetchOnEdit?: () => void;
 }) => {
   const { address } = useAccount();
   const { refetchUser } = useUserData();
@@ -102,7 +104,7 @@ export const NewRegisterProject = ({
         discord: values.discord,
         telegram: values.telegram,
         website: values.website,
-        bannerImage: values.bannerImage || null,
+        bannerImage: values.bannerImage || '',
         showcaseLinks:
           values.showcaseLinks && values.showcaseLinks.length
             ? values.showcaseLinks.filter(
@@ -110,9 +112,11 @@ export const NewRegisterProject = ({
                   link.mediaType !== MediaType.None &&
                   link.mediaType !== MediaType.Unknown
               )
-            : null,
-        mainDemoLink: values.mainDemoLink || null,
+            : [],
+        mainDemoLink: values.mainDemoLink || '',
       };
+
+      console.log('projectMetadata.bannerImage', projectMetadata.bannerImage);
 
       const validation = ProjectProfileMetadata.safeParse(projectMetadata);
 
@@ -151,7 +155,7 @@ export const NewRegisterProject = ({
           });
           return;
         }
-        console.log('IS EDITING!!!');
+        navigate(-1);
         tx({
           writeContractParams: {
             abi: Registry,
@@ -166,7 +170,7 @@ export const NewRegisterProject = ({
             },
           },
           onComplete() {
-            // refetch();
+            refetchOnEdit?.();
             refetchUser();
           },
         });
@@ -254,9 +258,11 @@ const RegisterForm = ({
       });
       return;
     }
+
     setIsUploadingBanner(true);
     try {
       const res = await pinFileToIPFS(e);
+      console.log('res', res);
       if (typeof res.IpfsHash !== 'string') return;
       form.setFieldValue('bannerImage', res.IpfsHash);
       setIsUploadingBanner(false);
@@ -278,9 +284,7 @@ const RegisterForm = ({
   };
 
   const bannerPreview = form.values.bannerImage
-    ? form.values.bannerImage.startsWith('https://')
-      ? form.values.bannerImage
-      : getGatewayUrl(form.values.bannerImage)
+    ? getGatewayUrl(form.values.bannerImage)
     : null;
 
   return (

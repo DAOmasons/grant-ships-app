@@ -56,7 +56,8 @@ export const getProjectPage = async (id: string): Promise<ProjectPageUI> => {
       discord: profileData.discord,
       telegram: profileData.telegram,
       mainDemoLink: profileData.mainDemoLink,
-      bannerImage: profileData.bannerImage
+      bannerImage: profileData.bannerImage,
+      bannerImgUrl: profileData.bannerImage
         ? getGatewayUrl(profileData.bannerImage)
         : undefined,
       showcaseLinks: profileData.showcaseLinks as ShowcaseLink[] | undefined,
