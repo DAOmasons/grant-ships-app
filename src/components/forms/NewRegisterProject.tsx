@@ -12,6 +12,7 @@ import {
   Text,
   TextInput,
   Textarea,
+  useMantineTheme,
 } from '@mantine/core';
 import { useMobile } from '../../hooks/useBreakpoint';
 import { AvatarPickerIPFS } from '../AvatarPickerIPFS';
@@ -39,41 +40,50 @@ import { useUserData } from '../../hooks/useUserState';
 import { useTx } from '../../hooks/useTx';
 import Registry from '../../abi/Registry.json';
 import { ADDR } from '../../constants/addresses';
-import { Link, Route, Routes, useNavigate } from 'react-router-dom';
+import { Link, Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import { TxButton } from '../TxButton';
 import { MediaForm } from './MediaForm';
 import { getGatewayUrl } from '../../utils/ipfs/get';
 import { MediaType, ShowcaseLink } from '../../utils/media';
+import { ProjectPageUI } from '../../types/ui';
 
 type FormValues = z.infer<typeof registerProjectSchema>;
 
-export const NewRegisterProject = () => {
+export const NewRegisterProject = ({
+  existingProject,
+}: {
+  existingProject?: ProjectPageUI;
+}) => {
   const { address } = useAccount();
   const { refetchUser } = useUserData();
   const navigate = useNavigate();
   const { tx } = useTx();
 
+  const isEditing = !!existingProject;
+
   const form = useForm({
     validateInputOnBlur: true,
     initialValues: {
-      avatarHash: '',
-      name: '',
-      description: '',
-      email: '',
-      x: '',
-      github: '',
-      discord: '',
-      telegram: '',
-      website: '',
-      showcaseLinks: [
-        {
-          id: 'showcase-link-0',
-          url: '',
-          mediaType: MediaType.None,
-        },
-      ] as ShowcaseLink[],
-      mainDemoLink: '',
-      bannerImage: '',
+      avatarHash: existingProject?.avatarHash || '',
+      name: existingProject?.name || '',
+      description: existingProject?.description || '',
+      email: existingProject?.email || '',
+      x: existingProject?.x || '',
+      github: existingProject?.github || '',
+      discord: existingProject?.discord || '',
+      telegram: existingProject?.telegram || '',
+      website: existingProject?.website || '',
+      showcaseLinks:
+        existingProject?.showcaseLinks ||
+        ([
+          {
+            id: 'showcase-link-0',
+            url: '',
+            mediaType: MediaType.None,
+          },
+        ] as ShowcaseLink[]),
+      mainDemoLink: existingProject?.mainDemoLink || '',
+      bannerImage: existingProject?.bannerImage || '',
     },
     validate: zodResolver(registerProjectSchema),
   });
@@ -171,9 +181,27 @@ export const NewRegisterProject = () => {
       <Routes>
         <Route
           path="/"
-          element={<RegisterForm form={form} onSubmit={handleFormSubmit} />}
+          element={
+            <RegisterForm
+              form={form}
+              onSubmit={handleFormSubmit}
+              isEditing={isEditing}
+              projectId={existingProject?.id}
+            />
+          }
         />
-        <Route path="media" element={<MediaForm form={form} />} />
+        <Route
+          path="edit"
+          element={
+            <RegisterForm
+              form={form}
+              onSubmit={handleFormSubmit}
+              isEditing={isEditing}
+              projectId={existingProject?.id}
+            />
+          }
+        />
+        <Route path="edit-media" element={<MediaForm form={form} />} />
       </Routes>
     </>
   );
@@ -182,12 +210,16 @@ export const NewRegisterProject = () => {
 const RegisterForm = ({
   form,
   onSubmit,
+  isEditing,
+  projectId,
 }: {
   form: UseFormReturnType<any>;
   onSubmit: (values: FormValues) => void;
+  isEditing?: boolean;
+  projectId?: string;
 }) => {
   const [isUploadingBanner, setIsUploadingBanner] = useState(false);
-
+  const theme = useMantineTheme();
   const isMobile = useMobile();
 
   const handleUpload = async (e: File | null) => {
@@ -230,6 +262,8 @@ const RegisterForm = ({
     <ProfileSection
       pageTitle="Register Project"
       bannerImg={bannerPreview || ''}
+      bannerBg={isEditing ? theme.colors.dark[7] : undefined}
+      spaceToRight={isEditing ? false : true}
       addBannerElement={
         <Box style={{ position: 'absolute', bottom: -20, right: 10 }}>
           <FileButton
@@ -390,7 +424,11 @@ const RegisterForm = ({
             variant="secondary"
             leftSection={<IconLink />}
             component={Link}
-            to="media"
+            to={
+              isEditing && projectId
+                ? `/project/${projectId}/edit-media`
+                : 'edit-media'
+            }
           >
             Manage
           </Button>

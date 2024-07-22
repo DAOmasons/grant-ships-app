@@ -23,7 +23,7 @@ export const ClientRoutes = () => {
   return (
     <Routes>
       <Route path="/" element={<Home />} />
-      <Route path="projects" element={<Projects />} />
+      <Route path="projects/" element={<Projects />} />
       <Route path="create-project/*" element={<NewRegisterProject />} />
       <Route path="create-ship" element={<CreateShip />} />
       <Route path="ships" element={<Ships />} />
@@ -35,7 +35,7 @@ export const ClientRoutes = () => {
         element={<ApplyFunding />}
       />
       <Route path="ship/:id" element={<Ship />} />
-      <Route path="project/:id" element={<Project />} />
+      <Route path="project/:id/*" element={<Project />} />
       <Route path="facilitators" element={<Facilitators />} />
       <Route
         path="facilitator-dashboard"

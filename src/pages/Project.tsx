@@ -9,6 +9,7 @@ import {
   Image,
   Loader,
   Paper,
+  ScrollArea,
   Stack,
   Tabs,
   Text,
@@ -32,7 +33,13 @@ import { Contact } from '../components/Contact';
 import classes from '../components/forms/DrawerStyles.module.css';
 
 import { formatEther } from 'viem';
-import { Link, useParams } from 'react-router-dom';
+import {
+  Link,
+  Navigate,
+  useLocation,
+  useNavigate,
+  useParams,
+} from 'react-router-dom';
 import { useQuery, useInfiniteQuery } from '@tanstack/react-query';
 import { getProjectPage } from '../queries/getProjectPage';
 import { AddressAvatarGroup } from '../components/AddressAvatar';
@@ -40,18 +47,16 @@ import { AppAlert } from '../components/UnderContruction';
 import { GrantStatus } from '../types/common';
 import { SingleItemPageSkeleton } from '../components/skeletons';
 import { getEntityFeed } from '../queries/getFeed';
-import { getProjectGrants } from '../queries/getProjectGrants';
 import { DashGrant } from '../resolvers/grantResolvers';
 import { useMemo } from 'react';
 import { useUserData } from '../hooks/useUserState';
-import { ProjectUpdatesPanel } from '../components/projectItems/ProjectUpdatesPanel';
 import { useLaptop, useTablet } from '../hooks/useBreakpoint';
 import { useDisclosure } from '@mantine/hooks';
 import { ProjectBadge } from '../components/RoleBadges';
-import zIndex from '@mui/material/styles/zIndex';
-import { Carousel } from '@mantine/carousel';
 import { MediaForm } from '../components/forms/MediaForm';
 import { MediaCarousel } from '../components/MediaCarousel';
+import { NewRegisterProject } from '../components/forms/NewRegisterProject';
+import { ProjectPageUI } from '../types/ui';
 
 const infiniteWrapper = async ({ pageParam }: any) => {
   const result = await getEntityFeed(pageParam);
@@ -270,7 +275,8 @@ export const Project = () => {
                 size="lg"
                 bg={theme.colors.dark[5]}
                 radius={100}
-                onClick={open}
+                component={Link}
+                to={'edit'}
               >
                 <IconPencil size={16} />
               </ActionIcon>
@@ -390,26 +396,48 @@ export const Project = () => {
           )}
         </Stack>
       )}
-      <EditProfileDrawer opened={modalOpened} onClose={close} />
+      <EditProfileDrawer
+        opened={modalOpened}
+        onClose={close}
+        project={project}
+      />
     </Flex>
   );
 };
 
-type EditProfileDrawerProps = { opened: boolean; onClose: () => void };
+type EditProfileDrawerProps = {
+  opened: boolean;
+  onClose: () => void;
+  project: ProjectPageUI;
+};
 
-const EditProfileDrawer = ({ opened, onClose }: EditProfileDrawerProps) => {
+const EditProfileDrawer = ({
+  opened,
+  // onClose,
+  project,
+}: EditProfileDrawerProps) => {
   const theme = useMantineTheme();
+
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const isEditing = location.pathname.includes('edit');
+
+  const onClose = () =>
+    navigate(location.pathname.replace(/\/(edit(-media)?)$/, ''));
 
   return (
     <Drawer.Root
-      opened={opened}
+      opened={isEditing}
       size="lg"
       onClose={onClose}
       className={classes.bg}
     >
       <Drawer.Overlay />
       <Drawer.Content bg={theme.colors.dark[6]}>
-        <MediaForm />
+        {/* <ScrollArea h="100vh"> */}
+        <NewRegisterProject existingProject={project} />
+        {/* </ScrollArea> */}
       </Drawer.Content>
     </Drawer.Root>
   );

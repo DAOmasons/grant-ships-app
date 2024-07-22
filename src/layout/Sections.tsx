@@ -98,22 +98,35 @@ export const ProfileSection = ({
   children,
   bannerImg,
   addBannerElement,
+  bannerBg,
+  spaceToRight = true,
 }: {
   pageTitle: ReactNode;
   children: ReactNode;
   bannerImg?: string;
   addBannerElement?: ReactNode;
+  bannerBg?: string;
+  spaceToRight?: boolean;
 }) => {
   const theme = useMantineTheme();
   const isMobile = useMobile();
   const isLaptop = useLaptop();
   return (
-    <Box miw={isLaptop ? undefined : 650} maw={650} w="100%">
+    <Box miw={isLaptop ? undefined : 600} maw={650} w="100%">
       <Box mt="xl" ml="xl">
         <PageTitle title={pageTitle} />
       </Box>
-      <Box pos="relative" mr={isLaptop ? undefined : 'xl'}>
-        <Box bg={theme.colors.dark[6]} h={150} pos="absolute" top={0} w="100%">
+      <Box
+        pos="relative"
+        mr={isLaptop ? undefined : spaceToRight ? 'xl' : undefined}
+      >
+        <Box
+          bg={bannerBg || theme.colors.dark[6]}
+          h={150}
+          pos="absolute"
+          top={0}
+          w="100%"
+        >
           <BackgroundImage
             src={bannerImg || ''}
             w="100%"
