@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ProfileSection } from '../../layout/Sections';
 import {
   ActionIcon,
@@ -65,7 +65,13 @@ export const NewRegisterProject = () => {
     },
     validate: zodResolver(registerProjectSchema),
   });
+
+  useEffect(() => {
+    console.log('form.values', form.values);
+  }, [form.values]);
+
   const handleFormSubmit = async (values: FormValues) => {
+    console.log('values', values);
     try {
       const nonce = generateRandomUint256();
 
@@ -205,6 +211,7 @@ const RegisterForm = ({
           required
           maw={292}
           placeholder="Project Name"
+          {...form.getInputProps('name')}
         />
         <Textarea
           w="100%"
@@ -329,7 +336,10 @@ const RegisterForm = ({
           </Button>
         </Box>
         <Group w="100%" justify="flex-end">
-          <TxButton onClick={() => onSubmit(form.values)}>
+          <TxButton
+            onClick={() => onSubmit(form.values)}
+            disabled={!form.isValid()}
+          >
             Register Project
           </TxButton>
         </Group>
