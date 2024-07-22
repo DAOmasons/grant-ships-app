@@ -3,6 +3,7 @@ import { ProjectPageUI } from '../types/ui';
 import { getGatewayUrl, getIpfsJson } from '../utils/ipfs/get';
 import { ProjectProfileMetadata } from '../utils/ipfs/metadataValidation';
 import { SUBGRAPH_URL } from '../constants/gameSetup';
+import { ShowcaseLink } from '../utils/media';
 
 export const getProjectPage = async (id: string): Promise<ProjectPageUI> => {
   try {
@@ -54,6 +55,11 @@ export const getProjectPage = async (id: string): Promise<ProjectPageUI> => {
       x: profileData.x,
       discord: profileData.discord,
       telegram: profileData.telegram,
+      mainDemoLink: profileData.mainDemoLink,
+      bannerImage: profileData.bannerImage
+        ? getGatewayUrl(profileData.bannerImage)
+        : undefined,
+      showcaseLinks: profileData.showcaseLinks as ShowcaseLink[] | undefined,
     };
   } catch (error) {
     console.error('Error in getProjectPage', error);

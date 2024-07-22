@@ -8,7 +8,7 @@ const { getRecentTransaction } = getBuiltGraphSDK({
 export const fetchRecentTransaction = async (txHash: string) => {
   const res = await getRecentTransaction({ txHash });
 
-  return res?.Transaction?.[0].id;
+  return res?.Transaction?.[0]?.id;
 };
 
 type PollEnvioParams = {

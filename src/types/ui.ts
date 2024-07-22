@@ -1,3 +1,4 @@
+import { ShowcaseLink } from '../utils/media';
 import { GameStatus } from './common';
 
 export enum Player {
@@ -114,4 +115,7 @@ export type ProjectPageUI = {
   discord: string;
   telegram: string;
   members: string[];
+  showcaseLinks?: ShowcaseLink[];
+  bannerImage?: string;
+  mainDemoLink?: string;
 };

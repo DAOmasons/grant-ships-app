@@ -170,6 +170,7 @@ export const Project = () => {
   return (
     <Flex w="100%">
       <ProfileSection
+        bannerImg={project.bannerImage}
         pageTitle={
           <Group gap={'sm'} style={{ zIndex: 1 }}>
             <Text fz={20} fw={500}>
@@ -345,7 +346,9 @@ export const Project = () => {
       </ProfileSection>
       {!isLaptop && (
         <Stack gap={'xs'} mt={84} w={270}>
-          {/* <MediaCarousel /> */}
+          {project.showcaseLinks && (
+            <MediaCarousel size="sm" items={project.showcaseLinks} />
+          )}
           <Paper p="md" bg={theme.colors.dark[6]} w="100%">
             <Text size="lg" mb={2}>
               {totalFundsAllocated} {GAME_TOKEN.SYMBOL}
