@@ -1,4 +1,11 @@
-import { Button, Loader, Modal, Tooltip, createTheme } from '@mantine/core';
+import {
+  ActionIcon,
+  Button,
+  Loader,
+  Modal,
+  Tooltip,
+  createTheme,
+} from '@mantine/core';
 import { RingLoader } from './components/loader/RingLoader';
 import { BreakPoint } from './constants/style';
 import btnExtend from './styles/extendButtonTheme.module.css';
@@ -34,6 +41,9 @@ export const theme = createTheme({
       },
     }),
     Button: Button.extend({
+      classNames: btnExtend,
+    }),
+    ActionIcon: ActionIcon.extend({
       classNames: btnExtend,
     }),
   },

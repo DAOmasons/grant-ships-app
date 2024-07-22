@@ -97,16 +97,18 @@ export const ProfileSection = ({
   pageTitle,
   children,
   bannerImg,
+  addBannerElement,
 }: {
   pageTitle: ReactNode;
   children: ReactNode;
   bannerImg?: string;
+  addBannerElement?: ReactNode;
 }) => {
   const theme = useMantineTheme();
   const isMobile = useMobile();
   const isLaptop = useLaptop();
   return (
-    <Box miw={isLaptop ? undefined : 650}>
+    <Box miw={isLaptop ? undefined : 650} maw={650} w="100%">
       <Box mt="xl" ml="xl">
         <PageTitle title={pageTitle} />
       </Box>
@@ -118,6 +120,7 @@ export const ProfileSection = ({
             h="100%"
             opacity={0.6}
           />
+          {addBannerElement}
         </Box>
         <MainSection>
           <Box pt={1}>{children}</Box>

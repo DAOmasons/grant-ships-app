@@ -1,8 +1,10 @@
 import React from 'react';
 import { ProfileSection } from '../../layout/Sections';
 import {
+  ActionIcon,
   Box,
   Button,
+  FileButton,
   Flex,
   Group,
   Stack,
@@ -22,6 +24,7 @@ import {
   IconBrandTelegram,
   IconBrandX,
   IconMail,
+  IconPencil,
   IconWorld,
 } from '@tabler/icons-react';
 import { generateRandomUint256 } from '../../utils/helpers';
@@ -50,7 +53,6 @@ export const NewRegisterProject = () => {
     initialValues: {
       avatarHash: '',
       name: '',
-      teamMembers: [''],
       description: '',
       email: '',
       x: '',
@@ -99,8 +101,6 @@ export const NewRegisterProject = () => {
         return;
       }
 
-      const teamMembers = values.teamMembers.filter(Boolean);
-
       const schemaCode = projectProfileHash();
 
       const metadataStruct = createMetadata({
@@ -113,7 +113,7 @@ export const NewRegisterProject = () => {
           abi: Registry,
           address: ADDR.REGISTRY,
           functionName: 'createProfile',
-          args: [nonce, values.name, metadataStruct, address, teamMembers],
+          args: [nonce, values.name, metadataStruct, address, []],
         },
         viewParams: {
           successButton: {
@@ -135,8 +135,26 @@ export const NewRegisterProject = () => {
     }
   };
 
+  const handleUpload = () => {};
+
   return (
-    <ProfileSection pageTitle="Register Project">
+    <ProfileSection
+      pageTitle="Register Project"
+      addBannerElement={
+        <Box style={{ position: 'absolute', bottom: -20, right: 10 }}>
+          <FileButton
+            onChange={handleUpload}
+            accept={'image/png,image/jpeg,image/webp'}
+          >
+            {(props) => (
+              <ActionIcon {...props} radius={50} variant="secondary">
+                <IconPencil />
+              </ActionIcon>
+            )}
+          </FileButton>
+        </Box>
+      }
+    >
       <Stack maw={600} miw={300} w={'100%'} mb={isMobile ? 72 : 'xl'}>
         <AvatarPickerIPFS
           onUploadSuccess={(hash: string) => {
