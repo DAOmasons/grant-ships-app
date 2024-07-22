@@ -13,16 +13,21 @@ import { PageTitle } from '../../layout/Sections';
 import {
   IconBrandVimeo,
   IconBrandYoutube,
+  IconDeviceFloppy,
   IconExclamationCircle,
   IconPhoto,
   IconPlus,
   IconWorld,
 } from '@tabler/icons-react';
 import { MediaCarousel } from '../MediaCarousel';
-import { MediaType, parseShowcaseLink } from '../../utils/media';
+import { MediaType, ShowcaseLink, parseShowcaseLink } from '../../utils/media';
 
-export const MediaForm = () => {
-  const [links, setLinks] = React.useState([
+export const MediaForm = ({
+  onSave,
+}: {
+  onSave?: (sclinks: ShowcaseLink[], demoLink: string) => void;
+}) => {
+  const [links, setLinks] = React.useState<ShowcaseLink[]>([
     {
       id: 'showcase-link-0',
       url: '',
@@ -67,6 +72,12 @@ export const MediaForm = () => {
     );
   };
 
+  const handleSave = () => {
+    if (onSave) {
+      onSave(links, 'demo link');
+    }
+  };
+
   return (
     <Stack
       maw={600}
@@ -75,7 +86,7 @@ export const MediaForm = () => {
       p={isMobile ? 'xs' : 'xl'}
       mb={isMobile ? 72 : 'xl'}
     >
-      <PageTitle title="Media" backAction={() => console.log('back')} />
+      <PageTitle title="Media" />
       <Box>
         <Text fw={700} mb="xs">
           Showcase Media
@@ -124,6 +135,11 @@ export const MediaForm = () => {
 
       <Divider />
       <TextInput label="Demo Link" placeholder="ex. Public Goods Death Star" />
+      <Group w="100%" justify="flex-end" mt="md">
+        <Button leftSection={<IconDeviceFloppy />} onClick={handleSave}>
+          Save
+        </Button>
+      </Group>
     </Stack>
   );
 };

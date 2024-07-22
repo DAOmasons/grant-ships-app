@@ -402,7 +402,6 @@ const EditProfileDrawer = ({ opened, onClose }: EditProfileDrawerProps) => {
       opened={opened}
       size="lg"
       onClose={onClose}
-      bg={'pink'}
       className={classes.bg}
     >
       <Drawer.Overlay />

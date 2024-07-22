@@ -8,6 +8,7 @@ import {
   Flex,
   Group,
   Stack,
+  Text,
   TextInput,
   Textarea,
 } from '@mantine/core';
@@ -15,7 +16,7 @@ import { useMobile } from '../../hooks/useBreakpoint';
 import { AvatarPickerIPFS } from '../AvatarPickerIPFS';
 import { notifications } from '@mantine/notifications';
 import { AddressBox } from '../AddressBox';
-import { useForm, zodResolver } from '@mantine/form';
+import { UseFormReturnType, useForm, zodResolver } from '@mantine/form';
 import { registerProjectSchema } from './validationSchemas/registerProjectSchema';
 import { z } from 'zod';
 import {
@@ -23,6 +24,7 @@ import {
   IconBrandGithub,
   IconBrandTelegram,
   IconBrandX,
+  IconLink,
   IconMail,
   IconPencil,
   IconWorld,
@@ -36,8 +38,9 @@ import { useUserData } from '../../hooks/useUserState';
 import { useTx } from '../../hooks/useTx';
 import Registry from '../../abi/Registry.json';
 import { ADDR } from '../../constants/addresses';
-import { useNavigate } from 'react-router-dom';
+import { Link, Outlet, Route, Routes, useNavigate } from 'react-router-dom';
 import { TxButton } from '../TxButton';
+import { MediaForm } from './MediaForm';
 
 type FormValues = z.infer<typeof registerProjectSchema>;
 
@@ -47,9 +50,8 @@ export const NewRegisterProject = () => {
   const navigate = useNavigate();
   const { tx } = useTx();
 
-  const isMobile = useMobile();
-
   const form = useForm({
+    validateInputOnBlur: true,
     initialValues: {
       avatarHash: '',
       name: '',
@@ -135,6 +137,28 @@ export const NewRegisterProject = () => {
     }
   };
 
+  return (
+    <>
+      <Routes>
+        <Route
+          path="/"
+          element={<RegisterForm form={form} onSubmit={handleFormSubmit} />}
+        />
+        <Route path="media" element={<MediaForm />} />
+      </Routes>
+    </>
+  );
+};
+
+const RegisterForm = ({
+  form,
+  onSubmit,
+}: {
+  form: UseFormReturnType<FormValues>;
+  onSubmit: (values: FormValues) => void;
+}) => {
+  const isMobile = useMobile();
+
   const handleUpload = () => {};
 
   return (
@@ -182,17 +206,6 @@ export const NewRegisterProject = () => {
           maw={292}
           placeholder="Project Name"
         />
-        {/* <AddressBox
-          w="100%"
-          label="Team Members"
-          description={`Must be comma separated. Team members can edit metadata and apply for grants. You do not need to enter your own address as you are already the profile owner`}
-          placeholder="Paste addresses here. Must be comma separated."
-          {...form.getInputProps('teamMembers')}
-          //   onBlur={() => handleBlur('teamMembers')}
-          formSetValue={(addresses: string[]) => {
-            form.setFieldValue('teamMembers', addresses);
-          }}
-        /> */}
         <Textarea
           w="100%"
           label="Short Project Description"
@@ -301,8 +314,24 @@ export const NewRegisterProject = () => {
             </Flex>
           </Box>
         )}
+        <Box>
+          <Text fw={600}>Manage Media</Text>
+          <Text fz="sm" opacity={0.8} mb="sm">
+            Display media/link to your project (optional).
+          </Text>
+          <Button
+            variant="secondary"
+            leftSection={<IconLink />}
+            component={Link}
+            to="media"
+          >
+            Manage
+          </Button>
+        </Box>
         <Group w="100%" justify="flex-end">
-          <TxButton>Register Project</TxButton>
+          <TxButton onClick={() => onSubmit(form.values)}>
+            Register Project
+          </TxButton>
         </Group>
       </Stack>
     </ProfileSection>

@@ -102,7 +102,7 @@ export const RegisterProject = () => {
         return;
       }
 
-      const teamMembers = values.teamMembers.filter(Boolean);
+      const teamMembers = values?.teamMembers?.filter(Boolean);
 
       const schemaCode = projectProfileHash();
 
