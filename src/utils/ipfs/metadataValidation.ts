@@ -14,6 +14,7 @@ export const ProjectProfileMetadata = z.object({
     .array(z.object({ id: z.string(), url: z.string(), mediaType: z.string() }))
     .optional(),
   bannerImage: z.string().optional(),
+  mainDemoLink: z.string().url({ message: 'Invalid url' }).optional(),
 });
 
 export const ShipProfileMetadata = z.object({

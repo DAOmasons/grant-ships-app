@@ -3,6 +3,7 @@ import {
   Avatar,
   Box,
   FileButton,
+  InputLabel,
   Text,
   useMantineTheme,
 } from '@mantine/core';
@@ -70,6 +71,7 @@ export const AvatarPickerIPFS = ({
         >
           {canPreview || <IconUser size={80} />}
         </Avatar>
+
         <FileButton
           onChange={handleUpload}
           accept={'image/png,image/jpeg,image/webp'}
@@ -90,7 +92,7 @@ export const AvatarPickerIPFS = ({
         </FileButton>
       </Box>
       {validationError && (
-        <Text fz={12} color="red">
+        <Text fz={12} c="red">
           {validationError}
         </Text>
       )}

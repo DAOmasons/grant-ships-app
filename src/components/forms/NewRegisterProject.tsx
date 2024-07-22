@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ProfileSection } from '../../layout/Sections';
 import {
   ActionIcon,
@@ -7,6 +7,7 @@ import {
   FileButton,
   Flex,
   Group,
+  Loader,
   Stack,
   Text,
   TextInput,
@@ -31,16 +32,18 @@ import {
 } from '@tabler/icons-react';
 import { generateRandomUint256 } from '../../utils/helpers';
 import { ProjectProfileMetadata } from '../../utils/ipfs/metadataValidation';
-import { pinJSONToIPFS } from '../../utils/ipfs/pin';
+import { pinFileToIPFS, pinJSONToIPFS } from '../../utils/ipfs/pin';
 import { createMetadata, projectProfileHash } from '../../utils/metadata';
-import { useAccount, useConnect } from 'wagmi';
+import { useAccount } from 'wagmi';
 import { useUserData } from '../../hooks/useUserState';
 import { useTx } from '../../hooks/useTx';
 import Registry from '../../abi/Registry.json';
 import { ADDR } from '../../constants/addresses';
-import { Link, Outlet, Route, Routes, useNavigate } from 'react-router-dom';
+import { Link, Route, Routes, useNavigate } from 'react-router-dom';
 import { TxButton } from '../TxButton';
 import { MediaForm } from './MediaForm';
+import { getGatewayUrl } from '../../utils/ipfs/get';
+import { MediaType, ShowcaseLink } from '../../utils/media';
 
 type FormValues = z.infer<typeof registerProjectSchema>;
 
@@ -62,6 +65,15 @@ export const NewRegisterProject = () => {
       discord: '',
       telegram: '',
       website: '',
+      showcaseLinks: [
+        {
+          id: 'showcase-link-0',
+          url: '',
+          mediaType: MediaType.None,
+        },
+      ] as ShowcaseLink[],
+      mainDemoLink: '',
+      bannerImage: '',
     },
     validate: zodResolver(registerProjectSchema),
   });
@@ -71,7 +83,6 @@ export const NewRegisterProject = () => {
   }, [form.values]);
 
   const handleFormSubmit = async (values: FormValues) => {
-    console.log('values', values);
     try {
       const nonce = generateRandomUint256();
 
@@ -85,6 +96,16 @@ export const NewRegisterProject = () => {
         discord: values.discord,
         telegram: values.telegram,
         website: values.website,
+        bannerImage: values.bannerImage || null,
+        showcaseLinks:
+          values.showcaseLinks && values.showcaseLinks.length
+            ? values.showcaseLinks.filter(
+                (link) =>
+                  link.mediaType !== MediaType.None &&
+                  link.mediaType !== MediaType.Unknown
+              )
+            : null,
+        mainDemoLink: values.mainDemoLink || null,
       };
 
       const validation = ProjectProfileMetadata.safeParse(projectMetadata);
@@ -98,7 +119,9 @@ export const NewRegisterProject = () => {
         return;
       }
 
-      const pinRes = await pinJSONToIPFS(projectMetadata);
+      console.log('validation.data', validation.data);
+
+      const pinRes = await pinJSONToIPFS(validation.data);
 
       if (typeof pinRes.IpfsHash !== 'string' && pinRes.IpfsHash[0] !== 'Q') {
         notifications.show({
@@ -150,7 +173,7 @@ export const NewRegisterProject = () => {
           path="/"
           element={<RegisterForm form={form} onSubmit={handleFormSubmit} />}
         />
-        <Route path="media" element={<MediaForm />} />
+        <Route path="media" element={<MediaForm form={form} />} />
       </Routes>
     </>
   );
@@ -160,16 +183,53 @@ const RegisterForm = ({
   form,
   onSubmit,
 }: {
-  form: UseFormReturnType<FormValues>;
+  form: UseFormReturnType<any>;
   onSubmit: (values: FormValues) => void;
 }) => {
+  const [isUploadingBanner, setIsUploadingBanner] = useState(false);
+
   const isMobile = useMobile();
 
-  const handleUpload = () => {};
+  const handleUpload = async (e: File | null) => {
+    if (!e) {
+      notifications.show({
+        title: 'No file selected',
+        message: 'Please select an image file to upload',
+        color: 'red',
+      });
+      return;
+    }
+    setIsUploadingBanner(true);
+    try {
+      const res = await pinFileToIPFS(e);
+      if (typeof res.IpfsHash !== 'string') return;
+      form.setFieldValue('bannerImage', res.IpfsHash);
+      setIsUploadingBanner(false);
+
+      notifications.show({
+        title: 'IPFS Image Uploaded',
+        message: `IPFS Hash: ${res.IpfsHash}`,
+        color: 'green',
+      });
+    } catch (error: any) {
+      console.error(error);
+      setIsUploadingBanner(false);
+      notifications.show({
+        title: 'Error Uploading Image',
+        message: error?.message || 'Error uploading file',
+        color: 'red',
+      });
+    }
+  };
+
+  const bannerPreview = form.values.bannerImage
+    ? getGatewayUrl(form.values.bannerImage)
+    : null;
 
   return (
     <ProfileSection
       pageTitle="Register Project"
+      bannerImg={bannerPreview || ''}
       addBannerElement={
         <Box style={{ position: 'absolute', bottom: -20, right: 10 }}>
           <FileButton
@@ -178,7 +238,7 @@ const RegisterForm = ({
           >
             {(props) => (
               <ActionIcon {...props} radius={50} variant="secondary">
-                <IconPencil />
+                {isUploadingBanner ? <Loader /> : <IconPencil />}
               </ActionIcon>
             )}
           </FileButton>

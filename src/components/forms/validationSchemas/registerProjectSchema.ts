@@ -34,9 +34,16 @@ export const registerProjectSchema = z.object({
     .url({ message: 'Invalid telegram url' })
     .or(z.literal('')),
   showcaseLinks: z
-    .array(z.object({ id: z.string(), url: z.string(), mediaType: z.string() }))
+    .array(
+      z.object({
+        id: z.string(),
+        url: z.string().url({ message: 'Invalid url' }),
+        mediaType: z.string(),
+      })
+    )
     .optional(),
   bannerImage: z.string().optional(),
+  mainDemoLink: z.string().url({ message: 'Invalid url' }).optional(),
 });
 
 export const registerShipSchema = z.object({

@@ -21,26 +21,25 @@ import {
 } from '@tabler/icons-react';
 import { MediaCarousel } from '../MediaCarousel';
 import { MediaType, ShowcaseLink, parseShowcaseLink } from '../../utils/media';
+import { UseFormReturnType } from '@mantine/form';
+import { useNavigate } from 'react-router-dom';
 
-export const MediaForm = ({
-  onSave,
-}: {
-  onSave?: (sclinks: ShowcaseLink[], demoLink: string) => void;
-}) => {
-  const [links, setLinks] = React.useState<ShowcaseLink[]>([
-    {
-      id: 'showcase-link-0',
-      url: '',
-      mediaType: MediaType.None,
-    },
-  ]);
+export const MediaForm = ({ form }: { form: UseFormReturnType<any> }) => {
   const isMobile = useMobile();
+  const navigate = useNavigate();
 
   const handleAddLink = () => {
-    setLinks((prev) => [
-      ...prev,
+    const prevLinks = form.values.showcaseLinks;
+
+    if (!prevLinks) {
+      console.error('showcaseLinks not found in form values');
+      return;
+    }
+
+    form.setFieldValue('showcaseLinks', [
+      ...prevLinks,
       {
-        id: `showcase-link-${prev.length}`,
+        id: `showcase-link-${prevLinks.length}`,
         url: '',
         mediaType: MediaType.None,
       },
@@ -48,34 +47,37 @@ export const MediaForm = ({
   };
 
   const handleLinkChange = (id: string, value: string) => {
-    setLinks((prev) =>
-      prev.map((link) => {
-        if (link.id === id) {
-          const { url, mediaType } = parseShowcaseLink(value);
+    const prevLinks = form.values.showcaseLinks;
 
-          if (url === null) {
-            return {
-              ...link,
-              url: '',
-              mediaType: MediaType.Unknown,
-            };
-          } else {
-            return {
-              ...link,
-              url,
-              mediaType,
-            };
-          }
+    if (!prevLinks) {
+      console.error('showcaseLinks not found in form values');
+      return;
+    }
+    const newLinks = prevLinks.map((link: ShowcaseLink) => {
+      if (link.id === id) {
+        const { url, mediaType } = parseShowcaseLink(value);
+
+        if (url === null) {
+          return {
+            ...link,
+            url: '',
+            mediaType: MediaType.Unknown,
+          };
+        } else {
+          return {
+            ...link,
+            url,
+            mediaType,
+          };
         }
-        return link;
-      })
-    );
+      }
+      return link;
+    });
+    form.setFieldValue('showcaseLinks', newLinks);
   };
 
-  const handleSave = () => {
-    if (onSave) {
-      onSave(links, 'demo link');
-    }
+  const handleUpdate = () => {
+    navigate('/create-project');
   };
 
   return (
@@ -97,9 +99,12 @@ export const MediaForm = ({
           vimeo.
         </Text>
       </Box>
-      <MediaCarousel items={links} containerProps={{ my: 'md' }} />
+      <MediaCarousel
+        items={form.values.showcaseLinks}
+        containerProps={{ my: 'md' }}
+      />
 
-      {links.map((link) => {
+      {form.values.showcaseLinks?.map((link: ShowcaseLink, i: number) => {
         const icon =
           link.mediaType === MediaType.ImageLink ? (
             <IconPhoto size={18} />
@@ -117,7 +122,12 @@ export const MediaForm = ({
             key={link.id}
             leftSection={icon}
             placeholder="https://image-hosting/id.png"
-            onBlur={(e) => handleLinkChange(link.id, e.currentTarget.value)}
+            {...form.getInputProps(`showcaseLinks.${i}.url`)}
+            error={link.mediaType === MediaType.Unknown ? 'Invalid link' : null}
+            onBlur={(e) => {
+              form.getInputProps(`showcaseLinks.${link.id}`).onBlur(e);
+              handleLinkChange(link.id, e.currentTarget.value);
+            }}
           />
         );
       })}
@@ -127,18 +137,21 @@ export const MediaForm = ({
           variant="secondary"
           leftSection={<IconPlus size={18} />}
           onClick={handleAddLink}
-          disabled={links.length >= 4}
+          disabled={form.values.showcaseLinks.length >= 4}
         >
           Add Another Link
         </Button>
       </Group>
 
       <Divider />
-      <TextInput label="Demo Link" placeholder="ex. Public Goods Death Star" />
+      <TextInput
+        leftSection={<IconWorld size={18} />}
+        label="Demo Link"
+        placeholder="ex. Public Goods Death Star"
+        {...form.getInputProps('mainDemoLink')}
+      />
       <Group w="100%" justify="flex-end" mt="md">
-        <Button leftSection={<IconDeviceFloppy />} onClick={handleSave}>
-          Save
-        </Button>
+        <Button onClick={handleUpdate}>Update</Button>
       </Group>
     </Stack>
   );
