@@ -2,16 +2,12 @@ import {
   ActionIcon,
   Avatar,
   Box,
-  Button,
   Collapse,
-  Drawer,
   Flex,
   Group,
-  Image,
   Loader,
   Modal,
   Paper,
-  ScrollArea,
   Stack,
   Tabs,
   Text,
@@ -23,7 +19,6 @@ import {
   IconAward,
   IconChevronDown,
   IconChevronUp,
-  IconEdit,
   IconInfoCircle,
   IconMaximize,
   IconPencil,
@@ -31,18 +26,10 @@ import {
 import { FeedPanel } from '../components/shipItems/FeedPanel';
 import { GAME_TOKEN } from '../constants/gameSetup';
 import { MilestoneProgress } from '../components/projectItems/MilestoneProgress';
-import { GrantsPanel } from '../components/projectItems/GrantsPanel';
 import { Contact } from '../components/Contact';
-import classes from '../components/forms/DrawerStyles.module.css';
 
 import { formatEther } from 'viem';
-import {
-  Link,
-  Navigate,
-  useLocation,
-  useNavigate,
-  useParams,
-} from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useQuery, useInfiniteQuery } from '@tanstack/react-query';
 import { getProjectPage } from '../queries/getProjectPage';
 import { AddressAvatarGroup } from '../components/AddressAvatar';
@@ -56,11 +43,10 @@ import { useUserData } from '../hooks/useUserState';
 import { useLaptop, useTablet } from '../hooks/useBreakpoint';
 import { useDisclosure } from '@mantine/hooks';
 import { ProjectBadge } from '../components/RoleBadges';
-import { MediaForm } from '../components/forms/MediaForm';
 import { MediaCarousel } from '../components/MediaCarousel';
-import { NewRegisterProject } from '../components/forms/NewRegisterProject';
-import { ProjectPageUI } from '../types/ui';
 import { ShowcaseLink } from '../utils/media';
+import { EditProfileDrawer } from '../components/projectItems/EditProfileDrawer';
+import { FullScreenGallery } from '../components/FullScreenGallery';
 
 const infiniteWrapper = async ({ pageParam }: any) => {
   const result = await getEntityFeed(pageParam);
@@ -420,67 +406,5 @@ export const Project = () => {
         />
       )}
     </Flex>
-  );
-};
-
-type EditProfileDrawerProps = {
-  project: ProjectPageUI;
-  refetchProject: () => void;
-};
-
-const EditProfileDrawer = ({
-  project,
-  refetchProject,
-}: EditProfileDrawerProps) => {
-  const theme = useMantineTheme();
-
-  const location = useLocation();
-  const navigate = useNavigate();
-
-  const isEditing = location.pathname.includes('edit');
-
-  const onClose = () =>
-    navigate(location.pathname.replace(/\/(edit(-media)?)$/, ''));
-
-  return (
-    <Drawer.Root
-      opened={isEditing}
-      size="lg"
-      onClose={onClose}
-      className={classes.bg}
-    >
-      <Drawer.Overlay />
-      <Drawer.Content bg={theme.colors.dark[6]}>
-        <ScrollArea h="100vh">
-          <NewRegisterProject
-            existingProject={project}
-            refetchOnEdit={refetchProject}
-          />
-        </ScrollArea>
-      </Drawer.Content>
-    </Drawer.Root>
-  );
-};
-
-const FullScreenGallery = ({
-  items,
-  isOpen,
-  close,
-}: {
-  items: ShowcaseLink[];
-  isOpen: boolean;
-  close: () => void;
-}) => {
-  return (
-    <Modal
-      opened={isOpen}
-      onClose={close}
-      fullScreen
-      transitionProps={{ transition: 'fade', duration: 200 }}
-    >
-      <Flex h="90vh" justify={'center'} align="center">
-        <MediaCarousel items={items} size="lg" />
-      </Flex>
-    </Modal>
   );
 };

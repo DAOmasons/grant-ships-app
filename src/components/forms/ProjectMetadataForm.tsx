@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { ProfileSection } from '../../layout/Sections';
 import {
   ActionIcon,
@@ -17,10 +17,7 @@ import {
 import { useMobile } from '../../hooks/useBreakpoint';
 import { AvatarPickerIPFS } from '../AvatarPickerIPFS';
 import { notifications } from '@mantine/notifications';
-import { AddressBox } from '../AddressBox';
-import { UseFormReturnType, useForm, zodResolver } from '@mantine/form';
-import { registerProjectSchema } from './validationSchemas/registerProjectSchema';
-import { z } from 'zod';
+import { UseFormReturnType } from '@mantine/form';
 import {
   IconBrandDiscord,
   IconBrandGithub,
@@ -31,217 +28,20 @@ import {
   IconPencil,
   IconWorld,
 } from '@tabler/icons-react';
-import { generateRandomUint256 } from '../../utils/helpers';
-import { ProjectProfileMetadata } from '../../utils/ipfs/metadataValidation';
-import { pinFileToIPFS, pinJSONToIPFS } from '../../utils/ipfs/pin';
-import { createMetadata, projectProfileHash } from '../../utils/metadata';
-import { useAccount } from 'wagmi';
-import { useUserData } from '../../hooks/useUserState';
-import { useTx } from '../../hooks/useTx';
-import Registry from '../../abi/Registry.json';
-import { ADDR } from '../../constants/addresses';
-import { Link, Navigate, Route, Routes, useNavigate } from 'react-router-dom';
+import { pinFileToIPFS } from '../../utils/ipfs/pin';
+import { Link } from 'react-router-dom';
 import { TxButton } from '../TxButton';
-import { MediaForm } from './MediaForm';
 import { getGatewayUrl } from '../../utils/ipfs/get';
-import { MediaType, ShowcaseLink } from '../../utils/media';
-import { ProjectPageUI } from '../../types/ui';
+import { ProjectFormValues } from '../../pages/RegisterProject';
 
-type FormValues = z.infer<typeof registerProjectSchema>;
-
-export const NewRegisterProject = ({
-  existingProject,
-  refetchOnEdit,
-}: {
-  existingProject?: ProjectPageUI;
-  refetchOnEdit?: () => void;
-}) => {
-  const { address } = useAccount();
-  const { refetchUser } = useUserData();
-  const navigate = useNavigate();
-  const { tx } = useTx();
-
-  const isEditing = !!existingProject;
-
-  const form = useForm({
-    validateInputOnBlur: true,
-    initialValues: {
-      avatarHash: existingProject?.avatarHash || '',
-      name: existingProject?.name || '',
-      description: existingProject?.description || '',
-      email: existingProject?.email || '',
-      x: existingProject?.x || '',
-      github: existingProject?.github || '',
-      discord: existingProject?.discord || '',
-      telegram: existingProject?.telegram || '',
-      website: existingProject?.website || '',
-      showcaseLinks:
-        existingProject?.showcaseLinks ||
-        ([
-          {
-            id: 'showcase-link-0',
-            url: '',
-            mediaType: MediaType.None,
-          },
-        ] as ShowcaseLink[]),
-      mainDemoLink: existingProject?.mainDemoLink || '',
-      bannerImage: existingProject?.bannerImage || '',
-    },
-    validate: zodResolver(registerProjectSchema),
-  });
-
-  const handleSubmit = async (values: FormValues) => {
-    try {
-      const nonce = generateRandomUint256();
-
-      const projectMetadata = {
-        name: values.name,
-        description: values.description,
-        avatarHash_IPFS: values.avatarHash,
-        email: values.email,
-        x: values.x,
-        github: values.github,
-        discord: values.discord,
-        telegram: values.telegram,
-        website: values.website,
-        bannerImage: values.bannerImage || '',
-        showcaseLinks:
-          values.showcaseLinks && values.showcaseLinks.length
-            ? values.showcaseLinks.filter(
-                (link) =>
-                  link.mediaType !== MediaType.None &&
-                  link.mediaType !== MediaType.Unknown
-              )
-            : [],
-        mainDemoLink: values.mainDemoLink || '',
-      };
-
-      console.log('projectMetadata.bannerImage', projectMetadata.bannerImage);
-
-      const validation = ProjectProfileMetadata.safeParse(projectMetadata);
-
-      if (!validation.success) {
-        notifications.show({
-          title: 'Validation Error',
-          message: validation.error.errors[0].message,
-          color: 'red',
-        });
-        return;
-      }
-
-      const pinRes = await pinJSONToIPFS(validation.data);
-
-      if (typeof pinRes.IpfsHash !== 'string' && pinRes.IpfsHash[0] !== 'Q') {
-        notifications.show({
-          title: 'IPFS Upload Error',
-          message: pinRes.IpfsHash[1],
-          color: 'red',
-        });
-        return;
-      }
-
-      const schemaCode = projectProfileHash();
-      const metadataStruct = createMetadata({
-        protocol: schemaCode,
-        ipfsHash: pinRes.IpfsHash,
-      });
-
-      if (isEditing) {
-        if (!existingProject || !existingProject?.profileId) {
-          notifications.show({
-            title: 'Error',
-            message: 'Existing project not found',
-            color: 'red',
-          });
-          return;
-        }
-        navigate(-1);
-        tx({
-          writeContractParams: {
-            abi: Registry,
-            address: ADDR.REGISTRY,
-            functionName: 'updateProfileMetadata',
-            args: [existingProject?.profileId, [1n, pinRes.IpfsHash]],
-          },
-          viewParams: {
-            successButton: {
-              label: 'Go see your project!',
-              onClick: () => navigate(`/project/${existingProject.id}`),
-            },
-          },
-          onComplete() {
-            refetchOnEdit?.();
-            refetchUser();
-          },
-        });
-      } else {
-        tx({
-          writeContractParams: {
-            abi: Registry,
-            address: ADDR.REGISTRY,
-            functionName: 'createProfile',
-            args: [nonce, values.name, metadataStruct, address, []],
-          },
-          viewParams: {
-            successButton: {
-              label: 'Go find some Grants!',
-              onClick: () => navigate('/ships'),
-            },
-          },
-          onComplete() {
-            refetchUser();
-          },
-        });
-      }
-    } catch (error: any) {
-      console.error(error);
-      notifications.show({
-        title: 'Transaction Error',
-        message: error.message,
-        color: 'red',
-      });
-    }
-  };
-
-  return (
-    <>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <RegisterForm
-              form={form}
-              onSubmit={handleSubmit}
-              isEditing={isEditing}
-              projectId={existingProject?.id}
-            />
-          }
-        />
-        <Route
-          path="edit"
-          element={
-            <RegisterForm
-              form={form}
-              onSubmit={handleSubmit}
-              isEditing={isEditing}
-              projectId={existingProject?.id}
-            />
-          }
-        />
-        <Route path="edit-media" element={<MediaForm form={form} />} />
-      </Routes>
-    </>
-  );
-};
-
-const RegisterForm = ({
+export const ProjectMetadataForm = ({
   form,
   onSubmit,
   isEditing,
   projectId,
 }: {
   form: UseFormReturnType<any>;
-  onSubmit: (values: FormValues) => void;
+  onSubmit: (values: ProjectFormValues) => void;
   isEditing?: boolean;
   projectId?: string;
 }) => {
@@ -262,7 +62,6 @@ const RegisterForm = ({
     setIsUploadingBanner(true);
     try {
       const res = await pinFileToIPFS(e);
-      console.log('res', res);
       if (typeof res.IpfsHash !== 'string') return;
       form.setFieldValue('bannerImage', res.IpfsHash);
       setIsUploadingBanner(false);
