@@ -2,12 +2,14 @@ import {
   ActionIcon,
   Avatar,
   Box,
+  Button,
   Collapse,
   Drawer,
   Flex,
   Group,
   Image,
   Loader,
+  Modal,
   Paper,
   ScrollArea,
   Stack,
@@ -23,6 +25,7 @@ import {
   IconChevronUp,
   IconEdit,
   IconInfoCircle,
+  IconMaximize,
   IconPencil,
 } from '@tabler/icons-react';
 import { FeedPanel } from '../components/shipItems/FeedPanel';
@@ -57,6 +60,7 @@ import { MediaForm } from '../components/forms/MediaForm';
 import { MediaCarousel } from '../components/MediaCarousel';
 import { NewRegisterProject } from '../components/forms/NewRegisterProject';
 import { ProjectPageUI } from '../types/ui';
+import { ShowcaseLink } from '../utils/media';
 
 const infiniteWrapper = async ({ pageParam }: any) => {
   const result = await getEntityFeed(pageParam);
@@ -69,7 +73,7 @@ export const Project = () => {
   const isTablet = useTablet();
   const isLaptop = useLaptop();
   const [opened, { toggle }] = useDisclosure(false);
-  const [modalOpened, { close, open }] = useDisclosure(false);
+  const [showcaseOpened, { toggle: toggleShowcase }] = useDisclosure(false);
 
   const {
     data: project,
@@ -354,7 +358,17 @@ export const Project = () => {
       {!isLaptop && (
         <Stack gap={'xs'} mt={84} w={270}>
           {project.showcaseLinks && project.showcaseLinks?.length > 0 && (
-            <MediaCarousel size="sm" items={project.showcaseLinks} />
+            <Box>
+              <Group mt="4" gap={4} align="center">
+                <ActionIcon variant="subtle" onClick={() => toggleShowcase()}>
+                  <IconMaximize />
+                </ActionIcon>
+                <Text fz="xs" style={{ cursor: 'pointer' }}>
+                  Showcase Gallery
+                </Text>
+              </Group>
+              <MediaCarousel size="sm" items={project.showcaseLinks} />
+            </Box>
           )}
           <Paper p="md" bg={theme.colors.dark[6]} w="100%">
             <Text size="lg" mb={2}>
@@ -397,25 +411,24 @@ export const Project = () => {
           )}
         </Stack>
       )}
-      <EditProfileDrawer
-        opened={modalOpened}
-        onClose={close}
-        project={project}
-        refetchProject={refetchProject}
-      />
+      <EditProfileDrawer project={project} refetchProject={refetchProject} />
+      {project.showcaseLinks && project.showcaseLinks.length > 0 && (
+        <FullScreenGallery
+          items={project.showcaseLinks}
+          isOpen={showcaseOpened}
+          close={toggleShowcase}
+        />
+      )}
     </Flex>
   );
 };
 
 type EditProfileDrawerProps = {
-  opened: boolean;
-  onClose: () => void;
   project: ProjectPageUI;
   refetchProject: () => void;
 };
 
 const EditProfileDrawer = ({
-  opened,
   project,
   refetchProject,
 }: EditProfileDrawerProps) => {
@@ -446,5 +459,28 @@ const EditProfileDrawer = ({
         </ScrollArea>
       </Drawer.Content>
     </Drawer.Root>
+  );
+};
+
+const FullScreenGallery = ({
+  items,
+  isOpen,
+  close,
+}: {
+  items: ShowcaseLink[];
+  isOpen: boolean;
+  close: () => void;
+}) => {
+  return (
+    <Modal
+      opened={isOpen}
+      onClose={close}
+      fullScreen
+      transitionProps={{ transition: 'fade', duration: 200 }}
+    >
+      <Flex h="90vh" justify={'center'} align="center">
+        <MediaCarousel items={items} size="lg" />
+      </Flex>
+    </Modal>
   );
 };

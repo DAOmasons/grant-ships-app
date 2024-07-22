@@ -44,7 +44,7 @@ const transformYoutubeUrl = (url: string) => {
 
   if (match && match[2].length === 11) {
     const videoId = match[2];
-    return `https://www.youtube.com/embed/${videoId}`;
+    return `https://www.youtube.com/embed/${videoId}?rel=0&modestBranding=1&showinfo=0&controls=0&title=0`;
   }
 
   return null;
@@ -57,7 +57,7 @@ const transformVimeoUrl = (url: string) => {
     const videoId = match[1];
     const h_id = match[2];
 
-    return `https://player.vimeo.com/video/${videoId}?h=${h_id}&badge=0&autopause=0&player_id=0&byline=0&title=0`;
+    return `https://player.vimeo.com/video/${videoId}?h=${h_id}&autopause=0&player_id=0&byline=0&title=0&transparent=1&autoplay=1&dnt=1&controls=0&background=1`;
   }
 
   return null;
