@@ -42,6 +42,8 @@ export const ImageControl = () => {
     >
       <Popover.Target>
         <RichTextEditor.Control
+          h={'2rem'}
+          w="2rem"
           onClick={() => {
             open();
           }}

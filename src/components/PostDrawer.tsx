@@ -50,7 +50,7 @@ export const PostDrawer = ({
     navigate(location.pathname.replace(/\/(post(-media)?)$/, ''));
 
   return (
-    <Drawer.Root opened={isOpen} size="xl" onClose={onClose} position="right">
+    <Drawer.Root opened={isOpen} size={720} onClose={onClose} position="right">
       <Drawer.Overlay />
       <Drawer.Content bg={theme.colors.dark[6]}>
         <Flex w="100%" justify={'center'}>
@@ -60,24 +60,30 @@ export const PostDrawer = ({
               <Avatar src={avatarImg} alt={name} size={40} />
               <Text fw={600}>{name}</Text>
             </Group>
-            <RichTextEditor editor={editor} h="70vh">
+            <RichTextEditor editor={editor} h="70vh" bg={theme.colors.dark[6]}>
               <RichTextEditor.Toolbar bg={theme.colors.dark[6]}>
-                <RichTextEditor.ControlsGroup>
-                  <RichTextEditor.H3 icon={IconHeading} />
-                  <RichTextEditor.Bold />
-                  <RichTextEditor.Italic />
+                <RichTextEditor.ControlsGroup style={{ border: 'none' }}>
+                  <RichTextEditor.H3 icon={IconHeading} h={'2rem'} w="2rem" />
+                  <RichTextEditor.Bold h={'2rem'} w="2rem" />
+                  <RichTextEditor.Italic h={'2rem'} w="2rem" />
+                  <RichTextEditor.Strikethrough h={'2rem'} w="2rem" />
                 </RichTextEditor.ControlsGroup>
                 <RichTextEditor.ControlsGroup>
-                  <RichTextEditor.BulletList />
-                  <RichTextEditor.OrderedList />
+                  <RichTextEditor.BulletList h={'2rem'} w="2rem" />
+                  <RichTextEditor.OrderedList h={'2rem'} w="2rem" />
+                  <RichTextEditor.Code h={'2rem'} w="2rem" />
                 </RichTextEditor.ControlsGroup>
                 <RichTextEditor.ControlsGroup>
-                  <RichTextEditor.Link />
+                  <RichTextEditor.Link h={'2rem'} w="2rem" />
                   <ImageControl />
                 </RichTextEditor.ControlsGroup>
               </RichTextEditor.Toolbar>
 
-              <RichTextEditor.Content bg={theme.colors.dark[6]} h="100%" />
+              <RichTextEditor.Content
+                fz="sm"
+                bg={theme.colors.dark[6]}
+                h="100%"
+              />
             </RichTextEditor>
             {/* <RegisterProject
             existingProject={project}
@@ -89,3 +95,5 @@ export const PostDrawer = ({
     </Drawer.Root>
   );
 };
+
+const RTEditor = () => {};
