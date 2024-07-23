@@ -361,7 +361,6 @@ export const Project = () => {
             />
           </Tabs.Panel>
         </Tabs>
-        {isProjectMember && <PostAffix />}
       </ProfileSection>
       {!isLaptop && (
         <Stack gap={'xs'} mt={84} w={270}>
@@ -419,14 +418,16 @@ export const Project = () => {
           )}
         </Stack>
       )}
+      {isProjectMember && <PostAffix />}
       {isProjectMember && (
         <PostDrawer
           avatarImg={project.imgUrl}
           name={project.name}
           posterType={Player.Project}
-          posterId={project.id}
+          posterId={project.profileId}
           postType="update"
           postIndex={0}
+          refetch={refetchProject}
         />
       )}
       <EditProfileDrawer project={project} refetchProject={refetchProject} />

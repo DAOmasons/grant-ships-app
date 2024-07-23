@@ -20,6 +20,12 @@ import { ImageControl } from './RTEditor/ImageControl';
 import { ProjectBadge } from './RoleBadges';
 import { useEffect } from 'react';
 import { Player } from '../types/ui';
+import { useTx } from '../hooks/useTx';
+import AlloPoster from '../abi/AlloPoster.json';
+import { ADDR } from '../constants/addresses';
+import { pinJSONToIPFS } from '../utils/ipfs/pin';
+import { notifications } from '@mantine/notifications';
+import { TxButton } from './TxButton';
 
 type PostDrawerProps = {
   avatarImg?: string;
@@ -28,6 +34,7 @@ type PostDrawerProps = {
   posterId: string;
   postType: string;
   postIndex: number;
+  refetch: () => void;
 };
 
 export const PostDrawer = ({
@@ -36,8 +43,11 @@ export const PostDrawer = ({
   postType,
   posterId,
   postIndex,
+  refetch,
 }: PostDrawerProps) => {
   const theme = useMantineTheme();
+  const location = useLocation();
+  const navigate = useNavigate();
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -50,6 +60,8 @@ export const PostDrawer = ({
     },
     content: { type: 'doc', content: [] },
   });
+  const { tx } = useTx();
+
   const postId = `${postType}-${posterId}-${postIndex}`;
 
   useEffect(() => {
@@ -59,15 +71,51 @@ export const PostDrawer = ({
     }
   }, [postId, editor]);
 
-  const location = useLocation();
-  const navigate = useNavigate();
-
   const isOpen = location.pathname.includes('post');
 
   const onClose = () =>
     navigate(location.pathname.replace(/\/(post(-media)?)$/, ''));
 
-  const postContent = async () => {};
+  const postContent = async () => {
+    const metadata = editor?.getJSON();
+
+    if (!metadata) {
+      notifications.show({
+        title: 'Error',
+        message: 'No content to post',
+        color: 'red',
+      });
+      return;
+    }
+
+    const pinRes = await pinJSONToIPFS(metadata);
+
+    if (!pinRes.IpfsHash) {
+      notifications.show({
+        title: 'Error',
+        message: 'Failed to pin content to IPFS',
+        color: 'red',
+      });
+      return;
+    }
+
+    onClose();
+
+    tx({
+      writeContractParams: {
+        abi: AlloPoster,
+        address: ADDR.ALLO_POSTER,
+        functionName: 'postUpdate',
+        args: [postId, posterId, [1n, metadata]],
+      },
+      writeContractOptions: {
+        onPollSuccess() {
+          refetch();
+          localStorage.removeItem(postId);
+        },
+      },
+    });
+  };
 
   return (
     <Drawer.Root opened={isOpen} size={720} onClose={onClose} position="right">
@@ -83,9 +131,9 @@ export const PostDrawer = ({
                 <ProjectBadge size={18} />
               </Group>
               <Group gap="sm">
-                <Button leftSection={<IconPlus />} onClick={postContent}>
+                <TxButton leftSection={<IconPlus />} onClick={postContent}>
                   Post
-                </Button>
+                </TxButton>
               </Group>
             </Group>
             <RTEditor editor={editor} />
