@@ -50,6 +50,7 @@ import { FullScreenGallery } from '../components/FullScreenGallery';
 import { IconPlayerPlay } from '@tabler/icons-react';
 import { PostAffix } from '../components/PostAffix';
 import { PostDrawer } from '../components/PostDrawer';
+import { Player } from '../types/ui';
 
 const infiniteWrapper = async ({ pageParam }: any) => {
   const result = await getEntityFeed(pageParam);
@@ -360,7 +361,7 @@ export const Project = () => {
             />
           </Tabs.Panel>
         </Tabs>
-        <PostAffix />
+        {isProjectMember && <PostAffix />}
       </ProfileSection>
       {!isLaptop && (
         <Stack gap={'xs'} mt={84} w={270}>
@@ -418,7 +419,16 @@ export const Project = () => {
           )}
         </Stack>
       )}
-      <PostDrawer />
+      {isProjectMember && (
+        <PostDrawer
+          avatarImg={project.imgUrl}
+          name={project.name}
+          posterType={Player.Project}
+          posterId={project.id}
+          postType="update"
+          postIndex={0}
+        />
+      )}
       <EditProfileDrawer project={project} refetchProject={refetchProject} />
       {project.showcaseLinks && project.showcaseLinks.length > 0 && (
         <FullScreenGallery

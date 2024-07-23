@@ -1,36 +1,41 @@
 import {
   Avatar,
   Box,
-  Container,
+  Button,
   Drawer,
   Flex,
   Group,
-  ScrollArea,
   Text,
   useMantineTheme,
 } from '@mantine/core';
-import { useEditor } from '@tiptap/react';
+import { Editor, useEditor } from '@tiptap/react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import StarterKit from '@tiptap/starter-kit';
-import {
-  RichTextEditor,
-  useRichTextEditorContext,
-  Link,
-} from '@mantine/tiptap';
+import { RichTextEditor, Link } from '@mantine/tiptap';
 import { PageTitle } from '../layout/Sections';
-import { IconHeading, IconPhoto } from '@tabler/icons-react';
+import { IconHeading, IconPlus } from '@tabler/icons-react';
 import { Image } from '@tiptap/extension-image';
 import { ImageControl } from './RTEditor/ImageControl';
+import { ProjectBadge } from './RoleBadges';
+import { useEffect } from 'react';
+import { Player } from '../types/ui';
 
 type PostDrawerProps = {
   avatarImg?: string;
   name?: string;
+  posterType: Player;
+  posterId: string;
+  postType: string;
+  postIndex: number;
 };
 
 export const PostDrawer = ({
   avatarImg,
-  name = 'Project 576',
+  name,
+  postType,
+  posterId,
+  postIndex,
 }: PostDrawerProps) => {
   const theme = useMantineTheme();
   const editor = useEditor({
@@ -39,7 +44,20 @@ export const PostDrawer = ({
       Link,
       Image.configure({ inline: true, allowBase64: true }),
     ],
+    onUpdate({ editor }) {
+      const newContent = editor.getJSON();
+      localStorage.setItem(postId, JSON.stringify(newContent));
+    },
+    content: { type: 'doc', content: [] },
   });
+  const postId = `${postType}-${posterId}-${postIndex}`;
+
+  useEffect(() => {
+    const draft = localStorage.getItem(postId);
+    if (editor && draft) {
+      editor.commands.setContent(JSON.parse(draft));
+    }
+  }, [postId, editor]);
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -49,6 +67,8 @@ export const PostDrawer = ({
   const onClose = () =>
     navigate(location.pathname.replace(/\/(post(-media)?)$/, ''));
 
+  const postContent = async () => {};
+
   return (
     <Drawer.Root opened={isOpen} size={720} onClose={onClose} position="right">
       <Drawer.Overlay />
@@ -56,39 +76,19 @@ export const PostDrawer = ({
         <Flex w="100%" justify={'center'}>
           <Box mt="xl" w="600px">
             <PageTitle title="Post Update" />
-            <Group mt="40" mb="lg">
-              <Avatar src={avatarImg} alt={name} size={40} />
-              <Text fw={600}>{name}</Text>
+            <Group mt="40" mb="lg" w="100%" justify="space-between">
+              <Group gap="sm">
+                <Avatar src={avatarImg} alt={name} size={40} />
+                <Text fw={600}>{name}</Text>
+                <ProjectBadge size={18} />
+              </Group>
+              <Group gap="sm">
+                <Button leftSection={<IconPlus />} onClick={postContent}>
+                  Post
+                </Button>
+              </Group>
             </Group>
-            <RichTextEditor editor={editor} h="70vh" bg={theme.colors.dark[6]}>
-              <RichTextEditor.Toolbar bg={theme.colors.dark[6]}>
-                <RichTextEditor.ControlsGroup style={{ border: 'none' }}>
-                  <RichTextEditor.H3 icon={IconHeading} h={'2rem'} w="2rem" />
-                  <RichTextEditor.Bold h={'2rem'} w="2rem" />
-                  <RichTextEditor.Italic h={'2rem'} w="2rem" />
-                  <RichTextEditor.Strikethrough h={'2rem'} w="2rem" />
-                </RichTextEditor.ControlsGroup>
-                <RichTextEditor.ControlsGroup>
-                  <RichTextEditor.BulletList h={'2rem'} w="2rem" />
-                  <RichTextEditor.OrderedList h={'2rem'} w="2rem" />
-                  <RichTextEditor.Code h={'2rem'} w="2rem" />
-                </RichTextEditor.ControlsGroup>
-                <RichTextEditor.ControlsGroup>
-                  <RichTextEditor.Link h={'2rem'} w="2rem" />
-                  <ImageControl />
-                </RichTextEditor.ControlsGroup>
-              </RichTextEditor.Toolbar>
-
-              <RichTextEditor.Content
-                fz="sm"
-                bg={theme.colors.dark[6]}
-                h="100%"
-              />
-            </RichTextEditor>
-            {/* <RegisterProject
-            existingProject={project}
-            refetchOnEdit={refetchProject}
-        /> */}
+            <RTEditor editor={editor} />
           </Box>
         </Flex>
       </Drawer.Content>
@@ -96,4 +96,34 @@ export const PostDrawer = ({
   );
 };
 
-const RTEditor = () => {};
+const RTEditor = ({ editor }: { editor: Editor | null }) => {
+  const theme = useMantineTheme();
+
+  return (
+    <RichTextEditor
+      editor={editor}
+      mih="70vh"
+      h="100%"
+      bg={theme.colors.dark[6]}
+    >
+      <RichTextEditor.Toolbar bg={theme.colors.dark[6]}>
+        <RichTextEditor.ControlsGroup style={{ border: 'none' }}>
+          <RichTextEditor.H3 icon={IconHeading} h={'2rem'} w="2rem" />
+          <RichTextEditor.Bold h={'2rem'} w="2rem" />
+          <RichTextEditor.Italic h={'2rem'} w="2rem" />
+          <RichTextEditor.Strikethrough h={'2rem'} w="2rem" />
+        </RichTextEditor.ControlsGroup>
+        <RichTextEditor.ControlsGroup>
+          <RichTextEditor.BulletList h={'2rem'} w="2rem" />
+          <RichTextEditor.OrderedList h={'2rem'} w="2rem" />
+          <RichTextEditor.Code h={'2rem'} w="2rem" />
+        </RichTextEditor.ControlsGroup>
+        <RichTextEditor.ControlsGroup>
+          <RichTextEditor.Link h={'2rem'} w="2rem" />
+          <ImageControl />
+        </RichTextEditor.ControlsGroup>
+      </RichTextEditor.Toolbar>
+      <RichTextEditor.Content fz="sm" bg={theme.colors.dark[6]} h="100%" />
+    </RichTextEditor>
+  );
+};
