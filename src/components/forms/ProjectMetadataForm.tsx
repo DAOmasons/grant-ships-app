@@ -102,7 +102,6 @@ export const ProjectMetadataForm = ({
               <ActionIcon
                 {...props}
                 radius={50}
-                // variant="secondary"
                 size="lg"
                 bg={'rgba(255, 255, 255, 0.05)'}
                 style={{ zIndex: 50 }}
