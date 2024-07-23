@@ -7,7 +7,7 @@ import {
   Text,
   useMantineTheme,
 } from '@mantine/core';
-import { IconPencil, IconUser } from '@tabler/icons-react';
+import { IconCameraPlus, IconPencil, IconUser } from '@tabler/icons-react';
 import { pinFileToIPFS } from '../utils/ipfs/pin';
 import { ReactNode, useEffect, useState } from 'react';
 import { getGatewayUrl } from '../utils/ipfs/get';
@@ -68,10 +68,18 @@ export const AvatarPickerIPFS = ({
           size={160}
           src={canPreview ? avatarPreview : undefined}
           bg={theme.colors.dark[5]}
+          pos="relative"
         >
-          {canPreview || <IconUser size={80} />}
+          {canPreview || (
+            <InputLabel
+              c={theme.colors.dark[0]}
+              pos="absolute"
+              bottom={'51%'}
+              right={'35%'}
+              required
+            ></InputLabel>
+          )}
         </Avatar>
-
         <FileButton
           onChange={handleUpload}
           accept={'image/png,image/jpeg,image/webp'}
@@ -80,13 +88,16 @@ export const AvatarPickerIPFS = ({
             <ActionIcon
               {...props}
               pos={'absolute'}
-              bottom={0}
-              left={115}
+              bottom={'33%'}
+              left={'10%'}
               radius="xl"
+              bg={'rgba(255, 255, 255, 0.05)'}
               loading={isLoading}
               disabled={isLoading || disabled}
+              w={'50px'}
+              h={'50px'}
             >
-              <IconPencil />
+              <IconCameraPlus />
             </ActionIcon>
           )}
         </FileButton>

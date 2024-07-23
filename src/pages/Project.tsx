@@ -47,6 +47,9 @@ import { MediaCarousel } from '../components/MediaCarousel';
 import { ShowcaseLink } from '../utils/media';
 import { EditProfileDrawer } from '../components/projectItems/EditProfileDrawer';
 import { FullScreenGallery } from '../components/FullScreenGallery';
+import { IconPlayerPlay } from '@tabler/icons-react';
+import { PostAffix } from '../components/PostAffix';
+import { PostDrawer } from '../components/PostDrawer';
 
 const infiniteWrapper = async ({ pageParam }: any) => {
   const result = await getEntityFeed(pageParam);
@@ -259,20 +262,37 @@ export const Project = () => {
             addresses={project.members}
             avatarProps={{ size: 32 }}
           />
-          {isProjectMember && (
-            <Tooltip label="Edit Profile" position="bottom">
-              <ActionIcon
-                variant="secondary"
-                size="lg"
-                bg={theme.colors.dark[5]}
-                radius={100}
-                component={Link}
-                to={'edit'}
-              >
-                <IconPencil size={16} />
-              </ActionIcon>
-            </Tooltip>
-          )}
+          <Group gap={8}>
+            {project.mainDemoLink && (
+              <Tooltip label="Try Demo" position="bottom">
+                <ActionIcon
+                  variant="priority"
+                  size="lg"
+                  radius={100}
+                  component="a"
+                  href={project.mainDemoLink}
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  <IconPlayerPlay size={16} />
+                </ActionIcon>
+              </Tooltip>
+            )}
+            {isProjectMember && (
+              <Tooltip label="Edit Profile" position="bottom">
+                <ActionIcon
+                  variant="secondary"
+                  size="lg"
+                  bg={theme.colors.dark[5]}
+                  radius={100}
+                  component={Link}
+                  to={'edit'}
+                >
+                  <IconPencil size={16} />
+                </ActionIcon>
+              </Tooltip>
+            )}
+          </Group>
         </Group>
         <Tabs defaultValue="feed">
           <Tabs.List mb={'xl'}>
@@ -340,6 +360,7 @@ export const Project = () => {
             />
           </Tabs.Panel>
         </Tabs>
+        <PostAffix />
       </ProfileSection>
       {!isLaptop && (
         <Stack gap={'xs'} mt={84} w={270}>
@@ -397,6 +418,7 @@ export const Project = () => {
           )}
         </Stack>
       )}
+      <PostDrawer />
       <EditProfileDrawer project={project} refetchProject={refetchProject} />
       {project.showcaseLinks && project.showcaseLinks.length > 0 && (
         <FullScreenGallery

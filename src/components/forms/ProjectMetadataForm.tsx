@@ -25,7 +25,7 @@ import {
   IconBrandX,
   IconLink,
   IconMail,
-  IconPencil,
+  IconCameraPlus,
   IconWorld,
 } from '@tabler/icons-react';
 import { pinFileToIPFS } from '../../utils/ipfs/pin';
@@ -93,14 +93,23 @@ export const ProjectMetadataForm = ({
       bannerBg={isEditing ? theme.colors.dark[7] : undefined}
       spaceToRight={isEditing ? false : true}
       addBannerElement={
-        <Box style={{ position: 'absolute', bottom: -20, right: 10 }}>
+        <Box style={{ position: 'absolute', bottom: '30%', right: '50%' }}>
           <FileButton
             onChange={handleUpload}
             accept={'image/png,image/jpeg,image/webp'}
           >
             {(props) => (
-              <ActionIcon {...props} radius={50} variant="secondary">
-                {isUploadingBanner ? <Loader /> : <IconPencil />}
+              <ActionIcon
+                {...props}
+                radius={50}
+                // variant="secondary"
+                size="lg"
+                bg={'rgba(255, 255, 255, 0.05)'}
+                style={{ zIndex: 50 }}
+                w={'50px'}
+                h={'50px'}
+              >
+                {isUploadingBanner ? <Loader /> : <IconCameraPlus />}
               </ActionIcon>
             )}
           </FileButton>

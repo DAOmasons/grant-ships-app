@@ -109,7 +109,6 @@ export const ProfileSection = ({
   spaceToRight?: boolean;
 }) => {
   const theme = useMantineTheme();
-  const isMobile = useMobile();
   const isLaptop = useLaptop();
   return (
     <Box miw={isLaptop ? undefined : 600} maw={650} w="100%">
