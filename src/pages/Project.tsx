@@ -426,7 +426,7 @@ export const Project = () => {
           posterType={Player.Project}
           posterId={project.profileId}
           postType="richtext/post"
-          postIndex={0}
+          postIndex={1}
           refetch={refetchProject}
         />
       )}

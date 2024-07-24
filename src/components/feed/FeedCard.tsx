@@ -169,15 +169,17 @@ export const FeedCard = ({
   const entityUrl = getUrlByEntityType(subject.playerType, subject.id);
 
   return (
-    <Box mb="lg" ref={observer.ref}>
-      <Group gap={8} mb={8}>
+    <Box pt={'lg'} ref={observer.ref}>
+      <Group gap={8}>
         <HoverCard {...hoverCardProps}>
           <HoverCard.Target>
-            <PlayerAvatar
-              playerType={subject.playerType}
-              imgUrl={subject.imgUrl}
-              name={subject.name}
-            />
+            <Box>
+              <PlayerAvatar
+                playerType={subject.playerType}
+                imgUrl={subject.imgUrl}
+                name={subject.name}
+              />
+            </Box>
           </HoverCard.Target>
           <HoverCard.Dropdown style={{ border: 'none' }}>
             <HoverCardContent subject={subject} url={entityUrl} />
@@ -190,12 +192,23 @@ export const FeedCard = ({
           {time}
         </Text>
       </Group>
-      <Box pl={48} pb={'sm'}>
+      <Box pl={48} pb={'lg'}>
         <Box mb="sm">
-          <Text size="sm" mb={10} className="ws-pre-wrap">
-            {formattedFeedMessage}
-          </Text>
-          {richTextContent && <RTDisplay minified content={richTextContent} />}
+          {formattedFeedMessage && (
+            <Text
+              size="sm"
+              mb={10}
+              className="ws-pre-wrap"
+              opacity={richTextContent ? 0.8 : 0.9}
+            >
+              {formattedFeedMessage}
+            </Text>
+          )}
+          {richTextContent && (
+            <Box style={{ overflowY: 'hidden' }} mah="300px">
+              <RTDisplay minified content={richTextContent} />
+            </Box>
+          )}
           {embedText && (
             <Spoiler
               mb={'xs'}
@@ -213,7 +226,7 @@ export const FeedCard = ({
             </Spoiler>
           )}
         </Box>
-        <Text size="xs" opacity={0.85}>
+        <Text size="xs" opacity={0.7}>
           Posted by{' '}
           {ensName ? ensName : sender.slice(0, 6) + '...' + sender.slice(-4)}
         </Text>

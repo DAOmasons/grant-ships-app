@@ -160,7 +160,13 @@ export const PostDrawer = ({
 
 const RTEditor = ({ editor }: { editor: Editor | null }) => {
   return (
-    <RichTextEditor editor={editor} mih="70vh" h="100%" bg={'transparent'}>
+    <RichTextEditor
+      editor={editor}
+      mih="70vh"
+      h="100%"
+      bg={'transparent'}
+      classNames={{ root: classes.editor }}
+    >
       <RichTextEditor.Toolbar bg={'transparent'}>
         <RichTextEditor.ControlsGroup style={{ border: 'none' }}>
           <RichTextEditor.H3 icon={IconHeading} h={'2rem'} w="2rem" />
@@ -206,7 +212,7 @@ export const RTDisplay = ({
       bg={'transparent'}
       style={{ border: 'none' }}
       classNames={{
-        root: classes.paddingOff,
+        root: classes.display,
       }}
     >
       <RichTextEditor.Content fz={minified ? 'sm' : 'md'} bg={'transparent'} />
