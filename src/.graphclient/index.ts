@@ -3713,6 +3713,7 @@ export type Transaction_stream_cursor_value_input = {
 
 /** columns and relationships of "Update" */
 export type Update = {
+  chainId: Scalars['Int'];
   /** An object relationship */
   content?: Maybe<RawMetadata>;
   contentSchema: Scalars['Int'];
@@ -3720,12 +3721,16 @@ export type Update = {
   db_write_timestamp?: Maybe<Scalars['timestamp']>;
   /** An object relationship */
   domain?: Maybe<GameManager>;
-  domain_id: Scalars['String'];
+  domain_id?: Maybe<Scalars['String']>;
   entityAddress: Scalars['String'];
+  /** An object relationship */
+  entityMetadata?: Maybe<RawMetadata>;
+  entityMetadata_id?: Maybe<Scalars['String']>;
   id: Scalars['String'];
-  postDecorator: Scalars['Int'];
-  postedBy: Scalars['String'];
-  posterRole: Scalars['numeric'];
+  postBlockNumber: Scalars['Int'];
+  postDecorator?: Maybe<Scalars['Int']>;
+  postedBy?: Maybe<Scalars['String']>;
+  posterRole: Scalars['Int'];
   scope: Scalars['Int'];
   tag: Scalars['String'];
   timestamp: Scalars['Int'];
@@ -3736,6 +3741,7 @@ export type Update_bool_exp = {
   _and?: InputMaybe<Array<Update_bool_exp>>;
   _not?: InputMaybe<Update_bool_exp>;
   _or?: InputMaybe<Array<Update_bool_exp>>;
+  chainId?: InputMaybe<Int_comparison_exp>;
   content?: InputMaybe<RawMetadata_bool_exp>;
   contentSchema?: InputMaybe<Int_comparison_exp>;
   content_id?: InputMaybe<String_comparison_exp>;
@@ -3743,10 +3749,13 @@ export type Update_bool_exp = {
   domain?: InputMaybe<GameManager_bool_exp>;
   domain_id?: InputMaybe<String_comparison_exp>;
   entityAddress?: InputMaybe<String_comparison_exp>;
+  entityMetadata?: InputMaybe<RawMetadata_bool_exp>;
+  entityMetadata_id?: InputMaybe<String_comparison_exp>;
   id?: InputMaybe<String_comparison_exp>;
+  postBlockNumber?: InputMaybe<Int_comparison_exp>;
   postDecorator?: InputMaybe<Int_comparison_exp>;
   postedBy?: InputMaybe<String_comparison_exp>;
-  posterRole?: InputMaybe<numeric_comparison_exp>;
+  posterRole?: InputMaybe<Int_comparison_exp>;
   scope?: InputMaybe<Int_comparison_exp>;
   tag?: InputMaybe<String_comparison_exp>;
   timestamp?: InputMaybe<Int_comparison_exp>;
@@ -3754,6 +3763,7 @@ export type Update_bool_exp = {
 
 /** Ordering options when selecting data from "Update". */
 export type Update_order_by = {
+  chainId?: InputMaybe<order_by>;
   content?: InputMaybe<RawMetadata_order_by>;
   contentSchema?: InputMaybe<order_by>;
   content_id?: InputMaybe<order_by>;
@@ -3761,7 +3771,10 @@ export type Update_order_by = {
   domain?: InputMaybe<GameManager_order_by>;
   domain_id?: InputMaybe<order_by>;
   entityAddress?: InputMaybe<order_by>;
+  entityMetadata?: InputMaybe<RawMetadata_order_by>;
+  entityMetadata_id?: InputMaybe<order_by>;
   id?: InputMaybe<order_by>;
+  postBlockNumber?: InputMaybe<order_by>;
   postDecorator?: InputMaybe<order_by>;
   postedBy?: InputMaybe<order_by>;
   posterRole?: InputMaybe<order_by>;
@@ -3773,6 +3786,8 @@ export type Update_order_by = {
 /** select columns of table "Update" */
 export type Update_select_column =
   /** column name */
+  | 'chainId'
+  /** column name */
   | 'contentSchema'
   /** column name */
   | 'content_id'
@@ -3783,7 +3798,11 @@ export type Update_select_column =
   /** column name */
   | 'entityAddress'
   /** column name */
+  | 'entityMetadata_id'
+  /** column name */
   | 'id'
+  /** column name */
+  | 'postBlockNumber'
   /** column name */
   | 'postDecorator'
   /** column name */
@@ -3807,15 +3826,18 @@ export type Update_stream_cursor_input = {
 
 /** Initial value of the column from where the streaming should start */
 export type Update_stream_cursor_value_input = {
+  chainId?: InputMaybe<Scalars['Int']>;
   contentSchema?: InputMaybe<Scalars['Int']>;
   content_id?: InputMaybe<Scalars['String']>;
   db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
   domain_id?: InputMaybe<Scalars['String']>;
   entityAddress?: InputMaybe<Scalars['String']>;
+  entityMetadata_id?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['String']>;
+  postBlockNumber?: InputMaybe<Scalars['Int']>;
   postDecorator?: InputMaybe<Scalars['Int']>;
   postedBy?: InputMaybe<Scalars['String']>;
-  posterRole?: InputMaybe<Scalars['numeric']>;
+  posterRole?: InputMaybe<Scalars['Int']>;
   scope?: InputMaybe<Scalars['Int']>;
   tag?: InputMaybe<Scalars['String']>;
   timestamp?: InputMaybe<Scalars['Int']>;
@@ -7891,17 +7913,21 @@ export type TransactionResolvers<ContextType = MeshContext, ParentType extends R
 }>;
 
 export type UpdateResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Update'] = ResolversParentTypes['Update']> = ResolversObject<{
+  chainId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   content?: Resolver<Maybe<ResolversTypes['RawMetadata']>, ParentType, ContextType>;
   contentSchema?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   content_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
   domain?: Resolver<Maybe<ResolversTypes['GameManager']>, ParentType, ContextType>;
-  domain_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  domain_id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   entityAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  entityMetadata?: Resolver<Maybe<ResolversTypes['RawMetadata']>, ParentType, ContextType>;
+  entityMetadata_id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  postDecorator?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  postedBy?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  posterRole?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
+  postBlockNumber?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  postDecorator?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  postedBy?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  posterRole?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   scope?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   tag?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   timestamp?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -8435,6 +8461,12 @@ const merger = new(BareMerger as any)({
         },
         location: 'GetUserProjectsDocument.graphql'
       },{
+        document: GetRtUpdateDocument,
+        get rawSDL() {
+          return printWithCache(GetRtUpdateDocument);
+        },
+        location: 'GetRtUpdateDocument.graphql'
+      },{
         document: GetRecentTransactionDocument,
         get rawSDL() {
           return printWithCache(GetRecentTransactionDocument);
@@ -8695,6 +8727,17 @@ export type GetUserProjectsQueryVariables = Exact<{
 export type GetUserProjectsQuery = { Project: Array<(
     Pick<Project, 'id' | 'name' | 'profileId' | 'nonce' | 'anchor' | 'owner'>
     & { metadata?: Maybe<Pick<RawMetadata, 'protocol' | 'pointer'>> }
+  )> };
+
+export type getRTUpdateQueryVariables = Exact<{
+  id: Scalars['String'];
+  chainId: Scalars['Int'];
+}>;
+
+
+export type getRTUpdateQuery = { Update: Array<(
+    Pick<Update, 'id' | 'scope' | 'tag' | 'posterRole' | 'entityAddress' | 'entityMetadata_id' | 'postedBy' | 'timestamp' | 'chainId' | 'contentSchema'>
+    & { content?: Maybe<Pick<RawMetadata, 'protocol' | 'pointer'>> }
   )> };
 
 export type getRecentTransactionQueryVariables = Exact<{
@@ -9040,6 +9083,26 @@ export const GetUserProjectsDocument = gql`
 }
     ${ProjectDetailsFragmentDoc}
 ${RawMetadataFragmentDoc}` as unknown as DocumentNode<GetUserProjectsQuery, GetUserProjectsQueryVariables>;
+export const getRTUpdateDocument = gql`
+    query getRTUpdate($id: String!, $chainId: Int!) {
+  Update(where: {id: {_eq: $id}, chainId: {_eq: $chainId}}) {
+    id
+    scope
+    tag
+    posterRole
+    entityAddress
+    entityMetadata_id
+    postedBy
+    timestamp
+    chainId
+    contentSchema
+    content {
+      protocol
+      pointer
+    }
+  }
+}
+    ` as unknown as DocumentNode<getRTUpdateQuery, getRTUpdateQueryVariables>;
 export const getRecentTransactionDocument = gql`
     query getRecentTransaction($txHash: String!) {
   Transaction(where: {id: {_eq: $txHash}}) {
@@ -9193,6 +9256,7 @@ export const ShipsPageQueryDocument = gql`
 
 
 
+
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
@@ -9216,6 +9280,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     GetUserProjects(variables: GetUserProjectsQueryVariables, options?: C): Promise<GetUserProjectsQuery> {
       return requester<GetUserProjectsQuery, GetUserProjectsQueryVariables>(GetUserProjectsDocument, variables, options) as Promise<GetUserProjectsQuery>;
+    },
+    getRTUpdate(variables: getRTUpdateQueryVariables, options?: C): Promise<getRTUpdateQuery> {
+      return requester<getRTUpdateQuery, getRTUpdateQueryVariables>(getRTUpdateDocument, variables, options) as Promise<getRTUpdateQuery>;
     },
     getRecentTransaction(variables: getRecentTransactionQueryVariables, options?: C): Promise<getRecentTransactionQuery> {
       return requester<getRecentTransactionQuery, getRecentTransactionQueryVariables>(getRecentTransactionDocument, variables, options) as Promise<getRecentTransactionQuery>;

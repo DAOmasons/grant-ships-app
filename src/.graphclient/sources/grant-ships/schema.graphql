@@ -4145,6 +4145,7 @@ input Transaction_stream_cursor_value_input {
 columns and relationships of "Update"
 """
 type Update {
+  chainId: Int!
   """An object relationship"""
   content: RawMetadata
   contentSchema: Int!
@@ -4152,12 +4153,16 @@ type Update {
   db_write_timestamp: timestamp
   """An object relationship"""
   domain: GameManager
-  domain_id: String!
+  domain_id: String
   entityAddress: String!
+  """An object relationship"""
+  entityMetadata: RawMetadata
+  entityMetadata_id: String
   id: String!
-  postDecorator: Int!
-  postedBy: String!
-  posterRole: numeric!
+  postBlockNumber: Int!
+  postDecorator: Int
+  postedBy: String
+  posterRole: Int!
   scope: Int!
   tag: String!
   timestamp: Int!
@@ -4170,6 +4175,7 @@ input Update_bool_exp {
   _and: [Update_bool_exp!]
   _not: Update_bool_exp
   _or: [Update_bool_exp!]
+  chainId: Int_comparison_exp
   content: RawMetadata_bool_exp
   contentSchema: Int_comparison_exp
   content_id: String_comparison_exp
@@ -4177,10 +4183,13 @@ input Update_bool_exp {
   domain: GameManager_bool_exp
   domain_id: String_comparison_exp
   entityAddress: String_comparison_exp
+  entityMetadata: RawMetadata_bool_exp
+  entityMetadata_id: String_comparison_exp
   id: String_comparison_exp
+  postBlockNumber: Int_comparison_exp
   postDecorator: Int_comparison_exp
   postedBy: String_comparison_exp
-  posterRole: numeric_comparison_exp
+  posterRole: Int_comparison_exp
   scope: Int_comparison_exp
   tag: String_comparison_exp
   timestamp: Int_comparison_exp
@@ -4188,6 +4197,7 @@ input Update_bool_exp {
 
 """Ordering options when selecting data from "Update"."""
 input Update_order_by {
+  chainId: order_by
   content: RawMetadata_order_by
   contentSchema: order_by
   content_id: order_by
@@ -4195,7 +4205,10 @@ input Update_order_by {
   domain: GameManager_order_by
   domain_id: order_by
   entityAddress: order_by
+  entityMetadata: RawMetadata_order_by
+  entityMetadata_id: order_by
   id: order_by
+  postBlockNumber: order_by
   postDecorator: order_by
   postedBy: order_by
   posterRole: order_by
@@ -4209,6 +4222,8 @@ select columns of table "Update"
 """
 enum Update_select_column {
   """column name"""
+  chainId
+  """column name"""
   contentSchema
   """column name"""
   content_id
@@ -4219,7 +4234,11 @@ enum Update_select_column {
   """column name"""
   entityAddress
   """column name"""
+  entityMetadata_id
+  """column name"""
   id
+  """column name"""
+  postBlockNumber
   """column name"""
   postDecorator
   """column name"""
@@ -4246,15 +4265,18 @@ input Update_stream_cursor_input {
 
 """Initial value of the column from where the streaming should start"""
 input Update_stream_cursor_value_input {
+  chainId: Int
   contentSchema: Int
   content_id: String
   db_write_timestamp: timestamp
   domain_id: String
   entityAddress: String
+  entityMetadata_id: String
   id: String
+  postBlockNumber: Int
   postDecorator: Int
   postedBy: String
-  posterRole: numeric
+  posterRole: Int
   scope: Int
   tag: String
   timestamp: Int

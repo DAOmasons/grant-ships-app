@@ -38589,6 +38589,25 @@ const schemaAST = {
       "fields": [
         {
           "kind": "FieldDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "chainId"
+          },
+          "arguments": [],
+          "type": {
+            "kind": "NonNullType",
+            "type": {
+              "kind": "NamedType",
+              "name": {
+                "kind": "Name",
+                "value": "Int"
+              }
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "FieldDefinition",
           "description": {
             "kind": "StringValue",
             "value": "An object relationship",
@@ -38691,13 +38710,10 @@ const schemaAST = {
           },
           "arguments": [],
           "type": {
-            "kind": "NonNullType",
-            "type": {
-              "kind": "NamedType",
-              "name": {
-                "kind": "Name",
-                "value": "String"
-              }
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "String"
             }
           },
           "directives": []
@@ -38717,6 +38733,43 @@ const schemaAST = {
                 "kind": "Name",
                 "value": "String"
               }
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "FieldDefinition",
+          "description": {
+            "kind": "StringValue",
+            "value": "An object relationship",
+            "block": true
+          },
+          "name": {
+            "kind": "Name",
+            "value": "entityMetadata"
+          },
+          "arguments": [],
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "RawMetadata"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "FieldDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "entityMetadata_id"
+          },
+          "arguments": [],
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "String"
             }
           },
           "directives": []
@@ -38744,7 +38797,7 @@ const schemaAST = {
           "kind": "FieldDefinition",
           "name": {
             "kind": "Name",
-            "value": "postDecorator"
+            "value": "postBlockNumber"
           },
           "arguments": [],
           "type": {
@@ -38763,17 +38816,30 @@ const schemaAST = {
           "kind": "FieldDefinition",
           "name": {
             "kind": "Name",
+            "value": "postDecorator"
+          },
+          "arguments": [],
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "Int"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "FieldDefinition",
+          "name": {
+            "kind": "Name",
             "value": "postedBy"
           },
           "arguments": [],
           "type": {
-            "kind": "NonNullType",
-            "type": {
-              "kind": "NamedType",
-              "name": {
-                "kind": "Name",
-                "value": "String"
-              }
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "String"
             }
           },
           "directives": []
@@ -38791,7 +38857,7 @@ const schemaAST = {
               "kind": "NamedType",
               "name": {
                 "kind": "Name",
-                "value": "numeric"
+                "value": "Int"
               }
             }
           },
@@ -38931,6 +38997,21 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
+            "value": "chainId"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "Int_comparison_exp"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
             "value": "content"
           },
           "type": {
@@ -39036,6 +39117,36 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
+            "value": "entityMetadata"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "RawMetadata_bool_exp"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "entityMetadata_id"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "String_comparison_exp"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
             "value": "id"
           },
           "type": {
@@ -39043,6 +39154,21 @@ const schemaAST = {
             "name": {
               "kind": "Name",
               "value": "String_comparison_exp"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "postBlockNumber"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "Int_comparison_exp"
             }
           },
           "directives": []
@@ -39087,7 +39213,7 @@ const schemaAST = {
             "kind": "NamedType",
             "name": {
               "kind": "Name",
-              "value": "numeric_comparison_exp"
+              "value": "Int_comparison_exp"
             }
           },
           "directives": []
@@ -39152,6 +39278,21 @@ const schemaAST = {
         "value": "Update_order_by"
       },
       "fields": [
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "chainId"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "order_by"
+            }
+          },
+          "directives": []
+        },
         {
           "kind": "InputValueDefinition",
           "name": {
@@ -39261,7 +39402,52 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
+            "value": "entityMetadata"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "RawMetadata_order_by"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "entityMetadata_id"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "order_by"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
             "value": "id"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "order_by"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "postBlockNumber"
           },
           "type": {
             "kind": "NamedType",
@@ -39386,6 +39572,19 @@ const schemaAST = {
           },
           "name": {
             "kind": "Name",
+            "value": "chainId"
+          },
+          "directives": []
+        },
+        {
+          "kind": "EnumValueDefinition",
+          "description": {
+            "kind": "StringValue",
+            "value": "column name",
+            "block": true
+          },
+          "name": {
+            "kind": "Name",
             "value": "contentSchema"
           },
           "directives": []
@@ -39451,7 +39650,33 @@ const schemaAST = {
           },
           "name": {
             "kind": "Name",
+            "value": "entityMetadata_id"
+          },
+          "directives": []
+        },
+        {
+          "kind": "EnumValueDefinition",
+          "description": {
+            "kind": "StringValue",
+            "value": "column name",
+            "block": true
+          },
+          "name": {
+            "kind": "Name",
             "value": "id"
+          },
+          "directives": []
+        },
+        {
+          "kind": "EnumValueDefinition",
+          "description": {
+            "kind": "StringValue",
+            "value": "column name",
+            "block": true
+          },
+          "name": {
+            "kind": "Name",
+            "value": "postBlockNumber"
           },
           "directives": []
         },
@@ -39610,6 +39835,21 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
+            "value": "chainId"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "Int"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
             "value": "contentSchema"
           },
           "type": {
@@ -39685,6 +39925,21 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
+            "value": "entityMetadata_id"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "String"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
             "value": "id"
           },
           "type": {
@@ -39692,6 +39947,21 @@ const schemaAST = {
             "name": {
               "kind": "Name",
               "value": "String"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "postBlockNumber"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "Int"
             }
           },
           "directives": []
@@ -39736,7 +40006,7 @@ const schemaAST = {
             "kind": "NamedType",
             "name": {
               "kind": "Name",
-              "value": "numeric"
+              "value": "Int"
             }
           },
           "directives": []

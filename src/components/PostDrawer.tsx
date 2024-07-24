@@ -8,7 +8,7 @@ import {
   Text,
   useMantineTheme,
 } from '@mantine/core';
-import { Editor, useEditor } from '@tiptap/react';
+import { Content, Editor, useEditor } from '@tiptap/react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import StarterKit from '@tiptap/starter-kit';
@@ -26,6 +26,7 @@ import { ADDR } from '../constants/addresses';
 import { pinJSONToIPFS } from '../utils/ipfs/pin';
 import { notifications } from '@mantine/notifications';
 import { TxButton } from './TxButton';
+import { Json } from '../types/common';
 
 type PostDrawerProps = {
   avatarImg?: string;
@@ -88,6 +89,8 @@ export const PostDrawer = ({
       return;
     }
 
+    console.log('metadata', metadata);
+
     const pinRes = await pinJSONToIPFS(metadata);
 
     if (!pinRes.IpfsHash) {
@@ -101,12 +104,14 @@ export const PostDrawer = ({
 
     onClose();
 
+    const tag = `TAG:PROJECT_POST:${postId}`;
+
     tx({
       writeContractParams: {
         abi: AlloPoster,
         address: ADDR.ALLO_POSTER,
         functionName: 'postUpdate',
-        args: [postId, posterId, [1n, metadata]],
+        args: [tag, posterId, [1n, pinRes.IpfsHash]],
       },
       writeContractOptions: {
         onPollSuccess() {
@@ -171,7 +176,43 @@ const RTEditor = ({ editor }: { editor: Editor | null }) => {
           <ImageControl />
         </RichTextEditor.ControlsGroup>
       </RichTextEditor.Toolbar>
-      <RichTextEditor.Content fz="sm" bg={theme.colors.dark[6]} h="100%" />
+      <RichTextEditor.Content
+        p="lg"
+        fz="sm"
+        bg={theme.colors.dark[6]}
+        h="100%"
+      />
+    </RichTextEditor>
+  );
+};
+
+export const RTDisplay = ({ content }: { content: Content }) => {
+  const theme = useMantineTheme();
+
+  console.log('content', content);
+
+  const editor = useEditor({
+    extensions: [
+      StarterKit,
+      Link,
+      Image.configure({ inline: true, allowBase64: true }),
+    ],
+    editable: false,
+    content: content,
+  });
+
+  return (
+    <RichTextEditor
+      editor={editor}
+      bg={theme.colors.dark[6]}
+      style={{ border: 'none' }}
+    >
+      <RichTextEditor.Content
+        fz="sm"
+        bg={theme.colors.dark[6]}
+        px={'lg'}
+        py="sm"
+      />
     </RichTextEditor>
   );
 };

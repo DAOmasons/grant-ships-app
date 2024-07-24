@@ -1,0 +1,18 @@
+query getRTUpdate($id: String!, $chainId: Int!) {
+  Update(where: { id: { _eq: $id }, chainId: { _eq: $chainId } }) {
+    id
+    scope
+    tag
+    posterRole
+    entityAddress
+    entityMetadata_id
+    postedBy
+    timestamp
+    chainId
+    contentSchema
+    content {
+      protocol
+      pointer
+    }
+  }
+}

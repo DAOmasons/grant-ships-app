@@ -44,7 +44,7 @@ import { useLaptop, useTablet } from '../hooks/useBreakpoint';
 import { useDisclosure } from '@mantine/hooks';
 import { ProjectBadge } from '../components/RoleBadges';
 import { MediaCarousel } from '../components/MediaCarousel';
-import { ShowcaseLink } from '../utils/media';
+
 import { EditProfileDrawer } from '../components/projectItems/EditProfileDrawer';
 import { FullScreenGallery } from '../components/FullScreenGallery';
 import { IconPlayerPlay } from '@tabler/icons-react';
@@ -425,7 +425,7 @@ export const Project = () => {
           name={project.name}
           posterType={Player.Project}
           posterId={project.profileId}
-          postType="update"
+          postType="richtext/post"
           postIndex={0}
           refetch={refetchProject}
         />

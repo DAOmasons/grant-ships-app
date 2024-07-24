@@ -3691,6 +3691,7 @@ export type Transaction_stream_cursor_value_input = {
 
 /** columns and relationships of "Update" */
 export type Update = {
+  chainId: Scalars['Int'];
   /** An object relationship */
   content?: Maybe<RawMetadata>;
   contentSchema: Scalars['Int'];
@@ -3698,12 +3699,16 @@ export type Update = {
   db_write_timestamp?: Maybe<Scalars['timestamp']>;
   /** An object relationship */
   domain?: Maybe<GameManager>;
-  domain_id: Scalars['String'];
+  domain_id?: Maybe<Scalars['String']>;
   entityAddress: Scalars['String'];
+  /** An object relationship */
+  entityMetadata?: Maybe<RawMetadata>;
+  entityMetadata_id?: Maybe<Scalars['String']>;
   id: Scalars['String'];
-  postDecorator: Scalars['Int'];
-  postedBy: Scalars['String'];
-  posterRole: Scalars['numeric'];
+  postBlockNumber: Scalars['Int'];
+  postDecorator?: Maybe<Scalars['Int']>;
+  postedBy?: Maybe<Scalars['String']>;
+  posterRole: Scalars['Int'];
   scope: Scalars['Int'];
   tag: Scalars['String'];
   timestamp: Scalars['Int'];
@@ -3714,6 +3719,7 @@ export type Update_bool_exp = {
   _and?: InputMaybe<Array<Update_bool_exp>>;
   _not?: InputMaybe<Update_bool_exp>;
   _or?: InputMaybe<Array<Update_bool_exp>>;
+  chainId?: InputMaybe<Int_comparison_exp>;
   content?: InputMaybe<RawMetadata_bool_exp>;
   contentSchema?: InputMaybe<Int_comparison_exp>;
   content_id?: InputMaybe<String_comparison_exp>;
@@ -3721,10 +3727,13 @@ export type Update_bool_exp = {
   domain?: InputMaybe<GameManager_bool_exp>;
   domain_id?: InputMaybe<String_comparison_exp>;
   entityAddress?: InputMaybe<String_comparison_exp>;
+  entityMetadata?: InputMaybe<RawMetadata_bool_exp>;
+  entityMetadata_id?: InputMaybe<String_comparison_exp>;
   id?: InputMaybe<String_comparison_exp>;
+  postBlockNumber?: InputMaybe<Int_comparison_exp>;
   postDecorator?: InputMaybe<Int_comparison_exp>;
   postedBy?: InputMaybe<String_comparison_exp>;
-  posterRole?: InputMaybe<numeric_comparison_exp>;
+  posterRole?: InputMaybe<Int_comparison_exp>;
   scope?: InputMaybe<Int_comparison_exp>;
   tag?: InputMaybe<String_comparison_exp>;
   timestamp?: InputMaybe<Int_comparison_exp>;
@@ -3732,6 +3741,7 @@ export type Update_bool_exp = {
 
 /** Ordering options when selecting data from "Update". */
 export type Update_order_by = {
+  chainId?: InputMaybe<order_by>;
   content?: InputMaybe<RawMetadata_order_by>;
   contentSchema?: InputMaybe<order_by>;
   content_id?: InputMaybe<order_by>;
@@ -3739,7 +3749,10 @@ export type Update_order_by = {
   domain?: InputMaybe<GameManager_order_by>;
   domain_id?: InputMaybe<order_by>;
   entityAddress?: InputMaybe<order_by>;
+  entityMetadata?: InputMaybe<RawMetadata_order_by>;
+  entityMetadata_id?: InputMaybe<order_by>;
   id?: InputMaybe<order_by>;
+  postBlockNumber?: InputMaybe<order_by>;
   postDecorator?: InputMaybe<order_by>;
   postedBy?: InputMaybe<order_by>;
   posterRole?: InputMaybe<order_by>;
@@ -3751,6 +3764,8 @@ export type Update_order_by = {
 /** select columns of table "Update" */
 export type Update_select_column =
   /** column name */
+  | 'chainId'
+  /** column name */
   | 'contentSchema'
   /** column name */
   | 'content_id'
@@ -3761,7 +3776,11 @@ export type Update_select_column =
   /** column name */
   | 'entityAddress'
   /** column name */
+  | 'entityMetadata_id'
+  /** column name */
   | 'id'
+  /** column name */
+  | 'postBlockNumber'
   /** column name */
   | 'postDecorator'
   /** column name */
@@ -3785,15 +3804,18 @@ export type Update_stream_cursor_input = {
 
 /** Initial value of the column from where the streaming should start */
 export type Update_stream_cursor_value_input = {
+  chainId?: InputMaybe<Scalars['Int']>;
   contentSchema?: InputMaybe<Scalars['Int']>;
   content_id?: InputMaybe<Scalars['String']>;
   db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
   domain_id?: InputMaybe<Scalars['String']>;
   entityAddress?: InputMaybe<Scalars['String']>;
+  entityMetadata_id?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['String']>;
+  postBlockNumber?: InputMaybe<Scalars['Int']>;
   postDecorator?: InputMaybe<Scalars['Int']>;
   postedBy?: InputMaybe<Scalars['String']>;
-  posterRole?: InputMaybe<Scalars['numeric']>;
+  posterRole?: InputMaybe<Scalars['Int']>;
   scope?: InputMaybe<Scalars['Int']>;
   tag?: InputMaybe<Scalars['String']>;
   timestamp?: InputMaybe<Scalars['Int']>;
