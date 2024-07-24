@@ -9,6 +9,7 @@ import { getIpfsJson } from '../../utils/ipfs/get';
 import { tiptapContentSchema } from '../forms/validationSchemas/tiptap';
 import { resolveProjectMetadata } from '../../resolvers/projectResolvers';
 import { Content } from '@tiptap/react';
+import { Box } from '@mantine/core';
 
 export const resolveRichTextMetadata = async (rtfPointer: string) => {
   const rtfJSON = await getIpfsJson(rtfPointer);
@@ -79,7 +80,9 @@ export const LongForm = () => {
   return (
     <MainSection>
       <PageTitle title="Post" />
-      <RTDisplay content={content.content} />
+      <Box>
+        <RTDisplay content={content.content} />
+      </Box>
     </MainSection>
   );
 };

@@ -858,9 +858,9 @@ export type FeedItemEmbed_stream_cursor_value_input = {
 /** columns and relationships of "FeedItemEntity" */
 export type FeedItemEntity = {
   db_write_timestamp?: Maybe<Scalars['timestamp']>;
-  entityType: Scalars['String'];
   id: Scalars['String'];
   name: Scalars['String'];
+  playerType: Scalars['Int'];
 };
 
 /** Boolean expression to filter rows from the table "FeedItemEntity". All fields are combined with a logical 'AND'. */
@@ -869,17 +869,17 @@ export type FeedItemEntity_bool_exp = {
   _not?: InputMaybe<FeedItemEntity_bool_exp>;
   _or?: InputMaybe<Array<FeedItemEntity_bool_exp>>;
   db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
-  entityType?: InputMaybe<String_comparison_exp>;
   id?: InputMaybe<String_comparison_exp>;
   name?: InputMaybe<String_comparison_exp>;
+  playerType?: InputMaybe<Int_comparison_exp>;
 };
 
 /** Ordering options when selecting data from "FeedItemEntity". */
 export type FeedItemEntity_order_by = {
   db_write_timestamp?: InputMaybe<order_by>;
-  entityType?: InputMaybe<order_by>;
   id?: InputMaybe<order_by>;
   name?: InputMaybe<order_by>;
+  playerType?: InputMaybe<order_by>;
 };
 
 /** select columns of table "FeedItemEntity" */
@@ -887,11 +887,11 @@ export type FeedItemEntity_select_column =
   /** column name */
   | 'db_write_timestamp'
   /** column name */
-  | 'entityType'
-  /** column name */
   | 'id'
   /** column name */
-  | 'name';
+  | 'name'
+  /** column name */
+  | 'playerType';
 
 /** Streaming cursor of the table "FeedItemEntity" */
 export type FeedItemEntity_stream_cursor_input = {
@@ -904,9 +904,9 @@ export type FeedItemEntity_stream_cursor_input = {
 /** Initial value of the column from where the streaming should start */
 export type FeedItemEntity_stream_cursor_value_input = {
   db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
-  entityType?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['String']>;
   name?: InputMaybe<Scalars['String']>;
+  playerType?: InputMaybe<Scalars['Int']>;
 };
 
 /** columns and relationships of "GMInitParams" */
@@ -3705,10 +3705,10 @@ export type Update = {
   entityMetadata?: Maybe<RawMetadata>;
   entityMetadata_id?: Maybe<Scalars['String']>;
   id: Scalars['String'];
+  playerType: Scalars['Int'];
   postBlockNumber: Scalars['Int'];
   postDecorator?: Maybe<Scalars['Int']>;
   postedBy?: Maybe<Scalars['String']>;
-  posterRole: Scalars['Int'];
   scope: Scalars['Int'];
   tag: Scalars['String'];
   timestamp: Scalars['Int'];
@@ -3730,10 +3730,10 @@ export type Update_bool_exp = {
   entityMetadata?: InputMaybe<RawMetadata_bool_exp>;
   entityMetadata_id?: InputMaybe<String_comparison_exp>;
   id?: InputMaybe<String_comparison_exp>;
+  playerType?: InputMaybe<Int_comparison_exp>;
   postBlockNumber?: InputMaybe<Int_comparison_exp>;
   postDecorator?: InputMaybe<Int_comparison_exp>;
   postedBy?: InputMaybe<String_comparison_exp>;
-  posterRole?: InputMaybe<Int_comparison_exp>;
   scope?: InputMaybe<Int_comparison_exp>;
   tag?: InputMaybe<String_comparison_exp>;
   timestamp?: InputMaybe<Int_comparison_exp>;
@@ -3752,10 +3752,10 @@ export type Update_order_by = {
   entityMetadata?: InputMaybe<RawMetadata_order_by>;
   entityMetadata_id?: InputMaybe<order_by>;
   id?: InputMaybe<order_by>;
+  playerType?: InputMaybe<order_by>;
   postBlockNumber?: InputMaybe<order_by>;
   postDecorator?: InputMaybe<order_by>;
   postedBy?: InputMaybe<order_by>;
-  posterRole?: InputMaybe<order_by>;
   scope?: InputMaybe<order_by>;
   tag?: InputMaybe<order_by>;
   timestamp?: InputMaybe<order_by>;
@@ -3780,13 +3780,13 @@ export type Update_select_column =
   /** column name */
   | 'id'
   /** column name */
+  | 'playerType'
+  /** column name */
   | 'postBlockNumber'
   /** column name */
   | 'postDecorator'
   /** column name */
   | 'postedBy'
-  /** column name */
-  | 'posterRole'
   /** column name */
   | 'scope'
   /** column name */
@@ -3812,10 +3812,10 @@ export type Update_stream_cursor_value_input = {
   entityAddress?: InputMaybe<Scalars['String']>;
   entityMetadata_id?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['String']>;
+  playerType?: InputMaybe<Scalars['Int']>;
   postBlockNumber?: InputMaybe<Scalars['Int']>;
   postDecorator?: InputMaybe<Scalars['Int']>;
   postedBy?: InputMaybe<Scalars['String']>;
-  posterRole?: InputMaybe<Scalars['Int']>;
   scope?: InputMaybe<Scalars['Int']>;
   tag?: InputMaybe<Scalars['String']>;
   timestamp?: InputMaybe<Scalars['Int']>;

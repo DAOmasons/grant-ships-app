@@ -1,6 +1,6 @@
 fragment FeedData on FeedCard {
   id
-  content: message
+  message
   timestamp
   sender
   tag
@@ -9,12 +9,12 @@ fragment FeedData on FeedCard {
   subject {
     id
     name
-    type: entityType
+    playerType
   }
   object {
     id
     name
-    type: entityType
+    playerType
   }
   embed {
     key

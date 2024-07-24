@@ -33,15 +33,15 @@ const handleEmbedText = async (
   }
 };
 
-const isPlayerType = (type: string): type is Player => {
+const isPlayerType = (type: number): type is Player => {
   return Object.values(Player).includes(type as any);
 };
 
 export const handleSubjectMetadata = async (
-  entityType: string,
+  playerType: number,
   metadataPointer: string
 ) => {
-  if (entityType === 'facilitators') {
+  if (playerType === Player.Facilitators) {
     return {
       imgCID: DAO_MASONS.AVATAR_IMG,
       description:
@@ -49,7 +49,7 @@ export const handleSubjectMetadata = async (
     };
   }
 
-  if (entityType === 'ship' || entityType === 'project') {
+  if (playerType === Player.Ship || playerType === Player.Project) {
     const data = await getIpfsJson(metadataPointer);
 
     const cid = data?.avatarHash_IPFS;
@@ -64,7 +64,7 @@ export const handleSubjectMetadata = async (
     return { imgCID: cid, description };
   }
 
-  console.warn('No image found for entity type', entityType);
+  console.warn('No image found for entity type', playerType);
   return { imgCID: undefined, description: '' };
 };
 
@@ -79,18 +79,18 @@ export const resolveFeedItem = async (
   }
 
   const { imgCID, description } = await handleSubjectMetadata(
-    item.subject.type,
+    item.subject.playerType,
     item.subjectMetadataPointer
   );
 
-  if (!isPlayerType(item.subject.type)) {
-    console.warn('Invalid entity type', item.subject.type);
+  if (!isPlayerType(item.subject.playerType)) {
+    console.warn('Invalid entity type', item.subject.playerType);
   }
-  if (item.object?.type && !isPlayerType(item.object.type)) {
-    console.warn('Invalid entity type', item.object.type);
+  if (item.object?.playerType && !isPlayerType(item.object.playerType)) {
+    console.warn('Invalid entity type', item.object.playerType);
   }
 
-  const hasObject = item.object?.type && item.object?.name;
+  const hasObject = item.object?.playerType && item.object?.name;
   const hasEmbed =
     (item.embed?.pointer && item.embed?.key) || item.embed?.content;
 
@@ -100,7 +100,7 @@ export const resolveFeedItem = async (
     subject: {
       name: item.subject.name,
       id: item.subject.id,
-      entityType: item.subject.type as Player,
+      playerType: item.subject.playerType as Player,
       imgUrl: imgCID ? getGatewayUrl(imgCID) : undefined,
       description,
     },
@@ -108,10 +108,10 @@ export const resolveFeedItem = async (
       ? {
           name: item.object?.name || '',
           id: item.object?.id || '',
-          entityType: (item.object?.type as Player) || '',
+          playerType: item.object?.playerType as Player,
         }
       : undefined,
-    content: item.content!!,
+    message: item.message as string | undefined,
     timestamp: item.timestamp,
     sender: item.sender!!,
     embedText,

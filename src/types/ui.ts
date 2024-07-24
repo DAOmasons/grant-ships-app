@@ -1,10 +1,11 @@
+import { Content } from '@tiptap/react';
 import { ShowcaseLink } from '../utils/media';
 import { GameStatus } from './common';
 
 export enum Player {
-  Facilitators = 'facilitators',
-  Ship = 'ship',
-  Project = 'project',
+  Project,
+  Ship,
+  Facilitators,
 }
 
 export type FeedCardUI = {
@@ -12,15 +13,15 @@ export type FeedCardUI = {
     name: string;
     id: string;
     imgUrl?: string;
-    entityType: Player;
+    playerType: Player;
     description?: string;
   };
   object?: {
     name: string;
     id: string;
-    entityType: Player;
+    playerType: Player;
   };
-  content: string;
+  message?: string;
   timestamp: number;
   embedText?: string;
   embed?: {
@@ -28,6 +29,7 @@ export type FeedCardUI = {
     url: string;
   };
   sender: string;
+  richTextContent?: Content;
 };
 
 export enum MilestoneStatus {

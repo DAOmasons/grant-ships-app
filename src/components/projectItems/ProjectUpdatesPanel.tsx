@@ -175,12 +175,12 @@ export const ProjectUpdatesPanel = ({
             cardCount={posts.length}
             key={post.id}
             timestamp={post.timestamp}
-            sender={post.postedBy}
+            sender={post.postedBy || ''}
             subject={{
               name: project?.name as string,
               id: project?.id as string,
               imgUrl: project?.imgUrl,
-              entityType: Player.Ship,
+              playerType: Player.Ship,
             }}
             content={post.content.text}
           />

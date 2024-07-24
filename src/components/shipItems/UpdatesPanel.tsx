@@ -145,7 +145,7 @@ export const UpdatesPanel = ({
               name: ship?.name as string,
               id: shipId as string,
               imgUrl: ship?.imgUrl,
-              entityType: Player.Ship,
+              playerType: Player.Ship,
             }}
             content={post.content.text}
           />

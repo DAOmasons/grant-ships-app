@@ -27,6 +27,8 @@ import { pinJSONToIPFS } from '../utils/ipfs/pin';
 import { notifications } from '@mantine/notifications';
 import { TxButton } from './TxButton';
 import { Json } from '../types/common';
+import { PlayerAvatar } from './PlayerAvatar';
+import { GAME_MANAGER } from '../constants/gameSetup';
 
 type PostDrawerProps = {
   avatarImg?: string;
@@ -46,7 +48,6 @@ export const PostDrawer = ({
   postIndex,
   refetch,
 }: PostDrawerProps) => {
-  const theme = useMantineTheme();
   const location = useLocation();
   const navigate = useNavigate();
   const editor = useEditor({
@@ -89,8 +90,6 @@ export const PostDrawer = ({
       return;
     }
 
-    console.log('metadata', metadata);
-
     const pinRes = await pinJSONToIPFS(metadata);
 
     if (!pinRes.IpfsHash) {
@@ -104,7 +103,15 @@ export const PostDrawer = ({
 
     onClose();
 
-    const tag = `TAG:PROJECT_POST:${postId}`;
+    // tag: TAG tells the indexer to await for instructions
+    // action: PROJECT_POST action code to be executed index side
+    // postId:
+    // - postType: tells the indexer what type of post it is
+    // - posterId: the id of the poster, in this case it's the profileID
+    // - postIndex: the index of the post
+    // domain: GAME_MANAGER.ADDRESS ensures that this post is only available within this game scope
+
+    const tag = `TAG:PROJECT_POST:${postId}:${GAME_MANAGER.ADDRESS}`;
 
     tx({
       writeContractParams: {
@@ -125,22 +132,23 @@ export const PostDrawer = ({
   return (
     <Drawer.Root opened={isOpen} size={720} onClose={onClose} position="right">
       <Drawer.Overlay />
-      <Drawer.Content bg={theme.colors.dark[6]}>
+      <Drawer.Content>
         <Flex w="100%" justify={'center'}>
           <Box mt="xl" w="600px">
             <PageTitle title="Post Update" />
             <Group mt="40" mb="lg" w="100%" justify="space-between">
-              <Group gap="sm">
-                <Avatar src={avatarImg} alt={name} size={40} />
-                <Text fw={600}>{name}</Text>
-                <ProjectBadge size={18} />
-              </Group>
+              <PlayerAvatar
+                playerType={Player.Project}
+                imgUrl={avatarImg}
+                name={name}
+              />
               <Group gap="sm">
                 <TxButton leftSection={<IconPlus />} onClick={postContent}>
                   Post
                 </TxButton>
               </Group>
             </Group>
+
             <RTEditor editor={editor} />
           </Box>
         </Flex>
@@ -150,16 +158,9 @@ export const PostDrawer = ({
 };
 
 const RTEditor = ({ editor }: { editor: Editor | null }) => {
-  const theme = useMantineTheme();
-
   return (
-    <RichTextEditor
-      editor={editor}
-      mih="70vh"
-      h="100%"
-      bg={theme.colors.dark[6]}
-    >
-      <RichTextEditor.Toolbar bg={theme.colors.dark[6]}>
+    <RichTextEditor editor={editor} mih="70vh" h="100%" bg={'transparent'}>
+      <RichTextEditor.Toolbar bg={'transparent'}>
         <RichTextEditor.ControlsGroup style={{ border: 'none' }}>
           <RichTextEditor.H3 icon={IconHeading} h={'2rem'} w="2rem" />
           <RichTextEditor.Bold h={'2rem'} w="2rem" />
@@ -176,21 +177,12 @@ const RTEditor = ({ editor }: { editor: Editor | null }) => {
           <ImageControl />
         </RichTextEditor.ControlsGroup>
       </RichTextEditor.Toolbar>
-      <RichTextEditor.Content
-        p="lg"
-        fz="sm"
-        bg={theme.colors.dark[6]}
-        h="100%"
-      />
+      <RichTextEditor.Content p="lg" fz="sm" bg={'transparent'} h="100%" />
     </RichTextEditor>
   );
 };
 
 export const RTDisplay = ({ content }: { content: Content }) => {
-  const theme = useMantineTheme();
-
-  console.log('content', content);
-
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -204,15 +196,10 @@ export const RTDisplay = ({ content }: { content: Content }) => {
   return (
     <RichTextEditor
       editor={editor}
-      bg={theme.colors.dark[6]}
+      bg={'transparent'}
       style={{ border: 'none' }}
     >
-      <RichTextEditor.Content
-        fz="sm"
-        bg={theme.colors.dark[6]}
-        px={'lg'}
-        py="sm"
-      />
+      <RichTextEditor.Content fz="sm" bg={'transparent'} />
     </RichTextEditor>
   );
 };

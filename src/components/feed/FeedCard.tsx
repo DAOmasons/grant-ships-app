@@ -16,7 +16,7 @@ import { Address, formatEther } from 'viem';
 import { useEnsName } from 'wagmi';
 import { ensConfig } from '../../utils/config';
 import { mainnet } from 'viem/chains';
-import { FeedCardUI } from '../../types/ui';
+import { FeedCardUI, Player } from '../../types/ui';
 import {
   IconChevronDown,
   IconChevronUp,
@@ -39,28 +39,28 @@ const hoverCardProps: HoverCardProps = {
   transitionProps: { transition: 'fade', duration: 300 },
 };
 
-const getUrlByEntityType = (entityType: string, entityId: string) => {
-  if (entityType === 'project') {
+const getUrlByEntityType = (playerType: Player, entityId: string) => {
+  if (playerType === Player.Project) {
     return `/project/${entityId}`;
   }
-  if (entityType === 'ship') {
+  if (playerType === Player.Ship) {
     return `/ship/${entityId}`;
   }
-  if (entityType === 'facilitators') {
+  if (playerType === Player.Facilitators) {
     return `/facilitators`;
   }
   return '';
 };
 
 function replaceTextWithComponents(
-  content: string,
+  message: string,
   entities: {
     name: string;
     id: string;
-    entityType: string;
+    playerType: Player;
   }[]
 ) {
-  let elements: ReactNode[] = [content];
+  let elements: ReactNode[] = [message];
 
   entities.forEach((entity) => {
     const newElements: ReactNode[] = [];
@@ -76,7 +76,7 @@ function replaceTextWithComponents(
             newElements.push(
               <Link
                 key={`${entity.id}-${index}`}
-                to={getUrlByEntityType(entity.entityType, entity.id)}
+                to={getUrlByEntityType(entity.playerType, entity.id)}
                 style={{ color: 'inherit' }}
               >
                 {entity.name}
@@ -95,16 +95,16 @@ function replaceTextWithComponents(
   return elements;
 }
 
-const replaceWei = (content: string) => {
+const replaceWei = (message: string) => {
   const regex = /##IN-WEI(\d+)##/g;
 
-  const matches = content.matchAll(regex);
+  const matches = message.matchAll(regex);
 
   if (!matches) {
-    return content;
+    return message;
   }
 
-  return content.replace(regex, (match, amount) => {
+  return message.replace(regex, (match, amount) => {
     return `${formatEther(BigInt(amount))} ${GAME_TOKEN.SYMBOL}`;
   });
 };
@@ -112,7 +112,7 @@ const replaceWei = (content: string) => {
 export const FeedCard = ({
   subject,
   object,
-  content,
+  message,
   embedText,
   timestamp,
   sender,
@@ -138,22 +138,22 @@ export const FeedCard = ({
 
   const formattedFeedContent = useMemo(() => {
     return replaceTextWithComponents(
-      replaceWei(content),
+      replaceWei(message || ''),
       object ? [subject, object] : [subject]
     );
-  }, [content, subject, object]);
+  }, [message, subject, object]);
 
   const icon = useMemo(() => {
-    if (subject.entityType === 'project') {
+    if (subject.playerType === Player.Project) {
       return <ProjectBadge />;
     }
-    if (subject.entityType === 'ship') {
+    if (subject.playerType === Player.Ship) {
       return <ShipBadge />;
     }
-    if (subject.entityType === 'facilitators') {
+    if (subject.playerType === Player.Facilitators) {
       return <FacilitatorBadge />;
     }
-  }, [subject.entityType]);
+  }, [subject.playerType]);
 
   const time = useMemo(() => {
     return secondsToShortRelativeTime(timestamp);
@@ -173,7 +173,7 @@ export const FeedCard = ({
     [observer, cardCount, cardIndex, shouldFetch]
   );
 
-  const entityUrl = getUrlByEntityType(subject.entityType, subject.id);
+  const entityUrl = getUrlByEntityType(subject.playerType, subject.id);
 
   return (
     <Box mb="lg" ref={observer.ref}>
@@ -254,7 +254,7 @@ export const HoverCardContent = ({
   const theme = useMantineTheme();
 
   const roleDisplay = useMemo(() => {
-    if (subject.entityType === 'project') {
+    if (subject.playerType === Player.Project) {
       return (
         <Group gap={8} mb="sm">
           <IconAward size={20} color={theme.colors.blue[5]} />
@@ -262,7 +262,7 @@ export const HoverCardContent = ({
         </Group>
       );
     }
-    if (subject.entityType === 'ship') {
+    if (subject.playerType === Player.Ship) {
       return (
         <Group gap={8} mb="sm">
           <IconRocket size={20} color={theme.colors.violet[5]} />
@@ -270,7 +270,7 @@ export const HoverCardContent = ({
         </Group>
       );
     }
-    if (subject.entityType === 'facilitators') {
+    if (subject.playerType === Player.Facilitators) {
       return (
         <Group gap={8} mb="sm">
           <IconShieldHalf size={20} color={theme.colors.pink[5]} />
@@ -278,7 +278,7 @@ export const HoverCardContent = ({
         </Group>
       );
     }
-  }, [subject.entityType, theme]);
+  }, [subject.playerType, theme]);
 
   return (
     <Box w="100%" p="xs">

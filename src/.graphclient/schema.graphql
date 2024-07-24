@@ -949,9 +949,9 @@ columns and relationships of "FeedItemEntity"
 """
 type FeedItemEntity {
   db_write_timestamp: timestamp
-  entityType: String!
   id: String!
   name: String!
+  playerType: Int!
 }
 
 """
@@ -962,17 +962,17 @@ input FeedItemEntity_bool_exp {
   _not: FeedItemEntity_bool_exp
   _or: [FeedItemEntity_bool_exp!]
   db_write_timestamp: timestamp_comparison_exp
-  entityType: String_comparison_exp
   id: String_comparison_exp
   name: String_comparison_exp
+  playerType: Int_comparison_exp
 }
 
 """Ordering options when selecting data from "FeedItemEntity"."""
 input FeedItemEntity_order_by {
   db_write_timestamp: order_by
-  entityType: order_by
   id: order_by
   name: order_by
+  playerType: order_by
 }
 
 """
@@ -982,11 +982,11 @@ enum FeedItemEntity_select_column {
   """column name"""
   db_write_timestamp
   """column name"""
-  entityType
-  """column name"""
   id
   """column name"""
   name
+  """column name"""
+  playerType
 }
 
 """
@@ -1002,9 +1002,9 @@ input FeedItemEntity_stream_cursor_input {
 """Initial value of the column from where the streaming should start"""
 input FeedItemEntity_stream_cursor_value_input {
   db_write_timestamp: timestamp
-  entityType: String
   id: String
   name: String
+  playerType: Int
 }
 
 """
@@ -4159,10 +4159,10 @@ type Update {
   entityMetadata: RawMetadata
   entityMetadata_id: String
   id: String!
+  playerType: Int!
   postBlockNumber: Int!
   postDecorator: Int
   postedBy: String
-  posterRole: Int!
   scope: Int!
   tag: String!
   timestamp: Int!
@@ -4186,10 +4186,10 @@ input Update_bool_exp {
   entityMetadata: RawMetadata_bool_exp
   entityMetadata_id: String_comparison_exp
   id: String_comparison_exp
+  playerType: Int_comparison_exp
   postBlockNumber: Int_comparison_exp
   postDecorator: Int_comparison_exp
   postedBy: String_comparison_exp
-  posterRole: Int_comparison_exp
   scope: Int_comparison_exp
   tag: String_comparison_exp
   timestamp: Int_comparison_exp
@@ -4208,10 +4208,10 @@ input Update_order_by {
   entityMetadata: RawMetadata_order_by
   entityMetadata_id: order_by
   id: order_by
+  playerType: order_by
   postBlockNumber: order_by
   postDecorator: order_by
   postedBy: order_by
-  posterRole: order_by
   scope: order_by
   tag: order_by
   timestamp: order_by
@@ -4238,13 +4238,13 @@ enum Update_select_column {
   """column name"""
   id
   """column name"""
+  playerType
+  """column name"""
   postBlockNumber
   """column name"""
   postDecorator
   """column name"""
   postedBy
-  """column name"""
-  posterRole
   """column name"""
   scope
   """column name"""
@@ -4273,10 +4273,10 @@ input Update_stream_cursor_value_input {
   entityAddress: String
   entityMetadata_id: String
   id: String
+  playerType: Int
   postBlockNumber: Int
   postDecorator: Int
   postedBy: String
-  posterRole: Int
   scope: Int
   tag: String
   timestamp: Int

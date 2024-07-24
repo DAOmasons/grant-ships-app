@@ -3,7 +3,7 @@ query getRTUpdate($id: String!, $chainId: Int!) {
     id
     scope
     tag
-    posterRole
+    playerType
     entityAddress
     entityMetadata_id
     postedBy
