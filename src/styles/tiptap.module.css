@@ -1,0 +1,6 @@
+.paddingOff {
+  :global(.tiptap.ProseMirror) {
+    padding: 0;
+  }
+  background: red;
+}

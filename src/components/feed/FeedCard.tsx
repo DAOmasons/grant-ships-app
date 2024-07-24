@@ -148,18 +148,6 @@ export const FeedCard = ({
     );
   }, [message, subject, object]);
 
-  const icon = useMemo(() => {
-    if (subject.playerType === Player.Project) {
-      return <ProjectBadge />;
-    }
-    if (subject.playerType === Player.Ship) {
-      return <ShipBadge />;
-    }
-    if (subject.playerType === Player.Facilitators) {
-      return <FacilitatorBadge />;
-    }
-  }, [subject.playerType]);
-
   const time = useMemo(() => {
     return secondsToShortRelativeTime(timestamp);
   }, [timestamp]);
@@ -182,71 +170,54 @@ export const FeedCard = ({
 
   return (
     <Box mb="lg" ref={observer.ref}>
-      <Flex>
-        <Group gap={8} mb={8}>
-          <HoverCard {...hoverCardProps}>
-            <HoverCard.Target>
-              {/* <Avatar
-                size={32}
-                src={subject.imgUrl && subject.imgUrl}
-                component={Link}
-                to={entityUrl}
-              /> */}
-              <PlayerAvatar
-                playerType={subject.playerType}
-                imgUrl={subject.imgUrl}
-                name={subject.name}
-              />
-            </HoverCard.Target>
-            <HoverCard.Dropdown style={{ border: 'none' }}>
-              <HoverCardContent subject={subject} url={entityUrl} />
-            </HoverCard.Dropdown>
-          </HoverCard>
-
-          {/* <HoverCard {...hoverCardProps}>
-              <HoverCard.Target>
-                <Text size="sm" component={Link} to={entityUrl}>
-                  {subject.name}
-                </Text>
-              </HoverCard.Target>
-              <HoverCard.Dropdown style={{ border: 'none' }}>
-                <HoverCardContent subject={subject} url={entityUrl} />
-              </HoverCard.Dropdown>
-            </HoverCard> */}
-          {/* {icon} */}
-          <Text size="sm" opacity={0.8}>
-            ·
+      <Group gap={8} mb={8}>
+        <HoverCard {...hoverCardProps}>
+          <HoverCard.Target>
+            <PlayerAvatar
+              playerType={subject.playerType}
+              imgUrl={subject.imgUrl}
+              name={subject.name}
+            />
+          </HoverCard.Target>
+          <HoverCard.Dropdown style={{ border: 'none' }}>
+            <HoverCardContent subject={subject} url={entityUrl} />
+          </HoverCard.Dropdown>
+        </HoverCard>
+        <Text size="sm" opacity={0.8}>
+          ·
+        </Text>
+        <Text size="sm" opacity={0.8}>
+          {time}
+        </Text>
+      </Group>
+      <Box pl={48} pb={'sm'}>
+        <Box mb="sm">
+          <Text size="sm" mb={10} className="ws-pre-wrap">
+            {formattedFeedMessage}
           </Text>
-
-          <Text size="sm" opacity={0.8}>
-            {time}
-          </Text>
-        </Group>
-      </Flex>
-      <Text size="sm" mb={10} className="ws-pre-wrap">
-        {formattedFeedMessage}
-      </Text>
-      {richTextContent && <RTDisplay content={richTextContent} />}
-      {embedText && (
-        <Spoiler
-          mb={'xs'}
-          hideLabel={<IconChevronUp stroke={1} />}
-          showLabel={<IconChevronDown stroke={1} />}
-          classNames={{
-            root: classes.embedTextBox,
-            control: classes.embedTextControl,
-          }}
-          maxHeight={48}
-        >
-          <Text fz="sm" className="ws-pre-wrap">
-            {embedText}
-          </Text>
-        </Spoiler>
-      )}
-      <Text size="xs" opacity={0.85}>
-        Posted by{' '}
-        {ensName ? ensName : sender.slice(0, 6) + '...' + sender.slice(-4)}
-      </Text>
+          {richTextContent && <RTDisplay minified content={richTextContent} />}
+          {embedText && (
+            <Spoiler
+              mb={'xs'}
+              hideLabel={<IconChevronUp stroke={1} />}
+              showLabel={<IconChevronDown stroke={1} />}
+              classNames={{
+                root: classes.embedTextBox,
+                control: classes.embedTextControl,
+              }}
+              maxHeight={48}
+            >
+              <Text fz="sm" className="ws-pre-wrap">
+                {embedText}
+              </Text>
+            </Spoiler>
+          )}
+        </Box>
+        <Text size="xs" opacity={0.85}>
+          Posted by{' '}
+          {ensName ? ensName : sender.slice(0, 6) + '...' + sender.slice(-4)}
+        </Text>
+      </Box>
       <Divider />
     </Box>
   );

@@ -29,6 +29,7 @@ import { TxButton } from './TxButton';
 import { Json } from '../types/common';
 import { PlayerAvatar } from './PlayerAvatar';
 import { GAME_MANAGER } from '../constants/gameSetup';
+import classes from '../styles/tiptap.module.css';
 
 type PostDrawerProps = {
   avatarImg?: string;
@@ -177,12 +178,18 @@ const RTEditor = ({ editor }: { editor: Editor | null }) => {
           <ImageControl />
         </RichTextEditor.ControlsGroup>
       </RichTextEditor.Toolbar>
-      <RichTextEditor.Content p="lg" fz="sm" bg={'transparent'} h="100%" />
+      <RichTextEditor.Content p="lg" fz="md" bg={'transparent'} h="100%" />
     </RichTextEditor>
   );
 };
 
-export const RTDisplay = ({ content }: { content: Content }) => {
+export const RTDisplay = ({
+  content,
+  minified,
+}: {
+  content: Content;
+  minified?: boolean;
+}) => {
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -198,8 +205,11 @@ export const RTDisplay = ({ content }: { content: Content }) => {
       editor={editor}
       bg={'transparent'}
       style={{ border: 'none' }}
+      classNames={{
+        root: classes.paddingOff,
+      }}
     >
-      <RichTextEditor.Content fz="sm" bg={'transparent'} />
+      <RichTextEditor.Content fz={minified ? 'sm' : 'md'} bg={'transparent'} />
     </RichTextEditor>
   );
 };
