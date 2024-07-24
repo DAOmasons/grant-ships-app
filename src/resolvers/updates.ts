@@ -5,6 +5,8 @@ import {
   basicUpdateSchema,
 } from '../components/forms/validationSchemas/updateSchemas';
 import { getIpfsJson } from '../utils/ipfs/get';
+import { tiptapContentSchema } from '../components/forms/validationSchemas/tiptap';
+import { Content } from '@tiptap/react';
 
 type BasicUpdate = z.infer<typeof basicUpdateSchema>;
 
@@ -36,4 +38,16 @@ export const resolveUpdates = async (updateData: UpdateBodyFragment[]) => {
   );
 
   return resolved.filter(Boolean) as ResolvedUpdate[];
+};
+
+export const resolveRichTextMetadata = async (rtfPointer: string) => {
+  const rtfJSON = await getIpfsJson(rtfPointer);
+
+  const validatedRt = tiptapContentSchema.safeParse(rtfJSON);
+
+  if (!validatedRt.success) {
+    throw new Error('Invalid RTF');
+  }
+
+  return validatedRt.data as Content;
 };

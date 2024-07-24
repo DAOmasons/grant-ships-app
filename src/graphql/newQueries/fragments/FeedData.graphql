@@ -16,6 +16,10 @@ fragment FeedData on FeedCard {
     name
     playerType
   }
+  richTextContent {
+    protocol
+    pointer
+  }
   embed {
     key
     pointer

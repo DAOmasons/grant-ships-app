@@ -1,5 +1,6 @@
 import { FeedDataFragment, getBuiltGraphSDK } from '../.graphclient';
 import { DAO_MASONS, GAME_MANAGER, SUBGRAPH_URL } from '../constants/gameSetup';
+import { resolveRichTextMetadata } from '../resolvers/updates';
 import { FeedCardUI, Player } from '../types/ui';
 import { findValueByKey } from '../utils/helpers';
 import { getGatewayUrl, getIpfsJson, isCID } from '../utils/ipfs/get';
@@ -96,6 +97,12 @@ export const resolveFeedItem = async (
 
   const embedText = hasEmbed ? await handleEmbedText(item.embed!) : undefined;
 
+  const richTextPointer = item.richTextContent?.pointer;
+
+  const richTextContent = richTextPointer
+    ? await resolveRichTextMetadata(richTextPointer)
+    : undefined;
+
   return {
     subject: {
       name: item.subject.name,
@@ -115,6 +122,7 @@ export const resolveFeedItem = async (
     timestamp: item.timestamp,
     sender: item.sender!!,
     embedText,
+    richTextContent,
   };
 };
 

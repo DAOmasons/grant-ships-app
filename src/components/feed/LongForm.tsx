@@ -10,18 +10,7 @@ import { tiptapContentSchema } from '../forms/validationSchemas/tiptap';
 import { resolveProjectMetadata } from '../../resolvers/projectResolvers';
 import { Content } from '@tiptap/react';
 import { Box } from '@mantine/core';
-
-export const resolveRichTextMetadata = async (rtfPointer: string) => {
-  const rtfJSON = await getIpfsJson(rtfPointer);
-
-  const validatedRt = tiptapContentSchema.safeParse(rtfJSON);
-
-  if (!validatedRt.success) {
-    throw new Error('Invalid RTF');
-  }
-
-  return validatedRt.data as Content;
-};
+import { resolveRichTextMetadata } from '../../resolvers/updates';
 
 export const getRTUpdate = async (id: string, chainId: number) => {
   const { getRTUpdate } = getBuiltGraphSDK();

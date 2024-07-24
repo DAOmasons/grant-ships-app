@@ -6480,43 +6480,6 @@ const schemaAST = {
       "fields": [
         {
           "kind": "FieldDefinition",
-          "description": {
-            "kind": "StringValue",
-            "value": "An object relationship",
-            "block": true
-          },
-          "name": {
-            "kind": "Name",
-            "value": "content"
-          },
-          "arguments": [],
-          "type": {
-            "kind": "NamedType",
-            "name": {
-              "kind": "Name",
-              "value": "RawMetadata"
-            }
-          },
-          "directives": []
-        },
-        {
-          "kind": "FieldDefinition",
-          "name": {
-            "kind": "Name",
-            "value": "content_id"
-          },
-          "arguments": [],
-          "type": {
-            "kind": "NamedType",
-            "name": {
-              "kind": "Name",
-              "value": "String"
-            }
-          },
-          "directives": []
-        },
-        {
-          "kind": "FieldDefinition",
           "name": {
             "kind": "Name",
             "value": "db_write_timestamp"
@@ -6698,6 +6661,43 @@ const schemaAST = {
           "name": {
             "kind": "Name",
             "value": "object_id"
+          },
+          "arguments": [],
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "String"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "FieldDefinition",
+          "description": {
+            "kind": "StringValue",
+            "value": "An object relationship",
+            "block": true
+          },
+          "name": {
+            "kind": "Name",
+            "value": "richTextContent"
+          },
+          "arguments": [],
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "RawMetadata"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "FieldDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "richTextContent_id"
           },
           "arguments": [],
           "type": {
@@ -6899,36 +6899,6 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "content"
-          },
-          "type": {
-            "kind": "NamedType",
-            "name": {
-              "kind": "Name",
-              "value": "RawMetadata_bool_exp"
-            }
-          },
-          "directives": []
-        },
-        {
-          "kind": "InputValueDefinition",
-          "name": {
-            "kind": "Name",
-            "value": "content_id"
-          },
-          "type": {
-            "kind": "NamedType",
-            "name": {
-              "kind": "Name",
-              "value": "String_comparison_exp"
-            }
-          },
-          "directives": []
-        },
-        {
-          "kind": "InputValueDefinition",
-          "name": {
-            "kind": "Name",
             "value": "db_write_timestamp"
           },
           "type": {
@@ -7094,6 +7064,36 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
+            "value": "richTextContent"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "RawMetadata_bool_exp"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "richTextContent_id"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "String_comparison_exp"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
             "value": "sender"
           },
           "type": {
@@ -7195,36 +7195,6 @@ const schemaAST = {
         "value": "FeedCard_order_by"
       },
       "fields": [
-        {
-          "kind": "InputValueDefinition",
-          "name": {
-            "kind": "Name",
-            "value": "content"
-          },
-          "type": {
-            "kind": "NamedType",
-            "name": {
-              "kind": "Name",
-              "value": "RawMetadata_order_by"
-            }
-          },
-          "directives": []
-        },
-        {
-          "kind": "InputValueDefinition",
-          "name": {
-            "kind": "Name",
-            "value": "content_id"
-          },
-          "type": {
-            "kind": "NamedType",
-            "name": {
-              "kind": "Name",
-              "value": "order_by"
-            }
-          },
-          "directives": []
-        },
         {
           "kind": "InputValueDefinition",
           "name": {
@@ -7394,6 +7364,36 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
+            "value": "richTextContent"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "RawMetadata_order_by"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "richTextContent_id"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "order_by"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
             "value": "sender"
           },
           "type": {
@@ -7504,19 +7504,6 @@ const schemaAST = {
           },
           "name": {
             "kind": "Name",
-            "value": "content_id"
-          },
-          "directives": []
-        },
-        {
-          "kind": "EnumValueDefinition",
-          "description": {
-            "kind": "StringValue",
-            "value": "column name",
-            "block": true
-          },
-          "name": {
-            "kind": "Name",
             "value": "db_write_timestamp"
           },
           "directives": []
@@ -7609,6 +7596,19 @@ const schemaAST = {
           "name": {
             "kind": "Name",
             "value": "object_id"
+          },
+          "directives": []
+        },
+        {
+          "kind": "EnumValueDefinition",
+          "description": {
+            "kind": "StringValue",
+            "value": "column name",
+            "block": true
+          },
+          "name": {
+            "kind": "Name",
+            "value": "richTextContent_id"
           },
           "directives": []
         },
@@ -7754,21 +7754,6 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "content_id"
-          },
-          "type": {
-            "kind": "NamedType",
-            "name": {
-              "kind": "Name",
-              "value": "String"
-            }
-          },
-          "directives": []
-        },
-        {
-          "kind": "InputValueDefinition",
-          "name": {
-            "kind": "Name",
             "value": "db_write_timestamp"
           },
           "type": {
@@ -7875,6 +7860,21 @@ const schemaAST = {
           "name": {
             "kind": "Name",
             "value": "object_id"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "String"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "richTextContent_id"
           },
           "type": {
             "kind": "NamedType",

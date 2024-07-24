@@ -30,6 +30,8 @@ import { GAME_TOKEN } from '../../constants/gameSetup';
 import { useIntersection } from '@mantine/hooks';
 import { FacilitatorBadge, ProjectBadge, ShipBadge } from '../RoleBadges';
 import { IconAward } from '@tabler/icons-react';
+import { RTDisplay } from '../PostDrawer';
+import { PlayerAvatar } from '../PlayerAvatar';
 
 const hoverCardProps: HoverCardProps = {
   position: 'bottom-start',
@@ -119,6 +121,7 @@ export const FeedCard = ({
   cardIndex,
   cardCount,
   onIntersect,
+  richTextContent,
 }: FeedCardUI & {
   cardIndex: number;
   cardCount: number;
@@ -136,7 +139,9 @@ export const FeedCard = ({
     chainId: mainnet.id,
   });
 
-  const formattedFeedContent = useMemo(() => {
+  const formattedFeedMessage = useMemo(() => {
+    if (!message) return '';
+
     return replaceTextWithComponents(
       replaceWei(message || ''),
       object ? [subject, object] : [subject]
@@ -177,25 +182,28 @@ export const FeedCard = ({
 
   return (
     <Box mb="lg" ref={observer.ref}>
-      <Flex mb="lg">
-        <Box mr="xs">
+      <Flex>
+        <Group gap={8} mb={8}>
           <HoverCard {...hoverCardProps}>
             <HoverCard.Target>
-              <Avatar
+              {/* <Avatar
                 size={32}
                 src={subject.imgUrl && subject.imgUrl}
                 component={Link}
                 to={entityUrl}
+              /> */}
+              <PlayerAvatar
+                playerType={subject.playerType}
+                imgUrl={subject.imgUrl}
+                name={subject.name}
               />
             </HoverCard.Target>
             <HoverCard.Dropdown style={{ border: 'none' }}>
               <HoverCardContent subject={subject} url={entityUrl} />
             </HoverCard.Dropdown>
           </HoverCard>
-        </Box>
-        <Box w="100%">
-          <Group gap={8} mb={8}>
-            <HoverCard {...hoverCardProps}>
+
+          {/* <HoverCard {...hoverCardProps}>
               <HoverCard.Target>
                 <Text size="sm" component={Link} to={entityUrl}>
                   {subject.name}
@@ -204,41 +212,41 @@ export const FeedCard = ({
               <HoverCard.Dropdown style={{ border: 'none' }}>
                 <HoverCardContent subject={subject} url={entityUrl} />
               </HoverCard.Dropdown>
-            </HoverCard>
-            {icon}
-            <Text size="sm" opacity={0.8}>
-              ·
-            </Text>
+            </HoverCard> */}
+          {/* {icon} */}
+          <Text size="sm" opacity={0.8}>
+            ·
+          </Text>
 
-            <Text size="sm" opacity={0.8}>
-              {time}
-            </Text>
-          </Group>
-          <Text size="sm" mb={10} className="ws-pre-wrap">
-            {formattedFeedContent}
+          <Text size="sm" opacity={0.8}>
+            {time}
           </Text>
-          {embedText && (
-            <Spoiler
-              mb={'xs'}
-              hideLabel={<IconChevronUp stroke={1} />}
-              showLabel={<IconChevronDown stroke={1} />}
-              classNames={{
-                root: classes.embedTextBox,
-                control: classes.embedTextControl,
-              }}
-              maxHeight={48}
-            >
-              <Text fz="sm" className="ws-pre-wrap">
-                {embedText}
-              </Text>
-            </Spoiler>
-          )}
-          <Text size="xs" opacity={0.85}>
-            Posted by{' '}
-            {ensName ? ensName : sender.slice(0, 6) + '...' + sender.slice(-4)}
-          </Text>
-        </Box>
+        </Group>
       </Flex>
+      <Text size="sm" mb={10} className="ws-pre-wrap">
+        {formattedFeedMessage}
+      </Text>
+      {richTextContent && <RTDisplay content={richTextContent} />}
+      {embedText && (
+        <Spoiler
+          mb={'xs'}
+          hideLabel={<IconChevronUp stroke={1} />}
+          showLabel={<IconChevronDown stroke={1} />}
+          classNames={{
+            root: classes.embedTextBox,
+            control: classes.embedTextControl,
+          }}
+          maxHeight={48}
+        >
+          <Text fz="sm" className="ws-pre-wrap">
+            {embedText}
+          </Text>
+        </Spoiler>
+      )}
+      <Text size="xs" opacity={0.85}>
+        Posted by{' '}
+        {ensName ? ensName : sender.slice(0, 6) + '...' + sender.slice(-4)}
+      </Text>
       <Divider />
     </Box>
   );

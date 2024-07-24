@@ -51,8 +51,6 @@ export const GlobalStateProvider = ({
     enabled: !!address,
   });
 
-  console.log('gameManager', gameManager);
-
   return (
     <GlobalContext.Provider
       value={{

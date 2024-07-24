@@ -730,9 +730,6 @@ input FactoryEventsSummary_stream_cursor_value_input {
 columns and relationships of "FeedCard"
 """
 type FeedCard {
-  """An object relationship"""
-  content: RawMetadata
-  content_id: String
   db_write_timestamp: timestamp
   """An object relationship"""
   domain: GameManager
@@ -747,6 +744,9 @@ type FeedCard {
   """An object relationship"""
   object: FeedItemEntity
   object_id: String
+  """An object relationship"""
+  richTextContent: RawMetadata
+  richTextContent_id: String
   sender: String
   """An object relationship"""
   subject: FeedItemEntity
@@ -763,8 +763,6 @@ input FeedCard_bool_exp {
   _and: [FeedCard_bool_exp!]
   _not: FeedCard_bool_exp
   _or: [FeedCard_bool_exp!]
-  content: RawMetadata_bool_exp
-  content_id: String_comparison_exp
   db_write_timestamp: timestamp_comparison_exp
   domain: GameManager_bool_exp
   domain_id: String_comparison_exp
@@ -776,6 +774,8 @@ input FeedCard_bool_exp {
   message: String_comparison_exp
   object: FeedItemEntity_bool_exp
   object_id: String_comparison_exp
+  richTextContent: RawMetadata_bool_exp
+  richTextContent_id: String_comparison_exp
   sender: String_comparison_exp
   subject: FeedItemEntity_bool_exp
   subjectMetadataPointer: String_comparison_exp
@@ -786,8 +786,6 @@ input FeedCard_bool_exp {
 
 """Ordering options when selecting data from "FeedCard"."""
 input FeedCard_order_by {
-  content: RawMetadata_order_by
-  content_id: order_by
   db_write_timestamp: order_by
   domain: GameManager_order_by
   domain_id: order_by
@@ -799,6 +797,8 @@ input FeedCard_order_by {
   message: order_by
   object: FeedItemEntity_order_by
   object_id: order_by
+  richTextContent: RawMetadata_order_by
+  richTextContent_id: order_by
   sender: order_by
   subject: FeedItemEntity_order_by
   subjectMetadataPointer: order_by
@@ -811,8 +811,6 @@ input FeedCard_order_by {
 select columns of table "FeedCard"
 """
 enum FeedCard_select_column {
-  """column name"""
-  content_id
   """column name"""
   db_write_timestamp
   """column name"""
@@ -829,6 +827,8 @@ enum FeedCard_select_column {
   message
   """column name"""
   object_id
+  """column name"""
+  richTextContent_id
   """column name"""
   sender
   """column name"""
@@ -853,7 +853,6 @@ input FeedCard_stream_cursor_input {
 
 """Initial value of the column from where the streaming should start"""
 input FeedCard_stream_cursor_value_input {
-  content_id: String
   db_write_timestamp: timestamp
   domain_id: String
   embed_id: String
@@ -862,6 +861,7 @@ input FeedCard_stream_cursor_value_input {
   internalLink: String
   message: String
   object_id: String
+  richTextContent_id: String
   sender: String
   subjectMetadataPointer: String
   subject_id: String

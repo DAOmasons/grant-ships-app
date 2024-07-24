@@ -679,9 +679,6 @@ export type FactoryEventsSummary_stream_cursor_value_input = {
 
 /** columns and relationships of "FeedCard" */
 export type FeedCard = {
-  /** An object relationship */
-  content?: Maybe<RawMetadata>;
-  content_id?: Maybe<Scalars['String']>;
   db_write_timestamp?: Maybe<Scalars['timestamp']>;
   /** An object relationship */
   domain?: Maybe<GameManager>;
@@ -696,6 +693,9 @@ export type FeedCard = {
   /** An object relationship */
   object?: Maybe<FeedItemEntity>;
   object_id?: Maybe<Scalars['String']>;
+  /** An object relationship */
+  richTextContent?: Maybe<RawMetadata>;
+  richTextContent_id?: Maybe<Scalars['String']>;
   sender?: Maybe<Scalars['String']>;
   /** An object relationship */
   subject?: Maybe<FeedItemEntity>;
@@ -710,8 +710,6 @@ export type FeedCard_bool_exp = {
   _and?: InputMaybe<Array<FeedCard_bool_exp>>;
   _not?: InputMaybe<FeedCard_bool_exp>;
   _or?: InputMaybe<Array<FeedCard_bool_exp>>;
-  content?: InputMaybe<RawMetadata_bool_exp>;
-  content_id?: InputMaybe<String_comparison_exp>;
   db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
   domain?: InputMaybe<GameManager_bool_exp>;
   domain_id?: InputMaybe<String_comparison_exp>;
@@ -723,6 +721,8 @@ export type FeedCard_bool_exp = {
   message?: InputMaybe<String_comparison_exp>;
   object?: InputMaybe<FeedItemEntity_bool_exp>;
   object_id?: InputMaybe<String_comparison_exp>;
+  richTextContent?: InputMaybe<RawMetadata_bool_exp>;
+  richTextContent_id?: InputMaybe<String_comparison_exp>;
   sender?: InputMaybe<String_comparison_exp>;
   subject?: InputMaybe<FeedItemEntity_bool_exp>;
   subjectMetadataPointer?: InputMaybe<String_comparison_exp>;
@@ -733,8 +733,6 @@ export type FeedCard_bool_exp = {
 
 /** Ordering options when selecting data from "FeedCard". */
 export type FeedCard_order_by = {
-  content?: InputMaybe<RawMetadata_order_by>;
-  content_id?: InputMaybe<order_by>;
   db_write_timestamp?: InputMaybe<order_by>;
   domain?: InputMaybe<GameManager_order_by>;
   domain_id?: InputMaybe<order_by>;
@@ -746,6 +744,8 @@ export type FeedCard_order_by = {
   message?: InputMaybe<order_by>;
   object?: InputMaybe<FeedItemEntity_order_by>;
   object_id?: InputMaybe<order_by>;
+  richTextContent?: InputMaybe<RawMetadata_order_by>;
+  richTextContent_id?: InputMaybe<order_by>;
   sender?: InputMaybe<order_by>;
   subject?: InputMaybe<FeedItemEntity_order_by>;
   subjectMetadataPointer?: InputMaybe<order_by>;
@@ -756,8 +756,6 @@ export type FeedCard_order_by = {
 
 /** select columns of table "FeedCard" */
 export type FeedCard_select_column =
-  /** column name */
-  | 'content_id'
   /** column name */
   | 'db_write_timestamp'
   /** column name */
@@ -774,6 +772,8 @@ export type FeedCard_select_column =
   | 'message'
   /** column name */
   | 'object_id'
+  /** column name */
+  | 'richTextContent_id'
   /** column name */
   | 'sender'
   /** column name */
@@ -795,7 +795,6 @@ export type FeedCard_stream_cursor_input = {
 
 /** Initial value of the column from where the streaming should start */
 export type FeedCard_stream_cursor_value_input = {
-  content_id?: InputMaybe<Scalars['String']>;
   db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
   domain_id?: InputMaybe<Scalars['String']>;
   embed_id?: InputMaybe<Scalars['String']>;
@@ -804,6 +803,7 @@ export type FeedCard_stream_cursor_value_input = {
   internalLink?: InputMaybe<Scalars['String']>;
   message?: InputMaybe<Scalars['String']>;
   object_id?: InputMaybe<Scalars['String']>;
+  richTextContent_id?: InputMaybe<Scalars['String']>;
   sender?: InputMaybe<Scalars['String']>;
   subjectMetadataPointer?: InputMaybe<Scalars['String']>;
   subject_id?: InputMaybe<Scalars['String']>;
@@ -7553,8 +7553,6 @@ export type FactoryEventsSummaryResolvers<ContextType = MeshContext, ParentType 
 }>;
 
 export type FeedCardResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['FeedCard'] = ResolversParentTypes['FeedCard']> = ResolversObject<{
-  content?: Resolver<Maybe<ResolversTypes['RawMetadata']>, ParentType, ContextType>;
-  content_id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
   domain?: Resolver<Maybe<ResolversTypes['GameManager']>, ParentType, ContextType>;
   domain_id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -7566,6 +7564,8 @@ export type FeedCardResolvers<ContextType = MeshContext, ParentType extends Reso
   message?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   object?: Resolver<Maybe<ResolversTypes['FeedItemEntity']>, ParentType, ContextType>;
   object_id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  richTextContent?: Resolver<Maybe<ResolversTypes['RawMetadata']>, ParentType, ContextType>;
+  richTextContent_id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   sender?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   subject?: Resolver<Maybe<ResolversTypes['FeedItemEntity']>, ParentType, ContextType>;
   subjectMetadataPointer?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -8589,7 +8589,7 @@ export type BaseShipDataFragment = (
 
 export type FeedDataFragment = (
   Pick<FeedCard, 'id' | 'message' | 'timestamp' | 'sender' | 'tag' | 'subjectMetadataPointer' | 'domain_id' | 'internalLink' | 'externalLink'>
-  & { subject?: Maybe<Pick<FeedItemEntity, 'id' | 'name' | 'playerType'>>, object?: Maybe<Pick<FeedItemEntity, 'id' | 'name' | 'playerType'>>, embed?: Maybe<Pick<FeedItemEmbed, 'key' | 'pointer' | 'protocol' | 'content'>> }
+  & { subject?: Maybe<Pick<FeedItemEntity, 'id' | 'name' | 'playerType'>>, object?: Maybe<Pick<FeedItemEntity, 'id' | 'name' | 'playerType'>>, richTextContent?: Maybe<Pick<RawMetadata, 'protocol' | 'pointer'>>, embed?: Maybe<Pick<FeedItemEmbed, 'key' | 'pointer' | 'protocol' | 'content'>> }
 );
 
 export type UpdateBodyFragment = (
@@ -8626,7 +8626,7 @@ export type getFeedQueryVariables = Exact<{
 
 export type getFeedQuery = { FeedCard: Array<(
     Pick<FeedCard, 'id' | 'message' | 'timestamp' | 'sender' | 'tag' | 'subjectMetadataPointer' | 'domain_id' | 'internalLink' | 'externalLink'>
-    & { subject?: Maybe<Pick<FeedItemEntity, 'id' | 'name' | 'playerType'>>, object?: Maybe<Pick<FeedItemEntity, 'id' | 'name' | 'playerType'>>, embed?: Maybe<Pick<FeedItemEmbed, 'key' | 'pointer' | 'protocol' | 'content'>> }
+    & { subject?: Maybe<Pick<FeedItemEntity, 'id' | 'name' | 'playerType'>>, object?: Maybe<Pick<FeedItemEntity, 'id' | 'name' | 'playerType'>>, richTextContent?: Maybe<Pick<RawMetadata, 'protocol' | 'pointer'>>, embed?: Maybe<Pick<FeedItemEmbed, 'key' | 'pointer' | 'protocol' | 'content'>> }
   )> };
 
 export type getEntityFeedQueryVariables = Exact<{
@@ -8640,10 +8640,10 @@ export type getEntityFeedQueryVariables = Exact<{
 
 export type getEntityFeedQuery = { subjectItems: Array<(
     Pick<FeedCard, 'id' | 'message' | 'timestamp' | 'sender' | 'tag' | 'subjectMetadataPointer' | 'domain_id' | 'internalLink' | 'externalLink'>
-    & { subject?: Maybe<Pick<FeedItemEntity, 'id' | 'name' | 'playerType'>>, object?: Maybe<Pick<FeedItemEntity, 'id' | 'name' | 'playerType'>>, embed?: Maybe<Pick<FeedItemEmbed, 'key' | 'pointer' | 'protocol' | 'content'>> }
+    & { subject?: Maybe<Pick<FeedItemEntity, 'id' | 'name' | 'playerType'>>, object?: Maybe<Pick<FeedItemEntity, 'id' | 'name' | 'playerType'>>, richTextContent?: Maybe<Pick<RawMetadata, 'protocol' | 'pointer'>>, embed?: Maybe<Pick<FeedItemEmbed, 'key' | 'pointer' | 'protocol' | 'content'>> }
   )>, objectItems: Array<(
     Pick<FeedCard, 'id' | 'message' | 'timestamp' | 'sender' | 'tag' | 'subjectMetadataPointer' | 'domain_id' | 'internalLink' | 'externalLink'>
-    & { subject?: Maybe<Pick<FeedItemEntity, 'id' | 'name' | 'playerType'>>, object?: Maybe<Pick<FeedItemEntity, 'id' | 'name' | 'playerType'>>, embed?: Maybe<Pick<FeedItemEmbed, 'key' | 'pointer' | 'protocol' | 'content'>> }
+    & { subject?: Maybe<Pick<FeedItemEntity, 'id' | 'name' | 'playerType'>>, object?: Maybe<Pick<FeedItemEntity, 'id' | 'name' | 'playerType'>>, richTextContent?: Maybe<Pick<RawMetadata, 'protocol' | 'pointer'>>, embed?: Maybe<Pick<FeedItemEmbed, 'key' | 'pointer' | 'protocol' | 'content'>> }
   )> };
 
 export type GameManagerDataFragment = (
@@ -8867,6 +8867,10 @@ export const FeedDataFragmentDoc = gql`
     id
     name
     playerType
+  }
+  richTextContent {
+    protocol
+    pointer
   }
   embed {
     key
