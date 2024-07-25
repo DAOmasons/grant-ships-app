@@ -30,6 +30,8 @@ export type FeedCardUI = {
   };
   sender: string;
   richTextContent?: Content;
+  internalLink?: string;
+  externalLink?: string;
 };
 
 export enum MilestoneStatus {

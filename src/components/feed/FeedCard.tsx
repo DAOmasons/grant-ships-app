@@ -11,7 +11,7 @@ import {
   Text,
   useMantineTheme,
 } from '@mantine/core';
-import { ReactNode, useEffect, useMemo, useRef } from 'react';
+import { ReactNode, useEffect, useMemo, useRef, useState } from 'react';
 import { Address, formatEther } from 'viem';
 import { useEnsName } from 'wagmi';
 import { ensConfig } from '../../utils/config';
@@ -27,11 +27,11 @@ import classes from './FeedStyles.module.css';
 import { secondsToShortRelativeTime } from '../../utils/time';
 import { Link } from 'react-router-dom';
 import { GAME_TOKEN } from '../../constants/gameSetup';
-import { useIntersection } from '@mantine/hooks';
-import { FacilitatorBadge, ProjectBadge, ShipBadge } from '../RoleBadges';
+import { useElementSize, useIntersection } from '@mantine/hooks';
 import { IconAward } from '@tabler/icons-react';
 import { RTDisplay } from '../PostDrawer';
 import { PlayerAvatar } from '../PlayerAvatar';
+import { Content } from '@tiptap/react';
 
 const hoverCardProps: HoverCardProps = {
   position: 'bottom-start',
@@ -122,6 +122,8 @@ export const FeedCard = ({
   cardCount,
   onIntersect,
   richTextContent,
+  internalLink,
+  externalLink,
 }: FeedCardUI & {
   cardIndex: number;
   cardCount: number;
@@ -168,8 +170,8 @@ export const FeedCard = ({
 
   const entityUrl = getUrlByEntityType(subject.playerType, subject.id);
 
-  return (
-    <Box pt={'lg'} ref={observer.ref}>
+  const Inner = (
+    <>
       <Group gap={8}>
         <HoverCard {...hoverCardProps}>
           <HoverCard.Target>
@@ -204,11 +206,7 @@ export const FeedCard = ({
               {formattedFeedMessage}
             </Text>
           )}
-          {richTextContent && (
-            <Box style={{ overflowY: 'hidden' }} mah="300px">
-              <RTDisplay minified content={richTextContent} />
-            </Box>
-          )}
+          {richTextContent && <RichTextDisplay content={richTextContent} />}
           {embedText && (
             <Spoiler
               mb={'xs'}
@@ -232,6 +230,81 @@ export const FeedCard = ({
         </Text>
       </Box>
       <Divider />
+    </>
+  );
+
+  if (internalLink) {
+    return (
+      <Box
+        component={Link}
+        ref={observer.ref}
+        to={internalLink}
+        pt={'lg'}
+        style={{ textDecoration: 'none' }}
+      >
+        {Inner}
+      </Box>
+    );
+  }
+
+  if (externalLink) {
+    return (
+      <Box
+        component="a"
+        ref={observer.ref}
+        href={externalLink}
+        style={{ textDecoration: 'none' }}
+        pt={'lg'}
+      >
+        {Inner}
+      </Box>
+    );
+  }
+
+  return (
+    <Box pt={'lg'} ref={observer.ref}>
+      {Inner}
+    </Box>
+  );
+};
+
+const RichTextDisplay = ({
+  content,
+  maxHeight = 300,
+  internalLink,
+  externalLink,
+}: {
+  content: Content;
+  maxHeight?: number;
+  internalLink?: string;
+  externalLink?: string;
+}) => {
+  const { ref, height } = useElementSize();
+  const [isMaxHeight, setIsMaxHeight] = useState(false);
+  const theme = useMantineTheme();
+
+  useEffect(() => {
+    if (height >= maxHeight) {
+      setIsMaxHeight(true);
+    }
+  }, [height]);
+
+  return (
+    <Box className={classes.richTextDisplay} ref={ref}>
+      <RTDisplay minified content={content} />
+      {isMaxHeight && <Box className={classes.fade}></Box>}
+      {isMaxHeight && (
+        <Text
+          fz="sm"
+          fw={600}
+          c={theme.colors.blue[4]}
+          className={classes.readMore}
+          component={Link}
+          to="/post"
+        >
+          See More
+        </Text>
+      )}
     </Box>
   );
 };

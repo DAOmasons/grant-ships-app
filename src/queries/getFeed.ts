@@ -123,6 +123,8 @@ export const resolveFeedItem = async (
     sender: item.sender!!,
     embedText,
     richTextContent,
+    internalLink: item.internalLink || undefined,
+    externalLink: item.externalLink || undefined,
   };
 };
 
