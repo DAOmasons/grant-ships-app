@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import { getBuiltGraphSDK } from '../../.graphclient';
 import { useChainId } from 'wagmi';
 import { resolveProjectMetadata } from '../../resolvers/projectResolvers';
-import { Box, Divider, Group, Text } from '@mantine/core';
+import { Box, Divider, Group, Skeleton, Text } from '@mantine/core';
 import { resolveRichTextMetadata } from '../../resolvers/updates';
 import { PlayerAvatar } from '../PlayerAvatar';
 import { useMemo } from 'react';
@@ -62,15 +62,23 @@ export const RichTextUpdate = () => {
   }, [update]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return (
+      <MainSection maw={675}>
+        <PageTitle title="Post" />
+        <Box>
+          <Skeleton height={40} mt={'xl'} w={250} />
+          <Skeleton mt="lg" height={400} ml={54} w="100%" />
+        </Box>
+      </MainSection>
+    );
   }
 
   if (error) {
-    return <div>Error: {error.message}</div>;
+    return <MainSection maw={675}>Error: {error.message}</MainSection>;
   }
 
   if (!update || !update.content || !update.posterProfile) {
-    return <div>No update found</div>;
+    return <MainSection maw={675}>404: No update found</MainSection>;
   }
 
   return (
@@ -90,7 +98,7 @@ export const RichTextUpdate = () => {
           {time}
         </Text>
       </Group>
-      <Box ml={54} pt={'lg'}>
+      <Box ml={54} mt={'lg'}>
         <RTDisplay content={update.content} />
         <Divider mt="lg" />
         {update.postedBy && (
