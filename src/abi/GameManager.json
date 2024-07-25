@@ -24,6 +24,7 @@
   { "inputs": [], "name": "IS_APPROVED_STRATEGY", "type": "error" },
   { "inputs": [], "name": "MISMATCH", "type": "error" },
   { "inputs": [], "name": "NONCE_NOT_AVAILABLE", "type": "error" },
+  { "inputs": [], "name": "NON_ZERO_VALUE", "type": "error" },
   { "inputs": [], "name": "NOT_APPROVED_STRATEGY", "type": "error" },
   { "inputs": [], "name": "NOT_ENOUGH_FUNDS", "type": "error" },
   { "inputs": [], "name": "NOT_IMPLEMENTED", "type": "error" },
@@ -784,17 +785,6 @@
       },
       {
         "components": [
-          { "internalType": "bool", "name": "registryGating", "type": "bool" },
-          {
-            "internalType": "bool",
-            "name": "metadataRequired",
-            "type": "bool"
-          },
-          {
-            "internalType": "bool",
-            "name": "grantAmountRequired",
-            "type": "bool"
-          },
           { "internalType": "string", "name": "shipName", "type": "string" },
           {
             "components": [

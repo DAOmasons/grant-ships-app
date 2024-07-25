@@ -71,8 +71,6 @@ export const SHIP_AMOUNT = 2;
 export const NETWORK_ID =
   import.meta.env.VITE_RUNTIME_ENV === 'dev' ? arbitrumSepolia.id : arbitrum.id;
 
-console.log('Runtime Environment', import.meta.env.VITE_RUNTIME_ENV);
-
 export const SUBGRAPH_URL =
   import.meta.env.VITE_RUNTIME_ENV === 'dev'
     ? 'api.goldsky.com/api/public/project_clruaxx0m7yn101uj2rmi6mfj/subgraphs/gs-arb-sepolia/1.0.6/gn'

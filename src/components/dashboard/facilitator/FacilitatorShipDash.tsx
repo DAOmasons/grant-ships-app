@@ -6,7 +6,7 @@ import { Dispatch, ReactNode, SetStateAction, useState } from 'react';
 import { ApplicationReview } from './ApplicationReview';
 import { useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
-import { decodeAbiParameters, parseAbiParameters } from 'viem';
+import { Hex, decodeAbiParameters, parseAbiParameters } from 'viem';
 import { getGatewayUrl, getIpfsJson } from '../../../utils/ipfs/get';
 import GameManagerAbi from '../../../abi/GameManager.json';
 import { ShipApplicationMetadata } from '../../../utils/ipfs/metadataValidation';
@@ -85,7 +85,7 @@ export const FacilitatorShipDash = ({
 
     const decodedApplicationData = decodeAbiParameters(
       parseAbiParameters('address, string, (uint256, string)'),
-      ship.shipApplicationBytesData
+      ship.shipApplicationBytesData as Hex
     );
 
     if (!decodedApplicationData) {
@@ -196,19 +196,27 @@ export const FacilitatorShipDash = ({
       return;
     }
 
+    // const shipInitData = [
+    //   ship.name,
+    //   [1n, ship.profilePointer],
+    //   ship.id,
+    //   hatId || 1n,
+    //   HATS.FACILITATOR,
+    // ];
+
     const shipInitData = {
-      registryGating: true,
-      metadataRequired: true,
-      grantAmountRequired: true,
       shipName: ship.name,
-      shipMetadata: {
-        protocol: 1n,
-        pointer: ship.profilePointer,
-      },
+      shipMetadata: [1n, ship.profilePointer],
       recipientId: ship.id,
-      operatorHatId: hatId,
+      operatorHatId: hatId || 0n,
       facilitatorHatId: HATS.FACILITATOR,
     };
+
+    console.log('shipReviewData', shipReviewData);
+    console.log('isApproved', isApproved);
+    console.log('shipInitData', shipInitData);
+    console.log('ADDR.GS_FACTORY', ADDR.GS_FACTORY);
+    console.log('ipfsHash', pinRes.IpfsHash);
 
     tx({
       writeContractParams: {
@@ -220,7 +228,7 @@ export const FacilitatorShipDash = ({
           isApproved ? GameStatus.Accepted : GameStatus.Rejected,
           shipInitData,
           ADDR.GS_FACTORY,
-          { protocol: 1n, pointer: pinRes.IpfsHash },
+          [1n, pinRes.IpfsHash],
         ],
       },
       onComplete() {
