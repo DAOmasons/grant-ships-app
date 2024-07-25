@@ -28,6 +28,11 @@ const displayParams: Record<string, DisplayParams> = {
     fontSize: 'md',
     avatarSize: 40,
   },
+  fullPage: {
+    gap: 'sm',
+    fontSize: 'md',
+    avatarSize: 40,
+  },
 };
 
 export const PlayerAvatar = ({

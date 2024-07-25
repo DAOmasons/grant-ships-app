@@ -1,16 +1,17 @@
-import React from 'react';
 import { MainSection, PageTitle } from '../../layout/Sections';
 import { RTDisplay } from '../PostDrawer';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { getBuiltGraphSDK } from '../../.graphclient';
 import { useChainId } from 'wagmi';
-import { getIpfsJson } from '../../utils/ipfs/get';
-import { tiptapContentSchema } from '../forms/validationSchemas/tiptap';
 import { resolveProjectMetadata } from '../../resolvers/projectResolvers';
-import { Content } from '@tiptap/react';
-import { Box } from '@mantine/core';
+import { Box, Divider, Group, Text } from '@mantine/core';
 import { resolveRichTextMetadata } from '../../resolvers/updates';
+import { PlayerAvatar } from '../PlayerAvatar';
+import { useMemo } from 'react';
+import { secondsToShortRelativeTime } from '../../utils/time';
+import { AddressAvatar } from '../AddressAvatar';
+import { Address } from 'viem';
 
 export const getRTUpdate = async (id: string, chainId: number) => {
   const { getRTUpdate } = getBuiltGraphSDK();
@@ -40,12 +41,12 @@ export const getRTUpdate = async (id: string, chainId: number) => {
   };
 };
 
-export const LongForm = () => {
+export const RichTextUpdate = () => {
   const { id } = useParams();
   const chainId = useChainId();
 
   const {
-    data: content,
+    data: update,
     isLoading,
     error,
   } = useQuery({
@@ -53,6 +54,12 @@ export const LongForm = () => {
     queryFn: () => getRTUpdate(id as string, chainId),
     enabled: !!id,
   });
+
+  const time = useMemo(() => {
+    if (!update?.timestamp) return '';
+
+    return secondsToShortRelativeTime(update.timestamp);
+  }, [update]);
 
   if (isLoading) {
     return <div>Loading...</div>;
@@ -62,15 +69,38 @@ export const LongForm = () => {
     return <div>Error: {error.message}</div>;
   }
 
-  if (!content || !content.content || !content.posterProfile) {
-    return <div>No content found</div>;
+  if (!update || !update.content || !update.posterProfile) {
+    return <div>No update found</div>;
   }
 
   return (
-    <MainSection>
+    <MainSection maw={675}>
       <PageTitle title="Post" />
-      <Box>
-        <RTDisplay content={content.content} />
+      <Group mt="xl" gap={8}>
+        <PlayerAvatar
+          display="fullPage"
+          playerType={update.playerType}
+          imgUrl={update?.posterProfile.imgUrl}
+          name={update?.posterProfile.name}
+        />
+        <Text size="sm" opacity={0.8}>
+          ·
+        </Text>
+        <Text size="sm" opacity={0.8}>
+          {time}
+        </Text>
+      </Group>
+      <Box ml={54} pt={'lg'}>
+        <RTDisplay content={update.content} />
+        <Divider mt="lg" />
+        {update.postedBy && (
+          <Group mt="lg" gap={'md'}>
+            <Text size="sm" opacity={0.8}>
+              Posted by:{' '}
+            </Text>
+            <AddressAvatar address={update.postedBy as Address} canCopy />
+          </Group>
+        )}
       </Box>
     </MainSection>
   );

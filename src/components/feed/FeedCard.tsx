@@ -206,7 +206,13 @@ export const FeedCard = ({
               {formattedFeedMessage}
             </Text>
           )}
-          {richTextContent && <RichTextDisplay content={richTextContent} />}
+          {richTextContent && (
+            <RichTextDisplay
+              content={richTextContent}
+              internalLink={internalLink}
+              externalLink={externalLink}
+            />
+          )}
           {embedText && (
             <Spoiler
               mb={'xs'}
@@ -235,28 +241,30 @@ export const FeedCard = ({
 
   if (internalLink) {
     return (
-      <Box
-        component={Link}
-        ref={observer.ref}
-        to={internalLink}
-        pt={'lg'}
-        style={{ textDecoration: 'none' }}
-      >
-        {Inner}
+      <Box pt={'lg'}>
+        <Box
+          component={Link}
+          ref={observer.ref}
+          to={internalLink}
+          style={{ textDecoration: 'none' }}
+        >
+          {Inner}
+        </Box>
       </Box>
     );
   }
 
   if (externalLink) {
     return (
-      <Box
-        component="a"
-        ref={observer.ref}
-        href={externalLink}
-        style={{ textDecoration: 'none' }}
-        pt={'lg'}
-      >
-        {Inner}
+      <Box pt={'lg'}>
+        <Box
+          component="a"
+          ref={observer.ref}
+          href={externalLink}
+          style={{ textDecoration: 'none' }}
+        >
+          {Inner}
+        </Box>
       </Box>
     );
   }
@@ -270,7 +278,7 @@ export const FeedCard = ({
 
 const RichTextDisplay = ({
   content,
-  maxHeight = 300,
+  maxHeight = 350,
   internalLink,
   externalLink,
 }: {
@@ -289,22 +297,44 @@ const RichTextDisplay = ({
     }
   }, [height]);
 
+  const readMoreLink = useMemo(() => {
+    if (internalLink) {
+      return (
+        <Text
+          fz="sm"
+          fw={500}
+          c={theme.colors.blue[4]}
+          component={Link}
+          to={internalLink}
+          className={classes.readMore}
+        >
+          Read More
+        </Text>
+      );
+    }
+    if (externalLink) {
+      return (
+        <Text
+          fz="sm"
+          fw={500}
+          c={theme.colors.blue[4]}
+          component={'a'}
+          href={externalLink}
+          rel="noreferrer"
+          target="_blank"
+          className={classes.readMore}
+        >
+          Read More
+        </Text>
+      );
+    }
+  }, [internalLink, externalLink]);
+
   return (
     <Box className={classes.richTextDisplay} ref={ref}>
       <RTDisplay minified content={content} />
       {isMaxHeight && <Box className={classes.fade}></Box>}
-      {isMaxHeight && (
-        <Text
-          fz="sm"
-          fw={600}
-          c={theme.colors.blue[4]}
-          className={classes.readMore}
-          component={Link}
-          to="/post"
-        >
-          See More
-        </Text>
-      )}
+      {isMaxHeight && readMoreLink}
     </Box>
   );
 };
@@ -356,7 +386,6 @@ export const HoverCardContent = ({
       <Text size="lg" mb={4} fw={600}>
         {subject.name}
       </Text>
-
       {roleDisplay}
       <Text size="sm" lineClamp={2}>
         {subject.description}

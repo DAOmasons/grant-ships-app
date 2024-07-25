@@ -182,7 +182,7 @@ export const ProjectUpdatesPanel = ({
               imgUrl: project?.imgUrl,
               playerType: Player.Ship,
             }}
-            content={post.content.text}
+            message={post.content.text}
           />
         ))
       ) : (

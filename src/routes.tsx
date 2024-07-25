@@ -17,7 +17,7 @@ import { Vote } from './pages/Vote';
 import { VoteProvider } from './contexts/VoteContext';
 import { ADDR } from './constants/addresses';
 import { RegisterProject } from './pages/RegisterProject';
-import { LongForm } from './components/feed/LongForm';
+import { RichTextUpdate } from './components/feed/RichTextUpdate';
 
 export const ClientRoutes = () => {
   return (
@@ -51,7 +51,7 @@ export const ClientRoutes = () => {
       <Route path="ship-operator-dashboard/:id" element={<ShipOpDashboard />} />
       <Route path="my-projects/:id" element={<MyProjects />} />
       <Route path="dev-panel" element={<DevPanel />} />
-      <Route path="post/:id" element={<LongForm />} />
+      <Route path="post/:id" element={<RichTextUpdate />} />
       <Route
         path="vote"
         element={
