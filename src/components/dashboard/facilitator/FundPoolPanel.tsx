@@ -11,6 +11,7 @@ import { Alert, Box, Skeleton, Text, TextInput } from '@mantine/core';
 import { useState } from 'react';
 import AlloAbi from '../../../abi/Allo.json';
 import { TxButton } from '../../TxButton';
+import { useGameManager } from '../../../hooks/useGameMangers';
 
 export const FundPoolPanel = ({
   poolBalance,
@@ -26,6 +27,7 @@ export const FundPoolPanel = ({
 
   const { address } = useAccount();
   const { tx } = useTx();
+  const { gm, refetchGameManager } = useGameManager();
   const {
     data: queries,
     isLoading,
@@ -73,7 +75,7 @@ export const FundPoolPanel = ({
       writeContractParams: {
         functionName: 'approve',
         abi: erc20Abi,
-        address: GAME_TOKEN.ADDRESS as Address,
+        address: gm?.tokenAddress as Address,
         args: [ADDR.ALLO as Address, parseEther(roundAmount)],
       },
       viewParams: {
@@ -82,6 +84,7 @@ export const FundPoolPanel = ({
       writeContractOptions: {
         onSuccess: () => {
           refetch();
+          refetchGameManager();
         },
       },
     });
@@ -93,7 +96,7 @@ export const FundPoolPanel = ({
         functionName: 'fundPool',
         abi: AlloAbi,
         address: ADDR.ALLO,
-        args: [GAME_MANAGER.POOL.ID, parseEther(inputText.toString())],
+        args: [gm?.poolId, parseEther(inputText.toString())],
       },
       viewParams: {
         awaitEnvioPoll: false,
@@ -101,6 +104,7 @@ export const FundPoolPanel = ({
       writeContractOptions: {
         onSuccess: () => {
           refetch();
+          refetchGameManager();
         },
       },
     });

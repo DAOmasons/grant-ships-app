@@ -15,6 +15,7 @@ import AlloAbi from '../../../abi/Allo.json';
 import { ADDR } from '../../../constants/addresses';
 import { TxButton } from '../../TxButton';
 import { useQueryClient } from '@tanstack/react-query';
+import { useGameManager } from '../../../hooks/useGameMangers';
 
 export const AllocationPanel = ({
   poolBalance,
@@ -31,6 +32,7 @@ export const AllocationPanel = ({
 
   const theme = useMantineTheme();
   const { tx } = useTx();
+  const { gm } = useGameManager();
 
   const [shipData, setShipData] = useState<Record<string, number>>({});
 
@@ -62,7 +64,7 @@ export const AllocationPanel = ({
         functionName: 'allocate',
         abi: AlloAbi,
         address: ADDR.ALLO,
-        args: [GAME_MANAGER.POOL.ID, encoded],
+        args: [gm?.poolId, encoded],
       },
       onComplete() {
         queryClient.invalidateQueries({ queryKey: ['game-manager-state'] });

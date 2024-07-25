@@ -4,23 +4,11 @@ import { ADDR_PROD, ADDR_TESTNET } from './addresses';
 export const GAME_MANAGER_TESTNET = {
   ADDRESS: ADDR_TESTNET.GAME_MANAGER,
   FACTORY: ADDR_TESTNET.GS_FACTORY,
-  PROFILE: {
-    ID: '0xab00163cc5a78abcc61d1e59a9ae56ae80076dc8b77c4358f03ab0a2575cddde7',
-  },
-  POOL: {
-    ID: 340n,
-  },
 };
 
 export const GAME_MANAGER_PROD = {
   ADDRESS: ADDR_PROD.GAME_MANAGER,
   FACTORY: ADDR_PROD.GS_FACTORY,
-  PROFILE: {
-    ID: '0x47465450fe64330c66074ed65c8aef71e196088c72eb71fb19e86bfc53f4206e',
-  },
-  POOL: {
-    ID: 22n,
-  },
 };
 
 export const DAO_MASONS = {
@@ -78,7 +66,7 @@ export const GAME_TOKEN =
 export const HATS =
   import.meta.env.VITE_RUNTIME_ENV === 'dev' ? HATS_DEV : HATS_PROD;
 
-export const SHIP_AMOUNT = 3;
+export const SHIP_AMOUNT = 2;
 
 export const NETWORK_ID =
   import.meta.env.VITE_RUNTIME_ENV === 'dev' ? arbitrumSepolia.id : arbitrum.id;
