@@ -18,6 +18,7 @@ import { VoteProvider } from './contexts/VoteContext';
 import { ADDR } from './constants/addresses';
 import { RegisterProject } from './pages/RegisterProject';
 import { RichTextUpdate } from './components/feed/RichTextUpdate';
+import { Grant } from './pages/Grant';
 
 export const ClientRoutes = () => {
   return (
@@ -34,6 +35,7 @@ export const ClientRoutes = () => {
         path="resubmit-funding/:shipId/:projectId"
         element={<ApplyFunding />}
       />
+      <Route path="grant/:id/*" element={<Grant />} />
       <Route path="ship/:id" element={<Ship />} />
       <Route path="project/:id/*" element={<Project />} />
       <Route path="facilitators" element={<Facilitators />} />

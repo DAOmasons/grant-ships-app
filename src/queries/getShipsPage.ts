@@ -19,6 +19,7 @@ const resolveProfileMetadata = async (
     console.error('Invalid metadata', validate.error);
     throw new Error('Invalid metadata');
   }
+
   return {
     id: shipCard.id,
     name: shipCard.name,
