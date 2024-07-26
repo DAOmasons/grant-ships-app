@@ -21,11 +21,9 @@ import {
   useParams,
 } from 'react-router-dom';
 import {
-  IconCode,
   IconFileDescription,
   IconPennant,
   IconRoute,
-  IconTimeline,
 } from '@tabler/icons-react';
 
 export const Grant = () => {

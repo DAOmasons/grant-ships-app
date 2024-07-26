@@ -68,9 +68,7 @@ const checkIsShipOperator = async (address: string) => {
     const isOperator = results.find((result) => result.isOperator);
 
     if (isOperator) {
-      const { getShipIdByHatId } = getBuiltGraphSDK({
-        apiEndpoint: SUBGRAPH_URL,
-      });
+      const { getShipIdByHatId } = getBuiltGraphSDK({});
       const result = await getShipIdByHatId({
         hatId: isOperator.hatId.toString(),
       });
@@ -117,7 +115,7 @@ const resolveShipApplicationProfile = async (
 
 export const getUserData = async (address: string): Promise<UserData> => {
   try {
-    const sdk = getBuiltGraphSDK({ apiEndpoint: SUBGRAPH_URL });
+    const sdk = getBuiltGraphSDK();
     const { getUserData } = sdk;
     const data = await getUserData({ id: address });
     const isFacilitator = await checkIsFacilitator(address);

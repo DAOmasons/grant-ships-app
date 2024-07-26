@@ -12,11 +12,11 @@ fragment ShipDash on GrantShip {
   balance
 }
 
-query getShipDash($id: ID!) {
-  grantShip(id: $id) {
+query getShipDash($id: String!) {
+  GrantShip(where: { id: { _eq: $id } }) {
     ...ShipDash
-    grants {
-      ...GrantDash
-    }
+    # grants {
+    #   ...GrantDash
+    # }
   }
 }

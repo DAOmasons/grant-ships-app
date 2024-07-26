@@ -27,6 +27,187 @@ export type Scalars = {
   timestamptz: any;
 };
 
+/** columns and relationships of "Application" */
+export type Application = {
+  amount: Scalars['numeric'];
+  db_write_timestamp?: Maybe<Scalars['timestamp']>;
+  /** An object relationship */
+  grant?: Maybe<Grant>;
+  grant_id: Scalars['String'];
+  id: Scalars['String'];
+  /** An object relationship */
+  metadata?: Maybe<RawMetadata>;
+  metadata_id: Scalars['String'];
+  receivingAddress: Scalars['String'];
+  status: Scalars['Int'];
+  timestamp: Scalars['Int'];
+};
+
+/** order by aggregate values of table "Application" */
+export type Application_aggregate_order_by = {
+  avg?: InputMaybe<Application_avg_order_by>;
+  count?: InputMaybe<order_by>;
+  max?: InputMaybe<Application_max_order_by>;
+  min?: InputMaybe<Application_min_order_by>;
+  stddev?: InputMaybe<Application_stddev_order_by>;
+  stddev_pop?: InputMaybe<Application_stddev_pop_order_by>;
+  stddev_samp?: InputMaybe<Application_stddev_samp_order_by>;
+  sum?: InputMaybe<Application_sum_order_by>;
+  var_pop?: InputMaybe<Application_var_pop_order_by>;
+  var_samp?: InputMaybe<Application_var_samp_order_by>;
+  variance?: InputMaybe<Application_variance_order_by>;
+};
+
+/** order by avg() on columns of table "Application" */
+export type Application_avg_order_by = {
+  amount?: InputMaybe<order_by>;
+  status?: InputMaybe<order_by>;
+  timestamp?: InputMaybe<order_by>;
+};
+
+/** Boolean expression to filter rows from the table "Application". All fields are combined with a logical 'AND'. */
+export type Application_bool_exp = {
+  _and?: InputMaybe<Array<Application_bool_exp>>;
+  _not?: InputMaybe<Application_bool_exp>;
+  _or?: InputMaybe<Array<Application_bool_exp>>;
+  amount?: InputMaybe<numeric_comparison_exp>;
+  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
+  grant?: InputMaybe<Grant_bool_exp>;
+  grant_id?: InputMaybe<String_comparison_exp>;
+  id?: InputMaybe<String_comparison_exp>;
+  metadata?: InputMaybe<RawMetadata_bool_exp>;
+  metadata_id?: InputMaybe<String_comparison_exp>;
+  receivingAddress?: InputMaybe<String_comparison_exp>;
+  status?: InputMaybe<Int_comparison_exp>;
+  timestamp?: InputMaybe<Int_comparison_exp>;
+};
+
+/** order by max() on columns of table "Application" */
+export type Application_max_order_by = {
+  amount?: InputMaybe<order_by>;
+  db_write_timestamp?: InputMaybe<order_by>;
+  grant_id?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  metadata_id?: InputMaybe<order_by>;
+  receivingAddress?: InputMaybe<order_by>;
+  status?: InputMaybe<order_by>;
+  timestamp?: InputMaybe<order_by>;
+};
+
+/** order by min() on columns of table "Application" */
+export type Application_min_order_by = {
+  amount?: InputMaybe<order_by>;
+  db_write_timestamp?: InputMaybe<order_by>;
+  grant_id?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  metadata_id?: InputMaybe<order_by>;
+  receivingAddress?: InputMaybe<order_by>;
+  status?: InputMaybe<order_by>;
+  timestamp?: InputMaybe<order_by>;
+};
+
+/** Ordering options when selecting data from "Application". */
+export type Application_order_by = {
+  amount?: InputMaybe<order_by>;
+  db_write_timestamp?: InputMaybe<order_by>;
+  grant?: InputMaybe<Grant_order_by>;
+  grant_id?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  metadata?: InputMaybe<RawMetadata_order_by>;
+  metadata_id?: InputMaybe<order_by>;
+  receivingAddress?: InputMaybe<order_by>;
+  status?: InputMaybe<order_by>;
+  timestamp?: InputMaybe<order_by>;
+};
+
+/** select columns of table "Application" */
+export type Application_select_column =
+  /** column name */
+  | 'amount'
+  /** column name */
+  | 'db_write_timestamp'
+  /** column name */
+  | 'grant_id'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'metadata_id'
+  /** column name */
+  | 'receivingAddress'
+  /** column name */
+  | 'status'
+  /** column name */
+  | 'timestamp';
+
+/** order by stddev() on columns of table "Application" */
+export type Application_stddev_order_by = {
+  amount?: InputMaybe<order_by>;
+  status?: InputMaybe<order_by>;
+  timestamp?: InputMaybe<order_by>;
+};
+
+/** order by stddev_pop() on columns of table "Application" */
+export type Application_stddev_pop_order_by = {
+  amount?: InputMaybe<order_by>;
+  status?: InputMaybe<order_by>;
+  timestamp?: InputMaybe<order_by>;
+};
+
+/** order by stddev_samp() on columns of table "Application" */
+export type Application_stddev_samp_order_by = {
+  amount?: InputMaybe<order_by>;
+  status?: InputMaybe<order_by>;
+  timestamp?: InputMaybe<order_by>;
+};
+
+/** Streaming cursor of the table "Application" */
+export type Application_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: Application_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Application_stream_cursor_value_input = {
+  amount?: InputMaybe<Scalars['numeric']>;
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
+  grant_id?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['String']>;
+  metadata_id?: InputMaybe<Scalars['String']>;
+  receivingAddress?: InputMaybe<Scalars['String']>;
+  status?: InputMaybe<Scalars['Int']>;
+  timestamp?: InputMaybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "Application" */
+export type Application_sum_order_by = {
+  amount?: InputMaybe<order_by>;
+  status?: InputMaybe<order_by>;
+  timestamp?: InputMaybe<order_by>;
+};
+
+/** order by var_pop() on columns of table "Application" */
+export type Application_var_pop_order_by = {
+  amount?: InputMaybe<order_by>;
+  status?: InputMaybe<order_by>;
+  timestamp?: InputMaybe<order_by>;
+};
+
+/** order by var_samp() on columns of table "Application" */
+export type Application_var_samp_order_by = {
+  amount?: InputMaybe<order_by>;
+  status?: InputMaybe<order_by>;
+  timestamp?: InputMaybe<order_by>;
+};
+
+/** order by variance() on columns of table "Application" */
+export type Application_variance_order_by = {
+  amount?: InputMaybe<order_by>;
+  status?: InputMaybe<order_by>;
+  timestamp?: InputMaybe<order_by>;
+};
+
 /** Boolean expression to compare columns of type "Boolean". All fields are combined with logical 'AND'. */
 export type Boolean_comparison_exp = {
   _eq?: InputMaybe<Scalars['Boolean']>;
@@ -1574,14 +1755,52 @@ export type GameRound_variance_order_by = {
 
 /** columns and relationships of "Grant" */
 export type Grant = {
+  amount?: Maybe<Scalars['numeric']>;
+  applicationApproved?: Maybe<Scalars['Boolean']>;
+  /** An array relationship */
+  applications: Array<Application>;
+  /** An object relationship */
+  approvedMilestones?: Maybe<MilestoneSet>;
+  approvedMilestones_id?: Maybe<Scalars['String']>;
   db_write_timestamp?: Maybe<Scalars['timestamp']>;
+  facilitatorApproved?: Maybe<Scalars['Boolean']>;
+  /** An object relationship */
+  gameManager?: Maybe<GameManager>;
+  gameManager_id: Scalars['String'];
   id: Scalars['String'];
+  isRequestingFacilitator?: Maybe<Scalars['Boolean']>;
+  lastUpdated: Scalars['Int'];
+  /** An array relationship */
+  milestoneDrafts: Array<MilestoneSet>;
+  milestonesApproved?: Maybe<Scalars['Boolean']>;
+  milestonesStatus: Scalars['Int'];
   /** An object relationship */
   project?: Maybe<Project>;
   project_id: Scalars['String'];
   /** An object relationship */
   ship?: Maybe<GrantShip>;
   ship_id: Scalars['String'];
+  status: Scalars['Int'];
+};
+
+
+/** columns and relationships of "Grant" */
+export type GrantapplicationsArgs = {
+  distinct_on?: InputMaybe<Array<Application_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Application_order_by>>;
+  where?: InputMaybe<Application_bool_exp>;
+};
+
+
+/** columns and relationships of "Grant" */
+export type GrantmilestoneDraftsArgs = {
+  distinct_on?: InputMaybe<Array<MilestoneSet_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<MilestoneSet_order_by>>;
+  where?: InputMaybe<MilestoneSet_bool_exp>;
 };
 
 /** columns and relationships of "GrantShip" */
@@ -1596,6 +1815,9 @@ export type GrantShip = {
   applicationSubmittedTime?: Maybe<Scalars['Int']>;
   approvedTime?: Maybe<Scalars['Int']>;
   balance: Scalars['numeric'];
+  /** An object relationship */
+  beaconMessage?: Maybe<RawMetadata>;
+  beaconMessage_id?: Maybe<Scalars['String']>;
   chainId: Scalars['Int'];
   db_write_timestamp?: Maybe<Scalars['timestamp']>;
   /** An object relationship */
@@ -1694,6 +1916,8 @@ export type GrantShip_bool_exp = {
   applicationSubmittedTime?: InputMaybe<Int_comparison_exp>;
   approvedTime?: InputMaybe<Int_comparison_exp>;
   balance?: InputMaybe<numeric_comparison_exp>;
+  beaconMessage?: InputMaybe<RawMetadata_bool_exp>;
+  beaconMessage_id?: InputMaybe<String_comparison_exp>;
   chainId?: InputMaybe<Int_comparison_exp>;
   db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
   gameManager?: InputMaybe<GameManager_bool_exp>;
@@ -1741,6 +1965,7 @@ export type GrantShip_max_order_by = {
   applicationSubmittedTime?: InputMaybe<order_by>;
   approvedTime?: InputMaybe<order_by>;
   balance?: InputMaybe<order_by>;
+  beaconMessage_id?: InputMaybe<order_by>;
   chainId?: InputMaybe<order_by>;
   db_write_timestamp?: InputMaybe<order_by>;
   gameManager_id?: InputMaybe<order_by>;
@@ -1772,6 +1997,7 @@ export type GrantShip_min_order_by = {
   applicationSubmittedTime?: InputMaybe<order_by>;
   approvedTime?: InputMaybe<order_by>;
   balance?: InputMaybe<order_by>;
+  beaconMessage_id?: InputMaybe<order_by>;
   chainId?: InputMaybe<order_by>;
   db_write_timestamp?: InputMaybe<order_by>;
   gameManager_id?: InputMaybe<order_by>;
@@ -1805,6 +2031,8 @@ export type GrantShip_order_by = {
   applicationSubmittedTime?: InputMaybe<order_by>;
   approvedTime?: InputMaybe<order_by>;
   balance?: InputMaybe<order_by>;
+  beaconMessage?: InputMaybe<RawMetadata_order_by>;
+  beaconMessage_id?: InputMaybe<order_by>;
   chainId?: InputMaybe<order_by>;
   db_write_timestamp?: InputMaybe<order_by>;
   gameManager?: InputMaybe<GameManager_order_by>;
@@ -1858,6 +2086,8 @@ export type GrantShip_select_column =
   | 'approvedTime'
   /** column name */
   | 'balance'
+  /** column name */
+  | 'beaconMessage_id'
   /** column name */
   | 'chainId'
   /** column name */
@@ -1992,6 +2222,7 @@ export type GrantShip_stream_cursor_value_input = {
   applicationSubmittedTime?: InputMaybe<Scalars['Int']>;
   approvedTime?: InputMaybe<Scalars['Int']>;
   balance?: InputMaybe<Scalars['numeric']>;
+  beaconMessage_id?: InputMaybe<Scalars['String']>;
   chainId?: InputMaybe<Scalars['Int']>;
   db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
   gameManager_id?: InputMaybe<Scalars['String']>;
@@ -2237,9 +2468,25 @@ export type GrantShipsVoting_stream_cursor_value_input = {
 
 /** order by aggregate values of table "Grant" */
 export type Grant_aggregate_order_by = {
+  avg?: InputMaybe<Grant_avg_order_by>;
   count?: InputMaybe<order_by>;
   max?: InputMaybe<Grant_max_order_by>;
   min?: InputMaybe<Grant_min_order_by>;
+  stddev?: InputMaybe<Grant_stddev_order_by>;
+  stddev_pop?: InputMaybe<Grant_stddev_pop_order_by>;
+  stddev_samp?: InputMaybe<Grant_stddev_samp_order_by>;
+  sum?: InputMaybe<Grant_sum_order_by>;
+  var_pop?: InputMaybe<Grant_var_pop_order_by>;
+  var_samp?: InputMaybe<Grant_var_samp_order_by>;
+  variance?: InputMaybe<Grant_variance_order_by>;
+};
+
+/** order by avg() on columns of table "Grant" */
+export type Grant_avg_order_by = {
+  amount?: InputMaybe<order_by>;
+  lastUpdated?: InputMaybe<order_by>;
+  milestonesStatus?: InputMaybe<order_by>;
+  status?: InputMaybe<order_by>;
 };
 
 /** Boolean expression to filter rows from the table "Grant". All fields are combined with a logical 'AND'. */
@@ -2247,50 +2494,134 @@ export type Grant_bool_exp = {
   _and?: InputMaybe<Array<Grant_bool_exp>>;
   _not?: InputMaybe<Grant_bool_exp>;
   _or?: InputMaybe<Array<Grant_bool_exp>>;
+  amount?: InputMaybe<numeric_comparison_exp>;
+  applicationApproved?: InputMaybe<Boolean_comparison_exp>;
+  applications?: InputMaybe<Application_bool_exp>;
+  approvedMilestones?: InputMaybe<MilestoneSet_bool_exp>;
+  approvedMilestones_id?: InputMaybe<String_comparison_exp>;
   db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
+  facilitatorApproved?: InputMaybe<Boolean_comparison_exp>;
+  gameManager?: InputMaybe<GameManager_bool_exp>;
+  gameManager_id?: InputMaybe<String_comparison_exp>;
   id?: InputMaybe<String_comparison_exp>;
+  isRequestingFacilitator?: InputMaybe<Boolean_comparison_exp>;
+  lastUpdated?: InputMaybe<Int_comparison_exp>;
+  milestoneDrafts?: InputMaybe<MilestoneSet_bool_exp>;
+  milestonesApproved?: InputMaybe<Boolean_comparison_exp>;
+  milestonesStatus?: InputMaybe<Int_comparison_exp>;
   project?: InputMaybe<Project_bool_exp>;
   project_id?: InputMaybe<String_comparison_exp>;
   ship?: InputMaybe<GrantShip_bool_exp>;
   ship_id?: InputMaybe<String_comparison_exp>;
+  status?: InputMaybe<Int_comparison_exp>;
 };
 
 /** order by max() on columns of table "Grant" */
 export type Grant_max_order_by = {
+  amount?: InputMaybe<order_by>;
+  approvedMilestones_id?: InputMaybe<order_by>;
   db_write_timestamp?: InputMaybe<order_by>;
+  gameManager_id?: InputMaybe<order_by>;
   id?: InputMaybe<order_by>;
+  lastUpdated?: InputMaybe<order_by>;
+  milestonesStatus?: InputMaybe<order_by>;
   project_id?: InputMaybe<order_by>;
   ship_id?: InputMaybe<order_by>;
+  status?: InputMaybe<order_by>;
 };
 
 /** order by min() on columns of table "Grant" */
 export type Grant_min_order_by = {
+  amount?: InputMaybe<order_by>;
+  approvedMilestones_id?: InputMaybe<order_by>;
   db_write_timestamp?: InputMaybe<order_by>;
+  gameManager_id?: InputMaybe<order_by>;
   id?: InputMaybe<order_by>;
+  lastUpdated?: InputMaybe<order_by>;
+  milestonesStatus?: InputMaybe<order_by>;
   project_id?: InputMaybe<order_by>;
   ship_id?: InputMaybe<order_by>;
+  status?: InputMaybe<order_by>;
 };
 
 /** Ordering options when selecting data from "Grant". */
 export type Grant_order_by = {
+  amount?: InputMaybe<order_by>;
+  applicationApproved?: InputMaybe<order_by>;
+  applications_aggregate?: InputMaybe<Application_aggregate_order_by>;
+  approvedMilestones?: InputMaybe<MilestoneSet_order_by>;
+  approvedMilestones_id?: InputMaybe<order_by>;
   db_write_timestamp?: InputMaybe<order_by>;
+  facilitatorApproved?: InputMaybe<order_by>;
+  gameManager?: InputMaybe<GameManager_order_by>;
+  gameManager_id?: InputMaybe<order_by>;
   id?: InputMaybe<order_by>;
+  isRequestingFacilitator?: InputMaybe<order_by>;
+  lastUpdated?: InputMaybe<order_by>;
+  milestoneDrafts_aggregate?: InputMaybe<MilestoneSet_aggregate_order_by>;
+  milestonesApproved?: InputMaybe<order_by>;
+  milestonesStatus?: InputMaybe<order_by>;
   project?: InputMaybe<Project_order_by>;
   project_id?: InputMaybe<order_by>;
   ship?: InputMaybe<GrantShip_order_by>;
   ship_id?: InputMaybe<order_by>;
+  status?: InputMaybe<order_by>;
 };
 
 /** select columns of table "Grant" */
 export type Grant_select_column =
   /** column name */
+  | 'amount'
+  /** column name */
+  | 'applicationApproved'
+  /** column name */
+  | 'approvedMilestones_id'
+  /** column name */
   | 'db_write_timestamp'
+  /** column name */
+  | 'facilitatorApproved'
+  /** column name */
+  | 'gameManager_id'
   /** column name */
   | 'id'
   /** column name */
+  | 'isRequestingFacilitator'
+  /** column name */
+  | 'lastUpdated'
+  /** column name */
+  | 'milestonesApproved'
+  /** column name */
+  | 'milestonesStatus'
+  /** column name */
   | 'project_id'
   /** column name */
-  | 'ship_id';
+  | 'ship_id'
+  /** column name */
+  | 'status';
+
+/** order by stddev() on columns of table "Grant" */
+export type Grant_stddev_order_by = {
+  amount?: InputMaybe<order_by>;
+  lastUpdated?: InputMaybe<order_by>;
+  milestonesStatus?: InputMaybe<order_by>;
+  status?: InputMaybe<order_by>;
+};
+
+/** order by stddev_pop() on columns of table "Grant" */
+export type Grant_stddev_pop_order_by = {
+  amount?: InputMaybe<order_by>;
+  lastUpdated?: InputMaybe<order_by>;
+  milestonesStatus?: InputMaybe<order_by>;
+  status?: InputMaybe<order_by>;
+};
+
+/** order by stddev_samp() on columns of table "Grant" */
+export type Grant_stddev_samp_order_by = {
+  amount?: InputMaybe<order_by>;
+  lastUpdated?: InputMaybe<order_by>;
+  milestonesStatus?: InputMaybe<order_by>;
+  status?: InputMaybe<order_by>;
+};
 
 /** Streaming cursor of the table "Grant" */
 export type Grant_stream_cursor_input = {
@@ -2302,10 +2633,52 @@ export type Grant_stream_cursor_input = {
 
 /** Initial value of the column from where the streaming should start */
 export type Grant_stream_cursor_value_input = {
+  amount?: InputMaybe<Scalars['numeric']>;
+  applicationApproved?: InputMaybe<Scalars['Boolean']>;
+  approvedMilestones_id?: InputMaybe<Scalars['String']>;
   db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
+  facilitatorApproved?: InputMaybe<Scalars['Boolean']>;
+  gameManager_id?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['String']>;
+  isRequestingFacilitator?: InputMaybe<Scalars['Boolean']>;
+  lastUpdated?: InputMaybe<Scalars['Int']>;
+  milestonesApproved?: InputMaybe<Scalars['Boolean']>;
+  milestonesStatus?: InputMaybe<Scalars['Int']>;
   project_id?: InputMaybe<Scalars['String']>;
   ship_id?: InputMaybe<Scalars['String']>;
+  status?: InputMaybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "Grant" */
+export type Grant_sum_order_by = {
+  amount?: InputMaybe<order_by>;
+  lastUpdated?: InputMaybe<order_by>;
+  milestonesStatus?: InputMaybe<order_by>;
+  status?: InputMaybe<order_by>;
+};
+
+/** order by var_pop() on columns of table "Grant" */
+export type Grant_var_pop_order_by = {
+  amount?: InputMaybe<order_by>;
+  lastUpdated?: InputMaybe<order_by>;
+  milestonesStatus?: InputMaybe<order_by>;
+  status?: InputMaybe<order_by>;
+};
+
+/** order by var_samp() on columns of table "Grant" */
+export type Grant_var_samp_order_by = {
+  amount?: InputMaybe<order_by>;
+  lastUpdated?: InputMaybe<order_by>;
+  milestonesStatus?: InputMaybe<order_by>;
+  status?: InputMaybe<order_by>;
+};
+
+/** order by variance() on columns of table "Grant" */
+export type Grant_variance_order_by = {
+  amount?: InputMaybe<order_by>;
+  lastUpdated?: InputMaybe<order_by>;
+  milestonesStatus?: InputMaybe<order_by>;
+  status?: InputMaybe<order_by>;
 };
 
 /** columns and relationships of "HALParams" */
@@ -2503,6 +2876,334 @@ export type LocalLog_stream_cursor_value_input = {
   db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
   id?: InputMaybe<Scalars['String']>;
   message?: InputMaybe<Scalars['String']>;
+};
+
+/** columns and relationships of "Milestone" */
+export type Milestone = {
+  amount: Scalars['numeric'];
+  db_write_timestamp?: Maybe<Scalars['timestamp']>;
+  /** An object relationship */
+  grant?: Maybe<Grant>;
+  grant_id: Scalars['String'];
+  id: Scalars['String'];
+  /** An object relationship */
+  metadata?: Maybe<RawMetadata>;
+  metadata_id: Scalars['String'];
+  /** An object relationship */
+  milestoneSet?: Maybe<MilestoneSet>;
+  milestoneSet_id: Scalars['String'];
+  percentage: Scalars['numeric'];
+  status: Scalars['Int'];
+};
+
+/** columns and relationships of "MilestoneSet" */
+export type MilestoneSet = {
+  db_write_timestamp?: Maybe<Scalars['timestamp']>;
+  /** An object relationship */
+  grant?: Maybe<Grant>;
+  grant_id: Scalars['String'];
+  id: Scalars['String'];
+  /** An array relationship */
+  milestones: Array<Milestone>;
+  timestamp: Scalars['Int'];
+};
+
+
+/** columns and relationships of "MilestoneSet" */
+export type MilestoneSetmilestonesArgs = {
+  distinct_on?: InputMaybe<Array<Milestone_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Milestone_order_by>>;
+  where?: InputMaybe<Milestone_bool_exp>;
+};
+
+/** order by aggregate values of table "MilestoneSet" */
+export type MilestoneSet_aggregate_order_by = {
+  avg?: InputMaybe<MilestoneSet_avg_order_by>;
+  count?: InputMaybe<order_by>;
+  max?: InputMaybe<MilestoneSet_max_order_by>;
+  min?: InputMaybe<MilestoneSet_min_order_by>;
+  stddev?: InputMaybe<MilestoneSet_stddev_order_by>;
+  stddev_pop?: InputMaybe<MilestoneSet_stddev_pop_order_by>;
+  stddev_samp?: InputMaybe<MilestoneSet_stddev_samp_order_by>;
+  sum?: InputMaybe<MilestoneSet_sum_order_by>;
+  var_pop?: InputMaybe<MilestoneSet_var_pop_order_by>;
+  var_samp?: InputMaybe<MilestoneSet_var_samp_order_by>;
+  variance?: InputMaybe<MilestoneSet_variance_order_by>;
+};
+
+/** order by avg() on columns of table "MilestoneSet" */
+export type MilestoneSet_avg_order_by = {
+  timestamp?: InputMaybe<order_by>;
+};
+
+/** Boolean expression to filter rows from the table "MilestoneSet". All fields are combined with a logical 'AND'. */
+export type MilestoneSet_bool_exp = {
+  _and?: InputMaybe<Array<MilestoneSet_bool_exp>>;
+  _not?: InputMaybe<MilestoneSet_bool_exp>;
+  _or?: InputMaybe<Array<MilestoneSet_bool_exp>>;
+  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
+  grant?: InputMaybe<Grant_bool_exp>;
+  grant_id?: InputMaybe<String_comparison_exp>;
+  id?: InputMaybe<String_comparison_exp>;
+  milestones?: InputMaybe<Milestone_bool_exp>;
+  timestamp?: InputMaybe<Int_comparison_exp>;
+};
+
+/** order by max() on columns of table "MilestoneSet" */
+export type MilestoneSet_max_order_by = {
+  db_write_timestamp?: InputMaybe<order_by>;
+  grant_id?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  timestamp?: InputMaybe<order_by>;
+};
+
+/** order by min() on columns of table "MilestoneSet" */
+export type MilestoneSet_min_order_by = {
+  db_write_timestamp?: InputMaybe<order_by>;
+  grant_id?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  timestamp?: InputMaybe<order_by>;
+};
+
+/** Ordering options when selecting data from "MilestoneSet". */
+export type MilestoneSet_order_by = {
+  db_write_timestamp?: InputMaybe<order_by>;
+  grant?: InputMaybe<Grant_order_by>;
+  grant_id?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  milestones_aggregate?: InputMaybe<Milestone_aggregate_order_by>;
+  timestamp?: InputMaybe<order_by>;
+};
+
+/** select columns of table "MilestoneSet" */
+export type MilestoneSet_select_column =
+  /** column name */
+  | 'db_write_timestamp'
+  /** column name */
+  | 'grant_id'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'timestamp';
+
+/** order by stddev() on columns of table "MilestoneSet" */
+export type MilestoneSet_stddev_order_by = {
+  timestamp?: InputMaybe<order_by>;
+};
+
+/** order by stddev_pop() on columns of table "MilestoneSet" */
+export type MilestoneSet_stddev_pop_order_by = {
+  timestamp?: InputMaybe<order_by>;
+};
+
+/** order by stddev_samp() on columns of table "MilestoneSet" */
+export type MilestoneSet_stddev_samp_order_by = {
+  timestamp?: InputMaybe<order_by>;
+};
+
+/** Streaming cursor of the table "MilestoneSet" */
+export type MilestoneSet_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: MilestoneSet_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type MilestoneSet_stream_cursor_value_input = {
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
+  grant_id?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['String']>;
+  timestamp?: InputMaybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "MilestoneSet" */
+export type MilestoneSet_sum_order_by = {
+  timestamp?: InputMaybe<order_by>;
+};
+
+/** order by var_pop() on columns of table "MilestoneSet" */
+export type MilestoneSet_var_pop_order_by = {
+  timestamp?: InputMaybe<order_by>;
+};
+
+/** order by var_samp() on columns of table "MilestoneSet" */
+export type MilestoneSet_var_samp_order_by = {
+  timestamp?: InputMaybe<order_by>;
+};
+
+/** order by variance() on columns of table "MilestoneSet" */
+export type MilestoneSet_variance_order_by = {
+  timestamp?: InputMaybe<order_by>;
+};
+
+/** order by aggregate values of table "Milestone" */
+export type Milestone_aggregate_order_by = {
+  avg?: InputMaybe<Milestone_avg_order_by>;
+  count?: InputMaybe<order_by>;
+  max?: InputMaybe<Milestone_max_order_by>;
+  min?: InputMaybe<Milestone_min_order_by>;
+  stddev?: InputMaybe<Milestone_stddev_order_by>;
+  stddev_pop?: InputMaybe<Milestone_stddev_pop_order_by>;
+  stddev_samp?: InputMaybe<Milestone_stddev_samp_order_by>;
+  sum?: InputMaybe<Milestone_sum_order_by>;
+  var_pop?: InputMaybe<Milestone_var_pop_order_by>;
+  var_samp?: InputMaybe<Milestone_var_samp_order_by>;
+  variance?: InputMaybe<Milestone_variance_order_by>;
+};
+
+/** order by avg() on columns of table "Milestone" */
+export type Milestone_avg_order_by = {
+  amount?: InputMaybe<order_by>;
+  percentage?: InputMaybe<order_by>;
+  status?: InputMaybe<order_by>;
+};
+
+/** Boolean expression to filter rows from the table "Milestone". All fields are combined with a logical 'AND'. */
+export type Milestone_bool_exp = {
+  _and?: InputMaybe<Array<Milestone_bool_exp>>;
+  _not?: InputMaybe<Milestone_bool_exp>;
+  _or?: InputMaybe<Array<Milestone_bool_exp>>;
+  amount?: InputMaybe<numeric_comparison_exp>;
+  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
+  grant?: InputMaybe<Grant_bool_exp>;
+  grant_id?: InputMaybe<String_comparison_exp>;
+  id?: InputMaybe<String_comparison_exp>;
+  metadata?: InputMaybe<RawMetadata_bool_exp>;
+  metadata_id?: InputMaybe<String_comparison_exp>;
+  milestoneSet?: InputMaybe<MilestoneSet_bool_exp>;
+  milestoneSet_id?: InputMaybe<String_comparison_exp>;
+  percentage?: InputMaybe<numeric_comparison_exp>;
+  status?: InputMaybe<Int_comparison_exp>;
+};
+
+/** order by max() on columns of table "Milestone" */
+export type Milestone_max_order_by = {
+  amount?: InputMaybe<order_by>;
+  db_write_timestamp?: InputMaybe<order_by>;
+  grant_id?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  metadata_id?: InputMaybe<order_by>;
+  milestoneSet_id?: InputMaybe<order_by>;
+  percentage?: InputMaybe<order_by>;
+  status?: InputMaybe<order_by>;
+};
+
+/** order by min() on columns of table "Milestone" */
+export type Milestone_min_order_by = {
+  amount?: InputMaybe<order_by>;
+  db_write_timestamp?: InputMaybe<order_by>;
+  grant_id?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  metadata_id?: InputMaybe<order_by>;
+  milestoneSet_id?: InputMaybe<order_by>;
+  percentage?: InputMaybe<order_by>;
+  status?: InputMaybe<order_by>;
+};
+
+/** Ordering options when selecting data from "Milestone". */
+export type Milestone_order_by = {
+  amount?: InputMaybe<order_by>;
+  db_write_timestamp?: InputMaybe<order_by>;
+  grant?: InputMaybe<Grant_order_by>;
+  grant_id?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  metadata?: InputMaybe<RawMetadata_order_by>;
+  metadata_id?: InputMaybe<order_by>;
+  milestoneSet?: InputMaybe<MilestoneSet_order_by>;
+  milestoneSet_id?: InputMaybe<order_by>;
+  percentage?: InputMaybe<order_by>;
+  status?: InputMaybe<order_by>;
+};
+
+/** select columns of table "Milestone" */
+export type Milestone_select_column =
+  /** column name */
+  | 'amount'
+  /** column name */
+  | 'db_write_timestamp'
+  /** column name */
+  | 'grant_id'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'metadata_id'
+  /** column name */
+  | 'milestoneSet_id'
+  /** column name */
+  | 'percentage'
+  /** column name */
+  | 'status';
+
+/** order by stddev() on columns of table "Milestone" */
+export type Milestone_stddev_order_by = {
+  amount?: InputMaybe<order_by>;
+  percentage?: InputMaybe<order_by>;
+  status?: InputMaybe<order_by>;
+};
+
+/** order by stddev_pop() on columns of table "Milestone" */
+export type Milestone_stddev_pop_order_by = {
+  amount?: InputMaybe<order_by>;
+  percentage?: InputMaybe<order_by>;
+  status?: InputMaybe<order_by>;
+};
+
+/** order by stddev_samp() on columns of table "Milestone" */
+export type Milestone_stddev_samp_order_by = {
+  amount?: InputMaybe<order_by>;
+  percentage?: InputMaybe<order_by>;
+  status?: InputMaybe<order_by>;
+};
+
+/** Streaming cursor of the table "Milestone" */
+export type Milestone_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: Milestone_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Milestone_stream_cursor_value_input = {
+  amount?: InputMaybe<Scalars['numeric']>;
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
+  grant_id?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['String']>;
+  metadata_id?: InputMaybe<Scalars['String']>;
+  milestoneSet_id?: InputMaybe<Scalars['String']>;
+  percentage?: InputMaybe<Scalars['numeric']>;
+  status?: InputMaybe<Scalars['Int']>;
+};
+
+/** order by sum() on columns of table "Milestone" */
+export type Milestone_sum_order_by = {
+  amount?: InputMaybe<order_by>;
+  percentage?: InputMaybe<order_by>;
+  status?: InputMaybe<order_by>;
+};
+
+/** order by var_pop() on columns of table "Milestone" */
+export type Milestone_var_pop_order_by = {
+  amount?: InputMaybe<order_by>;
+  percentage?: InputMaybe<order_by>;
+  status?: InputMaybe<order_by>;
+};
+
+/** order by var_samp() on columns of table "Milestone" */
+export type Milestone_var_samp_order_by = {
+  amount?: InputMaybe<order_by>;
+  percentage?: InputMaybe<order_by>;
+  status?: InputMaybe<order_by>;
+};
+
+/** order by variance() on columns of table "Milestone" */
+export type Milestone_variance_order_by = {
+  amount?: InputMaybe<order_by>;
+  percentage?: InputMaybe<order_by>;
+  status?: InputMaybe<order_by>;
 };
 
 /** columns and relationships of "ModuleTemplate" */
@@ -3279,6 +3980,74 @@ export type ShipChoice_variance_order_by = {
   voteTally?: InputMaybe<order_by>;
 };
 
+/** columns and relationships of "ShipContext" */
+export type ShipContext = {
+  db_write_timestamp?: Maybe<Scalars['timestamp']>;
+  /** An object relationship */
+  gameManager?: Maybe<GameManager>;
+  gameManager_id: Scalars['String'];
+  /** An object relationship */
+  grantShip?: Maybe<GrantShip>;
+  grantShip_id: Scalars['String'];
+  id: Scalars['String'];
+  shipAddress: Scalars['String'];
+};
+
+/** Boolean expression to filter rows from the table "ShipContext". All fields are combined with a logical 'AND'. */
+export type ShipContext_bool_exp = {
+  _and?: InputMaybe<Array<ShipContext_bool_exp>>;
+  _not?: InputMaybe<ShipContext_bool_exp>;
+  _or?: InputMaybe<Array<ShipContext_bool_exp>>;
+  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
+  gameManager?: InputMaybe<GameManager_bool_exp>;
+  gameManager_id?: InputMaybe<String_comparison_exp>;
+  grantShip?: InputMaybe<GrantShip_bool_exp>;
+  grantShip_id?: InputMaybe<String_comparison_exp>;
+  id?: InputMaybe<String_comparison_exp>;
+  shipAddress?: InputMaybe<String_comparison_exp>;
+};
+
+/** Ordering options when selecting data from "ShipContext". */
+export type ShipContext_order_by = {
+  db_write_timestamp?: InputMaybe<order_by>;
+  gameManager?: InputMaybe<GameManager_order_by>;
+  gameManager_id?: InputMaybe<order_by>;
+  grantShip?: InputMaybe<GrantShip_order_by>;
+  grantShip_id?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  shipAddress?: InputMaybe<order_by>;
+};
+
+/** select columns of table "ShipContext" */
+export type ShipContext_select_column =
+  /** column name */
+  | 'db_write_timestamp'
+  /** column name */
+  | 'gameManager_id'
+  /** column name */
+  | 'grantShip_id'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'shipAddress';
+
+/** Streaming cursor of the table "ShipContext" */
+export type ShipContext_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: ShipContext_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type ShipContext_stream_cursor_value_input = {
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
+  gameManager_id?: InputMaybe<Scalars['String']>;
+  grantShip_id?: InputMaybe<Scalars['String']>;
+  id?: InputMaybe<Scalars['String']>;
+  shipAddress?: InputMaybe<Scalars['String']>;
+};
+
 /** columns and relationships of "ShipVote" */
 export type ShipVote = {
   amount: Scalars['numeric'];
@@ -3635,6 +4404,7 @@ export type Transaction = {
   db_write_timestamp?: Maybe<Scalars['timestamp']>;
   id: Scalars['String'];
   srcAddress: Scalars['String'];
+  timestamp: Scalars['Int'];
   txHash: Scalars['String'];
 };
 
@@ -3647,6 +4417,7 @@ export type Transaction_bool_exp = {
   db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
   id?: InputMaybe<String_comparison_exp>;
   srcAddress?: InputMaybe<String_comparison_exp>;
+  timestamp?: InputMaybe<Int_comparison_exp>;
   txHash?: InputMaybe<String_comparison_exp>;
 };
 
@@ -3656,6 +4427,7 @@ export type Transaction_order_by = {
   db_write_timestamp?: InputMaybe<order_by>;
   id?: InputMaybe<order_by>;
   srcAddress?: InputMaybe<order_by>;
+  timestamp?: InputMaybe<order_by>;
   txHash?: InputMaybe<order_by>;
 };
 
@@ -3669,6 +4441,8 @@ export type Transaction_select_column =
   | 'id'
   /** column name */
   | 'srcAddress'
+  /** column name */
+  | 'timestamp'
   /** column name */
   | 'txHash';
 
@@ -3686,6 +4460,7 @@ export type Transaction_stream_cursor_value_input = {
   db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
   id?: InputMaybe<Scalars['String']>;
   srcAddress?: InputMaybe<Scalars['String']>;
+  timestamp?: InputMaybe<Scalars['Int']>;
   txHash?: InputMaybe<Scalars['String']>;
 };
 
@@ -3704,6 +4479,7 @@ export type Update = {
   /** An object relationship */
   entityMetadata?: Maybe<RawMetadata>;
   entityMetadata_id?: Maybe<Scalars['String']>;
+  hostEntityId: Scalars['String'];
   id: Scalars['String'];
   playerType: Scalars['Int'];
   postBlockNumber: Scalars['Int'];
@@ -3729,6 +4505,7 @@ export type Update_bool_exp = {
   entityAddress?: InputMaybe<String_comparison_exp>;
   entityMetadata?: InputMaybe<RawMetadata_bool_exp>;
   entityMetadata_id?: InputMaybe<String_comparison_exp>;
+  hostEntityId?: InputMaybe<String_comparison_exp>;
   id?: InputMaybe<String_comparison_exp>;
   playerType?: InputMaybe<Int_comparison_exp>;
   postBlockNumber?: InputMaybe<Int_comparison_exp>;
@@ -3751,6 +4528,7 @@ export type Update_order_by = {
   entityAddress?: InputMaybe<order_by>;
   entityMetadata?: InputMaybe<RawMetadata_order_by>;
   entityMetadata_id?: InputMaybe<order_by>;
+  hostEntityId?: InputMaybe<order_by>;
   id?: InputMaybe<order_by>;
   playerType?: InputMaybe<order_by>;
   postBlockNumber?: InputMaybe<order_by>;
@@ -3777,6 +4555,8 @@ export type Update_select_column =
   | 'entityAddress'
   /** column name */
   | 'entityMetadata_id'
+  /** column name */
+  | 'hostEntityId'
   /** column name */
   | 'id'
   /** column name */
@@ -3811,6 +4591,7 @@ export type Update_stream_cursor_value_input = {
   domain_id?: InputMaybe<Scalars['String']>;
   entityAddress?: InputMaybe<Scalars['String']>;
   entityMetadata_id?: InputMaybe<Scalars['String']>;
+  hostEntityId?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['String']>;
   playerType?: InputMaybe<Scalars['Int']>;
   postBlockNumber?: InputMaybe<Scalars['Int']>;
@@ -4579,6 +5360,10 @@ export type persisted_state_stream_cursor_value_input = {
 };
 
 export type query_root = {
+  /** fetch data from the table: "Application" */
+  Application: Array<Application>;
+  /** fetch data from the table: "Application" using primary key columns */
+  Application_by_pk?: Maybe<Application>;
   /** fetch data from the table: "Contest" */
   Contest: Array<Contest>;
   /** fetch data from the table: "ContestClone" */
@@ -4667,6 +5452,14 @@ export type query_root = {
   LocalLog: Array<LocalLog>;
   /** fetch data from the table: "LocalLog" using primary key columns */
   LocalLog_by_pk?: Maybe<LocalLog>;
+  /** fetch data from the table: "Milestone" */
+  Milestone: Array<Milestone>;
+  /** fetch data from the table: "MilestoneSet" */
+  MilestoneSet: Array<MilestoneSet>;
+  /** fetch data from the table: "MilestoneSet" using primary key columns */
+  MilestoneSet_by_pk?: Maybe<MilestoneSet>;
+  /** fetch data from the table: "Milestone" using primary key columns */
+  Milestone_by_pk?: Maybe<Milestone>;
   /** fetch data from the table: "ModuleTemplate" */
   ModuleTemplate: Array<ModuleTemplate>;
   /** fetch data from the table: "ModuleTemplate" using primary key columns */
@@ -4699,6 +5492,10 @@ export type query_root = {
   ShipChoice: Array<ShipChoice>;
   /** fetch data from the table: "ShipChoice" using primary key columns */
   ShipChoice_by_pk?: Maybe<ShipChoice>;
+  /** fetch data from the table: "ShipContext" */
+  ShipContext: Array<ShipContext>;
+  /** fetch data from the table: "ShipContext" using primary key columns */
+  ShipContext_by_pk?: Maybe<ShipContext>;
   /** fetch data from the table: "ShipVote" */
   ShipVote: Array<ShipVote>;
   /** fetch data from the table: "ShipVote" using primary key columns */
@@ -4749,6 +5546,20 @@ export type query_root = {
   raw_events: Array<raw_events>;
   /** fetch data from the table: "raw_events" using primary key columns */
   raw_events_by_pk?: Maybe<raw_events>;
+};
+
+
+export type query_rootApplicationArgs = {
+  distinct_on?: InputMaybe<Array<Application_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Application_order_by>>;
+  where?: InputMaybe<Application_bool_exp>;
+};
+
+
+export type query_rootApplication_by_pkArgs = {
+  id: Scalars['String'];
 };
 
 
@@ -5060,6 +5871,34 @@ export type query_rootLocalLog_by_pkArgs = {
 };
 
 
+export type query_rootMilestoneArgs = {
+  distinct_on?: InputMaybe<Array<Milestone_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Milestone_order_by>>;
+  where?: InputMaybe<Milestone_bool_exp>;
+};
+
+
+export type query_rootMilestoneSetArgs = {
+  distinct_on?: InputMaybe<Array<MilestoneSet_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<MilestoneSet_order_by>>;
+  where?: InputMaybe<MilestoneSet_bool_exp>;
+};
+
+
+export type query_rootMilestoneSet_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type query_rootMilestone_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
 export type query_rootModuleTemplateArgs = {
   distinct_on?: InputMaybe<Array<ModuleTemplate_select_column>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -5168,6 +6007,20 @@ export type query_rootShipChoiceArgs = {
 
 
 export type query_rootShipChoice_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type query_rootShipContextArgs = {
+  distinct_on?: InputMaybe<Array<ShipContext_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<ShipContext_order_by>>;
+  where?: InputMaybe<ShipContext_bool_exp>;
+};
+
+
+export type query_rootShipContext_by_pkArgs = {
   id: Scalars['String'];
 };
 
@@ -5484,6 +6337,12 @@ export type raw_events_stream_cursor_value_input = {
 };
 
 export type subscription_root = {
+  /** fetch data from the table: "Application" */
+  Application: Array<Application>;
+  /** fetch data from the table: "Application" using primary key columns */
+  Application_by_pk?: Maybe<Application>;
+  /** fetch data from the table in a streaming manner: "Application" */
+  Application_stream: Array<Application>;
   /** fetch data from the table: "Contest" */
   Contest: Array<Contest>;
   /** fetch data from the table: "ContestClone" */
@@ -5616,6 +6475,18 @@ export type subscription_root = {
   LocalLog_by_pk?: Maybe<LocalLog>;
   /** fetch data from the table in a streaming manner: "LocalLog" */
   LocalLog_stream: Array<LocalLog>;
+  /** fetch data from the table: "Milestone" */
+  Milestone: Array<Milestone>;
+  /** fetch data from the table: "MilestoneSet" */
+  MilestoneSet: Array<MilestoneSet>;
+  /** fetch data from the table: "MilestoneSet" using primary key columns */
+  MilestoneSet_by_pk?: Maybe<MilestoneSet>;
+  /** fetch data from the table in a streaming manner: "MilestoneSet" */
+  MilestoneSet_stream: Array<MilestoneSet>;
+  /** fetch data from the table: "Milestone" using primary key columns */
+  Milestone_by_pk?: Maybe<Milestone>;
+  /** fetch data from the table in a streaming manner: "Milestone" */
+  Milestone_stream: Array<Milestone>;
   /** fetch data from the table: "ModuleTemplate" */
   ModuleTemplate: Array<ModuleTemplate>;
   /** fetch data from the table: "ModuleTemplate" using primary key columns */
@@ -5664,6 +6535,12 @@ export type subscription_root = {
   ShipChoice_by_pk?: Maybe<ShipChoice>;
   /** fetch data from the table in a streaming manner: "ShipChoice" */
   ShipChoice_stream: Array<ShipChoice>;
+  /** fetch data from the table: "ShipContext" */
+  ShipContext: Array<ShipContext>;
+  /** fetch data from the table: "ShipContext" using primary key columns */
+  ShipContext_by_pk?: Maybe<ShipContext>;
+  /** fetch data from the table in a streaming manner: "ShipContext" */
+  ShipContext_stream: Array<ShipContext>;
   /** fetch data from the table: "ShipVote" */
   ShipVote: Array<ShipVote>;
   /** fetch data from the table: "ShipVote" using primary key columns */
@@ -5738,6 +6615,27 @@ export type subscription_root = {
   raw_events_by_pk?: Maybe<raw_events>;
   /** fetch data from the table in a streaming manner: "raw_events" */
   raw_events_stream: Array<raw_events>;
+};
+
+
+export type subscription_rootApplicationArgs = {
+  distinct_on?: InputMaybe<Array<Application_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Application_order_by>>;
+  where?: InputMaybe<Application_bool_exp>;
+};
+
+
+export type subscription_rootApplication_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type subscription_rootApplication_streamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Application_stream_cursor_input>>;
+  where?: InputMaybe<Application_bool_exp>;
 };
 
 
@@ -6203,6 +7101,48 @@ export type subscription_rootLocalLog_streamArgs = {
 };
 
 
+export type subscription_rootMilestoneArgs = {
+  distinct_on?: InputMaybe<Array<Milestone_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Milestone_order_by>>;
+  where?: InputMaybe<Milestone_bool_exp>;
+};
+
+
+export type subscription_rootMilestoneSetArgs = {
+  distinct_on?: InputMaybe<Array<MilestoneSet_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<MilestoneSet_order_by>>;
+  where?: InputMaybe<MilestoneSet_bool_exp>;
+};
+
+
+export type subscription_rootMilestoneSet_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type subscription_rootMilestoneSet_streamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<MilestoneSet_stream_cursor_input>>;
+  where?: InputMaybe<MilestoneSet_bool_exp>;
+};
+
+
+export type subscription_rootMilestone_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type subscription_rootMilestone_streamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Milestone_stream_cursor_input>>;
+  where?: InputMaybe<Milestone_bool_exp>;
+};
+
+
 export type subscription_rootModuleTemplateArgs = {
   distinct_on?: InputMaybe<Array<ModuleTemplate_select_column>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -6368,6 +7308,27 @@ export type subscription_rootShipChoice_streamArgs = {
   batch_size: Scalars['Int'];
   cursor: Array<InputMaybe<ShipChoice_stream_cursor_input>>;
   where?: InputMaybe<ShipChoice_bool_exp>;
+};
+
+
+export type subscription_rootShipContextArgs = {
+  distinct_on?: InputMaybe<Array<ShipContext_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<ShipContext_order_by>>;
+  where?: InputMaybe<ShipContext_bool_exp>;
+};
+
+
+export type subscription_rootShipContext_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type subscription_rootShipContext_streamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<ShipContext_stream_cursor_input>>;
+  where?: InputMaybe<ShipContext_bool_exp>;
 };
 
 
@@ -6671,7 +7632,11 @@ export type timestamptz_comparison_exp = {
 };
 
   export type QuerySdk = {
-      /** fetch data from the table: "Contest" **/
+      /** fetch data from the table: "Application" **/
+  Application: InContextSdkMethod<query_root['Application'], query_rootApplicationArgs, MeshContext>,
+  /** fetch data from the table: "Application" using primary key columns **/
+  Application_by_pk: InContextSdkMethod<query_root['Application_by_pk'], query_rootApplication_by_pkArgs, MeshContext>,
+  /** fetch data from the table: "Contest" **/
   Contest: InContextSdkMethod<query_root['Contest'], query_rootContestArgs, MeshContext>,
   /** fetch data from the table: "ContestClone" **/
   ContestClone: InContextSdkMethod<query_root['ContestClone'], query_rootContestCloneArgs, MeshContext>,
@@ -6759,6 +7724,14 @@ export type timestamptz_comparison_exp = {
   LocalLog: InContextSdkMethod<query_root['LocalLog'], query_rootLocalLogArgs, MeshContext>,
   /** fetch data from the table: "LocalLog" using primary key columns **/
   LocalLog_by_pk: InContextSdkMethod<query_root['LocalLog_by_pk'], query_rootLocalLog_by_pkArgs, MeshContext>,
+  /** fetch data from the table: "Milestone" **/
+  Milestone: InContextSdkMethod<query_root['Milestone'], query_rootMilestoneArgs, MeshContext>,
+  /** fetch data from the table: "MilestoneSet" **/
+  MilestoneSet: InContextSdkMethod<query_root['MilestoneSet'], query_rootMilestoneSetArgs, MeshContext>,
+  /** fetch data from the table: "MilestoneSet" using primary key columns **/
+  MilestoneSet_by_pk: InContextSdkMethod<query_root['MilestoneSet_by_pk'], query_rootMilestoneSet_by_pkArgs, MeshContext>,
+  /** fetch data from the table: "Milestone" using primary key columns **/
+  Milestone_by_pk: InContextSdkMethod<query_root['Milestone_by_pk'], query_rootMilestone_by_pkArgs, MeshContext>,
   /** fetch data from the table: "ModuleTemplate" **/
   ModuleTemplate: InContextSdkMethod<query_root['ModuleTemplate'], query_rootModuleTemplateArgs, MeshContext>,
   /** fetch data from the table: "ModuleTemplate" using primary key columns **/
@@ -6791,6 +7764,10 @@ export type timestamptz_comparison_exp = {
   ShipChoice: InContextSdkMethod<query_root['ShipChoice'], query_rootShipChoiceArgs, MeshContext>,
   /** fetch data from the table: "ShipChoice" using primary key columns **/
   ShipChoice_by_pk: InContextSdkMethod<query_root['ShipChoice_by_pk'], query_rootShipChoice_by_pkArgs, MeshContext>,
+  /** fetch data from the table: "ShipContext" **/
+  ShipContext: InContextSdkMethod<query_root['ShipContext'], query_rootShipContextArgs, MeshContext>,
+  /** fetch data from the table: "ShipContext" using primary key columns **/
+  ShipContext_by_pk: InContextSdkMethod<query_root['ShipContext_by_pk'], query_rootShipContext_by_pkArgs, MeshContext>,
   /** fetch data from the table: "ShipVote" **/
   ShipVote: InContextSdkMethod<query_root['ShipVote'], query_rootShipVoteArgs, MeshContext>,
   /** fetch data from the table: "ShipVote" using primary key columns **/
@@ -6848,7 +7825,13 @@ export type timestamptz_comparison_exp = {
   };
 
   export type SubscriptionSdk = {
-      /** fetch data from the table: "Contest" **/
+      /** fetch data from the table: "Application" **/
+  Application: InContextSdkMethod<subscription_root['Application'], subscription_rootApplicationArgs, MeshContext>,
+  /** fetch data from the table: "Application" using primary key columns **/
+  Application_by_pk: InContextSdkMethod<subscription_root['Application_by_pk'], subscription_rootApplication_by_pkArgs, MeshContext>,
+  /** fetch data from the table in a streaming manner: "Application" **/
+  Application_stream: InContextSdkMethod<subscription_root['Application_stream'], subscription_rootApplication_streamArgs, MeshContext>,
+  /** fetch data from the table: "Contest" **/
   Contest: InContextSdkMethod<subscription_root['Contest'], subscription_rootContestArgs, MeshContext>,
   /** fetch data from the table: "ContestClone" **/
   ContestClone: InContextSdkMethod<subscription_root['ContestClone'], subscription_rootContestCloneArgs, MeshContext>,
@@ -6980,6 +7963,18 @@ export type timestamptz_comparison_exp = {
   LocalLog_by_pk: InContextSdkMethod<subscription_root['LocalLog_by_pk'], subscription_rootLocalLog_by_pkArgs, MeshContext>,
   /** fetch data from the table in a streaming manner: "LocalLog" **/
   LocalLog_stream: InContextSdkMethod<subscription_root['LocalLog_stream'], subscription_rootLocalLog_streamArgs, MeshContext>,
+  /** fetch data from the table: "Milestone" **/
+  Milestone: InContextSdkMethod<subscription_root['Milestone'], subscription_rootMilestoneArgs, MeshContext>,
+  /** fetch data from the table: "MilestoneSet" **/
+  MilestoneSet: InContextSdkMethod<subscription_root['MilestoneSet'], subscription_rootMilestoneSetArgs, MeshContext>,
+  /** fetch data from the table: "MilestoneSet" using primary key columns **/
+  MilestoneSet_by_pk: InContextSdkMethod<subscription_root['MilestoneSet_by_pk'], subscription_rootMilestoneSet_by_pkArgs, MeshContext>,
+  /** fetch data from the table in a streaming manner: "MilestoneSet" **/
+  MilestoneSet_stream: InContextSdkMethod<subscription_root['MilestoneSet_stream'], subscription_rootMilestoneSet_streamArgs, MeshContext>,
+  /** fetch data from the table: "Milestone" using primary key columns **/
+  Milestone_by_pk: InContextSdkMethod<subscription_root['Milestone_by_pk'], subscription_rootMilestone_by_pkArgs, MeshContext>,
+  /** fetch data from the table in a streaming manner: "Milestone" **/
+  Milestone_stream: InContextSdkMethod<subscription_root['Milestone_stream'], subscription_rootMilestone_streamArgs, MeshContext>,
   /** fetch data from the table: "ModuleTemplate" **/
   ModuleTemplate: InContextSdkMethod<subscription_root['ModuleTemplate'], subscription_rootModuleTemplateArgs, MeshContext>,
   /** fetch data from the table: "ModuleTemplate" using primary key columns **/
@@ -7028,6 +8023,12 @@ export type timestamptz_comparison_exp = {
   ShipChoice_by_pk: InContextSdkMethod<subscription_root['ShipChoice_by_pk'], subscription_rootShipChoice_by_pkArgs, MeshContext>,
   /** fetch data from the table in a streaming manner: "ShipChoice" **/
   ShipChoice_stream: InContextSdkMethod<subscription_root['ShipChoice_stream'], subscription_rootShipChoice_streamArgs, MeshContext>,
+  /** fetch data from the table: "ShipContext" **/
+  ShipContext: InContextSdkMethod<subscription_root['ShipContext'], subscription_rootShipContextArgs, MeshContext>,
+  /** fetch data from the table: "ShipContext" using primary key columns **/
+  ShipContext_by_pk: InContextSdkMethod<subscription_root['ShipContext_by_pk'], subscription_rootShipContext_by_pkArgs, MeshContext>,
+  /** fetch data from the table in a streaming manner: "ShipContext" **/
+  ShipContext_stream: InContextSdkMethod<subscription_root['ShipContext_stream'], subscription_rootShipContext_streamArgs, MeshContext>,
   /** fetch data from the table: "ShipVote" **/
   ShipVote: InContextSdkMethod<subscription_root['ShipVote'], subscription_rootShipVoteArgs, MeshContext>,
   /** fetch data from the table: "ShipVote" using primary key columns **/

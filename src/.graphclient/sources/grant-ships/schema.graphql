@@ -12,6 +12,218 @@ directive @cached(
 ) on QUERY
 
 """
+columns and relationships of "Application"
+"""
+type Application {
+  amount: numeric!
+  db_write_timestamp: timestamp
+  """An object relationship"""
+  grant: Grant
+  grant_id: String!
+  id: String!
+  """An object relationship"""
+  metadata: RawMetadata
+  metadata_id: String!
+  receivingAddress: String!
+  status: Int!
+  timestamp: Int!
+}
+
+"""
+order by aggregate values of table "Application"
+"""
+input Application_aggregate_order_by {
+  avg: Application_avg_order_by
+  count: order_by
+  max: Application_max_order_by
+  min: Application_min_order_by
+  stddev: Application_stddev_order_by
+  stddev_pop: Application_stddev_pop_order_by
+  stddev_samp: Application_stddev_samp_order_by
+  sum: Application_sum_order_by
+  var_pop: Application_var_pop_order_by
+  var_samp: Application_var_samp_order_by
+  variance: Application_variance_order_by
+}
+
+"""
+order by avg() on columns of table "Application"
+"""
+input Application_avg_order_by {
+  amount: order_by
+  status: order_by
+  timestamp: order_by
+}
+
+"""
+Boolean expression to filter rows from the table "Application". All fields are combined with a logical 'AND'.
+"""
+input Application_bool_exp {
+  _and: [Application_bool_exp!]
+  _not: Application_bool_exp
+  _or: [Application_bool_exp!]
+  amount: numeric_comparison_exp
+  db_write_timestamp: timestamp_comparison_exp
+  grant: Grant_bool_exp
+  grant_id: String_comparison_exp
+  id: String_comparison_exp
+  metadata: RawMetadata_bool_exp
+  metadata_id: String_comparison_exp
+  receivingAddress: String_comparison_exp
+  status: Int_comparison_exp
+  timestamp: Int_comparison_exp
+}
+
+"""
+order by max() on columns of table "Application"
+"""
+input Application_max_order_by {
+  amount: order_by
+  db_write_timestamp: order_by
+  grant_id: order_by
+  id: order_by
+  metadata_id: order_by
+  receivingAddress: order_by
+  status: order_by
+  timestamp: order_by
+}
+
+"""
+order by min() on columns of table "Application"
+"""
+input Application_min_order_by {
+  amount: order_by
+  db_write_timestamp: order_by
+  grant_id: order_by
+  id: order_by
+  metadata_id: order_by
+  receivingAddress: order_by
+  status: order_by
+  timestamp: order_by
+}
+
+"""Ordering options when selecting data from "Application"."""
+input Application_order_by {
+  amount: order_by
+  db_write_timestamp: order_by
+  grant: Grant_order_by
+  grant_id: order_by
+  id: order_by
+  metadata: RawMetadata_order_by
+  metadata_id: order_by
+  receivingAddress: order_by
+  status: order_by
+  timestamp: order_by
+}
+
+"""
+select columns of table "Application"
+"""
+enum Application_select_column {
+  """column name"""
+  amount
+  """column name"""
+  db_write_timestamp
+  """column name"""
+  grant_id
+  """column name"""
+  id
+  """column name"""
+  metadata_id
+  """column name"""
+  receivingAddress
+  """column name"""
+  status
+  """column name"""
+  timestamp
+}
+
+"""
+order by stddev() on columns of table "Application"
+"""
+input Application_stddev_order_by {
+  amount: order_by
+  status: order_by
+  timestamp: order_by
+}
+
+"""
+order by stddev_pop() on columns of table "Application"
+"""
+input Application_stddev_pop_order_by {
+  amount: order_by
+  status: order_by
+  timestamp: order_by
+}
+
+"""
+order by stddev_samp() on columns of table "Application"
+"""
+input Application_stddev_samp_order_by {
+  amount: order_by
+  status: order_by
+  timestamp: order_by
+}
+
+"""
+Streaming cursor of the table "Application"
+"""
+input Application_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: Application_stream_cursor_value_input!
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input Application_stream_cursor_value_input {
+  amount: numeric
+  db_write_timestamp: timestamp
+  grant_id: String
+  id: String
+  metadata_id: String
+  receivingAddress: String
+  status: Int
+  timestamp: Int
+}
+
+"""
+order by sum() on columns of table "Application"
+"""
+input Application_sum_order_by {
+  amount: order_by
+  status: order_by
+  timestamp: order_by
+}
+
+"""
+order by var_pop() on columns of table "Application"
+"""
+input Application_var_pop_order_by {
+  amount: order_by
+  status: order_by
+  timestamp: order_by
+}
+
+"""
+order by var_samp() on columns of table "Application"
+"""
+input Application_var_samp_order_by {
+  amount: order_by
+  status: order_by
+  timestamp: order_by
+}
+
+"""
+order by variance() on columns of table "Application"
+"""
+input Application_variance_order_by {
+  amount: order_by
+  status: order_by
+  timestamp: order_by
+}
+
+"""
 Boolean expression to compare columns of type "Boolean". All fields are combined with logical 'AND'.
 """
 input Boolean_comparison_exp {
@@ -1753,14 +1965,54 @@ input GameRound_variance_order_by {
 columns and relationships of "Grant"
 """
 type Grant {
+  amount: numeric
+  applicationApproved: Boolean
+  """An array relationship"""
+  applications(
+    """distinct select on columns"""
+    distinct_on: [Application_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [Application_order_by!]
+    """filter the rows returned"""
+    where: Application_bool_exp
+  ): [Application!]!
+  """An object relationship"""
+  approvedMilestones: MilestoneSet
+  approvedMilestones_id: String
   db_write_timestamp: timestamp
+  facilitatorApproved: Boolean
+  """An object relationship"""
+  gameManager: GameManager
+  gameManager_id: String!
   id: String!
+  isRequestingFacilitator: Boolean
+  lastUpdated: Int!
+  """An array relationship"""
+  milestoneDrafts(
+    """distinct select on columns"""
+    distinct_on: [MilestoneSet_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [MilestoneSet_order_by!]
+    """filter the rows returned"""
+    where: MilestoneSet_bool_exp
+  ): [MilestoneSet!]!
+  milestonesApproved: Boolean
+  milestonesStatus: Int!
   """An object relationship"""
   project: Project
   project_id: String!
   """An object relationship"""
   ship: GrantShip
   ship_id: String!
+  status: Int!
 }
 
 """
@@ -1777,6 +2029,9 @@ type GrantShip {
   applicationSubmittedTime: Int
   approvedTime: Int
   balance: numeric!
+  """An object relationship"""
+  beaconMessage: RawMetadata
+  beaconMessage_id: String
   chainId: Int!
   db_write_timestamp: timestamp
   """An object relationship"""
@@ -1882,6 +2137,8 @@ input GrantShip_bool_exp {
   applicationSubmittedTime: Int_comparison_exp
   approvedTime: Int_comparison_exp
   balance: numeric_comparison_exp
+  beaconMessage: RawMetadata_bool_exp
+  beaconMessage_id: String_comparison_exp
   chainId: Int_comparison_exp
   db_write_timestamp: timestamp_comparison_exp
   gameManager: GameManager_bool_exp
@@ -1931,6 +2188,7 @@ input GrantShip_max_order_by {
   applicationSubmittedTime: order_by
   approvedTime: order_by
   balance: order_by
+  beaconMessage_id: order_by
   chainId: order_by
   db_write_timestamp: order_by
   gameManager_id: order_by
@@ -1964,6 +2222,7 @@ input GrantShip_min_order_by {
   applicationSubmittedTime: order_by
   approvedTime: order_by
   balance: order_by
+  beaconMessage_id: order_by
   chainId: order_by
   db_write_timestamp: order_by
   gameManager_id: order_by
@@ -1997,6 +2256,8 @@ input GrantShip_order_by {
   applicationSubmittedTime: order_by
   approvedTime: order_by
   balance: order_by
+  beaconMessage: RawMetadata_order_by
+  beaconMessage_id: order_by
   chainId: order_by
   db_write_timestamp: order_by
   gameManager: GameManager_order_by
@@ -2052,6 +2313,8 @@ enum GrantShip_select_column {
   approvedTime
   """column name"""
   balance
+  """column name"""
+  beaconMessage_id
   """column name"""
   chainId
   """column name"""
@@ -2195,6 +2458,7 @@ input GrantShip_stream_cursor_value_input {
   applicationSubmittedTime: Int
   approvedTime: Int
   balance: numeric
+  beaconMessage_id: String
   chainId: Int
   db_write_timestamp: timestamp
   gameManager_id: String
@@ -2461,9 +2725,27 @@ input GrantShipsVoting_stream_cursor_value_input {
 order by aggregate values of table "Grant"
 """
 input Grant_aggregate_order_by {
+  avg: Grant_avg_order_by
   count: order_by
   max: Grant_max_order_by
   min: Grant_min_order_by
+  stddev: Grant_stddev_order_by
+  stddev_pop: Grant_stddev_pop_order_by
+  stddev_samp: Grant_stddev_samp_order_by
+  sum: Grant_sum_order_by
+  var_pop: Grant_var_pop_order_by
+  var_samp: Grant_var_samp_order_by
+  variance: Grant_variance_order_by
+}
+
+"""
+order by avg() on columns of table "Grant"
+"""
+input Grant_avg_order_by {
+  amount: order_by
+  lastUpdated: order_by
+  milestonesStatus: order_by
+  status: order_by
 }
 
 """
@@ -2473,42 +2755,82 @@ input Grant_bool_exp {
   _and: [Grant_bool_exp!]
   _not: Grant_bool_exp
   _or: [Grant_bool_exp!]
+  amount: numeric_comparison_exp
+  applicationApproved: Boolean_comparison_exp
+  applications: Application_bool_exp
+  approvedMilestones: MilestoneSet_bool_exp
+  approvedMilestones_id: String_comparison_exp
   db_write_timestamp: timestamp_comparison_exp
+  facilitatorApproved: Boolean_comparison_exp
+  gameManager: GameManager_bool_exp
+  gameManager_id: String_comparison_exp
   id: String_comparison_exp
+  isRequestingFacilitator: Boolean_comparison_exp
+  lastUpdated: Int_comparison_exp
+  milestoneDrafts: MilestoneSet_bool_exp
+  milestonesApproved: Boolean_comparison_exp
+  milestonesStatus: Int_comparison_exp
   project: Project_bool_exp
   project_id: String_comparison_exp
   ship: GrantShip_bool_exp
   ship_id: String_comparison_exp
+  status: Int_comparison_exp
 }
 
 """
 order by max() on columns of table "Grant"
 """
 input Grant_max_order_by {
+  amount: order_by
+  approvedMilestones_id: order_by
   db_write_timestamp: order_by
+  gameManager_id: order_by
   id: order_by
+  lastUpdated: order_by
+  milestonesStatus: order_by
   project_id: order_by
   ship_id: order_by
+  status: order_by
 }
 
 """
 order by min() on columns of table "Grant"
 """
 input Grant_min_order_by {
+  amount: order_by
+  approvedMilestones_id: order_by
   db_write_timestamp: order_by
+  gameManager_id: order_by
   id: order_by
+  lastUpdated: order_by
+  milestonesStatus: order_by
   project_id: order_by
   ship_id: order_by
+  status: order_by
 }
 
 """Ordering options when selecting data from "Grant"."""
 input Grant_order_by {
+  amount: order_by
+  applicationApproved: order_by
+  applications_aggregate: Application_aggregate_order_by
+  approvedMilestones: MilestoneSet_order_by
+  approvedMilestones_id: order_by
   db_write_timestamp: order_by
+  facilitatorApproved: order_by
+  gameManager: GameManager_order_by
+  gameManager_id: order_by
   id: order_by
+  isRequestingFacilitator: order_by
+  lastUpdated: order_by
+  milestoneDrafts_aggregate: MilestoneSet_aggregate_order_by
+  milestonesApproved: order_by
+  milestonesStatus: order_by
   project: Project_order_by
   project_id: order_by
   ship: GrantShip_order_by
   ship_id: order_by
+  status: order_by
 }
 
 """
@@ -2516,13 +2838,63 @@ select columns of table "Grant"
 """
 enum Grant_select_column {
   """column name"""
+  amount
+  """column name"""
+  applicationApproved
+  """column name"""
+  approvedMilestones_id
+  """column name"""
   db_write_timestamp
   """column name"""
+  facilitatorApproved
+  """column name"""
+  gameManager_id
+  """column name"""
   id
+  """column name"""
+  isRequestingFacilitator
+  """column name"""
+  lastUpdated
+  """column name"""
+  milestonesApproved
+  """column name"""
+  milestonesStatus
   """column name"""
   project_id
   """column name"""
   ship_id
+  """column name"""
+  status
+}
+
+"""
+order by stddev() on columns of table "Grant"
+"""
+input Grant_stddev_order_by {
+  amount: order_by
+  lastUpdated: order_by
+  milestonesStatus: order_by
+  status: order_by
+}
+
+"""
+order by stddev_pop() on columns of table "Grant"
+"""
+input Grant_stddev_pop_order_by {
+  amount: order_by
+  lastUpdated: order_by
+  milestonesStatus: order_by
+  status: order_by
+}
+
+"""
+order by stddev_samp() on columns of table "Grant"
+"""
+input Grant_stddev_samp_order_by {
+  amount: order_by
+  lastUpdated: order_by
+  milestonesStatus: order_by
+  status: order_by
 }
 
 """
@@ -2537,10 +2909,60 @@ input Grant_stream_cursor_input {
 
 """Initial value of the column from where the streaming should start"""
 input Grant_stream_cursor_value_input {
+  amount: numeric
+  applicationApproved: Boolean
+  approvedMilestones_id: String
   db_write_timestamp: timestamp
+  facilitatorApproved: Boolean
+  gameManager_id: String
   id: String
+  isRequestingFacilitator: Boolean
+  lastUpdated: Int
+  milestonesApproved: Boolean
+  milestonesStatus: Int
   project_id: String
   ship_id: String
+  status: Int
+}
+
+"""
+order by sum() on columns of table "Grant"
+"""
+input Grant_sum_order_by {
+  amount: order_by
+  lastUpdated: order_by
+  milestonesStatus: order_by
+  status: order_by
+}
+
+"""
+order by var_pop() on columns of table "Grant"
+"""
+input Grant_var_pop_order_by {
+  amount: order_by
+  lastUpdated: order_by
+  milestonesStatus: order_by
+  status: order_by
+}
+
+"""
+order by var_samp() on columns of table "Grant"
+"""
+input Grant_var_samp_order_by {
+  amount: order_by
+  lastUpdated: order_by
+  milestonesStatus: order_by
+  status: order_by
+}
+
+"""
+order by variance() on columns of table "Grant"
+"""
+input Grant_variance_order_by {
+  amount: order_by
+  lastUpdated: order_by
+  milestonesStatus: order_by
+  status: order_by
 }
 
 """
@@ -2769,6 +3191,397 @@ input LocalLog_stream_cursor_value_input {
   db_write_timestamp: timestamp
   id: String
   message: String
+}
+
+"""
+columns and relationships of "Milestone"
+"""
+type Milestone {
+  amount: numeric!
+  db_write_timestamp: timestamp
+  """An object relationship"""
+  grant: Grant
+  grant_id: String!
+  id: String!
+  """An object relationship"""
+  metadata: RawMetadata
+  metadata_id: String!
+  """An object relationship"""
+  milestoneSet: MilestoneSet
+  milestoneSet_id: String!
+  percentage: numeric!
+  status: Int!
+}
+
+"""
+columns and relationships of "MilestoneSet"
+"""
+type MilestoneSet {
+  db_write_timestamp: timestamp
+  """An object relationship"""
+  grant: Grant
+  grant_id: String!
+  id: String!
+  """An array relationship"""
+  milestones(
+    """distinct select on columns"""
+    distinct_on: [Milestone_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [Milestone_order_by!]
+    """filter the rows returned"""
+    where: Milestone_bool_exp
+  ): [Milestone!]!
+  timestamp: Int!
+}
+
+"""
+order by aggregate values of table "MilestoneSet"
+"""
+input MilestoneSet_aggregate_order_by {
+  avg: MilestoneSet_avg_order_by
+  count: order_by
+  max: MilestoneSet_max_order_by
+  min: MilestoneSet_min_order_by
+  stddev: MilestoneSet_stddev_order_by
+  stddev_pop: MilestoneSet_stddev_pop_order_by
+  stddev_samp: MilestoneSet_stddev_samp_order_by
+  sum: MilestoneSet_sum_order_by
+  var_pop: MilestoneSet_var_pop_order_by
+  var_samp: MilestoneSet_var_samp_order_by
+  variance: MilestoneSet_variance_order_by
+}
+
+"""
+order by avg() on columns of table "MilestoneSet"
+"""
+input MilestoneSet_avg_order_by {
+  timestamp: order_by
+}
+
+"""
+Boolean expression to filter rows from the table "MilestoneSet". All fields are combined with a logical 'AND'.
+"""
+input MilestoneSet_bool_exp {
+  _and: [MilestoneSet_bool_exp!]
+  _not: MilestoneSet_bool_exp
+  _or: [MilestoneSet_bool_exp!]
+  db_write_timestamp: timestamp_comparison_exp
+  grant: Grant_bool_exp
+  grant_id: String_comparison_exp
+  id: String_comparison_exp
+  milestones: Milestone_bool_exp
+  timestamp: Int_comparison_exp
+}
+
+"""
+order by max() on columns of table "MilestoneSet"
+"""
+input MilestoneSet_max_order_by {
+  db_write_timestamp: order_by
+  grant_id: order_by
+  id: order_by
+  timestamp: order_by
+}
+
+"""
+order by min() on columns of table "MilestoneSet"
+"""
+input MilestoneSet_min_order_by {
+  db_write_timestamp: order_by
+  grant_id: order_by
+  id: order_by
+  timestamp: order_by
+}
+
+"""Ordering options when selecting data from "MilestoneSet"."""
+input MilestoneSet_order_by {
+  db_write_timestamp: order_by
+  grant: Grant_order_by
+  grant_id: order_by
+  id: order_by
+  milestones_aggregate: Milestone_aggregate_order_by
+  timestamp: order_by
+}
+
+"""
+select columns of table "MilestoneSet"
+"""
+enum MilestoneSet_select_column {
+  """column name"""
+  db_write_timestamp
+  """column name"""
+  grant_id
+  """column name"""
+  id
+  """column name"""
+  timestamp
+}
+
+"""
+order by stddev() on columns of table "MilestoneSet"
+"""
+input MilestoneSet_stddev_order_by {
+  timestamp: order_by
+}
+
+"""
+order by stddev_pop() on columns of table "MilestoneSet"
+"""
+input MilestoneSet_stddev_pop_order_by {
+  timestamp: order_by
+}
+
+"""
+order by stddev_samp() on columns of table "MilestoneSet"
+"""
+input MilestoneSet_stddev_samp_order_by {
+  timestamp: order_by
+}
+
+"""
+Streaming cursor of the table "MilestoneSet"
+"""
+input MilestoneSet_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: MilestoneSet_stream_cursor_value_input!
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input MilestoneSet_stream_cursor_value_input {
+  db_write_timestamp: timestamp
+  grant_id: String
+  id: String
+  timestamp: Int
+}
+
+"""
+order by sum() on columns of table "MilestoneSet"
+"""
+input MilestoneSet_sum_order_by {
+  timestamp: order_by
+}
+
+"""
+order by var_pop() on columns of table "MilestoneSet"
+"""
+input MilestoneSet_var_pop_order_by {
+  timestamp: order_by
+}
+
+"""
+order by var_samp() on columns of table "MilestoneSet"
+"""
+input MilestoneSet_var_samp_order_by {
+  timestamp: order_by
+}
+
+"""
+order by variance() on columns of table "MilestoneSet"
+"""
+input MilestoneSet_variance_order_by {
+  timestamp: order_by
+}
+
+"""
+order by aggregate values of table "Milestone"
+"""
+input Milestone_aggregate_order_by {
+  avg: Milestone_avg_order_by
+  count: order_by
+  max: Milestone_max_order_by
+  min: Milestone_min_order_by
+  stddev: Milestone_stddev_order_by
+  stddev_pop: Milestone_stddev_pop_order_by
+  stddev_samp: Milestone_stddev_samp_order_by
+  sum: Milestone_sum_order_by
+  var_pop: Milestone_var_pop_order_by
+  var_samp: Milestone_var_samp_order_by
+  variance: Milestone_variance_order_by
+}
+
+"""
+order by avg() on columns of table "Milestone"
+"""
+input Milestone_avg_order_by {
+  amount: order_by
+  percentage: order_by
+  status: order_by
+}
+
+"""
+Boolean expression to filter rows from the table "Milestone". All fields are combined with a logical 'AND'.
+"""
+input Milestone_bool_exp {
+  _and: [Milestone_bool_exp!]
+  _not: Milestone_bool_exp
+  _or: [Milestone_bool_exp!]
+  amount: numeric_comparison_exp
+  db_write_timestamp: timestamp_comparison_exp
+  grant: Grant_bool_exp
+  grant_id: String_comparison_exp
+  id: String_comparison_exp
+  metadata: RawMetadata_bool_exp
+  metadata_id: String_comparison_exp
+  milestoneSet: MilestoneSet_bool_exp
+  milestoneSet_id: String_comparison_exp
+  percentage: numeric_comparison_exp
+  status: Int_comparison_exp
+}
+
+"""
+order by max() on columns of table "Milestone"
+"""
+input Milestone_max_order_by {
+  amount: order_by
+  db_write_timestamp: order_by
+  grant_id: order_by
+  id: order_by
+  metadata_id: order_by
+  milestoneSet_id: order_by
+  percentage: order_by
+  status: order_by
+}
+
+"""
+order by min() on columns of table "Milestone"
+"""
+input Milestone_min_order_by {
+  amount: order_by
+  db_write_timestamp: order_by
+  grant_id: order_by
+  id: order_by
+  metadata_id: order_by
+  milestoneSet_id: order_by
+  percentage: order_by
+  status: order_by
+}
+
+"""Ordering options when selecting data from "Milestone"."""
+input Milestone_order_by {
+  amount: order_by
+  db_write_timestamp: order_by
+  grant: Grant_order_by
+  grant_id: order_by
+  id: order_by
+  metadata: RawMetadata_order_by
+  metadata_id: order_by
+  milestoneSet: MilestoneSet_order_by
+  milestoneSet_id: order_by
+  percentage: order_by
+  status: order_by
+}
+
+"""
+select columns of table "Milestone"
+"""
+enum Milestone_select_column {
+  """column name"""
+  amount
+  """column name"""
+  db_write_timestamp
+  """column name"""
+  grant_id
+  """column name"""
+  id
+  """column name"""
+  metadata_id
+  """column name"""
+  milestoneSet_id
+  """column name"""
+  percentage
+  """column name"""
+  status
+}
+
+"""
+order by stddev() on columns of table "Milestone"
+"""
+input Milestone_stddev_order_by {
+  amount: order_by
+  percentage: order_by
+  status: order_by
+}
+
+"""
+order by stddev_pop() on columns of table "Milestone"
+"""
+input Milestone_stddev_pop_order_by {
+  amount: order_by
+  percentage: order_by
+  status: order_by
+}
+
+"""
+order by stddev_samp() on columns of table "Milestone"
+"""
+input Milestone_stddev_samp_order_by {
+  amount: order_by
+  percentage: order_by
+  status: order_by
+}
+
+"""
+Streaming cursor of the table "Milestone"
+"""
+input Milestone_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: Milestone_stream_cursor_value_input!
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input Milestone_stream_cursor_value_input {
+  amount: numeric
+  db_write_timestamp: timestamp
+  grant_id: String
+  id: String
+  metadata_id: String
+  milestoneSet_id: String
+  percentage: numeric
+  status: Int
+}
+
+"""
+order by sum() on columns of table "Milestone"
+"""
+input Milestone_sum_order_by {
+  amount: order_by
+  percentage: order_by
+  status: order_by
+}
+
+"""
+order by var_pop() on columns of table "Milestone"
+"""
+input Milestone_var_pop_order_by {
+  amount: order_by
+  percentage: order_by
+  status: order_by
+}
+
+"""
+order by var_samp() on columns of table "Milestone"
+"""
+input Milestone_var_samp_order_by {
+  amount: order_by
+  percentage: order_by
+  status: order_by
+}
+
+"""
+order by variance() on columns of table "Milestone"
+"""
+input Milestone_variance_order_by {
+  amount: order_by
+  percentage: order_by
+  status: order_by
 }
 
 """
@@ -3664,6 +4477,83 @@ input ShipChoice_variance_order_by {
 }
 
 """
+columns and relationships of "ShipContext"
+"""
+type ShipContext {
+  db_write_timestamp: timestamp
+  """An object relationship"""
+  gameManager: GameManager
+  gameManager_id: String!
+  """An object relationship"""
+  grantShip: GrantShip
+  grantShip_id: String!
+  id: String!
+  shipAddress: String!
+}
+
+"""
+Boolean expression to filter rows from the table "ShipContext". All fields are combined with a logical 'AND'.
+"""
+input ShipContext_bool_exp {
+  _and: [ShipContext_bool_exp!]
+  _not: ShipContext_bool_exp
+  _or: [ShipContext_bool_exp!]
+  db_write_timestamp: timestamp_comparison_exp
+  gameManager: GameManager_bool_exp
+  gameManager_id: String_comparison_exp
+  grantShip: GrantShip_bool_exp
+  grantShip_id: String_comparison_exp
+  id: String_comparison_exp
+  shipAddress: String_comparison_exp
+}
+
+"""Ordering options when selecting data from "ShipContext"."""
+input ShipContext_order_by {
+  db_write_timestamp: order_by
+  gameManager: GameManager_order_by
+  gameManager_id: order_by
+  grantShip: GrantShip_order_by
+  grantShip_id: order_by
+  id: order_by
+  shipAddress: order_by
+}
+
+"""
+select columns of table "ShipContext"
+"""
+enum ShipContext_select_column {
+  """column name"""
+  db_write_timestamp
+  """column name"""
+  gameManager_id
+  """column name"""
+  grantShip_id
+  """column name"""
+  id
+  """column name"""
+  shipAddress
+}
+
+"""
+Streaming cursor of the table "ShipContext"
+"""
+input ShipContext_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: ShipContext_stream_cursor_value_input!
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input ShipContext_stream_cursor_value_input {
+  db_write_timestamp: timestamp
+  gameManager_id: String
+  grantShip_id: String
+  id: String
+  shipAddress: String
+}
+
+"""
 columns and relationships of "ShipVote"
 """
 type ShipVote {
@@ -4080,6 +4970,7 @@ type Transaction {
   db_write_timestamp: timestamp
   id: String!
   srcAddress: String!
+  timestamp: Int!
   txHash: String!
 }
 
@@ -4094,6 +4985,7 @@ input Transaction_bool_exp {
   db_write_timestamp: timestamp_comparison_exp
   id: String_comparison_exp
   srcAddress: String_comparison_exp
+  timestamp: Int_comparison_exp
   txHash: String_comparison_exp
 }
 
@@ -4103,6 +4995,7 @@ input Transaction_order_by {
   db_write_timestamp: order_by
   id: order_by
   srcAddress: order_by
+  timestamp: order_by
   txHash: order_by
 }
 
@@ -4118,6 +5011,8 @@ enum Transaction_select_column {
   id
   """column name"""
   srcAddress
+  """column name"""
+  timestamp
   """column name"""
   txHash
 }
@@ -4138,6 +5033,7 @@ input Transaction_stream_cursor_value_input {
   db_write_timestamp: timestamp
   id: String
   srcAddress: String
+  timestamp: Int
   txHash: String
 }
 
@@ -4158,6 +5054,7 @@ type Update {
   """An object relationship"""
   entityMetadata: RawMetadata
   entityMetadata_id: String
+  hostEntityId: String!
   id: String!
   playerType: Int!
   postBlockNumber: Int!
@@ -4185,6 +5082,7 @@ input Update_bool_exp {
   entityAddress: String_comparison_exp
   entityMetadata: RawMetadata_bool_exp
   entityMetadata_id: String_comparison_exp
+  hostEntityId: String_comparison_exp
   id: String_comparison_exp
   playerType: Int_comparison_exp
   postBlockNumber: Int_comparison_exp
@@ -4207,6 +5105,7 @@ input Update_order_by {
   entityAddress: order_by
   entityMetadata: RawMetadata_order_by
   entityMetadata_id: order_by
+  hostEntityId: order_by
   id: order_by
   playerType: order_by
   postBlockNumber: order_by
@@ -4235,6 +5134,8 @@ enum Update_select_column {
   entityAddress
   """column name"""
   entityMetadata_id
+  """column name"""
+  hostEntityId
   """column name"""
   id
   """column name"""
@@ -4272,6 +5173,7 @@ input Update_stream_cursor_value_input {
   domain_id: String
   entityAddress: String
   entityMetadata_id: String
+  hostEntityId: String
   id: String
   playerType: Int
   postBlockNumber: Int
@@ -5138,6 +6040,23 @@ input persisted_state_stream_cursor_value_input {
 
 type query_root {
   """
+  fetch data from the table: "Application"
+  """
+  Application(
+    """distinct select on columns"""
+    distinct_on: [Application_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [Application_order_by!]
+    """filter the rows returned"""
+    where: Application_bool_exp
+  ): [Application!]!
+  """fetch data from the table: "Application" using primary key columns"""
+  Application_by_pk(id: String!): Application
+  """
   fetch data from the table: "Contest"
   """
   Contest(
@@ -5520,6 +6439,40 @@ type query_root {
   """fetch data from the table: "LocalLog" using primary key columns"""
   LocalLog_by_pk(id: String!): LocalLog
   """
+  fetch data from the table: "Milestone"
+  """
+  Milestone(
+    """distinct select on columns"""
+    distinct_on: [Milestone_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [Milestone_order_by!]
+    """filter the rows returned"""
+    where: Milestone_bool_exp
+  ): [Milestone!]!
+  """
+  fetch data from the table: "MilestoneSet"
+  """
+  MilestoneSet(
+    """distinct select on columns"""
+    distinct_on: [MilestoneSet_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [MilestoneSet_order_by!]
+    """filter the rows returned"""
+    where: MilestoneSet_bool_exp
+  ): [MilestoneSet!]!
+  """fetch data from the table: "MilestoneSet" using primary key columns"""
+  MilestoneSet_by_pk(id: String!): MilestoneSet
+  """fetch data from the table: "Milestone" using primary key columns"""
+  Milestone_by_pk(id: String!): Milestone
+  """
   fetch data from the table: "ModuleTemplate"
   """
   ModuleTemplate(
@@ -5659,6 +6612,23 @@ type query_root {
   ): [ShipChoice!]!
   """fetch data from the table: "ShipChoice" using primary key columns"""
   ShipChoice_by_pk(id: String!): ShipChoice
+  """
+  fetch data from the table: "ShipContext"
+  """
+  ShipContext(
+    """distinct select on columns"""
+    distinct_on: [ShipContext_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [ShipContext_order_by!]
+    """filter the rows returned"""
+    where: ShipContext_bool_exp
+  ): [ShipContext!]!
+  """fetch data from the table: "ShipContext" using primary key columns"""
+  ShipContext_by_pk(id: String!): ShipContext
   """
   fetch data from the table: "ShipVote"
   """
@@ -6018,6 +6988,34 @@ input raw_events_stream_cursor_value_input {
 }
 
 type subscription_root {
+  """
+  fetch data from the table: "Application"
+  """
+  Application(
+    """distinct select on columns"""
+    distinct_on: [Application_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [Application_order_by!]
+    """filter the rows returned"""
+    where: Application_bool_exp
+  ): [Application!]!
+  """fetch data from the table: "Application" using primary key columns"""
+  Application_by_pk(id: String!): Application
+  """
+  fetch data from the table in a streaming manner: "Application"
+  """
+  Application_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [Application_stream_cursor_input]!
+    """filter the rows returned"""
+    where: Application_bool_exp
+  ): [Application!]!
   """
   fetch data from the table: "Contest"
   """
@@ -6643,6 +7641,62 @@ type subscription_root {
     where: LocalLog_bool_exp
   ): [LocalLog!]!
   """
+  fetch data from the table: "Milestone"
+  """
+  Milestone(
+    """distinct select on columns"""
+    distinct_on: [Milestone_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [Milestone_order_by!]
+    """filter the rows returned"""
+    where: Milestone_bool_exp
+  ): [Milestone!]!
+  """
+  fetch data from the table: "MilestoneSet"
+  """
+  MilestoneSet(
+    """distinct select on columns"""
+    distinct_on: [MilestoneSet_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [MilestoneSet_order_by!]
+    """filter the rows returned"""
+    where: MilestoneSet_bool_exp
+  ): [MilestoneSet!]!
+  """fetch data from the table: "MilestoneSet" using primary key columns"""
+  MilestoneSet_by_pk(id: String!): MilestoneSet
+  """
+  fetch data from the table in a streaming manner: "MilestoneSet"
+  """
+  MilestoneSet_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [MilestoneSet_stream_cursor_input]!
+    """filter the rows returned"""
+    where: MilestoneSet_bool_exp
+  ): [MilestoneSet!]!
+  """fetch data from the table: "Milestone" using primary key columns"""
+  Milestone_by_pk(id: String!): Milestone
+  """
+  fetch data from the table in a streaming manner: "Milestone"
+  """
+  Milestone_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [Milestone_stream_cursor_input]!
+    """filter the rows returned"""
+    where: Milestone_bool_exp
+  ): [Milestone!]!
+  """
   fetch data from the table: "ModuleTemplate"
   """
   ModuleTemplate(
@@ -6870,6 +7924,34 @@ type subscription_root {
     """filter the rows returned"""
     where: ShipChoice_bool_exp
   ): [ShipChoice!]!
+  """
+  fetch data from the table: "ShipContext"
+  """
+  ShipContext(
+    """distinct select on columns"""
+    distinct_on: [ShipContext_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [ShipContext_order_by!]
+    """filter the rows returned"""
+    where: ShipContext_bool_exp
+  ): [ShipContext!]!
+  """fetch data from the table: "ShipContext" using primary key columns"""
+  ShipContext_by_pk(id: String!): ShipContext
+  """
+  fetch data from the table in a streaming manner: "ShipContext"
+  """
+  ShipContext_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [ShipContext_stream_cursor_input]!
+    """filter the rows returned"""
+    where: ShipContext_bool_exp
+  ): [ShipContext!]!
   """
   fetch data from the table: "ShipVote"
   """
