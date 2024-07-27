@@ -9684,6 +9684,12 @@ const merger = new(BareMerger as any)({
         },
         location: 'GetGameManagerDocument.graphql'
       },{
+        document: GetGrantDocument,
+        get rawSDL() {
+          return printWithCache(GetGrantDocument);
+        },
+        location: 'GetGrantDocument.graphql'
+      },{
         document: GetGsVotingDocument,
         get rawSDL() {
           return printWithCache(GetGsVotingDocument);
@@ -9913,6 +9919,21 @@ export type getGameManagerQuery = { GameManager: Array<(
       & { ships: Array<Pick<GrantShip, 'anchor'>> }
     )> }
   )> };
+
+export type getGrantQueryVariables = Exact<{
+  grantId: Scalars['String'];
+  projectId: Scalars['String'];
+  shipSrc: Scalars['String'];
+}>;
+
+
+export type getGrantQuery = { Project_by_pk?: Maybe<(
+    Pick<Project, 'id' | 'profileId' | 'name' | 'status' | 'owner'>
+    & { metadata?: Maybe<Pick<RawMetadata, 'pointer'>>, members?: Maybe<Pick<ProfileMemberGroup, 'addresses'>> }
+  )>, GrantShip: Array<(
+    Pick<GrantShip, 'id' | 'name' | 'status' | 'shipContractAddress' | 'shipApplicationBytesData' | 'owner' | 'balance' | 'totalAvailableFunds' | 'totalAllocated' | 'totalDistributed' | 'totalRoundAmount'>
+    & { beaconMessage?: Maybe<Pick<RawMetadata, 'pointer'>>, profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>>, alloProfileMembers?: Maybe<Pick<ProfileMemberGroup, 'addresses'>> }
+  )>, Grant_by_pk?: Maybe<Pick<Grant, 'id'>>, Update: Array<Pick<Update, 'id'>>, Application: Array<Pick<Application, 'id'>>, MilestoneSet: Array<Pick<MilestoneSet, 'id'>> };
 
 export type getGsVotingQueryVariables = Exact<{
   id: Scalars['String'];
@@ -10285,6 +10306,41 @@ export const getGameManagerDocument = gql`
   }
 }
     ${GameManagerDataFragmentDoc}` as unknown as DocumentNode<getGameManagerQuery, getGameManagerQueryVariables>;
+export const getGrantDocument = gql`
+    query getGrant($grantId: String!, $projectId: String!, $shipSrc: String!) {
+  Project_by_pk(id: $projectId) {
+    id
+    profileId
+    name
+    status
+    owner
+    metadata {
+      pointer
+    }
+    members {
+      addresses
+    }
+  }
+  GrantShip(where: {shipContractAddress: {_eq: $shipSrc}}, limit: 1) {
+    ...BaseShipData
+    beaconMessage {
+      pointer
+    }
+  }
+  Grant_by_pk(id: $grantId) {
+    id
+  }
+  Update(where: {hostEntityId: {_eq: $grantId}}) {
+    id
+  }
+  Application(where: {grant_id: {_eq: $grantId}}) {
+    id
+  }
+  MilestoneSet(where: {grant_id: {_eq: $grantId}}) {
+    id
+  }
+}
+    ${BaseShipDataFragmentDoc}` as unknown as DocumentNode<getGrantQuery, getGrantQueryVariables>;
 export const getGsVotingDocument = gql`
     query getGsVoting($id: String!) {
   GrantShipsVoting(where: {id: {_eq: $id}}) {
@@ -10519,6 +10575,7 @@ export const ShipsPageQueryDocument = gql`
 
 
 
+
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
@@ -10533,6 +10590,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     getGameManager(variables: getGameManagerQueryVariables, options?: C): Promise<getGameManagerQuery> {
       return requester<getGameManagerQuery, getGameManagerQueryVariables>(getGameManagerDocument, variables, options) as Promise<getGameManagerQuery>;
+    },
+    getGrant(variables: getGrantQueryVariables, options?: C): Promise<getGrantQuery> {
+      return requester<getGrantQuery, getGrantQueryVariables>(getGrantDocument, variables, options) as Promise<getGrantQuery>;
     },
     getGsVoting(variables: getGsVotingQueryVariables, options?: C): Promise<getGsVotingQuery> {
       return requester<getGsVotingQuery, getGsVotingQueryVariables>(getGsVotingDocument, variables, options) as Promise<getGsVotingQuery>;

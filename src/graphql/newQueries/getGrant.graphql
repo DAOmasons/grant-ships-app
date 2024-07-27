@@ -1,0 +1,33 @@
+query getGrant($grantId: String!, $projectId: String!, $shipSrc: String!) {
+  Project_by_pk(id: $projectId) {
+    id
+    profileId
+    name
+    status
+    owner
+    metadata {
+      pointer
+    }
+    members {
+      addresses
+    }
+  }
+  GrantShip(where: { shipContractAddress: { _eq: $shipSrc } }, limit: 1) {
+    ...BaseShipData
+    beaconMessage {
+      pointer
+    }
+  }
+  Grant_by_pk(id: $grantId) {
+    id
+  }
+  Update(where: { hostEntityId: { _eq: $grantId } }) {
+    id
+  }
+  Application(where: { grant_id: { _eq: $grantId } }) {
+    id
+  }
+  MilestoneSet(where: { grant_id: { _eq: $grantId } }) {
+    id
+  }
+}
