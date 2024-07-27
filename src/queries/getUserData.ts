@@ -10,7 +10,6 @@ import { HATS } from '../constants/gameSetup';
 import { publicClient } from '../utils/config';
 import { getIpfsJson } from '../utils/ipfs/get';
 import { ShipProfileMetadata } from '../utils/ipfs/metadataValidation';
-import { SUBGRAPH_URL } from '../constants/gameSetup';
 import { PROJECT_FILTER_LIST } from '../constants/filterLists';
 
 type ShipMetadataType = z.infer<typeof ShipProfileMetadata>;

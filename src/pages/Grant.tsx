@@ -14,7 +14,6 @@ import {
 import { useTablet } from '../hooks/useBreakpoint';
 import {
   Route,
-  Router,
   Routes,
   useLocation,
   useNavigate,

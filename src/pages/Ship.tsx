@@ -40,6 +40,7 @@ import { SHIP_STATUS_INFO } from '../constants/copy';
 import { useLaptop, useTablet } from '../hooks/useBreakpoint';
 import { useMemo } from 'react';
 import { ShipBadge } from '../components/RoleBadges';
+import { ApplyButton } from '../components/shipItems/ApplyButton';
 
 const infiniteWrapper = async ({ pageParam }: any) => {
   const result = await getEntityFeed(pageParam);
@@ -207,13 +208,9 @@ export const Ship = () => {
             addresses={ship.members}
             avatarProps={{ size: 32 }}
           />
-          <Button
-            component={Link}
-            to={`/apply-funding/${id}`}
-            disabled={!isShipActive}
-          >
-            Apply for Funding
-          </Button>
+          {ship.shipContractAddress && (
+            <ApplyButton shipSrcAddress={ship.shipContractAddress} />
+          )}
         </Group>
         <Tabs defaultValue="feed">
           <Tabs.List mb={'xl'}>
