@@ -56,7 +56,13 @@ export const ApplyButton = ({ shipSrcAddress }: { shipSrcAddress: string }) => {
             style={{ margin: 'auto' }}
             color={theme.colors.blue[6]}
           />
-          <Button mt="auto" component={Link} to="/create-project">
+          <Button
+            mt="auto"
+            onClick={(e) => {
+              e.stopPropagation();
+              navigate('/create-project');
+            }}
+          >
             Create Project
           </Button>
         </Stack>
@@ -75,8 +81,12 @@ export const ApplyButton = ({ shipSrcAddress }: { shipSrcAddress: string }) => {
                 my={'sm'}
                 key={project.id}
                 variant="secondary"
-                component={Link}
-                to={`/grant/${_grantId({ projectId: project.id, shipSrc: shipSrcAddress })}/timeline`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate(
+                    `/grant/${_grantId({ projectId: project.id, shipSrc: shipSrcAddress })}/timeline`
+                  );
+                }}
               >
                 <Text>{project.name}</Text>
               </Button>
@@ -90,8 +100,12 @@ export const ApplyButton = ({ shipSrcAddress }: { shipSrcAddress: string }) => {
   if (userData?.projects?.length === 1) {
     return (
       <Button
-        component={Link}
-        to={`/grant/${_grantId({ projectId: userData.projects[0].id, shipSrc: shipSrcAddress })}/timeline`}
+        onClick={(e) => {
+          e.stopPropagation();
+          navigate(
+            `/grant/${_grantId({ projectId: userData.projects[0].id, shipSrc: shipSrcAddress })}/timeline`
+          );
+        }}
       >
         Apply for Funding
       </Button>
@@ -106,7 +120,6 @@ export const ApplyButton = ({ shipSrcAddress }: { shipSrcAddress: string }) => {
       <Modal.Root opened={opened} onClose={close} centered>
         <Modal.Overlay />
         <Modal.Content bg={theme.colors.dark[6]}>
-          {/* <Modal.CloseButton /> */}
           <Modal.Body>{modalContent}</Modal.Body>
         </Modal.Content>
       </Modal.Root>

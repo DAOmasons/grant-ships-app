@@ -30,6 +30,7 @@ const resolveProfileMetadata = async (
     amtDistributed: shipCard.totalDistributed,
     amtAvailable: shipCard.totalAvailableFunds,
     balance: shipCard.balance,
+    shipContractAddress: shipCard.shipContractAddress,
   };
 };
 

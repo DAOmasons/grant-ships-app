@@ -3,5 +3,6 @@ query ShipsPageQuery($gmId: String!) {
     where: { isApproved: { _eq: true }, gameManager_id: { _eq: $gmId } }
   ) {
     ...BaseShipData
+    shipContractAddress
   }
 }

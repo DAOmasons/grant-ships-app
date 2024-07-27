@@ -57,6 +57,7 @@ export type Application = {
   grant?: Maybe<Grant>;
   grant_id: Scalars['String'];
   id: Scalars['String'];
+  index: Scalars['Int'];
   /** An object relationship */
   metadata?: Maybe<RawMetadata>;
   metadata_id: Scalars['String'];
@@ -83,6 +84,7 @@ export type Application_aggregate_order_by = {
 /** order by avg() on columns of table "Application" */
 export type Application_avg_order_by = {
   amount?: InputMaybe<order_by>;
+  index?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   timestamp?: InputMaybe<order_by>;
 };
@@ -97,6 +99,7 @@ export type Application_bool_exp = {
   grant?: InputMaybe<Grant_bool_exp>;
   grant_id?: InputMaybe<String_comparison_exp>;
   id?: InputMaybe<String_comparison_exp>;
+  index?: InputMaybe<Int_comparison_exp>;
   metadata?: InputMaybe<RawMetadata_bool_exp>;
   metadata_id?: InputMaybe<String_comparison_exp>;
   receivingAddress?: InputMaybe<String_comparison_exp>;
@@ -110,6 +113,7 @@ export type Application_max_order_by = {
   db_write_timestamp?: InputMaybe<order_by>;
   grant_id?: InputMaybe<order_by>;
   id?: InputMaybe<order_by>;
+  index?: InputMaybe<order_by>;
   metadata_id?: InputMaybe<order_by>;
   receivingAddress?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
@@ -122,6 +126,7 @@ export type Application_min_order_by = {
   db_write_timestamp?: InputMaybe<order_by>;
   grant_id?: InputMaybe<order_by>;
   id?: InputMaybe<order_by>;
+  index?: InputMaybe<order_by>;
   metadata_id?: InputMaybe<order_by>;
   receivingAddress?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
@@ -135,6 +140,7 @@ export type Application_order_by = {
   grant?: InputMaybe<Grant_order_by>;
   grant_id?: InputMaybe<order_by>;
   id?: InputMaybe<order_by>;
+  index?: InputMaybe<order_by>;
   metadata?: InputMaybe<RawMetadata_order_by>;
   metadata_id?: InputMaybe<order_by>;
   receivingAddress?: InputMaybe<order_by>;
@@ -153,6 +159,8 @@ export type Application_select_column =
   /** column name */
   | 'id'
   /** column name */
+  | 'index'
+  /** column name */
   | 'metadata_id'
   /** column name */
   | 'receivingAddress'
@@ -164,6 +172,7 @@ export type Application_select_column =
 /** order by stddev() on columns of table "Application" */
 export type Application_stddev_order_by = {
   amount?: InputMaybe<order_by>;
+  index?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   timestamp?: InputMaybe<order_by>;
 };
@@ -171,6 +180,7 @@ export type Application_stddev_order_by = {
 /** order by stddev_pop() on columns of table "Application" */
 export type Application_stddev_pop_order_by = {
   amount?: InputMaybe<order_by>;
+  index?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   timestamp?: InputMaybe<order_by>;
 };
@@ -178,6 +188,7 @@ export type Application_stddev_pop_order_by = {
 /** order by stddev_samp() on columns of table "Application" */
 export type Application_stddev_samp_order_by = {
   amount?: InputMaybe<order_by>;
+  index?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   timestamp?: InputMaybe<order_by>;
 };
@@ -196,6 +207,7 @@ export type Application_stream_cursor_value_input = {
   db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
   grant_id?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['String']>;
+  index?: InputMaybe<Scalars['Int']>;
   metadata_id?: InputMaybe<Scalars['String']>;
   receivingAddress?: InputMaybe<Scalars['String']>;
   status?: InputMaybe<Scalars['Int']>;
@@ -205,6 +217,7 @@ export type Application_stream_cursor_value_input = {
 /** order by sum() on columns of table "Application" */
 export type Application_sum_order_by = {
   amount?: InputMaybe<order_by>;
+  index?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   timestamp?: InputMaybe<order_by>;
 };
@@ -212,6 +225,7 @@ export type Application_sum_order_by = {
 /** order by var_pop() on columns of table "Application" */
 export type Application_var_pop_order_by = {
   amount?: InputMaybe<order_by>;
+  index?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   timestamp?: InputMaybe<order_by>;
 };
@@ -219,6 +233,7 @@ export type Application_var_pop_order_by = {
 /** order by var_samp() on columns of table "Application" */
 export type Application_var_samp_order_by = {
   amount?: InputMaybe<order_by>;
+  index?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   timestamp?: InputMaybe<order_by>;
 };
@@ -226,6 +241,7 @@ export type Application_var_samp_order_by = {
 /** order by variance() on columns of table "Application" */
 export type Application_variance_order_by = {
   amount?: InputMaybe<order_by>;
+  index?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   timestamp?: InputMaybe<order_by>;
 };
@@ -1777,25 +1793,29 @@ export type GameRound_variance_order_by = {
 
 /** columns and relationships of "Grant" */
 export type Grant = {
+  allApproved: Scalars['Boolean'];
   amount?: Maybe<Scalars['numeric']>;
-  applicationApproved?: Maybe<Scalars['Boolean']>;
+  applicationApproved: Scalars['Boolean'];
   /** An array relationship */
   applications: Array<Application>;
   /** An object relationship */
-  approvedMilestones?: Maybe<MilestoneSet>;
-  approvedMilestones_id?: Maybe<Scalars['String']>;
+  currentApplication?: Maybe<Application>;
+  currentApplication_id?: Maybe<Scalars['String']>;
+  /** An object relationship */
+  currentMilestones?: Maybe<MilestoneSet>;
+  currentMilestones_id?: Maybe<Scalars['String']>;
   db_write_timestamp?: Maybe<Scalars['timestamp']>;
-  facilitatorApproved?: Maybe<Scalars['Boolean']>;
+  facilitatorApprovalStatus: Scalars['Int'];
   /** An object relationship */
   gameManager?: Maybe<GameManager>;
   gameManager_id: Scalars['String'];
+  grantCompleted: Scalars['Boolean'];
+  hasPendingMilestones: Scalars['Boolean'];
+  hasRejectedMilestones: Scalars['Boolean'];
   id: Scalars['String'];
-  isRequestingFacilitator?: Maybe<Scalars['Boolean']>;
   lastUpdated: Scalars['Int'];
   /** An array relationship */
   milestoneDrafts: Array<MilestoneSet>;
-  milestonesApproved?: Maybe<Scalars['Boolean']>;
-  milestonesStatus: Scalars['Int'];
   /** An object relationship */
   project?: Maybe<Project>;
   project_id: Scalars['String'];
@@ -2506,8 +2526,8 @@ export type Grant_aggregate_order_by = {
 /** order by avg() on columns of table "Grant" */
 export type Grant_avg_order_by = {
   amount?: InputMaybe<order_by>;
+  facilitatorApprovalStatus?: InputMaybe<order_by>;
   lastUpdated?: InputMaybe<order_by>;
-  milestonesStatus?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
 };
 
@@ -2516,21 +2536,24 @@ export type Grant_bool_exp = {
   _and?: InputMaybe<Array<Grant_bool_exp>>;
   _not?: InputMaybe<Grant_bool_exp>;
   _or?: InputMaybe<Array<Grant_bool_exp>>;
+  allApproved?: InputMaybe<Boolean_comparison_exp>;
   amount?: InputMaybe<numeric_comparison_exp>;
   applicationApproved?: InputMaybe<Boolean_comparison_exp>;
   applications?: InputMaybe<Application_bool_exp>;
-  approvedMilestones?: InputMaybe<MilestoneSet_bool_exp>;
-  approvedMilestones_id?: InputMaybe<String_comparison_exp>;
+  currentApplication?: InputMaybe<Application_bool_exp>;
+  currentApplication_id?: InputMaybe<String_comparison_exp>;
+  currentMilestones?: InputMaybe<MilestoneSet_bool_exp>;
+  currentMilestones_id?: InputMaybe<String_comparison_exp>;
   db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
-  facilitatorApproved?: InputMaybe<Boolean_comparison_exp>;
+  facilitatorApprovalStatus?: InputMaybe<Int_comparison_exp>;
   gameManager?: InputMaybe<GameManager_bool_exp>;
   gameManager_id?: InputMaybe<String_comparison_exp>;
+  grantCompleted?: InputMaybe<Boolean_comparison_exp>;
+  hasPendingMilestones?: InputMaybe<Boolean_comparison_exp>;
+  hasRejectedMilestones?: InputMaybe<Boolean_comparison_exp>;
   id?: InputMaybe<String_comparison_exp>;
-  isRequestingFacilitator?: InputMaybe<Boolean_comparison_exp>;
   lastUpdated?: InputMaybe<Int_comparison_exp>;
   milestoneDrafts?: InputMaybe<MilestoneSet_bool_exp>;
-  milestonesApproved?: InputMaybe<Boolean_comparison_exp>;
-  milestonesStatus?: InputMaybe<Int_comparison_exp>;
   project?: InputMaybe<Project_bool_exp>;
   project_id?: InputMaybe<String_comparison_exp>;
   ship?: InputMaybe<GrantShip_bool_exp>;
@@ -2541,12 +2564,13 @@ export type Grant_bool_exp = {
 /** order by max() on columns of table "Grant" */
 export type Grant_max_order_by = {
   amount?: InputMaybe<order_by>;
-  approvedMilestones_id?: InputMaybe<order_by>;
+  currentApplication_id?: InputMaybe<order_by>;
+  currentMilestones_id?: InputMaybe<order_by>;
   db_write_timestamp?: InputMaybe<order_by>;
+  facilitatorApprovalStatus?: InputMaybe<order_by>;
   gameManager_id?: InputMaybe<order_by>;
   id?: InputMaybe<order_by>;
   lastUpdated?: InputMaybe<order_by>;
-  milestonesStatus?: InputMaybe<order_by>;
   project_id?: InputMaybe<order_by>;
   ship_id?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
@@ -2555,12 +2579,13 @@ export type Grant_max_order_by = {
 /** order by min() on columns of table "Grant" */
 export type Grant_min_order_by = {
   amount?: InputMaybe<order_by>;
-  approvedMilestones_id?: InputMaybe<order_by>;
+  currentApplication_id?: InputMaybe<order_by>;
+  currentMilestones_id?: InputMaybe<order_by>;
   db_write_timestamp?: InputMaybe<order_by>;
+  facilitatorApprovalStatus?: InputMaybe<order_by>;
   gameManager_id?: InputMaybe<order_by>;
   id?: InputMaybe<order_by>;
   lastUpdated?: InputMaybe<order_by>;
-  milestonesStatus?: InputMaybe<order_by>;
   project_id?: InputMaybe<order_by>;
   ship_id?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
@@ -2568,21 +2593,24 @@ export type Grant_min_order_by = {
 
 /** Ordering options when selecting data from "Grant". */
 export type Grant_order_by = {
+  allApproved?: InputMaybe<order_by>;
   amount?: InputMaybe<order_by>;
   applicationApproved?: InputMaybe<order_by>;
   applications_aggregate?: InputMaybe<Application_aggregate_order_by>;
-  approvedMilestones?: InputMaybe<MilestoneSet_order_by>;
-  approvedMilestones_id?: InputMaybe<order_by>;
+  currentApplication?: InputMaybe<Application_order_by>;
+  currentApplication_id?: InputMaybe<order_by>;
+  currentMilestones?: InputMaybe<MilestoneSet_order_by>;
+  currentMilestones_id?: InputMaybe<order_by>;
   db_write_timestamp?: InputMaybe<order_by>;
-  facilitatorApproved?: InputMaybe<order_by>;
+  facilitatorApprovalStatus?: InputMaybe<order_by>;
   gameManager?: InputMaybe<GameManager_order_by>;
   gameManager_id?: InputMaybe<order_by>;
+  grantCompleted?: InputMaybe<order_by>;
+  hasPendingMilestones?: InputMaybe<order_by>;
+  hasRejectedMilestones?: InputMaybe<order_by>;
   id?: InputMaybe<order_by>;
-  isRequestingFacilitator?: InputMaybe<order_by>;
   lastUpdated?: InputMaybe<order_by>;
   milestoneDrafts_aggregate?: InputMaybe<MilestoneSet_aggregate_order_by>;
-  milestonesApproved?: InputMaybe<order_by>;
-  milestonesStatus?: InputMaybe<order_by>;
   project?: InputMaybe<Project_order_by>;
   project_id?: InputMaybe<order_by>;
   ship?: InputMaybe<GrantShip_order_by>;
@@ -2593,27 +2621,31 @@ export type Grant_order_by = {
 /** select columns of table "Grant" */
 export type Grant_select_column =
   /** column name */
+  | 'allApproved'
+  /** column name */
   | 'amount'
   /** column name */
   | 'applicationApproved'
   /** column name */
-  | 'approvedMilestones_id'
+  | 'currentApplication_id'
+  /** column name */
+  | 'currentMilestones_id'
   /** column name */
   | 'db_write_timestamp'
   /** column name */
-  | 'facilitatorApproved'
+  | 'facilitatorApprovalStatus'
   /** column name */
   | 'gameManager_id'
   /** column name */
+  | 'grantCompleted'
+  /** column name */
+  | 'hasPendingMilestones'
+  /** column name */
+  | 'hasRejectedMilestones'
+  /** column name */
   | 'id'
   /** column name */
-  | 'isRequestingFacilitator'
-  /** column name */
   | 'lastUpdated'
-  /** column name */
-  | 'milestonesApproved'
-  /** column name */
-  | 'milestonesStatus'
   /** column name */
   | 'project_id'
   /** column name */
@@ -2624,24 +2656,24 @@ export type Grant_select_column =
 /** order by stddev() on columns of table "Grant" */
 export type Grant_stddev_order_by = {
   amount?: InputMaybe<order_by>;
+  facilitatorApprovalStatus?: InputMaybe<order_by>;
   lastUpdated?: InputMaybe<order_by>;
-  milestonesStatus?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
 };
 
 /** order by stddev_pop() on columns of table "Grant" */
 export type Grant_stddev_pop_order_by = {
   amount?: InputMaybe<order_by>;
+  facilitatorApprovalStatus?: InputMaybe<order_by>;
   lastUpdated?: InputMaybe<order_by>;
-  milestonesStatus?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
 };
 
 /** order by stddev_samp() on columns of table "Grant" */
 export type Grant_stddev_samp_order_by = {
   amount?: InputMaybe<order_by>;
+  facilitatorApprovalStatus?: InputMaybe<order_by>;
   lastUpdated?: InputMaybe<order_by>;
-  milestonesStatus?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
 };
 
@@ -2655,17 +2687,19 @@ export type Grant_stream_cursor_input = {
 
 /** Initial value of the column from where the streaming should start */
 export type Grant_stream_cursor_value_input = {
+  allApproved?: InputMaybe<Scalars['Boolean']>;
   amount?: InputMaybe<Scalars['numeric']>;
   applicationApproved?: InputMaybe<Scalars['Boolean']>;
-  approvedMilestones_id?: InputMaybe<Scalars['String']>;
+  currentApplication_id?: InputMaybe<Scalars['String']>;
+  currentMilestones_id?: InputMaybe<Scalars['String']>;
   db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
-  facilitatorApproved?: InputMaybe<Scalars['Boolean']>;
+  facilitatorApprovalStatus?: InputMaybe<Scalars['Int']>;
   gameManager_id?: InputMaybe<Scalars['String']>;
+  grantCompleted?: InputMaybe<Scalars['Boolean']>;
+  hasPendingMilestones?: InputMaybe<Scalars['Boolean']>;
+  hasRejectedMilestones?: InputMaybe<Scalars['Boolean']>;
   id?: InputMaybe<Scalars['String']>;
-  isRequestingFacilitator?: InputMaybe<Scalars['Boolean']>;
   lastUpdated?: InputMaybe<Scalars['Int']>;
-  milestonesApproved?: InputMaybe<Scalars['Boolean']>;
-  milestonesStatus?: InputMaybe<Scalars['Int']>;
   project_id?: InputMaybe<Scalars['String']>;
   ship_id?: InputMaybe<Scalars['String']>;
   status?: InputMaybe<Scalars['Int']>;
@@ -2674,32 +2708,32 @@ export type Grant_stream_cursor_value_input = {
 /** order by sum() on columns of table "Grant" */
 export type Grant_sum_order_by = {
   amount?: InputMaybe<order_by>;
+  facilitatorApprovalStatus?: InputMaybe<order_by>;
   lastUpdated?: InputMaybe<order_by>;
-  milestonesStatus?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
 };
 
 /** order by var_pop() on columns of table "Grant" */
 export type Grant_var_pop_order_by = {
   amount?: InputMaybe<order_by>;
+  facilitatorApprovalStatus?: InputMaybe<order_by>;
   lastUpdated?: InputMaybe<order_by>;
-  milestonesStatus?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
 };
 
 /** order by var_samp() on columns of table "Grant" */
 export type Grant_var_samp_order_by = {
   amount?: InputMaybe<order_by>;
+  facilitatorApprovalStatus?: InputMaybe<order_by>;
   lastUpdated?: InputMaybe<order_by>;
-  milestonesStatus?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
 };
 
 /** order by variance() on columns of table "Grant" */
 export type Grant_variance_order_by = {
   amount?: InputMaybe<order_by>;
+  facilitatorApprovalStatus?: InputMaybe<order_by>;
   lastUpdated?: InputMaybe<order_by>;
-  milestonesStatus?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
 };
 
@@ -2902,7 +2936,6 @@ export type LocalLog_stream_cursor_value_input = {
 
 /** columns and relationships of "Milestone" */
 export type Milestone = {
-  amount: Scalars['numeric'];
   db_write_timestamp?: Maybe<Scalars['timestamp']>;
   /** An object relationship */
   grant?: Maybe<Grant>;
@@ -2925,8 +2958,10 @@ export type MilestoneSet = {
   grant?: Maybe<Grant>;
   grant_id: Scalars['String'];
   id: Scalars['String'];
+  index: Scalars['Int'];
   /** An array relationship */
   milestones: Array<Milestone>;
+  status: Scalars['Int'];
   timestamp: Scalars['Int'];
 };
 
@@ -2957,6 +2992,8 @@ export type MilestoneSet_aggregate_order_by = {
 
 /** order by avg() on columns of table "MilestoneSet" */
 export type MilestoneSet_avg_order_by = {
+  index?: InputMaybe<order_by>;
+  status?: InputMaybe<order_by>;
   timestamp?: InputMaybe<order_by>;
 };
 
@@ -2969,7 +3006,9 @@ export type MilestoneSet_bool_exp = {
   grant?: InputMaybe<Grant_bool_exp>;
   grant_id?: InputMaybe<String_comparison_exp>;
   id?: InputMaybe<String_comparison_exp>;
+  index?: InputMaybe<Int_comparison_exp>;
   milestones?: InputMaybe<Milestone_bool_exp>;
+  status?: InputMaybe<Int_comparison_exp>;
   timestamp?: InputMaybe<Int_comparison_exp>;
 };
 
@@ -2978,6 +3017,8 @@ export type MilestoneSet_max_order_by = {
   db_write_timestamp?: InputMaybe<order_by>;
   grant_id?: InputMaybe<order_by>;
   id?: InputMaybe<order_by>;
+  index?: InputMaybe<order_by>;
+  status?: InputMaybe<order_by>;
   timestamp?: InputMaybe<order_by>;
 };
 
@@ -2986,6 +3027,8 @@ export type MilestoneSet_min_order_by = {
   db_write_timestamp?: InputMaybe<order_by>;
   grant_id?: InputMaybe<order_by>;
   id?: InputMaybe<order_by>;
+  index?: InputMaybe<order_by>;
+  status?: InputMaybe<order_by>;
   timestamp?: InputMaybe<order_by>;
 };
 
@@ -2995,7 +3038,9 @@ export type MilestoneSet_order_by = {
   grant?: InputMaybe<Grant_order_by>;
   grant_id?: InputMaybe<order_by>;
   id?: InputMaybe<order_by>;
+  index?: InputMaybe<order_by>;
   milestones_aggregate?: InputMaybe<Milestone_aggregate_order_by>;
+  status?: InputMaybe<order_by>;
   timestamp?: InputMaybe<order_by>;
 };
 
@@ -3008,20 +3053,30 @@ export type MilestoneSet_select_column =
   /** column name */
   | 'id'
   /** column name */
+  | 'index'
+  /** column name */
+  | 'status'
+  /** column name */
   | 'timestamp';
 
 /** order by stddev() on columns of table "MilestoneSet" */
 export type MilestoneSet_stddev_order_by = {
+  index?: InputMaybe<order_by>;
+  status?: InputMaybe<order_by>;
   timestamp?: InputMaybe<order_by>;
 };
 
 /** order by stddev_pop() on columns of table "MilestoneSet" */
 export type MilestoneSet_stddev_pop_order_by = {
+  index?: InputMaybe<order_by>;
+  status?: InputMaybe<order_by>;
   timestamp?: InputMaybe<order_by>;
 };
 
 /** order by stddev_samp() on columns of table "MilestoneSet" */
 export type MilestoneSet_stddev_samp_order_by = {
+  index?: InputMaybe<order_by>;
+  status?: InputMaybe<order_by>;
   timestamp?: InputMaybe<order_by>;
 };
 
@@ -3038,26 +3093,36 @@ export type MilestoneSet_stream_cursor_value_input = {
   db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
   grant_id?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['String']>;
+  index?: InputMaybe<Scalars['Int']>;
+  status?: InputMaybe<Scalars['Int']>;
   timestamp?: InputMaybe<Scalars['Int']>;
 };
 
 /** order by sum() on columns of table "MilestoneSet" */
 export type MilestoneSet_sum_order_by = {
+  index?: InputMaybe<order_by>;
+  status?: InputMaybe<order_by>;
   timestamp?: InputMaybe<order_by>;
 };
 
 /** order by var_pop() on columns of table "MilestoneSet" */
 export type MilestoneSet_var_pop_order_by = {
+  index?: InputMaybe<order_by>;
+  status?: InputMaybe<order_by>;
   timestamp?: InputMaybe<order_by>;
 };
 
 /** order by var_samp() on columns of table "MilestoneSet" */
 export type MilestoneSet_var_samp_order_by = {
+  index?: InputMaybe<order_by>;
+  status?: InputMaybe<order_by>;
   timestamp?: InputMaybe<order_by>;
 };
 
 /** order by variance() on columns of table "MilestoneSet" */
 export type MilestoneSet_variance_order_by = {
+  index?: InputMaybe<order_by>;
+  status?: InputMaybe<order_by>;
   timestamp?: InputMaybe<order_by>;
 };
 
@@ -3078,7 +3143,6 @@ export type Milestone_aggregate_order_by = {
 
 /** order by avg() on columns of table "Milestone" */
 export type Milestone_avg_order_by = {
-  amount?: InputMaybe<order_by>;
   percentage?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
 };
@@ -3088,7 +3152,6 @@ export type Milestone_bool_exp = {
   _and?: InputMaybe<Array<Milestone_bool_exp>>;
   _not?: InputMaybe<Milestone_bool_exp>;
   _or?: InputMaybe<Array<Milestone_bool_exp>>;
-  amount?: InputMaybe<numeric_comparison_exp>;
   db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
   grant?: InputMaybe<Grant_bool_exp>;
   grant_id?: InputMaybe<String_comparison_exp>;
@@ -3103,7 +3166,6 @@ export type Milestone_bool_exp = {
 
 /** order by max() on columns of table "Milestone" */
 export type Milestone_max_order_by = {
-  amount?: InputMaybe<order_by>;
   db_write_timestamp?: InputMaybe<order_by>;
   grant_id?: InputMaybe<order_by>;
   id?: InputMaybe<order_by>;
@@ -3115,7 +3177,6 @@ export type Milestone_max_order_by = {
 
 /** order by min() on columns of table "Milestone" */
 export type Milestone_min_order_by = {
-  amount?: InputMaybe<order_by>;
   db_write_timestamp?: InputMaybe<order_by>;
   grant_id?: InputMaybe<order_by>;
   id?: InputMaybe<order_by>;
@@ -3127,7 +3188,6 @@ export type Milestone_min_order_by = {
 
 /** Ordering options when selecting data from "Milestone". */
 export type Milestone_order_by = {
-  amount?: InputMaybe<order_by>;
   db_write_timestamp?: InputMaybe<order_by>;
   grant?: InputMaybe<Grant_order_by>;
   grant_id?: InputMaybe<order_by>;
@@ -3142,8 +3202,6 @@ export type Milestone_order_by = {
 
 /** select columns of table "Milestone" */
 export type Milestone_select_column =
-  /** column name */
-  | 'amount'
   /** column name */
   | 'db_write_timestamp'
   /** column name */
@@ -3161,21 +3219,18 @@ export type Milestone_select_column =
 
 /** order by stddev() on columns of table "Milestone" */
 export type Milestone_stddev_order_by = {
-  amount?: InputMaybe<order_by>;
   percentage?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
 };
 
 /** order by stddev_pop() on columns of table "Milestone" */
 export type Milestone_stddev_pop_order_by = {
-  amount?: InputMaybe<order_by>;
   percentage?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
 };
 
 /** order by stddev_samp() on columns of table "Milestone" */
 export type Milestone_stddev_samp_order_by = {
-  amount?: InputMaybe<order_by>;
   percentage?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
 };
@@ -3190,7 +3245,6 @@ export type Milestone_stream_cursor_input = {
 
 /** Initial value of the column from where the streaming should start */
 export type Milestone_stream_cursor_value_input = {
-  amount?: InputMaybe<Scalars['numeric']>;
   db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
   grant_id?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['String']>;
@@ -3202,28 +3256,24 @@ export type Milestone_stream_cursor_value_input = {
 
 /** order by sum() on columns of table "Milestone" */
 export type Milestone_sum_order_by = {
-  amount?: InputMaybe<order_by>;
   percentage?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
 };
 
 /** order by var_pop() on columns of table "Milestone" */
 export type Milestone_var_pop_order_by = {
-  amount?: InputMaybe<order_by>;
   percentage?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
 };
 
 /** order by var_samp() on columns of table "Milestone" */
 export type Milestone_var_samp_order_by = {
-  amount?: InputMaybe<order_by>;
   percentage?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
 };
 
 /** order by variance() on columns of table "Milestone" */
 export type Milestone_variance_order_by = {
-  amount?: InputMaybe<order_by>;
   percentage?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
 };
@@ -4503,6 +4553,7 @@ export type Update = {
   entityMetadata_id?: Maybe<Scalars['String']>;
   hostEntityId: Scalars['String'];
   id: Scalars['String'];
+  message?: Maybe<Scalars['String']>;
   playerType: Scalars['Int'];
   postBlockNumber: Scalars['Int'];
   postDecorator?: Maybe<Scalars['Int']>;
@@ -4529,6 +4580,7 @@ export type Update_bool_exp = {
   entityMetadata_id?: InputMaybe<String_comparison_exp>;
   hostEntityId?: InputMaybe<String_comparison_exp>;
   id?: InputMaybe<String_comparison_exp>;
+  message?: InputMaybe<String_comparison_exp>;
   playerType?: InputMaybe<Int_comparison_exp>;
   postBlockNumber?: InputMaybe<Int_comparison_exp>;
   postDecorator?: InputMaybe<Int_comparison_exp>;
@@ -4552,6 +4604,7 @@ export type Update_order_by = {
   entityMetadata_id?: InputMaybe<order_by>;
   hostEntityId?: InputMaybe<order_by>;
   id?: InputMaybe<order_by>;
+  message?: InputMaybe<order_by>;
   playerType?: InputMaybe<order_by>;
   postBlockNumber?: InputMaybe<order_by>;
   postDecorator?: InputMaybe<order_by>;
@@ -4581,6 +4634,8 @@ export type Update_select_column =
   | 'hostEntityId'
   /** column name */
   | 'id'
+  /** column name */
+  | 'message'
   /** column name */
   | 'playerType'
   /** column name */
@@ -4615,6 +4670,7 @@ export type Update_stream_cursor_value_input = {
   entityMetadata_id?: InputMaybe<Scalars['String']>;
   hostEntityId?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['String']>;
+  message?: InputMaybe<Scalars['String']>;
   playerType?: InputMaybe<Scalars['Int']>;
   postBlockNumber?: InputMaybe<Scalars['Int']>;
   postDecorator?: InputMaybe<Scalars['Int']>;
@@ -8562,6 +8618,7 @@ export type ApplicationResolvers<ContextType = MeshContext, ParentType extends R
   grant?: Resolver<Maybe<ResolversTypes['Grant']>, ParentType, ContextType>;
   grant_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  index?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   metadata?: Resolver<Maybe<ResolversTypes['RawMetadata']>, ParentType, ContextType>;
   metadata_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   receivingAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -8773,21 +8830,24 @@ export type GameRoundResolvers<ContextType = MeshContext, ParentType extends Res
 }>;
 
 export type GrantResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Grant'] = ResolversParentTypes['Grant']> = ResolversObject<{
+  allApproved?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   amount?: Resolver<Maybe<ResolversTypes['numeric']>, ParentType, ContextType>;
-  applicationApproved?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  applicationApproved?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   applications?: Resolver<Array<ResolversTypes['Application']>, ParentType, ContextType, Partial<GrantapplicationsArgs>>;
-  approvedMilestones?: Resolver<Maybe<ResolversTypes['MilestoneSet']>, ParentType, ContextType>;
-  approvedMilestones_id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  currentApplication?: Resolver<Maybe<ResolversTypes['Application']>, ParentType, ContextType>;
+  currentApplication_id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  currentMilestones?: Resolver<Maybe<ResolversTypes['MilestoneSet']>, ParentType, ContextType>;
+  currentMilestones_id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
-  facilitatorApproved?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  facilitatorApprovalStatus?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   gameManager?: Resolver<Maybe<ResolversTypes['GameManager']>, ParentType, ContextType>;
   gameManager_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  grantCompleted?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  hasPendingMilestones?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  hasRejectedMilestones?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  isRequestingFacilitator?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   lastUpdated?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   milestoneDrafts?: Resolver<Array<ResolversTypes['MilestoneSet']>, ParentType, ContextType, Partial<GrantmilestoneDraftsArgs>>;
-  milestonesApproved?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
-  milestonesStatus?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   project?: Resolver<Maybe<ResolversTypes['Project']>, ParentType, ContextType>;
   project_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   ship?: Resolver<Maybe<ResolversTypes['GrantShip']>, ParentType, ContextType>;
@@ -8893,7 +8953,6 @@ export type LocalLogResolvers<ContextType = MeshContext, ParentType extends Reso
 }>;
 
 export type MilestoneResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Milestone'] = ResolversParentTypes['Milestone']> = ResolversObject<{
-  amount?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
   db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
   grant?: Resolver<Maybe<ResolversTypes['Grant']>, ParentType, ContextType>;
   grant_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -8912,7 +8971,9 @@ export type MilestoneSetResolvers<ContextType = MeshContext, ParentType extends 
   grant?: Resolver<Maybe<ResolversTypes['Grant']>, ParentType, ContextType>;
   grant_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  index?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   milestones?: Resolver<Array<ResolversTypes['Milestone']>, ParentType, ContextType, Partial<MilestoneSetmilestonesArgs>>;
+  status?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   timestamp?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
@@ -9079,6 +9140,7 @@ export type UpdateResolvers<ContextType = MeshContext, ParentType extends Resolv
   entityMetadata_id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   hostEntityId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  message?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   playerType?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   postBlockNumber?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   postDecorator?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
@@ -10024,7 +10086,7 @@ export type ShipsPageQueryQueryVariables = Exact<{
 
 
 export type ShipsPageQueryQuery = { GrantShip: Array<(
-    Pick<GrantShip, 'id' | 'name' | 'status' | 'shipContractAddress' | 'shipApplicationBytesData' | 'owner' | 'balance' | 'totalAvailableFunds' | 'totalAllocated' | 'totalDistributed' | 'totalRoundAmount'>
+    Pick<GrantShip, 'shipContractAddress' | 'id' | 'name' | 'status' | 'shipApplicationBytesData' | 'owner' | 'balance' | 'totalAvailableFunds' | 'totalAllocated' | 'totalDistributed' | 'totalRoundAmount'>
     & { profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>>, alloProfileMembers?: Maybe<Pick<ProfileMemberGroup, 'addresses'>> }
   )> };
 
@@ -10430,6 +10492,7 @@ export const ShipsPageQueryDocument = gql`
     query ShipsPageQuery($gmId: String!) {
   GrantShip(where: {isApproved: {_eq: true}, gameManager_id: {_eq: $gmId}}) {
     ...BaseShipData
+    shipContractAddress
   }
 }
     ${BaseShipDataFragmentDoc}` as unknown as DocumentNode<ShipsPageQueryQuery, ShipsPageQueryQueryVariables>;

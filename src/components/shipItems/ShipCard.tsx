@@ -19,6 +19,7 @@ import { ShipsCardUI } from '../../types/ui';
 import { useUserData } from '../../hooks/useUserState';
 import { SHIP_STATUS_INFO } from '../../constants/copy';
 import { useMobile, useTablet } from '../../hooks/useBreakpoint';
+import { ApplyButton } from './ApplyButton';
 
 export const ShipCard = ({
   id,
@@ -30,6 +31,7 @@ export const ShipCard = ({
   amtDistributed,
   amtAvailable,
   gameStatus,
+  shipContractAddress,
 }: ShipsCardUI & { gameStatus: GameStatus }) => {
   const theme = useMantineTheme();
   const navigate = useNavigate();
@@ -107,15 +109,9 @@ export const ShipCard = ({
             {description}
           </Text>
           <Group>
-            <Button
-              disabled={!isGameActive}
-              onClick={(e) => {
-                e.stopPropagation();
-                navigate(`/apply-funding/${id}`);
-              }}
-            >
-              Apply For Funding
-            </Button>
+            {isGameActive && shipContractAddress && (
+              <ApplyButton shipSrcAddress={shipContractAddress} />
+            )}
           </Group>
         </Box>
       </Flex>

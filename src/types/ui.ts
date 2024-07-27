@@ -57,6 +57,7 @@ export type ShipsCardUI = {
   amtDistributed: string;
   amtAvailable: string;
   balance: string;
+  shipContractAddress?: string | null;
 };
 
 export type ShipPageUI = {
