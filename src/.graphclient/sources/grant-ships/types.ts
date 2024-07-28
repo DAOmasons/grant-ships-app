@@ -1771,7 +1771,6 @@ export type GameRound_variance_order_by = {
 
 /** columns and relationships of "Grant" */
 export type Grant = {
-  allApproved: Scalars['Boolean'];
   amount?: Maybe<Scalars['numeric']>;
   applicationApproved: Scalars['Boolean'];
   /** An array relationship */
@@ -1783,14 +1782,12 @@ export type Grant = {
   currentMilestones?: Maybe<MilestoneSet>;
   currentMilestones_id?: Maybe<Scalars['String']>;
   db_write_timestamp?: Maybe<Scalars['timestamp']>;
-  facilitatorApprovalStatus: Scalars['Int'];
   /** An object relationship */
   gameManager?: Maybe<GameManager>;
   gameManager_id: Scalars['String'];
   grantCompleted: Scalars['Boolean'];
-  hasPendingMilestones: Scalars['Boolean'];
-  hasRejectedMilestones: Scalars['Boolean'];
   id: Scalars['String'];
+  isAllocated: Scalars['Boolean'];
   lastUpdated: Scalars['Int'];
   /** An array relationship */
   milestoneDrafts: Array<MilestoneSet>;
@@ -2504,7 +2501,6 @@ export type Grant_aggregate_order_by = {
 /** order by avg() on columns of table "Grant" */
 export type Grant_avg_order_by = {
   amount?: InputMaybe<order_by>;
-  facilitatorApprovalStatus?: InputMaybe<order_by>;
   lastUpdated?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
 };
@@ -2514,7 +2510,6 @@ export type Grant_bool_exp = {
   _and?: InputMaybe<Array<Grant_bool_exp>>;
   _not?: InputMaybe<Grant_bool_exp>;
   _or?: InputMaybe<Array<Grant_bool_exp>>;
-  allApproved?: InputMaybe<Boolean_comparison_exp>;
   amount?: InputMaybe<numeric_comparison_exp>;
   applicationApproved?: InputMaybe<Boolean_comparison_exp>;
   applications?: InputMaybe<Application_bool_exp>;
@@ -2523,13 +2518,11 @@ export type Grant_bool_exp = {
   currentMilestones?: InputMaybe<MilestoneSet_bool_exp>;
   currentMilestones_id?: InputMaybe<String_comparison_exp>;
   db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
-  facilitatorApprovalStatus?: InputMaybe<Int_comparison_exp>;
   gameManager?: InputMaybe<GameManager_bool_exp>;
   gameManager_id?: InputMaybe<String_comparison_exp>;
   grantCompleted?: InputMaybe<Boolean_comparison_exp>;
-  hasPendingMilestones?: InputMaybe<Boolean_comparison_exp>;
-  hasRejectedMilestones?: InputMaybe<Boolean_comparison_exp>;
   id?: InputMaybe<String_comparison_exp>;
+  isAllocated?: InputMaybe<Boolean_comparison_exp>;
   lastUpdated?: InputMaybe<Int_comparison_exp>;
   milestoneDrafts?: InputMaybe<MilestoneSet_bool_exp>;
   project?: InputMaybe<Project_bool_exp>;
@@ -2545,7 +2538,6 @@ export type Grant_max_order_by = {
   currentApplication_id?: InputMaybe<order_by>;
   currentMilestones_id?: InputMaybe<order_by>;
   db_write_timestamp?: InputMaybe<order_by>;
-  facilitatorApprovalStatus?: InputMaybe<order_by>;
   gameManager_id?: InputMaybe<order_by>;
   id?: InputMaybe<order_by>;
   lastUpdated?: InputMaybe<order_by>;
@@ -2560,7 +2552,6 @@ export type Grant_min_order_by = {
   currentApplication_id?: InputMaybe<order_by>;
   currentMilestones_id?: InputMaybe<order_by>;
   db_write_timestamp?: InputMaybe<order_by>;
-  facilitatorApprovalStatus?: InputMaybe<order_by>;
   gameManager_id?: InputMaybe<order_by>;
   id?: InputMaybe<order_by>;
   lastUpdated?: InputMaybe<order_by>;
@@ -2571,7 +2562,6 @@ export type Grant_min_order_by = {
 
 /** Ordering options when selecting data from "Grant". */
 export type Grant_order_by = {
-  allApproved?: InputMaybe<order_by>;
   amount?: InputMaybe<order_by>;
   applicationApproved?: InputMaybe<order_by>;
   applications_aggregate?: InputMaybe<Application_aggregate_order_by>;
@@ -2580,13 +2570,11 @@ export type Grant_order_by = {
   currentMilestones?: InputMaybe<MilestoneSet_order_by>;
   currentMilestones_id?: InputMaybe<order_by>;
   db_write_timestamp?: InputMaybe<order_by>;
-  facilitatorApprovalStatus?: InputMaybe<order_by>;
   gameManager?: InputMaybe<GameManager_order_by>;
   gameManager_id?: InputMaybe<order_by>;
   grantCompleted?: InputMaybe<order_by>;
-  hasPendingMilestones?: InputMaybe<order_by>;
-  hasRejectedMilestones?: InputMaybe<order_by>;
   id?: InputMaybe<order_by>;
+  isAllocated?: InputMaybe<order_by>;
   lastUpdated?: InputMaybe<order_by>;
   milestoneDrafts_aggregate?: InputMaybe<MilestoneSet_aggregate_order_by>;
   project?: InputMaybe<Project_order_by>;
@@ -2599,8 +2587,6 @@ export type Grant_order_by = {
 /** select columns of table "Grant" */
 export type Grant_select_column =
   /** column name */
-  | 'allApproved'
-  /** column name */
   | 'amount'
   /** column name */
   | 'applicationApproved'
@@ -2611,17 +2597,13 @@ export type Grant_select_column =
   /** column name */
   | 'db_write_timestamp'
   /** column name */
-  | 'facilitatorApprovalStatus'
-  /** column name */
   | 'gameManager_id'
   /** column name */
   | 'grantCompleted'
   /** column name */
-  | 'hasPendingMilestones'
-  /** column name */
-  | 'hasRejectedMilestones'
-  /** column name */
   | 'id'
+  /** column name */
+  | 'isAllocated'
   /** column name */
   | 'lastUpdated'
   /** column name */
@@ -2634,7 +2616,6 @@ export type Grant_select_column =
 /** order by stddev() on columns of table "Grant" */
 export type Grant_stddev_order_by = {
   amount?: InputMaybe<order_by>;
-  facilitatorApprovalStatus?: InputMaybe<order_by>;
   lastUpdated?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
 };
@@ -2642,7 +2623,6 @@ export type Grant_stddev_order_by = {
 /** order by stddev_pop() on columns of table "Grant" */
 export type Grant_stddev_pop_order_by = {
   amount?: InputMaybe<order_by>;
-  facilitatorApprovalStatus?: InputMaybe<order_by>;
   lastUpdated?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
 };
@@ -2650,7 +2630,6 @@ export type Grant_stddev_pop_order_by = {
 /** order by stddev_samp() on columns of table "Grant" */
 export type Grant_stddev_samp_order_by = {
   amount?: InputMaybe<order_by>;
-  facilitatorApprovalStatus?: InputMaybe<order_by>;
   lastUpdated?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
 };
@@ -2665,18 +2644,15 @@ export type Grant_stream_cursor_input = {
 
 /** Initial value of the column from where the streaming should start */
 export type Grant_stream_cursor_value_input = {
-  allApproved?: InputMaybe<Scalars['Boolean']>;
   amount?: InputMaybe<Scalars['numeric']>;
   applicationApproved?: InputMaybe<Scalars['Boolean']>;
   currentApplication_id?: InputMaybe<Scalars['String']>;
   currentMilestones_id?: InputMaybe<Scalars['String']>;
   db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
-  facilitatorApprovalStatus?: InputMaybe<Scalars['Int']>;
   gameManager_id?: InputMaybe<Scalars['String']>;
   grantCompleted?: InputMaybe<Scalars['Boolean']>;
-  hasPendingMilestones?: InputMaybe<Scalars['Boolean']>;
-  hasRejectedMilestones?: InputMaybe<Scalars['Boolean']>;
   id?: InputMaybe<Scalars['String']>;
+  isAllocated?: InputMaybe<Scalars['Boolean']>;
   lastUpdated?: InputMaybe<Scalars['Int']>;
   project_id?: InputMaybe<Scalars['String']>;
   ship_id?: InputMaybe<Scalars['String']>;
@@ -2686,7 +2662,6 @@ export type Grant_stream_cursor_value_input = {
 /** order by sum() on columns of table "Grant" */
 export type Grant_sum_order_by = {
   amount?: InputMaybe<order_by>;
-  facilitatorApprovalStatus?: InputMaybe<order_by>;
   lastUpdated?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
 };
@@ -2694,7 +2669,6 @@ export type Grant_sum_order_by = {
 /** order by var_pop() on columns of table "Grant" */
 export type Grant_var_pop_order_by = {
   amount?: InputMaybe<order_by>;
-  facilitatorApprovalStatus?: InputMaybe<order_by>;
   lastUpdated?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
 };
@@ -2702,7 +2676,6 @@ export type Grant_var_pop_order_by = {
 /** order by var_samp() on columns of table "Grant" */
 export type Grant_var_samp_order_by = {
   amount?: InputMaybe<order_by>;
-  facilitatorApprovalStatus?: InputMaybe<order_by>;
   lastUpdated?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
 };
@@ -2710,7 +2683,6 @@ export type Grant_var_samp_order_by = {
 /** order by variance() on columns of table "Grant" */
 export type Grant_variance_order_by = {
   amount?: InputMaybe<order_by>;
-  facilitatorApprovalStatus?: InputMaybe<order_by>;
   lastUpdated?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
 };
@@ -2937,6 +2909,7 @@ export type MilestoneSet = {
   grant_id: Scalars['String'];
   id: Scalars['String'];
   index: Scalars['Int'];
+  milestoneLength: Scalars['Int'];
   /** An array relationship */
   milestones: Array<Milestone>;
   status: Scalars['Int'];
@@ -2971,6 +2944,7 @@ export type MilestoneSet_aggregate_order_by = {
 /** order by avg() on columns of table "MilestoneSet" */
 export type MilestoneSet_avg_order_by = {
   index?: InputMaybe<order_by>;
+  milestoneLength?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   timestamp?: InputMaybe<order_by>;
 };
@@ -2985,6 +2959,7 @@ export type MilestoneSet_bool_exp = {
   grant_id?: InputMaybe<String_comparison_exp>;
   id?: InputMaybe<String_comparison_exp>;
   index?: InputMaybe<Int_comparison_exp>;
+  milestoneLength?: InputMaybe<Int_comparison_exp>;
   milestones?: InputMaybe<Milestone_bool_exp>;
   status?: InputMaybe<Int_comparison_exp>;
   timestamp?: InputMaybe<Int_comparison_exp>;
@@ -2996,6 +2971,7 @@ export type MilestoneSet_max_order_by = {
   grant_id?: InputMaybe<order_by>;
   id?: InputMaybe<order_by>;
   index?: InputMaybe<order_by>;
+  milestoneLength?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   timestamp?: InputMaybe<order_by>;
 };
@@ -3006,6 +2982,7 @@ export type MilestoneSet_min_order_by = {
   grant_id?: InputMaybe<order_by>;
   id?: InputMaybe<order_by>;
   index?: InputMaybe<order_by>;
+  milestoneLength?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   timestamp?: InputMaybe<order_by>;
 };
@@ -3017,6 +2994,7 @@ export type MilestoneSet_order_by = {
   grant_id?: InputMaybe<order_by>;
   id?: InputMaybe<order_by>;
   index?: InputMaybe<order_by>;
+  milestoneLength?: InputMaybe<order_by>;
   milestones_aggregate?: InputMaybe<Milestone_aggregate_order_by>;
   status?: InputMaybe<order_by>;
   timestamp?: InputMaybe<order_by>;
@@ -3033,6 +3011,8 @@ export type MilestoneSet_select_column =
   /** column name */
   | 'index'
   /** column name */
+  | 'milestoneLength'
+  /** column name */
   | 'status'
   /** column name */
   | 'timestamp';
@@ -3040,6 +3020,7 @@ export type MilestoneSet_select_column =
 /** order by stddev() on columns of table "MilestoneSet" */
 export type MilestoneSet_stddev_order_by = {
   index?: InputMaybe<order_by>;
+  milestoneLength?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   timestamp?: InputMaybe<order_by>;
 };
@@ -3047,6 +3028,7 @@ export type MilestoneSet_stddev_order_by = {
 /** order by stddev_pop() on columns of table "MilestoneSet" */
 export type MilestoneSet_stddev_pop_order_by = {
   index?: InputMaybe<order_by>;
+  milestoneLength?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   timestamp?: InputMaybe<order_by>;
 };
@@ -3054,6 +3036,7 @@ export type MilestoneSet_stddev_pop_order_by = {
 /** order by stddev_samp() on columns of table "MilestoneSet" */
 export type MilestoneSet_stddev_samp_order_by = {
   index?: InputMaybe<order_by>;
+  milestoneLength?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   timestamp?: InputMaybe<order_by>;
 };
@@ -3072,6 +3055,7 @@ export type MilestoneSet_stream_cursor_value_input = {
   grant_id?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['String']>;
   index?: InputMaybe<Scalars['Int']>;
+  milestoneLength?: InputMaybe<Scalars['Int']>;
   status?: InputMaybe<Scalars['Int']>;
   timestamp?: InputMaybe<Scalars['Int']>;
 };
@@ -3079,6 +3063,7 @@ export type MilestoneSet_stream_cursor_value_input = {
 /** order by sum() on columns of table "MilestoneSet" */
 export type MilestoneSet_sum_order_by = {
   index?: InputMaybe<order_by>;
+  milestoneLength?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   timestamp?: InputMaybe<order_by>;
 };
@@ -3086,6 +3071,7 @@ export type MilestoneSet_sum_order_by = {
 /** order by var_pop() on columns of table "MilestoneSet" */
 export type MilestoneSet_var_pop_order_by = {
   index?: InputMaybe<order_by>;
+  milestoneLength?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   timestamp?: InputMaybe<order_by>;
 };
@@ -3093,6 +3079,7 @@ export type MilestoneSet_var_pop_order_by = {
 /** order by var_samp() on columns of table "MilestoneSet" */
 export type MilestoneSet_var_samp_order_by = {
   index?: InputMaybe<order_by>;
+  milestoneLength?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   timestamp?: InputMaybe<order_by>;
 };
@@ -3100,6 +3087,7 @@ export type MilestoneSet_var_samp_order_by = {
 /** order by variance() on columns of table "MilestoneSet" */
 export type MilestoneSet_variance_order_by = {
   index?: InputMaybe<order_by>;
+  milestoneLength?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   timestamp?: InputMaybe<order_by>;
 };
@@ -4519,8 +4507,8 @@ export type Update = {
   chainId: Scalars['Int'];
   /** An object relationship */
   content?: Maybe<RawMetadata>;
-  contentSchema: Scalars['Int'];
-  content_id: Scalars['String'];
+  contentSchema?: Maybe<Scalars['Int']>;
+  content_id?: Maybe<Scalars['String']>;
   db_write_timestamp?: Maybe<Scalars['timestamp']>;
   /** An object relationship */
   domain?: Maybe<GameManager>;

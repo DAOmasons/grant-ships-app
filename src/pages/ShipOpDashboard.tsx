@@ -36,6 +36,7 @@ export const ShipOpDashboard = () => {
     data: shipData,
     error: shipError,
     isLoading: shipLoading,
+    refetch: refetchShip,
   } = useQuery({
     queryKey: [`ship-dash-${id}`],
     queryFn: () => getShipDash(id as string),
@@ -79,6 +80,8 @@ export const ShipOpDashboard = () => {
             shipSrcAddress={shipData?.shipContractAddress as string | undefined}
             shipAvatar={shipData?.profileMetadata?.imgUrl}
             shipName={shipData?.name}
+            refetch={refetchShip}
+            beacon={shipData?.beaconMessage}
           />
         </Tabs.Panel>
         {/* <Tabs.Panel value="application">

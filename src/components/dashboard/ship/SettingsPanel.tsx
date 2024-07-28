@@ -4,6 +4,7 @@ import {
   IconBuildingLighthouse,
   IconChartBar,
   IconFileDescription,
+  IconMessage,
   IconPlus,
 } from '@tabler/icons-react';
 import { PageDrawer } from '../../PageDrawer';
@@ -30,12 +31,14 @@ export const SettingsPanel = ({
   shipSrcAddress,
   shipAvatar,
   shipName,
+  refetch,
 }: {
   shipSrcAddress?: string;
   shipAvatar?: string;
   shipName?: string;
-  beacon?: string;
+  beacon?: Content;
   customApplication?: string;
+  refetch?: () => void;
 }) => {
   const [beaconOpen, { close: closeBeacon, open: openBeacon }] =
     useDisclosure();
@@ -43,12 +46,11 @@ export const SettingsPanel = ({
     useDisclosure();
 
   const hasLoaded = shipSrcAddress && shipAvatar && shipName;
-
   return (
     <>
       <Box>
         <Group mb="sm">
-          <IconBuildingLighthouse size={24} />
+          <IconMessage size={24} />
           <Text fz="lg" fw={600}>
             Beacon Message
           </Text>
@@ -59,15 +61,11 @@ export const SettingsPanel = ({
           projects to apply for a grant.
         </Text>
         {hasLoaded ? (
-          <Button
-            mb="lg"
-            leftSection={<IconBuildingLighthouse />}
-            onClick={openBeacon}
-          >
+          <Button mb="lg" onClick={openBeacon}>
             Manage Beacon
           </Button>
         ) : (
-          <Button mb="lg" leftSection={<IconBuildingLighthouse />} disabled>
+          <Button mb="lg" disabled>
             Manage Beacon
           </Button>
         )}
@@ -83,15 +81,11 @@ export const SettingsPanel = ({
           you need.
         </Text>
         {hasLoaded ? (
-          <Button
-            mb="lg"
-            leftSection={<IconFileDescription />}
-            onClick={openApplication}
-          >
+          <Button mb="lg" onClick={openApplication}>
             Manage Application
           </Button>
         ) : (
-          <Button mb="lg" leftSection={<IconFileDescription />} disabled>
+          <Button mb="lg" disabled>
             Manage Application
           </Button>
         )}
@@ -107,11 +101,11 @@ export const SettingsPanel = ({
           Comment on each project and share a video summary of the round.
         </Text>
         {hasLoaded ? (
-          <Button mb="lg" leftSection={<IconChartBar />} disabled>
+          <Button mb="lg" disabled>
             Manage Report
           </Button>
         ) : (
-          <Button mb="lg" leftSection={<IconChartBar />} disabled>
+          <Button mb="lg" disabled>
             Manage Report
           </Button>
         )}
@@ -147,7 +141,8 @@ const BeaconDrawer = ({
   shipAvatar,
   shipName,
   shipSrcAddress,
-  content = { type: 'doc', content: [] },
+  content,
+  refetch,
 }: {
   shipSrcAddress: string;
   shipAvatar: string;
@@ -155,6 +150,7 @@ const BeaconDrawer = ({
   opened: boolean;
   onClose: () => void;
   content?: Content;
+  refetch?: () => void;
 }) => {
   const postId = `beacon-${shipSrcAddress}`;
   const editor = useEditor({
@@ -205,6 +201,7 @@ const BeaconDrawer = ({
       return;
     }
 
+    onClose();
     const pinRes = await pinJSONToIPFS(rtMetadata.data);
 
     if (typeof pinRes.IpfsHash !== 'string' && pinRes.IpfsHash[0] !== 'Q') {
@@ -223,6 +220,11 @@ const BeaconDrawer = ({
         address: shipSrcAddress as Address,
         args: [Tag.ShipBeacon, [1n, pinRes.IpfsHash], ZER0_ADDRESS],
       },
+      writeContractOptions: {
+        onPollSuccess() {
+          localStorage.removeItem(postId);
+        },
+      },
     });
   };
 
@@ -234,7 +236,7 @@ const BeaconDrawer = ({
           imgUrl={shipAvatar}
           name={shipName}
         />
-        <TxButton leftSection={<IconPlus />} onClick={() => {}}>
+        <TxButton leftSection={<IconPlus />} onClick={handleBeaconPost}>
           Post
         </TxButton>
       </Group>
