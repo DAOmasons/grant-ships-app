@@ -111,22 +111,11 @@ const ProjectActions = () => {
         leftSection={
           <IconPlayerPlay style={{ transform: 'translateY(-1px)' }} />
         }
-        px={'lg'}
-        bg={theme.colors.blue[2]}
-        c={theme.colors.blue[8]}
-        radius="xl"
-        w="180px"
+        variant="menu"
       >
         <Text>Start Grant</Text>
       </Button>
-      <Button
-        leftSection={<IconFileDescription />}
-        px={'lg'}
-        bg={theme.colors.blue[2]}
-        c={theme.colors.blue[8]}
-        radius="xl"
-        w="180px"
-      >
+      <Button variant="menu" leftSection={<IconFileDescription />}>
         <Text>Application</Text>
       </Button>
     </Stack>

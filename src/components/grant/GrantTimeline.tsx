@@ -22,7 +22,7 @@ import { Bold } from '../Typography';
 export const GrantTimeline = () => {
   const { timeline, beacon, ship } = useGrant();
   return (
-    <Box h="300vh">
+    <Box>
       {/* <ScrollArea h="30%"> */}
       {timeline.map((item) => {
         if (item.tag === 'beacon') {

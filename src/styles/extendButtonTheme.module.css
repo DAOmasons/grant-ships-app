@@ -22,4 +22,21 @@
       );
     }
   }
+  &[data-variant='menu'] {
+    background-color: var(--mantine-color-blue-2);
+    color: var(--mantine-color-blue-8);
+    border-radius: var(--mantine-radius-xl);
+    width: 180px;
+    transition:
+      background-color 100ms,
+      color 100ms;
+    &:hover {
+      background-color: var(--mantine-color-blue-1);
+      color: var(--mantine-color-blue-7);
+    }
+    &:disabled {
+      background-color: var(--mantine-color-gray-6);
+      color: var(--mantine-color-gray-9);
+    }
+  }
 }
