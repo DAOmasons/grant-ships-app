@@ -1,4 +1,4 @@
-import { createContext, ReactNode } from 'react';
+import { createContext, ReactNode, useMemo } from 'react';
 import {
   getGrant,
   GrantQueryType,
@@ -7,10 +7,13 @@ import {
 } from '../queries/getGrant';
 import { useQuery } from '@tanstack/react-query';
 import { Content } from '@tiptap/react';
+import { useUserData } from '../hooks/useUserState';
 
 export type GrantContext = GrantQueryType & {
   isLoadingGrant: boolean;
   grantError: Error | null;
+  isProjectMember?: boolean;
+  isShipOperator?: boolean;
   refetchGrant: () => void;
 };
 
@@ -22,6 +25,8 @@ export const GrantContext = createContext<GrantContext>({
   timeline: [],
   isLoadingGrant: false,
   grantError: null,
+  isProjectMember: undefined,
+  isShipOperator: undefined,
   refetchGrant: () => {},
 });
 
@@ -42,6 +47,22 @@ export const GrantContextProvider = ({
     queryFn: () => getGrant(grantId),
   });
 
+  const { userData } = useUserData();
+
+  const isShipOperator =
+    userData &&
+    userData.isShipOperator &&
+    userData.shipAddress === grant?.ship?.id;
+
+  const isProjectMember = useMemo(() => {
+    return (
+      userData &&
+      !!userData.projects?.find(
+        (project) => project.anchor === grant?.project?.id
+      )
+    );
+  }, [userData, grant]);
+
   return (
     <GrantContext.Provider
       value={{
@@ -53,6 +74,8 @@ export const GrantContextProvider = ({
         isLoadingGrant,
         grantError,
         refetchGrant,
+        isProjectMember,
+        isShipOperator,
       }}
     >
       {children}
