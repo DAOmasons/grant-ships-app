@@ -1,7 +1,9 @@
 import React from 'react';
 import { GrantContext } from '../contexts/GrantContext';
 
-export const useGrant = () => {
+type UseGrant = GrantContext & { grantExists: boolean };
+
+export const useGrant = (): UseGrant => {
   const context = React.useContext(GrantContext);
 
   if (context === undefined) {
@@ -14,5 +16,12 @@ export const useGrant = () => {
     beacon: context.beacon,
     applicationTemplate: context.applicationTemplate,
     timeline: context.timeline,
-  } as GrantContext;
+    grant: context.grant,
+    grantExists: !!context.grant,
+    isLoadingGrant: context.isLoadingGrant,
+    grantError: context.grantError,
+    refetchGrant: context.refetchGrant,
+    isProjectMember: context.isProjectMember,
+    isShipOperator: context.isShipOperator,
+  };
 };

@@ -1,13 +1,16 @@
 import React from 'react';
 import { MainSection, PageTitle, ProfileSection } from '../layout/Sections';
 import {
+  ActionIcon,
   Avatar,
   Box,
+  Button,
   Center,
   Flex,
   Paper,
   SegmentedControl,
   Skeleton,
+  Stack,
   Text,
   useMantineTheme,
 } from '@mantine/core';
@@ -22,6 +25,7 @@ import {
 import {
   IconFileDescription,
   IconPennant,
+  IconPlayerPlay,
   IconRoute,
 } from '@tabler/icons-react';
 import { FeedCard } from '../components/feed/FeedCard';
@@ -43,55 +47,89 @@ export const Grant = () => {
   const layout = location.pathname.split('/').pop();
 
   return (
-    <MainSection maw={640}>
-      <GrantContextProvider grantId={id as string}>
-        <PageTitle title="Grant" />
-        <TopSection />
-        <SegmentedControl
-          value={layout || 'timeline'}
-          size={isMobile ? 'sm' : 'md'}
-          bg={theme.colors.dark[6]}
-          mb="lg"
-          data={[
-            {
-              value: 'timeline',
-              label: (
-                <Center style={{ gap: 8 }}>
-                  <IconRoute size={16} />
-                  <span>Timeline</span>
-                </Center>
-              ),
-            },
-            {
-              value: 'application',
-              label: (
-                <Center style={{ gap: 8 }}>
-                  <IconFileDescription size={16} />
-                  <span>Application</span>
-                </Center>
-              ),
-            },
-            {
-              value: 'milestones',
-              label: (
-                <Center style={{ gap: 8 }}>
-                  <IconPennant size={16} />
-                  <span>Milestones</span>
-                </Center>
-              ),
-            },
-          ]}
-          onChange={(value) => navigate(`/grant/${id}/${value}`)}
-        />
-        <Routes>
-          <Route path="/" element={<GrantTimeline />} />
-          <Route path="application" element={<GrantApplication />} />
-          <Route path="milestones" element={<GrantMilestones />} />
-          <Route path="timeline" element={<GrantTimeline />} />
-          <Route path="*" element={<GrantTimeline />} />
-        </Routes>
-      </GrantContextProvider>
-    </MainSection>
+    <GrantContextProvider grantId={id as string}>
+      <Flex pos="relative">
+        <MainSection maw={640}>
+          <PageTitle title="Grant" />
+          <TopSection />
+          <SegmentedControl
+            value={layout || 'timeline'}
+            size={isMobile ? 'sm' : 'md'}
+            bg={theme.colors.dark[6]}
+            mb="lg"
+            data={[
+              {
+                value: 'timeline',
+                label: (
+                  <Center style={{ gap: 8 }}>
+                    <IconRoute size={16} />
+                    <span>Timeline</span>
+                  </Center>
+                ),
+              },
+              {
+                value: 'application',
+                label: (
+                  <Center style={{ gap: 8 }}>
+                    <IconFileDescription size={16} />
+                    <span>Application</span>
+                  </Center>
+                ),
+              },
+              {
+                value: 'milestones',
+                label: (
+                  <Center style={{ gap: 8 }}>
+                    <IconPennant size={16} />
+                    <span>Milestones</span>
+                  </Center>
+                ),
+              },
+            ]}
+            onChange={(value) => navigate(`/grant/${id}/${value}`)}
+          />
+          <Routes>
+            <Route path="/" element={<GrantTimeline />} />
+            <Route path="application" element={<GrantApplication />} />
+            <Route path="milestones" element={<GrantMilestones />} />
+            <Route path="timeline" element={<GrantTimeline />} />
+            <Route path="*" element={<GrantTimeline />} />
+          </Routes>
+        </MainSection>
+        <Flex h="100%" pos="relative" style={{ flexGrow: 1 }}>
+          <ProjectActions />
+        </Flex>
+      </Flex>
+    </GrantContextProvider>
+  );
+};
+const ProjectActions = () => {
+  const theme = useMantineTheme();
+  return (
+    <Stack pos="fixed" top="45%" gap="sm">
+      <Button
+        leftSection={
+          <IconPlayerPlay style={{ transform: 'translateY(-1px)' }} />
+        }
+        px={'lg'}
+        bg={theme.colors.blue[2]}
+        c={theme.colors.blue[8]}
+        radius="xl"
+        w="180px"
+      >
+        <Text>Start Grant</Text>
+      </Button>
+      <Button
+        leftSection={<IconFileDescription />}
+        px={'lg'}
+        bg={theme.colors.blue[2]}
+        c={theme.colors.blue[8]}
+        radius="xl"
+        w="180px"
+      >
+        <Text>Application</Text>
+      </Button>
+    </Stack>
   );
 };
 

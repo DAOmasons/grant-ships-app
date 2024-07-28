@@ -1,11 +1,20 @@
-import { Box, Divider, Flex, Group, ScrollArea, Text } from '@mantine/core';
+import {
+  Affix,
+  Box,
+  Button,
+  Divider,
+  Flex,
+  Group,
+  ScrollArea,
+  Text,
+} from '@mantine/core';
 import { useGrant } from '../../hooks/useGrant';
 import { FeedCard } from '../feed/FeedCard';
 import { RTDisplay } from '../RTDisplay';
 import { Content } from '@tiptap/react';
 import { PlayerAvatar } from '../PlayerAvatar';
 import { Player } from '../../types/ui';
-import { Fragment, ReactNode, useMemo } from 'react';
+import React, { ComponentProps, Fragment, ReactNode, useMemo } from 'react';
 import { secondsToShortRelativeTime } from '../../utils/time';
 import { IconRoute } from '@tabler/icons-react';
 import { Bold } from '../Typography';
@@ -13,33 +22,22 @@ import { Bold } from '../Typography';
 export const GrantTimeline = () => {
   const { timeline, beacon, ship } = useGrant();
   return (
-    <Box>
+    <Box h="300vh">
       {/* <ScrollArea h="30%"> */}
-      {timeline.map((item, index) => {
+      {timeline.map((item) => {
         if (item.tag === 'beacon') {
           return (
-            <Fragment key={item.id}>
-              <NextStep
-                text={
-                  <Text fz="sm">
-                    Next Step: Please submit an <Bold>Application</Bold> or
-                    select <Bold>Start Grant</Bold> to signal your intent to
-                    apply.
-                  </Text>
-                }
-              />
-              <UserUpdate
-                content={item.updateContent}
-                posterImg={ship?.profileMetadata?.imgUrl || ''}
-                posterName={ship?.name || ''}
-                playerType={item.playerType}
-                timestamp={item.timestamp}
-              />
-            </Fragment>
+            <BeaconMessage
+              key={item.id}
+              content={item.updateContent}
+              posterImg={ship?.profileMetadata?.imgUrl || ''}
+              posterName={ship?.name || ''}
+              playerType={item.playerType}
+              timestamp={item.timestamp}
+            />
           );
         }
       })}
-      {/* </ScrollArea> */}
     </Box>
   );
 };
@@ -89,6 +87,25 @@ const UserUpdate = ({
       </Box>
       <Divider />
     </Box>
+  );
+};
+
+const BeaconMessage = (props: ComponentProps<typeof UserUpdate>) => {
+  const { grantExists } = useGrant();
+  return (
+    <Fragment>
+      {!grantExists && (
+        <NextStep
+          text={
+            <Text fz="sm">
+              Next Step: Please submit an <Bold>Application</Bold> or select{' '}
+              <Bold>Start Grant</Bold> to signal your intent to apply.
+            </Text>
+          }
+        />
+      )}
+      <UserUpdate {...props} />
+    </Fragment>
   );
 };
 
