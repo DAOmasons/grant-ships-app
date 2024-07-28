@@ -1,7 +1,5 @@
 import { ShipDashFragment, getBuiltGraphSDK } from '../.graphclient';
-import { DashGrant, resolveGrants } from '../resolvers/grantResolvers';
 import { ShipMetadata, resolveShipMetadata } from '../resolvers/shipResolvers';
-import { SUBGRAPH_URL } from '../constants/gameSetup';
 
 export type DashShip = ShipDashFragment & {
   profileMetadata?: ShipMetadata;

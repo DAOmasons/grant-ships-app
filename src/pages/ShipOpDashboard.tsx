@@ -75,7 +75,11 @@ export const ShipOpDashboard = () => {
           /> */}
         </Tabs.Panel>
         <Tabs.Panel value="settings">
-          <SettingsPanel />
+          <SettingsPanel
+            shipSrcAddress={shipData?.shipContractAddress as string | undefined}
+            shipAvatar={shipData?.profileMetadata?.imgUrl}
+            shipName={shipData?.name}
+          />
         </Tabs.Panel>
         {/* <Tabs.Panel value="application">
           {id && (

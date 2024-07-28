@@ -1,24 +1,12 @@
-import {
-  Avatar,
-  Box,
-  Button,
-  Drawer,
-  Flex,
-  Group,
-  Text,
-  useMantineTheme,
-} from '@mantine/core';
-import { Content, Editor, useEditor } from '@tiptap/react';
+import { Group } from '@mantine/core';
+import { Content, useEditor } from '@tiptap/react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import StarterKit from '@tiptap/starter-kit';
-import { RichTextEditor, Link } from '@mantine/tiptap';
-import { PageTitle } from '../layout/Sections';
-import { IconHeading, IconPlus } from '@tabler/icons-react';
+import { Link } from '@mantine/tiptap';
+import { IconPlus } from '@tabler/icons-react';
 import { Image } from '@tiptap/extension-image';
-import { ImageControl } from './RTEditor/ImageControl';
-import { ProjectBadge } from './RoleBadges';
-import { ReactNode, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Player } from '../types/ui';
 import { useTx } from '../hooks/useTx';
 import AlloPoster from '../abi/AlloPoster.json';
@@ -26,10 +14,8 @@ import { ADDR } from '../constants/addresses';
 import { pinJSONToIPFS } from '../utils/ipfs/pin';
 import { notifications } from '@mantine/notifications';
 import { TxButton } from './TxButton';
-import { Json } from '../types/common';
 import { PlayerAvatar } from './PlayerAvatar';
 import { GAME_MANAGER } from '../constants/gameSetup';
-import classes from '../styles/tiptap.module.css';
 import { RTEditor } from './RTEditor';
 import { PageDrawer } from './PageDrawer';
 
