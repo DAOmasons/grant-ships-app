@@ -16,7 +16,7 @@ export const GrantContext = createContext<GrantQueryType>({
   timeline: [],
 });
 
-export const GrantProvider = ({
+export const GrantContextProvider = ({
   children,
   grantId,
 }: {
