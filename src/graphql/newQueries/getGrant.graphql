@@ -26,6 +26,28 @@ fragment GrantUpdate on Update {
   timestamp
 }
 
+fragment GrantData on Grant {
+  id
+  status
+  lastUpdated
+  amount
+  isAllocated
+  grantCompleted
+  applicationApproved
+  milestoneDrafts {
+    id
+  }
+  currentMilestones {
+    id
+  }
+  applications {
+    id
+  }
+  currentApplication {
+    id
+  }
+}
+
 query getGrant($grantId: String!, $projectId: String!, $shipSrc: String!) {
   Project_by_pk(id: $projectId) {
     ...ProjectData
@@ -40,15 +62,9 @@ query getGrant($grantId: String!, $projectId: String!, $shipSrc: String!) {
     }
   }
   Grant_by_pk(id: $grantId) {
-    id
+    ...GrantData
   }
   Update(where: { hostEntityId: { _eq: $grantId } }) {
     ...GrantUpdate
-  }
-  Application(where: { grant_id: { _eq: $grantId } }) {
-    id
-  }
-  MilestoneSet(where: { grant_id: { _eq: $grantId } }) {
-    id
   }
 }

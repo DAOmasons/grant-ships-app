@@ -9930,6 +9930,11 @@ export type GrantUpdateFragment = (
   & { content?: Maybe<Pick<RawMetadata, 'pointer'>> }
 );
 
+export type GrantDataFragment = (
+  Pick<Grant, 'id' | 'status' | 'lastUpdated' | 'amount' | 'isAllocated' | 'grantCompleted' | 'applicationApproved'>
+  & { milestoneDrafts: Array<Pick<MilestoneSet, 'id'>>, currentMilestones?: Maybe<Pick<MilestoneSet, 'id'>>, applications: Array<Pick<Application, 'id'>>, currentApplication?: Maybe<Pick<Application, 'id'>> }
+);
+
 export type getGrantQueryVariables = Exact<{
   grantId: Scalars['String'];
   projectId: Scalars['String'];
@@ -9943,10 +9948,13 @@ export type getGrantQuery = { Project_by_pk?: Maybe<(
   )>, GrantShip: Array<(
     Pick<GrantShip, 'id' | 'name' | 'status' | 'shipContractAddress' | 'shipApplicationBytesData' | 'owner' | 'balance' | 'totalAvailableFunds' | 'totalAllocated' | 'totalDistributed' | 'totalRoundAmount'>
     & { beaconMessage?: Maybe<Pick<RawMetadata, 'pointer'>>, customApplication?: Maybe<Pick<RawMetadata, 'pointer'>>, profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>>, alloProfileMembers?: Maybe<Pick<ProfileMemberGroup, 'addresses'>> }
-  )>, Grant_by_pk?: Maybe<Pick<Grant, 'id'>>, Update: Array<(
+  )>, Grant_by_pk?: Maybe<(
+    Pick<Grant, 'id' | 'status' | 'lastUpdated' | 'amount' | 'isAllocated' | 'grantCompleted' | 'applicationApproved'>
+    & { milestoneDrafts: Array<Pick<MilestoneSet, 'id'>>, currentMilestones?: Maybe<Pick<MilestoneSet, 'id'>>, applications: Array<Pick<Application, 'id'>>, currentApplication?: Maybe<Pick<Application, 'id'>> }
+  )>, Update: Array<(
     Pick<Update, 'id' | 'tag' | 'playerType' | 'entityAddress' | 'postedBy' | 'message' | 'contentSchema' | 'timestamp'>
     & { content?: Maybe<Pick<RawMetadata, 'pointer'>> }
-  )>, Application: Array<Pick<Application, 'id'>>, MilestoneSet: Array<Pick<MilestoneSet, 'id'>> };
+  )> };
 
 export type getGsVotingQueryVariables = Exact<{
   id: Scalars['String'];
@@ -10254,6 +10262,29 @@ export const GrantUpdateFragmentDoc = gql`
   timestamp
 }
     ` as unknown as DocumentNode<GrantUpdateFragment, unknown>;
+export const GrantDataFragmentDoc = gql`
+    fragment GrantData on Grant {
+  id
+  status
+  lastUpdated
+  amount
+  isAllocated
+  grantCompleted
+  applicationApproved
+  milestoneDrafts {
+    id
+  }
+  currentMilestones {
+    id
+  }
+  applications {
+    id
+  }
+  currentApplication {
+    id
+  }
+}
+    ` as unknown as DocumentNode<GrantDataFragment, unknown>;
 export const ProjectDetailsFragmentDoc = gql`
     fragment ProjectDetails on Project {
   id
@@ -10367,20 +10398,15 @@ export const getGrantDocument = gql`
     }
   }
   Grant_by_pk(id: $grantId) {
-    id
+    ...GrantData
   }
   Update(where: {hostEntityId: {_eq: $grantId}}) {
     ...GrantUpdate
   }
-  Application(where: {grant_id: {_eq: $grantId}}) {
-    id
-  }
-  MilestoneSet(where: {grant_id: {_eq: $grantId}}) {
-    id
-  }
 }
     ${ProjectDataFragmentDoc}
 ${BaseShipDataFragmentDoc}
+${GrantDataFragmentDoc}
 ${GrantUpdateFragmentDoc}` as unknown as DocumentNode<getGrantQuery, getGrantQueryVariables>;
 export const getGsVotingDocument = gql`
     query getGsVoting($id: String!) {

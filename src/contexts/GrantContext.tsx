@@ -28,6 +28,7 @@ export const GrantContext = createContext<GrantContext>({
   isProjectMember: undefined,
   isShipOperator: undefined,
   refetchGrant: () => {},
+  grant: null,
 });
 
 export const GrantContextProvider = ({
@@ -38,7 +39,7 @@ export const GrantContextProvider = ({
   grantId: string;
 }) => {
   const {
-    data: grant,
+    data,
     isLoading: isLoadingGrant,
     error: grantError,
     refetch: refetchGrant,
@@ -52,25 +53,26 @@ export const GrantContextProvider = ({
   const isShipOperator =
     userData &&
     userData.isShipOperator &&
-    userData.shipAddress === grant?.ship?.id;
+    userData.shipAddress === data?.ship?.id;
 
   const isProjectMember = useMemo(() => {
     return (
       userData &&
       !!userData.projects?.find(
-        (project) => project.anchor === grant?.project?.id
+        (project) => project.anchor === data?.project?.id
       )
     );
-  }, [userData, grant]);
+  }, [userData, data]);
 
   return (
     <GrantContext.Provider
       value={{
-        project: (grant?.project as ProjectGrant) || null,
-        ship: (grant?.ship as ShipGrant) || null,
-        beacon: (grant?.beacon as Content) || null,
-        applicationTemplate: (grant?.applicationTemplate as Content) || null,
-        timeline: grant?.timeline || [],
+        grant: data?.grant!,
+        project: (data?.project as ProjectGrant) || null,
+        ship: (data?.ship as ShipGrant) || null,
+        beacon: (data?.beacon as Content) || null,
+        applicationTemplate: (data?.applicationTemplate as Content) || null,
+        timeline: data?.timeline || [],
         isLoadingGrant,
         grantError,
         refetchGrant,

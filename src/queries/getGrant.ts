@@ -4,6 +4,7 @@ import {
   ProjectDataFragment,
   getBuiltGraphSDK,
   GrantUpdateFragment,
+  GrantDataFragment,
 } from '../.graphclient';
 import { beaconNotSubmitted, defaultApplication } from '../constants/copy';
 import { resolveShipMetadata } from '../resolvers/grantResolvers';
@@ -37,6 +38,7 @@ export type GrantQueryType = {
   beacon: Content;
   applicationTemplate: Content;
   timeline: TimelineItem[];
+  grant: GrantDataFragment | null;
 };
 
 export const getGrant = async (grantId: string) => {
@@ -58,10 +60,8 @@ export const getGrant = async (grantId: string) => {
   const {
     Project_by_pk: project,
     GrantShip: ships,
-    Grant_by_pk: grantData,
+    Grant_by_pk: grant,
     Update: updates,
-    Application: applications,
-    MilestoneSet: milestonesSets,
   } = data;
 
   const ship = ships ? ships[0] : null;
@@ -102,5 +102,6 @@ export const getGrant = async (grantId: string) => {
     beacon: resolvedBeacon || beaconNotSubmitted,
     applicationTemplate: resolvedCustomApplication || defaultApplication,
     timeline: [beaconUpdate],
+    grant: grant ? grant : null,
   } as GrantQueryType;
 };
