@@ -1,20 +1,27 @@
+fragment ProjectData on Project {
+  id
+  profileId
+  name
+  status
+  owner
+  metadata {
+    pointer
+  }
+  members {
+    addresses
+  }
+}
+
 query getGrant($grantId: String!, $projectId: String!, $shipSrc: String!) {
   Project_by_pk(id: $projectId) {
-    id
-    profileId
-    name
-    status
-    owner
-    metadata {
-      pointer
-    }
-    members {
-      addresses
-    }
+    ...ProjectData
   }
   GrantShip(where: { shipContractAddress: { _eq: $shipSrc } }, limit: 1) {
     ...BaseShipData
     beaconMessage {
+      pointer
+    }
+    customApplication {
       pointer
     }
   }
