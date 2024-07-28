@@ -24,12 +24,14 @@ export type ShipGrant =
     })
   | null;
 
+export type GrantUpdate = {};
+
 export type GrantQueryType = {
   project: ProjectGrant;
   ship: ShipGrant;
   beacon: Content;
   applicationTemplate: Content;
-  timeline: any[];
+  timeline: GrantUpdate[];
 };
 
 export const getGrant = async (grantId: string) => {

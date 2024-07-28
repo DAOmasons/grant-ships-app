@@ -24,12 +24,14 @@ import {
   IconPennant,
   IconRoute,
 } from '@tabler/icons-react';
-import { getGrant } from '../queries/getGrant';
-import { useQuery } from '@tanstack/react-query';
 import { FeedCard } from '../components/feed/FeedCard';
 import { DAO_MASONS } from '../constants/gameSetup';
 import { Player } from '../types/ui';
 import { getGatewayUrl } from '../utils/ipfs/get';
+import { TopSection } from '../components/grant/TopSection';
+import { GrantContextProvider } from '../contexts/GrantContext';
+import { useGrant } from '../hooks/useGrant';
+import { GrantTimeline } from '../components/grant/GrantTimeline';
 
 export const Grant = () => {
   const theme = useMantineTheme();
@@ -40,145 +42,57 @@ export const Grant = () => {
   const location = useLocation();
   const layout = location.pathname.split('/').pop();
 
-  const { data, isLoading } = useQuery({
-    queryKey: ['grant', id],
-    queryFn: () => getGrant(id as string),
-  });
-
-  const { project, ship } = data || {};
-
   return (
     <MainSection maw={640}>
-      <PageTitle title="Grant" />
-      <TopSection
-        projectImg={project?.metadata?.imgUrl}
-        shipImg={ship?.profileMetadata?.imgUrl}
-        isLoading={isLoading}
-        shipName={ship?.name}
-        projectName={project?.name}
-      />
-      <SegmentedControl
-        value={layout || 'timeline'}
-        size={isMobile ? 'sm' : 'md'}
-        bg={theme.colors.dark[6]}
-        data={[
-          {
-            value: 'timeline',
-            label: (
-              <Center style={{ gap: 8 }}>
-                <IconRoute size={16} />
-                <span>Timeline</span>
-              </Center>
-            ),
-          },
-          {
-            value: 'application',
-            label: (
-              <Center style={{ gap: 8 }}>
-                <IconFileDescription size={16} />
-                <span>Application</span>
-              </Center>
-            ),
-          },
-          {
-            value: 'milestones',
-            label: (
-              <Center style={{ gap: 8 }}>
-                <IconPennant size={16} />
-                <span>Milestones</span>
-              </Center>
-            ),
-          },
-        ]}
-        onChange={(value) => navigate(`/grant/${id}/${value}`)}
-      />
-      <Routes>
-        <Route path="/" element={<GrantTimeline />} />
-        <Route path="application" element={<GrantApplication />} />
-        <Route path="milestones" element={<GrantMilestones />} />
-        <Route path="timeline" element={<GrantTimeline />} />
-        <Route path="*" element={<GrantTimeline />} />
-      </Routes>
+      <GrantContextProvider grantId={id as string}>
+        <PageTitle title="Grant" />
+        <TopSection />
+        <SegmentedControl
+          value={layout || 'timeline'}
+          size={isMobile ? 'sm' : 'md'}
+          bg={theme.colors.dark[6]}
+          data={[
+            {
+              value: 'timeline',
+              label: (
+                <Center style={{ gap: 8 }}>
+                  <IconRoute size={16} />
+                  <span>Timeline</span>
+                </Center>
+              ),
+            },
+            {
+              value: 'application',
+              label: (
+                <Center style={{ gap: 8 }}>
+                  <IconFileDescription size={16} />
+                  <span>Application</span>
+                </Center>
+              ),
+            },
+            {
+              value: 'milestones',
+              label: (
+                <Center style={{ gap: 8 }}>
+                  <IconPennant size={16} />
+                  <span>Milestones</span>
+                </Center>
+              ),
+            },
+          ]}
+          onChange={(value) => navigate(`/grant/${id}/${value}`)}
+        />
+        <Routes>
+          <Route path="/" element={<GrantTimeline />} />
+          <Route path="application" element={<GrantApplication />} />
+          <Route path="milestones" element={<GrantMilestones />} />
+          <Route path="timeline" element={<GrantTimeline />} />
+          <Route path="*" element={<GrantTimeline />} />
+        </Routes>
+      </GrantContextProvider>
     </MainSection>
   );
 };
 
-const TopSection = ({
-  isLoading,
-  projectName,
-  shipName,
-  shipImg,
-  projectImg,
-}: {
-  isLoading: boolean;
-  projectName?: string;
-  shipName?: string;
-  shipImg?: string;
-  projectImg?: string;
-}) => {
-  const theme = useMantineTheme();
-  const { isTablet, isMobile } = useBreakpoints();
-
-  const avatarSize = isMobile ? 80 : 115;
-
-  return (
-    <Paper
-      py="lg"
-      px="md"
-      mb={'lg'}
-      bg={theme.colors.dark[6]}
-      w={isTablet ? '100%' : 640}
-    >
-      <Flex
-        align={isTablet ? 'flex-start' : 'center'}
-        gap="md"
-        direction={isTablet ? 'column' : 'row'}
-      >
-        <Avatar.Group spacing={'xl'}>
-          <Avatar size={avatarSize} src={shipImg ? shipImg : null}>
-            <Skeleton h={avatarSize} w={avatarSize} circle />
-          </Avatar>
-          <Avatar size={avatarSize} src={projectImg ? projectImg : null}>
-            <Skeleton h={avatarSize} w={avatarSize} circle />
-          </Avatar>
-        </Avatar.Group>
-        <Box>
-          {isLoading ? (
-            <Skeleton w={175} h={20} mb="sm" />
-          ) : (
-            <Text fz="xl" fw={600} c={theme.colors.dark[0]} mb={2}>
-              Grant Partnership
-            </Text>
-          )}
-          {isLoading ? (
-            <Skeleton w={120} h={16} />
-          ) : (
-            <Text fz="sm" c={theme.colors.dark[2]}>
-              {projectName} {'<>'} {shipName}
-            </Text>
-          )}
-        </Box>
-      </Flex>
-    </Paper>
-  );
-};
-
-const GrantTimeline = () => (
-  <Box>
-    <FeedCard
-      subject={{
-        name: 'Ship 2',
-        id: '0',
-        imgUrl: getGatewayUrl(DAO_MASONS.AVATAR_IMG),
-        playerType: Player.Ship,
-      }}
-      cardCount={1}
-      cardIndex={0}
-      timestamp={0}
-      sender={'0x123'}
-      message="Thank you for reaching out to us. After reviewing your invitation and profile, we have decided to proceed with a funding application. We will submit the application within the next few days. If you have any questions in the meantime, please feel free to let us know!"
-    />
-  </Box>
-);
 const GrantApplication = () => <Text>Application</Text>;
 const GrantMilestones = () => <Text>Milestones</Text>;

@@ -125,6 +125,7 @@ export const FeedCard = ({
   richTextContent,
   internalLink,
   externalLink,
+  limitHeight = false,
 }: FeedCardUI & {
   cardIndex: number;
   cardCount: number;
@@ -209,6 +210,7 @@ export const FeedCard = ({
           )}
           {richTextContent && (
             <RichTextDisplay
+              limitHeight={limitHeight}
               content={richTextContent}
               internalLink={internalLink}
               externalLink={externalLink}
@@ -281,10 +283,12 @@ const RichTextDisplay = ({
   content,
   maxHeight = 350,
   internalLink,
+  limitHeight,
   externalLink,
 }: {
   content: Content;
   maxHeight?: number;
+  limitHeight: boolean;
   internalLink?: string;
   externalLink?: string;
 }) => {
@@ -293,7 +297,7 @@ const RichTextDisplay = ({
   const theme = useMantineTheme();
 
   useEffect(() => {
-    if (height >= maxHeight) {
+    if (height >= maxHeight && limitHeight) {
       setIsMaxHeight(true);
     }
   }, [height]);

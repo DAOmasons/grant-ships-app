@@ -30,6 +30,7 @@ export type FeedCardUI = {
   };
   sender: string;
   richTextContent?: Content;
+  limitHeight?: boolean;
   internalLink?: string;
   externalLink?: string;
 };

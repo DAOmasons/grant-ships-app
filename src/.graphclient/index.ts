@@ -9938,7 +9938,10 @@ export type getGrantQuery = { Project_by_pk?: Maybe<(
   )>, GrantShip: Array<(
     Pick<GrantShip, 'id' | 'name' | 'status' | 'shipContractAddress' | 'shipApplicationBytesData' | 'owner' | 'balance' | 'totalAvailableFunds' | 'totalAllocated' | 'totalDistributed' | 'totalRoundAmount'>
     & { beaconMessage?: Maybe<Pick<RawMetadata, 'pointer'>>, customApplication?: Maybe<Pick<RawMetadata, 'pointer'>>, profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>>, alloProfileMembers?: Maybe<Pick<ProfileMemberGroup, 'addresses'>> }
-  )>, Grant_by_pk?: Maybe<Pick<Grant, 'id'>>, Update: Array<Pick<Update, 'id'>>, Application: Array<Pick<Application, 'id'>>, MilestoneSet: Array<Pick<MilestoneSet, 'id'>> };
+  )>, Grant_by_pk?: Maybe<Pick<Grant, 'id'>>, Update: Array<(
+    Pick<Update, 'id' | 'tag' | 'playerType' | 'entityAddress' | 'postedBy' | 'message' | 'contentSchema' | 'timestamp'>
+    & { content?: Maybe<Pick<RawMetadata, 'pointer'>> }
+  )>, Application: Array<Pick<Application, 'id'>>, MilestoneSet: Array<Pick<MilestoneSet, 'id'>> };
 
 export type getGsVotingQueryVariables = Exact<{
   id: Scalars['String'];
@@ -10348,6 +10351,16 @@ export const getGrantDocument = gql`
   }
   Update(where: {hostEntityId: {_eq: $grantId}}) {
     id
+    tag
+    playerType
+    entityAddress
+    postedBy
+    message
+    content {
+      pointer
+    }
+    contentSchema
+    timestamp
   }
   Application(where: {grant_id: {_eq: $grantId}}) {
     id

@@ -12,6 +12,20 @@ fragment ProjectData on Project {
   }
 }
 
+fragment GrantUpdate on Update {
+  id
+  tag
+  playerType
+  entityAddress
+  postedBy
+  message
+  content {
+    pointer
+  }
+  contentSchema
+  timestamp
+}
+
 query getGrant($grantId: String!, $projectId: String!, $shipSrc: String!) {
   Project_by_pk(id: $projectId) {
     ...ProjectData
@@ -29,7 +43,7 @@ query getGrant($grantId: String!, $projectId: String!, $shipSrc: String!) {
     id
   }
   Update(where: { hostEntityId: { _eq: $grantId } }) {
-    id
+    ...GrantUpdate
   }
   Application(where: { grant_id: { _eq: $grantId } }) {
     id

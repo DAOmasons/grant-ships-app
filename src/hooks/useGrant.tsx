@@ -1,6 +1,5 @@
 import React from 'react';
 import { GrantContext } from '../contexts/GrantContext';
-import { GrantQueryType } from '../queries/getGrant';
 
 export const useGrant = () => {
   const context = React.useContext(GrantContext);
@@ -15,5 +14,5 @@ export const useGrant = () => {
     beacon: context.beacon,
     applicationTemplate: context.applicationTemplate,
     timeline: context.timeline,
-  } as GrantQueryType;
+  } as GrantContext;
 };

@@ -8,12 +8,21 @@ import {
 import { useQuery } from '@tanstack/react-query';
 import { Content } from '@tiptap/react';
 
-export const GrantContext = createContext<GrantQueryType>({
+export type GrantContext = GrantQueryType & {
+  isLoadingGrant: boolean;
+  grantError: Error | null;
+  refetchGrant: () => void;
+};
+
+export const GrantContext = createContext<GrantContext>({
   project: null,
   ship: null,
   beacon: null,
   applicationTemplate: null,
   timeline: [],
+  isLoadingGrant: false,
+  grantError: null,
+  refetchGrant: () => {},
 });
 
 export const GrantContextProvider = ({
@@ -41,6 +50,9 @@ export const GrantContextProvider = ({
         beacon: (grant?.beacon as Content) || null,
         applicationTemplate: (grant?.applicationTemplate as Content) || null,
         timeline: grant?.timeline || [],
+        isLoadingGrant,
+        grantError,
+        refetchGrant,
       }}
     >
       {children}
