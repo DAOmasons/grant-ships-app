@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 export enum ContentSchema {
   BasicUpdate, // { text: string, contentSchema: ContentSchema.BasicUpdate }
+  RichText,
 }
 
 export const basicUpdateSchema = z.object({

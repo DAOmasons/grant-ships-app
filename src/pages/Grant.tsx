@@ -51,6 +51,7 @@ export const Grant = () => {
           value={layout || 'timeline'}
           size={isMobile ? 'sm' : 'md'}
           bg={theme.colors.dark[6]}
+          mb="lg"
           data={[
             {
               value: 'timeline',

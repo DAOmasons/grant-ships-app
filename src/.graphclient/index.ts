@@ -9925,6 +9925,11 @@ export type ProjectDataFragment = (
   & { metadata?: Maybe<Pick<RawMetadata, 'pointer'>>, members?: Maybe<Pick<ProfileMemberGroup, 'addresses'>> }
 );
 
+export type GrantUpdateFragment = (
+  Pick<Update, 'id' | 'tag' | 'playerType' | 'entityAddress' | 'postedBy' | 'message' | 'contentSchema' | 'timestamp'>
+  & { content?: Maybe<Pick<RawMetadata, 'pointer'>> }
+);
+
 export type getGrantQueryVariables = Exact<{
   grantId: Scalars['String'];
   projectId: Scalars['String'];
@@ -10234,6 +10239,21 @@ export const ProjectDataFragmentDoc = gql`
   }
 }
     ` as unknown as DocumentNode<ProjectDataFragment, unknown>;
+export const GrantUpdateFragmentDoc = gql`
+    fragment GrantUpdate on Update {
+  id
+  tag
+  playerType
+  entityAddress
+  postedBy
+  message
+  content {
+    pointer
+  }
+  contentSchema
+  timestamp
+}
+    ` as unknown as DocumentNode<GrantUpdateFragment, unknown>;
 export const ProjectDetailsFragmentDoc = gql`
     fragment ProjectDetails on Project {
   id
@@ -10350,17 +10370,7 @@ export const getGrantDocument = gql`
     id
   }
   Update(where: {hostEntityId: {_eq: $grantId}}) {
-    id
-    tag
-    playerType
-    entityAddress
-    postedBy
-    message
-    content {
-      pointer
-    }
-    contentSchema
-    timestamp
+    ...GrantUpdate
   }
   Application(where: {grant_id: {_eq: $grantId}}) {
     id
@@ -10370,7 +10380,8 @@ export const getGrantDocument = gql`
   }
 }
     ${ProjectDataFragmentDoc}
-${BaseShipDataFragmentDoc}` as unknown as DocumentNode<getGrantQuery, getGrantQueryVariables>;
+${BaseShipDataFragmentDoc}
+${GrantUpdateFragmentDoc}` as unknown as DocumentNode<getGrantQuery, getGrantQueryVariables>;
 export const getGsVotingDocument = gql`
     query getGsVoting($id: String!) {
   GrantShipsVoting(where: {id: {_eq: $id}}) {

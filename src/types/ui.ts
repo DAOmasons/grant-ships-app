@@ -6,6 +6,7 @@ export enum Player {
   Project,
   Ship,
   Facilitators,
+  System,
 }
 
 export type FeedCardUI = {

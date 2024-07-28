@@ -20,6 +20,7 @@ export const Feed = ({
           cardIndex={i}
           cardCount={feed.length}
           onIntersect={fetchNext}
+          limitHeight
         />
       ))}
     </Box>
