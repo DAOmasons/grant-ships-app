@@ -41,6 +41,7 @@ type PostDrawerProps = {
   postType: string;
   postIndex: number;
   refetch: () => void;
+  content?: Content;
 };
 
 export const PostDrawer = ({
@@ -50,6 +51,7 @@ export const PostDrawer = ({
   posterId,
   postIndex,
   refetch,
+  content = { type: 'doc', content: [] },
 }: PostDrawerProps) => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -63,7 +65,7 @@ export const PostDrawer = ({
       const newContent = editor.getJSON();
       localStorage.setItem(postId, JSON.stringify(newContent));
     },
-    content: { type: 'doc', content: [] },
+    content,
   });
   const { tx } = useTx();
 
