@@ -18,7 +18,7 @@ import { IconHeading, IconPlus } from '@tabler/icons-react';
 import { Image } from '@tiptap/extension-image';
 import { ImageControl } from './RTEditor/ImageControl';
 import { ProjectBadge } from './RoleBadges';
-import { useEffect } from 'react';
+import { ReactNode, useEffect } from 'react';
 import { Player } from '../types/ui';
 import { useTx } from '../hooks/useTx';
 import AlloPoster from '../abi/AlloPoster.json';
@@ -30,6 +30,8 @@ import { Json } from '../types/common';
 import { PlayerAvatar } from './PlayerAvatar';
 import { GAME_MANAGER } from '../constants/gameSetup';
 import classes from '../styles/tiptap.module.css';
+import { RTEditor } from './RTEditor';
+import { PageDrawer } from './PageDrawer';
 
 type PostDrawerProps = {
   avatarImg?: string;
@@ -131,91 +133,20 @@ export const PostDrawer = ({
   };
 
   return (
-    <Drawer.Root opened={isOpen} size={720} onClose={onClose} position="right">
-      <Drawer.Overlay />
-      <Drawer.Content>
-        <Flex w="100%" justify={'center'}>
-          <Box mt="xl" w="600px">
-            <PageTitle title="Post Update" />
-            <Group mt="40" mb="lg" w="100%" justify="space-between">
-              <PlayerAvatar
-                playerType={Player.Project}
-                imgUrl={avatarImg}
-                name={name}
-              />
-              <Group gap="sm">
-                <TxButton leftSection={<IconPlus />} onClick={postContent}>
-                  Post
-                </TxButton>
-              </Group>
-            </Group>
-
-            <RTEditor editor={editor} />
-          </Box>
-        </Flex>
-      </Drawer.Content>
-    </Drawer.Root>
-  );
-};
-
-const RTEditor = ({ editor }: { editor: Editor | null }) => {
-  return (
-    <RichTextEditor
-      editor={editor}
-      mih="70vh"
-      h="100%"
-      bg={'transparent'}
-      classNames={{ root: classes.editor }}
-    >
-      <RichTextEditor.Toolbar bg={'transparent'}>
-        <RichTextEditor.ControlsGroup style={{ border: 'none' }}>
-          <RichTextEditor.H3 icon={IconHeading} h={'2rem'} w="2rem" />
-          <RichTextEditor.Bold h={'2rem'} w="2rem" />
-          <RichTextEditor.Italic h={'2rem'} w="2rem" />
-          <RichTextEditor.Strikethrough h={'2rem'} w="2rem" />
-        </RichTextEditor.ControlsGroup>
-        <RichTextEditor.ControlsGroup>
-          <RichTextEditor.BulletList h={'2rem'} w="2rem" />
-          <RichTextEditor.OrderedList h={'2rem'} w="2rem" />
-          <RichTextEditor.Code h={'2rem'} w="2rem" />
-        </RichTextEditor.ControlsGroup>
-        <RichTextEditor.ControlsGroup>
-          <RichTextEditor.Link h={'2rem'} w="2rem" />
-          <ImageControl />
-        </RichTextEditor.ControlsGroup>
-      </RichTextEditor.Toolbar>
-      <RichTextEditor.Content p="lg" fz="md" bg={'transparent'} h="100%" />
-    </RichTextEditor>
-  );
-};
-
-export const RTDisplay = ({
-  content,
-  minified,
-}: {
-  content: Content;
-  minified?: boolean;
-}) => {
-  const editor = useEditor({
-    extensions: [
-      StarterKit,
-      Link,
-      Image.configure({ inline: true, allowBase64: true }),
-    ],
-    editable: false,
-    content: content,
-  });
-
-  return (
-    <RichTextEditor
-      editor={editor}
-      bg={'transparent'}
-      style={{ border: 'none' }}
-      classNames={{
-        root: classes.display,
-      }}
-    >
-      <RichTextEditor.Content fz={minified ? 'sm' : 'md'} bg={'transparent'} />
-    </RichTextEditor>
+    <PageDrawer pageTitle="Post Update" opened={isOpen} onClose={onClose}>
+      <Group mt="40" mb="lg" w="100%" justify="space-between">
+        <PlayerAvatar
+          playerType={Player.Project}
+          imgUrl={avatarImg}
+          name={name}
+        />
+        <Group gap="sm">
+          <TxButton leftSection={<IconPlus />} onClick={postContent}>
+            Post
+          </TxButton>
+        </Group>
+      </Group>
+      <RTEditor editor={editor} />
+    </PageDrawer>
   );
 };

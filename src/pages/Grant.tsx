@@ -26,6 +26,10 @@ import {
 } from '@tabler/icons-react';
 import { getGrant } from '../queries/getGrant';
 import { useQuery } from '@tanstack/react-query';
+import { FeedCard } from '../components/feed/FeedCard';
+import { DAO_MASONS } from '../constants/gameSetup';
+import { Player } from '../types/ui';
+import { getGatewayUrl } from '../utils/ipfs/get';
 
 export const Grant = () => {
   const theme = useMantineTheme();
@@ -131,10 +135,10 @@ const TopSection = ({
         direction={isTablet ? 'column' : 'row'}
       >
         <Avatar.Group spacing={'xl'}>
-          <Avatar size={avatarSize} src={projectImg ? projectImg : null}>
+          <Avatar size={avatarSize} src={shipImg ? shipImg : null}>
             <Skeleton h={avatarSize} w={avatarSize} circle />
           </Avatar>
-          <Avatar size={avatarSize} src={shipImg ? shipImg : null}>
+          <Avatar size={avatarSize} src={projectImg ? projectImg : null}>
             <Skeleton h={avatarSize} w={avatarSize} circle />
           </Avatar>
         </Avatar.Group>
@@ -159,6 +163,22 @@ const TopSection = ({
   );
 };
 
-const GrantTimeline = () => <Text>Grant</Text>;
+const GrantTimeline = () => (
+  <Box>
+    <FeedCard
+      subject={{
+        name: 'Ship 2',
+        id: '0',
+        imgUrl: getGatewayUrl(DAO_MASONS.AVATAR_IMG),
+        playerType: Player.Ship,
+      }}
+      cardCount={1}
+      cardIndex={0}
+      timestamp={0}
+      sender={'0x123'}
+      message="Thank you for reaching out to us. After reviewing your invitation and profile, we have decided to proceed with a funding application. We will submit the application within the next few days. If you have any questions in the meantime, please feel free to let us know!"
+    />
+  </Box>
+);
 const GrantApplication = () => <Text>Application</Text>;
 const GrantMilestones = () => <Text>Milestones</Text>;

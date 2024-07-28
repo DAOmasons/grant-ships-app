@@ -8,18 +8,13 @@ import {
 import { ShipPageUI } from '../types/ui';
 import { SUBGRAPH_URL } from '../constants/gameSetup';
 
-export const getShipPageData = async (
-  id: string,
-  bySrcAddress?: boolean
-): Promise<ShipPageUI> => {
+export const getShipPageData = async (id: string): Promise<ShipPageUI> => {
   try {
-    const { shipPageQuery, getShipBySrcAddress } = getBuiltGraphSDK({
+    const { shipPageQuery } = getBuiltGraphSDK({
       apiEndpoint: SUBGRAPH_URL,
     });
 
-    const { GrantShip } = bySrcAddress
-      ? await getShipBySrcAddress({ srcAddress: id })
-      : await shipPageQuery({ id });
+    const { GrantShip } = await shipPageQuery({ id });
 
     if (!GrantShip?.[0]) {
       throw new Error('No ship found');

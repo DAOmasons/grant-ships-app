@@ -29,9 +29,10 @@ import { Link } from 'react-router-dom';
 import { GAME_TOKEN } from '../../constants/gameSetup';
 import { useElementSize, useIntersection } from '@mantine/hooks';
 import { IconAward } from '@tabler/icons-react';
-import { RTDisplay } from '../PostDrawer';
+
 import { PlayerAvatar } from '../PlayerAvatar';
 import { Content } from '@tiptap/react';
+import { RTDisplay } from '../RTDisplay';
 
 const hoverCardProps: HoverCardProps = {
   position: 'bottom-start',

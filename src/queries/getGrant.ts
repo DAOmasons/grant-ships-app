@@ -1,8 +1,6 @@
 import { getBuiltGraphSDK } from '../.graphclient';
 import { resolveShipMetadata } from '../resolvers/grantResolvers';
 import { resolveProjectMetadata } from '../resolvers/projectResolvers';
-import { getProjectPage } from './getProjectPage';
-import { getShipPageData } from './getShipPage';
 
 export const getGrant = async (grantId: string) => {
   const { getGrant } = getBuiltGraphSDK();

@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Box,
   Skeleton,
   Stack,
   Tabs,
@@ -26,6 +27,7 @@ import { ZER0_ADDRESS } from '../constants/gameSetup';
 import { ReportStatus } from '../types/common';
 import { getRecentPortfolioReport } from '../queries/getRecordsByTag';
 import { ADDR } from '../constants/addresses';
+import { SettingsPanel } from '../components/dashboard/ship/SettingsPanel';
 
 export const ShipOpDashboard = () => {
   const { id } = useParams();
@@ -39,21 +41,6 @@ export const ShipOpDashboard = () => {
     queryFn: () => getShipDash(id as string),
     enabled: !!id,
   });
-
-  const { data: recentRecord, refetch: refetchRecentRecord } = useQuery({
-    queryKey: [`ship-portfolio-${id}`],
-    queryFn: () =>
-      getRecentPortfolioReport(
-        `${Tag.ShipSubmitReport}-${ADDR.VOTE_CONTEST}-${id}`
-      ),
-    enabled: !!id,
-  });
-
-  // const porfolioGrants = shipData?.grants
-  //   ? shipData.grants.filter((grant) => grant.grantStatus >= 5)
-  //   : undefined;
-
-  const reportStatus = recentRecord ? ReportStatus.Review : ReportStatus.Submit;
 
   return (
     <MainSection>
@@ -75,6 +62,7 @@ export const ShipOpDashboard = () => {
       <Tabs defaultValue="grants">
         <Tabs.List mb="xl" grow>
           <Tabs.Tab value="grants">Grants</Tabs.Tab>
+          <Tabs.Tab value="settings">Settings</Tabs.Tab>
           {/* <Tabs.Tab value="application">Portfolio Report</Tabs.Tab> */}
           <Tabs.Tab value="postUpdate">Post</Tabs.Tab>
         </Tabs.List>
@@ -85,6 +73,9 @@ export const ShipOpDashboard = () => {
             shipError={shipError}
             shipLoading={shipLoading}
           /> */}
+        </Tabs.Panel>
+        <Tabs.Panel value="settings">
+          <SettingsPanel />
         </Tabs.Panel>
         {/* <Tabs.Panel value="application">
           {id && (

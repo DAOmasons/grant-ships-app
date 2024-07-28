@@ -114,7 +114,13 @@ export const ApplyButton = ({ shipSrcAddress }: { shipSrcAddress: string }) => {
 
   return (
     <>
-      <Button disabled={userLoading} onClick={open}>
+      <Button
+        disabled={userLoading}
+        onClick={(e) => {
+          e.stopPropagation();
+          open();
+        }}
+      >
         Apply For Funding
       </Button>
       <Modal.Root opened={opened} onClose={close} centered>

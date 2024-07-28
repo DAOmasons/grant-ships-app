@@ -4,7 +4,6 @@ import { ShipMetadata, resolveShipMetadata } from '../resolvers/shipResolvers';
 import { SUBGRAPH_URL } from '../constants/gameSetup';
 
 export type DashShip = ShipDashFragment & {
-  // grants: DashGrant[];
   profileMetadata?: ShipMetadata;
 };
 
@@ -22,11 +21,8 @@ export const getShipDash = async (shipId: string): Promise<DashShip> => {
 
     const metadata = await resolveShipMetadata(ship.profileMetadata?.pointer);
 
-    // const unpackedGrantData = await resolveGrants(ship.grants);
-
     return {
       ...ship,
-      // grants: unpackedGrantData,
       profileMetadata: metadata as ShipMetadata,
     } as DashShip;
   } catch (error) {

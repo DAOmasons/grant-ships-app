@@ -1,3 +1,4 @@
+import { Content } from '@tiptap/react';
 import { GameStatus, VotingStage } from '../types/common';
 
 export const SHIP_STATUS_INFO: Record<number | string, string> = {
@@ -19,4 +20,11 @@ export const VOTING_STAGE_INFO: Record<number | string, string> = {
   [VotingStage.Active]: 'Voting is currently active.',
   [VotingStage.Closed]: 'Voting is over, but results have not been finalized.',
   [VotingStage.Finalized]: 'Voting results have been finalized.',
+};
+
+export const startBeaconContent: Content = {
+  type: 'doc',
+  content: [
+    { type: 'paragraph', content: [{ type: 'text', text: 'Start Beacon' }] },
+  ],
 };

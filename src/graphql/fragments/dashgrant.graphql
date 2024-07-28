@@ -38,4 +38,7 @@ fragment GrantDash on Grant {
   shipApprovalReason {
     pointer
   }
+  beaconMessage {
+    pointer
+  }
 }

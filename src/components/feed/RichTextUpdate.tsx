@@ -1,5 +1,4 @@
 import { MainSection, PageTitle } from '../../layout/Sections';
-import { RTDisplay } from '../PostDrawer';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { getBuiltGraphSDK } from '../../.graphclient';
@@ -12,6 +11,7 @@ import { useMemo } from 'react';
 import { secondsToShortRelativeTime } from '../../utils/time';
 import { AddressAvatar } from '../AddressAvatar';
 import { Address } from 'viem';
+import { RTDisplay } from '../RTDisplay';
 
 export const getRTUpdate = async (id: string, chainId: number) => {
   const { getRTUpdate } = getBuiltGraphSDK();
