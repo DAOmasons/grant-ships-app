@@ -22,9 +22,120 @@ export const VOTING_STAGE_INFO: Record<number | string, string> = {
   [VotingStage.Finalized]: 'Voting results have been finalized.',
 };
 
-export const startBeaconContent: Content = {
+export const beaconNotSubmitted: Content = {
   type: 'doc',
   content: [
-    { type: 'paragraph', content: [{ type: 'text', text: 'Start Beacon' }] },
+    {
+      attrs: { level: 3 },
+      type: 'heading',
+      content: [{ type: 'text', text: 'Beacon Not Submitted' }],
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text: 'The beacon has not been submitted for this ship.',
+        },
+      ],
+    },
+  ],
+};
+
+export const defaultApplication: Content = {
+  type: 'doc',
+  content: [
+    {
+      type: 'paragraph',
+      content: [
+        {
+          marks: [{ type: 'bold' }],
+          type: 'text',
+          text: 'Game Description: ',
+        },
+      ],
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text: '(A brief 1-2 description of your project)',
+        },
+        {
+          type: 'text',
+          text: '\n',
+        },
+      ],
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          marks: [{ type: 'bold' }],
+          type: 'text',
+          text: 'Deliverables: ',
+        },
+      ],
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text: '(Provide 1-3 objectives or deliverables)',
+        },
+        {
+          type: 'text',
+          text: '\n',
+        },
+      ],
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          marks: [{ type: 'bold' }],
+          type: 'text',
+          text: 'Additional Links: ',
+        },
+      ],
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text: 'Optional, provide some links to any project deployments or demos)',
+        },
+        {
+          type: 'text',
+          text: '\n',
+        },
+      ],
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          marks: [{ type: 'bold' }],
+          type: 'text',
+          text: 'Additional Information: ',
+        },
+      ],
+    },
+    {
+      type: 'paragraph',
+      content: [
+        {
+          type: 'text',
+          text: '(Any additional information that can be provided)',
+        },
+        {
+          type: 'text',
+          text: '\n',
+        },
+      ],
+    },
   ],
 };

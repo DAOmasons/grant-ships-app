@@ -1858,6 +1858,9 @@ export type GrantShip = {
   beaconMessage?: Maybe<RawMetadata>;
   beaconMessage_id?: Maybe<Scalars['String']>;
   chainId: Scalars['Int'];
+  /** An object relationship */
+  customApplication?: Maybe<RawMetadata>;
+  customApplication_id?: Maybe<Scalars['String']>;
   db_write_timestamp?: Maybe<Scalars['timestamp']>;
   /** An object relationship */
   gameManager?: Maybe<GameManager>;
@@ -1958,6 +1961,8 @@ export type GrantShip_bool_exp = {
   beaconMessage?: InputMaybe<RawMetadata_bool_exp>;
   beaconMessage_id?: InputMaybe<String_comparison_exp>;
   chainId?: InputMaybe<Int_comparison_exp>;
+  customApplication?: InputMaybe<RawMetadata_bool_exp>;
+  customApplication_id?: InputMaybe<String_comparison_exp>;
   db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
   gameManager?: InputMaybe<GameManager_bool_exp>;
   gameManager_id?: InputMaybe<String_comparison_exp>;
@@ -2006,6 +2011,7 @@ export type GrantShip_max_order_by = {
   balance?: InputMaybe<order_by>;
   beaconMessage_id?: InputMaybe<order_by>;
   chainId?: InputMaybe<order_by>;
+  customApplication_id?: InputMaybe<order_by>;
   db_write_timestamp?: InputMaybe<order_by>;
   gameManager_id?: InputMaybe<order_by>;
   gameRound_id?: InputMaybe<order_by>;
@@ -2038,6 +2044,7 @@ export type GrantShip_min_order_by = {
   balance?: InputMaybe<order_by>;
   beaconMessage_id?: InputMaybe<order_by>;
   chainId?: InputMaybe<order_by>;
+  customApplication_id?: InputMaybe<order_by>;
   db_write_timestamp?: InputMaybe<order_by>;
   gameManager_id?: InputMaybe<order_by>;
   gameRound_id?: InputMaybe<order_by>;
@@ -2073,6 +2080,8 @@ export type GrantShip_order_by = {
   beaconMessage?: InputMaybe<RawMetadata_order_by>;
   beaconMessage_id?: InputMaybe<order_by>;
   chainId?: InputMaybe<order_by>;
+  customApplication?: InputMaybe<RawMetadata_order_by>;
+  customApplication_id?: InputMaybe<order_by>;
   db_write_timestamp?: InputMaybe<order_by>;
   gameManager?: InputMaybe<GameManager_order_by>;
   gameManager_id?: InputMaybe<order_by>;
@@ -2129,6 +2138,8 @@ export type GrantShip_select_column =
   | 'beaconMessage_id'
   /** column name */
   | 'chainId'
+  /** column name */
+  | 'customApplication_id'
   /** column name */
   | 'db_write_timestamp'
   /** column name */
@@ -2263,6 +2274,7 @@ export type GrantShip_stream_cursor_value_input = {
   balance?: InputMaybe<Scalars['numeric']>;
   beaconMessage_id?: InputMaybe<Scalars['String']>;
   chainId?: InputMaybe<Scalars['Int']>;
+  customApplication_id?: InputMaybe<Scalars['String']>;
   db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
   gameManager_id?: InputMaybe<Scalars['String']>;
   gameRound_id?: InputMaybe<Scalars['String']>;
@@ -8853,6 +8865,8 @@ export type GrantShipResolvers<ContextType = MeshContext, ParentType extends Res
   beaconMessage?: Resolver<Maybe<ResolversTypes['RawMetadata']>, ParentType, ContextType>;
   beaconMessage_id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   chainId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  customApplication?: Resolver<Maybe<ResolversTypes['RawMetadata']>, ParentType, ContextType>;
+  customApplication_id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
   gameManager?: Resolver<Maybe<ResolversTypes['GameManager']>, ParentType, ContextType>;
   gameManager_id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
@@ -9906,6 +9920,11 @@ export type getGameManagerQuery = { GameManager: Array<(
     )> }
   )> };
 
+export type ProjectDataFragment = (
+  Pick<Project, 'id' | 'profileId' | 'name' | 'status' | 'owner'>
+  & { metadata?: Maybe<Pick<RawMetadata, 'pointer'>>, members?: Maybe<Pick<ProfileMemberGroup, 'addresses'>> }
+);
+
 export type getGrantQueryVariables = Exact<{
   grantId: Scalars['String'];
   projectId: Scalars['String'];
@@ -9918,7 +9937,7 @@ export type getGrantQuery = { Project_by_pk?: Maybe<(
     & { metadata?: Maybe<Pick<RawMetadata, 'pointer'>>, members?: Maybe<Pick<ProfileMemberGroup, 'addresses'>> }
   )>, GrantShip: Array<(
     Pick<GrantShip, 'id' | 'name' | 'status' | 'shipContractAddress' | 'shipApplicationBytesData' | 'owner' | 'balance' | 'totalAvailableFunds' | 'totalAllocated' | 'totalDistributed' | 'totalRoundAmount'>
-    & { beaconMessage?: Maybe<Pick<RawMetadata, 'pointer'>>, profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>>, alloProfileMembers?: Maybe<Pick<ProfileMemberGroup, 'addresses'>> }
+    & { beaconMessage?: Maybe<Pick<RawMetadata, 'pointer'>>, customApplication?: Maybe<Pick<RawMetadata, 'pointer'>>, profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>>, alloProfileMembers?: Maybe<Pick<ProfileMemberGroup, 'addresses'>> }
   )>, Grant_by_pk?: Maybe<Pick<Grant, 'id'>>, Update: Array<Pick<Update, 'id'>>, Application: Array<Pick<Application, 'id'>>, MilestoneSet: Array<Pick<MilestoneSet, 'id'>> };
 
 export type getGsVotingQueryVariables = Exact<{
@@ -10197,6 +10216,21 @@ export const GameManagerDataFragmentDoc = gql`
   }
 }
     ` as unknown as DocumentNode<GameManagerDataFragment, unknown>;
+export const ProjectDataFragmentDoc = gql`
+    fragment ProjectData on Project {
+  id
+  profileId
+  name
+  status
+  owner
+  metadata {
+    pointer
+  }
+  members {
+    addresses
+  }
+}
+    ` as unknown as DocumentNode<ProjectDataFragment, unknown>;
 export const ProjectDetailsFragmentDoc = gql`
     fragment ProjectDetails on Project {
   id
@@ -10298,21 +10332,14 @@ export const getGameManagerDocument = gql`
 export const getGrantDocument = gql`
     query getGrant($grantId: String!, $projectId: String!, $shipSrc: String!) {
   Project_by_pk(id: $projectId) {
-    id
-    profileId
-    name
-    status
-    owner
-    metadata {
-      pointer
-    }
-    members {
-      addresses
-    }
+    ...ProjectData
   }
   GrantShip(where: {shipContractAddress: {_eq: $shipSrc}}, limit: 1) {
     ...BaseShipData
     beaconMessage {
+      pointer
+    }
+    customApplication {
       pointer
     }
   }
@@ -10329,7 +10356,8 @@ export const getGrantDocument = gql`
     id
   }
 }
-    ${BaseShipDataFragmentDoc}` as unknown as DocumentNode<getGrantQuery, getGrantQueryVariables>;
+    ${ProjectDataFragmentDoc}
+${BaseShipDataFragmentDoc}` as unknown as DocumentNode<getGrantQuery, getGrantQueryVariables>;
 export const getGsVotingDocument = gql`
     query getGsVoting($id: String!) {
   GrantShipsVoting(where: {id: {_eq: $id}}) {

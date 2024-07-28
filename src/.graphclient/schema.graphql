@@ -2050,6 +2050,9 @@ type GrantShip {
   beaconMessage: RawMetadata
   beaconMessage_id: String
   chainId: Int!
+  """An object relationship"""
+  customApplication: RawMetadata
+  customApplication_id: String
   db_write_timestamp: timestamp
   """An object relationship"""
   gameManager: GameManager
@@ -2157,6 +2160,8 @@ input GrantShip_bool_exp {
   beaconMessage: RawMetadata_bool_exp
   beaconMessage_id: String_comparison_exp
   chainId: Int_comparison_exp
+  customApplication: RawMetadata_bool_exp
+  customApplication_id: String_comparison_exp
   db_write_timestamp: timestamp_comparison_exp
   gameManager: GameManager_bool_exp
   gameManager_id: String_comparison_exp
@@ -2207,6 +2212,7 @@ input GrantShip_max_order_by {
   balance: order_by
   beaconMessage_id: order_by
   chainId: order_by
+  customApplication_id: order_by
   db_write_timestamp: order_by
   gameManager_id: order_by
   gameRound_id: order_by
@@ -2241,6 +2247,7 @@ input GrantShip_min_order_by {
   balance: order_by
   beaconMessage_id: order_by
   chainId: order_by
+  customApplication_id: order_by
   db_write_timestamp: order_by
   gameManager_id: order_by
   gameRound_id: order_by
@@ -2276,6 +2283,8 @@ input GrantShip_order_by {
   beaconMessage: RawMetadata_order_by
   beaconMessage_id: order_by
   chainId: order_by
+  customApplication: RawMetadata_order_by
+  customApplication_id: order_by
   db_write_timestamp: order_by
   gameManager: GameManager_order_by
   gameManager_id: order_by
@@ -2334,6 +2343,8 @@ enum GrantShip_select_column {
   beaconMessage_id
   """column name"""
   chainId
+  """column name"""
+  customApplication_id
   """column name"""
   db_write_timestamp
   """column name"""
@@ -2477,6 +2488,7 @@ input GrantShip_stream_cursor_value_input {
   balance: numeric
   beaconMessage_id: String
   chainId: Int
+  customApplication_id: String
   db_write_timestamp: timestamp
   gameManager_id: String
   gameRound_id: String

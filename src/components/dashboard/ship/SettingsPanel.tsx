@@ -24,6 +24,10 @@ import { Address } from 'viem';
 import { Tag } from '../../../constants/tags';
 import { pinJSONToIPFS } from '../../../utils/ipfs/pin';
 import { ZER0_ADDRESS } from '../../../constants/gameSetup';
+import {
+  beaconNotSubmitted,
+  defaultApplication,
+} from '../../../constants/copy';
 
 export const SettingsPanel = ({
   beacon,
@@ -113,22 +117,24 @@ export const SettingsPanel = ({
       </Box>
       {hasLoaded && (
         <BeaconDrawer
+          key={JSON.stringify(beacon || beaconNotSubmitted)}
           opened={beaconOpen}
           onClose={closeBeacon}
           shipSrcAddress={shipSrcAddress}
           shipName={shipName}
           shipAvatar={shipAvatar}
-          content={beacon}
+          content={beacon || beaconNotSubmitted}
         />
       )}
       {hasLoaded && (
         <ApplicationDrawer
+          key={JSON.stringify(customApplication || defaultApplication)}
           shipName={shipName}
           shipAvatar={shipAvatar}
           shipSrcAddress={shipSrcAddress}
           opened={applicationOpen}
           onClose={closeApplication}
-          content={customApplication}
+          content={customApplication || defaultApplication}
         />
       )}
     </>
@@ -223,6 +229,7 @@ const BeaconDrawer = ({
       writeContractOptions: {
         onPollSuccess() {
           localStorage.removeItem(postId);
+          refetch?.();
         },
       },
     });
@@ -260,6 +267,7 @@ const ApplicationDrawer = ({
   onClose: () => void;
   content?: Content;
 }) => {
+  console.log('test');
   const postId = `custom-application-${shipSrcAddress}`;
   const editor = useEditor({
     extensions: [
@@ -274,6 +282,10 @@ const ApplicationDrawer = ({
     content,
   });
 
+  const handlePost = () => {
+    console.log(editor?.getJSON());
+  };
+
   return (
     <PageDrawer
       pageTitle="Custom Application"
@@ -286,7 +298,7 @@ const ApplicationDrawer = ({
           imgUrl={shipAvatar}
           name={shipName}
         />
-        <TxButton leftSection={<IconPlus />} onClick={() => {}}>
+        <TxButton leftSection={<IconPlus />} onClick={handlePost}>
           Post
         </TxButton>
       </Group>

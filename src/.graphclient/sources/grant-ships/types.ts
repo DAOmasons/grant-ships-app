@@ -1836,6 +1836,9 @@ export type GrantShip = {
   beaconMessage?: Maybe<RawMetadata>;
   beaconMessage_id?: Maybe<Scalars['String']>;
   chainId: Scalars['Int'];
+  /** An object relationship */
+  customApplication?: Maybe<RawMetadata>;
+  customApplication_id?: Maybe<Scalars['String']>;
   db_write_timestamp?: Maybe<Scalars['timestamp']>;
   /** An object relationship */
   gameManager?: Maybe<GameManager>;
@@ -1936,6 +1939,8 @@ export type GrantShip_bool_exp = {
   beaconMessage?: InputMaybe<RawMetadata_bool_exp>;
   beaconMessage_id?: InputMaybe<String_comparison_exp>;
   chainId?: InputMaybe<Int_comparison_exp>;
+  customApplication?: InputMaybe<RawMetadata_bool_exp>;
+  customApplication_id?: InputMaybe<String_comparison_exp>;
   db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
   gameManager?: InputMaybe<GameManager_bool_exp>;
   gameManager_id?: InputMaybe<String_comparison_exp>;
@@ -1984,6 +1989,7 @@ export type GrantShip_max_order_by = {
   balance?: InputMaybe<order_by>;
   beaconMessage_id?: InputMaybe<order_by>;
   chainId?: InputMaybe<order_by>;
+  customApplication_id?: InputMaybe<order_by>;
   db_write_timestamp?: InputMaybe<order_by>;
   gameManager_id?: InputMaybe<order_by>;
   gameRound_id?: InputMaybe<order_by>;
@@ -2016,6 +2022,7 @@ export type GrantShip_min_order_by = {
   balance?: InputMaybe<order_by>;
   beaconMessage_id?: InputMaybe<order_by>;
   chainId?: InputMaybe<order_by>;
+  customApplication_id?: InputMaybe<order_by>;
   db_write_timestamp?: InputMaybe<order_by>;
   gameManager_id?: InputMaybe<order_by>;
   gameRound_id?: InputMaybe<order_by>;
@@ -2051,6 +2058,8 @@ export type GrantShip_order_by = {
   beaconMessage?: InputMaybe<RawMetadata_order_by>;
   beaconMessage_id?: InputMaybe<order_by>;
   chainId?: InputMaybe<order_by>;
+  customApplication?: InputMaybe<RawMetadata_order_by>;
+  customApplication_id?: InputMaybe<order_by>;
   db_write_timestamp?: InputMaybe<order_by>;
   gameManager?: InputMaybe<GameManager_order_by>;
   gameManager_id?: InputMaybe<order_by>;
@@ -2107,6 +2116,8 @@ export type GrantShip_select_column =
   | 'beaconMessage_id'
   /** column name */
   | 'chainId'
+  /** column name */
+  | 'customApplication_id'
   /** column name */
   | 'db_write_timestamp'
   /** column name */
@@ -2241,6 +2252,7 @@ export type GrantShip_stream_cursor_value_input = {
   balance?: InputMaybe<Scalars['numeric']>;
   beaconMessage_id?: InputMaybe<Scalars['String']>;
   chainId?: InputMaybe<Scalars['Int']>;
+  customApplication_id?: InputMaybe<Scalars['String']>;
   db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
   gameManager_id?: InputMaybe<Scalars['String']>;
   gameRound_id?: InputMaybe<Scalars['String']>;
