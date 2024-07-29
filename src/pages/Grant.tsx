@@ -106,15 +106,40 @@ export const Grant = () => {
 };
 
 const ActionsPanel = () => {
-  const { isProjectMember } = useGrant();
+  const { isProjectMember, isShipOperator } = useGrant();
   return (
     <Flex h="100%" pos="relative" style={{ flexGrow: 1 }}>
       {isProjectMember && <ProjectActions />}
+      {isShipOperator && <ShipActions />}
     </Flex>
   );
 };
+
+const ShipActions = () => {
+  const {} = useGrant();
+
+  return (
+    <>
+      <Stack pos="fixed" top={'260px'} gap="sm">
+        <Button variant="menu" leftSection={<IconMessage />} onClick={openPost}>
+          <Text>Message</Text>
+        </Button>
+      </Stack>
+      <PostGrantDrawer
+        opened={postOpened}
+        onClose={closePost}
+        projectId={project?.id || ''}
+        avatarImg={project?.metadata?.imgUrl || ''}
+        avatarName={project?.name || ''}
+        shipSrcAddress={ship?.shipContractAddress || ''}
+        playerType={Player.Project}
+        refetch={refetchGrant}
+      />
+    </>
+  );
+};
+
 const ProjectActions = () => {
-  const theme = useMantineTheme();
   const { project, ship, refetchGrant } = useGrant();
   const [postOpened, { open: openPost, close: closePost }] = useDisclosure();
   return (

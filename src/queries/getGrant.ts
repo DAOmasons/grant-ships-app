@@ -64,8 +64,6 @@ export const getGrant = async (grantId: string) => {
     Update: updates,
   } = data;
 
-  console.log('updates', updates);
-
   const ship = ships ? ships[0] : null;
 
   const [projectMetadata, shipMetadata] = await Promise.all([
@@ -87,6 +85,23 @@ export const getGrant = async (grantId: string) => {
     ? await resolveRichTextMetadata(ship.customApplication.pointer)
     : null;
 
+  const resolvedUpdates = await Promise.all(
+    updates?.map(async (update) => {
+      if (update?.content?.pointer) {
+        const content = await resolveRichTextMetadata(update.content.pointer);
+        return {
+          ...update,
+          updateContent: content,
+        };
+      }
+      return update;
+    })
+  );
+
+  const timeline = [...(resolvedUpdates || [])].sort((a, b) =>
+    a.timestamp < b.timestamp ? 1 : -1
+  );
+
   const beaconUpdate: GrantUpdate = {
     id: `${grantId}-beacon`,
     tag: 'beacon',
@@ -103,7 +118,7 @@ export const getGrant = async (grantId: string) => {
     ship: resolvedShip,
     beacon: resolvedBeacon || beaconNotSubmitted,
     applicationTemplate: resolvedCustomApplication || defaultApplication,
-    timeline: [beaconUpdate],
+    timeline: [...timeline, beaconUpdate],
     grant: grant ? grant : null,
   } as GrantQueryType;
 };

@@ -37,6 +37,18 @@ export const GrantTimeline = () => {
             />
           );
         }
+        if (item.tag === 'grant/update/project') {
+          return (
+            <UserUpdate
+              key={item.id}
+              content={item.updateContent}
+              posterImg={ship?.profileMetadata?.imgUrl || ''}
+              posterName={ship?.name || ''}
+              playerType={item.playerType}
+              timestamp={item.timestamp}
+            />
+          );
+        }
       })}
     </Box>
   );
