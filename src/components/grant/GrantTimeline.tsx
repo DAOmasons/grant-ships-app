@@ -7,6 +7,8 @@ import {
   ApplicationDisplay as ApplicationDisplayType,
   GrantUpdate,
 } from '../../queries/getGrant';
+import { InsetUpdate } from './InsetUpdate';
+import { VerdictDisplay } from './VerdictDisplay';
 
 export const GrantTimeline = () => {
   const { timeline, ship, project } = useGrant();
@@ -66,6 +68,23 @@ export const GrantTimeline = () => {
               amountRequested={doc.amount}
               dueDate={doc.content.dueDate}
               rtContent={doc.content.content}
+            />
+          );
+        }
+        if (
+          item.tag === 'grant/approve/application' ||
+          item.tag === 'grant/reject/application'
+        ) {
+          console.log('item', item);
+          return (
+            <VerdictDisplay
+              timestamp={item.timestamp}
+              posterName={ship?.name || ''}
+              reason={item.reason || ''}
+              key={item.id}
+              hasApproved={
+                item.tag === 'grant/approve/application' ? true : false
+              }
             />
           );
         }

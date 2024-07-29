@@ -11,6 +11,7 @@ import {
 } from '../components/forms/validationSchemas/tiptap';
 import { Content } from '@tiptap/react';
 import { get } from 'http';
+import { reasonSchema } from '../utils/ipfs/metadataValidation';
 
 type BasicUpdate = z.infer<typeof basicUpdateSchema>;
 
@@ -71,4 +72,21 @@ export const resolveRTApplication = async (
   }
 
   return validatedRt.data;
+};
+
+export const resolveReason = async (pointer?: string) => {
+  if (!pointer) {
+    return null;
+  }
+
+  const json = await getIpfsJson(pointer);
+
+  const validated = reasonSchema.safeParse(json);
+
+  if (!validated.success) {
+    console.error('Invalid metadata', validated.error);
+    throw new Error('Invalid metadata: Data does not match the schema');
+  }
+
+  return validated.data;
 };

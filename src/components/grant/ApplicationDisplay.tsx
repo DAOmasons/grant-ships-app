@@ -87,7 +87,7 @@ export const ApplicationDisplay = ({
   );
 
   const applicationText = !isCurrentDraft
-    ? 'Draft Expired'
+    ? 'Inactive Draft'
     : status === GameStatus.Pending
       ? 'Application in Review'
       : status === GameStatus.Accepted
@@ -170,6 +170,7 @@ export const ApplicationDisplay = ({
               root: classes.embedTextBox,
               control: classes.embedTextControl,
             }}
+            maxHeight={40}
           >
             <RTDisplay content={rtContent} minified />
           </Spoiler>

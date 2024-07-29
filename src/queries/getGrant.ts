@@ -8,7 +8,10 @@ import {
   GrantApplicationFragment,
 } from '../.graphclient';
 import { beaconNotSubmitted, defaultApplication } from '../constants/copy';
-import { resolveShipMetadata } from '../resolvers/grantResolvers';
+import {
+  resolveFacilitatorReason,
+  resolveShipMetadata,
+} from '../resolvers/grantResolvers';
 import {
   ProjectMetadata,
   resolveProjectMetadata,
@@ -16,6 +19,7 @@ import {
 import { ShipMetadata } from '../resolvers/shipResolvers';
 import {
   resolveRTApplication,
+  resolveReason,
   resolveRichTextMetadata,
 } from '../resolvers/updates';
 import { Player } from '../types/ui';
@@ -32,7 +36,10 @@ export type ShipGrant =
     })
   | null;
 
-export type GrantUpdate = GrantUpdateFragment & { updateContent: Content };
+export type GrantUpdate = GrantUpdateFragment & {
+  updateContent: Content;
+  reason?: string;
+};
 export type ApplicationDisplay = GrantApplicationFragment & {
   tag: 'string';
   content: {
@@ -108,6 +115,17 @@ export const getGrant = async (grantId: string) => {
         return {
           ...update,
           updateContent: content,
+        };
+      }
+      if (
+        update?.content?.pointer &&
+        update?.contentSchema === ContentSchema.Reason
+      ) {
+        const content = await resolveReason(update.content.pointer);
+
+        return {
+          ...update,
+          reason: content?.reason,
         };
       }
       return update;
