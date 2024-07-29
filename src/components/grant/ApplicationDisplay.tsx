@@ -6,7 +6,14 @@ import {
   Text,
   useMantineTheme,
 } from '@mantine/core';
-import { IconClock, IconExternalLink } from '@tabler/icons-react';
+import {
+  IconCheck,
+  IconClock,
+  IconExclamationCircle,
+  IconExternalLink,
+  IconFileX,
+  IconQuestionMark,
+} from '@tabler/icons-react';
 import { PlayerAvatar } from '../PlayerAvatar';
 import { Player } from '../../types/ui';
 import { useGrant } from '../../hooks/useGrant';
@@ -16,23 +23,52 @@ import { secondsToLongDate } from '../../utils/time';
 import { formatEther } from 'viem';
 import { GAME_TOKEN } from '../../constants/gameSetup';
 import { SCAN_URL } from '../../constants/enpoints';
+import { GameStatus } from '../../types/common';
 
 export const ApplicationDisplay = ({
   amountRequested,
   receivingAddress,
   dueDate,
   rtContent,
+  status,
+  id,
 }: {
+  id: string;
   amountRequested: string;
   receivingAddress: string;
   dueDate: number;
   rtContent: Content;
+  status: GameStatus;
 }) => {
   const theme = useMantineTheme();
-  const { project, ship } = useGrant();
+  const { project, ship, grant } = useGrant();
 
   const formattedTime = secondsToLongDate(dueDate);
   const formattedAmount = formatEther(BigInt(amountRequested));
+
+  const isCurrentDraft = grant?.currentApplication?.id;
+
+  const color = !isCurrentDraft
+    ? theme.colors.dark[2]
+    : status === GameStatus.Pending
+      ? theme.colors.yellow[6]
+      : status === GameStatus.Accepted
+        ? theme.colors.green[6]
+        : status === GameStatus.Rejected
+          ? theme.colors.red[6]
+          : theme.colors.dark[2];
+
+  const tagIcon = !isCurrentDraft ? (
+    <IconFileX size={18} color={color} />
+  ) : status === GameStatus.Pending ? (
+    <IconClock size={18} color={color} />
+  ) : status === GameStatus.Accepted ? (
+    <IconCheck size={18} color={color} />
+  ) : status === GameStatus.Rejected ? (
+    <IconExclamationCircle size={18} color={color} />
+  ) : (
+    <IconQuestionMark size={18} color={color} />
+  );
 
   return (
     <Box>
@@ -45,8 +81,10 @@ export const ApplicationDisplay = ({
         mb="md"
       >
         <Group gap={6}>
-          <IconClock size={18} />
-          <Text fz={'sm'}>Application in Review</Text>
+          {tagIcon}
+          <Text fz={'sm'} c={color}>
+            Application in Review
+          </Text>
         </Group>
       </Box>
       <Box pl={50} mb="lg">
@@ -95,10 +133,10 @@ export const ApplicationDisplay = ({
           </Box>
         </Stack>
         <RTDisplay content={rtContent} minified />
-        <Divider variant="dotted" mt="lg" />
-        <Text size="xs" mt="lg" mb="lg" opacity={0.8}>
+        {/* <Divider variant="dotted" mt="lg" /> */}
+        {/* <Text size="xs" mt="lg" mb="lg" opacity={0.8}>
           Posted By:
-        </Text>
+        </Text> */}
       </Box>
       <Divider mb="lg" />
     </Box>

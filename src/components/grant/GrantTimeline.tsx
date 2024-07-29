@@ -67,6 +67,8 @@ export const GrantTimeline = () => {
           const doc = item as any as ApplicationDisplayType;
           return (
             <ApplicationDisplay
+              id={doc.id}
+              status={doc.status}
               receivingAddress={doc.receivingAddress}
               amountRequested={doc.amount}
               dueDate={doc.content.dueDate}
