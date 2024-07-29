@@ -116,7 +116,8 @@ const ActionsPanel = () => {
 };
 
 const ShipActions = () => {
-  const {} = useGrant();
+  const { refetchGrant, project, ship } = useGrant();
+  const [postOpened, { open: openPost, close: closePost }] = useDisclosure();
 
   return (
     <>
@@ -129,10 +130,10 @@ const ShipActions = () => {
         opened={postOpened}
         onClose={closePost}
         projectId={project?.id || ''}
-        avatarImg={project?.metadata?.imgUrl || ''}
-        avatarName={project?.name || ''}
+        avatarImg={ship?.profileMetadata?.imgUrl || ''}
+        avatarName={ship?.name || ''}
         shipSrcAddress={ship?.shipContractAddress || ''}
-        playerType={Player.Project}
+        playerType={Player.Ship}
         refetch={refetchGrant}
       />
     </>

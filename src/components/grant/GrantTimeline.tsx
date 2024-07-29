@@ -1,15 +1,5 @@
-import {
-  Affix,
-  Box,
-  Button,
-  Divider,
-  Flex,
-  Group,
-  ScrollArea,
-  Text,
-} from '@mantine/core';
+import { Affix, Box, Button, Divider, Flex, Group, Text } from '@mantine/core';
 import { useGrant } from '../../hooks/useGrant';
-import { FeedCard } from '../feed/FeedCard';
 import { RTDisplay } from '../RTDisplay';
 import { Content } from '@tiptap/react';
 import { PlayerAvatar } from '../PlayerAvatar';
@@ -20,10 +10,9 @@ import { IconRoute } from '@tabler/icons-react';
 import { Bold } from '../Typography';
 
 export const GrantTimeline = () => {
-  const { timeline, beacon, ship } = useGrant();
+  const { timeline, ship } = useGrant();
   return (
     <Box>
-      {/* <ScrollArea h="30%"> */}
       {timeline.map((item) => {
         if (item.tag === 'beacon') {
           return (
@@ -37,7 +26,10 @@ export const GrantTimeline = () => {
             />
           );
         }
-        if (item.tag === 'grant/update/project') {
+        if (
+          item.tag === 'grant/update/project' ||
+          item.tag === 'grant/update/ship'
+        ) {
           return (
             <UserUpdate
               key={item.id}
