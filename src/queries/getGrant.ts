@@ -100,7 +100,10 @@ export const getGrant = async (grantId: string) => {
 
   const resolvedUpdates = await Promise.all(
     updates?.map(async (update) => {
-      if (update?.content?.pointer) {
+      if (
+        update?.content?.pointer &&
+        update?.contentSchema === ContentSchema.RichText
+      ) {
         const content = await resolveRichTextMetadata(update.content.pointer);
         return {
           ...update,
@@ -125,6 +128,8 @@ export const getGrant = async (grantId: string) => {
       }
     })
   );
+
+  console.log('resolvedApplications', resolvedApplications);
 
   const timeline = [...resolvedUpdates, ...resolvedApplications].sort((a, b) =>
     a.timestamp < b.timestamp ? 1 : -1

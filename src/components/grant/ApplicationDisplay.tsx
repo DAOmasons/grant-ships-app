@@ -3,6 +3,7 @@ import {
   Button,
   Divider,
   Group,
+  Spoiler,
   Stack,
   Text,
   Textarea,
@@ -10,6 +11,10 @@ import {
 } from '@mantine/core';
 import {
   IconCheck,
+  IconChevronCompactDown,
+  IconChevronCompactUp,
+  IconChevronDown,
+  IconChevronUp,
   IconClock,
   IconExclamationCircle,
   IconExternalLink,
@@ -22,11 +27,19 @@ import { useGrant } from '../../hooks/useGrant';
 import { Content } from '@tiptap/react';
 import { RTDisplay } from '../RTDisplay';
 import { secondsToLongDate } from '../../utils/time';
-import { formatEther } from 'viem';
-import { GAME_TOKEN } from '../../constants/gameSetup';
+import { Address, formatEther } from 'viem';
+import { GAME_TOKEN, ZER0_ADDRESS } from '../../constants/gameSetup';
 import { SCAN_URL } from '../../constants/enpoints';
 import { GameStatus } from '../../types/common';
 import { useInputState } from '@mantine/hooks';
+import { useTx } from '../../hooks/useTx';
+import { useState } from 'react';
+import { notifications } from '@mantine/notifications';
+import GrantShipAbi from '../../abi/GrantShip.json';
+import { Tag } from '../../constants/tags';
+import { reasonSchema } from '../../utils/ipfs/metadataValidation';
+import { pinJSONToIPFS } from '../../utils/ipfs/pin';
+import classes from '../../styles/Spoiler.module.css';
 
 export const ApplicationDisplay = ({
   amountRequested,
@@ -73,6 +86,18 @@ export const ApplicationDisplay = ({
     <IconQuestionMark size={18} color={color} />
   );
 
+  const applicationText = !isCurrentDraft
+    ? 'Draft Expired'
+    : status === GameStatus.Pending
+      ? 'Application in Review'
+      : status === GameStatus.Accepted
+        ? 'Application Approved'
+        : GameStatus.Rejected
+          ? 'Application Not Approved'
+          : 'Unknown Status';
+
+  const isOldOrRejected = !isCurrentDraft || status === GameStatus.Rejected;
+
   return (
     <Box>
       <Box
@@ -86,7 +111,7 @@ export const ApplicationDisplay = ({
         <Group gap={6}>
           {tagIcon}
           <Text fz={'sm'} c={color}>
-            Application in Review
+            {applicationText}
           </Text>
         </Group>
       </Box>
@@ -108,7 +133,7 @@ export const ApplicationDisplay = ({
             <Text size="sm" fw={700} mb={4}>
               Amount Requested
             </Text>
-            <Text size="sm">
+            <Text size="sm" td={isOldOrRejected ? 'line-through' : undefined}>
               {formattedAmount} {GAME_TOKEN.SYMBOL}
             </Text>
           </Box>
@@ -116,18 +141,20 @@ export const ApplicationDisplay = ({
             <Text size="sm" fw={700}>
               Expected Delivery
             </Text>
-            <Text size="sm">{formattedTime}</Text>
+            <Text size="sm" td={isOldOrRejected ? 'line-through' : undefined}>
+              {formattedTime}
+            </Text>
           </Box>
           <Box>
             <Text size="sm" fw={700}>
               Send Address
             </Text>
             <Text
+              td={isOldOrRejected ? 'line-through' : 'underline'}
               size="sm"
               component="a"
               href={`${SCAN_URL}address/${receivingAddress}`}
               target="_blank"
-              td="underline"
               c={theme.colors.blue[3]}
               rel="noopener noreferrer"
             >
@@ -135,7 +162,20 @@ export const ApplicationDisplay = ({
             </Text>
           </Box>
         </Stack>
-        <RTDisplay content={rtContent} minified />
+        {isOldOrRejected ? (
+          <Spoiler
+            hideLabel={<IconChevronUp stroke={1} />}
+            showLabel={<IconChevronDown stroke={1} />}
+            classNames={{
+              root: classes.embedTextBox,
+              control: classes.embedTextControl,
+            }}
+          >
+            <RTDisplay content={rtContent} minified />
+          </Spoiler>
+        ) : (
+          <RTDisplay content={rtContent} minified />
+        )}
         {isShipOperator && status === GameStatus.Pending && (
           <OperatorControls />
         )}
@@ -146,9 +186,94 @@ export const ApplicationDisplay = ({
 };
 
 const OperatorControls = () => {
+  const { ship, project, refetchGrant } = useGrant();
   const [reason, setReason] = useInputState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const { tx } = useTx();
 
-  const handleApprove = (decision: boolean) => {};
+  const handleApprove = async (isApproved: boolean) => {
+    try {
+      setIsLoading(true);
+      if (!ship || !ship.shipContractAddress) {
+        notifications.show({
+          title: 'Error',
+          message: 'Ship not found',
+          color: 'red',
+        });
+        setIsLoading(false);
+        return;
+      }
+
+      if (!project) {
+        notifications.show({
+          title: 'Error',
+          message: 'Project not found',
+          color: 'red',
+        });
+        setIsLoading(false);
+        return;
+      }
+
+      const metadata = {
+        reason: reason,
+      };
+
+      const parsed = reasonSchema.safeParse(metadata);
+
+      if (!parsed.success) {
+        notifications.show({
+          title: 'Error',
+          message: 'Invalid metadata',
+          color: 'red',
+        });
+        setIsLoading(false);
+        return;
+      }
+
+      const pinRes = await pinJSONToIPFS(parsed.data);
+
+      if (typeof pinRes.IpfsHash !== 'string' && pinRes.IpfsHash[0] !== 'Q') {
+        notifications.show({
+          title: 'IPFS Upload Error',
+          message: pinRes.IpfsHash[1],
+          color: 'red',
+        });
+        setIsLoading(false);
+        return;
+      }
+
+      const TAG = `${Tag.ShipReviewGrant}:${project.id}:${isApproved ? GameStatus.Accepted : GameStatus.Rejected}`;
+
+      tx({
+        writeContractParams: {
+          abi: GrantShipAbi,
+          address: ship.shipContractAddress as Address,
+          functionName: 'postUpdate',
+          args: [TAG, [1n, pinRes.IpfsHash], ZER0_ADDRESS],
+        },
+        writeContractOptions: {
+          onPollSuccess() {
+            refetchGrant();
+            setIsLoading(false);
+          },
+          onError() {
+            setIsLoading(false);
+          },
+          onPollTimeout() {
+            setIsLoading(false);
+          },
+        },
+      });
+    } catch (error) {
+      console.error(error);
+      notifications.show({
+        title: 'Error',
+        message: 'Failed to approve grant',
+        color: 'red',
+      });
+      setIsLoading(false);
+    }
+  };
 
   return (
     <Box mt="sm">
@@ -163,8 +288,20 @@ const OperatorControls = () => {
         mb="lg"
       />
       <Group justify="flex-end">
-        <Button variant="secondary">Not Approve</Button>
-        <Button variant="primary">Approve</Button>
+        <Button
+          variant="secondary"
+          disabled={isLoading || !reason}
+          onClick={() => handleApprove(false)}
+        >
+          Not Approve
+        </Button>
+        <Button
+          variant="primary"
+          disabled={isLoading || !reason}
+          onClick={() => handleApprove(true)}
+        >
+          Approve
+        </Button>
       </Group>
     </Box>
   );
