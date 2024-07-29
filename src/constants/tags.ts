@@ -5,4 +5,5 @@ export enum Tag {
   ProjectPostUpdate = 'TAG:PROJECT_POST_UPDATE',
   GameUpdate = 'TAG:FACILITATOR_POST_UPDATE',
   ShipSubmitReport = 'TAG:SHIP_SUBMIT_REPORT',
+  ProjectGrantUpdate = 'TAG:PROJECT_GRANT_UPDATE',
 }

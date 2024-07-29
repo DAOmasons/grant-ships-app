@@ -64,6 +64,8 @@ export const getGrant = async (grantId: string) => {
     Update: updates,
   } = data;
 
+  console.log('updates', updates);
+
   const ship = ships ? ships[0] : null;
 
   const [projectMetadata, shipMetadata] = await Promise.all([

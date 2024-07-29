@@ -24,6 +24,7 @@ import {
 } from 'react-router-dom';
 import {
   IconFileDescription,
+  IconMessage,
   IconPennant,
   IconPlayerPlay,
   IconRoute,
@@ -36,6 +37,8 @@ import { TopSection } from '../components/grant/TopSection';
 import { GrantContextProvider } from '../contexts/GrantContext';
 import { useGrant } from '../hooks/useGrant';
 import { GrantTimeline } from '../components/grant/GrantTimeline';
+import { PostGrantDrawer } from '../components/grant/PostGrantDrawer';
+import { useDisclosure } from '@mantine/hooks';
 
 export const Grant = () => {
   const theme = useMantineTheme();
@@ -96,29 +99,45 @@ export const Grant = () => {
             <Route path="*" element={<GrantTimeline />} />
           </Routes>
         </MainSection>
-        <Flex h="100%" pos="relative" style={{ flexGrow: 1 }}>
-          <ProjectActions />
-        </Flex>
+        <ActionsPanel />
       </Flex>
     </GrantContextProvider>
   );
 };
+
+const ActionsPanel = () => {
+  const { isProjectMember } = useGrant();
+  return (
+    <Flex h="100%" pos="relative" style={{ flexGrow: 1 }}>
+      {isProjectMember && <ProjectActions />}
+    </Flex>
+  );
+};
 const ProjectActions = () => {
   const theme = useMantineTheme();
+  const { project, ship, refetchGrant } = useGrant();
+  const [postOpened, { open: openPost, close: closePost }] = useDisclosure();
   return (
-    <Stack pos="fixed" top="45%" gap="sm">
-      <Button
-        leftSection={
-          <IconPlayerPlay style={{ transform: 'translateY(-1px)' }} />
-        }
-        variant="menu"
-      >
-        <Text>Start Grant</Text>
-      </Button>
-      <Button variant="menu" leftSection={<IconFileDescription />}>
-        <Text>Application</Text>
-      </Button>
-    </Stack>
+    <>
+      <Stack pos="fixed" top={'260px'} gap="sm">
+        <Button variant="menu" leftSection={<IconFileDescription />}>
+          <Text>Application</Text>
+        </Button>
+        <Button variant="menu" leftSection={<IconMessage />} onClick={openPost}>
+          <Text>Message</Text>
+        </Button>
+      </Stack>
+      <PostGrantDrawer
+        opened={postOpened}
+        onClose={closePost}
+        projectId={project?.id || ''}
+        avatarImg={project?.metadata?.imgUrl || ''}
+        avatarName={project?.name || ''}
+        shipSrcAddress={ship?.shipContractAddress || ''}
+        playerType={Player.Project}
+        refetch={refetchGrant}
+      />
+    </>
   );
 };
 
