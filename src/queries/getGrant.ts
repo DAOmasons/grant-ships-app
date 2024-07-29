@@ -13,7 +13,10 @@ import {
   resolveProjectMetadata,
 } from '../resolvers/projectResolvers';
 import { ShipMetadata } from '../resolvers/shipResolvers';
-import { resolveRichTextMetadata } from '../resolvers/updates';
+import {
+  resolveRTApplication,
+  resolveRichTextMetadata,
+} from '../resolvers/updates';
 import { Player } from '../types/ui';
 import { ContentSchema } from '../components/forms/validationSchemas/updateSchemas';
 
@@ -66,6 +69,8 @@ export const getGrant = async (grantId: string) => {
 
   const ship = ships ? ships[0] : null;
 
+  const applications = grant?.applications || [];
+
   const [projectMetadata, shipMetadata] = await Promise.all([
     project ? await resolveProjectMetadata(project?.metadata?.pointer) : null,
     ship ? await resolveShipMetadata(ship.profileMetadata?.pointer) : null,
@@ -98,7 +103,21 @@ export const getGrant = async (grantId: string) => {
     })
   );
 
-  const timeline = [...(resolvedUpdates || [])].sort((a, b) =>
+  const resolvedApplications = await Promise.all(
+    applications.map(async (doc) => {
+      if (doc?.metadata?.pointer) {
+        const content = await resolveRTApplication(doc.metadata?.pointer);
+        return {
+          ...doc,
+          content,
+        };
+      } else {
+        return doc;
+      }
+    })
+  );
+
+  const timeline = [...resolvedUpdates, ...resolvedApplications].sort((a, b) =>
     a.timestamp < b.timestamp ? 1 : -1
   );
 

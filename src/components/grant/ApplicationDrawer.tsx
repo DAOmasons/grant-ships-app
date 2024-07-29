@@ -83,11 +83,6 @@ export const ApplicationDrawer = ({
   });
 
   const handlePostApplication = async () => {
-    const values = {
-      sendAddress: '',
-      amount: '',
-    };
-
     if (!ship?.shipContractAddress || !project?.id) {
       notifications.show({
         title: 'Error',

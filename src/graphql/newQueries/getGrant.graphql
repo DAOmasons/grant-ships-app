@@ -42,6 +42,13 @@ fragment GrantData on Grant {
   }
   applications {
     id
+    metadata {
+      pointer
+    }
+    amount
+    receivingAddress
+    status
+    timestamp
   }
   currentApplication {
     id

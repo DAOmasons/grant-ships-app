@@ -9932,7 +9932,10 @@ export type GrantUpdateFragment = (
 
 export type GrantDataFragment = (
   Pick<Grant, 'id' | 'status' | 'lastUpdated' | 'amount' | 'isAllocated' | 'grantCompleted' | 'applicationApproved'>
-  & { milestoneDrafts: Array<Pick<MilestoneSet, 'id'>>, currentMilestones?: Maybe<Pick<MilestoneSet, 'id'>>, applications: Array<Pick<Application, 'id'>>, currentApplication?: Maybe<Pick<Application, 'id'>> }
+  & { milestoneDrafts: Array<Pick<MilestoneSet, 'id'>>, currentMilestones?: Maybe<Pick<MilestoneSet, 'id'>>, applications: Array<(
+    Pick<Application, 'id' | 'amount' | 'receivingAddress' | 'status' | 'timestamp'>
+    & { metadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
+  )>, currentApplication?: Maybe<Pick<Application, 'id'>> }
 );
 
 export type getGrantQueryVariables = Exact<{
@@ -9950,7 +9953,10 @@ export type getGrantQuery = { Project_by_pk?: Maybe<(
     & { beaconMessage?: Maybe<Pick<RawMetadata, 'pointer'>>, customApplication?: Maybe<Pick<RawMetadata, 'pointer'>>, profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>>, alloProfileMembers?: Maybe<Pick<ProfileMemberGroup, 'addresses'>> }
   )>, Grant_by_pk?: Maybe<(
     Pick<Grant, 'id' | 'status' | 'lastUpdated' | 'amount' | 'isAllocated' | 'grantCompleted' | 'applicationApproved'>
-    & { milestoneDrafts: Array<Pick<MilestoneSet, 'id'>>, currentMilestones?: Maybe<Pick<MilestoneSet, 'id'>>, applications: Array<Pick<Application, 'id'>>, currentApplication?: Maybe<Pick<Application, 'id'>> }
+    & { milestoneDrafts: Array<Pick<MilestoneSet, 'id'>>, currentMilestones?: Maybe<Pick<MilestoneSet, 'id'>>, applications: Array<(
+      Pick<Application, 'id' | 'amount' | 'receivingAddress' | 'status' | 'timestamp'>
+      & { metadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
+    )>, currentApplication?: Maybe<Pick<Application, 'id'>> }
   )>, Update: Array<(
     Pick<Update, 'id' | 'tag' | 'playerType' | 'entityAddress' | 'postedBy' | 'message' | 'contentSchema' | 'timestamp'>
     & { content?: Maybe<Pick<RawMetadata, 'pointer'>> }
@@ -10280,6 +10286,13 @@ export const GrantDataFragmentDoc = gql`
   }
   applications {
     id
+    metadata {
+      pointer
+    }
+    amount
+    receivingAddress
+    status
+    timestamp
   }
   currentApplication {
     id

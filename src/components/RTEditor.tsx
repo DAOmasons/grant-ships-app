@@ -3,7 +3,6 @@ import classes from '../styles/tiptap.module.css';
 import { Editor } from '@tiptap/react';
 import { IconHeading } from '@tabler/icons-react';
 import { ImageControl } from './RTEditor/ImageControl';
-import { StyleProp } from '@mantine/core';
 
 export const RTEditor = ({ editor }: { editor: Editor | null }) => {
   return (
