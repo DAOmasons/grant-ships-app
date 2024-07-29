@@ -1,20 +1,14 @@
-import React from 'react';
-import { MainSection, PageTitle, ProfileSection } from '../layout/Sections';
+import { MainSection, PageTitle } from '../layout/Sections';
 import {
-  ActionIcon,
-  Avatar,
-  Box,
   Button,
   Center,
   Flex,
-  Paper,
   SegmentedControl,
-  Skeleton,
   Stack,
   Text,
   useMantineTheme,
 } from '@mantine/core';
-import { useBreakpoints, useTablet } from '../hooks/useBreakpoint';
+import { useBreakpoints } from '../hooks/useBreakpoint';
 import {
   Route,
   Routes,
@@ -26,13 +20,10 @@ import {
   IconFileDescription,
   IconMessage,
   IconPennant,
-  IconPlayerPlay,
+  IconPlus,
   IconRoute,
 } from '@tabler/icons-react';
-import { FeedCard } from '../components/feed/FeedCard';
-import { DAO_MASONS } from '../constants/gameSetup';
 import { Player } from '../types/ui';
-import { getGatewayUrl } from '../utils/ipfs/get';
 import { TopSection } from '../components/grant/TopSection';
 import { GrantContextProvider } from '../contexts/GrantContext';
 import { useGrant } from '../hooks/useGrant';
@@ -110,8 +101,11 @@ const ActionsPanel = () => {
   const { isProjectMember, isShipOperator } = useGrant();
   return (
     <Flex h="100%" pos="relative" style={{ flexGrow: 1 }}>
-      {isProjectMember && <ProjectActions />}
-      {isShipOperator && <ShipActions />}
+      {isShipOperator ? (
+        <ShipActions />
+      ) : isProjectMember ? (
+        <ProjectActions />
+      ) : null}
     </Flex>
   );
 };
@@ -153,12 +147,12 @@ const ProjectActions = () => {
       <Stack pos="fixed" top={'260px'} gap="sm">
         <Button
           variant="menu"
-          leftSection={<IconFileDescription />}
+          leftSection={<IconPlus />}
           onClick={openApplication}
         >
           <Text>Application</Text>
         </Button>
-        <Button variant="menu" leftSection={<IconMessage />} onClick={openPost}>
+        <Button variant="menu" leftSection={<IconPlus />} onClick={openPost}>
           <Text>Message</Text>
         </Button>
       </Stack>

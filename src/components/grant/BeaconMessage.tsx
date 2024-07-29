@@ -6,9 +6,20 @@ import { useGrant } from '../../hooks/useGrant';
 import { NextStep } from './NextStep';
 
 export const BeaconMessage = (props: ComponentProps<typeof UserUpdate>) => {
-  const { grantExists } = useGrant();
+  const { grantExists, grant } = useGrant();
+
+  const grantExistsButNoApplication = grantExists && !grant?.currentApplication;
   return (
     <>
+      {grantExistsButNoApplication && (
+        <NextStep
+          text={
+            <Text fz="sm">
+              Next Step: Submit an <Bold>Application</Bold> once you are ready.
+            </Text>
+          }
+        />
+      )}
       {!grantExists && (
         <NextStep
           text={

@@ -1,9 +1,11 @@
 import {
   Box,
+  Button,
   Divider,
   Group,
   Stack,
   Text,
+  Textarea,
   useMantineTheme,
 } from '@mantine/core';
 import {
@@ -24,6 +26,7 @@ import { formatEther } from 'viem';
 import { GAME_TOKEN } from '../../constants/gameSetup';
 import { SCAN_URL } from '../../constants/enpoints';
 import { GameStatus } from '../../types/common';
+import { useInputState } from '@mantine/hooks';
 
 export const ApplicationDisplay = ({
   amountRequested,
@@ -41,7 +44,7 @@ export const ApplicationDisplay = ({
   status: GameStatus;
 }) => {
   const theme = useMantineTheme();
-  const { project, ship, grant } = useGrant();
+  const { project, ship, grant, isShipOperator } = useGrant();
 
   const formattedTime = secondsToLongDate(dueDate);
   const formattedAmount = formatEther(BigInt(amountRequested));
@@ -133,12 +136,36 @@ export const ApplicationDisplay = ({
           </Box>
         </Stack>
         <RTDisplay content={rtContent} minified />
-        {/* <Divider variant="dotted" mt="lg" /> */}
-        {/* <Text size="xs" mt="lg" mb="lg" opacity={0.8}>
-          Posted By:
-        </Text> */}
+        {isShipOperator && status === GameStatus.Pending && (
+          <OperatorControls />
+        )}
       </Box>
       <Divider mb="lg" />
+    </Box>
+  );
+};
+
+const OperatorControls = () => {
+  const [reason, setReason] = useInputState('');
+
+  const handleApprove = (decision: boolean) => {};
+
+  return (
+    <Box mt="sm">
+      <Textarea
+        value={reason}
+        onChange={setReason}
+        label="Reason"
+        placeholder="Provide constructive feedback and reasoning for your decision."
+        minRows={3}
+        autosize
+        required
+        mb="lg"
+      />
+      <Group justify="flex-end">
+        <Button variant="secondary">Not Approve</Button>
+        <Button variant="primary">Approve</Button>
+      </Group>
     </Box>
   );
 };

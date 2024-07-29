@@ -1,13 +1,5 @@
-import { Affix, Box, Button, Divider, Flex, Group, Text } from '@mantine/core';
+import { Box } from '@mantine/core';
 import { useGrant } from '../../hooks/useGrant';
-import { RTDisplay } from '../RTDisplay';
-import { Content } from '@tiptap/react';
-import { PlayerAvatar } from '../PlayerAvatar';
-import { Player } from '../../types/ui';
-import React, { ComponentProps, Fragment, ReactNode, useMemo } from 'react';
-import { secondsToShortRelativeTime } from '../../utils/time';
-import { IconRoute } from '@tabler/icons-react';
-import { Bold } from '../Typography';
 import { UserUpdate } from './UserUpdate';
 import { BeaconMessage } from './BeaconMessage';
 import { ApplicationDisplay } from './ApplicationDisplay';
@@ -67,6 +59,7 @@ export const GrantTimeline = () => {
           const doc = item as any as ApplicationDisplayType;
           return (
             <ApplicationDisplay
+              key={doc.id}
               id={doc.id}
               status={doc.status}
               receivingAddress={doc.receivingAddress}
