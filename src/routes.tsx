@@ -8,7 +8,6 @@ import { Apply } from './pages/Apply';
 import { CreateShip } from './pages/CreateShip';
 import { FacilitatorDashboard } from './pages/FacilitatorDashboard';
 import { Ship } from './pages/Ship';
-import { ApplyFunding } from './pages/ApplyFunding';
 import { Facilitators } from './pages/Faciltiators';
 import { ShipOpDashboard } from './pages/ShipOpDashboard';
 import { MyProjects } from './pages/MyProjects';
@@ -30,11 +29,6 @@ export const ClientRoutes = () => {
       <Route path="ships" element={<Ships />} />
       <Route path="game-rules" element={<GameRules />} />
       <Route path="apply" element={<Apply />} />
-      <Route path="apply-funding/:shipId" element={<ApplyFunding />} />
-      <Route
-        path="resubmit-funding/:shipId/:projectId"
-        element={<ApplyFunding />}
-      />
       <Route path="grant/:id/*" element={<Grant />} />
       <Route path="ship/:id" element={<Ship />} />
       <Route path="project/:id/*" element={<Project />} />

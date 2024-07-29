@@ -9930,12 +9930,20 @@ export type GrantUpdateFragment = (
   & { content?: Maybe<Pick<RawMetadata, 'pointer'>> }
 );
 
+export type GrantApplicationFragment = (
+  Pick<Application, 'id' | 'amount' | 'receivingAddress' | 'status' | 'timestamp'>
+  & { metadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
+);
+
 export type GrantDataFragment = (
   Pick<Grant, 'id' | 'status' | 'lastUpdated' | 'amount' | 'isAllocated' | 'grantCompleted' | 'applicationApproved'>
   & { milestoneDrafts: Array<Pick<MilestoneSet, 'id'>>, currentMilestones?: Maybe<Pick<MilestoneSet, 'id'>>, applications: Array<(
     Pick<Application, 'id' | 'amount' | 'receivingAddress' | 'status' | 'timestamp'>
     & { metadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
-  )>, currentApplication?: Maybe<Pick<Application, 'id'>> }
+  )>, currentApplication?: Maybe<(
+    Pick<Application, 'id' | 'amount' | 'receivingAddress' | 'status' | 'timestamp'>
+    & { metadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
+  )> }
 );
 
 export type getGrantQueryVariables = Exact<{
@@ -9956,7 +9964,10 @@ export type getGrantQuery = { Project_by_pk?: Maybe<(
     & { milestoneDrafts: Array<Pick<MilestoneSet, 'id'>>, currentMilestones?: Maybe<Pick<MilestoneSet, 'id'>>, applications: Array<(
       Pick<Application, 'id' | 'amount' | 'receivingAddress' | 'status' | 'timestamp'>
       & { metadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
-    )>, currentApplication?: Maybe<Pick<Application, 'id'>> }
+    )>, currentApplication?: Maybe<(
+      Pick<Application, 'id' | 'amount' | 'receivingAddress' | 'status' | 'timestamp'>
+      & { metadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
+    )> }
   )>, Update: Array<(
     Pick<Update, 'id' | 'tag' | 'playerType' | 'entityAddress' | 'postedBy' | 'message' | 'contentSchema' | 'timestamp'>
     & { content?: Maybe<Pick<RawMetadata, 'pointer'>> }
@@ -10269,6 +10280,18 @@ export const GrantUpdateFragmentDoc = gql`
   timestamp
 }
     ` as unknown as DocumentNode<GrantUpdateFragment, unknown>;
+export const GrantApplicationFragmentDoc = gql`
+    fragment GrantApplication on Application {
+  id
+  metadata {
+    pointer
+  }
+  amount
+  receivingAddress
+  status
+  timestamp
+}
+    ` as unknown as DocumentNode<GrantApplicationFragment, unknown>;
 export const GrantDataFragmentDoc = gql`
     fragment GrantData on Grant {
   id
@@ -10285,20 +10308,13 @@ export const GrantDataFragmentDoc = gql`
     id
   }
   applications {
-    id
-    metadata {
-      pointer
-    }
-    amount
-    receivingAddress
-    status
-    timestamp
+    ...GrantApplication
   }
   currentApplication {
-    id
+    ...GrantApplication
   }
 }
-    ` as unknown as DocumentNode<GrantDataFragment, unknown>;
+    ${GrantApplicationFragmentDoc}` as unknown as DocumentNode<GrantDataFragment, unknown>;
 export const ProjectDetailsFragmentDoc = gql`
     fragment ProjectDetails on Project {
   id

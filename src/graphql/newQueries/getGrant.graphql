@@ -26,6 +26,17 @@ fragment GrantUpdate on Update {
   timestamp
 }
 
+fragment GrantApplication on Application {
+  id
+  metadata {
+    pointer
+  }
+  amount
+  receivingAddress
+  status
+  timestamp
+}
+
 fragment GrantData on Grant {
   id
   status
@@ -41,17 +52,10 @@ fragment GrantData on Grant {
     id
   }
   applications {
-    id
-    metadata {
-      pointer
-    }
-    amount
-    receivingAddress
-    status
-    timestamp
+    ...GrantApplication
   }
   currentApplication {
-    id
+    ...GrantApplication
   }
 }
 

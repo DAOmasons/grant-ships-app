@@ -15,6 +15,7 @@ type DisplayParams = {
   gap: string | number;
   fontSize: StyleProp<number | MantineSize | (string & {})> | undefined;
   avatarSize: number;
+  displayBadge: boolean;
 };
 
 const displayParams: Record<string, DisplayParams> = {
@@ -22,16 +23,25 @@ const displayParams: Record<string, DisplayParams> = {
     gap: 8,
     fontSize: 'sm',
     avatarSize: 40,
+    displayBadge: true,
   },
   postDrawer: {
     gap: 'sm',
     fontSize: 'md',
     avatarSize: 40,
+    displayBadge: true,
   },
   fullPage: {
     gap: 'sm',
     fontSize: 'md',
     avatarSize: 40,
+    displayBadge: true,
+  },
+  grantTimeline: {
+    gap: 8,
+    fontSize: 'sm',
+    avatarSize: 24,
+    displayBadge: false,
   },
 };
 
@@ -47,6 +57,7 @@ export const PlayerAvatar = ({
   display?: keyof typeof displayParams;
 }) => {
   const badge = useMemo(() => {
+    if (!displayParams[display].displayBadge) return null;
     if (playerType === Player.Project) {
       return <ProjectBadge size={18} />;
     }

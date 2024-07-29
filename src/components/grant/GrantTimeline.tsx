@@ -8,123 +8,73 @@ import React, { ComponentProps, Fragment, ReactNode, useMemo } from 'react';
 import { secondsToShortRelativeTime } from '../../utils/time';
 import { IconRoute } from '@tabler/icons-react';
 import { Bold } from '../Typography';
+import { UserUpdate } from './UserUpdate';
+import { BeaconMessage } from './BeaconMessage';
+import { ApplicationDisplay } from './ApplicationDisplay';
+import {
+  ApplicationDisplay as ApplicationDisplayType,
+  GrantUpdate,
+} from '../../queries/getGrant';
 
 export const GrantTimeline = () => {
-  const { timeline, ship } = useGrant();
+  const { timeline, ship, project } = useGrant();
+
   return (
     <Box>
       {timeline.map((item) => {
         if (item.tag === 'beacon') {
+          const update = item as GrantUpdate;
+
           return (
             <BeaconMessage
-              key={item.id}
-              content={item.updateContent}
+              key={update.id}
+              content={update.updateContent}
               posterImg={ship?.profileMetadata?.imgUrl || ''}
               posterName={ship?.name || ''}
-              playerType={item.playerType}
-              timestamp={item.timestamp}
+              playerType={update.playerType}
+              timestamp={update.timestamp}
             />
           );
         }
-        if (
-          item.tag === 'grant/update/project' ||
-          item.tag === 'grant/update/ship'
-        ) {
+        if (item.tag === 'grant/update/ship') {
+          const update = item as GrantUpdate;
+
           return (
             <UserUpdate
-              key={item.id}
-              content={item.updateContent}
+              key={update.id}
+              content={update.updateContent}
               posterImg={ship?.profileMetadata?.imgUrl || ''}
               posterName={ship?.name || ''}
-              playerType={item.playerType}
-              timestamp={item.timestamp}
+              playerType={update.playerType}
+              timestamp={update.timestamp}
+            />
+          );
+        }
+        if (item.tag === 'grant/update/project') {
+          const update = item as GrantUpdate;
+          return (
+            <UserUpdate
+              key={update.id}
+              content={update.updateContent}
+              posterImg={project?.metadata?.imgUrl || ''}
+              posterName={project?.name || ''}
+              playerType={update.playerType}
+              timestamp={update.timestamp}
+            />
+          );
+        }
+        if (item.tag === 'application') {
+          const doc = item as any as ApplicationDisplayType;
+          return (
+            <ApplicationDisplay
+              receivingAddress={doc.receivingAddress}
+              amountRequested={doc.amount}
+              dueDate={doc.content.dueDate}
+              rtContent={doc.content.content}
             />
           );
         }
       })}
-    </Box>
-  );
-};
-
-const UserUpdate = ({
-  content,
-  posterImg,
-  posterName,
-  playerType,
-  timestamp,
-  innerUI,
-}: {
-  content: Content;
-  posterImg: string;
-  posterName: string;
-  playerType: Player;
-  timestamp: number;
-  innerUI?: ReactNode;
-}) => {
-  const time = useMemo(() => {
-    if (!timestamp) return '';
-    return secondsToShortRelativeTime(timestamp);
-  }, [timestamp]);
-
-  return (
-    <Box mb="lg">
-      <Group gap={8}>
-        <PlayerAvatar
-          playerType={playerType}
-          imgUrl={posterImg}
-          name={posterName}
-        />
-        {time && (
-          <>
-            <Text size="sm" opacity={0.8}>
-              ·
-            </Text>
-            <Text size="sm" opacity={0.8}>
-              {time}
-            </Text>
-          </>
-        )}
-      </Group>
-      <Box pl={50} mb="lg">
-        <RTDisplay content={content} minified={true} />
-        {innerUI}
-      </Box>
-      <Divider />
-    </Box>
-  );
-};
-
-const BeaconMessage = (props: ComponentProps<typeof UserUpdate>) => {
-  const { grantExists } = useGrant();
-  return (
-    <Fragment>
-      {!grantExists && (
-        <NextStep
-          text={
-            <Text fz="sm">
-              Next Step: Please submit an <Bold>Application</Bold> or select{' '}
-              <Bold>Start Grant</Bold> to signal your intent to apply.
-            </Text>
-          }
-        />
-      )}
-      <UserUpdate {...props} />
-    </Fragment>
-  );
-};
-
-const NextStep = ({ text }: { text: ReactNode }) => {
-  return (
-    <Box mb="lg">
-      <Box pl={50} mb="lg" opacity={0.8}>
-        <Flex gap="8">
-          <Box style={{ flexShrink: 0 }}>
-            <IconRoute size={20} />
-          </Box>
-          <Box style={{ minWidth: 0, flexGrow: 1 }}>{text}</Box>
-        </Flex>
-      </Box>
-      <Divider />
     </Box>
   );
 };

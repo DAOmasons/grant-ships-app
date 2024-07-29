@@ -5,6 +5,7 @@ import {
   getBuiltGraphSDK,
   GrantUpdateFragment,
   GrantDataFragment,
+  GrantApplicationFragment,
 } from '../.graphclient';
 import { beaconNotSubmitted, defaultApplication } from '../constants/copy';
 import { resolveShipMetadata } from '../resolvers/grantResolvers';
@@ -32,8 +33,15 @@ export type ShipGrant =
   | null;
 
 export type GrantUpdate = GrantUpdateFragment & { updateContent: Content };
+export type ApplicationDisplay = GrantApplicationFragment & {
+  tag: 'string';
+  content: {
+    content: Content;
+    dueDate: number;
+  };
+};
 
-export type TimelineItem = GrantUpdate;
+export type TimelineItem = GrantUpdate | ApplicationDisplay;
 
 export type GrantQueryType = {
   project: ProjectGrant;
@@ -108,6 +116,7 @@ export const getGrant = async (grantId: string) => {
       if (doc?.metadata?.pointer) {
         const content = await resolveRTApplication(doc.metadata?.pointer);
         return {
+          tag: 'application',
           ...doc,
           content,
         };
