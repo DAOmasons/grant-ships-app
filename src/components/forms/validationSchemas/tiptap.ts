@@ -19,3 +19,8 @@ export const tiptapContentSchema = z.object({
   type: z.literal('doc'),
   content: z.array(tiptapNodeSchema),
 });
+
+export const tipTapApplicationSchema = z.object({
+  dueDate: z.number(),
+  content: tiptapContentSchema,
+});

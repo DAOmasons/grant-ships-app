@@ -2,6 +2,7 @@ fragment BaseShipData on GrantShip {
   id
   name
   status
+  poolId
   shipContractAddress
   shipApplicationBytesData
   profileMetadata {

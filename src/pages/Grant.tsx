@@ -39,6 +39,7 @@ import { useGrant } from '../hooks/useGrant';
 import { GrantTimeline } from '../components/grant/GrantTimeline';
 import { PostGrantDrawer } from '../components/grant/PostGrantDrawer';
 import { useDisclosure } from '@mantine/hooks';
+import { ApplicationDrawer } from '../components/grant/ApplicationDrawer';
 
 export const Grant = () => {
   const theme = useMantineTheme();
@@ -141,18 +142,31 @@ const ShipActions = () => {
 };
 
 const ProjectActions = () => {
-  const { project, ship, refetchGrant } = useGrant();
+  const { project, ship, refetchGrant, applicationTemplate } = useGrant();
   const [postOpened, { open: openPost, close: closePost }] = useDisclosure();
+  const [
+    applicationOpened,
+    { open: openApplication, close: closeApplication },
+  ] = useDisclosure();
   return (
     <>
       <Stack pos="fixed" top={'260px'} gap="sm">
-        <Button variant="menu" leftSection={<IconFileDescription />}>
+        <Button
+          variant="menu"
+          leftSection={<IconFileDescription />}
+          onClick={openApplication}
+        >
           <Text>Application</Text>
         </Button>
         <Button variant="menu" leftSection={<IconMessage />} onClick={openPost}>
           <Text>Message</Text>
         </Button>
       </Stack>
+      <ApplicationDrawer
+        opened={applicationOpened}
+        onClose={closeApplication}
+        content={applicationTemplate}
+      />
       <PostGrantDrawer
         opened={postOpened}
         onClose={closePost}
