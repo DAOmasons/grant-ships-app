@@ -60,7 +60,7 @@ export const ApplicationDrawer = ({
   opened: boolean;
   onClose: () => void;
 }) => {
-  const { project, ship } = useGrant();
+  const { project, ship, refetchGrant } = useGrant();
   const { tx } = useTx();
 
   const editor = useEditor({
@@ -176,6 +176,11 @@ export const ApplicationDrawer = ({
         address: ADDR.ALLO,
         functionName: 'registerRecipient',
         args: [ship.poolId, encoded],
+      },
+      writeContractOptions: {
+        onPollSuccess() {
+          refetchGrant();
+        },
       },
     });
   };

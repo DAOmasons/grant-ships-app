@@ -7,7 +7,6 @@ import {
   ApplicationDisplay as ApplicationDisplayType,
   GrantUpdate,
 } from '../../queries/getGrant';
-import { InsetUpdate } from './InsetUpdate';
 import { VerdictDisplay } from './VerdictDisplay';
 
 export const GrantTimeline = () => {

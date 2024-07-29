@@ -1,4 +1,3 @@
-import React from 'react';
 import { InsetUpdate } from './InsetUpdate';
 import { IconCircleCheck, IconExclamationCircle } from '@tabler/icons-react';
 import { Text, useMantineTheme } from '@mantine/core';
@@ -18,15 +17,17 @@ export const VerdictDisplay = ({
   hasApproved: boolean;
   posterName: string;
 }) => {
-  const { grant } = useGrant();
+  const { grant, isProjectMember } = useGrant();
   const theme = useMantineTheme();
   const tagLine = hasApproved
     ? ' has approved this Grant Application'
     : ' has rejected this Grant Application';
 
   const currentDraftIsRejected =
+    isProjectMember &&
     grant?.currentApplication?.status === GameStatus.Rejected;
   const currentDraftIsApproved =
+    isProjectMember &&
     grant?.currentApplication?.status === GameStatus.Accepted &&
     grant.currentMilestones == null;
 
