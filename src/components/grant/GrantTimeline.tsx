@@ -6,12 +6,14 @@ import { ApplicationDisplay } from './ApplicationDisplay';
 import {
   ApplicationDisplay as ApplicationDisplayType,
   GrantUpdate,
+  MilestonesDisplay,
+  VerdictUpdate,
 } from '../../queries/getGrant';
 import { VerdictDisplay } from './VerdictDisplay';
+import { MilestoneDisplay } from './MilestoneDisplay';
 
 export const GrantTimeline = () => {
   const { timeline, ship, project } = useGrant();
-
   return (
     <Box>
       {timeline.map((item) => {
@@ -74,17 +76,22 @@ export const GrantTimeline = () => {
           item.tag === 'grant/approve/application' ||
           item.tag === 'grant/reject/application'
         ) {
+          const update = item as VerdictUpdate;
           return (
             <VerdictDisplay
-              timestamp={item.timestamp}
+              timestamp={update.timestamp}
               posterName={ship?.name || ''}
-              reason={item.reason || ''}
-              key={item.id}
+              reason={update.reason}
+              key={update.id}
               hasApproved={
-                item.tag === 'grant/approve/application' ? true : false
+                update.tag === 'grant/approve/application' ? true : false
               }
             />
           );
+        }
+        if (item.tag === 'milestoneSet') {
+          const doc = item as any as MilestonesDisplay;
+          return <MilestoneDisplay key={doc.id} doc={doc} />;
         }
       })}
     </Box>

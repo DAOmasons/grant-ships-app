@@ -15,6 +15,7 @@ import {
   IconChevronCompactUp,
   IconChevronDown,
   IconChevronUp,
+  IconCircleCheck,
   IconClock,
   IconExclamationCircle,
   IconExternalLink,
@@ -30,7 +31,7 @@ import { secondsToLongDate } from '../../utils/time';
 import { Address, formatEther } from 'viem';
 import { GAME_TOKEN, ZER0_ADDRESS } from '../../constants/gameSetup';
 import { SCAN_URL } from '../../constants/enpoints';
-import { GameStatus } from '../../types/common';
+import { GameStatus, GrantStatus } from '../../types/common';
 import { useInputState } from '@mantine/hooks';
 import { useTx } from '../../hooks/useTx';
 import { useState } from 'react';
@@ -62,39 +63,42 @@ export const ApplicationDisplay = ({
   const formattedTime = secondsToLongDate(dueDate);
   const formattedAmount = formatEther(BigInt(amountRequested));
 
-  const isCurrentDraft = grant?.currentApplication?.id;
+  const isCurrentDraft = grant?.currentApplication?.id === id;
 
-  const color = !isCurrentDraft
-    ? theme.colors.dark[2]
-    : status === GameStatus.Pending
-      ? theme.colors.yellow[6]
-      : status === GameStatus.Accepted
-        ? theme.colors.green[6]
-        : status === GameStatus.Rejected
-          ? theme.colors.red[6]
-          : theme.colors.dark[2];
+  const color =
+    status === GameStatus.Rejected
+      ? theme.colors.red[6]
+      : status === GameStatus.Pending
+        ? theme.colors.yellow[6]
+        : !isCurrentDraft
+          ? theme.colors.dark[2]
+          : status === GameStatus.Accepted
+            ? theme.colors.green[6]
+            : theme.colors.dark[2];
 
-  const tagIcon = !isCurrentDraft ? (
-    <IconFileX size={18} color={color} />
-  ) : status === GameStatus.Pending ? (
-    <IconClock size={18} color={color} />
-  ) : status === GameStatus.Accepted ? (
-    <IconCheck size={18} color={color} />
-  ) : status === GameStatus.Rejected ? (
-    <IconExclamationCircle size={18} color={color} />
-  ) : (
-    <IconQuestionMark size={18} color={color} />
-  );
+  const tagIcon =
+    status === GameStatus.Rejected ? (
+      <IconExclamationCircle size={18} color={color} />
+    ) : status === GameStatus.Pending ? (
+      <IconClock size={18} color={color} />
+    ) : !isCurrentDraft ? (
+      <IconFileX size={18} color={color} />
+    ) : status === GameStatus.Accepted ? (
+      <IconCircleCheck size={18} color={color} />
+    ) : (
+      <IconQuestionMark size={18} color={color} />
+    );
 
-  const applicationText = !isCurrentDraft
-    ? 'Inactive Draft'
-    : status === GameStatus.Pending
-      ? 'Application in Review'
-      : status === GameStatus.Accepted
-        ? 'Application Approved'
-        : GameStatus.Rejected
-          ? 'Application Not Approved'
-          : 'Unknown Status';
+  const applicationText =
+    status === GameStatus.Rejected
+      ? 'Application Not Approved'
+      : status === GameStatus.Pending
+        ? 'Application in Review'
+        : !isCurrentDraft
+          ? 'Inactive Draft'
+          : status === GameStatus.Accepted
+            ? 'Application Approved'
+            : 'Unknown Status';
 
   const isOldOrRejected = !isCurrentDraft || status === GameStatus.Rejected;
 

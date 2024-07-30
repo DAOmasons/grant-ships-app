@@ -6,12 +6,11 @@ import {
   GrantUpdateFragment,
   GrantDataFragment,
   GrantApplicationFragment,
+  MilestonesFragment,
+  MilestoneStepFragment,
 } from '../.graphclient';
 import { beaconNotSubmitted, defaultApplication } from '../constants/copy';
-import {
-  resolveFacilitatorReason,
-  resolveShipMetadata,
-} from '../resolvers/grantResolvers';
+import { resolveShipMetadata } from '../resolvers/grantResolvers';
 import {
   ProjectMetadata,
   resolveProjectMetadata,
@@ -24,6 +23,8 @@ import {
 } from '../resolvers/updates';
 import { Player } from '../types/ui';
 import { ContentSchema } from '../components/forms/validationSchemas/updateSchemas';
+import { getIpfsJson } from '../utils/ipfs/get';
+import { milestoneSchema } from '../utils/ipfs/metadataValidation';
 
 export type ProjectGrant =
   | (ProjectDataFragment & { metadata: ProjectMetadata | null })
@@ -38,7 +39,10 @@ export type ShipGrant =
 
 export type GrantUpdate = GrantUpdateFragment & {
   updateContent: Content;
-  reason?: string;
+};
+
+export type VerdictUpdate = GrantUpdateFragment & {
+  reason: string;
 };
 export type ApplicationDisplay = GrantApplicationFragment & {
   tag: 'string';
@@ -47,8 +51,23 @@ export type ApplicationDisplay = GrantApplicationFragment & {
     dueDate: number;
   };
 };
+export type ResolvedMilestone = MilestoneStepFragment & {
+  milestoneContent: {
+    milestoneDetails: string;
+    date: number;
+  };
+};
 
-export type TimelineItem = GrantUpdate | ApplicationDisplay;
+export type MilestonesDisplay = MilestonesFragment & {
+  resolvedMilestones: ResolvedMilestone[];
+  tag: string;
+};
+
+export type TimelineItem =
+  | GrantUpdate
+  | ApplicationDisplay
+  | MilestonesDisplay
+  | VerdictUpdate;
 
 export type GrantQueryType = {
   project: ProjectGrant;
@@ -85,6 +104,7 @@ export const getGrant = async (grantId: string) => {
   const ship = ships ? ships[0] : null;
 
   const applications = grant?.applications || [];
+  const milestoneDrafts = grant?.milestoneDrafts || [];
 
   const [projectMetadata, shipMetadata] = await Promise.all([
     project ? await resolveProjectMetadata(project?.metadata?.pointer) : null,
@@ -147,11 +167,53 @@ export const getGrant = async (grantId: string) => {
     })
   );
 
-  console.log('resolvedApplications', resolvedApplications);
+  const resolveMilestoneMetadata = async (pointer: string) => {
+    const res = await getIpfsJson(pointer);
+    const validated = await milestoneSchema.safeParse(res);
 
-  const timeline = [...resolvedUpdates, ...resolvedApplications].sort((a, b) =>
-    a.timestamp < b.timestamp ? 1 : -1
+    if (!validated.success) {
+      console.error('Invalid metadata', validated.error);
+      throw new Error('Invalid metadata: Data does not match the schema');
+    }
+
+    return validated.data;
+  };
+
+  const resolvedMilestoneDrafts = await Promise.all(
+    milestoneDrafts.map(async (set) => {
+      if (set?.milestones?.length) {
+        const resolvedMilestones = await Promise.all(
+          set.milestones.map(async (milestone: MilestoneStepFragment) => {
+            if (milestone?.metadata?.pointer) {
+              const content = await resolveMilestoneMetadata(
+                milestone.metadata.pointer
+              );
+              return {
+                ...milestone,
+                milestoneContent: content,
+              } as ResolvedMilestone;
+            }
+            return null;
+          })
+        );
+        return {
+          ...set,
+          resolvedMilestones: resolvedMilestones.filter(
+            Boolean
+          ) as ResolvedMilestone[],
+          tag: 'milestoneSet',
+        } as MilestonesDisplay;
+      } else {
+        return null;
+      }
+    })
   );
+
+  const timeline = [
+    ...resolvedUpdates,
+    ...resolvedApplications,
+    ...(resolvedMilestoneDrafts.filter(Boolean) as MilestonesDisplay[]),
+  ].sort((a, b) => (a.timestamp < b.timestamp ? 1 : -1));
 
   const beaconUpdate: GrantUpdate = {
     id: `${grantId}-beacon`,

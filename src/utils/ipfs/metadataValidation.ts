@@ -65,3 +65,8 @@ export const gmDeploymentMetadata = z.object({
   title: z.string(),
   description: z.string(),
 });
+
+export const milestoneSchema = z.object({
+  milestoneDetails: z.string(),
+  date: z.number(),
+});
