@@ -25,7 +25,7 @@ import {
 } from '@tabler/icons-react';
 import { FeedPanel } from '../components/shipItems/FeedPanel';
 import { GAME_TOKEN } from '../constants/gameSetup';
-import { MilestoneProgress } from '../components/projectItems/MilestoneProgress';
+// import { MilestoneProgress } from '../components/projectItems/MilestoneProgress';
 import { Contact } from '../components/Contact';
 
 import { formatEther } from 'viem';
@@ -37,7 +37,7 @@ import { AppAlert } from '../components/UnderContruction';
 import { GrantStatus } from '../types/common';
 import { SingleItemPageSkeleton } from '../components/skeletons';
 import { getEntityFeed } from '../queries/getFeed';
-import { DashGrant } from '../resolvers/grantResolvers';
+// import { DashGrant } from '../resolvers/grantResolvers';
 import { useMemo } from 'react';
 import { useUserData } from '../hooks/useUserState';
 import { useLaptop, useTablet } from '../hooks/useBreakpoint';
@@ -145,27 +145,27 @@ export const Project = () => {
       </MainSection>
     );
 
-  const totalFundsReceived = !grants
-    ? '0'
-    : formatEther(
-        grants.reduce((acc: bigint, grant: DashGrant) => {
-          return (
-            acc + (grant.amtDistributed ? BigInt(grant.amtDistributed) : 0n)
-          );
-        }, 0n)
-      );
+  // const totalFundsReceived = !grants
+  //   ? '0'
+  //   : formatEther(
+  //       grants.reduce((acc: bigint, grant: DashGrant) => {
+  //         return (
+  //           acc + (grant.amtDistributed ? BigInt(grant.amtDistributed) : 0n)
+  //         );
+  //       }, 0n)
+  //     );
 
-  const totalFundsAllocated = !grants
-    ? '0'
-    : formatEther(
-        grants.reduce((acc: bigint, grant: DashGrant) => {
-          return acc + (grant.amtAllocated ? BigInt(grant.amtAllocated) : 0n);
-        }, 0n)
-      );
+  // const totalFundsAllocated = !grants
+  //   ? '0'
+  //   : formatEther(
+  //       grants.reduce((acc: bigint, grant: DashGrant) => {
+  //         return acc + (grant.amtAllocated ? BigInt(grant.amtAllocated) : 0n);
+  //       }, 0n)
+  //     );
 
-  const activeGrants = grants?.filter(
-    (grant: DashGrant) => grant.grantStatus >= GrantStatus.FacilitatorApproved
-  );
+  // const activeGrants = grants?.filter(
+  //   (grant: DashGrant) => grant.grantStatus >= GrantStatus.FacilitatorApproved
+  // );
 
   return (
     <Flex w="100%">
@@ -202,7 +202,7 @@ export const Project = () => {
         </Group>
         {isLaptop && (
           <Stack mb="md">
-            {activeGrants?.length !== 0 && (
+            {/* {activeGrants?.length !== 0 && (
               <Box>
                 <Group mb={opened ? 'sm' : 0}>
                   <Text fz="sm">Active Grants</Text>
@@ -221,7 +221,7 @@ export const Project = () => {
                   </Stack>
                 </Collapse>
               </Box>
-            )}
+            )} */}
             <Group>
               <Box>
                 <Group gap={4}>
@@ -234,7 +234,7 @@ export const Project = () => {
                   </Tooltip>
                 </Group>
                 <Text size="sm" mb={2}>
-                  {totalFundsAllocated} {GAME_TOKEN.SYMBOL}
+                  {/* {totalFundsAllocated} {GAME_TOKEN.SYMBOL} */}
                 </Text>
               </Box>
               <Box>
@@ -248,7 +248,7 @@ export const Project = () => {
                   </Tooltip>
                 </Group>
                 <Text size="sm" mb={2}>
-                  {totalFundsReceived} {GAME_TOKEN.SYMBOL}
+                  {/* {totalFundsReceived} {GAME_TOKEN.SYMBOL} */}
                 </Text>
               </Box>
             </Group>
@@ -379,7 +379,7 @@ export const Project = () => {
           )}
           <Paper p="md" bg={theme.colors.dark[6]} w="100%">
             <Text size="lg" mb={2}>
-              {totalFundsAllocated} {GAME_TOKEN.SYMBOL}
+              {/* {totalFundsAllocated} {GAME_TOKEN.SYMBOL} */}
             </Text>
             <Group mb="md" gap={4}>
               <Text size="sm">Funding allocated </Text>
@@ -391,7 +391,7 @@ export const Project = () => {
               </Tooltip>
             </Group>
             <Text size="lg" mb={2}>
-              {totalFundsReceived} {GAME_TOKEN.SYMBOL}
+              {/* {totalFundsReceived} {GAME_TOKEN.SYMBOL} */}
             </Text>
             <Group gap={4}>
               <Text size="sm">Funding Received</Text>
@@ -403,7 +403,7 @@ export const Project = () => {
               </Tooltip>
             </Group>
           </Paper>
-          {activeGrants?.length !== 0 && (
+          {/* {activeGrants?.length !== 0 && (
             <Paper p="md" bg={theme.colors.dark[6]}>
               <Stack gap="lg">
                 <Text>Active Grants</Text>
@@ -415,7 +415,7 @@ export const Project = () => {
                 ))}
               </Stack>
             </Paper>
-          )}
+          )} */}
         </Stack>
       )}
       {isProjectMember && <PostAffix />}

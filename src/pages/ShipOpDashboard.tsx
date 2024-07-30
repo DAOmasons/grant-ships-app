@@ -25,7 +25,7 @@ import { Tag } from '../constants/tags';
 import { Address } from 'viem';
 import { ZER0_ADDRESS } from '../constants/gameSetup';
 import { ReportStatus } from '../types/common';
-import { getRecentPortfolioReport } from '../queries/getRecordsByTag';
+// import { getRecentPortfolioReport } from '../queries/getRecordsByTag';
 import { ADDR } from '../constants/addresses';
 import { SettingsPanel } from '../components/dashboard/ship/SettingsPanel';
 

@@ -1,38 +1,38 @@
-import { getBuiltGraphSDK } from '../.graphclient';
-import { SUBGRAPH_URL } from '../constants/gameSetup';
-import { DashGrant, resolveGrants } from '../resolvers/grantResolvers';
+// import { getBuiltGraphSDK } from '../.graphclient';
+// import { SUBGRAPH_URL } from '../constants/gameSetup';
+// import { DashGrant, resolveGrants } from '../resolvers/grantResolvers';
 
-type FacilitatorGrantsData = {
-  requiresAction: DashGrant[];
-  rejected: DashGrant[];
-  approved: DashGrant[];
-};
+// type FacilitatorGrantsData = {
+//   requiresAction: DashGrant[];
+//   rejected: DashGrant[];
+//   approved: DashGrant[];
+// };
 
-export const getFacilitatorGrants =
-  async (): Promise<FacilitatorGrantsData> => {
-    try {
-      const { getFacilitatorGrants } = getBuiltGraphSDK({
-        apiEndpoint: SUBGRAPH_URL,
-      });
-      const res = await getFacilitatorGrants();
+// export const getFacilitatorGrants =
+//   async (): Promise<FacilitatorGrantsData> => {
+//     try {
+//       const { getFacilitatorGrants } = getBuiltGraphSDK({
+//         apiEndpoint: SUBGRAPH_URL,
+//       });
+//       const res = await getFacilitatorGrants();
 
-      if (!res || !res.approved || !res.rejected || !res.requiresAction) {
-        throw new Error('Error loading grants data');
-      }
+//       if (!res || !res.approved || !res.rejected || !res.requiresAction) {
+//         throw new Error('Error loading grants data');
+//       }
 
-      const [requiresAction, rejected, approved] = await Promise.all([
-        resolveGrants(res.requiresAction),
-        resolveGrants(res.rejected),
-        resolveGrants(res.approved),
-      ]);
+//       const [requiresAction, rejected, approved] = await Promise.all([
+//         resolveGrants(res.requiresAction),
+//         resolveGrants(res.rejected),
+//         resolveGrants(res.approved),
+//       ]);
 
-      return {
-        requiresAction: requiresAction as DashGrant[],
-        rejected: rejected as DashGrant[],
-        approved: approved as DashGrant[],
-      };
-    } catch (error: any) {
-      console.error(error.message || 'Error loading grants data');
-      throw new Error(error.message || 'Error loading grants data');
-    }
-  };
+//       return {
+//         requiresAction: requiresAction as DashGrant[],
+//         rejected: rejected as DashGrant[],
+//         approved: approved as DashGrant[],
+//       };
+//     } catch (error: any) {
+//       console.error(error.message || 'Error loading grants data');
+//       throw new Error(error.message || 'Error loading grants data');
+//     }
+//   };

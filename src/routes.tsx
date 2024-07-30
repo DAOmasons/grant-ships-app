@@ -11,8 +11,8 @@ import { Ship } from './pages/Ship';
 import { Facilitators } from './pages/Faciltiators';
 import { ShipOpDashboard } from './pages/ShipOpDashboard';
 import { MyProjects } from './pages/MyProjects';
-import { DevPanel } from './pages/DevPanel';
-import { Vote } from './pages/Vote';
+// import { DevPanel } from './pages/DevPanel';
+// import { Vote } from './pages/Vote';
 import { VoteProvider } from './contexts/VoteContext';
 import { ADDR } from './constants/addresses';
 import { RegisterProject } from './pages/RegisterProject';
@@ -46,9 +46,9 @@ export const ClientRoutes = () => {
       />
       <Route path="ship-operator-dashboard/:id" element={<ShipOpDashboard />} />
       <Route path="my-projects/:id" element={<MyProjects />} />
-      <Route path="dev-panel" element={<DevPanel />} />
+      {/* <Route path="dev-panel" element={<DevPanel />} /> */}
       <Route path="post/:id" element={<RichTextUpdate />} />
-      <Route
+      {/* <Route
         path="vote"
         element={
           <VoteProvider
@@ -58,8 +58,8 @@ export const ClientRoutes = () => {
             <Vote />
           </VoteProvider>
         }
-      />
-      <Route
+      /> */}
+      {/* <Route
         path="dao-vote"
         element={
           <VoteProvider
@@ -69,7 +69,7 @@ export const ClientRoutes = () => {
             <Vote isHistory />
           </VoteProvider>
         }
-      />
+      /> */}
     </Routes>
   );
 };

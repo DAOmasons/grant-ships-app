@@ -1,17 +1,17 @@
-import { getBuiltGraphSDK } from '../.graphclient';
-import { DashGrant, resolveGrants } from '../resolvers/grantResolvers';
-import { SUBGRAPH_URL } from '../constants/gameSetup';
+// import { getBuiltGraphSDK } from '../.graphclient';
+// import { DashGrant, resolveGrants } from '../resolvers/grantResolvers';
+// import { SUBGRAPH_URL } from '../constants/gameSetup';
 
-export const getShipGrants = async (shipId: string) => {
-  const { getShipGrants } = getBuiltGraphSDK({
-    apiEndpoint: SUBGRAPH_URL,
-  });
+// export const getShipGrants = async (shipId: string) => {
+//   const { getShipGrants } = getBuiltGraphSDK({
+//     apiEndpoint: SUBGRAPH_URL,
+//   });
 
-  const { grantShip } = await getShipGrants({ id: shipId });
+//   const { grantShip } = await getShipGrants({ id: shipId });
 
-  if (!grantShip) return null;
+//   if (!grantShip) return null;
 
-  const resolvedGrants = await resolveGrants(grantShip.grants);
+//   const resolvedGrants = await resolveGrants(grantShip.grants);
 
-  return resolvedGrants as DashGrant[];
-};
+//   return resolvedGrants as DashGrant[];
+// };

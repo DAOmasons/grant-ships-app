@@ -33,6 +33,7 @@ import { useDisclosure } from '@mantine/hooks';
 import { ApplicationDrawer } from '../components/grant/ApplicationDrawer';
 import { GrantStatus } from '../types/common';
 import { MilestonesDrawer } from '../components/grant/MilestonesDrawer';
+import { useUserData } from '../hooks/useUserState';
 
 export const Grant = () => {
   const theme = useMantineTheme();
@@ -100,15 +101,32 @@ export const Grant = () => {
 };
 
 const ActionsPanel = () => {
+  const { userData } = useUserData();
+
+  const { isFacilitator } = userData || {};
   const { isProjectMember, isShipOperator } = useGrant();
   return (
     <Flex h="100%" pos="relative" style={{ flexGrow: 1 }}>
-      {isShipOperator ? (
+      {isFacilitator ? (
+        <FacilitatorActions />
+      ) : isShipOperator ? (
         <ShipActions />
       ) : isProjectMember ? (
         <ProjectActions />
       ) : null}
     </Flex>
+  );
+};
+
+const FacilitatorActions = () => {
+  return (
+    <>
+      <Stack pos="fixed" top={'260px'} gap="sm">
+        <Button variant="menu" leftSection={<IconPlus />} onClick={() => {}}>
+          <Text>Review Grantee</Text>
+        </Button>
+      </Stack>
+    </>
   );
 };
 
@@ -119,7 +137,7 @@ const ShipActions = () => {
   return (
     <>
       <Stack pos="fixed" top={'260px'} gap="sm">
-        <Button variant="menu" leftSection={<IconMessage />} onClick={openPost}>
+        <Button variant="menu" leftSection={<IconPlus />} onClick={openPost}>
           <Text>Message</Text>
         </Button>
       </Stack>

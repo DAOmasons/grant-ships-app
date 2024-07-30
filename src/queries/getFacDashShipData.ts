@@ -11,13 +11,13 @@ type RawReason = {
 };
 type QueryApplicant = FacShipDataFragment;
 type QueryApproved = FacShipDataFragment & {
-  approvedTime?: string | null;
+  approvedTime?: number | null;
   applicationReviewReason?: RawReason | null;
   shipAllocation?: string | null;
   totalAvailableFunds?: string | null;
 };
 type QueryRejected = FacShipDataFragment & {
-  rejectedTime?: string | null;
+  rejectedTime?: number | null;
   applicationReviewReason?: RawReason | null;
 };
 

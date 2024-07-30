@@ -12,7 +12,7 @@ import { AllocationPanel } from './AllocationPanel';
 import { StartGamePanel } from './StartGamePanel';
 import { StopGamePanel } from './StopGamePanel';
 import { GameManager } from '../../../queries/getGameManger';
-import { PopulateChoicesPanel } from './PopulateChoicesPanel';
+// import { PopulateChoicesPanel } from './PopulateChoicesPanel';
 import { StartVotingPanel } from './StartVotingPanel';
 import { CompleteVotePanel } from './CompleteVotePanel';
 
@@ -41,8 +41,6 @@ export const FacilitatorGameDash = ({
     ) {
       return null;
     }
-
-    console.log('gameStatusNumber', gameStatusNumber);
 
     return [
       {
@@ -107,33 +105,33 @@ export const FacilitatorGameDash = ({
         description: gameStatusNumber > 5 ? 'Game Ended' : 'Game Not Finished',
         content: <StopGamePanel gm={gm} gameStatusNumber={gameStatusNumber} />,
       },
-      {
-        title: 'Populate Choices',
-        description:
-          gameStatusNumber > 7
-            ? 'Choices have been approved'
-            : "Choices haven't been approved",
-        content: <PopulateChoicesPanel ships={shipData.approvedShips} />,
-      },
-      {
-        title: 'Initiate DAO Voting',
-        description:
-          gameStatusNumber > 8
-            ? 'DAO Vote started'
-            : 'DAO Voting has not started',
-        content: <StartVotingPanel gameStatusNumber={gameStatusNumber} />,
-      },
-      {
-        title: 'Finalize Voting',
-        description:
-          gameStatusNumber > 9 ? 'DAO vote is complete' : 'DAO vote is ongoing',
-        content: <CompleteVotePanel />,
-      },
-      {
-        title: 'End Voting',
-        description:
-          gameStatusNumber > 10 ? 'Voting complete!' : 'Voting Ongoing',
-      },
+      // {
+      //   title: 'Populate Choices',
+      //   description:
+      //     gameStatusNumber > 7
+      //       ? 'Choices have been approved'
+      //       : "Choices haven't been approved",
+      //   content: <PopulateChoicesPanel ships={shipData.approvedShips} />,
+      // },
+      // {
+      //   title: 'Initiate DAO Voting',
+      //   description:
+      //     gameStatusNumber > 8
+      //       ? 'DAO Vote started'
+      //       : 'DAO Voting has not started',
+      //   content: <StartVotingPanel gameStatusNumber={gameStatusNumber} />,
+      // },
+      // {
+      //   title: 'Finalize Voting',
+      //   description:
+      //     gameStatusNumber > 9 ? 'DAO vote is complete' : 'DAO vote is ongoing',
+      //   content: <CompleteVotePanel />,
+      // },
+      // {
+      //   title: 'End Voting',
+      //   description:
+      //     gameStatusNumber > 10 ? 'Voting complete!' : 'Voting Ongoing',
+      // },
     ];
   }, [shipData, isLoading, gameStatusNumber, gm, poolBalance]);
 

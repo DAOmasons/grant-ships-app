@@ -11,8 +11,8 @@ import { useMemo } from 'react';
 import { NETWORK_ID, SHIP_AMOUNT } from '../constants/gameSetup';
 import { useReadContract } from 'wagmi';
 import { ADDR } from '../constants/addresses';
-import { ContestStatus, GameStatus } from '../types/common';
-import { ProjectApproval } from '../components/dashboard/facilitator/ProjectApproval';
+import { GameStatus } from '../types/common';
+// import { ProjectApproval } from '../components/dashboard/facilitator/ProjectApproval';
 import { FacPostUpdatePanel } from '../components/dashboard/facilitator/FacPostUpdatePanel';
 import { useVoting } from '../hooks/useVoting';
 
@@ -87,30 +87,30 @@ export const FacilitatorDashboard = () => {
       return 6;
     }
 
-    // Populating Ready
-    // Checks to see if the voting contracts exists, if it does, then we await choices and approve them
-    if (votingExists && contestStatus === ContestStatus.Populating) {
-      return 7;
-    }
+    // // Populating Ready
+    // // Checks to see if the voting contracts exists, if it does, then we await choices and approve them
+    // if (votingExists && contestStatus === ContestStatus.Populating) {
+    //   return 7;
+    // }
 
-    // Voting Ready
-    // Voting is ready to be initiated
-    if (contestStatus === ContestStatus.Voting && !isVotingActive) {
-      return 8;
-    }
+    // // Voting Ready
+    // // Voting is ready to be initiated
+    // if (contestStatus === ContestStatus.Voting && !isVotingActive) {
+    //   return 8;
+    // }
 
-    // Voting is active
-    // Awaiting the end of the voting period
-    if (isVotingActive) {
-      return 9;
-    }
+    // // Voting is active
+    // // Awaiting the end of the voting period
+    // if (isVotingActive) {
+    //   return 9;
+    // }
 
-    // Finalized
-    // The contest is finalized
-    if (contestStatus === ContestStatus.Finalized) {
-      return 10;
-    }
-  }, [shipData, gm, poolBalance, votingExists, contestStatus, isVotingActive]);
+    // // Finalized
+    // // The contest is finalized
+    // if (contestStatus === ContestStatus.Finalized) {
+    //   return 10;
+    // }
+  }, [shipData, gm, poolBalance]);
 
   return (
     <MainSection>
@@ -140,7 +140,8 @@ export const FacilitatorDashboard = () => {
           />
         </Tabs.Panel>
         <Tabs.Panel value="projects">
-          <ProjectApproval />
+          <></>
+          {/* <ProjectApproval /> */}
         </Tabs.Panel>
         <Tabs.Panel value="post">
           <FacPostUpdatePanel />

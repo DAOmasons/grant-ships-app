@@ -35,7 +35,7 @@ import { SingleItemPageSkeleton } from '../components/skeletons';
 import { getEntityFeed } from '../queries/getFeed';
 import { formatEther } from 'viem';
 import { useUserData } from '../hooks/useUserState';
-import { UpdatesPanel } from '../components/shipItems/UpdatesPanel';
+// import { UpdatesPanel } from '../components/shipItems/UpdatesPanel';
 import { SHIP_STATUS_INFO } from '../constants/copy';
 import { useLaptop, useTablet } from '../hooks/useBreakpoint';
 import { useMemo } from 'react';
@@ -251,15 +251,16 @@ export const Ship = () => {
           <Tabs.Panel value="details">
             <DetailsPanel details={ship.details} members={ship.members} />
           </Tabs.Panel>
-          <Tabs.Panel value="updates">
+          {/* <Tabs.Panel value="updates">
             <UpdatesPanel
               ship={ship}
               isShipOperator={isShipOperator}
               shipId={id}
             />
-          </Tabs.Panel>
+          </Tabs.Panel> */}
           <Tabs.Panel value="portfolio">
-            <PortfolioPanel />
+            <></>
+            {/* <PortfolioPanel /> */}
           </Tabs.Panel>
         </Tabs>
       </MainSection>
