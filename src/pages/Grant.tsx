@@ -31,6 +31,8 @@ import { GrantTimeline } from '../components/grant/GrantTimeline';
 import { PostGrantDrawer } from '../components/grant/PostGrantDrawer';
 import { useDisclosure } from '@mantine/hooks';
 import { ApplicationDrawer } from '../components/grant/ApplicationDrawer';
+import { GrantStatus } from '../types/common';
+import { MilestonesDrawer } from '../components/grant/MilestonesDrawer';
 
 export const Grant = () => {
   const theme = useMantineTheme();
@@ -136,22 +138,44 @@ const ShipActions = () => {
 };
 
 const ProjectActions = () => {
-  const { project, ship, refetchGrant, applicationTemplate } = useGrant();
+  const { project, ship, refetchGrant, applicationTemplate, grant } =
+    useGrant();
   const [postOpened, { open: openPost, close: closePost }] = useDisclosure();
   const [
     applicationOpened,
     { open: openApplication, close: closeApplication },
   ] = useDisclosure();
+  const [milestonesOpened, { open: openMilestones, close: closeMilestones }] =
+    useDisclosure();
+
+  const isApplicationStage =
+    grant?.status && grant.status < GrantStatus.ShipApproved;
+  const isMilestonePlanning =
+    grant?.status &&
+    grant.status >= GrantStatus.ShipApproved &&
+    grant?.status < GrantStatus.FacilitatorApproved;
+
   return (
     <>
       <Stack pos="fixed" top={'260px'} gap="sm">
-        <Button
-          variant="menu"
-          leftSection={<IconPlus />}
-          onClick={openApplication}
-        >
-          <Text>Application</Text>
-        </Button>
+        {isMilestonePlanning && (
+          <Button
+            variant="menu"
+            leftSection={<IconPlus />}
+            onClick={openMilestones}
+          >
+            <Text>Milestones</Text>
+          </Button>
+        )}
+        {isApplicationStage && (
+          <Button
+            variant="menu"
+            leftSection={<IconPlus />}
+            onClick={openApplication}
+          >
+            <Text>Application</Text>
+          </Button>
+        )}
         <Button variant="menu" leftSection={<IconPlus />} onClick={openPost}>
           <Text>Message</Text>
         </Button>
@@ -171,6 +195,7 @@ const ProjectActions = () => {
         playerType={Player.Project}
         refetch={refetchGrant}
       />
+      <MilestonesDrawer opened={milestonesOpened} onClose={closeMilestones} />
     </>
   );
 };
