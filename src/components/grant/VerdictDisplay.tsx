@@ -11,7 +11,9 @@ export const VerdictDisplay = ({
   posterName,
   timestamp,
   reason,
+  entityReviewed,
 }: {
+  entityReviewed: string;
   reason: string;
   timestamp: number;
   hasApproved: boolean;
@@ -20,8 +22,8 @@ export const VerdictDisplay = ({
   const { grant, isProjectMember } = useGrant();
   const theme = useMantineTheme();
   const tagLine = hasApproved
-    ? ' has approved this Grant Application'
-    : ' has rejected this Grant Application';
+    ? ` has approved this ${entityReviewed}`
+    : ` has rejected this ${entityReviewed}`;
 
   const currentDraftIsRejected =
     isProjectMember &&

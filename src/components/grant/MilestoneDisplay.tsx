@@ -72,7 +72,7 @@ export const MilestoneDisplay = ({ doc }: { doc: MilestonesDisplay }) => {
 
   const milestoneUI = useMemo(() => {
     return resolvedMilestones?.map((milestone, index) => (
-      <Stack gap="sm" mb="xl">
+      <Stack gap="sm" mb="xl" key={milestone.id}>
         <Text fw={600}>Milestone {index + 1}</Text>
         <Box>
           <Text size="sm" fw={700} mb={4}>

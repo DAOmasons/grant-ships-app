@@ -74,15 +74,24 @@ export const GrantTimeline = () => {
         }
         if (
           item.tag === 'grant/approve/application' ||
-          item.tag === 'grant/reject/application'
+          item.tag === 'grant/reject/application' ||
+          item.tag === 'grant/approve/milestoneSet' ||
+          item.tag === 'grant/reject/milestoneSet'
         ) {
           const update = item as VerdictUpdate;
+          const entityReviewed = update.tag.includes('application')
+            ? 'Application'
+            : update.tag.includes('milestoneSet')
+              ? 'Milestone Draft'
+              : 'unknown';
+
           return (
             <VerdictDisplay
+              key={update.id}
               timestamp={update.timestamp}
+              entityReviewed={entityReviewed}
               posterName={ship?.name || ''}
               reason={update.reason}
-              key={update.id}
               hasApproved={
                 update.tag === 'grant/approve/application' ? true : false
               }
