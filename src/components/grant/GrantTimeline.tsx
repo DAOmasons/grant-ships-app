@@ -74,7 +74,6 @@ export const GrantTimeline = () => {
           item.tag === 'grant/approve/application' ||
           item.tag === 'grant/reject/application'
         ) {
-          console.log('item', item);
           return (
             <VerdictDisplay
               timestamp={item.timestamp}

@@ -9925,6 +9925,19 @@ export type ProjectDataFragment = (
   & { metadata?: Maybe<Pick<RawMetadata, 'pointer'>>, members?: Maybe<Pick<ProfileMemberGroup, 'addresses'>> }
 );
 
+export type MilestoneStepFragment = (
+  Pick<Milestone, 'id' | 'percentage' | 'status'>
+  & { metadata?: Maybe<Pick<RawMetadata, 'pointer'>>, milestoneSet?: Maybe<Pick<MilestoneSet, 'id'>> }
+);
+
+export type MilestonesFragment = (
+  Pick<MilestoneSet, 'id' | 'index' | 'timestamp' | 'status' | 'milestoneLength'>
+  & { milestones: Array<(
+    Pick<Milestone, 'id' | 'percentage' | 'status'>
+    & { metadata?: Maybe<Pick<RawMetadata, 'pointer'>>, milestoneSet?: Maybe<Pick<MilestoneSet, 'id'>> }
+  )> }
+);
+
 export type GrantUpdateFragment = (
   Pick<Update, 'id' | 'tag' | 'playerType' | 'entityAddress' | 'postedBy' | 'message' | 'contentSchema' | 'timestamp'>
   & { content?: Maybe<Pick<RawMetadata, 'pointer'>> }
@@ -9937,7 +9950,19 @@ export type GrantApplicationFragment = (
 
 export type GrantDataFragment = (
   Pick<Grant, 'id' | 'status' | 'lastUpdated' | 'amount' | 'isAllocated' | 'grantCompleted' | 'applicationApproved'>
-  & { milestoneDrafts: Array<Pick<MilestoneSet, 'id'>>, currentMilestones?: Maybe<Pick<MilestoneSet, 'id'>>, applications: Array<(
+  & { milestoneDrafts: Array<(
+    Pick<MilestoneSet, 'id' | 'index' | 'timestamp' | 'status' | 'milestoneLength'>
+    & { milestones: Array<(
+      Pick<Milestone, 'id' | 'percentage' | 'status'>
+      & { metadata?: Maybe<Pick<RawMetadata, 'pointer'>>, milestoneSet?: Maybe<Pick<MilestoneSet, 'id'>> }
+    )> }
+  )>, currentMilestones?: Maybe<(
+    Pick<MilestoneSet, 'id' | 'index' | 'timestamp' | 'status' | 'milestoneLength'>
+    & { milestones: Array<(
+      Pick<Milestone, 'id' | 'percentage' | 'status'>
+      & { metadata?: Maybe<Pick<RawMetadata, 'pointer'>>, milestoneSet?: Maybe<Pick<MilestoneSet, 'id'>> }
+    )> }
+  )>, applications: Array<(
     Pick<Application, 'id' | 'amount' | 'receivingAddress' | 'status' | 'timestamp'>
     & { metadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
   )>, currentApplication?: Maybe<(
@@ -9961,7 +9986,19 @@ export type getGrantQuery = { Project_by_pk?: Maybe<(
     & { beaconMessage?: Maybe<Pick<RawMetadata, 'pointer'>>, customApplication?: Maybe<Pick<RawMetadata, 'pointer'>>, profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>>, alloProfileMembers?: Maybe<Pick<ProfileMemberGroup, 'addresses'>> }
   )>, Grant_by_pk?: Maybe<(
     Pick<Grant, 'id' | 'status' | 'lastUpdated' | 'amount' | 'isAllocated' | 'grantCompleted' | 'applicationApproved'>
-    & { milestoneDrafts: Array<Pick<MilestoneSet, 'id'>>, currentMilestones?: Maybe<Pick<MilestoneSet, 'id'>>, applications: Array<(
+    & { milestoneDrafts: Array<(
+      Pick<MilestoneSet, 'id' | 'index' | 'timestamp' | 'status' | 'milestoneLength'>
+      & { milestones: Array<(
+        Pick<Milestone, 'id' | 'percentage' | 'status'>
+        & { metadata?: Maybe<Pick<RawMetadata, 'pointer'>>, milestoneSet?: Maybe<Pick<MilestoneSet, 'id'>> }
+      )> }
+    )>, currentMilestones?: Maybe<(
+      Pick<MilestoneSet, 'id' | 'index' | 'timestamp' | 'status' | 'milestoneLength'>
+      & { milestones: Array<(
+        Pick<Milestone, 'id' | 'percentage' | 'status'>
+        & { metadata?: Maybe<Pick<RawMetadata, 'pointer'>>, milestoneSet?: Maybe<Pick<MilestoneSet, 'id'>> }
+      )> }
+    )>, applications: Array<(
       Pick<Application, 'id' | 'amount' | 'receivingAddress' | 'status' | 'timestamp'>
       & { metadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
     )>, currentApplication?: Maybe<(
@@ -10280,6 +10317,31 @@ export const GrantUpdateFragmentDoc = gql`
   timestamp
 }
     ` as unknown as DocumentNode<GrantUpdateFragment, unknown>;
+export const MilestoneStepFragmentDoc = gql`
+    fragment MilestoneStep on Milestone {
+  id
+  percentage
+  metadata {
+    pointer
+  }
+  milestoneSet {
+    id
+  }
+  status
+}
+    ` as unknown as DocumentNode<MilestoneStepFragment, unknown>;
+export const MilestonesFragmentDoc = gql`
+    fragment Milestones on MilestoneSet {
+  id
+  index
+  timestamp
+  status
+  milestoneLength
+  milestones {
+    ...MilestoneStep
+  }
+}
+    ${MilestoneStepFragmentDoc}` as unknown as DocumentNode<MilestonesFragment, unknown>;
 export const GrantApplicationFragmentDoc = gql`
     fragment GrantApplication on Application {
   id
@@ -10302,10 +10364,10 @@ export const GrantDataFragmentDoc = gql`
   grantCompleted
   applicationApproved
   milestoneDrafts {
-    id
+    ...Milestones
   }
   currentMilestones {
-    id
+    ...Milestones
   }
   applications {
     ...GrantApplication
@@ -10314,7 +10376,8 @@ export const GrantDataFragmentDoc = gql`
     ...GrantApplication
   }
 }
-    ${GrantApplicationFragmentDoc}` as unknown as DocumentNode<GrantDataFragment, unknown>;
+    ${MilestonesFragmentDoc}
+${GrantApplicationFragmentDoc}` as unknown as DocumentNode<GrantDataFragment, unknown>;
 export const ProjectDetailsFragmentDoc = gql`
     fragment ProjectDetails on Project {
   id

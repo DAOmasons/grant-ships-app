@@ -14,8 +14,14 @@ import { useGrant } from '../../hooks/useGrant';
 import { PlayerAvatar } from '../PlayerAvatar';
 import { Player } from '../../types/ui';
 import { TxButton } from '../TxButton';
-import { IconFileDescription, IconPlus, IconTrash } from '@tabler/icons-react';
+import { IconPennant, IconPlus, IconTrash } from '@tabler/icons-react';
 import { DatePickerInput } from '@mantine/dates';
+import { notifications } from '@mantine/notifications';
+import { pinJSONToIPFS } from '../../utils/ipfs/pin';
+import { AlloStatus } from '../../types/common';
+import { useTx } from '../../hooks/useTx';
+import GrantShipAbi from '../../abi/GrantShip.json';
+import { Address } from 'viem';
 
 export const MilestonesDrawer = ({
   opened,
@@ -24,11 +30,11 @@ export const MilestonesDrawer = ({
   opened: boolean;
   onClose: () => void;
 }) => {
-  const { project } = useGrant();
+  const { project, ship, refetchGrant } = useGrant();
   const theme = useMantineTheme();
-  const [isPinning, setIsPinning] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const { tx } = useTx();
 
-  const handlePostMilestones = () => {};
   const [formData, setFormData] = useState<Record<string, string>>({
     'milestone-description-1': '',
     'milestone-perc-1': '0',
@@ -65,17 +71,132 @@ export const MilestonesDrawer = ({
     });
   };
 
-  //   const percentagesInOrder = inputSets
-  //     .map((_, index) => formData[`milestone-perc-${index + 1}`])
-  //     .filter(Boolean);
+  const handlePostMilestones = async () => {
+    setIsLoading(true);
 
-  //   const descriptionsInOrder = inputSets
-  //     .map((_, index) => formData[`milestone-description-${index + 1}`])
-  //     .filter(Boolean);
+    const percentTotal = inputSets.reduce((acc, _, index) => {
+      const value = formData[`milestone-perc-${index + 1}`];
+      return acc + Number(value);
+    }, 0);
 
-  //   const datesInOrder = inputSets
-  //     .map((_, index) => formData[`milestone-date-${index + 1}`])
-  //     .filter(Boolean);
+    if (percentTotal !== 100) {
+      setIsLoading(false);
+      notifications.show({
+        title: 'Error',
+        message: 'Milestone percentages must add up to 100',
+        color: 'red',
+      });
+      return;
+    }
+    if (Object.values(formData).some((value) => value === '')) {
+      setIsLoading(false);
+      return notifications.show({
+        title: 'Error',
+        message: 'Please fill out all fields',
+        color: 'red',
+      });
+    }
+
+    const percentagesInOrder = inputSets
+      .map((_, index) => formData[`milestone-perc-${index + 1}`])
+      .filter(Boolean);
+
+    const descriptionsInOrder = inputSets
+      .map((_, index) => formData[`milestone-description-${index + 1}`])
+      .filter(Boolean);
+
+    const datesInOrder = inputSets
+      .map((_, index) => formData[`milestone-date-${index + 1}`])
+      .filter(Boolean);
+
+    if (
+      percentagesInOrder.length !== descriptionsInOrder.length ||
+      descriptionsInOrder.length !== datesInOrder.length
+    ) {
+      setIsLoading(false);
+      return notifications.show({
+        title: 'Error',
+        message: 'Data length mismatch: Please fill out all fields',
+        color: 'red',
+      });
+    }
+
+    const milestones = await Promise.all(
+      inputSets.map(async (_, index) => {
+        const milestoneDetails = formData[`milestone-description-${index + 1}`];
+        const formPercentage = Number(formData[`milestone-perc-${index + 1}`]);
+        const formDate = Number(formData[`milestone-date-${index + 1}`]);
+
+        const scaleFactor = BigInt(1e18);
+        const formPercentageBigInt = BigInt(formPercentage * 1e16);
+
+        const solidityPercentage = BigInt(
+          formPercentageBigInt === 0n
+            ? 0n
+            : (formPercentageBigInt * scaleFactor) / BigInt(1e16 * 100)
+        );
+
+        const pinRes = await pinJSONToIPFS({
+          milestoneDetails,
+          date: formDate,
+        });
+
+        if (typeof pinRes.IpfsHash !== 'string' && pinRes.IpfsHash[0] !== 'Q') {
+          notifications.show({
+            title: 'IPFS Upload Error',
+            message: pinRes.IpfsHash[1],
+            color: 'red',
+          });
+          setIsLoading(false);
+          return false;
+        }
+
+        return {
+          amountPercentage: solidityPercentage,
+          metadata: { protocol: 1n, pointer: pinRes.IpfsHash },
+          milestoneStatus: AlloStatus.None,
+        };
+      })
+    );
+
+    const hasPinError = milestones.some((milestone) => milestone === false);
+
+    if (hasPinError) {
+      setIsLoading(false);
+      notifications.show({
+        title: 'Error',
+        message: 'Failed to pin content to IPFS',
+        color: 'red',
+      });
+      return;
+    }
+
+    if (!ship || !project) {
+      setIsLoading(false);
+      notifications.show({
+        title: 'Error',
+        message: 'Failed to get ship or project',
+        color: 'red',
+      });
+      return;
+    }
+    setIsLoading(false);
+    onClose();
+
+    tx({
+      writeContractParams: {
+        abi: GrantShipAbi,
+        address: ship.shipContractAddress as Address,
+        functionName: 'setMilestones',
+        args: [project.id, milestones, [1n, 'NULL']],
+      },
+      writeContractOptions: {
+        onPollSuccess() {
+          refetchGrant();
+        },
+      },
+    });
+  };
 
   return (
     <PageDrawer opened={opened} onClose={onClose}>
@@ -86,8 +207,9 @@ export const MilestonesDrawer = ({
           name={project?.name}
         />
         <TxButton
-          //   leftSection={< />}
+          leftSection={<IconPennant />}
           onClick={handlePostMilestones}
+          disabled={isLoading}
         >
           Submit Milestones
         </TxButton>

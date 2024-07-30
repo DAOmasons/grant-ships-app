@@ -12,6 +12,29 @@ fragment ProjectData on Project {
   }
 }
 
+fragment MilestoneStep on Milestone {
+  id
+  percentage
+  metadata {
+    pointer
+  }
+  milestoneSet {
+    id
+  }
+  status
+}
+
+fragment Milestones on MilestoneSet {
+  id
+  index
+  timestamp
+  status
+  milestoneLength
+  milestones {
+    ...MilestoneStep
+  }
+}
+
 fragment GrantUpdate on Update {
   id
   tag
@@ -46,10 +69,10 @@ fragment GrantData on Grant {
   grantCompleted
   applicationApproved
   milestoneDrafts {
-    id
+    ...Milestones
   }
   currentMilestones {
-    id
+    ...Milestones
   }
   applications {
     ...GrantApplication
