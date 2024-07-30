@@ -9,7 +9,6 @@ import {
 import { Player } from '../types/ui';
 import { FacilitatorBadge, ProjectBadge, ShipBadge } from './RoleBadges';
 import { useMemo } from 'react';
-import { fontSize } from '@mui/system';
 
 type DisplayParams = {
   gap: string | number;
