@@ -9,8 +9,9 @@ import { Tag } from '../../constants/tags';
 import GrantShipAbi from '../../abi/GrantShip.json';
 import { Address } from 'viem';
 import { ZER0_ADDRESS } from '../../constants/gameSetup';
-import { Box, Button, Group, Textarea } from '@mantine/core';
+import { Box, Group, Textarea } from '@mantine/core';
 import { GameStatus } from '../../types/common';
+import { TxButton } from '../TxButton';
 
 export const ApplicationVerdictControls = () => {
   const { ship, project, refetchGrant } = useGrant();
@@ -115,20 +116,20 @@ export const ApplicationVerdictControls = () => {
         mb="lg"
       />
       <Group justify="flex-end">
-        <Button
+        <TxButton
           variant="secondary"
           disabled={isLoading || !reason}
           onClick={() => handleApprove(false)}
         >
           Not Approve
-        </Button>
-        <Button
+        </TxButton>
+        <TxButton
           variant="primary"
           disabled={isLoading || !reason}
           onClick={() => handleApprove(true)}
         >
           Approve
-        </Button>
+        </TxButton>
       </Group>
     </Box>
   );

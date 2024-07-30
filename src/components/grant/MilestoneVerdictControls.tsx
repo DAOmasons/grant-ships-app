@@ -9,11 +9,12 @@ import { pinJSONToIPFS } from '../../utils/ipfs/pin';
 import GrantShipAbi from '../../abi/GrantShip.json';
 import { Address } from 'viem';
 import { AlloStatus } from '../../types/common';
+import { TxButton } from '../TxButton';
 
 export const MilestoneVerdictControls = () => {
   const [reason, setReason] = useInputState('');
   const [isLoading, setIsLoading] = useState(false);
-  const { ship, project } = useGrant();
+  const { ship, project, refetchGrant } = useGrant();
   const { tx } = useTx();
 
   const handleApprove = async (isApproved: boolean) => {
@@ -67,6 +68,18 @@ export const MilestoneVerdictControls = () => {
             [1n, pinRes.IpfsHash],
           ],
         },
+        writeContractOptions: {
+          onPollSuccess() {
+            refetchGrant();
+            setIsLoading(false);
+          },
+          onError() {
+            setIsLoading(false);
+          },
+          onPollTimeout() {
+            setIsLoading(false);
+          },
+        },
       });
     } catch (error) {
       console.error(error);
@@ -92,20 +105,20 @@ export const MilestoneVerdictControls = () => {
         mb="lg"
       />
       <Group justify="flex-end">
-        <Button
+        <TxButton
           variant="secondary"
           disabled={isLoading || !reason}
           onClick={() => handleApprove(false)}
         >
           Not Approve
-        </Button>
-        <Button
+        </TxButton>
+        <TxButton
           variant="primary"
           disabled={isLoading || !reason}
           onClick={() => handleApprove(true)}
         >
           Approve
-        </Button>
+        </TxButton>
       </Group>
     </Box>
   );

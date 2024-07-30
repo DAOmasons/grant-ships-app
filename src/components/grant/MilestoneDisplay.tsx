@@ -2,6 +2,7 @@ import {
   Box,
   Divider,
   Group,
+  Spoiler,
   Stack,
   Text,
   useMantineTheme,
@@ -9,6 +10,8 @@ import {
 import { useGrant } from '../../hooks/useGrant';
 import { GameStatus } from '../../types/common';
 import {
+  IconChevronDown,
+  IconChevronUp,
   IconCircleCheck,
   IconClock,
   IconExclamationCircle,
@@ -20,6 +23,9 @@ import { PlayerAvatar } from '../PlayerAvatar';
 import { Player } from '../../types/ui';
 import { formatEther } from 'viem';
 import { secondsToLongDate } from '../../utils/time';
+import { MilestoneVerdictControls } from './MilestoneVerdictControls';
+import { useMemo } from 'react';
+import classes from '../../styles/Spoiler.module.css';
 
 export const MilestoneDisplay = ({ doc }: { doc: MilestonesDisplay }) => {
   const theme = useMantineTheme();
@@ -64,6 +70,38 @@ export const MilestoneDisplay = ({ doc }: { doc: MilestonesDisplay }) => {
             : 'Unknown Status';
   const isOldOrRejected = !isCurrentDraft || status === GameStatus.Rejected;
 
+  const milestoneUI = useMemo(() => {
+    return resolvedMilestones?.map((milestone, index) => (
+      <Stack gap="sm" mb="xl">
+        <Text fw={600}>Milestone {index + 1}</Text>
+        <Box>
+          <Text size="sm" fw={700} mb={4}>
+            Payment Percentage
+          </Text>
+          <Text size="sm" td={isOldOrRejected ? 'line-through' : undefined}>
+            {Number(formatEther(milestone.percentage as bigint)) * 100}%
+          </Text>
+        </Box>
+        <Box>
+          <Text size="sm" fw={700} mb={4}>
+            Expected Delivery
+          </Text>
+          <Text size="sm" td={isOldOrRejected ? 'line-through' : undefined}>
+            {secondsToLongDate(milestone.milestoneContent.date)}
+          </Text>
+        </Box>
+        <Box>
+          <Text size="sm" fw={700} mb={4}>
+            Description
+          </Text>
+          <Text size="sm" td={isOldOrRejected ? 'line-through' : undefined}>
+            {milestone.milestoneContent.milestoneDetails}
+          </Text>
+        </Box>
+      </Stack>
+    ));
+  }, [resolvedMilestones, isOldOrRejected]);
+
   return (
     <Box>
       <Box
@@ -94,36 +132,25 @@ export const MilestoneDisplay = ({ doc }: { doc: MilestonesDisplay }) => {
           </Text>
         </Group>
         <Divider variant="dotted" mb="lg" />
-        {resolvedMilestones?.map((milestone, index) => (
-          <Stack gap="sm" mb="xl">
-            <Text fw={600}>Milestone {index + 1}</Text>
-            <Box>
-              <Text size="sm" fw={700} mb={4}>
-                Payment Percentage
-              </Text>
-              <Text size="sm" td={isOldOrRejected ? 'line-through' : undefined}>
-                {Number(formatEther(milestone.percentage as bigint)) * 100}%
-              </Text>
-            </Box>
-            <Box>
-              <Text size="sm" fw={700} mb={4}>
-                Expected Delivery
-              </Text>
-              <Text size="sm" td={isOldOrRejected ? 'line-through' : undefined}>
-                {secondsToLongDate(milestone.milestoneContent.date)}
-              </Text>
-            </Box>
-            <Box>
-              <Text size="sm" fw={700} mb={4}>
-                Description
-              </Text>
-              <Text size="sm" td={isOldOrRejected ? 'line-through' : undefined}>
-                {milestone.milestoneContent.milestoneDetails}
-              </Text>
-            </Box>
-          </Stack>
-        ))}
-        {/* <Divider variant="dotted" mb="lg" /> */}
+        {isOldOrRejected ? (
+          <Spoiler
+            hideLabel={<IconChevronUp stroke={1} />}
+            showLabel={<IconChevronDown stroke={1} />}
+            classNames={{
+              root: classes.embedTextBox,
+              control: classes.embedTextControl,
+            }}
+            maxHeight={80}
+          >
+            {milestoneUI}
+          </Spoiler>
+        ) : (
+          milestoneUI
+        )}
+
+        {status === GameStatus.Pending && isShipOperator && (
+          <MilestoneVerdictControls />
+        )}
       </Box>
       <Divider mb="lg" />
     </Box>
