@@ -34,6 +34,7 @@ import { ApplicationDrawer } from '../components/grant/ApplicationDrawer';
 import { GrantStatus } from '../types/common';
 import { MilestonesDrawer } from '../components/grant/MilestonesDrawer';
 import { useUserData } from '../hooks/useUserState';
+import { FacilitatorApprovalDrawer } from '../components/grant/FacilitatorApprovalDrawer';
 
 export const Grant = () => {
   const theme = useMantineTheme();
@@ -119,13 +120,19 @@ const ActionsPanel = () => {
 };
 
 const FacilitatorActions = () => {
+  const [approvalOpened, { open: openApprove, close: closeApprove }] =
+    useDisclosure();
   return (
     <>
       <Stack pos="fixed" top={'260px'} gap="sm">
-        <Button variant="menu" leftSection={<IconPlus />} onClick={() => {}}>
+        <Button variant="menu" leftSection={<IconPlus />} onClick={openApprove}>
           <Text>Review Grantee</Text>
         </Button>
       </Stack>
+      <FacilitatorApprovalDrawer
+        opened={approvalOpened}
+        onClose={closeApprove}
+      />
     </>
   );
 };
@@ -167,7 +174,7 @@ const ProjectActions = () => {
     useDisclosure();
 
   const isApplicationStage =
-    grant?.status && grant.status < GrantStatus.ShipApproved;
+    !grant || (grant?.status && grant.status < GrantStatus.ShipApproved);
   const isMilestonePlanning =
     grant?.status &&
     grant.status >= GrantStatus.ShipApproved &&

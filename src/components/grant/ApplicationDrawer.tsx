@@ -198,30 +198,30 @@ export const ApplicationDrawer = ({
         >
           Apply
         </TxButton>
-        <Stack mb="md">
-          <DatePickerInput
-            label="Expected delivery"
-            w={292}
-            required
-            leftSection={<IconCalendar size={16} />}
-            placeholder="Date"
-            {...form.getInputProps('dueDate')}
-          />
-          <TextInput
-            label="Amount Requested"
-            w={292}
-            required
-            placeholder={GAME_TOKEN.SYMBOL}
-            {...form.getInputProps('amount')}
-          />
-          <TextInput
-            label="Send Address"
-            w={292}
-            required
-            {...form.getInputProps('sendAddress')}
-          />
-        </Stack>
       </Group>
+      <Stack mb="md">
+        <DatePickerInput
+          label="Expected delivery"
+          w={292}
+          required
+          leftSection={<IconCalendar size={16} />}
+          placeholder="Date"
+          {...form.getInputProps('dueDate')}
+        />
+        <TextInput
+          label="Amount Requested"
+          w={292}
+          required
+          placeholder={GAME_TOKEN.SYMBOL}
+          {...form.getInputProps('amount')}
+        />
+        <TextInput
+          label="Send Address"
+          w={292}
+          required
+          {...form.getInputProps('sendAddress')}
+        />
+      </Stack>
       <RTEditor editor={editor} />
     </PageDrawer>
   );
