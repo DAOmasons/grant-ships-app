@@ -1,4 +1,3 @@
-import React from 'react';
 import { PageDrawer } from '../PageDrawer';
 import { Group, Stack, TextInput } from '@mantine/core';
 import { PlayerAvatar } from '../PlayerAvatar';
@@ -12,10 +11,7 @@ import Image from '@tiptap/extension-image';
 import { Content, useEditor } from '@tiptap/react';
 import { useTx } from '../../hooks/useTx';
 import { notifications } from '@mantine/notifications';
-import {
-  tipTapApplicationSchema,
-  tiptapContentSchema,
-} from '../forms/validationSchemas/tiptap';
+import { tipTapApplicationSchema } from '../forms/validationSchemas/tiptap';
 import { pinJSONToIPFS } from '../../utils/ipfs/pin';
 import AlloAbi from '../../abi/Allo.json';
 import { ADDR } from '../../constants/addresses';

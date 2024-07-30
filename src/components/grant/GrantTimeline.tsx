@@ -1,4 +1,4 @@
-import { Box } from '@mantine/core';
+import { Box, Text } from '@mantine/core';
 import { useGrant } from '../../hooks/useGrant';
 import { UserUpdate } from './UserUpdate';
 import { BeaconMessage } from './BeaconMessage';
@@ -11,6 +11,7 @@ import {
 } from '../../queries/getGrant';
 import { VerdictDisplay } from './VerdictDisplay';
 import { MilestoneDisplay } from './MilestoneDisplay';
+import { AllocationComplete } from './AllocationComplete';
 
 export const GrantTimeline = () => {
   const { timeline, ship, project } = useGrant();
@@ -103,11 +104,29 @@ export const GrantTimeline = () => {
               entityReviewed={'Milestone Draft'}
               posterName={ship?.name || ''}
               reason={update.reason}
-              hasApproved={
-                update.tag === 'grant/approve/milestoneSet' ? true : false
-              }
+              hasApproved={update.tag === 'grant/approve/milestoneSet'}
             />
           );
+        }
+        if (
+          item.tag === 'grant/allocate/approved' ||
+          item.tag === 'grant/allocate/rejected'
+        ) {
+          const update = item as VerdictUpdate;
+          return (
+            <VerdictDisplay
+              key={update.id}
+              timestamp={update.timestamp}
+              entityReviewed={'Grant Allocation'}
+              posterName={'Facilitator Crew'}
+              reason={update.reason}
+              hasApproved={update.tag === 'grant/allocate/approved'}
+            />
+          );
+        }
+        if (item.tag === 'grant/allocation/locked') {
+          const update = item as GrantUpdate;
+          return <AllocationComplete timestamp={update.timestamp} />;
         }
         if (item.tag === 'milestoneSet') {
           const doc = item as any as MilestonesDisplay;

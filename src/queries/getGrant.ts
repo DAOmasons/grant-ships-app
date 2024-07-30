@@ -125,6 +125,8 @@ export const getGrant = async (grantId: string) => {
     ? await resolveRichTextMetadata(ship.customApplication.pointer)
     : null;
 
+  console.log('updates', updates);
+
   const resolvedUpdates = await Promise.all(
     updates?.map(async (update) => {
       if (
