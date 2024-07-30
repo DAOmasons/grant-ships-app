@@ -33,6 +33,12 @@ export const VerdictDisplay = ({
     grant?.currentApplication?.status === GameStatus.Accepted &&
     grant.currentMilestones == null;
 
+  const currentMilestoneSetIsRejected =
+    isProjectMember && grant?.currentMilestones?.status === GameStatus.Rejected;
+
+  const currentMilestoneSetIsApproved =
+    isProjectMember && grant?.currentMilestones?.status === GameStatus.Accepted;
+
   return (
     <>
       {currentDraftIsApproved && (
@@ -54,6 +60,27 @@ export const VerdictDisplay = ({
           }
         />
       )}
+      {currentMilestoneSetIsApproved && (
+        <NextStep
+          text={
+            <Text fz="sm">
+              <Bold>Next step:</Bold> await for facilitator review. Communicate
+              with facilitators about any KYC or round requirements
+            </Text>
+          }
+        />
+      )}
+      {currentMilestoneSetIsRejected && (
+        <NextStep
+          text={
+            <Text fz="sm">
+              <Bold>Next step:</Bold> Incorporate feedback and resubmit your
+              <Bold> Milestones</Bold>
+            </Text>
+          }
+        />
+      )}
+
       <InsetUpdate
         bodyUI={<Text fz="sm">{reason}</Text>}
         timestamp={timestamp}
