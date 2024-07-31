@@ -6,12 +6,9 @@ import {
   Center,
   Group,
   InputLabel,
-  ScrollArea,
   SegmentedControl,
-  Select,
   Stack,
   Text,
-  Textarea,
   useMantineTheme,
 } from '@mantine/core';
 import { useGrant } from '../../hooks/useGrant';
@@ -23,7 +20,7 @@ import {
 } from '@tabler/icons-react';
 import { GameStatus } from '../../types/common';
 import { useInputState } from '@mantine/hooks';
-import { formatEther } from 'viem';
+import { Address, formatEther } from 'viem';
 import { secondsToLongDate } from '../../utils/time';
 import { RTEditor } from '../RTEditor';
 import StarterKit from '@tiptap/starter-kit';
@@ -32,6 +29,11 @@ import Image from '@tiptap/extension-image';
 import { useEditor } from '@tiptap/react';
 import { PlayerAvatar } from '../PlayerAvatar';
 import { Player } from '../../types/ui';
+import { useTx } from '../../hooks/useTx';
+import ShipAbi from '../../abi/GrantShip.json';
+import { tiptapContentSchema } from '../forms/validationSchemas/tiptap';
+import { notifications } from '@mantine/notifications';
+import { pinJSONToIPFS } from '../../utils/ipfs/pin';
 
 export const SubmitMilestoneDrawer = ({
   opened,
@@ -48,8 +50,8 @@ export const SubmitMilestoneDrawer = ({
     ],
     content: { type: 'doc', content: [] },
   });
-
-  const { project, currentMilestoneSet } = useGrant();
+  const { tx } = useTx();
+  const { project, currentMilestoneSet, ship, refetchGrant } = useGrant();
   const [milestoneId, setMilestoneId] = useInputState(
     currentMilestoneSet?.resolvedMilestones[0].id
   );
@@ -59,6 +61,81 @@ export const SubmitMilestoneDrawer = ({
     (milestone) => milestone.id === milestoneId
   );
 
+  const submitMilestone = async (milestoneId?: number) => {
+    if (!editor) {
+      notifications.show({
+        title: 'Error',
+        message: 'Please provide a description',
+        color: 'red',
+      });
+      return;
+    }
+
+    if (!project || !ship) {
+      notifications.show({
+        title: 'Error',
+        message: 'Project or Ship not found',
+        color: 'red',
+      });
+      return;
+    }
+    if (milestoneId === undefined) {
+      notifications.show({
+        title: 'Error',
+        message: 'Milestone not found',
+        color: 'red',
+      });
+      return;
+    }
+
+    const editorContent = editor.getJSON();
+
+    const content = editorContent.content
+      ? editorContent
+      : { type: 'doc', content: [] };
+
+    const validated = tiptapContentSchema.safeParse(content);
+
+    if (!validated.success) {
+      notifications.show({
+        title: 'Error',
+        message: 'Invalid content',
+        color: 'red',
+      });
+      return;
+    }
+    onClose();
+
+    const ipfsRes = await pinJSONToIPFS(validated.data);
+
+    if (!ipfsRes) {
+      notifications.show({
+        title: 'Error',
+        message: 'Failed to pin content to IPFS',
+        color: 'red',
+      });
+      return;
+    }
+
+    tx({
+      writeContractParams: {
+        abi: ShipAbi,
+        address: ship?.shipContractAddress as Address,
+        functionName: 'submitMilestone',
+        args: [project?.id, BigInt(milestoneId), [1n, ipfsRes.IpfsHash]],
+      },
+      writeContractOptions: {
+        onPollSuccess() {
+          refetchGrant();
+        },
+      },
+    });
+  };
+
+  const canSubmitMilestone =
+    currentMilestone?.status !== GameStatus.Pending &&
+    currentMilestone?.status !== GameStatus.Accepted;
+
   return (
     <PageDrawer opened={opened} onClose={onClose}>
       <Group justify="space-between">
@@ -67,7 +144,14 @@ export const SubmitMilestoneDrawer = ({
           imgUrl={project?.metadata?.imgUrl}
           name={project?.name}
         />
-        <Button>Submit Milestone</Button>
+        <Button
+          onClick={() => submitMilestone(currentMilestone?.index)}
+          disabled={!canSubmitMilestone}
+        >
+          {currentMilestone?.status === GameStatus.Rejected
+            ? 'Resubmit Milestone'
+            : 'Submit Milestone'}
+        </Button>
       </Group>
       <SegmentedControl
         mt={'md'}
@@ -76,7 +160,6 @@ export const SubmitMilestoneDrawer = ({
         size="xs"
         onChange={setMilestoneId}
         value={milestoneId || currentMilestoneSet?.resolvedMilestones[0].id}
-        // orientation="vertical"
         data={
           currentMilestoneSet?.resolvedMilestones.map((milestone, index) => {
             return {
