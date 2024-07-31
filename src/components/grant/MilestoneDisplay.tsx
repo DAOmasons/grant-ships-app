@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { GrantUpdate } from '../../queries/getGrant';
 import {
   Box,
@@ -137,7 +137,7 @@ export const MilestoneDisplay = ({
             </Box>
           </Box>
         </Stack>
-        {milestoneId && isShipOperator && (
+        {milestoneId && isShipOperator && status === GameStatus.Pending && (
           <MilestoneVerdictControls milestoneId={milestoneId} />
         )}
       </Box>

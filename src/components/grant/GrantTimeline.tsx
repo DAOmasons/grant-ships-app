@@ -1,4 +1,4 @@
-import { Box, Text } from '@mantine/core';
+import { Box } from '@mantine/core';
 import { useGrant } from '../../hooks/useGrant';
 import { UserUpdate } from './UserUpdate';
 import { BeaconMessage } from './BeaconMessage';
@@ -16,6 +16,7 @@ import { MilestoneDisplay } from './MilestoneDisplay';
 
 export const GrantTimeline = () => {
   const { timeline, ship, project } = useGrant();
+  console.log('timeline', timeline);
   return (
     <Box>
       {timeline.map((item) => {
@@ -138,6 +139,39 @@ export const GrantTimeline = () => {
         if (item.tag === 'grant/milestone/submit') {
           const doc = item as GrantUpdate;
           return <MilestoneDisplay key={doc.id} updateData={doc} />;
+        }
+        if (item.tag === 'grant/milestone/rejected') {
+          const doc = item as VerdictUpdate;
+
+          return (
+            <VerdictDisplay
+              key={doc.id}
+              timestamp={doc.timestamp}
+              entityReviewed={'Milestone'}
+              posterName={ship?.name || ''}
+              reason={doc.reason}
+              hasApproved={false}
+            />
+          );
+        }
+        if (item.tag === 'grant/milestone/accepted') {
+          const doc = item as VerdictUpdate;
+
+          const milestoneNumber = doc.id.split(':')[0];
+
+          return (
+            <VerdictDisplay
+              key={doc.id}
+              timestamp={doc.timestamp}
+              entityReviewed={`Milestone ${Number(milestoneNumber) + 1}`}
+              posterName={ship?.name || ''}
+              reason={doc.reason}
+              hasApproved={true}
+            />
+          );
+        }
+        if (item.tag === 'grant/distributed') {
+          return 'Distributed';
         }
       })}
     </Box>

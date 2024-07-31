@@ -1,6 +1,6 @@
 import { Box, Group, Textarea } from '@mantine/core';
 import { useInputState } from '@mantine/hooks';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { TxButton } from '../TxButton';
 import { useTx } from '../../hooks/useTx';
 import { useGrant } from '../../hooks/useGrant';
@@ -10,6 +10,7 @@ import { pinJSONToIPFS } from '../../utils/ipfs/pin';
 import GrantShipAbi from '../../abi/GrantShip.json';
 import AlloAbi from '../../abi/Allo.json';
 import { Address, encodeAbiParameters, parseAbiParameters } from 'viem';
+import { ADDR } from '../../constants/addresses';
 
 export const MilestoneVerdictControls = ({
   milestoneId,
@@ -91,6 +92,9 @@ export const MilestoneVerdictControls = ({
         refetchGrant();
         setIsLoading(false);
       },
+      onError() {
+        setIsLoading(false);
+      },
     });
   };
 
@@ -122,7 +126,7 @@ export const MilestoneVerdictControls = ({
     tx({
       writeContractParams: {
         abi: AlloAbi,
-        address: ship.shipContractAddress as Address,
+        address: ADDR.ALLO,
         functionName: 'distribute',
         args: [ship.poolId, [project.id], encoded],
       },
@@ -143,6 +147,7 @@ export const MilestoneVerdictControls = ({
       <Textarea
         value={reason}
         onChange={setReason}
+        description={'Reason is only visible for milestone rejection'}
         minRows={3}
         label="Reason"
         placeholder="Provide constructive feedback and reasoning for your decision."
