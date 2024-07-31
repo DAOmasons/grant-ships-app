@@ -13,6 +13,8 @@ import { VerdictDisplay } from './VerdictDisplay';
 import { MilestoneSetDisplay } from './MilestoneSetDisplay';
 import { AllocationComplete } from './AllocationComplete';
 import { MilestoneDisplay } from './MilestoneDisplay';
+import { DistributePanel } from '../dashboard/facilitator/DistributePanel';
+import { FundsDistributed } from './FundsDistributed';
 
 export const GrantTimeline = () => {
   const { timeline, ship, project } = useGrant();
@@ -171,7 +173,16 @@ export const GrantTimeline = () => {
           );
         }
         if (item.tag === 'grant/distributed') {
-          return 'Distributed';
+          const doc = item as GrantUpdate;
+
+          const amount = doc.id.split(':')[0];
+          return (
+            <FundsDistributed
+              key={item.id}
+              amount={amount}
+              timestamp={item.timestamp}
+            />
+          );
         }
       })}
     </Box>
