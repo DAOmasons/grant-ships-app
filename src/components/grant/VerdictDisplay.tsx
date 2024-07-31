@@ -17,8 +17,8 @@ export const VerdictDisplay = ({
 }) => {
   const theme = useMantineTheme();
   const tagLine = hasApproved
-    ? ` has approved this ${entityReviewed}`
-    : ` has rejected this ${entityReviewed}`;
+    ? ` has approved ${entityReviewed}`
+    : ` has rejected ${entityReviewed}`;
 
   return (
     <>
