@@ -66,7 +66,7 @@ export const MilestoneDisplay = ({ doc }: { doc: MilestonesDisplay }) => {
         : !isCurrentDraft
           ? 'Inactive Draft'
           : status === GameStatus.Accepted
-            ? 'Milestone Approved'
+            ? 'Milestones Approved'
             : 'Unknown Status';
   const isOldOrRejected = !isCurrentDraft || status === GameStatus.Rejected;
 

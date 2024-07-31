@@ -12,6 +12,7 @@ import {
 import { VerdictDisplay } from './VerdictDisplay';
 import { MilestoneDisplay } from './MilestoneDisplay';
 import { AllocationComplete } from './AllocationComplete';
+import { SingleMilestoneDisplay } from './SingleMilestoneDisplay';
 
 export const GrantTimeline = () => {
   const { timeline, ship, project } = useGrant();
@@ -133,6 +134,10 @@ export const GrantTimeline = () => {
         if (item.tag === 'milestoneSet') {
           const doc = item as any as MilestonesDisplay;
           return <MilestoneDisplay key={doc.id} doc={doc} />;
+        }
+        if (item.tag === 'grant/milestone/submit') {
+          const doc = item as GrantUpdate;
+          return <SingleMilestoneDisplay key={doc.id} updateData={doc} />;
         }
       })}
     </Box>
