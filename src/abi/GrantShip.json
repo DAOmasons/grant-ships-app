@@ -23,11 +23,13 @@
   { "inputs": [], "name": "INVALID_METADATA", "type": "error" },
   { "inputs": [], "name": "INVALID_MILESTONE", "type": "error" },
   { "inputs": [], "name": "INVALID_REGISTRATION", "type": "error" },
+  { "inputs": [], "name": "INVALID_STATUS", "type": "error" },
   { "inputs": [], "name": "IS_APPROVED_STRATEGY", "type": "error" },
   { "inputs": [], "name": "MILESTONES_ALREADY_SET", "type": "error" },
   { "inputs": [], "name": "MILESTONE_ALREADY_ACCEPTED", "type": "error" },
   { "inputs": [], "name": "MISMATCH", "type": "error" },
   { "inputs": [], "name": "NONCE_NOT_AVAILABLE", "type": "error" },
+  { "inputs": [], "name": "NON_ZERO_VALUE", "type": "error" },
   { "inputs": [], "name": "NOT_APPROVED_STRATEGY", "type": "error" },
   { "inputs": [], "name": "NOT_ENOUGH_FUNDS", "type": "error" },
   { "inputs": [], "name": "NOT_IMPLEMENTED", "type": "error" },
@@ -173,10 +175,49 @@
         "type": "address"
       },
       {
+        "components": [
+          { "internalType": "uint256", "name": "protocol", "type": "uint256" },
+          { "internalType": "string", "name": "pointer", "type": "string" }
+        ],
+        "indexed": false,
+        "internalType": "struct Metadata",
+        "name": "reason",
+        "type": "tuple"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amountReturned",
+        "type": "uint256"
+      }
+    ],
+    "name": "GrantClawback",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "recipientId",
+        "type": "address"
+      },
+      {
         "indexed": false,
         "internalType": "uint256",
         "name": "amount",
         "type": "uint256"
+      },
+      {
+        "components": [
+          { "internalType": "uint256", "name": "protocol", "type": "uint256" },
+          { "internalType": "string", "name": "pointer", "type": "string" }
+        ],
+        "indexed": false,
+        "internalType": "struct Metadata",
+        "name": "metadata",
+        "type": "tuple"
       }
     ],
     "name": "GrantComplete",
@@ -193,21 +234,9 @@
       },
       {
         "indexed": false,
-        "internalType": "bool",
-        "name": "registryGating",
-        "type": "bool"
-      },
-      {
-        "indexed": false,
-        "internalType": "bool",
-        "name": "metadataRequired",
-        "type": "bool"
-      },
-      {
-        "indexed": false,
-        "internalType": "bool",
-        "name": "grantAmountRequired",
-        "type": "bool"
+        "internalType": "address",
+        "name": "gameManager",
+        "type": "address"
       },
       {
         "indexed": false,
@@ -411,6 +440,37 @@
         "internalType": "uint256",
         "name": "milestonesLength",
         "type": "uint256"
+      },
+      {
+        "components": [
+          {
+            "internalType": "uint256",
+            "name": "amountPercentage",
+            "type": "uint256"
+          },
+          {
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "protocol",
+                "type": "uint256"
+              },
+              { "internalType": "string", "name": "pointer", "type": "string" }
+            ],
+            "internalType": "struct Metadata",
+            "name": "metadata",
+            "type": "tuple"
+          },
+          {
+            "internalType": "enum IStrategy.Status",
+            "name": "milestoneStatus",
+            "type": "uint8"
+          }
+        ],
+        "indexed": false,
+        "internalType": "struct GrantShipStrategy.Milestone[]",
+        "name": "milestones",
+        "type": "tuple[]"
       }
     ],
     "name": "MilestonesSet",
@@ -465,6 +525,47 @@
       }
     ],
     "name": "PoolWithdraw",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "recipientId",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "receivingAddress",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "grantAmount",
+        "type": "uint256"
+      },
+      {
+        "components": [
+          { "internalType": "uint256", "name": "protocol", "type": "uint256" },
+          { "internalType": "string", "name": "pointer", "type": "string" }
+        ],
+        "indexed": false,
+        "internalType": "struct Metadata",
+        "name": "metadata",
+        "type": "tuple"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "grantIndex",
+        "type": "uint256"
+      }
+    ],
+    "name": "RecipientRegistered",
     "type": "event"
   },
   {
@@ -578,6 +679,42 @@
     "name": "allocatedGrantAmount",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_recipientId", "type": "address" },
+      {
+        "components": [
+          { "internalType": "uint256", "name": "protocol", "type": "uint256" },
+          { "internalType": "string", "name": "pointer", "type": "string" }
+        ],
+        "internalType": "struct Metadata",
+        "name": "_reason",
+        "type": "tuple"
+      }
+    ],
+    "name": "clawbackGrant",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_recipientId", "type": "address" },
+      {
+        "components": [
+          { "internalType": "uint256", "name": "protocol", "type": "uint256" },
+          { "internalType": "string", "name": "pointer", "type": "string" }
+        ],
+        "internalType": "struct Metadata",
+        "name": "_metadata",
+        "type": "tuple"
+      }
+    ],
+    "name": "completeGrant",
+    "outputs": [],
+    "stateMutability": "nonpayable",
     "type": "function"
   },
   {
@@ -737,11 +874,6 @@
       {
         "components": [
           {
-            "internalType": "bool",
-            "name": "useRegistryAnchor",
-            "type": "bool"
-          },
-          {
             "internalType": "address",
             "name": "receivingAddress",
             "type": "address"
@@ -773,7 +905,8 @@
             "internalType": "enum IStrategy.Status",
             "name": "milestonesReviewStatus",
             "type": "uint8"
-          }
+          },
+          { "internalType": "uint256", "name": "grantIndex", "type": "uint256" }
         ],
         "internalType": "struct GrantShipStrategy.Recipient",
         "name": "",
@@ -798,22 +931,6 @@
     "inputs": [],
     "name": "getStrategyId",
     "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      { "internalType": "address", "name": "_recipientId", "type": "address" }
-    ],
-    "name": "getUpcomingMilestone",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "grantAmountRequired",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
     "stateMutability": "view",
     "type": "function"
   },
@@ -914,13 +1031,6 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "metadataRequired",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       { "internalType": "address", "name": "", "type": "address" },
       { "internalType": "uint256", "name": "", "type": "uint256" }
@@ -986,13 +1096,6 @@
       { "internalType": "address", "name": "recipientId", "type": "address" }
     ],
     "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "name": "registryGating",
-    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
-    "stateMutability": "view",
     "type": "function"
   },
   {
@@ -1111,28 +1214,6 @@
     "type": "function"
   },
   {
-    "inputs": [
-      {
-        "internalType": "address[]",
-        "name": "_recipientIds",
-        "type": "address[]"
-      },
-      {
-        "components": [
-          { "internalType": "uint256", "name": "protocol", "type": "uint256" },
-          { "internalType": "string", "name": "pointer", "type": "string" }
-        ],
-        "internalType": "struct Metadata[]",
-        "name": "_reasons",
-        "type": "tuple[]"
-      }
-    ],
-    "name": "setRecipientStatusToInReview",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
     "inputs": [],
     "name": "shipRegistryAnchor",
     "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
@@ -1149,7 +1230,7 @@
           { "internalType": "string", "name": "pointer", "type": "string" }
         ],
         "internalType": "struct Metadata",
-        "name": "_metadata",
+        "name": "_demoMetadata",
         "type": "tuple"
       }
     ],
@@ -1161,13 +1242,6 @@
   {
     "inputs": [],
     "name": "unresolvedRedFlags",
-    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [{ "internalType": "address", "name": "", "type": "address" }],
-    "name": "upcomingMilestone",
     "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
     "stateMutability": "view",
     "type": "function"

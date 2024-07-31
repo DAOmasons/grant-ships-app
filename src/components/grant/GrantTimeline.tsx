@@ -15,12 +15,24 @@ import { AllocationComplete } from './AllocationComplete';
 import { MilestoneDisplay } from './MilestoneDisplay';
 import { DistributePanel } from '../dashboard/facilitator/DistributePanel';
 import { FundsDistributed } from './FundsDistributed';
+import { useMemo } from 'react';
+import { GameStatus } from '../../types/common';
+import { GrantComplete } from './GrantComplete';
 
 export const GrantTimeline = () => {
-  const { timeline, ship, project } = useGrant();
-  console.log('timeline', timeline);
+  const { timeline, ship, project, currentMilestoneSet } = useGrant();
+
+  const hasCompletedAllMilestones = useMemo(() => {
+    if (!currentMilestoneSet) return false;
+
+    return currentMilestoneSet.resolvedMilestones.every((milestone) => {
+      return milestone.status === GameStatus.Accepted;
+    });
+  }, [currentMilestoneSet]);
+
   return (
     <Box>
+      {hasCompletedAllMilestones && <GrantComplete />}
       {timeline.map((item) => {
         if (item.tag === 'beacon') {
           const update = item as GrantUpdate;

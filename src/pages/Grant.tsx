@@ -18,7 +18,6 @@ import {
 } from 'react-router-dom';
 import {
   IconFileDescription,
-  IconMessage,
   IconPennant,
   IconPlus,
   IconRoute,
@@ -57,7 +56,7 @@ export const Grant = () => {
             value={layout || 'timeline'}
             size={isMobile ? 'sm' : 'md'}
             bg={theme.colors.dark[6]}
-            mb="lg"
+            mb="xl"
             data={[
               {
                 value: 'timeline',
