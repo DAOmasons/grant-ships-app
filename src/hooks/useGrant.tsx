@@ -23,5 +23,7 @@ export const useGrant = (): UseGrant => {
     refetchGrant: context.refetchGrant,
     isProjectMember: context.isProjectMember,
     isShipOperator: context.isShipOperator,
+    currentApplication: context.currentApplication,
+    currentMilestoneSet: context.currentMilestoneSet,
   };
 };

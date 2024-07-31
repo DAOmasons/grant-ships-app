@@ -29,6 +29,8 @@ export const GrantContext = createContext<GrantContext>({
   isShipOperator: undefined,
   refetchGrant: () => {},
   grant: null,
+  currentApplication: null,
+  currentMilestoneSet: null,
 });
 
 export const GrantContextProvider = ({
@@ -78,6 +80,8 @@ export const GrantContextProvider = ({
         refetchGrant,
         isProjectMember,
         isShipOperator,
+        currentApplication: data?.currentApplication || null,
+        currentMilestoneSet: data?.currentMilestoneSet || null,
       }}
     >
       {children}

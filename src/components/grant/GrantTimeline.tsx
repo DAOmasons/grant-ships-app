@@ -126,7 +126,9 @@ export const GrantTimeline = () => {
         }
         if (item.tag === 'grant/allocation/locked') {
           const update = item as GrantUpdate;
-          return <AllocationComplete timestamp={update.timestamp} />;
+          return (
+            <AllocationComplete key={item.id} timestamp={update.timestamp} />
+          );
         }
         if (item.tag === 'milestoneSet') {
           const doc = item as any as MilestonesDisplay;

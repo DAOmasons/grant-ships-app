@@ -4,7 +4,13 @@ import { Editor } from '@tiptap/react';
 import { IconHeading } from '@tabler/icons-react';
 import { ImageControl } from './RTEditor/ImageControl';
 
-export const RTEditor = ({ editor }: { editor: Editor | null }) => {
+export const RTEditor = ({
+  editor,
+  noHeading = false,
+}: {
+  editor: Editor | null;
+  noHeading?: boolean;
+}) => {
   return (
     <RichTextEditor
       editor={editor}
@@ -15,7 +21,9 @@ export const RTEditor = ({ editor }: { editor: Editor | null }) => {
     >
       <RichTextEditor.Toolbar bg={'transparent'}>
         <RichTextEditor.ControlsGroup style={{ border: 'none' }}>
-          <RichTextEditor.H3 icon={IconHeading} h={'2rem'} w="2rem" />
+          {!noHeading && (
+            <RichTextEditor.H3 icon={IconHeading} h={'2rem'} w="2rem" />
+          )}
           <RichTextEditor.Bold h={'2rem'} w="2rem" />
           <RichTextEditor.Italic h={'2rem'} w="2rem" />
           <RichTextEditor.Strikethrough h={'2rem'} w="2rem" />

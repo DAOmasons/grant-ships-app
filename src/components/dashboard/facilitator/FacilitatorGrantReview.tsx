@@ -76,16 +76,6 @@
 //       return;
 //     }
 
-//     const encoded = encodeAbiParameters(
-//       parseAbiParameters('address, uint8, uint256, (uint256, string)'),
-//       [
-//         grant.projectId.id,
-//         isApproved ? AlloStatus.Accepted : AlloStatus.Rejected,
-//         grantAmount,
-//         [1n, pinRes.IpfsHash],
-//       ]
-//     );
-
 //     tx({
 //       writeContractParams: {
 //         address: ADDR.ALLO,

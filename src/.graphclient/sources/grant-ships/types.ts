@@ -2903,6 +2903,7 @@ export type Milestone = {
   grant?: Maybe<Grant>;
   grant_id: Scalars['String'];
   id: Scalars['String'];
+  index: Scalars['Int'];
   /** An object relationship */
   metadata?: Maybe<RawMetadata>;
   metadata_id: Scalars['String'];
@@ -3121,6 +3122,7 @@ export type Milestone_aggregate_order_by = {
 
 /** order by avg() on columns of table "Milestone" */
 export type Milestone_avg_order_by = {
+  index?: InputMaybe<order_by>;
   percentage?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
 };
@@ -3134,6 +3136,7 @@ export type Milestone_bool_exp = {
   grant?: InputMaybe<Grant_bool_exp>;
   grant_id?: InputMaybe<String_comparison_exp>;
   id?: InputMaybe<String_comparison_exp>;
+  index?: InputMaybe<Int_comparison_exp>;
   metadata?: InputMaybe<RawMetadata_bool_exp>;
   metadata_id?: InputMaybe<String_comparison_exp>;
   milestoneSet?: InputMaybe<MilestoneSet_bool_exp>;
@@ -3147,6 +3150,7 @@ export type Milestone_max_order_by = {
   db_write_timestamp?: InputMaybe<order_by>;
   grant_id?: InputMaybe<order_by>;
   id?: InputMaybe<order_by>;
+  index?: InputMaybe<order_by>;
   metadata_id?: InputMaybe<order_by>;
   milestoneSet_id?: InputMaybe<order_by>;
   percentage?: InputMaybe<order_by>;
@@ -3158,6 +3162,7 @@ export type Milestone_min_order_by = {
   db_write_timestamp?: InputMaybe<order_by>;
   grant_id?: InputMaybe<order_by>;
   id?: InputMaybe<order_by>;
+  index?: InputMaybe<order_by>;
   metadata_id?: InputMaybe<order_by>;
   milestoneSet_id?: InputMaybe<order_by>;
   percentage?: InputMaybe<order_by>;
@@ -3170,6 +3175,7 @@ export type Milestone_order_by = {
   grant?: InputMaybe<Grant_order_by>;
   grant_id?: InputMaybe<order_by>;
   id?: InputMaybe<order_by>;
+  index?: InputMaybe<order_by>;
   metadata?: InputMaybe<RawMetadata_order_by>;
   metadata_id?: InputMaybe<order_by>;
   milestoneSet?: InputMaybe<MilestoneSet_order_by>;
@@ -3187,6 +3193,8 @@ export type Milestone_select_column =
   /** column name */
   | 'id'
   /** column name */
+  | 'index'
+  /** column name */
   | 'metadata_id'
   /** column name */
   | 'milestoneSet_id'
@@ -3197,18 +3205,21 @@ export type Milestone_select_column =
 
 /** order by stddev() on columns of table "Milestone" */
 export type Milestone_stddev_order_by = {
+  index?: InputMaybe<order_by>;
   percentage?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
 };
 
 /** order by stddev_pop() on columns of table "Milestone" */
 export type Milestone_stddev_pop_order_by = {
+  index?: InputMaybe<order_by>;
   percentage?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
 };
 
 /** order by stddev_samp() on columns of table "Milestone" */
 export type Milestone_stddev_samp_order_by = {
+  index?: InputMaybe<order_by>;
   percentage?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
 };
@@ -3226,6 +3237,7 @@ export type Milestone_stream_cursor_value_input = {
   db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
   grant_id?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['String']>;
+  index?: InputMaybe<Scalars['Int']>;
   metadata_id?: InputMaybe<Scalars['String']>;
   milestoneSet_id?: InputMaybe<Scalars['String']>;
   percentage?: InputMaybe<Scalars['numeric']>;
@@ -3234,24 +3246,28 @@ export type Milestone_stream_cursor_value_input = {
 
 /** order by sum() on columns of table "Milestone" */
 export type Milestone_sum_order_by = {
+  index?: InputMaybe<order_by>;
   percentage?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
 };
 
 /** order by var_pop() on columns of table "Milestone" */
 export type Milestone_var_pop_order_by = {
+  index?: InputMaybe<order_by>;
   percentage?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
 };
 
 /** order by var_samp() on columns of table "Milestone" */
 export type Milestone_var_samp_order_by = {
+  index?: InputMaybe<order_by>;
   percentage?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
 };
 
 /** order by variance() on columns of table "Milestone" */
 export type Milestone_variance_order_by = {
+  index?: InputMaybe<order_by>;
   percentage?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
 };

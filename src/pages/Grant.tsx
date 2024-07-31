@@ -31,10 +31,12 @@ import { GrantTimeline } from '../components/grant/GrantTimeline';
 import { PostGrantDrawer } from '../components/grant/PostGrantDrawer';
 import { useDisclosure } from '@mantine/hooks';
 import { ApplicationDrawer } from '../components/grant/ApplicationDrawer';
-import { GrantStatus } from '../types/common';
+import { GameStatus, GrantStatus } from '../types/common';
 import { MilestonesDrawer } from '../components/grant/MilestonesDrawer';
 import { useUserData } from '../hooks/useUserState';
 import { FacilitatorApprovalDrawer } from '../components/grant/FacilitatorApprovalDrawer';
+import { PageDrawer } from '../components/PageDrawer';
+import { SubmitMilestoneDrawer } from '../components/grant/SubmitMilestoneDrawer';
 
 export const Grant = () => {
   const theme = useMantineTheme();
@@ -180,6 +182,10 @@ const ProjectActions = () => {
     grant.status >= GrantStatus.ShipApproved &&
     grant?.status < GrantStatus.FacilitatorApproved;
 
+  const areMilestonesLocked =
+    grant?.isAllocated &&
+    grant?.currentMilestones?.status === GameStatus.Accepted;
+
   return (
     <>
       <Stack pos="fixed" top={'260px'} gap="sm">
@@ -220,7 +226,14 @@ const ProjectActions = () => {
         playerType={Player.Project}
         refetch={refetchGrant}
       />
-      <MilestonesDrawer opened={milestonesOpened} onClose={closeMilestones} />
+      {areMilestonesLocked ? (
+        <SubmitMilestoneDrawer
+          opened={milestonesOpened}
+          onClose={closeMilestones}
+        />
+      ) : (
+        <MilestonesDrawer opened={milestonesOpened} onClose={closeMilestones} />
+      )}
     </>
   );
 };

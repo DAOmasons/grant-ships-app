@@ -3220,6 +3220,7 @@ type Milestone {
   grant: Grant
   grant_id: String!
   id: String!
+  index: Int!
   """An object relationship"""
   metadata: RawMetadata
   metadata_id: String!
@@ -3474,6 +3475,7 @@ input Milestone_aggregate_order_by {
 order by avg() on columns of table "Milestone"
 """
 input Milestone_avg_order_by {
+  index: order_by
   percentage: order_by
   status: order_by
 }
@@ -3489,6 +3491,7 @@ input Milestone_bool_exp {
   grant: Grant_bool_exp
   grant_id: String_comparison_exp
   id: String_comparison_exp
+  index: Int_comparison_exp
   metadata: RawMetadata_bool_exp
   metadata_id: String_comparison_exp
   milestoneSet: MilestoneSet_bool_exp
@@ -3504,6 +3507,7 @@ input Milestone_max_order_by {
   db_write_timestamp: order_by
   grant_id: order_by
   id: order_by
+  index: order_by
   metadata_id: order_by
   milestoneSet_id: order_by
   percentage: order_by
@@ -3517,6 +3521,7 @@ input Milestone_min_order_by {
   db_write_timestamp: order_by
   grant_id: order_by
   id: order_by
+  index: order_by
   metadata_id: order_by
   milestoneSet_id: order_by
   percentage: order_by
@@ -3529,6 +3534,7 @@ input Milestone_order_by {
   grant: Grant_order_by
   grant_id: order_by
   id: order_by
+  index: order_by
   metadata: RawMetadata_order_by
   metadata_id: order_by
   milestoneSet: MilestoneSet_order_by
@@ -3548,6 +3554,8 @@ enum Milestone_select_column {
   """column name"""
   id
   """column name"""
+  index
+  """column name"""
   metadata_id
   """column name"""
   milestoneSet_id
@@ -3561,6 +3569,7 @@ enum Milestone_select_column {
 order by stddev() on columns of table "Milestone"
 """
 input Milestone_stddev_order_by {
+  index: order_by
   percentage: order_by
   status: order_by
 }
@@ -3569,6 +3578,7 @@ input Milestone_stddev_order_by {
 order by stddev_pop() on columns of table "Milestone"
 """
 input Milestone_stddev_pop_order_by {
+  index: order_by
   percentage: order_by
   status: order_by
 }
@@ -3577,6 +3587,7 @@ input Milestone_stddev_pop_order_by {
 order by stddev_samp() on columns of table "Milestone"
 """
 input Milestone_stddev_samp_order_by {
+  index: order_by
   percentage: order_by
   status: order_by
 }
@@ -3596,6 +3607,7 @@ input Milestone_stream_cursor_value_input {
   db_write_timestamp: timestamp
   grant_id: String
   id: String
+  index: Int
   metadata_id: String
   milestoneSet_id: String
   percentage: numeric
@@ -3606,6 +3618,7 @@ input Milestone_stream_cursor_value_input {
 order by sum() on columns of table "Milestone"
 """
 input Milestone_sum_order_by {
+  index: order_by
   percentage: order_by
   status: order_by
 }
@@ -3614,6 +3627,7 @@ input Milestone_sum_order_by {
 order by var_pop() on columns of table "Milestone"
 """
 input Milestone_var_pop_order_by {
+  index: order_by
   percentage: order_by
   status: order_by
 }
@@ -3622,6 +3636,7 @@ input Milestone_var_pop_order_by {
 order by var_samp() on columns of table "Milestone"
 """
 input Milestone_var_samp_order_by {
+  index: order_by
   percentage: order_by
   status: order_by
 }
@@ -3630,6 +3645,7 @@ input Milestone_var_samp_order_by {
 order by variance() on columns of table "Milestone"
 """
 input Milestone_variance_order_by {
+  index: order_by
   percentage: order_by
   status: order_by
 }

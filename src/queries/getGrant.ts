@@ -76,6 +76,8 @@ export type GrantQueryType = {
   applicationTemplate: Content;
   timeline: TimelineItem[];
   grant: GrantDataFragment | null;
+  currentApplication: ApplicationDisplay | null;
+  currentMilestoneSet: MilestonesDisplay | null;
 };
 
 export const getGrant = async (grantId: string) => {
@@ -124,8 +126,6 @@ export const getGrant = async (grantId: string) => {
   const resolvedCustomApplication = ship?.customApplication?.pointer
     ? await resolveRichTextMetadata(ship.customApplication.pointer)
     : null;
-
-  console.log('updates', updates);
 
   const resolvedUpdates = await Promise.all(
     updates?.map(async (update) => {
@@ -211,6 +211,14 @@ export const getGrant = async (grantId: string) => {
     })
   );
 
+  const currentApplication = resolvedApplications.sort((a, b) =>
+    a.timestamp < b.timestamp ? 1 : -1
+  )[0];
+
+  const currentMilestoneSet = resolvedMilestoneDrafts.sort((a, b) =>
+    (a?.timestamp || 0) < (b?.timestamp || 0) ? 1 : -1
+  )[0];
+
   const timeline = [
     ...resolvedUpdates,
     ...resolvedApplications,
@@ -231,6 +239,8 @@ export const getGrant = async (grantId: string) => {
   return {
     project: resolvedProject,
     ship: resolvedShip,
+    currentApplication,
+    currentMilestoneSet,
     beacon: resolvedBeacon || beaconNotSubmitted,
     applicationTemplate: resolvedCustomApplication || defaultApplication,
     timeline: [...timeline, beaconUpdate],

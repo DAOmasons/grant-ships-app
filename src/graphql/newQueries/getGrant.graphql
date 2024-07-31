@@ -15,6 +15,7 @@ fragment ProjectData on Project {
 fragment MilestoneStep on Milestone {
   id
   percentage
+  index
   metadata {
     pointer
   }
