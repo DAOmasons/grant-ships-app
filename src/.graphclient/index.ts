@@ -9845,6 +9845,12 @@ const merger = new(BareMerger as any)({
         },
         location: 'GetShipDashDocument.graphql'
       },{
+        document: GetShipGrantsDocument,
+        get rawSDL() {
+          return printWithCache(GetShipGrantsDocument);
+        },
+        location: 'GetShipGrantsDocument.graphql'
+      },{
         document: GetShipPoolIdDocument,
         get rawSDL() {
           return printWithCache(GetShipPoolIdDocument);
@@ -10141,7 +10147,7 @@ export type getProjectGrantsQueryVariables = Exact<{
 }>;
 
 
-export type getProjectGrantsQuery = { Grant: Array<(
+export type getProjectGrantsQuery = { grants: Array<(
     Pick<Grant, 'id' | 'status' | 'lastUpdated' | 'amount' | 'grantCompleted' | 'hasPendingMilestones' | 'hasRejectedMilestones' | 'allMilestonesApproved'>
     & { ship?: Maybe<(
       Pick<GrantShip, 'id' | 'name'>
@@ -10235,6 +10241,28 @@ export type getShipDashQueryVariables = Exact<{
 export type getShipDashQuery = { GrantShip: Array<(
     Pick<GrantShip, 'id' | 'name' | 'status' | 'hatId' | 'shipContractAddress' | 'shipApplicationBytesData' | 'owner' | 'balance'>
     & { profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>>, beaconMessage?: Maybe<Pick<RawMetadata, 'pointer'>> }
+  )> };
+
+export type ProjectDisplayFragment = (
+  Pick<Project, 'id' | 'name'>
+  & { metadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
+);
+
+export type getShipGrantsQueryVariables = Exact<{
+  shipId: Scalars['String'];
+  gameId: Scalars['String'];
+}>;
+
+
+export type getShipGrantsQuery = { grants: Array<(
+    Pick<Grant, 'id' | 'status' | 'lastUpdated' | 'amount' | 'grantCompleted' | 'hasPendingMilestones' | 'hasRejectedMilestones' | 'allMilestonesApproved'>
+    & { project?: Maybe<(
+      Pick<Project, 'id' | 'name'>
+      & { metadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
+    )>, currentMilestones?: Maybe<(
+      Pick<MilestoneSet, 'id' | 'milestoneLength' | 'milestonesCompleted' | 'milestonesRejected' | 'milestonesPending'>
+      & { milestones: Array<Pick<Milestone, 'id' | 'index' | 'percentage' | 'status'>> }
+    )> }
   )> };
 
 export type getShipPoolIdQueryVariables = Exact<{
@@ -10589,6 +10617,15 @@ export const ShipDashFragmentDoc = gql`
   }
 }
     ` as unknown as DocumentNode<ShipDashFragment, unknown>;
+export const ProjectDisplayFragmentDoc = gql`
+    fragment ProjectDisplay on Project {
+  id
+  name
+  metadata {
+    pointer
+  }
+}
+    ` as unknown as DocumentNode<ProjectDisplayFragment, unknown>;
 export const facDashShipDataDocument = gql`
     query facDashShipData {
   shipApplicants: GrantShip(where: {isAwaitingApproval: {_eq: true}}) {
@@ -10709,7 +10746,9 @@ export const getGsVotingDocument = gql`
     ` as unknown as DocumentNode<getGsVotingQuery, getGsVotingQueryVariables>;
 export const getProjectGrantsDocument = gql`
     query getProjectGrants($projectId: String!, $gameId: String!) {
-  Grant(where: {project_id: {_eq: $projectId}, gameManager_id: {_eq: $gameId}}) {
+  grants: Grant(
+    where: {project_id: {_eq: $projectId}, gameManager_id: {_eq: $gameId}}
+  ) {
     ...GrantBasic
     ship {
       ...ShipDisplay
@@ -10806,6 +10845,17 @@ export const getShipDashDocument = gql`
   }
 }
     ${ShipDashFragmentDoc}` as unknown as DocumentNode<getShipDashQuery, getShipDashQueryVariables>;
+export const getShipGrantsDocument = gql`
+    query getShipGrants($shipId: String!, $gameId: String!) {
+  grants: Grant(where: {ship_id: {_eq: $shipId}, gameManager_id: {_eq: $gameId}}) {
+    ...GrantBasic
+    project {
+      ...ProjectDisplay
+    }
+  }
+}
+    ${GrantBasicFragmentDoc}
+${ProjectDisplayFragmentDoc}` as unknown as DocumentNode<getShipGrantsQuery, getShipGrantsQueryVariables>;
 export const getShipPoolIdDocument = gql`
     query getShipPoolId($id: String!) {
   GrantShip(where: {id: {_eq: $id}}) {
@@ -10925,6 +10975,7 @@ export const ShipsPageQueryDocument = gql`
 
 
 
+
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
@@ -10975,6 +11026,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     getShipDash(variables: getShipDashQueryVariables, options?: C): Promise<getShipDashQuery> {
       return requester<getShipDashQuery, getShipDashQueryVariables>(getShipDashDocument, variables, options) as Promise<getShipDashQuery>;
+    },
+    getShipGrants(variables: getShipGrantsQueryVariables, options?: C): Promise<getShipGrantsQuery> {
+      return requester<getShipGrantsQuery, getShipGrantsQueryVariables>(getShipGrantsDocument, variables, options) as Promise<getShipGrantsQuery>;
     },
     getShipPoolId(variables: getShipPoolIdQueryVariables, options?: C): Promise<getShipPoolIdQuery> {
       return requester<getShipPoolIdQuery, getShipPoolIdQueryVariables>(getShipPoolIdDocument, variables, options) as Promise<getShipPoolIdQuery>;

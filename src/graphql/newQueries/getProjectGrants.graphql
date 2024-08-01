@@ -7,7 +7,7 @@ fragment ShipDisplay on GrantShip {
 }
 
 query getProjectGrants($projectId: String!, $gameId: String!) {
-  Grant(
+  grants: Grant(
     where: { project_id: { _eq: $projectId }, gameManager_id: { _eq: $gameId } }
   ) {
     ...GrantBasic
