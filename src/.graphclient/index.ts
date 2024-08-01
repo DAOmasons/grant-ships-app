@@ -9755,6 +9755,12 @@ const merger = new(BareMerger as any)({
         },
         location: 'FacDashShipDataDocument.graphql'
       },{
+        document: GetFacilitatorGrantsDocument,
+        get rawSDL() {
+          return printWithCache(GetFacilitatorGrantsDocument);
+        },
+        location: 'GetFacilitatorGrantsDocument.graphql'
+      },{
         document: GetFeedDocument,
         get rawSDL() {
           return printWithCache(GetFeedDocument);
@@ -9983,6 +9989,25 @@ export type facDashShipDataQuery = { shipApplicants: Array<(
   )>, rejectedShips: Array<(
     Pick<GrantShip, 'rejectedTime' | 'id' | 'name' | 'status' | 'applicationSubmittedTime' | 'shipApplicationBytesData'>
     & { applicationReviewReason?: Maybe<Pick<RawMetadata, 'pointer'>>, profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
+  )> };
+
+export type getFacilitatorGrantsQueryVariables = Exact<{
+  gameId: Scalars['String'];
+}>;
+
+
+export type getFacilitatorGrantsQuery = { grants: Array<(
+    Pick<Grant, 'id' | 'status' | 'lastUpdated' | 'amount' | 'grantCompleted' | 'hasPendingMilestones' | 'hasRejectedMilestones' | 'allMilestonesApproved'>
+    & { project?: Maybe<(
+      Pick<Project, 'id' | 'name'>
+      & { metadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
+    )>, ship?: Maybe<(
+      Pick<GrantShip, 'id' | 'name'>
+      & { profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
+    )>, currentMilestones?: Maybe<(
+      Pick<MilestoneSet, 'id' | 'milestoneLength' | 'milestonesCompleted' | 'milestonesRejected' | 'milestonesPending'>
+      & { milestones: Array<Pick<Milestone, 'id' | 'index' | 'percentage' | 'status'>> }
+    )> }
   )> };
 
 export type getFeedQueryVariables = Exact<{
@@ -10651,6 +10676,21 @@ export const facDashShipDataDocument = gql`
   }
 }
     ${FacShipDataFragmentDoc}` as unknown as DocumentNode<facDashShipDataQuery, facDashShipDataQueryVariables>;
+export const getFacilitatorGrantsDocument = gql`
+    query getFacilitatorGrants($gameId: String!) {
+  grants: Grant(where: {gameManager_id: {_eq: $gameId}}) {
+    ...GrantBasic
+    project {
+      ...ProjectDisplay
+    }
+    ship {
+      ...ShipDisplay
+    }
+  }
+}
+    ${GrantBasicFragmentDoc}
+${ProjectDisplayFragmentDoc}
+${ShipDisplayFragmentDoc}` as unknown as DocumentNode<getFacilitatorGrantsQuery, getFacilitatorGrantsQueryVariables>;
 export const getFeedDocument = gql`
     query getFeed($first: Int!, $skip: Int!, $orderBy: [FeedCard_order_by!], $domainId: String!) {
   FeedCard(
@@ -10976,11 +11016,15 @@ export const ShipsPageQueryDocument = gql`
 
 
 
+
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
     facDashShipData(variables?: facDashShipDataQueryVariables, options?: C): Promise<facDashShipDataQuery> {
       return requester<facDashShipDataQuery, facDashShipDataQueryVariables>(facDashShipDataDocument, variables, options) as Promise<facDashShipDataQuery>;
+    },
+    getFacilitatorGrants(variables: getFacilitatorGrantsQueryVariables, options?: C): Promise<getFacilitatorGrantsQuery> {
+      return requester<getFacilitatorGrantsQuery, getFacilitatorGrantsQueryVariables>(getFacilitatorGrantsDocument, variables, options) as Promise<getFacilitatorGrantsQuery>;
     },
     getFeed(variables: getFeedQueryVariables, options?: C): Promise<getFeedQuery> {
       return requester<getFeedQuery, getFeedQueryVariables>(getFeedDocument, variables, options) as Promise<getFeedQuery>;
