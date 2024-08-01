@@ -1793,6 +1793,7 @@ export type GameRound_variance_order_by = {
 
 /** columns and relationships of "Grant" */
 export type Grant = {
+  allMilestonesApproved: Scalars['Boolean'];
   amount?: Maybe<Scalars['numeric']>;
   applicationApproved: Scalars['Boolean'];
   /** An array relationship */
@@ -1808,6 +1809,8 @@ export type Grant = {
   gameManager?: Maybe<GameManager>;
   gameManager_id: Scalars['String'];
   grantCompleted: Scalars['Boolean'];
+  hasPendingMilestones: Scalars['Boolean'];
+  hasRejectedMilestones: Scalars['Boolean'];
   id: Scalars['String'];
   isAllocated: Scalars['Boolean'];
   lastUpdated: Scalars['Int'];
@@ -2544,6 +2547,7 @@ export type Grant_bool_exp = {
   _and?: InputMaybe<Array<Grant_bool_exp>>;
   _not?: InputMaybe<Grant_bool_exp>;
   _or?: InputMaybe<Array<Grant_bool_exp>>;
+  allMilestonesApproved?: InputMaybe<Boolean_comparison_exp>;
   amount?: InputMaybe<numeric_comparison_exp>;
   applicationApproved?: InputMaybe<Boolean_comparison_exp>;
   applications?: InputMaybe<Application_bool_exp>;
@@ -2555,6 +2559,8 @@ export type Grant_bool_exp = {
   gameManager?: InputMaybe<GameManager_bool_exp>;
   gameManager_id?: InputMaybe<String_comparison_exp>;
   grantCompleted?: InputMaybe<Boolean_comparison_exp>;
+  hasPendingMilestones?: InputMaybe<Boolean_comparison_exp>;
+  hasRejectedMilestones?: InputMaybe<Boolean_comparison_exp>;
   id?: InputMaybe<String_comparison_exp>;
   isAllocated?: InputMaybe<Boolean_comparison_exp>;
   lastUpdated?: InputMaybe<Int_comparison_exp>;
@@ -2596,6 +2602,7 @@ export type Grant_min_order_by = {
 
 /** Ordering options when selecting data from "Grant". */
 export type Grant_order_by = {
+  allMilestonesApproved?: InputMaybe<order_by>;
   amount?: InputMaybe<order_by>;
   applicationApproved?: InputMaybe<order_by>;
   applications_aggregate?: InputMaybe<Application_aggregate_order_by>;
@@ -2607,6 +2614,8 @@ export type Grant_order_by = {
   gameManager?: InputMaybe<GameManager_order_by>;
   gameManager_id?: InputMaybe<order_by>;
   grantCompleted?: InputMaybe<order_by>;
+  hasPendingMilestones?: InputMaybe<order_by>;
+  hasRejectedMilestones?: InputMaybe<order_by>;
   id?: InputMaybe<order_by>;
   isAllocated?: InputMaybe<order_by>;
   lastUpdated?: InputMaybe<order_by>;
@@ -2621,6 +2630,8 @@ export type Grant_order_by = {
 /** select columns of table "Grant" */
 export type Grant_select_column =
   /** column name */
+  | 'allMilestonesApproved'
+  /** column name */
   | 'amount'
   /** column name */
   | 'applicationApproved'
@@ -2634,6 +2645,10 @@ export type Grant_select_column =
   | 'gameManager_id'
   /** column name */
   | 'grantCompleted'
+  /** column name */
+  | 'hasPendingMilestones'
+  /** column name */
+  | 'hasRejectedMilestones'
   /** column name */
   | 'id'
   /** column name */
@@ -2678,6 +2693,7 @@ export type Grant_stream_cursor_input = {
 
 /** Initial value of the column from where the streaming should start */
 export type Grant_stream_cursor_value_input = {
+  allMilestonesApproved?: InputMaybe<Scalars['Boolean']>;
   amount?: InputMaybe<Scalars['numeric']>;
   applicationApproved?: InputMaybe<Scalars['Boolean']>;
   currentApplication_id?: InputMaybe<Scalars['String']>;
@@ -2685,6 +2701,8 @@ export type Grant_stream_cursor_value_input = {
   db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
   gameManager_id?: InputMaybe<Scalars['String']>;
   grantCompleted?: InputMaybe<Scalars['Boolean']>;
+  hasPendingMilestones?: InputMaybe<Scalars['Boolean']>;
+  hasRejectedMilestones?: InputMaybe<Scalars['Boolean']>;
   id?: InputMaybe<Scalars['String']>;
   isAllocated?: InputMaybe<Scalars['Boolean']>;
   lastUpdated?: InputMaybe<Scalars['Int']>;
@@ -2947,6 +2965,9 @@ export type MilestoneSet = {
   milestoneLength: Scalars['Int'];
   /** An array relationship */
   milestones: Array<Milestone>;
+  milestonesCompleted: Scalars['Int'];
+  milestonesPending: Scalars['Int'];
+  milestonesRejected: Scalars['Int'];
   status: Scalars['Int'];
   timestamp: Scalars['Int'];
 };
@@ -2980,6 +3001,9 @@ export type MilestoneSet_aggregate_order_by = {
 export type MilestoneSet_avg_order_by = {
   index?: InputMaybe<order_by>;
   milestoneLength?: InputMaybe<order_by>;
+  milestonesCompleted?: InputMaybe<order_by>;
+  milestonesPending?: InputMaybe<order_by>;
+  milestonesRejected?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   timestamp?: InputMaybe<order_by>;
 };
@@ -2996,6 +3020,9 @@ export type MilestoneSet_bool_exp = {
   index?: InputMaybe<Int_comparison_exp>;
   milestoneLength?: InputMaybe<Int_comparison_exp>;
   milestones?: InputMaybe<Milestone_bool_exp>;
+  milestonesCompleted?: InputMaybe<Int_comparison_exp>;
+  milestonesPending?: InputMaybe<Int_comparison_exp>;
+  milestonesRejected?: InputMaybe<Int_comparison_exp>;
   status?: InputMaybe<Int_comparison_exp>;
   timestamp?: InputMaybe<Int_comparison_exp>;
 };
@@ -3007,6 +3034,9 @@ export type MilestoneSet_max_order_by = {
   id?: InputMaybe<order_by>;
   index?: InputMaybe<order_by>;
   milestoneLength?: InputMaybe<order_by>;
+  milestonesCompleted?: InputMaybe<order_by>;
+  milestonesPending?: InputMaybe<order_by>;
+  milestonesRejected?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   timestamp?: InputMaybe<order_by>;
 };
@@ -3018,6 +3048,9 @@ export type MilestoneSet_min_order_by = {
   id?: InputMaybe<order_by>;
   index?: InputMaybe<order_by>;
   milestoneLength?: InputMaybe<order_by>;
+  milestonesCompleted?: InputMaybe<order_by>;
+  milestonesPending?: InputMaybe<order_by>;
+  milestonesRejected?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   timestamp?: InputMaybe<order_by>;
 };
@@ -3030,6 +3063,9 @@ export type MilestoneSet_order_by = {
   id?: InputMaybe<order_by>;
   index?: InputMaybe<order_by>;
   milestoneLength?: InputMaybe<order_by>;
+  milestonesCompleted?: InputMaybe<order_by>;
+  milestonesPending?: InputMaybe<order_by>;
+  milestonesRejected?: InputMaybe<order_by>;
   milestones_aggregate?: InputMaybe<Milestone_aggregate_order_by>;
   status?: InputMaybe<order_by>;
   timestamp?: InputMaybe<order_by>;
@@ -3048,6 +3084,12 @@ export type MilestoneSet_select_column =
   /** column name */
   | 'milestoneLength'
   /** column name */
+  | 'milestonesCompleted'
+  /** column name */
+  | 'milestonesPending'
+  /** column name */
+  | 'milestonesRejected'
+  /** column name */
   | 'status'
   /** column name */
   | 'timestamp';
@@ -3056,6 +3098,9 @@ export type MilestoneSet_select_column =
 export type MilestoneSet_stddev_order_by = {
   index?: InputMaybe<order_by>;
   milestoneLength?: InputMaybe<order_by>;
+  milestonesCompleted?: InputMaybe<order_by>;
+  milestonesPending?: InputMaybe<order_by>;
+  milestonesRejected?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   timestamp?: InputMaybe<order_by>;
 };
@@ -3064,6 +3109,9 @@ export type MilestoneSet_stddev_order_by = {
 export type MilestoneSet_stddev_pop_order_by = {
   index?: InputMaybe<order_by>;
   milestoneLength?: InputMaybe<order_by>;
+  milestonesCompleted?: InputMaybe<order_by>;
+  milestonesPending?: InputMaybe<order_by>;
+  milestonesRejected?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   timestamp?: InputMaybe<order_by>;
 };
@@ -3072,6 +3120,9 @@ export type MilestoneSet_stddev_pop_order_by = {
 export type MilestoneSet_stddev_samp_order_by = {
   index?: InputMaybe<order_by>;
   milestoneLength?: InputMaybe<order_by>;
+  milestonesCompleted?: InputMaybe<order_by>;
+  milestonesPending?: InputMaybe<order_by>;
+  milestonesRejected?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   timestamp?: InputMaybe<order_by>;
 };
@@ -3091,6 +3142,9 @@ export type MilestoneSet_stream_cursor_value_input = {
   id?: InputMaybe<Scalars['String']>;
   index?: InputMaybe<Scalars['Int']>;
   milestoneLength?: InputMaybe<Scalars['Int']>;
+  milestonesCompleted?: InputMaybe<Scalars['Int']>;
+  milestonesPending?: InputMaybe<Scalars['Int']>;
+  milestonesRejected?: InputMaybe<Scalars['Int']>;
   status?: InputMaybe<Scalars['Int']>;
   timestamp?: InputMaybe<Scalars['Int']>;
 };
@@ -3099,6 +3153,9 @@ export type MilestoneSet_stream_cursor_value_input = {
 export type MilestoneSet_sum_order_by = {
   index?: InputMaybe<order_by>;
   milestoneLength?: InputMaybe<order_by>;
+  milestonesCompleted?: InputMaybe<order_by>;
+  milestonesPending?: InputMaybe<order_by>;
+  milestonesRejected?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   timestamp?: InputMaybe<order_by>;
 };
@@ -3107,6 +3164,9 @@ export type MilestoneSet_sum_order_by = {
 export type MilestoneSet_var_pop_order_by = {
   index?: InputMaybe<order_by>;
   milestoneLength?: InputMaybe<order_by>;
+  milestonesCompleted?: InputMaybe<order_by>;
+  milestonesPending?: InputMaybe<order_by>;
+  milestonesRejected?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   timestamp?: InputMaybe<order_by>;
 };
@@ -3115,6 +3175,9 @@ export type MilestoneSet_var_pop_order_by = {
 export type MilestoneSet_var_samp_order_by = {
   index?: InputMaybe<order_by>;
   milestoneLength?: InputMaybe<order_by>;
+  milestonesCompleted?: InputMaybe<order_by>;
+  milestonesPending?: InputMaybe<order_by>;
+  milestonesRejected?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   timestamp?: InputMaybe<order_by>;
 };
@@ -3123,6 +3186,9 @@ export type MilestoneSet_var_samp_order_by = {
 export type MilestoneSet_variance_order_by = {
   index?: InputMaybe<order_by>;
   milestoneLength?: InputMaybe<order_by>;
+  milestonesCompleted?: InputMaybe<order_by>;
+  milestonesPending?: InputMaybe<order_by>;
+  milestonesRejected?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   timestamp?: InputMaybe<order_by>;
 };
@@ -8846,6 +8912,7 @@ export type GameRoundResolvers<ContextType = MeshContext, ParentType extends Res
 }>;
 
 export type GrantResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Grant'] = ResolversParentTypes['Grant']> = ResolversObject<{
+  allMilestonesApproved?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   amount?: Resolver<Maybe<ResolversTypes['numeric']>, ParentType, ContextType>;
   applicationApproved?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   applications?: Resolver<Array<ResolversTypes['Application']>, ParentType, ContextType, Partial<GrantapplicationsArgs>>;
@@ -8857,6 +8924,8 @@ export type GrantResolvers<ContextType = MeshContext, ParentType extends Resolve
   gameManager?: Resolver<Maybe<ResolversTypes['GameManager']>, ParentType, ContextType>;
   gameManager_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   grantCompleted?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  hasPendingMilestones?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  hasRejectedMilestones?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   isAllocated?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   lastUpdated?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -8990,6 +9059,9 @@ export type MilestoneSetResolvers<ContextType = MeshContext, ParentType extends 
   index?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   milestoneLength?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   milestones?: Resolver<Array<ResolversTypes['Milestone']>, ParentType, ContextType, Partial<MilestoneSetmilestonesArgs>>;
+  milestonesCompleted?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  milestonesPending?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  milestonesRejected?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   status?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   timestamp?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -9713,6 +9785,12 @@ const merger = new(BareMerger as any)({
         },
         location: 'GetGsVotingDocument.graphql'
       },{
+        document: GetProjectGrantsDocument,
+        get rawSDL() {
+          return printWithCache(GetProjectGrantsDocument);
+        },
+        location: 'GetProjectGrantsDocument.graphql'
+      },{
         document: GetProjectsDocument,
         get rawSDL() {
           return printWithCache(GetProjectsDocument);
@@ -9860,6 +9938,21 @@ export type BaseShipDataFragment = (
 export type FeedDataFragment = (
   Pick<FeedCard, 'id' | 'message' | 'timestamp' | 'sender' | 'tag' | 'subjectMetadataPointer' | 'domain_id' | 'internalLink' | 'externalLink'>
   & { subject?: Maybe<Pick<FeedItemEntity, 'id' | 'name' | 'playerType'>>, object?: Maybe<Pick<FeedItemEntity, 'id' | 'name' | 'playerType'>>, richTextContent?: Maybe<Pick<RawMetadata, 'protocol' | 'pointer'>>, embed?: Maybe<Pick<FeedItemEmbed, 'key' | 'pointer' | 'protocol' | 'content'>> }
+);
+
+export type MilestoneBasicFragment = Pick<Milestone, 'id' | 'index' | 'percentage' | 'status'>;
+
+export type MilestoneSetBasicFragment = (
+  Pick<MilestoneSet, 'id' | 'milestoneLength' | 'milestonesCompleted' | 'milestonesRejected' | 'milestonesPending'>
+  & { milestones: Array<Pick<Milestone, 'id' | 'index' | 'percentage' | 'status'>> }
+);
+
+export type GrantBasicFragment = (
+  Pick<Grant, 'id' | 'status' | 'lastUpdated' | 'amount' | 'grantCompleted' | 'hasPendingMilestones' | 'hasRejectedMilestones' | 'allMilestonesApproved'>
+  & { currentMilestones?: Maybe<(
+    Pick<MilestoneSet, 'id' | 'milestoneLength' | 'milestonesCompleted' | 'milestonesRejected' | 'milestonesPending'>
+    & { milestones: Array<Pick<Milestone, 'id' | 'index' | 'percentage' | 'status'>> }
+  )> }
 );
 
 export type UpdateBodyFragment = (
@@ -10035,6 +10128,28 @@ export type getGsVotingQueryVariables = Exact<{
 export type getGsVotingQuery = { GrantShipsVoting: Array<(
     Pick<GrantShipsVoting, 'id' | 'endTime' | 'startTime' | 'totalVotes' | 'voteDuration' | 'voteTokenAddress' | 'votingCheckpoint' | 'isVotingActive' | 'isSBTVoting'>
     & { choices: Array<Pick<ShipChoice, 'active' | 'id' | 'mdPointer' | 'mdProtocol' | 'voteTally'>>, contest?: Maybe<Pick<Contest, 'votesModule_id' | 'choicesModule_id' | 'pointsModule_id' | 'executionModule_id' | 'contestStatus'>> }
+  )> };
+
+export type ShipDisplayFragment = (
+  Pick<GrantShip, 'id' | 'name'>
+  & { profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
+);
+
+export type getProjectGrantsQueryVariables = Exact<{
+  projectId: Scalars['String'];
+  gameId: Scalars['String'];
+}>;
+
+
+export type getProjectGrantsQuery = { Grant: Array<(
+    Pick<Grant, 'id' | 'status' | 'lastUpdated' | 'amount' | 'grantCompleted' | 'hasPendingMilestones' | 'hasRejectedMilestones' | 'allMilestonesApproved'>
+    & { ship?: Maybe<(
+      Pick<GrantShip, 'id' | 'name'>
+      & { profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
+    )>, currentMilestones?: Maybe<(
+      Pick<MilestoneSet, 'id' | 'milestoneLength' | 'milestonesCompleted' | 'milestonesRejected' | 'milestonesPending'>
+      & { milestones: Array<Pick<Milestone, 'id' | 'index' | 'percentage' | 'status'>> }
+    )> }
   )> };
 
 export type ProjectDetailsFragment = Pick<Project, 'id' | 'name' | 'profileId' | 'nonce' | 'anchor' | 'owner'>;
@@ -10258,6 +10373,41 @@ export const FeedDataFragmentDoc = gql`
   externalLink
 }
     ` as unknown as DocumentNode<FeedDataFragment, unknown>;
+export const MilestoneBasicFragmentDoc = gql`
+    fragment MilestoneBasic on Milestone {
+  id
+  index
+  percentage
+  status
+}
+    ` as unknown as DocumentNode<MilestoneBasicFragment, unknown>;
+export const MilestoneSetBasicFragmentDoc = gql`
+    fragment MilestoneSetBasic on MilestoneSet {
+  id
+  milestoneLength
+  milestonesCompleted
+  milestonesRejected
+  milestonesPending
+  milestones {
+    ...MilestoneBasic
+  }
+}
+    ${MilestoneBasicFragmentDoc}` as unknown as DocumentNode<MilestoneSetBasicFragment, unknown>;
+export const GrantBasicFragmentDoc = gql`
+    fragment GrantBasic on Grant {
+  id
+  status
+  lastUpdated
+  amount
+  grantCompleted
+  hasPendingMilestones
+  hasRejectedMilestones
+  allMilestonesApproved
+  currentMilestones {
+    ...MilestoneSetBasic
+  }
+}
+    ${MilestoneSetBasicFragmentDoc}` as unknown as DocumentNode<GrantBasicFragment, unknown>;
 export const UpdateBodyFragmentDoc = gql`
     fragment UpdateBody on Update {
   id
@@ -10396,6 +10546,15 @@ export const GrantDataFragmentDoc = gql`
 }
     ${MilestonesFragmentDoc}
 ${GrantApplicationFragmentDoc}` as unknown as DocumentNode<GrantDataFragment, unknown>;
+export const ShipDisplayFragmentDoc = gql`
+    fragment ShipDisplay on GrantShip {
+  id
+  name
+  profileMetadata {
+    pointer
+  }
+}
+    ` as unknown as DocumentNode<ShipDisplayFragment, unknown>;
 export const ProjectDetailsFragmentDoc = gql`
     fragment ProjectDetails on Project {
   id
@@ -10548,6 +10707,17 @@ export const getGsVotingDocument = gql`
   }
 }
     ` as unknown as DocumentNode<getGsVotingQuery, getGsVotingQueryVariables>;
+export const getProjectGrantsDocument = gql`
+    query getProjectGrants($projectId: String!, $gameId: String!) {
+  Grant(where: {project_id: {_eq: $projectId}, gameManager_id: {_eq: $gameId}}) {
+    ...GrantBasic
+    ship {
+      ...ShipDisplay
+    }
+  }
+}
+    ${GrantBasicFragmentDoc}
+${ShipDisplayFragmentDoc}` as unknown as DocumentNode<getProjectGrantsQuery, getProjectGrantsQueryVariables>;
 export const GetProjectsDocument = gql`
     query GetProjects($chainId: Int!) {
   Project(where: {chainId: {_eq: $chainId}}) {
@@ -10754,6 +10924,7 @@ export const ShipsPageQueryDocument = gql`
 
 
 
+
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
@@ -10774,6 +10945,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     getGsVoting(variables: getGsVotingQueryVariables, options?: C): Promise<getGsVotingQuery> {
       return requester<getGsVotingQuery, getGsVotingQueryVariables>(getGsVotingDocument, variables, options) as Promise<getGsVotingQuery>;
+    },
+    getProjectGrants(variables: getProjectGrantsQueryVariables, options?: C): Promise<getProjectGrantsQuery> {
+      return requester<getProjectGrantsQuery, getProjectGrantsQueryVariables>(getProjectGrantsDocument, variables, options) as Promise<getProjectGrantsQuery>;
     },
     GetProjects(variables: GetProjectsQueryVariables, options?: C): Promise<GetProjectsQuery> {
       return requester<GetProjectsQuery, GetProjectsQueryVariables>(GetProjectsDocument, variables, options) as Promise<GetProjectsQuery>;

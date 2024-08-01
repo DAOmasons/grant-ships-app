@@ -1,0 +1,31 @@
+fragment MilestoneBasic on Milestone {
+  id
+  index
+  percentage
+  status
+}
+
+fragment MilestoneSetBasic on MilestoneSet {
+  id
+  milestoneLength
+  milestonesCompleted
+  milestonesRejected
+  milestonesPending
+  milestones {
+    ...MilestoneBasic
+  }
+}
+
+fragment GrantBasic on Grant {
+  id
+  status
+  lastUpdated
+  amount
+  grantCompleted
+  hasPendingMilestones
+  hasRejectedMilestones
+  allMilestonesApproved
+  currentMilestones {
+    ...MilestoneSetBasic
+  }
+}

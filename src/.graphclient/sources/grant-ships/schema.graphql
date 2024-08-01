@@ -1981,6 +1981,7 @@ input GameRound_variance_order_by {
 columns and relationships of "Grant"
 """
 type Grant {
+  allMilestonesApproved: Boolean!
   amount: numeric
   applicationApproved: Boolean!
   """An array relationship"""
@@ -2007,6 +2008,8 @@ type Grant {
   gameManager: GameManager
   gameManager_id: String!
   grantCompleted: Boolean!
+  hasPendingMilestones: Boolean!
+  hasRejectedMilestones: Boolean!
   id: String!
   isAllocated: Boolean!
   lastUpdated: Int!
@@ -2783,6 +2786,7 @@ input Grant_bool_exp {
   _and: [Grant_bool_exp!]
   _not: Grant_bool_exp
   _or: [Grant_bool_exp!]
+  allMilestonesApproved: Boolean_comparison_exp
   amount: numeric_comparison_exp
   applicationApproved: Boolean_comparison_exp
   applications: Application_bool_exp
@@ -2794,6 +2798,8 @@ input Grant_bool_exp {
   gameManager: GameManager_bool_exp
   gameManager_id: String_comparison_exp
   grantCompleted: Boolean_comparison_exp
+  hasPendingMilestones: Boolean_comparison_exp
+  hasRejectedMilestones: Boolean_comparison_exp
   id: String_comparison_exp
   isAllocated: Boolean_comparison_exp
   lastUpdated: Int_comparison_exp
@@ -2839,6 +2845,7 @@ input Grant_min_order_by {
 
 """Ordering options when selecting data from "Grant"."""
 input Grant_order_by {
+  allMilestonesApproved: order_by
   amount: order_by
   applicationApproved: order_by
   applications_aggregate: Application_aggregate_order_by
@@ -2850,6 +2857,8 @@ input Grant_order_by {
   gameManager: GameManager_order_by
   gameManager_id: order_by
   grantCompleted: order_by
+  hasPendingMilestones: order_by
+  hasRejectedMilestones: order_by
   id: order_by
   isAllocated: order_by
   lastUpdated: order_by
@@ -2866,6 +2875,8 @@ select columns of table "Grant"
 """
 enum Grant_select_column {
   """column name"""
+  allMilestonesApproved
+  """column name"""
   amount
   """column name"""
   applicationApproved
@@ -2879,6 +2890,10 @@ enum Grant_select_column {
   gameManager_id
   """column name"""
   grantCompleted
+  """column name"""
+  hasPendingMilestones
+  """column name"""
+  hasRejectedMilestones
   """column name"""
   id
   """column name"""
@@ -2932,6 +2947,7 @@ input Grant_stream_cursor_input {
 
 """Initial value of the column from where the streaming should start"""
 input Grant_stream_cursor_value_input {
+  allMilestonesApproved: Boolean
   amount: numeric
   applicationApproved: Boolean
   currentApplication_id: String
@@ -2939,6 +2955,8 @@ input Grant_stream_cursor_value_input {
   db_write_timestamp: timestamp
   gameManager_id: String
   grantCompleted: Boolean
+  hasPendingMilestones: Boolean
+  hasRejectedMilestones: Boolean
   id: String
   isAllocated: Boolean
   lastUpdated: Int
@@ -3255,6 +3273,9 @@ type MilestoneSet {
     """filter the rows returned"""
     where: Milestone_bool_exp
   ): [Milestone!]!
+  milestonesCompleted: Int!
+  milestonesPending: Int!
+  milestonesRejected: Int!
   status: Int!
   timestamp: Int!
 }
@@ -3282,6 +3303,9 @@ order by avg() on columns of table "MilestoneSet"
 input MilestoneSet_avg_order_by {
   index: order_by
   milestoneLength: order_by
+  milestonesCompleted: order_by
+  milestonesPending: order_by
+  milestonesRejected: order_by
   status: order_by
   timestamp: order_by
 }
@@ -3300,6 +3324,9 @@ input MilestoneSet_bool_exp {
   index: Int_comparison_exp
   milestoneLength: Int_comparison_exp
   milestones: Milestone_bool_exp
+  milestonesCompleted: Int_comparison_exp
+  milestonesPending: Int_comparison_exp
+  milestonesRejected: Int_comparison_exp
   status: Int_comparison_exp
   timestamp: Int_comparison_exp
 }
@@ -3313,6 +3340,9 @@ input MilestoneSet_max_order_by {
   id: order_by
   index: order_by
   milestoneLength: order_by
+  milestonesCompleted: order_by
+  milestonesPending: order_by
+  milestonesRejected: order_by
   status: order_by
   timestamp: order_by
 }
@@ -3326,6 +3356,9 @@ input MilestoneSet_min_order_by {
   id: order_by
   index: order_by
   milestoneLength: order_by
+  milestonesCompleted: order_by
+  milestonesPending: order_by
+  milestonesRejected: order_by
   status: order_by
   timestamp: order_by
 }
@@ -3338,6 +3371,9 @@ input MilestoneSet_order_by {
   id: order_by
   index: order_by
   milestoneLength: order_by
+  milestonesCompleted: order_by
+  milestonesPending: order_by
+  milestonesRejected: order_by
   milestones_aggregate: Milestone_aggregate_order_by
   status: order_by
   timestamp: order_by
@@ -3358,6 +3394,12 @@ enum MilestoneSet_select_column {
   """column name"""
   milestoneLength
   """column name"""
+  milestonesCompleted
+  """column name"""
+  milestonesPending
+  """column name"""
+  milestonesRejected
+  """column name"""
   status
   """column name"""
   timestamp
@@ -3369,6 +3411,9 @@ order by stddev() on columns of table "MilestoneSet"
 input MilestoneSet_stddev_order_by {
   index: order_by
   milestoneLength: order_by
+  milestonesCompleted: order_by
+  milestonesPending: order_by
+  milestonesRejected: order_by
   status: order_by
   timestamp: order_by
 }
@@ -3379,6 +3424,9 @@ order by stddev_pop() on columns of table "MilestoneSet"
 input MilestoneSet_stddev_pop_order_by {
   index: order_by
   milestoneLength: order_by
+  milestonesCompleted: order_by
+  milestonesPending: order_by
+  milestonesRejected: order_by
   status: order_by
   timestamp: order_by
 }
@@ -3389,6 +3437,9 @@ order by stddev_samp() on columns of table "MilestoneSet"
 input MilestoneSet_stddev_samp_order_by {
   index: order_by
   milestoneLength: order_by
+  milestonesCompleted: order_by
+  milestonesPending: order_by
+  milestonesRejected: order_by
   status: order_by
   timestamp: order_by
 }
@@ -3410,6 +3461,9 @@ input MilestoneSet_stream_cursor_value_input {
   id: String
   index: Int
   milestoneLength: Int
+  milestonesCompleted: Int
+  milestonesPending: Int
+  milestonesRejected: Int
   status: Int
   timestamp: Int
 }
@@ -3420,6 +3474,9 @@ order by sum() on columns of table "MilestoneSet"
 input MilestoneSet_sum_order_by {
   index: order_by
   milestoneLength: order_by
+  milestonesCompleted: order_by
+  milestonesPending: order_by
+  milestonesRejected: order_by
   status: order_by
   timestamp: order_by
 }
@@ -3430,6 +3487,9 @@ order by var_pop() on columns of table "MilestoneSet"
 input MilestoneSet_var_pop_order_by {
   index: order_by
   milestoneLength: order_by
+  milestonesCompleted: order_by
+  milestonesPending: order_by
+  milestonesRejected: order_by
   status: order_by
   timestamp: order_by
 }
@@ -3440,6 +3500,9 @@ order by var_samp() on columns of table "MilestoneSet"
 input MilestoneSet_var_samp_order_by {
   index: order_by
   milestoneLength: order_by
+  milestonesCompleted: order_by
+  milestonesPending: order_by
+  milestonesRejected: order_by
   status: order_by
   timestamp: order_by
 }
@@ -3450,6 +3513,9 @@ order by variance() on columns of table "MilestoneSet"
 input MilestoneSet_variance_order_by {
   index: order_by
   milestoneLength: order_by
+  milestonesCompleted: order_by
+  milestonesPending: order_by
+  milestonesRejected: order_by
   status: order_by
   timestamp: order_by
 }
