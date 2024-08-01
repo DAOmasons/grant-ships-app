@@ -28,7 +28,7 @@ export const TopSection = () => {
       px="md"
       mb={'lg'}
       bg={theme.colors.dark[6]}
-      w={isTablet ? '100%' : 640}
+      w={isTablet ? '100%' : 600}
     >
       <Flex
         align={isTablet ? 'flex-start' : 'center'}

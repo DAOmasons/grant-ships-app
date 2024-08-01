@@ -15,12 +15,22 @@ import { useGrant } from '../../hooks/useGrant';
 import { notifications } from '@mantine/notifications';
 import { Address } from 'viem';
 import Complete from '../../assets/Complete.svg?react';
+import { useUserData } from '../../hooks/useUserState';
 
 export const GrantComplete = () => {
   const theme = useMantineTheme();
 
   const { tx } = useTx();
-  const { ship, project, refetchGrant, grant, isLoadingGrant } = useGrant();
+  const {
+    ship,
+    project,
+    refetchGrant,
+    grant,
+    isLoadingGrant,
+    isProjectMember,
+    isShipOperator,
+  } = useGrant();
+  const { userData } = useUserData();
   const [isLoading, setIsLoading] = React.useState(false);
 
   const isCompleted = grant?.grantCompleted;
@@ -55,6 +65,15 @@ export const GrantComplete = () => {
     });
   };
 
+  if (
+    !isProjectMember &&
+    !isShipOperator &&
+    !userData?.isFacilitator &&
+    !isCompleted
+  ) {
+    return <></>;
+  }
+
   if (isLoadingGrant) {
     return <></>;
   }
@@ -67,7 +86,7 @@ export const GrantComplete = () => {
             <Box mb="md">
               <Complete height={90} width={90} />
             </Box>
-            <Text>Congratulations! Your grant is complete.</Text>
+            <Text>Congratulations! The grant is complete.</Text>
           </Flex>
           <Divider mb="lg" />
         </>

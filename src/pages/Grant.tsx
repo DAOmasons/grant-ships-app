@@ -175,11 +175,11 @@ const ProjectActions = () => {
     useDisclosure();
 
   const isApplicationStage =
-    !grant || (grant?.status && grant.status < GrantStatus.ShipApproved);
+    !grant || (grant?.status && grant.status < GrantStatus.ApplicationApproved);
   const isMilestonePlanning =
     grant?.status &&
-    grant.status >= GrantStatus.ShipApproved &&
-    grant?.status < GrantStatus.FacilitatorApproved;
+    grant.status >= GrantStatus.ApplicationApproved &&
+    grant?.status < GrantStatus.Allocated;
 
   const areMilestonesLocked =
     grant?.isAllocated &&
