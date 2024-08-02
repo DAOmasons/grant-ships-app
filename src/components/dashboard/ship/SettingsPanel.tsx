@@ -352,7 +352,7 @@ const ApplicationDrawer = ({
           Post
         </TxButton>
       </Group>
-      <RTEditor editor={editor} />
+      <RTEditor editor={editor} noHeading />
     </PageDrawer>
   );
 };

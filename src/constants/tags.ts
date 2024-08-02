@@ -1,6 +1,7 @@
 export enum Tag {
   ShipPostUpdate = 'TAG:SHIP_POST_UPDATE',
   ShipBeacon = 'TAG:SHIP_BEACON',
+  ShipInvite = 'TAG:SHIP_INVITE',
   ShipReviewGrant = 'TAG:SHIP_REVIEW_GRANT',
   ShipApplication = 'TAG:SHIP_APPLICATION',
   ProjectPostUpdate = 'TAG:PROJECT_POST_UPDATE',

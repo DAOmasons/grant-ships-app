@@ -18,6 +18,7 @@ import {
 } from 'react-router-dom';
 import {
   IconFileDescription,
+  IconGitCommit,
   IconPennant,
   IconPlus,
   IconRoute,
@@ -62,7 +63,7 @@ export const Grant = () => {
                 value: 'timeline',
                 label: (
                   <Center style={{ gap: 8 }}>
-                    <IconRoute size={16} />
+                    <IconGitCommit size={16} />
                     <span>Timeline</span>
                   </Center>
                 ),

@@ -9867,6 +9867,12 @@ const merger = new(BareMerger as any)({
         },
         location: 'GetRecordsByTagDocument.graphql'
       },{
+        document: GetShipAddressByIdDocument,
+        get rawSDL() {
+          return printWithCache(GetShipAddressByIdDocument);
+        },
+        location: 'GetShipAddressByIdDocument.graphql'
+      },{
         document: GetShipFundsAvailableDocument,
         get rawSDL() {
           return printWithCache(GetShipFundsAvailableDocument);
@@ -10272,6 +10278,13 @@ export type getRecordsByTagQueryVariables = Exact<{
 
 
 export type getRecordsByTagQuery = { Record: Array<Pick<Record, 'id' | 'tag' | 'hatId' | 'mdPointer' | 'mdProtocol'>> };
+
+export type getShipAddressByIdQueryVariables = Exact<{
+  shipId: Scalars['String'];
+}>;
+
+
+export type getShipAddressByIdQuery = { GrantShip_by_pk?: Maybe<Pick<GrantShip, 'id' | 'shipContractAddress'>> };
 
 export type getShipFundsAvailableQueryVariables = Exact<{
   id: Scalars['String'];
@@ -10901,6 +10914,14 @@ export const getRecordsByTagDocument = gql`
   }
 }
     ` as unknown as DocumentNode<getRecordsByTagQuery, getRecordsByTagQueryVariables>;
+export const getShipAddressByIdDocument = gql`
+    query getShipAddressById($shipId: String!) {
+  GrantShip_by_pk(id: $shipId) {
+    id
+    shipContractAddress
+  }
+}
+    ` as unknown as DocumentNode<getShipAddressByIdQuery, getShipAddressByIdQueryVariables>;
 export const getShipFundsAvailableDocument = gql`
     query getShipFundsAvailable($id: String!) {
   GrantShip(where: {id: {_eq: $id}}) {
@@ -11054,6 +11075,7 @@ export const ShipsPageQueryDocument = gql`
 
 
 
+
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
@@ -11098,6 +11120,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     getRecordsByTag(variables: getRecordsByTagQueryVariables, options?: C): Promise<getRecordsByTagQuery> {
       return requester<getRecordsByTagQuery, getRecordsByTagQueryVariables>(getRecordsByTagDocument, variables, options) as Promise<getRecordsByTagQuery>;
+    },
+    getShipAddressById(variables: getShipAddressByIdQueryVariables, options?: C): Promise<getShipAddressByIdQuery> {
+      return requester<getShipAddressByIdQuery, getShipAddressByIdQueryVariables>(getShipAddressByIdDocument, variables, options) as Promise<getShipAddressByIdQuery>;
     },
     getShipFundsAvailable(variables: getShipFundsAvailableQueryVariables, options?: C): Promise<getShipFundsAvailableQuery> {
       return requester<getShipFundsAvailableQuery, getShipFundsAvailableQueryVariables>(getShipFundsAvailableDocument, variables, options) as Promise<getShipFundsAvailableQuery>;

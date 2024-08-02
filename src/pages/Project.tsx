@@ -56,6 +56,7 @@ import { Player } from '../types/ui';
 import { getProjectGrants } from '../queries/getProjectGrants';
 import { MilestoneProgress } from '../components/projectItems/MilestoneProgress';
 import { GrantCard } from '../components/grant/GrantCard';
+import { GrantInvite } from '../components/projectItems/GrantInvite';
 
 const infiniteWrapper = async ({ pageParam }: any) => {
   const result = await getEntityFeed(pageParam);
@@ -126,6 +127,8 @@ export const Project = () => {
       userData && !!userData.projects?.find((project) => project.anchor === id)
     );
   }, [userData, id]);
+
+  const isShipOperator = userData && userData.isShipOperator;
 
   if (isLoading) return <SingleItemPageSkeleton />;
 
@@ -303,6 +306,14 @@ export const Project = () => {
                   <IconPencil size={16} />
                 </ActionIcon>
               </Tooltip>
+            )}
+            {isShipOperator && (
+              <GrantInvite
+                projectId={project.id}
+                grantShipIds={
+                  grants?.map((grant) => grant.ship.id as string) || []
+                }
+              />
             )}
           </Group>
         </Group>
