@@ -14,20 +14,14 @@ import { MilestoneSetDisplay } from './MilestoneSetDisplay';
 import { AllocationComplete } from './AllocationComplete';
 import { MilestoneDisplay } from './MilestoneDisplay';
 import { FundsDistributed } from './FundsDistributed';
-import { useMemo } from 'react';
-import { GameStatus } from '../../types/common';
+
 import { GrantHelper } from './GrantHelpers';
+import { GrantInvite } from '../projectItems/GrantInvite';
+import { InsetUpdate } from './InsetUpdate';
+import { IconMail } from '@tabler/icons-react';
 
 export const GrantTimeline = () => {
   const { timeline, ship, project, currentMilestoneSet } = useGrant();
-
-  const hasCompletedAllMilestones = useMemo(() => {
-    if (!currentMilestoneSet) return false;
-
-    return currentMilestoneSet.resolvedMilestones.every((milestone) => {
-      return milestone.status === GameStatus.Accepted;
-    });
-  }, [currentMilestoneSet]);
 
   return (
     <Box>
@@ -74,6 +68,20 @@ export const GrantTimeline = () => {
             />
           );
         }
+        if (item.tag === 'grant/invite/ship') {
+          const update = item as GrantUpdate;
+
+          return (
+            <InsetUpdate
+              key={update.id}
+              posterName={ship?.name || ''}
+              tagline={`has invited ${project?.name} to start a grant!`}
+              symbolUI={<IconMail />}
+              timestamp={update.timestamp}
+            />
+          );
+        }
+
         if (item.tag === 'application') {
           const doc = item as any as ApplicationDisplayType;
           return (

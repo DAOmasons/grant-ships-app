@@ -9,7 +9,7 @@ export const NextStep = ({
   icon?: ReactNode;
 }) => {
   return (
-    <Box mb="lg" pl={50}>
+    <Box mb="lg">
       <Box pl={50} mb="sm" opacity={0.8}>
         <Flex gap="8">
           <Box style={{ flexShrink: 0 }}>{icon}</Box>

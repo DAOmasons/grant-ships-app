@@ -104,8 +104,6 @@ export const Ship = () => {
     enabled: !!id,
   });
 
-  console.log('grants', grants);
-
   if (isLoading) {
     return <SingleItemPageSkeleton />;
   }

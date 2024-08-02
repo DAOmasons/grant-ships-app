@@ -180,10 +180,11 @@ const ProjectActions = () => {
   const isMilestonePlanning =
     grant?.status &&
     grant.status >= GrantStatus.ApplicationApproved &&
-    grant?.status < GrantStatus.Allocated;
+    grant?.status <= GrantStatus.Allocated;
 
   const areMilestonesLocked =
-    grant?.isAllocated &&
+    grant?.status &&
+    grant.status === GrantStatus.Allocated &&
     grant?.currentMilestones?.status === GameStatus.Accepted;
 
   return (
