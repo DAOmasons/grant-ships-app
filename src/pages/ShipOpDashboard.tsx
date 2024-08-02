@@ -101,7 +101,8 @@ export const ShipOpDashboard = () => {
           )}
         </Tabs.Panel> */}
         <Tabs.Panel value="postUpdate">
-          <PostUpdatePanel ship={shipData} />
+          <></>
+          {/* <PostUpdatePanel ship={shipData} /> */}
         </Tabs.Panel>
       </Tabs>
     </MainSection>

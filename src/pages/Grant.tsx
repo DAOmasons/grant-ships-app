@@ -19,6 +19,7 @@ import {
 import {
   IconFileDescription,
   IconGitCommit,
+  IconPencil,
   IconPennant,
   IconPlus,
   IconRoute,
@@ -165,8 +166,14 @@ const ShipActions = () => {
 };
 
 const ProjectActions = () => {
-  const { project, ship, refetchGrant, applicationTemplate, grant } =
-    useGrant();
+  const {
+    project,
+    ship,
+    refetchGrant,
+    applicationTemplate,
+    grant,
+    currentApplication,
+  } = useGrant();
   const [postOpened, { open: openPost, close: closePost }] = useDisclosure();
   const [
     applicationOpened,
@@ -187,6 +194,8 @@ const ProjectActions = () => {
     grant.status === GrantStatus.Allocated &&
     grant?.currentMilestones?.status === GameStatus.Accepted;
 
+  const alreadyHasApplication = !!currentApplication;
+
   return (
     <>
       <Stack pos="fixed" top={'260px'} gap="sm">
@@ -199,13 +208,21 @@ const ProjectActions = () => {
             <Text>Milestones</Text>
           </Button>
         )}
-        {isApplicationStage && (
+        {isApplicationStage && alreadyHasApplication ? (
           <Button
             variant="menu"
             leftSection={<IconPlus />}
             onClick={openApplication}
           >
             <Text>Application</Text>
+          </Button>
+        ) : (
+          <Button
+            variant="menu"
+            leftSection={<IconPencil />}
+            onClick={openApplication}
+          >
+            <Text>Update Application</Text>
           </Button>
         )}
         <Button variant="menu" leftSection={<IconPlus />} onClick={openPost}>

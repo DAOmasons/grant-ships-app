@@ -56,7 +56,7 @@ export const ApplicationDrawer = ({
   opened: boolean;
   onClose: () => void;
 }) => {
-  const { project, ship, refetchGrant } = useGrant();
+  const { project, ship, refetchGrant, currentApplication } = useGrant();
   const { tx } = useTx();
 
   const editor = useEditor({

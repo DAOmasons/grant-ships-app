@@ -57,10 +57,10 @@ export const ApplicationDisplay = ({
   const color =
     status === GameStatus.Rejected
       ? theme.colors.red[6]
-      : status === GameStatus.Pending
-        ? theme.colors.yellow[6]
-        : !isCurrentDraft
-          ? theme.colors.dark[2]
+      : !isCurrentDraft
+        ? theme.colors.dark[2]
+        : status === GameStatus.Pending
+          ? theme.colors.yellow[6]
           : status === GameStatus.Accepted
             ? theme.colors.green[6]
             : theme.colors.dark[2];
@@ -68,10 +68,10 @@ export const ApplicationDisplay = ({
   const tagIcon =
     status === GameStatus.Rejected ? (
       <IconExclamationCircle size={18} color={color} />
-    ) : status === GameStatus.Pending ? (
-      <IconClock size={18} color={color} />
     ) : !isCurrentDraft ? (
       <IconFileX size={18} color={color} />
+    ) : status === GameStatus.Pending ? (
+      <IconClock size={18} color={color} />
     ) : status === GameStatus.Accepted ? (
       <IconCircleCheck size={18} color={color} />
     ) : (
@@ -81,10 +81,10 @@ export const ApplicationDisplay = ({
   const applicationText =
     status === GameStatus.Rejected
       ? 'Application Not Approved'
-      : status === GameStatus.Pending
-        ? 'Application in Review'
-        : !isCurrentDraft
-          ? 'Inactive Draft'
+      : !isCurrentDraft
+        ? 'Inactive: Previous Draft'
+        : status === GameStatus.Pending
+          ? 'Application in Review'
           : status === GameStatus.Accepted
             ? 'Application Approved'
             : 'Unknown Status';
@@ -170,7 +170,7 @@ export const ApplicationDisplay = ({
         ) : (
           <RTDisplay content={rtContent} minified />
         )}
-        {isShipOperator && status === GameStatus.Pending && (
+        {isShipOperator && status === GameStatus.Pending && isCurrentDraft && (
           <ApplicationVerdictControls />
         )}
       </Box>
