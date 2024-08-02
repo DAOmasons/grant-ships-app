@@ -23,7 +23,11 @@ import { FeedPanel } from '../components/shipItems/FeedPanel';
 import { PortfolioPanel } from '../components/shipItems/PortfolioPanel';
 import { DetailsPanel } from '../components/shipItems/DetailsPanel';
 import { Link, useParams } from 'react-router-dom';
-import { GAME_TOKEN } from '../constants/gameSetup';
+import {
+  GAME_MANAGER,
+  GAME_MANAGER_PROD,
+  GAME_TOKEN,
+} from '../constants/gameSetup';
 import { AddressAvatarGroup } from '../components/AddressAvatar';
 import { GameStatus } from '../types/common';
 
@@ -41,6 +45,7 @@ import { useLaptop, useTablet } from '../hooks/useBreakpoint';
 import { useMemo } from 'react';
 import { ShipBadge } from '../components/RoleBadges';
 import { ApplyButton } from '../components/shipItems/ApplyButton';
+import { getShipGrants } from '../queries/getShipGrants';
 
 const infiniteWrapper = async ({ pageParam }: any) => {
   const result = await getEntityFeed(pageParam);
@@ -92,6 +97,18 @@ export const Ship = () => {
   });
 
   const { userData } = useUserData();
+
+  const {
+    data: grants,
+    // isLoading: grantsLoading,
+    // error: grantsError,
+  } = useQuery({
+    queryKey: [`project-grants-${id}`],
+    queryFn: () => getShipGrants(id as string, GAME_MANAGER.ADDRESS),
+    enabled: !!id,
+  });
+
+  console.log('grants', grants);
 
   if (isLoading) {
     return <SingleItemPageSkeleton />;
@@ -209,18 +226,21 @@ export const Ship = () => {
             avatarProps={{ size: 32 }}
           />
           {ship.shipContractAddress && (
-            <ApplyButton shipSrcAddress={ship.shipContractAddress} />
+            <ApplyButton
+              shipSrcAddress={ship.shipContractAddress}
+              disabled={isShipActive}
+            />
           )}
         </Group>
-        <Tabs defaultValue="feed">
+        <Tabs defaultValue="updates">
           <Tabs.List mb={'xl'}>
-            <Tabs.Tab value="feed" w={isTablet ? '4.5rem' : '6rem'}>
-              Feed
-            </Tabs.Tab>
             <Tabs.Tab w={isTablet ? '4.5rem' : '6rem'} value="updates">
               Updates
             </Tabs.Tab>
-            <Tabs.Tab w={isTablet ? '4.5rem' : '6rem'} value="portfolio">
+            <Tabs.Tab value="history" w={isTablet ? '4.5rem' : '6rem'}>
+              Feed
+            </Tabs.Tab>
+            <Tabs.Tab w={isTablet ? '4.5rem' : '6rem'} value="grants">
               Portfolio
             </Tabs.Tab>
             <Tabs.Tab w={isTablet ? '4.5rem' : '6rem'} value="details">
@@ -258,7 +278,7 @@ export const Ship = () => {
               shipId={id}
             />
           </Tabs.Panel> */}
-          <Tabs.Panel value="portfolio">
+          <Tabs.Panel value="grants">
             <></>
             {/* <PortfolioPanel /> */}
           </Tabs.Panel>

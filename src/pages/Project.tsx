@@ -55,6 +55,7 @@ import { PostDrawer } from '../components/PostDrawer';
 import { Player } from '../types/ui';
 import { getProjectGrants } from '../queries/getProjectGrants';
 import { MilestoneProgress } from '../components/projectItems/MilestoneProgress';
+import { GrantCard } from '../components/grant/GrantCard';
 
 const infiniteWrapper = async ({ pageParam }: any) => {
   const result = await getEntityFeed(pageParam);
@@ -110,8 +111,8 @@ export const Project = () => {
 
   const {
     data: grants,
-    isLoading: grantsLoading,
-    error: grantsError,
+    // isLoading: grantsLoading,
+    // error: grantsError,
   } = useQuery({
     queryKey: [`project-grants-${id}`],
     queryFn: () => getProjectGrants(id as string, GAME_MANAGER.ADDRESS),
@@ -305,7 +306,7 @@ export const Project = () => {
             )}
           </Group>
         </Group>
-        <Tabs defaultValue="feed">
+        <Tabs defaultValue="updates">
           <Tabs.List mb={'xl'}>
             <Tabs.Tab w={isTablet ? '4.5rem' : '6rem'} value="updates">
               Updates
@@ -358,6 +359,7 @@ export const Project = () => {
                   avatarUrls={[grant.ship.profileMetadata.imgUrl]}
                   label={`Grant with ${grant.ship.name}`}
                   isActive={grant.status >= GrantStatus.Allocated}
+                  status={grant.status}
                 />
               ))}
             </Stack>
@@ -391,18 +393,6 @@ export const Project = () => {
             </Box>
           )}
           <Paper p="md" bg={theme.colors.dark[6]} w="100%">
-            <Text size="lg" mb={2}>
-              {totalFundsAllocated} {GAME_TOKEN.SYMBOL}
-            </Text>
-            <Group mb="md" gap={4}>
-              <Text size="sm">Funding allocated </Text>
-              <Tooltip
-                position="bottom"
-                label="Total funding allocated to this project"
-              >
-                <IconInfoCircle size={14} color={theme.colors.violet[4]} />
-              </Tooltip>
-            </Group>
             <Text size="lg" mb={2}>
               {totalFundsReceived} {GAME_TOKEN.SYMBOL}
             </Text>
@@ -456,46 +446,5 @@ export const Project = () => {
         />
       )}
     </Flex>
-  );
-};
-
-const GrantCard = ({
-  avatarUrls,
-  label,
-  isActive,
-  linkUrl,
-}: {
-  linkUrl: string;
-  isActive: boolean;
-  avatarUrls: string[];
-  label: string;
-}) => {
-  const theme = useMantineTheme();
-
-  return (
-    <Paper
-      w="100%"
-      bg={theme.colors.dark[6]}
-      p="lg"
-      component={Link}
-      to={linkUrl}
-    >
-      <Group gap={8}>
-        <Avatar.Group>
-          {avatarUrls.map((url) => (
-            <Avatar size={32} src={url} />
-          ))}
-        </Avatar.Group>
-        <Text fz="sm" fw={500}>
-          {label}
-        </Text>
-        <Tooltip label="Label">
-          <IconCheck
-            size={16}
-            color={isActive ? theme.colors.blue[6] : theme.colors.dark[5]}
-          />
-        </Tooltip>
-      </Group>
-    </Paper>
   );
 };

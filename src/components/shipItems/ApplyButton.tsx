@@ -16,7 +16,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import { _grantId } from '../../utils/id';
 import { IconAward } from '@tabler/icons-react';
 
-export const ApplyButton = ({ shipSrcAddress }: { shipSrcAddress: string }) => {
+export const ApplyButton = ({
+  shipSrcAddress,
+  disabled,
+}: {
+  shipSrcAddress: string;
+  disabled?: boolean;
+}) => {
   const { userData, userLoading } = useUserData();
   const [opened, { close, open }] = useDisclosure();
   const { isConnected } = useAccount();
@@ -100,6 +106,7 @@ export const ApplyButton = ({ shipSrcAddress }: { shipSrcAddress: string }) => {
   if (userData?.projects?.length === 1) {
     return (
       <Button
+        disabled={disabled || userLoading}
         onClick={(e) => {
           e.stopPropagation();
           navigate(
@@ -115,7 +122,7 @@ export const ApplyButton = ({ shipSrcAddress }: { shipSrcAddress: string }) => {
   return (
     <>
       <Button
-        disabled={userLoading}
+        disabled={disabled || userLoading}
         onClick={(e) => {
           e.stopPropagation();
           open();

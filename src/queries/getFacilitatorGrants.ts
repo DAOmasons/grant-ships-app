@@ -2,7 +2,7 @@ import { getBuiltGraphSDK } from '../.graphclient';
 import { resolveProjectMetadata } from '../resolvers/projectResolvers';
 import { resolveShipMetadata } from '../resolvers/shipResolvers';
 
-export const getShipGrants = async (gameId: string) => {
+export const getFacilitatorGrants = async (gameId: string) => {
   const { getFacilitatorGrants } = getBuiltGraphSDK();
 
   const data = await getFacilitatorGrants({
