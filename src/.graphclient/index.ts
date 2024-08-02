@@ -10130,7 +10130,7 @@ export type GrantApplicationFragment = (
 );
 
 export type GrantDataFragment = (
-  Pick<Grant, 'id' | 'status' | 'lastUpdated' | 'amount' | 'isAllocated' | 'grantCompleted' | 'applicationApproved'>
+  Pick<Grant, 'id' | 'status' | 'lastUpdated' | 'amount' | 'isAllocated' | 'grantCompleted' | 'applicationApproved' | 'hasPendingMilestones' | 'hasRejectedMilestones' | 'allMilestonesApproved'>
   & { milestoneDrafts: Array<(
     Pick<MilestoneSet, 'id' | 'index' | 'timestamp' | 'status' | 'milestoneLength'>
     & { milestones: Array<(
@@ -10166,7 +10166,7 @@ export type getGrantQuery = { Project_by_pk?: Maybe<(
     Pick<GrantShip, 'id' | 'name' | 'status' | 'poolId' | 'shipContractAddress' | 'shipApplicationBytesData' | 'owner' | 'balance' | 'totalAvailableFunds' | 'totalAllocated' | 'totalDistributed' | 'totalRoundAmount'>
     & { beaconMessage?: Maybe<Pick<RawMetadata, 'pointer'>>, customApplication?: Maybe<Pick<RawMetadata, 'pointer'>>, profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>>, alloProfileMembers?: Maybe<Pick<ProfileMemberGroup, 'addresses'>> }
   )>, Grant_by_pk?: Maybe<(
-    Pick<Grant, 'id' | 'status' | 'lastUpdated' | 'amount' | 'isAllocated' | 'grantCompleted' | 'applicationApproved'>
+    Pick<Grant, 'id' | 'status' | 'lastUpdated' | 'amount' | 'isAllocated' | 'grantCompleted' | 'applicationApproved' | 'hasPendingMilestones' | 'hasRejectedMilestones' | 'allMilestonesApproved'>
     & { milestoneDrafts: Array<(
       Pick<MilestoneSet, 'id' | 'index' | 'timestamp' | 'status' | 'milestoneLength'>
       & { milestones: Array<(
@@ -10631,6 +10631,9 @@ export const GrantDataFragmentDoc = gql`
   isAllocated
   grantCompleted
   applicationApproved
+  hasPendingMilestones
+  hasRejectedMilestones
+  allMilestonesApproved
   milestoneDrafts {
     ...Milestones
   }
