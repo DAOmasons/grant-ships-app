@@ -1,5 +1,5 @@
 import { PageDrawer } from '../PageDrawer';
-import { Group, Stack, TextInput } from '@mantine/core';
+import { Group, Stack, Text, TextInput, useMantineTheme } from '@mantine/core';
 import { PlayerAvatar } from '../PlayerAvatar';
 import { Player } from '../../types/ui';
 import { useGrant } from '../../hooks/useGrant';
@@ -58,6 +58,7 @@ export const ApplicationDrawer = ({
 }) => {
   const { project, ship, refetchGrant, currentApplication } = useGrant();
   const { tx } = useTx();
+  const theme = useMantineTheme();
 
   const editor = useEditor({
     extensions: [
@@ -180,6 +181,9 @@ export const ApplicationDrawer = ({
       },
     });
   };
+
+  const alreadyHasApplication = !!currentApplication;
+
   return (
     <PageDrawer pageTitle="Post Application" opened={opened} onClose={onClose}>
       <Group mt="40" mb="lg" w="100%" justify="space-between">
@@ -195,6 +199,12 @@ export const ApplicationDrawer = ({
           Apply
         </TxButton>
       </Group>
+      {alreadyHasApplication && (
+        <Text mb="md" size="sm" c={theme.colors.yellow[6]}>
+          You have already submitted an application. Resubmitting an old
+          application will overwrite the previous one.
+        </Text>
+      )}
       <Stack mb="md">
         <DatePickerInput
           label="Expected delivery"

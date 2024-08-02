@@ -211,18 +211,18 @@ const ProjectActions = () => {
         {isApplicationStage && alreadyHasApplication ? (
           <Button
             variant="menu"
-            leftSection={<IconPlus />}
-            onClick={openApplication}
-          >
-            <Text>Application</Text>
-          </Button>
-        ) : (
-          <Button
-            variant="menu"
             leftSection={<IconPencil />}
             onClick={openApplication}
           >
             <Text>Update Application</Text>
+          </Button>
+        ) : (
+          <Button
+            variant="menu"
+            leftSection={<IconPlus />}
+            onClick={openApplication}
+          >
+            <Text>Application</Text>
           </Button>
         )}
         <Button variant="menu" leftSection={<IconPlus />} onClick={openPost}>
