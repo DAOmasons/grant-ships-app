@@ -20,14 +20,9 @@ import {
 } from '@tabler/icons-react';
 import { FundingIndicator } from '../components/shipItems/FundingIndicator';
 import { FeedPanel } from '../components/shipItems/FeedPanel';
-import { PortfolioPanel } from '../components/shipItems/PortfolioPanel';
 import { DetailsPanel } from '../components/shipItems/DetailsPanel';
-import { Link, useParams } from 'react-router-dom';
-import {
-  GAME_MANAGER,
-  GAME_MANAGER_PROD,
-  GAME_TOKEN,
-} from '../constants/gameSetup';
+import { useParams } from 'react-router-dom';
+import { GAME_MANAGER, GAME_TOKEN } from '../constants/gameSetup';
 import { AddressAvatarGroup } from '../components/AddressAvatar';
 import { GameStatus, GrantStatus } from '../types/common';
 
@@ -280,16 +275,18 @@ export const Ship = () => {
             />
           </Tabs.Panel> */}
           <Tabs.Panel value="grants">
-            {grants?.map((grant) => (
-              <GrantCard
-                key={grant.id}
-                avatarUrls={[grant.project?.metadata?.imgUrl || '']}
-                label={`${grant.project.name}`}
-                isActive={grant.status >= GrantStatus.Allocated}
-                linkUrl={`/grant/${grant.id}/timeline`}
-                status={grant.status}
-              />
-            ))}
+            <Stack>
+              {grants?.map((grant) => (
+                <GrantCard
+                  key={grant.id}
+                  avatarUrls={[grant.project?.metadata?.imgUrl || '']}
+                  label={`${grant.project.name}`}
+                  isActive={grant.status >= GrantStatus.Allocated}
+                  linkUrl={`/grant/${grant.id}/timeline`}
+                  status={grant.status}
+                />
+              ))}
+            </Stack>
           </Tabs.Panel>
         </Tabs>
       </MainSection>

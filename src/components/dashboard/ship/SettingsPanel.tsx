@@ -1,7 +1,6 @@
 import { Box, Button, Divider, Group, Text } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import {
-  IconBuildingLighthouse,
   IconChartBar,
   IconFileDescription,
   IconMessage,
@@ -56,21 +55,20 @@ export const SettingsPanel = ({
         <Group mb="sm">
           <IconMessage size={24} />
           <Text fz="lg" fw={600}>
-            Beacon Message
+            Welcome Message
           </Text>
         </Group>
         <Text fz="sm" mb="md">
           This message will be displayed whenever a project starts a new grant
-          with you. In the future, it will also be displayed when you approach
-          projects to apply for a grant.
+          with you.
         </Text>
         {hasLoaded ? (
           <Button mb="lg" onClick={openBeacon}>
-            Manage Beacon
+            Manage Message
           </Button>
         ) : (
           <Button mb="lg" disabled>
-            Manage Beacon
+            Manage Message
           </Button>
         )}
         <Divider mb="lg" />
@@ -267,7 +265,6 @@ const ApplicationDrawer = ({
   onClose: () => void;
   content?: Content;
 }) => {
-  console.log('test');
   const postId = `custom-application-${shipSrcAddress}`;
   const editor = useEditor({
     extensions: [
@@ -282,8 +279,61 @@ const ApplicationDrawer = ({
     content,
   });
 
-  const handlePost = () => {
-    console.log(editor?.getJSON());
+  const { tx } = useTx();
+
+  const handlePost = async () => {
+    if (!shipSrcAddress) {
+      notifications.show({
+        title: 'Error',
+        message: 'Ship address is missing',
+        color: 'red',
+      });
+
+      return;
+    }
+
+    if (!editor) {
+      notifications.show({
+        title: 'Error',
+        message: 'No content to post',
+        color: 'red',
+      });
+
+      return;
+    }
+
+    const validated = tiptapContentSchema.safeParse(editor.getJSON());
+
+    if (!validated.success) {
+      notifications.show({
+        title: 'Validation Error',
+        message: "Application text doesn't match the schema",
+        color: 'red',
+      });
+
+      return;
+    }
+
+    onClose();
+    const pinRes = await pinJSONToIPFS(validated.data);
+
+    if (typeof pinRes.IpfsHash !== 'string' && pinRes.IpfsHash[0] !== 'Q') {
+      notifications.show({
+        title: 'IPFS Upload Error',
+        message: pinRes.IpfsHash[1],
+        color: 'red',
+      });
+      return;
+    }
+
+    tx({
+      writeContractParams: {
+        abi: ShipAbi,
+        functionName: 'postUpdate',
+        address: shipSrcAddress as Address,
+        args: [Tag.ShipApplication, [1n, pinRes.IpfsHash], ZER0_ADDRESS],
+      },
+    });
   };
 
   return (
