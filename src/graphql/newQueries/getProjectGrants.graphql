@@ -1,6 +1,7 @@
 fragment ShipDisplay on GrantShip {
   id
   name
+  shipContractAddress
   profileMetadata {
     pointer
   }

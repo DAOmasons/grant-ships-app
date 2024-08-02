@@ -1,4 +1,4 @@
-import { getBuiltGraphSDK } from '../.graphclient';
+import { GrantBasicFragment, getBuiltGraphSDK } from '../.graphclient';
 import { ProjectPageUI } from '../types/ui';
 import { getGatewayUrl, getIpfsJson } from '../utils/ipfs/get';
 import { ProjectProfileMetadata } from '../utils/ipfs/metadataValidation';

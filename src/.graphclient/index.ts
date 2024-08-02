@@ -10036,7 +10036,7 @@ export type getFacilitatorGrantsQuery = { grants: Array<(
       Pick<Project, 'id' | 'name'>
       & { metadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
     )>, ship?: Maybe<(
-      Pick<GrantShip, 'id' | 'name'>
+      Pick<GrantShip, 'id' | 'name' | 'shipContractAddress'>
       & { profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
     )>, currentMilestones?: Maybe<(
       Pick<MilestoneSet, 'id' | 'milestoneLength' | 'milestonesCompleted' | 'milestonesRejected' | 'milestonesPending'>
@@ -10196,7 +10196,7 @@ export type getGsVotingQuery = { GrantShipsVoting: Array<(
   )> };
 
 export type ShipDisplayFragment = (
-  Pick<GrantShip, 'id' | 'name'>
+  Pick<GrantShip, 'id' | 'name' | 'shipContractAddress'>
   & { profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
 );
 
@@ -10209,7 +10209,7 @@ export type getProjectGrantsQueryVariables = Exact<{
 export type getProjectGrantsQuery = { grants: Array<(
     Pick<Grant, 'amountDistributed' | 'amountAllocated' | 'id' | 'status' | 'lastUpdated' | 'amount' | 'grantCompleted' | 'hasPendingMilestones' | 'hasRejectedMilestones' | 'allMilestonesApproved'>
     & { ship?: Maybe<(
-      Pick<GrantShip, 'id' | 'name'>
+      Pick<GrantShip, 'id' | 'name' | 'shipContractAddress'>
       & { profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
     )>, currentMilestones?: Maybe<(
       Pick<MilestoneSet, 'id' | 'milestoneLength' | 'milestonesCompleted' | 'milestonesRejected' | 'milestonesPending'>
@@ -10637,6 +10637,7 @@ export const ShipDisplayFragmentDoc = gql`
     fragment ShipDisplay on GrantShip {
   id
   name
+  shipContractAddress
   profileMetadata {
     pointer
   }

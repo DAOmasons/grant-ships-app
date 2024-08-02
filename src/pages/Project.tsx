@@ -1,6 +1,7 @@
 import {
   ActionIcon,
   Avatar,
+  AvatarGroup,
   Box,
   Collapse,
   Flex,
@@ -17,6 +18,7 @@ import {
 import { MainSection, PageTitle, ProfileSection } from '../layout/Sections';
 import {
   IconAward,
+  IconCheck,
   IconChevronDown,
   IconChevronUp,
   IconInfoCircle,
@@ -206,7 +208,7 @@ export const Project = () => {
         </Group>
         {isLaptop && (
           <Stack mb="md">
-            {/* {activeGrants?.length !== 0 && (
+            {activeGrants?.length !== 0 && (
               <Box>
                 <Group mb={opened ? 'sm' : 0}>
                   <Text fz="sm">Active Grants</Text>
@@ -216,16 +218,20 @@ export const Project = () => {
                 </Group>
                 <Collapse in={opened}>
                   <Stack gap="sm">
-                    {activeGrants?.map((grant: DashGrant, i: number) => (
+                    {activeGrants?.map((grant, i) => (
                       <MilestoneProgress
+                        amount={BigInt(grant.amount)}
                         key={`milestone-progress-bar-${i}`}
-                        grant={grant}
+                        shipName={grant.ship.name || ''}
+                        shipId={grant.ship.id || ''}
+                        shipAvatar={grant.ship.profileMetadata?.imgUrl || ''}
+                        milestones={grant.currentMilestones?.milestones}
                       />
                     ))}
                   </Stack>
                 </Collapse>
               </Box>
-            )} */}
+            )}
             <Group>
               <Box>
                 <Group gap={4}>
@@ -238,7 +244,7 @@ export const Project = () => {
                   </Tooltip>
                 </Group>
                 <Text size="sm" mb={2}>
-                  {/* {totalFundsAllocated} {GAME_TOKEN.SYMBOL} */}
+                  {totalFundsAllocated} {GAME_TOKEN.SYMBOL}
                 </Text>
               </Box>
               <Box>
@@ -252,7 +258,7 @@ export const Project = () => {
                   </Tooltip>
                 </Group>
                 <Text size="sm" mb={2}>
-                  {/* {totalFundsReceived} {GAME_TOKEN.SYMBOL} */}
+                  {totalFundsReceived} {GAME_TOKEN.SYMBOL}
                 </Text>
               </Box>
             </Group>
@@ -301,14 +307,14 @@ export const Project = () => {
         </Group>
         <Tabs defaultValue="feed">
           <Tabs.List mb={'xl'}>
-            <Tabs.Tab value="feed" w={isTablet ? '4.5rem' : '6rem'}>
-              Feed
-            </Tabs.Tab>
             <Tabs.Tab w={isTablet ? '4.5rem' : '6rem'} value="updates">
               Updates
             </Tabs.Tab>
             <Tabs.Tab w={isTablet ? '4.5rem' : '6rem'} value="grants">
               Grants
+            </Tabs.Tab>
+            <Tabs.Tab value="feed" w={isTablet ? '4.5rem' : '6rem'}>
+              History
             </Tabs.Tab>
             <Tabs.Tab w={isTablet ? '4.5rem' : '6rem'} value="details">
               Contact
@@ -335,16 +341,6 @@ export const Project = () => {
               </Flex>
             )}
           </Tabs.Panel>
-          <Tabs.Panel value="grants">
-            {/* {project.grants && (
-              <GrantsPanel
-                grants={grants}
-                isLoading={grantsLoading}
-                error={grantsError}
-              />
-            )} */}
-            <></>
-          </Tabs.Panel>
           <Tabs.Panel value="updates">
             {/* <ProjectUpdatesPanel
               grants={grants}
@@ -352,6 +348,19 @@ export const Project = () => {
               isProjectMember={isProjectMember}
             /> */}
             <></>
+          </Tabs.Panel>
+          <Tabs.Panel value="grants">
+            <Stack>
+              {grants?.map((grant) => (
+                <GrantCard
+                  key={grant.id}
+                  linkUrl={`/grant/${grant.id}`}
+                  avatarUrls={[grant.ship.profileMetadata.imgUrl]}
+                  label={`Grant with ${grant.ship.name}`}
+                  isActive={grant.status >= GrantStatus.Allocated}
+                />
+              ))}
+            </Stack>
           </Tabs.Panel>
           <Tabs.Panel value="details">
             <Contact
@@ -419,7 +428,6 @@ export const Project = () => {
                     shipId={grant.ship.id || ''}
                     shipAvatar={grant.ship.profileMetadata?.imgUrl || ''}
                     milestones={grant.currentMilestones?.milestones}
-                    // grant={grant}
                   />
                 ))}
               </Stack>
@@ -448,5 +456,46 @@ export const Project = () => {
         />
       )}
     </Flex>
+  );
+};
+
+const GrantCard = ({
+  avatarUrls,
+  label,
+  isActive,
+  linkUrl,
+}: {
+  linkUrl: string;
+  isActive: boolean;
+  avatarUrls: string[];
+  label: string;
+}) => {
+  const theme = useMantineTheme();
+
+  return (
+    <Paper
+      w="100%"
+      bg={theme.colors.dark[6]}
+      p="lg"
+      component={Link}
+      to={linkUrl}
+    >
+      <Group gap={8}>
+        <Avatar.Group>
+          {avatarUrls.map((url) => (
+            <Avatar size={32} src={url} />
+          ))}
+        </Avatar.Group>
+        <Text fz="sm" fw={500}>
+          {label}
+        </Text>
+        <Tooltip label="Label">
+          <IconCheck
+            size={16}
+            color={isActive ? theme.colors.blue[6] : theme.colors.dark[5]}
+          />
+        </Tooltip>
+      </Group>
+    </Paper>
   );
 };

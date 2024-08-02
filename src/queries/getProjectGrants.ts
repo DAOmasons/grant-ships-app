@@ -1,5 +1,20 @@
-import { getBuiltGraphSDK } from '../.graphclient';
-import { resolveShipMetadata } from '../resolvers/shipResolvers';
+import {
+  GrantBasicFragment,
+  ShipDisplayFragment,
+  getBuiltGraphSDK,
+} from '../.graphclient';
+import { ShipMetadata, resolveShipMetadata } from '../resolvers/shipResolvers';
+
+type ProjectGrantBasic = GrantBasicFragment & {
+  amountDistributed: string;
+  amountAllocated: string;
+};
+
+export type ProjectGrant = ProjectGrantBasic & {
+  ship: ShipDisplayFragment & {
+    profileMetadata: ShipMetadata;
+  };
+};
 
 export const getProjectGrants = async (projectId: string, gameId: string) => {
   const { getProjectGrants } = getBuiltGraphSDK();
