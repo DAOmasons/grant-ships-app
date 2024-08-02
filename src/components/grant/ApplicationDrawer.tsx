@@ -4,7 +4,7 @@ import { PlayerAvatar } from '../PlayerAvatar';
 import { Player } from '../../types/ui';
 import { useGrant } from '../../hooks/useGrant';
 import { TxButton } from '../TxButton';
-import { IconFileDescription } from '@tabler/icons-react';
+import { IconFileDescription, IconPencil } from '@tabler/icons-react';
 import StarterKit from '@tiptap/starter-kit';
 import Link from '@tiptap/extension-link';
 import Image from '@tiptap/extension-image';
@@ -51,7 +51,13 @@ export const ApplicationDrawer = ({
   opened,
   onClose,
   content,
+  initialDueDate,
+  initialAmount,
+  initialSendAddress,
 }: {
+  initialDueDate?: Date;
+  initialAmount?: string;
+  initialSendAddress?: string;
   content: Content;
   opened: boolean;
   onClose: () => void;
@@ -71,9 +77,9 @@ export const ApplicationDrawer = ({
 
   const form = useForm({
     initialValues: {
-      sendAddress: '',
-      amount: '',
-      dueDate: null,
+      sendAddress: initialSendAddress || '',
+      amount: initialAmount || '',
+      dueDate: initialDueDate || null,
     },
     validate: zodResolver(applicationSchema),
     validateInputOnBlur: true,
@@ -193,10 +199,12 @@ export const ApplicationDrawer = ({
           name={project?.name}
         />
         <TxButton
-          leftSection={<IconFileDescription />}
+          leftSection={
+            alreadyHasApplication ? <IconPencil /> : <IconFileDescription />
+          }
           onClick={handlePostApplication}
         >
-          Apply
+          {alreadyHasApplication ? 'Resubmit' : 'Apply'}
         </TxButton>
       </Group>
       {alreadyHasApplication && (

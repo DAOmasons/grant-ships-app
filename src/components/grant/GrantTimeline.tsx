@@ -21,7 +21,7 @@ import { InsetUpdate } from './InsetUpdate';
 import { IconMail } from '@tabler/icons-react';
 
 export const GrantTimeline = () => {
-  const { timeline, ship, project, currentMilestoneSet } = useGrant();
+  const { timeline, ship, project } = useGrant();
 
   return (
     <Box>
@@ -84,15 +84,18 @@ export const GrantTimeline = () => {
 
         if (item.tag === 'application') {
           const doc = item as any as ApplicationDisplayType;
+
           return (
             <ApplicationDisplay
               key={doc.id}
               id={doc.id}
               status={doc.status}
+              timestamp={doc.timestamp}
               receivingAddress={doc.receivingAddress}
               amountRequested={doc.amount}
               dueDate={doc.content.dueDate}
               rtContent={doc.content.content}
+              draftNumber={doc.index + 1}
             />
           );
         }

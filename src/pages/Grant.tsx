@@ -38,6 +38,7 @@ import { useUserData } from '../hooks/useUserState';
 import { FacilitatorApprovalDrawer } from '../components/grant/FacilitatorApprovalDrawer';
 import { PageDrawer } from '../components/PageDrawer';
 import { SubmitMilestoneDrawer } from '../components/grant/SubmitMilestoneDrawer';
+import { formatEther, parseEther, weiUnits } from 'viem';
 
 export const Grant = () => {
   const theme = useMantineTheme();
@@ -208,7 +209,7 @@ const ProjectActions = () => {
             <Text>Milestones</Text>
           </Button>
         )}
-        {isApplicationStage && alreadyHasApplication ? (
+        {isApplicationStage && alreadyHasApplication && (
           <Button
             variant="menu"
             leftSection={<IconPencil />}
@@ -216,7 +217,9 @@ const ProjectActions = () => {
           >
             <Text>Update Application</Text>
           </Button>
-        ) : (
+        )}
+
+        {isApplicationStage && !alreadyHasApplication && (
           <Button
             variant="menu"
             leftSection={<IconPlus />}
@@ -229,11 +232,30 @@ const ProjectActions = () => {
           <Text>Message</Text>
         </Button>
       </Stack>
-      <ApplicationDrawer
-        opened={applicationOpened}
-        onClose={closeApplication}
-        content={applicationTemplate}
-      />
+      {alreadyHasApplication ? (
+        <ApplicationDrawer
+          key={`application-drawer-${currentApplication?.id}`}
+          opened={applicationOpened}
+          onClose={closeApplication}
+          content={currentApplication?.content?.content}
+          initialDueDate={
+            new Date(currentApplication?.content.dueDate * 1000 || '')
+          }
+          initialAmount={
+            currentApplication?.amount
+              ? formatEther(currentApplication?.amount)
+              : ''
+          }
+          initialSendAddress={currentApplication?.receivingAddress}
+        />
+      ) : (
+        <ApplicationDrawer
+          key={`application-drawer-new`}
+          opened={applicationOpened}
+          onClose={closeApplication}
+          content={applicationTemplate}
+        />
+      )}
       <PostGrantDrawer
         opened={postOpened}
         onClose={closePost}

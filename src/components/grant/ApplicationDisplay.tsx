@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Divider,
   Group,
   Spoiler,
@@ -30,6 +29,7 @@ import { SCAN_URL } from '../../constants/enpoints';
 import { GameStatus } from '../../types/common';
 import classes from '../../styles/Spoiler.module.css';
 import { ApplicationVerdictControls } from './ApplicationVerdictControls';
+import { useMemo } from 'react';
 
 export const ApplicationDisplay = ({
   amountRequested,
@@ -38,6 +38,8 @@ export const ApplicationDisplay = ({
   rtContent,
   status,
   id,
+  timestamp,
+  draftNumber,
 }: {
   id: string;
   amountRequested: string;
@@ -45,12 +47,19 @@ export const ApplicationDisplay = ({
   dueDate: number;
   rtContent: Content;
   status: GameStatus;
+  timestamp: number;
+  draftNumber: number;
 }) => {
   const theme = useMantineTheme();
-  const { project, ship, grant, isShipOperator } = useGrant();
+  const { project, grant, isShipOperator } = useGrant();
 
   const formattedTime = secondsToLongDate(dueDate);
   const formattedAmount = formatEther(BigInt(amountRequested));
+
+  const time = useMemo(() => {
+    if (!timestamp) return '';
+    return secondsToLongDate(timestamp);
+  }, [timestamp]);
 
   const isCurrentDraft = grant?.currentApplication?.id === id;
 
@@ -82,7 +91,7 @@ export const ApplicationDisplay = ({
     status === GameStatus.Rejected
       ? 'Application Not Approved'
       : !isCurrentDraft
-        ? 'Inactive: Previous Draft'
+        ? 'Inactive: Edited Draft'
         : status === GameStatus.Pending
           ? 'Application in Review'
           : status === GameStatus.Accepted
@@ -93,21 +102,36 @@ export const ApplicationDisplay = ({
 
   return (
     <Box>
-      <Box
-        py={6}
-        px={12}
-        style={{ borderRadius: '4px' }}
-        display="inline-block"
-        bg={theme.colors.dark[5]}
-        mb="md"
-      >
-        <Group gap={6}>
-          {tagIcon}
-          <Text fz={'sm'} c={color}>
-            {applicationText}
+      <Group mb="md" gap={8}>
+        <Box
+          py={6}
+          px={12}
+          style={{ borderRadius: '4px' }}
+          display="inline-block"
+          bg={theme.colors.dark[5]}
+        >
+          <Group gap={6}>
+            {tagIcon}
+            <Text fz={'sm'} c={color}>
+              {applicationText}
+            </Text>
+          </Group>
+        </Box>
+        {status === GameStatus.Accepted ? (
+          <Text size="sm" opacity={0.8}>
+            Final Draft
           </Text>
-        </Group>
-      </Box>
+        ) : (
+          <>
+            <Text size="sm" opacity={0.8}>
+              ·
+            </Text>
+            <Text size="sm" opacity={0.8}>
+              Draft {draftNumber}
+            </Text>
+          </>
+        )}
+      </Group>
       <Box pl={50} mb="lg">
         <Group gap={8} mb={'lg'}>
           <PlayerAvatar
@@ -117,8 +141,18 @@ export const ApplicationDisplay = ({
             imgUrl={project?.metadata?.imgUrl}
           />
           <Text size="sm" opacity={0.8}>
-            submitted a grant application to {ship?.name}
+            submitted an application
           </Text>
+          {time && (
+            <>
+              <Text size="sm" opacity={0.8}>
+                ·
+              </Text>
+              <Text size="sm" opacity={0.8}>
+                {time}
+              </Text>
+            </>
+          )}
         </Group>
         <Divider variant="dotted" mb="lg" />
         <Stack gap="sm" mb="sm">

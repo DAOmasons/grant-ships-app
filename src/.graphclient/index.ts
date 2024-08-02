@@ -10125,7 +10125,7 @@ export type GrantUpdateFragment = (
 );
 
 export type GrantApplicationFragment = (
-  Pick<Application, 'id' | 'amount' | 'receivingAddress' | 'status' | 'timestamp'>
+  Pick<Application, 'id' | 'amount' | 'index' | 'receivingAddress' | 'status' | 'timestamp'>
   & { metadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
 );
 
@@ -10144,10 +10144,10 @@ export type GrantDataFragment = (
       & { metadata?: Maybe<Pick<RawMetadata, 'pointer'>>, milestoneSet?: Maybe<Pick<MilestoneSet, 'id'>> }
     )> }
   )>, applications: Array<(
-    Pick<Application, 'id' | 'amount' | 'receivingAddress' | 'status' | 'timestamp'>
+    Pick<Application, 'id' | 'amount' | 'index' | 'receivingAddress' | 'status' | 'timestamp'>
     & { metadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
   )>, currentApplication?: Maybe<(
-    Pick<Application, 'id' | 'amount' | 'receivingAddress' | 'status' | 'timestamp'>
+    Pick<Application, 'id' | 'amount' | 'index' | 'receivingAddress' | 'status' | 'timestamp'>
     & { metadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
   )> }
 );
@@ -10180,10 +10180,10 @@ export type getGrantQuery = { Project_by_pk?: Maybe<(
         & { metadata?: Maybe<Pick<RawMetadata, 'pointer'>>, milestoneSet?: Maybe<Pick<MilestoneSet, 'id'>> }
       )> }
     )>, applications: Array<(
-      Pick<Application, 'id' | 'amount' | 'receivingAddress' | 'status' | 'timestamp'>
+      Pick<Application, 'id' | 'amount' | 'index' | 'receivingAddress' | 'status' | 'timestamp'>
       & { metadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
     )>, currentApplication?: Maybe<(
-      Pick<Application, 'id' | 'amount' | 'receivingAddress' | 'status' | 'timestamp'>
+      Pick<Application, 'id' | 'amount' | 'index' | 'receivingAddress' | 'status' | 'timestamp'>
       & { metadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
     )> }
   )>, Update: Array<(
@@ -10617,6 +10617,7 @@ export const GrantApplicationFragmentDoc = gql`
     pointer
   }
   amount
+  index
   receivingAddress
   status
   timestamp

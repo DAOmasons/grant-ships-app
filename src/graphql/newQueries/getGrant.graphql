@@ -56,6 +56,7 @@ fragment GrantApplication on Application {
     pointer
   }
   amount
+  index
   receivingAddress
   status
   timestamp
