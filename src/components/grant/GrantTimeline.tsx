@@ -13,11 +13,10 @@ import { VerdictDisplay } from './VerdictDisplay';
 import { MilestoneSetDisplay } from './MilestoneSetDisplay';
 import { AllocationComplete } from './AllocationComplete';
 import { MilestoneDisplay } from './MilestoneDisplay';
-import { DistributePanel } from '../dashboard/facilitator/DistributePanel';
 import { FundsDistributed } from './FundsDistributed';
 import { useMemo } from 'react';
 import { GameStatus } from '../../types/common';
-import { GrantComplete } from './GrantComplete';
+import { GrantHelper } from './GrantHelpers';
 
 export const GrantTimeline = () => {
   const { timeline, ship, project, currentMilestoneSet } = useGrant();
@@ -32,7 +31,7 @@ export const GrantTimeline = () => {
 
   return (
     <Box>
-      {hasCompletedAllMilestones && <GrantComplete />}
+      <GrantHelper />
       {timeline.map((item) => {
         if (item.tag === 'beacon') {
           const update = item as GrantUpdate;
