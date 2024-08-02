@@ -24,7 +24,7 @@ import {
   IconPencil,
 } from '@tabler/icons-react';
 import { FeedPanel } from '../components/shipItems/FeedPanel';
-import { GAME_TOKEN } from '../constants/gameSetup';
+import { GAME_MANAGER, GAME_TOKEN } from '../constants/gameSetup';
 // import { MilestoneProgress } from '../components/projectItems/MilestoneProgress';
 import { Contact } from '../components/Contact';
 
@@ -51,6 +51,8 @@ import { IconPlayerPlay } from '@tabler/icons-react';
 import { PostAffix } from '../components/PostAffix';
 import { PostDrawer } from '../components/PostDrawer';
 import { Player } from '../types/ui';
+import { getProjectGrants } from '../queries/getProjectGrants';
+import { MilestoneProgress } from '../components/projectItems/MilestoneProgress';
 
 const infiniteWrapper = async ({ pageParam }: any) => {
   const result = await getEntityFeed(pageParam);
@@ -104,16 +106,15 @@ export const Project = () => {
     [feedPages]
   );
 
-  // const {
-  //   data: grants,
-  //   isLoading: grantsLoading,
-  //   error: grantsError,
-  // } = useQuery({
-  //   queryKey: [`project-grants-${id}`],
-  //   queryFn: () => getProjectGrants(id as string),
-  //   enabled: !!id,
-  // });
-  const grants = [] as const;
+  const {
+    data: grants,
+    isLoading: grantsLoading,
+    error: grantsError,
+  } = useQuery({
+    queryKey: [`project-grants-${id}`],
+    queryFn: () => getProjectGrants(id as string, GAME_MANAGER.ADDRESS),
+    enabled: !!id,
+  });
 
   const theme = useMantineTheme();
 
@@ -145,27 +146,30 @@ export const Project = () => {
       </MainSection>
     );
 
-  // const totalFundsReceived = !grants
-  //   ? '0'
-  //   : formatEther(
-  //       grants.reduce((acc: bigint, grant: DashGrant) => {
-  //         return (
-  //           acc + (grant.amtDistributed ? BigInt(grant.amtDistributed) : 0n)
-  //         );
-  //       }, 0n)
-  //     );
+  const totalFundsReceived = !grants
+    ? '0'
+    : formatEther(
+        grants.reduce((acc, grant) => {
+          return (
+            acc +
+            (grant.amountDistributed ? BigInt(grant.amountDistributed) : 0n)
+          );
+        }, 0n)
+      );
 
-  // const totalFundsAllocated = !grants
-  //   ? '0'
-  //   : formatEther(
-  //       grants.reduce((acc: bigint, grant: DashGrant) => {
-  //         return acc + (grant.amtAllocated ? BigInt(grant.amtAllocated) : 0n);
-  //       }, 0n)
-  //     );
+  const totalFundsAllocated = !grants
+    ? '0'
+    : formatEther(
+        grants.reduce((acc, grant) => {
+          return (
+            acc + (grant.amountAllocated ? BigInt(grant.amountAllocated) : 0n)
+          );
+        }, 0n)
+      );
 
-  // const activeGrants = grants?.filter(
-  //   (grant: DashGrant) => grant.grantStatus >= GrantStatus.FacilitatorApproved
-  // );
+  const activeGrants = grants?.filter(
+    (grant) => grant.status >= GrantStatus.Allocated
+  );
 
   return (
     <Flex w="100%">
@@ -379,7 +383,7 @@ export const Project = () => {
           )}
           <Paper p="md" bg={theme.colors.dark[6]} w="100%">
             <Text size="lg" mb={2}>
-              {/* {totalFundsAllocated} {GAME_TOKEN.SYMBOL} */}
+              {totalFundsAllocated} {GAME_TOKEN.SYMBOL}
             </Text>
             <Group mb="md" gap={4}>
               <Text size="sm">Funding allocated </Text>
@@ -391,7 +395,7 @@ export const Project = () => {
               </Tooltip>
             </Group>
             <Text size="lg" mb={2}>
-              {/* {totalFundsReceived} {GAME_TOKEN.SYMBOL} */}
+              {totalFundsReceived} {GAME_TOKEN.SYMBOL}
             </Text>
             <Group gap={4}>
               <Text size="sm">Funding Received</Text>
@@ -403,19 +407,24 @@ export const Project = () => {
               </Tooltip>
             </Group>
           </Paper>
-          {/* {activeGrants?.length !== 0 && (
+          {activeGrants?.length !== 0 && (
             <Paper p="md" bg={theme.colors.dark[6]}>
               <Stack gap="lg">
                 <Text>Active Grants</Text>
-                {activeGrants?.map((grant: DashGrant, i: number) => (
+                {activeGrants?.map((grant, i) => (
                   <MilestoneProgress
+                    amount={BigInt(grant.amount)}
                     key={`milestone-progress-bar-${i}`}
-                    grant={grant}
+                    shipName={grant.ship.name || ''}
+                    shipId={grant.ship.id || ''}
+                    shipAvatar={grant.ship.profileMetadata?.imgUrl || ''}
+                    milestones={grant.currentMilestones?.milestones}
+                    // grant={grant}
                   />
                 ))}
               </Stack>
             </Paper>
-          )} */}
+          )}
         </Stack>
       )}
       {isProjectMember && <PostAffix />}

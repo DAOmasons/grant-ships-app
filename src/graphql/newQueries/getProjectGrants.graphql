@@ -11,6 +11,8 @@ query getProjectGrants($projectId: String!, $gameId: String!) {
     where: { project_id: { _eq: $projectId }, gameManager_id: { _eq: $gameId } }
   ) {
     ...GrantBasic
+    amountDistributed
+    amountAllocated
     ship {
       ...ShipDisplay
     }

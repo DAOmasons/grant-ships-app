@@ -1983,6 +1983,8 @@ columns and relationships of "Grant"
 type Grant {
   allMilestonesApproved: Boolean!
   amount: numeric
+  amountAllocated: numeric!
+  amountDistributed: numeric!
   applicationApproved: Boolean!
   """An array relationship"""
   applications(
@@ -2775,6 +2777,8 @@ order by avg() on columns of table "Grant"
 """
 input Grant_avg_order_by {
   amount: order_by
+  amountAllocated: order_by
+  amountDistributed: order_by
   lastUpdated: order_by
   status: order_by
 }
@@ -2788,6 +2792,8 @@ input Grant_bool_exp {
   _or: [Grant_bool_exp!]
   allMilestonesApproved: Boolean_comparison_exp
   amount: numeric_comparison_exp
+  amountAllocated: numeric_comparison_exp
+  amountDistributed: numeric_comparison_exp
   applicationApproved: Boolean_comparison_exp
   applications: Application_bool_exp
   currentApplication: Application_bool_exp
@@ -2816,6 +2822,8 @@ order by max() on columns of table "Grant"
 """
 input Grant_max_order_by {
   amount: order_by
+  amountAllocated: order_by
+  amountDistributed: order_by
   currentApplication_id: order_by
   currentMilestones_id: order_by
   db_write_timestamp: order_by
@@ -2832,6 +2840,8 @@ order by min() on columns of table "Grant"
 """
 input Grant_min_order_by {
   amount: order_by
+  amountAllocated: order_by
+  amountDistributed: order_by
   currentApplication_id: order_by
   currentMilestones_id: order_by
   db_write_timestamp: order_by
@@ -2847,6 +2857,8 @@ input Grant_min_order_by {
 input Grant_order_by {
   allMilestonesApproved: order_by
   amount: order_by
+  amountAllocated: order_by
+  amountDistributed: order_by
   applicationApproved: order_by
   applications_aggregate: Application_aggregate_order_by
   currentApplication: Application_order_by
@@ -2878,6 +2890,10 @@ enum Grant_select_column {
   allMilestonesApproved
   """column name"""
   amount
+  """column name"""
+  amountAllocated
+  """column name"""
+  amountDistributed
   """column name"""
   applicationApproved
   """column name"""
@@ -2913,6 +2929,8 @@ order by stddev() on columns of table "Grant"
 """
 input Grant_stddev_order_by {
   amount: order_by
+  amountAllocated: order_by
+  amountDistributed: order_by
   lastUpdated: order_by
   status: order_by
 }
@@ -2922,6 +2940,8 @@ order by stddev_pop() on columns of table "Grant"
 """
 input Grant_stddev_pop_order_by {
   amount: order_by
+  amountAllocated: order_by
+  amountDistributed: order_by
   lastUpdated: order_by
   status: order_by
 }
@@ -2931,6 +2951,8 @@ order by stddev_samp() on columns of table "Grant"
 """
 input Grant_stddev_samp_order_by {
   amount: order_by
+  amountAllocated: order_by
+  amountDistributed: order_by
   lastUpdated: order_by
   status: order_by
 }
@@ -2949,6 +2971,8 @@ input Grant_stream_cursor_input {
 input Grant_stream_cursor_value_input {
   allMilestonesApproved: Boolean
   amount: numeric
+  amountAllocated: numeric
+  amountDistributed: numeric
   applicationApproved: Boolean
   currentApplication_id: String
   currentMilestones_id: String
@@ -2970,6 +2994,8 @@ order by sum() on columns of table "Grant"
 """
 input Grant_sum_order_by {
   amount: order_by
+  amountAllocated: order_by
+  amountDistributed: order_by
   lastUpdated: order_by
   status: order_by
 }
@@ -2979,6 +3005,8 @@ order by var_pop() on columns of table "Grant"
 """
 input Grant_var_pop_order_by {
   amount: order_by
+  amountAllocated: order_by
+  amountDistributed: order_by
   lastUpdated: order_by
   status: order_by
 }
@@ -2988,6 +3016,8 @@ order by var_samp() on columns of table "Grant"
 """
 input Grant_var_samp_order_by {
   amount: order_by
+  amountAllocated: order_by
+  amountDistributed: order_by
   lastUpdated: order_by
   status: order_by
 }
@@ -2997,6 +3027,8 @@ order by variance() on columns of table "Grant"
 """
 input Grant_variance_order_by {
   amount: order_by
+  amountAllocated: order_by
+  amountDistributed: order_by
   lastUpdated: order_by
   status: order_by
 }

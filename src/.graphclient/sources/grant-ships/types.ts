@@ -1773,6 +1773,8 @@ export type GameRound_variance_order_by = {
 export type Grant = {
   allMilestonesApproved: Scalars['Boolean'];
   amount?: Maybe<Scalars['numeric']>;
+  amountAllocated: Scalars['numeric'];
+  amountDistributed: Scalars['numeric'];
   applicationApproved: Scalars['Boolean'];
   /** An array relationship */
   applications: Array<Application>;
@@ -2516,6 +2518,8 @@ export type Grant_aggregate_order_by = {
 /** order by avg() on columns of table "Grant" */
 export type Grant_avg_order_by = {
   amount?: InputMaybe<order_by>;
+  amountAllocated?: InputMaybe<order_by>;
+  amountDistributed?: InputMaybe<order_by>;
   lastUpdated?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
 };
@@ -2527,6 +2531,8 @@ export type Grant_bool_exp = {
   _or?: InputMaybe<Array<Grant_bool_exp>>;
   allMilestonesApproved?: InputMaybe<Boolean_comparison_exp>;
   amount?: InputMaybe<numeric_comparison_exp>;
+  amountAllocated?: InputMaybe<numeric_comparison_exp>;
+  amountDistributed?: InputMaybe<numeric_comparison_exp>;
   applicationApproved?: InputMaybe<Boolean_comparison_exp>;
   applications?: InputMaybe<Application_bool_exp>;
   currentApplication?: InputMaybe<Application_bool_exp>;
@@ -2553,6 +2559,8 @@ export type Grant_bool_exp = {
 /** order by max() on columns of table "Grant" */
 export type Grant_max_order_by = {
   amount?: InputMaybe<order_by>;
+  amountAllocated?: InputMaybe<order_by>;
+  amountDistributed?: InputMaybe<order_by>;
   currentApplication_id?: InputMaybe<order_by>;
   currentMilestones_id?: InputMaybe<order_by>;
   db_write_timestamp?: InputMaybe<order_by>;
@@ -2567,6 +2575,8 @@ export type Grant_max_order_by = {
 /** order by min() on columns of table "Grant" */
 export type Grant_min_order_by = {
   amount?: InputMaybe<order_by>;
+  amountAllocated?: InputMaybe<order_by>;
+  amountDistributed?: InputMaybe<order_by>;
   currentApplication_id?: InputMaybe<order_by>;
   currentMilestones_id?: InputMaybe<order_by>;
   db_write_timestamp?: InputMaybe<order_by>;
@@ -2582,6 +2592,8 @@ export type Grant_min_order_by = {
 export type Grant_order_by = {
   allMilestonesApproved?: InputMaybe<order_by>;
   amount?: InputMaybe<order_by>;
+  amountAllocated?: InputMaybe<order_by>;
+  amountDistributed?: InputMaybe<order_by>;
   applicationApproved?: InputMaybe<order_by>;
   applications_aggregate?: InputMaybe<Application_aggregate_order_by>;
   currentApplication?: InputMaybe<Application_order_by>;
@@ -2611,6 +2623,10 @@ export type Grant_select_column =
   | 'allMilestonesApproved'
   /** column name */
   | 'amount'
+  /** column name */
+  | 'amountAllocated'
+  /** column name */
+  | 'amountDistributed'
   /** column name */
   | 'applicationApproved'
   /** column name */
@@ -2643,6 +2659,8 @@ export type Grant_select_column =
 /** order by stddev() on columns of table "Grant" */
 export type Grant_stddev_order_by = {
   amount?: InputMaybe<order_by>;
+  amountAllocated?: InputMaybe<order_by>;
+  amountDistributed?: InputMaybe<order_by>;
   lastUpdated?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
 };
@@ -2650,6 +2668,8 @@ export type Grant_stddev_order_by = {
 /** order by stddev_pop() on columns of table "Grant" */
 export type Grant_stddev_pop_order_by = {
   amount?: InputMaybe<order_by>;
+  amountAllocated?: InputMaybe<order_by>;
+  amountDistributed?: InputMaybe<order_by>;
   lastUpdated?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
 };
@@ -2657,6 +2677,8 @@ export type Grant_stddev_pop_order_by = {
 /** order by stddev_samp() on columns of table "Grant" */
 export type Grant_stddev_samp_order_by = {
   amount?: InputMaybe<order_by>;
+  amountAllocated?: InputMaybe<order_by>;
+  amountDistributed?: InputMaybe<order_by>;
   lastUpdated?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
 };
@@ -2673,6 +2695,8 @@ export type Grant_stream_cursor_input = {
 export type Grant_stream_cursor_value_input = {
   allMilestonesApproved?: InputMaybe<Scalars['Boolean']>;
   amount?: InputMaybe<Scalars['numeric']>;
+  amountAllocated?: InputMaybe<Scalars['numeric']>;
+  amountDistributed?: InputMaybe<Scalars['numeric']>;
   applicationApproved?: InputMaybe<Scalars['Boolean']>;
   currentApplication_id?: InputMaybe<Scalars['String']>;
   currentMilestones_id?: InputMaybe<Scalars['String']>;
@@ -2692,6 +2716,8 @@ export type Grant_stream_cursor_value_input = {
 /** order by sum() on columns of table "Grant" */
 export type Grant_sum_order_by = {
   amount?: InputMaybe<order_by>;
+  amountAllocated?: InputMaybe<order_by>;
+  amountDistributed?: InputMaybe<order_by>;
   lastUpdated?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
 };
@@ -2699,6 +2725,8 @@ export type Grant_sum_order_by = {
 /** order by var_pop() on columns of table "Grant" */
 export type Grant_var_pop_order_by = {
   amount?: InputMaybe<order_by>;
+  amountAllocated?: InputMaybe<order_by>;
+  amountDistributed?: InputMaybe<order_by>;
   lastUpdated?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
 };
@@ -2706,6 +2734,8 @@ export type Grant_var_pop_order_by = {
 /** order by var_samp() on columns of table "Grant" */
 export type Grant_var_samp_order_by = {
   amount?: InputMaybe<order_by>;
+  amountAllocated?: InputMaybe<order_by>;
+  amountDistributed?: InputMaybe<order_by>;
   lastUpdated?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
 };
@@ -2713,6 +2743,8 @@ export type Grant_var_samp_order_by = {
 /** order by variance() on columns of table "Grant" */
 export type Grant_variance_order_by = {
   amount?: InputMaybe<order_by>;
+  amountAllocated?: InputMaybe<order_by>;
+  amountDistributed?: InputMaybe<order_by>;
   lastUpdated?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
 };
