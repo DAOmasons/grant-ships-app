@@ -29,7 +29,7 @@ import {
   GAME_TOKEN,
 } from '../constants/gameSetup';
 import { AddressAvatarGroup } from '../components/AddressAvatar';
-import { GameStatus } from '../types/common';
+import { GameStatus, GrantStatus } from '../types/common';
 
 import { getShipPageData } from '../queries/getShipPage';
 import { useQuery, useInfiniteQuery } from '@tanstack/react-query';
@@ -46,6 +46,7 @@ import { useMemo } from 'react';
 import { ShipBadge } from '../components/RoleBadges';
 import { ApplyButton } from '../components/shipItems/ApplyButton';
 import { getShipGrants } from '../queries/getShipGrants';
+import { GrantCard } from '../components/grant/GrantCard';
 
 const infiniteWrapper = async ({ pageParam }: any) => {
   const result = await getEntityFeed(pageParam);
@@ -103,7 +104,7 @@ export const Ship = () => {
     // isLoading: grantsLoading,
     // error: grantsError,
   } = useQuery({
-    queryKey: [`project-grants-${id}`],
+    queryKey: [`ship-grants-${id}`],
     queryFn: () => getShipGrants(id as string, GAME_MANAGER.ADDRESS),
     enabled: !!id,
   });
@@ -237,17 +238,17 @@ export const Ship = () => {
             <Tabs.Tab w={isTablet ? '4.5rem' : '6rem'} value="updates">
               Updates
             </Tabs.Tab>
-            <Tabs.Tab value="history" w={isTablet ? '4.5rem' : '6rem'}>
-              Feed
-            </Tabs.Tab>
             <Tabs.Tab w={isTablet ? '4.5rem' : '6rem'} value="grants">
-              Portfolio
+              Grants
+            </Tabs.Tab>
+            <Tabs.Tab value="history" w={isTablet ? '4.5rem' : '6rem'}>
+              History
             </Tabs.Tab>
             <Tabs.Tab w={isTablet ? '4.5rem' : '6rem'} value="details">
               Details
             </Tabs.Tab>
           </Tabs.List>
-          <Tabs.Panel value="feed">
+          <Tabs.Panel value="history">
             <FeedPanel
               feedItems={feedCards}
               isLoading={feedLoading}
@@ -279,8 +280,16 @@ export const Ship = () => {
             />
           </Tabs.Panel> */}
           <Tabs.Panel value="grants">
-            <></>
-            {/* <PortfolioPanel /> */}
+            {grants?.map((grant) => (
+              <GrantCard
+                key={grant.id}
+                avatarUrls={[grant.project?.metadata?.imgUrl || '']}
+                label={`${grant.project.name}`}
+                isActive={grant.status >= GrantStatus.Allocated}
+                linkUrl={`/grant/${grant.id}/timeline`}
+                status={grant.status}
+              />
+            ))}
           </Tabs.Panel>
         </Tabs>
       </MainSection>
