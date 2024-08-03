@@ -1,5 +1,7 @@
-query getUserData($id: String) {
-  projects: Project(where: { owner: { _eq: $id } }) {
+query getUserData($id: String!, $chainId: Int!) {
+  projects: Project(
+    where: { owner: { _eq: $id }, chainId: { _eq: $chainId } }
+  ) {
     ...ProjectDetails
     metadata {
       ...RawMetadata
@@ -12,7 +14,11 @@ query getUserData($id: String) {
     # }
   }
   shipApplicants: GrantShip(
-    where: { isAwaitingApproval: { _eq: true }, owner: { _eq: $id } }
+    where: {
+      isAwaitingApproval: { _eq: true }
+      owner: { _eq: $id }
+      chainId: { _eq: $chainId }
+    }
   ) {
     ...FacShipData
   }

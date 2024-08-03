@@ -112,11 +112,14 @@ const resolveShipApplicationProfile = async (
   };
 };
 
-export const getUserData = async (address: string): Promise<UserData> => {
+export const getUserData = async (
+  address: string,
+  chainId: number
+): Promise<UserData> => {
   try {
     const sdk = getBuiltGraphSDK();
     const { getUserData } = sdk;
-    const data = await getUserData({ id: address });
+    const data = await getUserData({ id: address, chainId });
     const isFacilitator = await checkIsFacilitator(address);
     const isShipOperator = await checkIsShipOperator(address);
 

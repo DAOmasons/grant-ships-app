@@ -10355,7 +10355,8 @@ export type getUpdatesQuery = { Update: Array<(
   )> };
 
 export type getUserDataQueryVariables = Exact<{
-  id?: InputMaybe<Scalars['String']>;
+  id: Scalars['String'];
+  chainId: Scalars['Int'];
 }>;
 
 
@@ -10976,15 +10977,15 @@ export const getUpdatesDocument = gql`
 }
     ${UpdateBodyFragmentDoc}` as unknown as DocumentNode<getUpdatesQuery, getUpdatesQueryVariables>;
 export const getUserDataDocument = gql`
-    query getUserData($id: String) {
-  projects: Project(where: {owner: {_eq: $id}}) {
+    query getUserData($id: String!, $chainId: Int!) {
+  projects: Project(where: {owner: {_eq: $id}, chainId: {_eq: $chainId}}) {
     ...ProjectDetails
     metadata {
       ...RawMetadata
     }
   }
   shipApplicants: GrantShip(
-    where: {isAwaitingApproval: {_eq: true}, owner: {_eq: $id}}
+    where: {isAwaitingApproval: {_eq: true}, owner: {_eq: $id}, chainId: {_eq: $chainId}}
   ) {
     ...FacShipData
   }
@@ -11146,7 +11147,7 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     getUpdates(variables: getUpdatesQueryVariables, options?: C): Promise<getUpdatesQuery> {
       return requester<getUpdatesQuery, getUpdatesQueryVariables>(getUpdatesDocument, variables, options) as Promise<getUpdatesQuery>;
     },
-    getUserData(variables?: getUserDataQueryVariables, options?: C): Promise<getUserDataQuery> {
+    getUserData(variables: getUserDataQueryVariables, options?: C): Promise<getUserDataQuery> {
       return requester<getUserDataQuery, getUserDataQueryVariables>(getUserDataDocument, variables, options) as Promise<getUserDataQuery>;
     },
     getUserVotes(variables: getUserVotesQueryVariables, options?: C): Promise<getUserVotesQuery> {
