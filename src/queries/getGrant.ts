@@ -233,7 +233,7 @@ export const getGrant = async (grantId: string) => {
     postedBy: ship?.id,
     updateContent: resolvedBeacon || beaconNotSubmitted,
     contentSchema: ContentSchema.RichText,
-    timestamp: 0,
+    timestamp: ship?.beaconLastUpdated || 0,
   };
 
   return {

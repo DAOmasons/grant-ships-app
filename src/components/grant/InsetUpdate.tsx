@@ -1,8 +1,7 @@
 import { Box, Divider, Group, Text } from '@mantine/core';
-import { Content } from '@tiptap/react';
-import React, { ReactNode, useMemo } from 'react';
+import { ReactNode, useMemo } from 'react';
 import { Bold } from '../Typography';
-import { secondsToLongDate } from '../../utils/time';
+import { secondsToShortRelativeTime } from '../../utils/time';
 
 export const InsetUpdate = ({
   posterName,
@@ -19,7 +18,7 @@ export const InsetUpdate = ({
 }) => {
   const time = useMemo(() => {
     if (!timestamp) return '';
-    return secondsToLongDate(timestamp);
+    return secondsToShortRelativeTime(timestamp);
   }, [timestamp]);
   return (
     <>

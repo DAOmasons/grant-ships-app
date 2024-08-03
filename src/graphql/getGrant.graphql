@@ -1,5 +1,0 @@
-query getGrant($id: ID!) {
-  grant(id: $id) {
-    ...GrantDash
-  }
-}

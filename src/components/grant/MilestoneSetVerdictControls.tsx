@@ -106,14 +106,14 @@ export const MilestoneSetVerdictControls = () => {
       />
       <Group justify="flex-end">
         <TxButton
-          variant="secondary"
+          variant="danger-light"
           disabled={isLoading || !reason}
           onClick={() => handleApprove(false)}
         >
           Not Approve
         </TxButton>
         <TxButton
-          variant="primary"
+          variant="success"
           disabled={isLoading || !reason}
           onClick={() => handleApprove(true)}
         >

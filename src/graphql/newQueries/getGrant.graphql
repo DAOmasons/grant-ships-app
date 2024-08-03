@@ -93,6 +93,7 @@ query getGrant($grantId: String!, $projectId: String!, $shipSrc: String!) {
   }
   GrantShip(where: { shipContractAddress: { _eq: $shipSrc } }, limit: 1) {
     ...BaseShipData
+    beaconLastUpdated
     beaconMessage {
       pointer
     }

@@ -99,7 +99,7 @@ export const FacilitatorApprovalDrawer = ({
       </Box>
       <Group justify="flex-end">
         <TxButton
-          variant="secondary"
+          variant="danger-light"
           disabled={!reasonText}
           onClick={() => {
             handleApprove(false);
@@ -108,6 +108,7 @@ export const FacilitatorApprovalDrawer = ({
           Not Approve
         </TxButton>
         <TxButton
+          variant="success"
           disabled={!reasonText}
           onClick={() => {
             handleApprove(true);

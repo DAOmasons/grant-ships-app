@@ -2051,6 +2051,7 @@ type GrantShip {
   applicationSubmittedTime: Int
   approvedTime: Int
   balance: numeric!
+  beaconLastUpdated: Int
   """An object relationship"""
   beaconMessage: RawMetadata
   beaconMessage_id: String
@@ -2135,6 +2136,7 @@ input GrantShip_avg_order_by {
   applicationSubmittedTime: order_by
   approvedTime: order_by
   balance: order_by
+  beaconLastUpdated: order_by
   chainId: order_by
   nonce: order_by
   poolId: order_by
@@ -2162,6 +2164,7 @@ input GrantShip_bool_exp {
   applicationSubmittedTime: Int_comparison_exp
   approvedTime: Int_comparison_exp
   balance: numeric_comparison_exp
+  beaconLastUpdated: Int_comparison_exp
   beaconMessage: RawMetadata_bool_exp
   beaconMessage_id: String_comparison_exp
   chainId: Int_comparison_exp
@@ -2215,6 +2218,7 @@ input GrantShip_max_order_by {
   applicationSubmittedTime: order_by
   approvedTime: order_by
   balance: order_by
+  beaconLastUpdated: order_by
   beaconMessage_id: order_by
   chainId: order_by
   customApplication_id: order_by
@@ -2250,6 +2254,7 @@ input GrantShip_min_order_by {
   applicationSubmittedTime: order_by
   approvedTime: order_by
   balance: order_by
+  beaconLastUpdated: order_by
   beaconMessage_id: order_by
   chainId: order_by
   customApplication_id: order_by
@@ -2285,6 +2290,7 @@ input GrantShip_order_by {
   applicationSubmittedTime: order_by
   approvedTime: order_by
   balance: order_by
+  beaconLastUpdated: order_by
   beaconMessage: RawMetadata_order_by
   beaconMessage_id: order_by
   chainId: order_by
@@ -2344,6 +2350,8 @@ enum GrantShip_select_column {
   approvedTime
   """column name"""
   balance
+  """column name"""
+  beaconLastUpdated
   """column name"""
   beaconMessage_id
   """column name"""
@@ -2423,6 +2431,7 @@ input GrantShip_stddev_order_by {
   applicationSubmittedTime: order_by
   approvedTime: order_by
   balance: order_by
+  beaconLastUpdated: order_by
   chainId: order_by
   nonce: order_by
   poolId: order_by
@@ -2442,6 +2451,7 @@ input GrantShip_stddev_pop_order_by {
   applicationSubmittedTime: order_by
   approvedTime: order_by
   balance: order_by
+  beaconLastUpdated: order_by
   chainId: order_by
   nonce: order_by
   poolId: order_by
@@ -2461,6 +2471,7 @@ input GrantShip_stddev_samp_order_by {
   applicationSubmittedTime: order_by
   approvedTime: order_by
   balance: order_by
+  beaconLastUpdated: order_by
   chainId: order_by
   nonce: order_by
   poolId: order_by
@@ -2491,6 +2502,7 @@ input GrantShip_stream_cursor_value_input {
   applicationSubmittedTime: Int
   approvedTime: Int
   balance: numeric
+  beaconLastUpdated: Int
   beaconMessage_id: String
   chainId: Int
   customApplication_id: String
@@ -2535,6 +2547,7 @@ input GrantShip_sum_order_by {
   applicationSubmittedTime: order_by
   approvedTime: order_by
   balance: order_by
+  beaconLastUpdated: order_by
   chainId: order_by
   nonce: order_by
   poolId: order_by
@@ -2554,6 +2567,7 @@ input GrantShip_var_pop_order_by {
   applicationSubmittedTime: order_by
   approvedTime: order_by
   balance: order_by
+  beaconLastUpdated: order_by
   chainId: order_by
   nonce: order_by
   poolId: order_by
@@ -2573,6 +2587,7 @@ input GrantShip_var_samp_order_by {
   applicationSubmittedTime: order_by
   approvedTime: order_by
   balance: order_by
+  beaconLastUpdated: order_by
   chainId: order_by
   nonce: order_by
   poolId: order_by
@@ -2592,6 +2607,7 @@ input GrantShip_variance_order_by {
   applicationSubmittedTime: order_by
   approvedTime: order_by
   balance: order_by
+  beaconLastUpdated: order_by
   chainId: order_by
   nonce: order_by
   poolId: order_by

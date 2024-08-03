@@ -22,7 +22,10 @@ import { Player } from '../../types/ui';
 import { useGrant } from '../../hooks/useGrant';
 import { Content } from '@tiptap/react';
 import { RTDisplay } from '../RTDisplay';
-import { secondsToLongDate } from '../../utils/time';
+import {
+  secondsToLongDate,
+  secondsToShortRelativeTime,
+} from '../../utils/time';
 import { formatEther } from 'viem';
 import { GAME_TOKEN } from '../../constants/gameSetup';
 import { SCAN_URL } from '../../constants/enpoints';
@@ -58,7 +61,7 @@ export const ApplicationDisplay = ({
 
   const time = useMemo(() => {
     if (!timestamp) return '';
-    return secondsToLongDate(timestamp);
+    return secondsToShortRelativeTime(timestamp);
   }, [timestamp]);
 
   const isCurrentDraft = grant?.currentApplication?.id === id;

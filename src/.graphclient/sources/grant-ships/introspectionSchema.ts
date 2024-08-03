@@ -19147,6 +19147,22 @@ const schemaAST = {
         },
         {
           "kind": "FieldDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "beaconLastUpdated"
+          },
+          "arguments": [],
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "Int"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "FieldDefinition",
           "description": {
             "kind": "StringValue",
             "value": "An object relationship",
@@ -20249,6 +20265,21 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
+            "value": "beaconLastUpdated"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "order_by"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
             "value": "chainId"
           },
           "type": {
@@ -20583,6 +20614,21 @@ const schemaAST = {
             "name": {
               "kind": "Name",
               "value": "numeric_comparison_exp"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "beaconLastUpdated"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "Int_comparison_exp"
             }
           },
           "directives": []
@@ -21311,6 +21357,21 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
+            "value": "beaconLastUpdated"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "order_by"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
             "value": "beaconMessage_id"
           },
           "type": {
@@ -21747,6 +21808,21 @@ const schemaAST = {
           "name": {
             "kind": "Name",
             "value": "balance"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "order_by"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "beaconLastUpdated"
           },
           "type": {
             "kind": "NamedType",
@@ -22227,6 +22303,21 @@ const schemaAST = {
           "name": {
             "kind": "Name",
             "value": "balance"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "order_by"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "beaconLastUpdated"
           },
           "type": {
             "kind": "NamedType",
@@ -22954,6 +23045,19 @@ const schemaAST = {
           },
           "name": {
             "kind": "Name",
+            "value": "beaconLastUpdated"
+          },
+          "directives": []
+        },
+        {
+          "kind": "EnumValueDefinition",
+          "description": {
+            "kind": "StringValue",
+            "value": "column name",
+            "block": true
+          },
+          "name": {
+            "kind": "Name",
             "value": "beaconMessage_id"
           },
           "directives": []
@@ -23464,6 +23568,21 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
+            "value": "beaconLastUpdated"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "order_by"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
             "value": "chainId"
           },
           "type": {
@@ -23674,6 +23793,21 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
+            "value": "beaconLastUpdated"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "order_by"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
             "value": "chainId"
           },
           "type": {
@@ -23870,6 +24004,21 @@ const schemaAST = {
           "name": {
             "kind": "Name",
             "value": "balance"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "order_by"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "beaconLastUpdated"
           },
           "type": {
             "kind": "NamedType",
@@ -24189,6 +24338,21 @@ const schemaAST = {
             "name": {
               "kind": "Name",
               "value": "numeric"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "beaconLastUpdated"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "Int"
             }
           },
           "directives": []
@@ -24782,6 +24946,21 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
+            "value": "beaconLastUpdated"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "order_by"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
             "value": "chainId"
           },
           "type": {
@@ -24978,6 +25157,21 @@ const schemaAST = {
           "name": {
             "kind": "Name",
             "value": "balance"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "order_by"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "beaconLastUpdated"
           },
           "type": {
             "kind": "NamedType",
@@ -25202,6 +25396,21 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
+            "value": "beaconLastUpdated"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "order_by"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
             "value": "chainId"
           },
           "type": {
@@ -25398,6 +25607,21 @@ const schemaAST = {
           "name": {
             "kind": "Name",
             "value": "balance"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "order_by"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "beaconLastUpdated"
           },
           "type": {
             "kind": "NamedType",

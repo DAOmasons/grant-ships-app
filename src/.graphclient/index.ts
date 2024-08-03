@@ -1859,6 +1859,7 @@ export type GrantShip = {
   applicationSubmittedTime?: Maybe<Scalars['Int']>;
   approvedTime?: Maybe<Scalars['Int']>;
   balance: Scalars['numeric'];
+  beaconLastUpdated?: Maybe<Scalars['Int']>;
   /** An object relationship */
   beaconMessage?: Maybe<RawMetadata>;
   beaconMessage_id?: Maybe<Scalars['String']>;
@@ -1938,6 +1939,7 @@ export type GrantShip_avg_order_by = {
   applicationSubmittedTime?: InputMaybe<order_by>;
   approvedTime?: InputMaybe<order_by>;
   balance?: InputMaybe<order_by>;
+  beaconLastUpdated?: InputMaybe<order_by>;
   chainId?: InputMaybe<order_by>;
   nonce?: InputMaybe<order_by>;
   poolId?: InputMaybe<order_by>;
@@ -1963,6 +1965,7 @@ export type GrantShip_bool_exp = {
   applicationSubmittedTime?: InputMaybe<Int_comparison_exp>;
   approvedTime?: InputMaybe<Int_comparison_exp>;
   balance?: InputMaybe<numeric_comparison_exp>;
+  beaconLastUpdated?: InputMaybe<Int_comparison_exp>;
   beaconMessage?: InputMaybe<RawMetadata_bool_exp>;
   beaconMessage_id?: InputMaybe<String_comparison_exp>;
   chainId?: InputMaybe<Int_comparison_exp>;
@@ -2014,6 +2017,7 @@ export type GrantShip_max_order_by = {
   applicationSubmittedTime?: InputMaybe<order_by>;
   approvedTime?: InputMaybe<order_by>;
   balance?: InputMaybe<order_by>;
+  beaconLastUpdated?: InputMaybe<order_by>;
   beaconMessage_id?: InputMaybe<order_by>;
   chainId?: InputMaybe<order_by>;
   customApplication_id?: InputMaybe<order_by>;
@@ -2047,6 +2051,7 @@ export type GrantShip_min_order_by = {
   applicationSubmittedTime?: InputMaybe<order_by>;
   approvedTime?: InputMaybe<order_by>;
   balance?: InputMaybe<order_by>;
+  beaconLastUpdated?: InputMaybe<order_by>;
   beaconMessage_id?: InputMaybe<order_by>;
   chainId?: InputMaybe<order_by>;
   customApplication_id?: InputMaybe<order_by>;
@@ -2082,6 +2087,7 @@ export type GrantShip_order_by = {
   applicationSubmittedTime?: InputMaybe<order_by>;
   approvedTime?: InputMaybe<order_by>;
   balance?: InputMaybe<order_by>;
+  beaconLastUpdated?: InputMaybe<order_by>;
   beaconMessage?: InputMaybe<RawMetadata_order_by>;
   beaconMessage_id?: InputMaybe<order_by>;
   chainId?: InputMaybe<order_by>;
@@ -2139,6 +2145,8 @@ export type GrantShip_select_column =
   | 'approvedTime'
   /** column name */
   | 'balance'
+  /** column name */
+  | 'beaconLastUpdated'
   /** column name */
   | 'beaconMessage_id'
   /** column name */
@@ -2215,6 +2223,7 @@ export type GrantShip_stddev_order_by = {
   applicationSubmittedTime?: InputMaybe<order_by>;
   approvedTime?: InputMaybe<order_by>;
   balance?: InputMaybe<order_by>;
+  beaconLastUpdated?: InputMaybe<order_by>;
   chainId?: InputMaybe<order_by>;
   nonce?: InputMaybe<order_by>;
   poolId?: InputMaybe<order_by>;
@@ -2232,6 +2241,7 @@ export type GrantShip_stddev_pop_order_by = {
   applicationSubmittedTime?: InputMaybe<order_by>;
   approvedTime?: InputMaybe<order_by>;
   balance?: InputMaybe<order_by>;
+  beaconLastUpdated?: InputMaybe<order_by>;
   chainId?: InputMaybe<order_by>;
   nonce?: InputMaybe<order_by>;
   poolId?: InputMaybe<order_by>;
@@ -2249,6 +2259,7 @@ export type GrantShip_stddev_samp_order_by = {
   applicationSubmittedTime?: InputMaybe<order_by>;
   approvedTime?: InputMaybe<order_by>;
   balance?: InputMaybe<order_by>;
+  beaconLastUpdated?: InputMaybe<order_by>;
   chainId?: InputMaybe<order_by>;
   nonce?: InputMaybe<order_by>;
   poolId?: InputMaybe<order_by>;
@@ -2277,6 +2288,7 @@ export type GrantShip_stream_cursor_value_input = {
   applicationSubmittedTime?: InputMaybe<Scalars['Int']>;
   approvedTime?: InputMaybe<Scalars['Int']>;
   balance?: InputMaybe<Scalars['numeric']>;
+  beaconLastUpdated?: InputMaybe<Scalars['Int']>;
   beaconMessage_id?: InputMaybe<Scalars['String']>;
   chainId?: InputMaybe<Scalars['Int']>;
   customApplication_id?: InputMaybe<Scalars['String']>;
@@ -2319,6 +2331,7 @@ export type GrantShip_sum_order_by = {
   applicationSubmittedTime?: InputMaybe<order_by>;
   approvedTime?: InputMaybe<order_by>;
   balance?: InputMaybe<order_by>;
+  beaconLastUpdated?: InputMaybe<order_by>;
   chainId?: InputMaybe<order_by>;
   nonce?: InputMaybe<order_by>;
   poolId?: InputMaybe<order_by>;
@@ -2336,6 +2349,7 @@ export type GrantShip_var_pop_order_by = {
   applicationSubmittedTime?: InputMaybe<order_by>;
   approvedTime?: InputMaybe<order_by>;
   balance?: InputMaybe<order_by>;
+  beaconLastUpdated?: InputMaybe<order_by>;
   chainId?: InputMaybe<order_by>;
   nonce?: InputMaybe<order_by>;
   poolId?: InputMaybe<order_by>;
@@ -2353,6 +2367,7 @@ export type GrantShip_var_samp_order_by = {
   applicationSubmittedTime?: InputMaybe<order_by>;
   approvedTime?: InputMaybe<order_by>;
   balance?: InputMaybe<order_by>;
+  beaconLastUpdated?: InputMaybe<order_by>;
   chainId?: InputMaybe<order_by>;
   nonce?: InputMaybe<order_by>;
   poolId?: InputMaybe<order_by>;
@@ -2370,6 +2385,7 @@ export type GrantShip_variance_order_by = {
   applicationSubmittedTime?: InputMaybe<order_by>;
   approvedTime?: InputMaybe<order_by>;
   balance?: InputMaybe<order_by>;
+  beaconLastUpdated?: InputMaybe<order_by>;
   chainId?: InputMaybe<order_by>;
   nonce?: InputMaybe<order_by>;
   poolId?: InputMaybe<order_by>;
@@ -8981,6 +8997,7 @@ export type GrantShipResolvers<ContextType = MeshContext, ParentType extends Res
   applicationSubmittedTime?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   approvedTime?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   balance?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
+  beaconLastUpdated?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   beaconMessage?: Resolver<Maybe<ResolversTypes['RawMetadata']>, ParentType, ContextType>;
   beaconMessage_id?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   chainId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -10163,7 +10180,7 @@ export type getGrantQuery = { Project_by_pk?: Maybe<(
     Pick<Project, 'id' | 'profileId' | 'name' | 'status' | 'owner'>
     & { metadata?: Maybe<Pick<RawMetadata, 'pointer'>>, members?: Maybe<Pick<ProfileMemberGroup, 'addresses'>> }
   )>, GrantShip: Array<(
-    Pick<GrantShip, 'id' | 'name' | 'status' | 'poolId' | 'shipContractAddress' | 'shipApplicationBytesData' | 'owner' | 'balance' | 'totalAvailableFunds' | 'totalAllocated' | 'totalDistributed' | 'totalRoundAmount'>
+    Pick<GrantShip, 'beaconLastUpdated' | 'id' | 'name' | 'status' | 'poolId' | 'shipContractAddress' | 'shipApplicationBytesData' | 'owner' | 'balance' | 'totalAvailableFunds' | 'totalAllocated' | 'totalDistributed' | 'totalRoundAmount'>
     & { beaconMessage?: Maybe<Pick<RawMetadata, 'pointer'>>, customApplication?: Maybe<Pick<RawMetadata, 'pointer'>>, profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>>, alloProfileMembers?: Maybe<Pick<ProfileMemberGroup, 'addresses'>> }
   )>, Grant_by_pk?: Maybe<(
     Pick<Grant, 'id' | 'status' | 'lastUpdated' | 'amount' | 'isAllocated' | 'grantCompleted' | 'applicationApproved' | 'hasPendingMilestones' | 'hasRejectedMilestones' | 'allMilestonesApproved'>
@@ -10790,6 +10807,7 @@ export const getGrantDocument = gql`
   }
   GrantShip(where: {shipContractAddress: {_eq: $shipSrc}}, limit: 1) {
     ...BaseShipData
+    beaconLastUpdated
     beaconMessage {
       pointer
     }

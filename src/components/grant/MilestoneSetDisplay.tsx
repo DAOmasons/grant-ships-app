@@ -22,7 +22,10 @@ import { MilestonesDisplay } from '../../queries/getGrant';
 import { PlayerAvatar } from '../PlayerAvatar';
 import { Player } from '../../types/ui';
 import { formatEther } from 'viem';
-import { secondsToLongDate } from '../../utils/time';
+import {
+  secondsToLongDate,
+  secondsToShortRelativeTime,
+} from '../../utils/time';
 import { MilestoneSetVerdictControls } from './MilestoneSetVerdictControls';
 import { useMemo } from 'react';
 import classes from '../../styles/Spoiler.module.css';
@@ -30,9 +33,14 @@ import classes from '../../styles/Spoiler.module.css';
 export const MilestoneSetDisplay = ({ doc }: { doc: MilestonesDisplay }) => {
   const theme = useMantineTheme();
   const { status, id, resolvedMilestones } = doc;
-  const { project, ship, grant, isShipOperator } = useGrant();
+  const { project, grant, isShipOperator } = useGrant();
 
   const isCurrentDraft = grant?.currentMilestones?.id === id;
+
+  const time = useMemo(() => {
+    if (!doc.timestamp) return '';
+    return secondsToShortRelativeTime(doc.timestamp);
+  }, [doc]);
 
   const color =
     status === GameStatus.Rejected
@@ -132,8 +140,18 @@ export const MilestoneSetDisplay = ({ doc }: { doc: MilestonesDisplay }) => {
             imgUrl={project?.metadata?.imgUrl}
           />
           <Text fz="sm" opacity={0.8}>
-            submitted their resolvedMilestones to {ship?.name}
+            submitted their milestones
           </Text>
+          {time && (
+            <>
+              <Text fz="sm" opacity={0.8}>
+                ·
+              </Text>
+              <Text fz="sm" opacity={0.8}>
+                {time}
+              </Text>
+            </>
+          )}
         </Group>
         <Divider variant="dotted" mb="lg" />
         {isOldOrRejected ? (
