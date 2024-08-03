@@ -140,15 +140,15 @@ export const ApplicationDisplay = ({
             display="grantTimeline"
             imgUrl={project?.metadata?.imgUrl}
           />
-          <Text size="sm" opacity={0.8}>
+          <Text fz="sm" opacity={0.8}>
             submitted an application
           </Text>
           {time && (
             <>
-              <Text size="sm" opacity={0.8}>
+              <Text fz="sm" opacity={0.8}>
                 ·
               </Text>
-              <Text size="sm" opacity={0.8}>
+              <Text fz="sm" opacity={0.8}>
                 {time}
               </Text>
             </>
