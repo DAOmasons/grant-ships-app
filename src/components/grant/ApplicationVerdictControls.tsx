@@ -9,7 +9,7 @@ import { Tag } from '../../constants/tags';
 import GrantShipAbi from '../../abi/GrantShip.json';
 import { Address } from 'viem';
 import { ZER0_ADDRESS } from '../../constants/gameSetup';
-import { Box, Group, Textarea } from '@mantine/core';
+import { Box, Group, Textarea, useMantineTheme } from '@mantine/core';
 import { GameStatus } from '../../types/common';
 import { TxButton } from '../TxButton';
 
@@ -18,6 +18,7 @@ export const ApplicationVerdictControls = () => {
   const [reason, setReason] = useInputState('');
   const [isLoading, setIsLoading] = useState(false);
   const { tx } = useTx();
+  const theme = useMantineTheme();
 
   const handleApprove = async (isApproved: boolean) => {
     try {
@@ -117,14 +118,14 @@ export const ApplicationVerdictControls = () => {
       />
       <Group justify="flex-end">
         <TxButton
-          variant="secondary"
+          variant="danger-light"
           disabled={isLoading || !reason}
           onClick={() => handleApprove(false)}
         >
           Not Approve
         </TxButton>
         <TxButton
-          variant="primary"
+          variant="success"
           disabled={isLoading || !reason}
           onClick={() => handleApprove(true)}
         >
