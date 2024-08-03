@@ -215,7 +215,7 @@ const ProjectActions = () => {
             leftSection={<IconPencil />}
             onClick={openApplication}
           >
-            <Text>Update Application</Text>
+            <Text>Resubmit Application</Text>
           </Button>
         )}
 

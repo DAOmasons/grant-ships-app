@@ -1,9 +1,6 @@
 import { Box, Divider, Group, Text } from '@mantine/core';
 import { PlayerAvatar } from '../PlayerAvatar';
-import {
-  secondsToLongDate,
-  secondsToShortRelativeTime,
-} from '../../utils/time';
+import { secondsToLongDate } from '../../utils/time';
 import { ReactNode, useMemo } from 'react';
 import { Player } from '../../types/ui';
 import { RTDisplay } from '../RTDisplay';

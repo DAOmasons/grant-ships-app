@@ -34,6 +34,7 @@ export type FeedCardUI = {
   limitHeight?: boolean;
   internalLink?: string;
   externalLink?: string;
+  tag: string;
 };
 
 export enum MilestoneStatus {

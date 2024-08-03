@@ -16,7 +16,6 @@ import { MilestoneDisplay } from './MilestoneDisplay';
 import { FundsDistributed } from './FundsDistributed';
 
 import { GrantHelper } from './GrantHelpers';
-import { GrantInvite } from '../projectItems/GrantInvite';
 import { InsetUpdate } from './InsetUpdate';
 import { IconMail } from '@tabler/icons-react';
 

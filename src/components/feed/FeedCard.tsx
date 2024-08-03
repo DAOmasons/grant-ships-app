@@ -72,6 +72,7 @@ function replaceTextWithComponents(
         // Split the string by the entity name to get an array of strings.
         // For each part, insert the Link component before adding the next part.
         const parts = element.split(entity.name);
+
         parts.forEach((part, index) => {
           newElements.push(part);
           if (index < parts.length - 1) {
@@ -117,6 +118,7 @@ export const FeedCard = ({
   object,
   message,
   embedText,
+  tag,
   timestamp,
   sender,
   cardIndex,

@@ -16,6 +16,7 @@ const handleEmbedText = async (
     | undefined
 ) => {
   if (!embed) return undefined;
+
   const isRawMessage = embed?.content && typeof embed?.content === 'string';
 
   if (isRawMessage) {
@@ -91,7 +92,7 @@ export const resolveFeedItem = async (
     console.warn('Invalid entity type', item.object.playerType);
   }
 
-  const hasObject = item.object?.playerType && item.object?.name;
+  const hasObject = item.object?.playerType != null && item.object?.name;
   const hasEmbed =
     (item.embed?.pointer && item.embed?.key) || item.embed?.content;
 
@@ -125,6 +126,7 @@ export const resolveFeedItem = async (
     richTextContent,
     internalLink: item.internalLink || undefined,
     externalLink: item.externalLink || undefined,
+    tag: item.tag,
   };
 };
 

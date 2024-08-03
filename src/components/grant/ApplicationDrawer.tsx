@@ -28,6 +28,7 @@ import { RTEditor } from '../RTEditor';
 import { IconCalendar } from '@tabler/icons-react';
 import { GAME_TOKEN } from '../../constants/gameSetup';
 import { DatePickerInput } from '@mantine/dates';
+import { GameStatus } from '../../types/common';
 
 const applicationSchema = z.object({
   sendAddress: z
@@ -207,12 +208,13 @@ export const ApplicationDrawer = ({
           {alreadyHasApplication ? 'Resubmit' : 'Apply'}
         </TxButton>
       </Group>
-      {alreadyHasApplication && (
-        <Text mb="md" size="sm" c={theme.colors.yellow[6]}>
-          You have already submitted an application. Resubmitting an old
-          application will overwrite the previous one.
-        </Text>
-      )}
+      {alreadyHasApplication &&
+        currentApplication.status !== GameStatus.Rejected && (
+          <Text mb="md" size="sm" c={theme.colors.yellow[6]}>
+            You have already submitted an application. Resubmitting an old
+            application will overwrite the previous one.
+          </Text>
+        )}
       <Stack mb="md">
         <DatePickerInput
           label="Expected delivery"
