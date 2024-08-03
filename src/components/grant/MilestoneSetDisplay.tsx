@@ -37,10 +37,10 @@ export const MilestoneSetDisplay = ({ doc }: { doc: MilestonesDisplay }) => {
   const color =
     status === GameStatus.Rejected
       ? theme.colors.red[6]
-      : status === GameStatus.Pending
-        ? theme.colors.yellow[6]
-        : !isCurrentDraft
-          ? theme.colors.dark[2]
+      : !isCurrentDraft
+        ? theme.colors.dark[2]
+        : status === GameStatus.Pending
+          ? theme.colors.yellow[6]
           : status === GameStatus.Accepted
             ? theme.colors.green[6]
             : theme.colors.dark[2];
@@ -48,10 +48,10 @@ export const MilestoneSetDisplay = ({ doc }: { doc: MilestonesDisplay }) => {
   const tagIcon =
     status === GameStatus.Rejected ? (
       <IconExclamationCircle size={18} color={color} />
-    ) : status === GameStatus.Pending ? (
-      <IconClock size={18} color={color} />
     ) : !isCurrentDraft ? (
       <IconFileX size={18} color={color} />
+    ) : status === GameStatus.Pending ? (
+      <IconClock size={18} color={color} />
     ) : status === GameStatus.Accepted ? (
       <IconCircleCheck size={18} color={color} />
     ) : (
@@ -61,13 +61,14 @@ export const MilestoneSetDisplay = ({ doc }: { doc: MilestonesDisplay }) => {
   const applicationText =
     status === GameStatus.Rejected
       ? 'Milestones Not Approved'
-      : status === GameStatus.Pending
-        ? 'Milestones in Review'
-        : !isCurrentDraft
-          ? 'Inactive Draft'
+      : !isCurrentDraft
+        ? 'Inactive Draft'
+        : status === GameStatus.Pending
+          ? 'Milestones in Review'
           : status === GameStatus.Accepted
             ? 'Milestones Approved'
             : 'Unknown Status';
+
   const isOldOrRejected = !isCurrentDraft || status === GameStatus.Rejected;
 
   const milestoneUI = useMemo(() => {
@@ -79,7 +80,10 @@ export const MilestoneSetDisplay = ({ doc }: { doc: MilestonesDisplay }) => {
             Payment Percentage
           </Text>
           <Text size="sm" td={isOldOrRejected ? 'line-through' : undefined}>
-            {Number(formatEther(milestone.percentage as bigint)) * 100}%
+            {Math.round(
+              Number(formatEther(milestone.percentage as bigint)) * 100
+            )}
+            %
           </Text>
         </Box>
         <Box>
@@ -127,7 +131,7 @@ export const MilestoneSetDisplay = ({ doc }: { doc: MilestonesDisplay }) => {
             display="grantTimeline"
             imgUrl={project?.metadata?.imgUrl}
           />
-          <Text size="sm" opacity={0.8}>
+          <Text fz="sm" opacity={0.8}>
             submitted their resolvedMilestones to {ship?.name}
           </Text>
         </Group>
@@ -148,7 +152,7 @@ export const MilestoneSetDisplay = ({ doc }: { doc: MilestonesDisplay }) => {
           milestoneUI
         )}
 
-        {status === GameStatus.Pending && isShipOperator && (
+        {status === GameStatus.Pending && isShipOperator && isCurrentDraft && (
           <MilestoneSetVerdictControls />
         )}
       </Box>

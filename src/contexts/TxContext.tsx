@@ -182,10 +182,10 @@ export const TxProvider = ({ children }: { children: ReactNode }) => {
         viewParams?.loading?.title || 'Validating Transaction';
       const validateDescription =
         viewParams?.loading?.description || 'Please wait...';
-      const pollTitle = viewParams?.polling?.title || 'Polling Subgraph';
+      const pollTitle = viewParams?.polling?.title || 'Polling Indexer';
       const pollDescription =
         viewParams?.polling?.description ||
-        'Transaction successful! Indexing data to the subgraph...';
+        'Transaction successful! Indexing data to the indexer...';
 
       const title = shouldWaitForPoll ? pollTitle : validateTitle;
       const description = shouldWaitForPoll

@@ -196,6 +196,9 @@ const ProjectActions = () => {
     grant?.currentMilestones?.status === GameStatus.Accepted;
 
   const alreadyHasApplication = !!currentApplication;
+  const alreadyHasMilestoneSet = !!grant?.currentMilestones;
+  const hasSetButNotLockedMilestones =
+    alreadyHasMilestoneSet && !areMilestonesLocked;
 
   return (
     <>
@@ -203,7 +206,7 @@ const ProjectActions = () => {
         {isMilestonePlanning && (
           <Button
             variant="menu"
-            leftSection={<IconPlus />}
+            leftSection={alreadyHasMilestoneSet ? <IconPencil /> : <IconPlus />}
             onClick={openMilestones}
           >
             <Text>Milestones</Text>

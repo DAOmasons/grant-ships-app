@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { PageDrawer } from '../PageDrawer';
 import {
   Box,
@@ -14,14 +14,20 @@ import { useGrant } from '../../hooks/useGrant';
 import { PlayerAvatar } from '../PlayerAvatar';
 import { Player } from '../../types/ui';
 import { TxButton } from '../TxButton';
-import { IconPennant, IconPlus, IconTrash } from '@tabler/icons-react';
+import {
+  IconPencil,
+  IconPennant,
+  IconPlus,
+  IconTrash,
+} from '@tabler/icons-react';
 import { DatePickerInput } from '@mantine/dates';
 import { notifications } from '@mantine/notifications';
 import { pinJSONToIPFS } from '../../utils/ipfs/pin';
-import { AlloStatus } from '../../types/common';
+import { AlloStatus, GameStatus } from '../../types/common';
 import { useTx } from '../../hooks/useTx';
 import GrantShipAbi from '../../abi/GrantShip.json';
-import { Address } from 'viem';
+import { Address, formatEther } from 'viem';
+import { ResolvedMilestone } from '../../queries/getGrant';
 
 export const MilestonesDrawer = ({
   opened,
@@ -30,16 +36,48 @@ export const MilestonesDrawer = ({
   opened: boolean;
   onClose: () => void;
 }) => {
-  const { project, ship, refetchGrant } = useGrant();
+  const { project, ship, refetchGrant, currentMilestoneSet } = useGrant();
   const theme = useMantineTheme();
   const [isLoading, setIsLoading] = useState(false);
   const { tx } = useTx();
 
-  const [formData, setFormData] = useState<Record<string, string>>({
+  const [formData, setFormData] = useState<Record<string, string | number>>({
     'milestone-description-1': '',
     'milestone-perc-1': '0',
+    'milestone-date-1': '',
   });
   const [inputSets, setInputSets] = useState([true]);
+
+  useEffect(() => {
+    if (!currentMilestoneSet?.resolvedMilestones) return;
+
+    const existing = currentMilestoneSet?.resolvedMilestones.reduce(
+      (
+        acc: Record<string, string | number>,
+        milestone: ResolvedMilestone,
+        index
+      ) => {
+        return {
+          ...acc,
+          [`milestone-description-${index + 1}`]:
+            milestone.milestoneContent.milestoneDetails,
+          [`milestone-perc-${index + 1}`]: Math.round(
+            Number(formatEther(milestone.percentage)) * 100
+          ),
+          [`milestone-date-${index + 1}`]:
+            milestone.milestoneContent.date * 1000,
+        };
+      },
+      {} as Record<string, string | number>
+    );
+
+    if (existing) {
+      setFormData(existing);
+      setInputSets(
+        new Array(currentMilestoneSet.resolvedMilestones.length).fill(true)
+      );
+    }
+  }, [currentMilestoneSet]);
 
   const handleChanges = (
     e: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
@@ -52,7 +90,7 @@ export const MilestonesDrawer = ({
 
     setFormData({
       ...formData,
-      [key]: Math.floor(dateObj.getTime() / 1000).toString(),
+      [key]: Math.floor(dateObj.getTime()),
     });
   };
 
@@ -125,7 +163,7 @@ export const MilestonesDrawer = ({
       inputSets.map(async (_, index) => {
         const milestoneDetails = formData[`milestone-description-${index + 1}`];
         const formPercentage = Number(formData[`milestone-perc-${index + 1}`]);
-        const formDate = Number(formData[`milestone-date-${index + 1}`]);
+        const formDate = Number(formData[`milestone-date-${index + 1}`]) / 1000;
 
         const scaleFactor = BigInt(1e18);
         const formPercentageBigInt = BigInt(formPercentage * 1e16);
@@ -198,6 +236,10 @@ export const MilestonesDrawer = ({
     });
   };
 
+  const alreadyHasMilestones = !!currentMilestoneSet;
+
+  console.log('formData', formData);
+
   return (
     <PageDrawer opened={opened} onClose={onClose}>
       <Group mt="40" mb="lg" w="100%" justify="space-between">
@@ -207,13 +249,20 @@ export const MilestonesDrawer = ({
           name={project?.name}
         />
         <TxButton
-          leftSection={<IconPennant />}
+          leftSection={alreadyHasMilestones ? <IconPencil /> : <IconPennant />}
           onClick={handlePostMilestones}
           disabled={isLoading}
         >
-          Submit Milestones
+          {alreadyHasMilestones ? 'Resubmit Milestones' : 'Submit Milestones'}
         </TxButton>
       </Group>
+      {alreadyHasMilestones &&
+        currentMilestoneSet.status !== GameStatus.Rejected && (
+          <Text mb="md" size="sm" c={theme.colors.yellow[6]}>
+            You have already submitted an application. Resubmitting an old
+            application will overwrite the previous one.
+          </Text>
+        )}
       <Stack align="center" mb="md">
         {inputSets.map((_, index) => (
           <Box key={`milestone-${index}`} w="100%" mb="md">
@@ -247,6 +296,7 @@ export const MilestonesDrawer = ({
                 type="number"
                 placeholder="30"
                 w={'48%'}
+                value={formData[`milestone-perc-${index + 1}`]}
                 onChange={handleChanges}
                 mb="xs"
               />
@@ -256,6 +306,11 @@ export const MilestonesDrawer = ({
                 label={`Estimated Delivery`}
                 name={`milestone-date-${index + 1}`}
                 placeholder="Date"
+                value={
+                  formData[`milestone-date-${index + 1}`]
+                    ? new Date(formData[`milestone-date-${index + 1}`])
+                    : undefined
+                }
                 w={'48%'}
                 onChange={(date) =>
                   handleDateChange(date, `milestone-date-${index + 1}`)
