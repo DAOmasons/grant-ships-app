@@ -206,7 +206,14 @@ const ProjectActions = () => {
         {isMilestonePlanning && (
           <Button
             variant="menu"
-            leftSection={alreadyHasMilestoneSet ? <IconPencil /> : <IconPlus />}
+            leftSection={
+              alreadyHasMilestoneSet &&
+              grant?.status !== GrantStatus.Allocated ? (
+                <IconPencil />
+              ) : (
+                <IconPlus />
+              )
+            }
             onClick={openMilestones}
           >
             <Text>Milestones</Text>

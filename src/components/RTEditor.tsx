@@ -3,6 +3,7 @@ import classes from '../styles/tiptap.module.css';
 import { Editor } from '@tiptap/react';
 import { IconHeading } from '@tabler/icons-react';
 import { ImageControl } from './RTEditor/ImageControl';
+import { useEffect, useRef, useState } from 'react';
 
 export const RTEditor = ({
   editor,
@@ -10,12 +11,33 @@ export const RTEditor = ({
 }: {
   editor: Editor | null;
   noHeading?: boolean;
+  growHeight?: boolean;
 }) => {
+  const editorContainerRef = useRef<HTMLDivElement | null>(null);
+  const [editorHeight, setEditorHeight] = useState('auto');
+  const focusTrapRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (editorContainerRef.current) {
+      const containerTop =
+        editorContainerRef.current.getBoundingClientRect().top;
+      const windowHeight = window.innerHeight;
+      const newHeight = windowHeight - containerTop - 55; // 20px for some bottom margin
+      setEditorHeight(`${newHeight}px`);
+    }
+  }, []);
+
+  const handleContentEditorFocus = () => {
+    if (editor && !editor.isActive('link')) {
+      editor.commands.focus();
+    }
+  };
+
   return (
     <RichTextEditor
+      ref={editorContainerRef}
       editor={editor}
-      mih="70vh"
-      h="100%"
+      h={editorHeight}
       bg={'transparent'}
       classNames={{ root: classes.editor }}
     >
@@ -38,7 +60,14 @@ export const RTEditor = ({
           <ImageControl />
         </RichTextEditor.ControlsGroup>
       </RichTextEditor.Toolbar>
-      <RichTextEditor.Content p="lg" fz="md" bg={'transparent'} h="100%" />
+
+      <RichTextEditor.Content
+        p="lg"
+        fz="md"
+        bg={'transparent'}
+        mih={editorHeight}
+        onClick={handleContentEditorFocus}
+      />
     </RichTextEditor>
   );
 };

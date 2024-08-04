@@ -1,7 +1,7 @@
 import { formatEther } from 'viem';
 import { useGrant } from '../../hooks/useGrant';
 import { InsetUpdate } from './InsetUpdate';
-import { IconLock } from '@tabler/icons-react';
+import { IconLock, IconShieldHalf } from '@tabler/icons-react';
 import { Text } from '@mantine/core';
 import { Bold } from '../Typography';
 import { GAME_TOKEN } from '../../constants/gameSetup';
@@ -15,7 +15,7 @@ export const AllocationComplete = ({ timestamp }: { timestamp: number }) => {
     <InsetUpdate
       posterName={'Facilitator Crew'}
       tagline=" has approved the grant."
-      symbolUI={<IconLock size={20} />}
+      symbolUI={<IconShieldHalf size={20} />}
       timestamp={timestamp}
       bodyUI={
         <Text fz="sm">
