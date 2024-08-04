@@ -98,7 +98,7 @@
 //   const hasFacilitatorReviewed = grant.grantStatus > GrantStatus.ShipApproved;
 //   const hasFunds =
 //     BigInt(grant.applicationData.grantAmount) <=
-//     BigInt(grant.shipId.totalAvailableFunds);
+//     BigInt(grant.shipId.totalFundsReceived);
 
 //   return (
 //     <>

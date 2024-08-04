@@ -58,7 +58,7 @@ export type ShipsCardUI = {
   description: string;
   amtAllocated: string;
   amtDistributed: string;
-  amtAvailable: string;
+
   balance: string;
   shipContractAddress?: string | null;
 };
@@ -70,7 +70,7 @@ export type ShipPageUI = {
   status: GameStatus;
   amtAllocated: string;
   amtDistributed: string;
-  amtAvailable: string;
+
   totalRoundAmount: string;
   balance: string;
   shipContractAddress?: string | null;

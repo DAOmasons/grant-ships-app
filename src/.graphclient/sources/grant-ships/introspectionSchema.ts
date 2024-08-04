@@ -19967,7 +19967,7 @@ const schemaAST = {
           "kind": "FieldDefinition",
           "name": {
             "kind": "Name",
-            "value": "totalAvailableFunds"
+            "value": "totalDistributed"
           },
           "arguments": [],
           "type": {
@@ -19986,7 +19986,7 @@ const schemaAST = {
           "kind": "FieldDefinition",
           "name": {
             "kind": "Name",
-            "value": "totalDistributed"
+            "value": "totalFundsReceived"
           },
           "arguments": [],
           "type": {
@@ -20385,7 +20385,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "totalAvailableFunds"
+            "value": "totalDistributed"
           },
           "type": {
             "kind": "NamedType",
@@ -20400,7 +20400,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "totalDistributed"
+            "value": "totalFundsReceived"
           },
           "type": {
             "kind": "NamedType",
@@ -21207,7 +21207,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "totalAvailableFunds"
+            "value": "totalDistributed"
           },
           "type": {
             "kind": "NamedType",
@@ -21222,7 +21222,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "totalDistributed"
+            "value": "totalFundsReceived"
           },
           "type": {
             "kind": "NamedType",
@@ -21672,7 +21672,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "totalAvailableFunds"
+            "value": "totalDistributed"
           },
           "type": {
             "kind": "NamedType",
@@ -21687,7 +21687,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "totalDistributed"
+            "value": "totalFundsReceived"
           },
           "type": {
             "kind": "NamedType",
@@ -22137,7 +22137,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "totalAvailableFunds"
+            "value": "totalDistributed"
           },
           "type": {
             "kind": "NamedType",
@@ -22152,7 +22152,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "totalDistributed"
+            "value": "totalFundsReceived"
           },
           "type": {
             "kind": "NamedType",
@@ -22902,7 +22902,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "totalAvailableFunds"
+            "value": "totalDistributed"
           },
           "type": {
             "kind": "NamedType",
@@ -22917,7 +22917,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "totalDistributed"
+            "value": "totalFundsReceived"
           },
           "type": {
             "kind": "NamedType",
@@ -23474,7 +23474,7 @@ const schemaAST = {
           },
           "name": {
             "kind": "Name",
-            "value": "totalAvailableFunds"
+            "value": "totalDistributed"
           },
           "directives": []
         },
@@ -23487,7 +23487,7 @@ const schemaAST = {
           },
           "name": {
             "kind": "Name",
-            "value": "totalDistributed"
+            "value": "totalFundsReceived"
           },
           "directives": []
         },
@@ -23688,7 +23688,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "totalAvailableFunds"
+            "value": "totalDistributed"
           },
           "type": {
             "kind": "NamedType",
@@ -23703,7 +23703,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "totalDistributed"
+            "value": "totalFundsReceived"
           },
           "type": {
             "kind": "NamedType",
@@ -23913,7 +23913,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "totalAvailableFunds"
+            "value": "totalDistributed"
           },
           "type": {
             "kind": "NamedType",
@@ -23928,7 +23928,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "totalDistributed"
+            "value": "totalFundsReceived"
           },
           "type": {
             "kind": "NamedType",
@@ -24138,7 +24138,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "totalAvailableFunds"
+            "value": "totalDistributed"
           },
           "type": {
             "kind": "NamedType",
@@ -24153,7 +24153,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "totalDistributed"
+            "value": "totalFundsReceived"
           },
           "type": {
             "kind": "NamedType",
@@ -24841,7 +24841,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "totalAvailableFunds"
+            "value": "totalDistributed"
           },
           "type": {
             "kind": "NamedType",
@@ -24856,7 +24856,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "totalDistributed"
+            "value": "totalFundsReceived"
           },
           "type": {
             "kind": "NamedType",
@@ -25066,7 +25066,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "totalAvailableFunds"
+            "value": "totalDistributed"
           },
           "type": {
             "kind": "NamedType",
@@ -25081,7 +25081,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "totalDistributed"
+            "value": "totalFundsReceived"
           },
           "type": {
             "kind": "NamedType",
@@ -25291,7 +25291,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "totalAvailableFunds"
+            "value": "totalDistributed"
           },
           "type": {
             "kind": "NamedType",
@@ -25306,7 +25306,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "totalDistributed"
+            "value": "totalFundsReceived"
           },
           "type": {
             "kind": "NamedType",
@@ -25516,7 +25516,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "totalAvailableFunds"
+            "value": "totalDistributed"
           },
           "type": {
             "kind": "NamedType",
@@ -25531,7 +25531,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "totalDistributed"
+            "value": "totalFundsReceived"
           },
           "type": {
             "kind": "NamedType",
@@ -25741,7 +25741,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "totalAvailableFunds"
+            "value": "totalDistributed"
           },
           "type": {
             "kind": "NamedType",
@@ -25756,7 +25756,7 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
-            "value": "totalDistributed"
+            "value": "totalFundsReceived"
           },
           "type": {
             "kind": "NamedType",

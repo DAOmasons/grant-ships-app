@@ -64,6 +64,9 @@ export const FacilitatorApprovalDrawer = ({
       ]
     );
 
+    console.log('encoded', encoded);
+    console.log('ship.poolId', ship.poolId);
+
     tx({
       writeContractParams: {
         abi: AlloAbi,

@@ -123,7 +123,7 @@
 
 //   const hasFunds =
 //     BigInt(grant.applicationData.grantAmount) <=
-//     BigInt(grant.shipId.totalAvailableFunds);
+//     BigInt(grant.shipId.totalFundsReceived);
 
 //   const scanLink = scanAddressLink(grant.applicationData.receivingAddress);
 //   const canResubmit =

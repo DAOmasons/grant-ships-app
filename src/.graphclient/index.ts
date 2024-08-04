@@ -1904,8 +1904,8 @@ export type GrantShip = {
   shipLaunched?: Maybe<Scalars['Boolean']>;
   status: Scalars['Int'];
   totalAllocated: Scalars['numeric'];
-  totalAvailableFunds: Scalars['numeric'];
   totalDistributed: Scalars['numeric'];
+  totalFundsReceived: Scalars['numeric'];
   totalRoundAmount: Scalars['numeric'];
 };
 
@@ -1947,8 +1947,8 @@ export type GrantShip_avg_order_by = {
   shipAllocation?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   totalAllocated?: InputMaybe<order_by>;
-  totalAvailableFunds?: InputMaybe<order_by>;
   totalDistributed?: InputMaybe<order_by>;
+  totalFundsReceived?: InputMaybe<order_by>;
   totalRoundAmount?: InputMaybe<order_by>;
 };
 
@@ -2004,8 +2004,8 @@ export type GrantShip_bool_exp = {
   shipLaunched?: InputMaybe<Boolean_comparison_exp>;
   status?: InputMaybe<Int_comparison_exp>;
   totalAllocated?: InputMaybe<numeric_comparison_exp>;
-  totalAvailableFunds?: InputMaybe<numeric_comparison_exp>;
   totalDistributed?: InputMaybe<numeric_comparison_exp>;
+  totalFundsReceived?: InputMaybe<numeric_comparison_exp>;
   totalRoundAmount?: InputMaybe<numeric_comparison_exp>;
 };
 
@@ -2038,8 +2038,8 @@ export type GrantShip_max_order_by = {
   shipContractAddress?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   totalAllocated?: InputMaybe<order_by>;
-  totalAvailableFunds?: InputMaybe<order_by>;
   totalDistributed?: InputMaybe<order_by>;
+  totalFundsReceived?: InputMaybe<order_by>;
   totalRoundAmount?: InputMaybe<order_by>;
 };
 
@@ -2072,8 +2072,8 @@ export type GrantShip_min_order_by = {
   shipContractAddress?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   totalAllocated?: InputMaybe<order_by>;
-  totalAvailableFunds?: InputMaybe<order_by>;
   totalDistributed?: InputMaybe<order_by>;
+  totalFundsReceived?: InputMaybe<order_by>;
   totalRoundAmount?: InputMaybe<order_by>;
 };
 
@@ -2126,8 +2126,8 @@ export type GrantShip_order_by = {
   shipLaunched?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   totalAllocated?: InputMaybe<order_by>;
-  totalAvailableFunds?: InputMaybe<order_by>;
   totalDistributed?: InputMaybe<order_by>;
+  totalFundsReceived?: InputMaybe<order_by>;
   totalRoundAmount?: InputMaybe<order_by>;
 };
 
@@ -2212,9 +2212,9 @@ export type GrantShip_select_column =
   /** column name */
   | 'totalAllocated'
   /** column name */
-  | 'totalAvailableFunds'
-  /** column name */
   | 'totalDistributed'
+  /** column name */
+  | 'totalFundsReceived'
   /** column name */
   | 'totalRoundAmount';
 
@@ -2231,8 +2231,8 @@ export type GrantShip_stddev_order_by = {
   shipAllocation?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   totalAllocated?: InputMaybe<order_by>;
-  totalAvailableFunds?: InputMaybe<order_by>;
   totalDistributed?: InputMaybe<order_by>;
+  totalFundsReceived?: InputMaybe<order_by>;
   totalRoundAmount?: InputMaybe<order_by>;
 };
 
@@ -2249,8 +2249,8 @@ export type GrantShip_stddev_pop_order_by = {
   shipAllocation?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   totalAllocated?: InputMaybe<order_by>;
-  totalAvailableFunds?: InputMaybe<order_by>;
   totalDistributed?: InputMaybe<order_by>;
+  totalFundsReceived?: InputMaybe<order_by>;
   totalRoundAmount?: InputMaybe<order_by>;
 };
 
@@ -2267,8 +2267,8 @@ export type GrantShip_stddev_samp_order_by = {
   shipAllocation?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   totalAllocated?: InputMaybe<order_by>;
-  totalAvailableFunds?: InputMaybe<order_by>;
   totalDistributed?: InputMaybe<order_by>;
+  totalFundsReceived?: InputMaybe<order_by>;
   totalRoundAmount?: InputMaybe<order_by>;
 };
 
@@ -2321,8 +2321,8 @@ export type GrantShip_stream_cursor_value_input = {
   shipLaunched?: InputMaybe<Scalars['Boolean']>;
   status?: InputMaybe<Scalars['Int']>;
   totalAllocated?: InputMaybe<Scalars['numeric']>;
-  totalAvailableFunds?: InputMaybe<Scalars['numeric']>;
   totalDistributed?: InputMaybe<Scalars['numeric']>;
+  totalFundsReceived?: InputMaybe<Scalars['numeric']>;
   totalRoundAmount?: InputMaybe<Scalars['numeric']>;
 };
 
@@ -2339,8 +2339,8 @@ export type GrantShip_sum_order_by = {
   shipAllocation?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   totalAllocated?: InputMaybe<order_by>;
-  totalAvailableFunds?: InputMaybe<order_by>;
   totalDistributed?: InputMaybe<order_by>;
+  totalFundsReceived?: InputMaybe<order_by>;
   totalRoundAmount?: InputMaybe<order_by>;
 };
 
@@ -2357,8 +2357,8 @@ export type GrantShip_var_pop_order_by = {
   shipAllocation?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   totalAllocated?: InputMaybe<order_by>;
-  totalAvailableFunds?: InputMaybe<order_by>;
   totalDistributed?: InputMaybe<order_by>;
+  totalFundsReceived?: InputMaybe<order_by>;
   totalRoundAmount?: InputMaybe<order_by>;
 };
 
@@ -2375,8 +2375,8 @@ export type GrantShip_var_samp_order_by = {
   shipAllocation?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   totalAllocated?: InputMaybe<order_by>;
-  totalAvailableFunds?: InputMaybe<order_by>;
   totalDistributed?: InputMaybe<order_by>;
+  totalFundsReceived?: InputMaybe<order_by>;
   totalRoundAmount?: InputMaybe<order_by>;
 };
 
@@ -2393,8 +2393,8 @@ export type GrantShip_variance_order_by = {
   shipAllocation?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   totalAllocated?: InputMaybe<order_by>;
-  totalAvailableFunds?: InputMaybe<order_by>;
   totalDistributed?: InputMaybe<order_by>;
+  totalFundsReceived?: InputMaybe<order_by>;
   totalRoundAmount?: InputMaybe<order_by>;
 };
 
@@ -9036,8 +9036,8 @@ export type GrantShipResolvers<ContextType = MeshContext, ParentType extends Res
   shipLaunched?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   status?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   totalAllocated?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
-  totalAvailableFunds?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
   totalDistributed?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
+  totalFundsReceived?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
   totalRoundAmount?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
@@ -10000,7 +10000,7 @@ export function getBuiltGraphSDK<TGlobalContext = any, TOperationContext = any>(
   return getSdk<TOperationContext, TGlobalContext>((...args) => sdkRequester$.then(sdkRequester => sdkRequester(...args)));
 }
 export type BaseShipDataFragment = (
-  Pick<GrantShip, 'id' | 'name' | 'status' | 'poolId' | 'shipContractAddress' | 'shipApplicationBytesData' | 'owner' | 'balance' | 'totalAvailableFunds' | 'totalAllocated' | 'totalDistributed' | 'totalRoundAmount'>
+  Pick<GrantShip, 'id' | 'name' | 'status' | 'poolId' | 'shipContractAddress' | 'shipApplicationBytesData' | 'owner' | 'balance' | 'totalFundsReceived' | 'totalAllocated' | 'totalDistributed' | 'totalRoundAmount'>
   & { profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>>, alloProfileMembers?: Maybe<Pick<ProfileMemberGroup, 'addresses'>> }
 );
 
@@ -10041,7 +10041,7 @@ export type facDashShipDataQuery = { shipApplicants: Array<(
     Pick<GrantShip, 'id' | 'name' | 'status' | 'applicationSubmittedTime' | 'shipApplicationBytesData'>
     & { profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
   )>, approvedShips: Array<(
-    Pick<GrantShip, 'approvedTime' | 'shipAllocation' | 'totalAvailableFunds' | 'id' | 'name' | 'status' | 'applicationSubmittedTime' | 'shipApplicationBytesData'>
+    Pick<GrantShip, 'approvedTime' | 'shipAllocation' | 'totalFundsReceived' | 'id' | 'name' | 'status' | 'applicationSubmittedTime' | 'shipApplicationBytesData'>
     & { applicationReviewReason?: Maybe<Pick<RawMetadata, 'pointer'>>, profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
   )>, rejectedShips: Array<(
     Pick<GrantShip, 'rejectedTime' | 'id' | 'name' | 'status' | 'applicationSubmittedTime' | 'shipApplicationBytesData'>
@@ -10180,7 +10180,7 @@ export type getGrantQuery = { Project_by_pk?: Maybe<(
     Pick<Project, 'id' | 'profileId' | 'name' | 'status' | 'owner'>
     & { metadata?: Maybe<Pick<RawMetadata, 'pointer'>>, members?: Maybe<Pick<ProfileMemberGroup, 'addresses'>> }
   )>, GrantShip: Array<(
-    Pick<GrantShip, 'beaconLastUpdated' | 'id' | 'name' | 'status' | 'poolId' | 'shipContractAddress' | 'shipApplicationBytesData' | 'owner' | 'balance' | 'totalAvailableFunds' | 'totalAllocated' | 'totalDistributed' | 'totalRoundAmount'>
+    Pick<GrantShip, 'beaconLastUpdated' | 'id' | 'name' | 'status' | 'poolId' | 'shipContractAddress' | 'shipApplicationBytesData' | 'owner' | 'balance' | 'totalFundsReceived' | 'totalAllocated' | 'totalDistributed' | 'totalRoundAmount'>
     & { beaconMessage?: Maybe<Pick<RawMetadata, 'pointer'>>, customApplication?: Maybe<Pick<RawMetadata, 'pointer'>>, profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>>, alloProfileMembers?: Maybe<Pick<ProfileMemberGroup, 'addresses'>> }
   )>, Grant_by_pk?: Maybe<(
     Pick<Grant, 'id' | 'status' | 'lastUpdated' | 'amount' | 'isAllocated' | 'grantCompleted' | 'applicationApproved' | 'hasPendingMilestones' | 'hasRejectedMilestones' | 'allMilestonesApproved'>
@@ -10308,7 +10308,7 @@ export type getShipFundsAvailableQueryVariables = Exact<{
 }>;
 
 
-export type getShipFundsAvailableQuery = { GrantShip: Array<Pick<GrantShip, 'totalAvailableFunds'>> };
+export type getShipFundsAvailableQuery = { GrantShip: Array<Pick<GrantShip, 'totalFundsReceived'>> };
 
 export type getShipIdByHatIdQueryVariables = Exact<{
   hatId: Scalars['String'];
@@ -10422,7 +10422,7 @@ export type shipPageQueryQueryVariables = Exact<{
 
 
 export type shipPageQueryQuery = { GrantShip: Array<(
-    Pick<GrantShip, 'id' | 'name' | 'status' | 'poolId' | 'shipContractAddress' | 'shipApplicationBytesData' | 'owner' | 'balance' | 'totalAvailableFunds' | 'totalAllocated' | 'totalDistributed' | 'totalRoundAmount'>
+    Pick<GrantShip, 'id' | 'name' | 'status' | 'poolId' | 'shipContractAddress' | 'shipApplicationBytesData' | 'owner' | 'balance' | 'totalFundsReceived' | 'totalAllocated' | 'totalDistributed' | 'totalRoundAmount'>
     & { profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>>, alloProfileMembers?: Maybe<Pick<ProfileMemberGroup, 'addresses'>> }
   )> };
 
@@ -10432,7 +10432,7 @@ export type ShipsPageQueryQueryVariables = Exact<{
 
 
 export type ShipsPageQueryQuery = { GrantShip: Array<(
-    Pick<GrantShip, 'shipContractAddress' | 'id' | 'name' | 'status' | 'poolId' | 'shipApplicationBytesData' | 'owner' | 'balance' | 'totalAvailableFunds' | 'totalAllocated' | 'totalDistributed' | 'totalRoundAmount'>
+    Pick<GrantShip, 'shipContractAddress' | 'id' | 'name' | 'status' | 'poolId' | 'shipApplicationBytesData' | 'owner' | 'balance' | 'totalFundsReceived' | 'totalAllocated' | 'totalDistributed' | 'totalRoundAmount'>
     & { profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>>, alloProfileMembers?: Maybe<Pick<ProfileMemberGroup, 'addresses'>> }
   )> };
 
@@ -10452,7 +10452,7 @@ export const BaseShipDataFragmentDoc = gql`
     addresses
   }
   balance
-  totalAvailableFunds
+  totalFundsReceived
   totalAllocated
   totalDistributed
   totalRoundAmount
@@ -10732,7 +10732,7 @@ export const facDashShipDataDocument = gql`
     ...FacShipData
     approvedTime
     shipAllocation
-    totalAvailableFunds
+    totalFundsReceived
     applicationReviewReason {
       pointer
     }
@@ -10948,7 +10948,7 @@ export const getShipAddressByIdDocument = gql`
 export const getShipFundsAvailableDocument = gql`
     query getShipFundsAvailable($id: String!) {
   GrantShip(where: {id: {_eq: $id}}) {
-    totalAvailableFunds
+    totalFundsReceived
   }
 }
     ` as unknown as DocumentNode<getShipFundsAvailableQuery, getShipFundsAvailableQueryVariables>;

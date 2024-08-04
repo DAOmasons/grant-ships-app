@@ -2107,8 +2107,8 @@ type GrantShip {
   shipLaunched: Boolean
   status: Int!
   totalAllocated: numeric!
-  totalAvailableFunds: numeric!
   totalDistributed: numeric!
+  totalFundsReceived: numeric!
   totalRoundAmount: numeric!
 }
 
@@ -2144,8 +2144,8 @@ input GrantShip_avg_order_by {
   shipAllocation: order_by
   status: order_by
   totalAllocated: order_by
-  totalAvailableFunds: order_by
   totalDistributed: order_by
+  totalFundsReceived: order_by
   totalRoundAmount: order_by
 }
 
@@ -2203,8 +2203,8 @@ input GrantShip_bool_exp {
   shipLaunched: Boolean_comparison_exp
   status: Int_comparison_exp
   totalAllocated: numeric_comparison_exp
-  totalAvailableFunds: numeric_comparison_exp
   totalDistributed: numeric_comparison_exp
+  totalFundsReceived: numeric_comparison_exp
   totalRoundAmount: numeric_comparison_exp
 }
 
@@ -2239,8 +2239,8 @@ input GrantShip_max_order_by {
   shipContractAddress: order_by
   status: order_by
   totalAllocated: order_by
-  totalAvailableFunds: order_by
   totalDistributed: order_by
+  totalFundsReceived: order_by
   totalRoundAmount: order_by
 }
 
@@ -2275,8 +2275,8 @@ input GrantShip_min_order_by {
   shipContractAddress: order_by
   status: order_by
   totalAllocated: order_by
-  totalAvailableFunds: order_by
   totalDistributed: order_by
+  totalFundsReceived: order_by
   totalRoundAmount: order_by
 }
 
@@ -2329,8 +2329,8 @@ input GrantShip_order_by {
   shipLaunched: order_by
   status: order_by
   totalAllocated: order_by
-  totalAvailableFunds: order_by
   totalDistributed: order_by
+  totalFundsReceived: order_by
   totalRoundAmount: order_by
 }
 
@@ -2417,9 +2417,9 @@ enum GrantShip_select_column {
   """column name"""
   totalAllocated
   """column name"""
-  totalAvailableFunds
-  """column name"""
   totalDistributed
+  """column name"""
+  totalFundsReceived
   """column name"""
   totalRoundAmount
 }
@@ -2439,8 +2439,8 @@ input GrantShip_stddev_order_by {
   shipAllocation: order_by
   status: order_by
   totalAllocated: order_by
-  totalAvailableFunds: order_by
   totalDistributed: order_by
+  totalFundsReceived: order_by
   totalRoundAmount: order_by
 }
 
@@ -2459,8 +2459,8 @@ input GrantShip_stddev_pop_order_by {
   shipAllocation: order_by
   status: order_by
   totalAllocated: order_by
-  totalAvailableFunds: order_by
   totalDistributed: order_by
+  totalFundsReceived: order_by
   totalRoundAmount: order_by
 }
 
@@ -2479,8 +2479,8 @@ input GrantShip_stddev_samp_order_by {
   shipAllocation: order_by
   status: order_by
   totalAllocated: order_by
-  totalAvailableFunds: order_by
   totalDistributed: order_by
+  totalFundsReceived: order_by
   totalRoundAmount: order_by
 }
 
@@ -2535,8 +2535,8 @@ input GrantShip_stream_cursor_value_input {
   shipLaunched: Boolean
   status: Int
   totalAllocated: numeric
-  totalAvailableFunds: numeric
   totalDistributed: numeric
+  totalFundsReceived: numeric
   totalRoundAmount: numeric
 }
 
@@ -2555,8 +2555,8 @@ input GrantShip_sum_order_by {
   shipAllocation: order_by
   status: order_by
   totalAllocated: order_by
-  totalAvailableFunds: order_by
   totalDistributed: order_by
+  totalFundsReceived: order_by
   totalRoundAmount: order_by
 }
 
@@ -2575,8 +2575,8 @@ input GrantShip_var_pop_order_by {
   shipAllocation: order_by
   status: order_by
   totalAllocated: order_by
-  totalAvailableFunds: order_by
   totalDistributed: order_by
+  totalFundsReceived: order_by
   totalRoundAmount: order_by
 }
 
@@ -2595,8 +2595,8 @@ input GrantShip_var_samp_order_by {
   shipAllocation: order_by
   status: order_by
   totalAllocated: order_by
-  totalAvailableFunds: order_by
   totalDistributed: order_by
+  totalFundsReceived: order_by
   totalRoundAmount: order_by
 }
 
@@ -2615,8 +2615,8 @@ input GrantShip_variance_order_by {
   shipAllocation: order_by
   status: order_by
   totalAllocated: order_by
-  totalAvailableFunds: order_by
   totalDistributed: order_by
+  totalFundsReceived: order_by
   totalRoundAmount: order_by
 }
 

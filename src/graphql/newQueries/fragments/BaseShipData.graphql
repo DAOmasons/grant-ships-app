@@ -13,7 +13,7 @@ fragment BaseShipData on GrantShip {
     addresses
   }
   balance
-  totalAvailableFunds
+  totalFundsReceived
   totalAllocated
   totalDistributed
   totalRoundAmount

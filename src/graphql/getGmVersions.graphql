@@ -1,7 +1,0 @@
-query getGmVersions {
-  gmVersions {
-    id
-    name
-    address
-  }
-}

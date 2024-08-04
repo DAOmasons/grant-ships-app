@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from 'react';
 export const RTEditor = ({
   editor,
   noHeading = false,
+  growHeight = true,
 }: {
   editor: Editor | null;
   noHeading?: boolean;
@@ -15,10 +16,9 @@ export const RTEditor = ({
 }) => {
   const editorContainerRef = useRef<HTMLDivElement | null>(null);
   const [editorHeight, setEditorHeight] = useState('auto');
-  const focusTrapRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
-    if (editorContainerRef.current) {
+    if (growHeight && editorContainerRef.current) {
       const containerTop =
         editorContainerRef.current.getBoundingClientRect().top;
       const windowHeight = window.innerHeight;

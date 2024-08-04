@@ -19,7 +19,7 @@ query facDashShipData {
     ...FacShipData
     approvedTime
     shipAllocation
-    totalAvailableFunds
+    totalFundsReceived
     applicationReviewReason {
       pointer
     }

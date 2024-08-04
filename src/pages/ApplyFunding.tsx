@@ -72,7 +72,7 @@
 
 //   const res = await getShipFundsAvailable({ id });
 
-//   return res.GrantShip?.[0].totalAvailableFunds;
+//   return res.GrantShip?.[0].totalFundsReceived;
 // };
 
 // export const ApplyFunding = () => {

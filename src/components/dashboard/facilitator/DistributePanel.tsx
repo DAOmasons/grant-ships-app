@@ -80,8 +80,8 @@ export const DistributePanel = ({
           {approvedShips.map((ship) => (
             <Text fz={'sm'} key={`distro-txt-${ship.id}`} mb="xs">
               {ship.name}:{' '}
-              {ship.totalAvailableFunds
-                ? formatEther(BigInt(ship.totalAvailableFunds))
+              {ship.totalFundsReceived
+                ? formatEther(BigInt(ship.totalFundsReceived))
                 : 'Error'}{' '}
               {GAME_TOKEN.SYMBOL}
             </Text>

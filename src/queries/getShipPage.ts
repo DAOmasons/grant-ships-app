@@ -76,7 +76,6 @@ export const getShipPageData = async (id: string): Promise<ShipPageUI> => {
       amtDistributed: grantShip.totalDistributed || '0',
       balance: grantShip.balance || '0',
       totalRoundAmount: grantShip.totalRoundAmount || '0',
-      amtAvailable: grantShip.totalAvailableFunds || '0',
       shipContractAddress: grantShip.shipContractAddress,
       members,
       details: {

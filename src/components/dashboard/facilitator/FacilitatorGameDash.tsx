@@ -12,9 +12,6 @@ import { AllocationPanel } from './AllocationPanel';
 import { StartGamePanel } from './StartGamePanel';
 import { StopGamePanel } from './StopGamePanel';
 import { GameManager } from '../../../queries/getGameManger';
-// import { PopulateChoicesPanel } from './PopulateChoicesPanel';
-import { StartVotingPanel } from './StartVotingPanel';
-import { CompleteVotePanel } from './CompleteVotePanel';
 
 export const FacilitatorGameDash = ({
   isLoading,

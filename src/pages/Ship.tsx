@@ -183,7 +183,7 @@ export const Ship = () => {
               <Box>
                 <FundingIndicator
                   fullWidth
-                  available={ship.amtAvailable}
+                  available={ship.balance}
                   distributed={ship.amtDistributed}
                   allocated={ship.amtAllocated}
                 />
@@ -318,7 +318,7 @@ export const Ship = () => {
               Total Round Amount
             </Text>
             <Text size="lg" mb={2}>
-              {formatEther(BigInt(ship.amtAvailable))} {GAME_TOKEN.SYMBOL}
+              {formatEther(BigInt(ship.balance))} {GAME_TOKEN.SYMBOL}
             </Text>
             <Text size="sm">Funding Available</Text>
           </Paper>
@@ -330,7 +330,7 @@ export const Ship = () => {
             </Text>
             {ship.status >= GameStatus.Active && (
               <FundingIndicator
-                available={ship.amtAvailable}
+                available={ship.balance}
                 distributed={ship.amtDistributed}
                 allocated={ship.amtAllocated}
               />

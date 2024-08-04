@@ -1,4 +1,3 @@
-import React from 'react';
 import { PageDrawer } from '../PageDrawer';
 import {
   Box,
@@ -197,7 +196,10 @@ export const SubmitMilestoneDrawer = ({
                 Payment Percentage
               </Text>
               <Text fz="sm" opacity={0.9}>
-                {Number(formatEther(currentMilestone.percentage)) * 100}%
+                {Math.round(
+                  Number(formatEther(currentMilestone.percentage)) * 100
+                )}
+                %
               </Text>
             </Box>
             <Box>

@@ -197,8 +197,6 @@ const ProjectActions = () => {
 
   const alreadyHasApplication = !!currentApplication;
   const alreadyHasMilestoneSet = !!grant?.currentMilestones;
-  const hasSetButNotLockedMilestones =
-    alreadyHasMilestoneSet && !areMilestonesLocked;
 
   return (
     <>

@@ -14,7 +14,7 @@ type QueryApproved = FacShipDataFragment & {
   approvedTime?: number | null;
   applicationReviewReason?: RawReason | null;
   shipAllocation?: string | null;
-  totalAvailableFunds?: string | null;
+  totalFundsReceived?: string | null;
 };
 type QueryRejected = FacShipDataFragment & {
   rejectedTime?: number | null;

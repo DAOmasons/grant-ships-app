@@ -1882,8 +1882,8 @@ export type GrantShip = {
   shipLaunched?: Maybe<Scalars['Boolean']>;
   status: Scalars['Int'];
   totalAllocated: Scalars['numeric'];
-  totalAvailableFunds: Scalars['numeric'];
   totalDistributed: Scalars['numeric'];
+  totalFundsReceived: Scalars['numeric'];
   totalRoundAmount: Scalars['numeric'];
 };
 
@@ -1925,8 +1925,8 @@ export type GrantShip_avg_order_by = {
   shipAllocation?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   totalAllocated?: InputMaybe<order_by>;
-  totalAvailableFunds?: InputMaybe<order_by>;
   totalDistributed?: InputMaybe<order_by>;
+  totalFundsReceived?: InputMaybe<order_by>;
   totalRoundAmount?: InputMaybe<order_by>;
 };
 
@@ -1982,8 +1982,8 @@ export type GrantShip_bool_exp = {
   shipLaunched?: InputMaybe<Boolean_comparison_exp>;
   status?: InputMaybe<Int_comparison_exp>;
   totalAllocated?: InputMaybe<numeric_comparison_exp>;
-  totalAvailableFunds?: InputMaybe<numeric_comparison_exp>;
   totalDistributed?: InputMaybe<numeric_comparison_exp>;
+  totalFundsReceived?: InputMaybe<numeric_comparison_exp>;
   totalRoundAmount?: InputMaybe<numeric_comparison_exp>;
 };
 
@@ -2016,8 +2016,8 @@ export type GrantShip_max_order_by = {
   shipContractAddress?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   totalAllocated?: InputMaybe<order_by>;
-  totalAvailableFunds?: InputMaybe<order_by>;
   totalDistributed?: InputMaybe<order_by>;
+  totalFundsReceived?: InputMaybe<order_by>;
   totalRoundAmount?: InputMaybe<order_by>;
 };
 
@@ -2050,8 +2050,8 @@ export type GrantShip_min_order_by = {
   shipContractAddress?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   totalAllocated?: InputMaybe<order_by>;
-  totalAvailableFunds?: InputMaybe<order_by>;
   totalDistributed?: InputMaybe<order_by>;
+  totalFundsReceived?: InputMaybe<order_by>;
   totalRoundAmount?: InputMaybe<order_by>;
 };
 
@@ -2104,8 +2104,8 @@ export type GrantShip_order_by = {
   shipLaunched?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   totalAllocated?: InputMaybe<order_by>;
-  totalAvailableFunds?: InputMaybe<order_by>;
   totalDistributed?: InputMaybe<order_by>;
+  totalFundsReceived?: InputMaybe<order_by>;
   totalRoundAmount?: InputMaybe<order_by>;
 };
 
@@ -2190,9 +2190,9 @@ export type GrantShip_select_column =
   /** column name */
   | 'totalAllocated'
   /** column name */
-  | 'totalAvailableFunds'
-  /** column name */
   | 'totalDistributed'
+  /** column name */
+  | 'totalFundsReceived'
   /** column name */
   | 'totalRoundAmount';
 
@@ -2209,8 +2209,8 @@ export type GrantShip_stddev_order_by = {
   shipAllocation?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   totalAllocated?: InputMaybe<order_by>;
-  totalAvailableFunds?: InputMaybe<order_by>;
   totalDistributed?: InputMaybe<order_by>;
+  totalFundsReceived?: InputMaybe<order_by>;
   totalRoundAmount?: InputMaybe<order_by>;
 };
 
@@ -2227,8 +2227,8 @@ export type GrantShip_stddev_pop_order_by = {
   shipAllocation?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   totalAllocated?: InputMaybe<order_by>;
-  totalAvailableFunds?: InputMaybe<order_by>;
   totalDistributed?: InputMaybe<order_by>;
+  totalFundsReceived?: InputMaybe<order_by>;
   totalRoundAmount?: InputMaybe<order_by>;
 };
 
@@ -2245,8 +2245,8 @@ export type GrantShip_stddev_samp_order_by = {
   shipAllocation?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   totalAllocated?: InputMaybe<order_by>;
-  totalAvailableFunds?: InputMaybe<order_by>;
   totalDistributed?: InputMaybe<order_by>;
+  totalFundsReceived?: InputMaybe<order_by>;
   totalRoundAmount?: InputMaybe<order_by>;
 };
 
@@ -2299,8 +2299,8 @@ export type GrantShip_stream_cursor_value_input = {
   shipLaunched?: InputMaybe<Scalars['Boolean']>;
   status?: InputMaybe<Scalars['Int']>;
   totalAllocated?: InputMaybe<Scalars['numeric']>;
-  totalAvailableFunds?: InputMaybe<Scalars['numeric']>;
   totalDistributed?: InputMaybe<Scalars['numeric']>;
+  totalFundsReceived?: InputMaybe<Scalars['numeric']>;
   totalRoundAmount?: InputMaybe<Scalars['numeric']>;
 };
 
@@ -2317,8 +2317,8 @@ export type GrantShip_sum_order_by = {
   shipAllocation?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   totalAllocated?: InputMaybe<order_by>;
-  totalAvailableFunds?: InputMaybe<order_by>;
   totalDistributed?: InputMaybe<order_by>;
+  totalFundsReceived?: InputMaybe<order_by>;
   totalRoundAmount?: InputMaybe<order_by>;
 };
 
@@ -2335,8 +2335,8 @@ export type GrantShip_var_pop_order_by = {
   shipAllocation?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   totalAllocated?: InputMaybe<order_by>;
-  totalAvailableFunds?: InputMaybe<order_by>;
   totalDistributed?: InputMaybe<order_by>;
+  totalFundsReceived?: InputMaybe<order_by>;
   totalRoundAmount?: InputMaybe<order_by>;
 };
 
@@ -2353,8 +2353,8 @@ export type GrantShip_var_samp_order_by = {
   shipAllocation?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   totalAllocated?: InputMaybe<order_by>;
-  totalAvailableFunds?: InputMaybe<order_by>;
   totalDistributed?: InputMaybe<order_by>;
+  totalFundsReceived?: InputMaybe<order_by>;
   totalRoundAmount?: InputMaybe<order_by>;
 };
 
@@ -2371,8 +2371,8 @@ export type GrantShip_variance_order_by = {
   shipAllocation?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
   totalAllocated?: InputMaybe<order_by>;
-  totalAvailableFunds?: InputMaybe<order_by>;
   totalDistributed?: InputMaybe<order_by>;
+  totalFundsReceived?: InputMaybe<order_by>;
   totalRoundAmount?: InputMaybe<order_by>;
 };
 

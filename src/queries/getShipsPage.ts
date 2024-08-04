@@ -28,7 +28,7 @@ const resolveProfileMetadata = async (
     description: metadata.mission,
     amtAllocated: shipCard.totalAllocated,
     amtDistributed: shipCard.totalDistributed,
-    amtAvailable: shipCard.totalAvailableFunds,
+
     balance: shipCard.balance,
     shipContractAddress: shipCard.shipContractAddress,
   };

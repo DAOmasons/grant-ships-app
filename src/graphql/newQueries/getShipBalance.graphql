@@ -1,5 +1,5 @@
 query getShipFundsAvailable($id: String!) {
   GrantShip(where: { id: { _eq: $id } }) {
-    totalAvailableFunds
+    totalFundsReceived
   }
 }

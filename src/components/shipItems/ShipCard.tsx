@@ -29,9 +29,9 @@ export const ShipCard = ({
   status,
   amtAllocated,
   amtDistributed,
-  amtAvailable,
   gameStatus,
   shipContractAddress,
+  balance,
 }: ShipsCardUI & { gameStatus: GameStatus }) => {
   const theme = useMantineTheme();
   const navigate = useNavigate();
@@ -101,7 +101,7 @@ export const ShipCard = ({
                 fullWidth={isTablet}
                 allocated={amtAllocated}
                 distributed={amtDistributed}
-                available={amtAvailable}
+                available={balance}
               />
             )}
           </Flex>
