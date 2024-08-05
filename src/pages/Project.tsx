@@ -78,7 +78,7 @@ export const Project = () => {
   const isLaptop = useLaptop();
   const [opened, { toggle }] = useDisclosure(false);
   const [showcaseOpened, { toggle: toggleShowcase }] = useDisclosure(false);
-  const queryClient = new QueryClient();
+
   const {
     data: project,
     isLoading,
@@ -465,7 +465,6 @@ export const Project = () => {
           posterId={project.profileId}
           postType="richtext/post"
           refetch={() => {
-            console.log('fired');
             refetchUpdates();
           }}
         />
