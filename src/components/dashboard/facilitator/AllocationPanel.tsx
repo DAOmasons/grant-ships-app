@@ -1,4 +1,3 @@
-/* eslint-disable prefer-const */
 import { Alert, Box, Text, TextInput, useMantineTheme } from '@mantine/core';
 import {
   Address,
@@ -15,6 +14,7 @@ import { ADDR } from '../../../constants/addresses';
 import { TxButton } from '../../TxButton';
 import { useQueryClient } from '@tanstack/react-query';
 import { useGameManager } from '../../../hooks/useGameMangers';
+import { GAME_TOKEN } from '../../../constants/gameSetup';
 
 export const AllocationPanel = ({
   poolBalance,
