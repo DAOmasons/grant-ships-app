@@ -91,6 +91,8 @@ export const Ship = () => {
     enabled: !!id,
   });
 
+  console.log('ship', ship);
+
   const { userData } = useUserData();
 
   const {
