@@ -2,6 +2,7 @@ import {
   ActionIcon,
   Button,
   Drawer,
+  DrawerRoot,
   Loader,
   Modal,
   Tooltip,
@@ -37,6 +38,11 @@ export const theme = createTheme({
       },
     }),
     Modal: Modal.extend({
+      defaultProps: {
+        lockScroll: false,
+      },
+    }),
+    DrawerRoot: DrawerRoot.extend({
       defaultProps: {
         lockScroll: false,
       },
