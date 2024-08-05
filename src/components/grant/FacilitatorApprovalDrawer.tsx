@@ -111,7 +111,6 @@ export const FacilitatorApprovalDrawer = ({
           Not Approve
         </TxButton>
         <TxButton
-          variant="success"
           disabled={!reasonText}
           onClick={() => {
             handleApprove(true);

@@ -163,11 +163,7 @@ export const MilestoneVerdictControls = ({
         >
           Not Approve
         </TxButton>
-        <TxButton
-          variant="success"
-          disabled={isLoading}
-          onClick={handleApprove}
-        >
+        <TxButton disabled={isLoading} onClick={handleApprove}>
           Approve
         </TxButton>
       </Group>

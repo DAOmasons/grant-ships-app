@@ -1,10 +1,17 @@
-import { Box, Text } from '@mantine/core';
 import { useGrant } from '../../hooks/useGrant';
+import { Display } from '../Display';
+import { MilestoneSetDisplay } from './MilestoneSetDisplay';
 
 export const GrantMilestones = () => {
   const { currentMilestoneSet } = useGrant();
 
-  // if(!currentMilestoneSet) return a display that says "No milestones set yet"
+  if (!currentMilestoneSet)
+    return (
+      <Display
+        title="Milestones Not Submitted"
+        description="Project has yet to submit their milestones"
+      />
+    );
 
-  return <Box></Box>;
+  return <MilestoneSetDisplay doc={currentMilestoneSet} />;
 };

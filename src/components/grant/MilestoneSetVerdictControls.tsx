@@ -113,7 +113,6 @@ export const MilestoneSetVerdictControls = () => {
           Not Approve
         </TxButton>
         <TxButton
-          variant="success"
           disabled={isLoading || !reason}
           onClick={() => handleApprove(true)}
         >

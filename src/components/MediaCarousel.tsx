@@ -2,7 +2,6 @@ import { Carousel } from '@mantine/carousel';
 import { Box, Image, useMantineTheme } from '@mantine/core';
 import React from 'react';
 import { MediaType } from '../utils/media';
-import classes from '../styles/MediaCarousel.module.css';
 
 type CarouselContent = {
   url: string;

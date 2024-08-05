@@ -1,11 +1,4 @@
-import {
-  Avatar,
-  Group,
-  MantineSize,
-  MantineStyleProps,
-  StyleProp,
-  Text,
-} from '@mantine/core';
+import { Avatar, Group, MantineSize, StyleProp, Text } from '@mantine/core';
 import { Player } from '../types/ui';
 import { FacilitatorBadge, ProjectBadge, ShipBadge } from './RoleBadges';
 import { useMemo } from 'react';
