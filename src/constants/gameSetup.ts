@@ -53,6 +53,7 @@ export const HATS_DEV = {
   ],
 };
 
+// trigger rebuild
 export const ZER0_ADDRESS = '0x0000000000000000000000000000000000000000';
 
 export const HATS_PROD = {
