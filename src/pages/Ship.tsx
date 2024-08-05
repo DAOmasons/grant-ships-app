@@ -1,7 +1,6 @@
 import {
   Avatar,
   Box,
-  Button,
   Flex,
   Group,
   Loader,
