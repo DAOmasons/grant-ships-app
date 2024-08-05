@@ -7,7 +7,6 @@ import {
   parseAbiParameters,
   parseEther,
 } from 'viem';
-import { GAME_MANAGER, GAME_TOKEN } from '../../../constants/gameSetup';
 import { CompressedApprovedShip } from '../../../queries/getFacDashShipData';
 import { useMemo, useState } from 'react';
 import { useTx } from '../../../hooks/useTx';
