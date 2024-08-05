@@ -13,10 +13,10 @@ import { Content } from '@tiptap/react';
 import { get } from 'http';
 import { reasonSchema } from '../utils/ipfs/metadataValidation';
 
-type BasicUpdate = z.infer<typeof basicUpdateSchema>;
+type RTContent = z.infer<typeof tiptapContentSchema>;
 
-type ResolvedUpdate = UpdateBodyFragment & {
-  content: BasicUpdate;
+export type ResolvedUpdate = UpdateBodyFragment & {
+  content: RTContent;
 };
 
 export const resolveUpdates = async (updateData: UpdateBodyFragment[]) => {
@@ -24,21 +24,17 @@ export const resolveUpdates = async (updateData: UpdateBodyFragment[]) => {
     updateData.map(async (update) => {
       const res = await getIpfsJson(update.content!!.pointer);
 
-      if (res.contentSchema === ContentSchema.BasicUpdate) {
-        const validated = basicUpdateSchema.safeParse(res);
+      const validated = tiptapContentSchema.safeParse(res);
 
-        if (!validated.success) {
-          console.error('Invalid metadata', validated.error);
-          return null;
-        }
-
-        return {
-          ...update,
-          content: validated.data as BasicUpdate,
-        };
+      if (!validated.success) {
+        console.error('Invalid metadata', validated.error);
+        return null;
       }
 
-      return null;
+      return {
+        ...update,
+        content: validated.data as RTContent,
+      };
     })
   );
 

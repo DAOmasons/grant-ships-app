@@ -25,7 +25,6 @@ type PostDrawerProps = {
   posterType: Player;
   posterId: string;
   postType: string;
-  postIndex: number;
   refetch: () => void;
   content?: Content;
 };
@@ -35,7 +34,7 @@ export const PostDrawer = ({
   name,
   postType,
   posterId,
-  postIndex,
+
   refetch,
   content = { type: 'doc', content: [] },
 }: PostDrawerProps) => {
@@ -55,7 +54,7 @@ export const PostDrawer = ({
   });
   const { tx } = useTx();
 
-  const postId = `${postType}-${posterId}-${postIndex}`;
+  const postId = `${postType}-${posterId}`;
 
   useEffect(() => {
     const draft = localStorage.getItem(postId);
@@ -97,10 +96,8 @@ export const PostDrawer = ({
     // tag: TAG tells the indexer to await for instructions
     // action: PROJECT_POST action code to be executed index side
     // postId:
-    // - postType: tells the indexer what type of post it is
     // - posterId: the id of the poster, in this case it's the profileID
-    // - postIndex: the index of the post
-    // domain: GAME_MANAGER.ADDRESS ensures that this post is only available within this game scope
+    /// -  GAME_MANAGER.ADDRESS ensures that this post is only available within this game scope
 
     const tag = `TAG:PROJECT_POST:${postId}:${GAME_MANAGER.ADDRESS}`;
 

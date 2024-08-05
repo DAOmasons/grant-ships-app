@@ -1,14 +1,26 @@
-import { Flex, Text, useMantineTheme } from '@mantine/core';
+import { Flex, Group, Text, useMantineTheme } from '@mantine/core';
+import { IconCircleCheck, IconExclamationCircle } from '@tabler/icons-react';
 import { ReactNode } from 'react';
 
 export const Display = ({
   title,
   description,
+  state = 'empty',
 }: {
+  state?: 'error' | 'warning' | 'empty' | 'success';
   title: ReactNode;
   description: ReactNode;
 }) => {
   const theme = useMantineTheme();
+
+  const icon =
+    state === 'error' ? (
+      <IconExclamationCircle color={theme.colors.red[5]} />
+    ) : state === 'warning' ? (
+      <IconExclamationCircle color={theme.colors.yellow[6]} />
+    ) : state === 'success' ? (
+      <IconCircleCheck color={theme.colors.green[6]} />
+    ) : null;
 
   return (
     <Flex
@@ -23,9 +35,12 @@ export const Display = ({
       direction="column"
     >
       {typeof title === 'string' ? (
-        <Text fz="md" mb="sm" fw={600}>
-          {title}
-        </Text>
+        <Group gap={8} mb="sm">
+          <span style={{ transform: 'translateY(1px)' }}>{icon}</span>
+          <Text fz="md" fw={600}>
+            {title}
+          </Text>
+        </Group>
       ) : (
         title
       )}

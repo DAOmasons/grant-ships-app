@@ -4,11 +4,13 @@ import {
   AvatarGroup,
   Box,
   Collapse,
+  Divider,
   Flex,
   Group,
   Loader,
   Modal,
   Paper,
+  Skeleton,
   Stack,
   Tabs,
   Text,
@@ -32,7 +34,7 @@ import { Contact } from '../components/Contact';
 
 import { formatEther } from 'viem';
 import { Link, useParams } from 'react-router-dom';
-import { useQuery, useInfiniteQuery } from '@tanstack/react-query';
+import { useQuery, useInfiniteQuery, QueryClient } from '@tanstack/react-query';
 import { getProjectPage } from '../queries/getProjectPage';
 import { AddressAvatarGroup } from '../components/AddressAvatar';
 import { AppAlert } from '../components/UnderContruction';
@@ -57,6 +59,12 @@ import { getProjectGrants } from '../queries/getProjectGrants';
 import { MilestoneProgress } from '../components/projectItems/MilestoneProgress';
 import { GrantCard } from '../components/grant/GrantCard';
 import { GrantInvite } from '../components/projectItems/GrantInvite';
+import { getUpdates } from '../queries/getUpdates';
+import { Display } from '../components/Display';
+import { PlayerAvatar } from '../components/PlayerAvatar';
+import { RTDisplay } from '../components/RTDisplay';
+import { secondsToShortRelativeTime } from '../utils/time';
+import { ResolvedUpdate } from '../resolvers/updates';
 
 const infiniteWrapper = async ({ pageParam }: any) => {
   const result = await getEntityFeed(pageParam);
@@ -70,7 +78,7 @@ export const Project = () => {
   const isLaptop = useLaptop();
   const [opened, { toggle }] = useDisclosure(false);
   const [showcaseOpened, { toggle: toggleShowcase }] = useDisclosure(false);
-
+  const queryClient = new QueryClient();
   const {
     data: project,
     isLoading,
@@ -80,6 +88,17 @@ export const Project = () => {
     queryKey: [`project-page-${id}`],
     queryFn: () => getProjectPage(id as string),
     enabled: !!id,
+  });
+
+  const {
+    data: updates,
+    error: updatesError,
+    isLoading: updatesLoading,
+    refetch: refetchUpdates,
+  } = useQuery({
+    queryKey: [`project-updates-${project?.id}`],
+    queryFn: () => getUpdates(project?.id as string),
+    enabled: !!project?.id,
   });
 
   const {
@@ -354,12 +373,13 @@ export const Project = () => {
             )}
           </Tabs.Panel>
           <Tabs.Panel value="updates">
-            {/* <ProjectUpdatesPanel
-              grants={grants}
-              project={project}
-              isProjectMember={isProjectMember}
-            /> */}
-            <></>
+            <ProjectUpdatesPanel
+              updates={updates}
+              error={updatesError}
+              projectName={project.name}
+              isLoading={updatesLoading}
+              imgUrl={project.imgUrl}
+            />
           </Tabs.Panel>
           <Tabs.Panel value="grants">
             <Stack>
@@ -444,8 +464,10 @@ export const Project = () => {
           posterType={Player.Project}
           posterId={project.profileId}
           postType="richtext/post"
-          postIndex={1}
-          refetch={refetchProject}
+          refetch={() => {
+            console.log('fired');
+            refetchUpdates();
+          }}
         />
       )}
       <EditProfileDrawer project={project} refetchProject={refetchProject} />
@@ -457,5 +479,69 @@ export const Project = () => {
         />
       )}
     </Flex>
+  );
+};
+
+const ProjectUpdatesPanel = ({
+  updates,
+  projectName,
+  isLoading,
+  error,
+  imgUrl,
+}: {
+  updates?: ResolvedUpdate[];
+  imgUrl?: string;
+
+  projectName: string;
+  isLoading: boolean;
+  error: Error | null;
+}) => {
+  if (isLoading) {
+    return (
+      <Box>
+        <Box mt="200" />
+        <Skeleton h={1} mb={200} />
+        <Skeleton h={1} mb={200} />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return <Display title="Error" description={error.message} />;
+  }
+
+  if (!updates || updates?.length === 0) {
+    return (
+      <Display
+        title="Just Getting Started"
+        description={`${projectName} hasn't posted any updates yet.`}
+      />
+    );
+  }
+
+  return (
+    <Box>
+      {updates.map((update) => (
+        <Box pb="lg" key={update.id}>
+          <Group mb="sm" gap={8}>
+            <PlayerAvatar
+              imgUrl={imgUrl || ''}
+              name={projectName}
+              playerType={Player.Project}
+            />
+            <Text size="sm" opacity={0.8}>
+              ·
+            </Text>
+            <Text size="sm" opacity={0.8}>
+              {secondsToShortRelativeTime(update.timestamp)}
+            </Text>
+          </Group>
+          <Box mb="lg" pl={50}>
+            <RTDisplay content={update.content} />
+          </Box>
+          <Divider mb="lg" />
+        </Box>
+      ))}
+    </Box>
   );
 };

@@ -1,11 +1,9 @@
-import { Box, Flex, Text, useMantineTheme } from '@mantine/core';
 import { useGrant } from '../../hooks/useGrant';
 import { ApplicationDisplay } from './ApplicationDisplay';
 import { Display } from '../Display';
 
 export const GrantApplication = () => {
   const { currentApplication } = useGrant();
-  const theme = useMantineTheme();
 
   if (!currentApplication)
     return (
