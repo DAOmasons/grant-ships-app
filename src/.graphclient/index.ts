@@ -10030,7 +10030,9 @@ export type FacShipDataFragment = (
   & { profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
 );
 
-export type facDashShipDataQueryVariables = Exact<{ [key: string]: never; }>;
+export type facDashShipDataQueryVariables = Exact<{
+  gameId: Scalars['String'];
+}>;
 
 
 export type facDashShipDataQuery = { shipApplicants: Array<(
@@ -10718,12 +10720,14 @@ export const ProjectDisplayFragmentDoc = gql`
 }
     ` as unknown as DocumentNode<ProjectDisplayFragment, unknown>;
 export const facDashShipDataDocument = gql`
-    query facDashShipData {
-  shipApplicants: GrantShip(where: {isAwaitingApproval: {_eq: true}}) {
+    query facDashShipData($gameId: String!) {
+  shipApplicants: GrantShip(
+    where: {gameManager_id: {_eq: $gameId}, isAwaitingApproval: {_eq: true}}
+  ) {
     ...FacShipData
   }
   approvedShips: GrantShip(
-    where: {isApproved: {_eq: true}, hasSubmittedApplication: {_eq: true}}
+    where: {gameManager_id: {_eq: $gameId}, isApproved: {_eq: true}, hasSubmittedApplication: {_eq: true}}
   ) {
     ...FacShipData
     approvedTime
@@ -10733,7 +10737,9 @@ export const facDashShipDataDocument = gql`
       pointer
     }
   }
-  rejectedShips: GrantShip(where: {isRejected: {_eq: true}}) {
+  rejectedShips: GrantShip(
+    where: {gameManager_id: {_eq: $gameId}, isRejected: {_eq: true}}
+  ) {
     ...FacShipData
     rejectedTime
     applicationReviewReason {
@@ -11098,7 +11104,7 @@ export const ShipsPageQueryDocument = gql`
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
-    facDashShipData(variables?: facDashShipDataQueryVariables, options?: C): Promise<facDashShipDataQuery> {
+    facDashShipData(variables: facDashShipDataQueryVariables, options?: C): Promise<facDashShipDataQuery> {
       return requester<facDashShipDataQuery, facDashShipDataQueryVariables>(facDashShipDataDocument, variables, options) as Promise<facDashShipDataQuery>;
     },
     getFacilitatorGrants(variables: getFacilitatorGrantsQueryVariables, options?: C): Promise<getFacilitatorGrantsQuery> {

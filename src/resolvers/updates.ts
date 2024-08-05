@@ -1,16 +1,13 @@
 import { z } from 'zod';
 import { UpdateBodyFragment } from '../.graphclient';
-import {
-  ContentSchema,
-  basicUpdateSchema,
-} from '../components/forms/validationSchemas/updateSchemas';
+
 import { getIpfsJson } from '../utils/ipfs/get';
 import {
   tipTapApplicationSchema,
   tiptapContentSchema,
 } from '../components/forms/validationSchemas/tiptap';
 import { Content } from '@tiptap/react';
-import { get } from 'http';
+
 import { reasonSchema } from '../utils/ipfs/metadataValidation';
 
 type RTContent = z.infer<typeof tiptapContentSchema>;
