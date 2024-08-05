@@ -10,6 +10,21 @@ export const ProjectProfileMetadata = z.object({
   discord: z.string(),
   telegram: z.string(),
   website: z.string(),
+  showcaseLinks: z
+    .array(
+      z.object({
+        id: z.string(),
+        url: z.string(),
+        mediaType: z.string(),
+      })
+    )
+    .optional(),
+  bannerImage: z.string().optional(),
+  mainDemoLink: z
+    .string()
+    .url({ message: 'Invalid url' })
+    .or(z.literal(''))
+    .optional(),
 });
 
 export const ShipProfileMetadata = z.object({
@@ -22,6 +37,7 @@ export const ShipProfileMetadata = z.object({
   discord: z.string(),
   telegram: z.string(),
   website: z.string(),
+  bannerImage: z.string().optional(),
 });
 
 export const ShipApplicationMetadata = z.object({
@@ -48,4 +64,9 @@ export const reasonSchema = z.object({
 export const gmDeploymentMetadata = z.object({
   title: z.string(),
   description: z.string(),
+});
+
+export const milestoneSchema = z.object({
+  milestoneDetails: z.string(),
+  date: z.number(),
 });

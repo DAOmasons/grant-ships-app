@@ -1,0 +1,11 @@
+.embedTextBox {
+  display: flex;
+  flex-direction: column-reverse;
+}
+
+.embedTextControl {
+  position: inherit;
+  transform: translateY(rem(4));
+  color: var(--mantine-color-dark-3);
+  height: rem(16);
+}

@@ -1,38 +1,41 @@
 import { getBuiltGraphSDK } from '../.graphclient';
-import { SUBGRAPH_URL } from '../constants/gameSetup';
-import { DashGrant, resolveGrants } from '../resolvers/grantResolvers';
+import { resolveProjectMetadata } from '../resolvers/projectResolvers';
+import { resolveShipMetadata } from '../resolvers/shipResolvers';
 
-type FacilitatorGrantsData = {
-  requiresAction: DashGrant[];
-  rejected: DashGrant[];
-  approved: DashGrant[];
-};
+export const getFacilitatorGrants = async (gameId: string) => {
+  const { getFacilitatorGrants } = getBuiltGraphSDK();
 
-export const getFacilitatorGrants =
-  async (): Promise<FacilitatorGrantsData> => {
-    try {
-      const { getFacilitatorGrants } = getBuiltGraphSDK({
-        apiEndpoint: SUBGRAPH_URL,
-      });
-      const res = await getFacilitatorGrants();
+  const data = await getFacilitatorGrants({
+    gameId,
+  });
 
-      if (!res || !res.approved || !res.rejected || !res.requiresAction) {
-        throw new Error('Error loading grants data');
-      }
+  if (!data?.grants) {
+    console.error('No grants found for gameId: ', gameId);
+    throw new Error('No grants found');
+  }
 
-      const [requiresAction, rejected, approved] = await Promise.all([
-        resolveGrants(res.requiresAction),
-        resolveGrants(res.rejected),
-        resolveGrants(res.approved),
-      ]);
+  const resolvedGrants = await Promise.all(
+    data.grants.map(async (grant) => {
+      const projectMetadata = await resolveProjectMetadata(
+        grant.project?.metadata?.pointer
+      );
+      const shipMetadata = await resolveShipMetadata(
+        grant.ship?.profileMetadata?.pointer
+      );
 
       return {
-        requiresAction: requiresAction as DashGrant[],
-        rejected: rejected as DashGrant[],
-        approved: approved as DashGrant[],
+        ...grant,
+        project: {
+          ...grant.project,
+          metadata: projectMetadata,
+        },
+        ship: {
+          ...grant.ship,
+          profileMetadata: shipMetadata,
+        },
       };
-    } catch (error: any) {
-      console.error(error.message || 'Error loading grants data');
-      throw new Error(error.message || 'Error loading grants data');
-    }
-  };
+    })
+  );
+
+  return resolvedGrants;
+};

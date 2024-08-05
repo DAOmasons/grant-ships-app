@@ -1,0 +1,45 @@
+fragment FacShipData on GrantShip {
+  id
+  name
+  status
+  applicationSubmittedTime
+  shipApplicationBytesData
+  profileMetadata {
+    pointer
+  }
+}
+
+query facDashShipData($gameId: String!) {
+  shipApplicants: GrantShip(
+    where: {
+      gameManager_id: { _eq: $gameId }
+      isAwaitingApproval: { _eq: true }
+    }
+  ) {
+    ...FacShipData
+  }
+  approvedShips: GrantShip(
+    where: {
+      gameManager_id: { _eq: $gameId }
+      isApproved: { _eq: true }
+      hasSubmittedApplication: { _eq: true }
+    }
+  ) {
+    ...FacShipData
+    approvedTime
+    shipAllocation
+    totalFundsReceived
+    applicationReviewReason {
+      pointer
+    }
+  }
+  rejectedShips: GrantShip(
+    where: { gameManager_id: { _eq: $gameId }, isRejected: { _eq: true } }
+  ) {
+    ...FacShipData
+    rejectedTime
+    applicationReviewReason {
+      pointer
+    }
+  }
+}

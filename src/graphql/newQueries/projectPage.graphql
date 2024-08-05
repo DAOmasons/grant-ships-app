@@ -1,0 +1,15 @@
+query projectPageQuery($id: String!) {
+  Project(where: { id: { _eq: $id } }) {
+    id
+    profileId
+    name
+    status
+    owner
+    metadata {
+      pointer
+    }
+    members {
+      addresses
+    }
+  }
+}

@@ -1,0 +1,25 @@
+fragment ShipDash on GrantShip {
+  id
+  name
+  status
+  hatId
+  shipContractAddress
+  shipApplicationBytesData
+  profileMetadata {
+    pointer
+  }
+  owner
+  balance
+  beaconMessage {
+    pointer
+  }
+}
+
+query getShipDash($id: String!) {
+  GrantShip(where: { id: { _eq: $id } }) {
+    ...ShipDash
+    # grants {
+    #   ...GrantDash
+    # }
+  }
+}

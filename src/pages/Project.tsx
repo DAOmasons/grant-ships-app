@@ -1,49 +1,70 @@
 import {
   ActionIcon,
   Avatar,
+  AvatarGroup,
   Box,
   Collapse,
+  Divider,
   Flex,
   Group,
   Loader,
+  Modal,
   Paper,
+  Skeleton,
   Stack,
   Tabs,
   Text,
   Tooltip,
   useMantineTheme,
 } from '@mantine/core';
-import { MainSection, PageTitle } from '../layout/Sections';
+import { MainSection, PageTitle, ProfileSection } from '../layout/Sections';
 import {
   IconAward,
+  IconCheck,
   IconChevronDown,
   IconChevronUp,
-  IconEdit,
   IconInfoCircle,
+  IconMaximize,
+  IconPencil,
 } from '@tabler/icons-react';
 import { FeedPanel } from '../components/shipItems/FeedPanel';
-import { GAME_TOKEN } from '../constants/gameSetup';
-import { MilestoneProgress } from '../components/projectItems/MilestoneProgress';
-import { GrantsPanel } from '../components/projectItems/GrantsPanel';
+import { GAME_MANAGER, GAME_TOKEN } from '../constants/gameSetup';
+// import { MilestoneProgress } from '../components/projectItems/MilestoneProgress';
 import { Contact } from '../components/Contact';
 
 import { formatEther } from 'viem';
 import { Link, useParams } from 'react-router-dom';
-import { useQuery, useInfiniteQuery } from '@tanstack/react-query';
+import { useQuery, useInfiniteQuery, QueryClient } from '@tanstack/react-query';
 import { getProjectPage } from '../queries/getProjectPage';
 import { AddressAvatarGroup } from '../components/AddressAvatar';
 import { AppAlert } from '../components/UnderContruction';
 import { GrantStatus } from '../types/common';
 import { SingleItemPageSkeleton } from '../components/skeletons';
 import { getEntityFeed } from '../queries/getFeed';
-import { getProjectGrants } from '../queries/getProjectGrants';
-import { DashGrant } from '../resolvers/grantResolvers';
+// import { DashGrant } from '../resolvers/grantResolvers';
 import { useMemo } from 'react';
 import { useUserData } from '../hooks/useUserState';
-import { ProjectUpdatesPanel } from '../components/projectItems/ProjectUpdatesPanel';
 import { useLaptop, useTablet } from '../hooks/useBreakpoint';
 import { useDisclosure } from '@mantine/hooks';
 import { ProjectBadge } from '../components/RoleBadges';
+import { MediaCarousel } from '../components/MediaCarousel';
+
+import { EditProfileDrawer } from '../components/projectItems/EditProfileDrawer';
+import { FullScreenGallery } from '../components/FullScreenGallery';
+import { IconPlayerPlay } from '@tabler/icons-react';
+import { PostAffix } from '../components/PostAffix';
+import { PostDrawer } from '../components/PostDrawer';
+import { Player } from '../types/ui';
+import { getProjectGrants } from '../queries/getProjectGrants';
+import { MilestoneProgress } from '../components/projectItems/MilestoneProgress';
+import { GrantCard } from '../components/grant/GrantCard';
+import { GrantInvite } from '../components/projectItems/GrantInvite';
+import { getUpdates } from '../queries/getUpdates';
+import { Display } from '../components/Display';
+import { PlayerAvatar } from '../components/PlayerAvatar';
+import { RTDisplay } from '../components/RTDisplay';
+import { secondsToShortRelativeTime } from '../utils/time';
+import { ResolvedUpdate } from '../resolvers/updates';
 
 const infiniteWrapper = async ({ pageParam }: any) => {
   const result = await getEntityFeed(pageParam);
@@ -56,15 +77,28 @@ export const Project = () => {
   const isTablet = useTablet();
   const isLaptop = useLaptop();
   const [opened, { toggle }] = useDisclosure(false);
+  const [showcaseOpened, { toggle: toggleShowcase }] = useDisclosure(false);
 
   const {
     data: project,
     isLoading,
     error,
+    refetch: refetchProject,
   } = useQuery({
     queryKey: [`project-page-${id}`],
     queryFn: () => getProjectPage(id as string),
     enabled: !!id,
+  });
+
+  const {
+    data: updates,
+    error: updatesError,
+    isLoading: updatesLoading,
+    refetch: refetchUpdates,
+  } = useQuery({
+    queryKey: [`project-updates-${project?.id}`],
+    queryFn: () => getUpdates(project?.id as string),
+    enabled: !!project?.id,
   });
 
   const {
@@ -97,11 +131,11 @@ export const Project = () => {
 
   const {
     data: grants,
-    isLoading: grantsLoading,
-    error: grantsError,
+    // isLoading: grantsLoading,
+    // error: grantsError,
   } = useQuery({
     queryKey: [`project-grants-${id}`],
-    queryFn: () => getProjectGrants(id as string),
+    queryFn: () => getProjectGrants(id as string, GAME_MANAGER.ADDRESS),
     enabled: !!id,
   });
 
@@ -112,6 +146,8 @@ export const Project = () => {
       userData && !!userData.projects?.find((project) => project.anchor === id)
     );
   }, [userData, id]);
+
+  const isShipOperator = userData && userData.isShipOperator;
 
   if (isLoading) return <SingleItemPageSkeleton />;
 
@@ -138,9 +174,10 @@ export const Project = () => {
   const totalFundsReceived = !grants
     ? '0'
     : formatEther(
-        grants.reduce((acc: bigint, grant: DashGrant) => {
+        grants.reduce((acc, grant) => {
           return (
-            acc + (grant.amtDistributed ? BigInt(grant.amtDistributed) : 0n)
+            acc +
+            (grant.amountDistributed ? BigInt(grant.amountDistributed) : 0n)
           );
         }, 0n)
       );
@@ -148,29 +185,31 @@ export const Project = () => {
   const totalFundsAllocated = !grants
     ? '0'
     : formatEther(
-        grants.reduce((acc: bigint, grant: DashGrant) => {
-          return acc + (grant.amtAllocated ? BigInt(grant.amtAllocated) : 0n);
+        grants.reduce((acc, grant) => {
+          return (
+            acc + (grant.amountAllocated ? BigInt(grant.amountAllocated) : 0n)
+          );
         }, 0n)
       );
 
   const activeGrants = grants?.filter(
-    (grant: DashGrant) => grant.grantStatus >= GrantStatus.FacilitatorApproved
+    (grant) => grant.status >= GrantStatus.Allocated
   );
 
   return (
     <Flex w="100%">
-      <MainSection maw={600}>
-        <PageTitle
-          title={
-            <Group gap={'sm'}>
-              <Text fz={20} fw={500}>
-                {project.name}
-              </Text>
-              <ProjectBadge size={24} />
-            </Group>
-          }
-        />
-        <Avatar size={160} mt={'xl'} mb="md" src={project.imgUrl} />
+      <ProfileSection
+        bannerImg={project.bannerImgUrl}
+        pageTitle={
+          <Group gap={'sm'} style={{ zIndex: 1 }}>
+            <Text fz={20} fw={500}>
+              {project.name}
+            </Text>
+            <ProjectBadge size={24} />
+          </Group>
+        }
+      >
+        <Avatar size={160} mb="md" src={project.imgUrl} />
         <Group gap={'xs'} mb="md">
           <Text fz="lg" fw={600}>
             {project.name}
@@ -202,10 +241,14 @@ export const Project = () => {
                 </Group>
                 <Collapse in={opened}>
                   <Stack gap="sm">
-                    {activeGrants?.map((grant: DashGrant, i: number) => (
+                    {activeGrants?.map((grant, i) => (
                       <MilestoneProgress
+                        amount={BigInt(grant.amount)}
                         key={`milestone-progress-bar-${i}`}
-                        grant={grant}
+                        shipName={grant.ship.name || ''}
+                        shipId={grant.ship.id || ''}
+                        shipAvatar={grant.ship.profileMetadata?.imgUrl || ''}
+                        milestones={grant.currentMilestones?.milestones}
                       />
                     ))}
                   </Stack>
@@ -253,24 +296,56 @@ export const Project = () => {
             addresses={project.members}
             avatarProps={{ size: 32 }}
           />
-          {isProjectMember && (
-            <Tooltip label="Edit Profile" position="bottom">
-              <ActionIcon component={Link} to={`/edit-project/${id}`} size="md">
-                <IconEdit />
-              </ActionIcon>
-            </Tooltip>
-          )}
+          <Group gap={8}>
+            {project.mainDemoLink && (
+              <Tooltip label="Try Demo" position="bottom">
+                <ActionIcon
+                  variant="priority"
+                  size="lg"
+                  radius={100}
+                  component="a"
+                  href={project.mainDemoLink}
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  <IconPlayerPlay size={16} />
+                </ActionIcon>
+              </Tooltip>
+            )}
+            {isProjectMember && (
+              <Tooltip label="Edit Profile" position="bottom">
+                <ActionIcon
+                  variant="secondary"
+                  size="lg"
+                  bg={theme.colors.dark[5]}
+                  radius={100}
+                  component={Link}
+                  to={'edit'}
+                >
+                  <IconPencil size={16} />
+                </ActionIcon>
+              </Tooltip>
+            )}
+            {isShipOperator && (
+              <GrantInvite
+                projectId={project.id}
+                grantShipIds={
+                  grants?.map((grant) => grant.ship.id as string) || []
+                }
+              />
+            )}
+          </Group>
         </Group>
-        <Tabs defaultValue="feed">
+        <Tabs defaultValue="updates">
           <Tabs.List mb={'xl'}>
-            <Tabs.Tab value="feed" w={isTablet ? '4.5rem' : '6rem'}>
-              Feed
-            </Tabs.Tab>
             <Tabs.Tab w={isTablet ? '4.5rem' : '6rem'} value="updates">
               Updates
             </Tabs.Tab>
             <Tabs.Tab w={isTablet ? '4.5rem' : '6rem'} value="grants">
               Grants
+            </Tabs.Tab>
+            <Tabs.Tab value="feed" w={isTablet ? '4.5rem' : '6rem'}>
+              History
             </Tabs.Tab>
             <Tabs.Tab w={isTablet ? '4.5rem' : '6rem'} value="details">
               Contact
@@ -297,21 +372,28 @@ export const Project = () => {
               </Flex>
             )}
           </Tabs.Panel>
-          <Tabs.Panel value="grants">
-            {project.grants && (
-              <GrantsPanel
-                grants={grants}
-                isLoading={grantsLoading}
-                error={grantsError}
-              />
-            )}
-          </Tabs.Panel>
           <Tabs.Panel value="updates">
             <ProjectUpdatesPanel
-              grants={grants}
-              project={project}
-              isProjectMember={isProjectMember}
+              updates={updates}
+              error={updatesError}
+              projectName={project.name}
+              isLoading={updatesLoading}
+              imgUrl={project.imgUrl}
             />
+          </Tabs.Panel>
+          <Tabs.Panel value="grants">
+            <Stack>
+              {grants?.map((grant) => (
+                <GrantCard
+                  key={grant.id}
+                  linkUrl={`/grant/${grant.id}`}
+                  avatarUrls={[grant.ship.profileMetadata.imgUrl]}
+                  label={`Grant with ${grant.ship.name}`}
+                  isActive={grant.status >= GrantStatus.Allocated}
+                  status={grant.status}
+                />
+              ))}
+            </Stack>
           </Tabs.Panel>
           <Tabs.Panel value="details">
             <Contact
@@ -325,22 +407,23 @@ export const Project = () => {
             />
           </Tabs.Panel>
         </Tabs>
-      </MainSection>
+      </ProfileSection>
       {!isLaptop && (
-        <Stack gap={'xs'} mt={72} w={270}>
-          <Paper p="md" bg={theme.colors.dark[6]}>
-            <Text size="lg" mb={2}>
-              {totalFundsAllocated} {GAME_TOKEN.SYMBOL}
-            </Text>
-            <Group mb="md" gap={4}>
-              <Text size="sm">Funding allocated </Text>
-              <Tooltip
-                position="bottom"
-                label="Total funding allocated to this project"
-              >
-                <IconInfoCircle size={14} color={theme.colors.violet[4]} />
-              </Tooltip>
-            </Group>
+        <Stack gap={'xs'} mt={84} w={270}>
+          {project.showcaseLinks && project.showcaseLinks?.length > 0 && (
+            <Box>
+              <Group mt="4" gap={4} align="center">
+                <ActionIcon variant="subtle" onClick={() => toggleShowcase()}>
+                  <IconMaximize />
+                </ActionIcon>
+                <Text fz="xs" style={{ cursor: 'pointer' }}>
+                  Showcase Gallery
+                </Text>
+              </Group>
+              <MediaCarousel size="sm" items={project.showcaseLinks} />
+            </Box>
+          )}
+          <Paper p="md" bg={theme.colors.dark[6]} w="100%">
             <Text size="lg" mb={2}>
               {totalFundsReceived} {GAME_TOKEN.SYMBOL}
             </Text>
@@ -358,10 +441,14 @@ export const Project = () => {
             <Paper p="md" bg={theme.colors.dark[6]}>
               <Stack gap="lg">
                 <Text>Active Grants</Text>
-                {activeGrants?.map((grant: DashGrant, i: number) => (
+                {activeGrants?.map((grant, i) => (
                   <MilestoneProgress
+                    amount={BigInt(grant.amount)}
                     key={`milestone-progress-bar-${i}`}
-                    grant={grant}
+                    shipName={grant.ship.name || ''}
+                    shipId={grant.ship.id || ''}
+                    shipAvatar={grant.ship.profileMetadata?.imgUrl || ''}
+                    milestones={grant.currentMilestones?.milestones}
                   />
                 ))}
               </Stack>
@@ -369,6 +456,91 @@ export const Project = () => {
           )}
         </Stack>
       )}
+      {isProjectMember && <PostAffix />}
+      {isProjectMember && (
+        <PostDrawer
+          avatarImg={project.imgUrl}
+          name={project.name}
+          posterType={Player.Project}
+          posterId={project.profileId}
+          postType="richtext/post"
+          refetch={() => {
+            refetchUpdates();
+          }}
+        />
+      )}
+      <EditProfileDrawer project={project} refetchProject={refetchProject} />
+      {project.showcaseLinks && project.showcaseLinks.length > 0 && (
+        <FullScreenGallery
+          items={project.showcaseLinks}
+          isOpen={showcaseOpened}
+          close={toggleShowcase}
+        />
+      )}
     </Flex>
+  );
+};
+
+const ProjectUpdatesPanel = ({
+  updates,
+  projectName,
+  isLoading,
+  error,
+  imgUrl,
+}: {
+  updates?: ResolvedUpdate[];
+  imgUrl?: string;
+
+  projectName: string;
+  isLoading: boolean;
+  error: Error | null;
+}) => {
+  if (isLoading) {
+    return (
+      <Box>
+        <Box mt="200" />
+        <Skeleton h={1} mb={200} />
+        <Skeleton h={1} mb={200} />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return <Display title="Error" description={error.message} />;
+  }
+
+  if (!updates || updates?.length === 0) {
+    return (
+      <Display
+        title="Just Getting Started"
+        description={`${projectName} hasn't posted any updates yet.`}
+      />
+    );
+  }
+
+  return (
+    <Box>
+      {updates.map((update) => (
+        <Box pb="lg" key={update.id}>
+          <Group mb="sm" gap={8}>
+            <PlayerAvatar
+              imgUrl={imgUrl || ''}
+              name={projectName}
+              playerType={Player.Project}
+            />
+            <Text size="sm" opacity={0.8}>
+              ·
+            </Text>
+            <Text size="sm" opacity={0.8}>
+              {secondsToShortRelativeTime(update.timestamp)}
+            </Text>
+          </Group>
+          <Box mb="lg" pl={50}>
+            <RTDisplay content={update.content} />
+          </Box>
+          <Divider mb="lg" />
+        </Box>
+      ))}
+    </Box>
   );
 };

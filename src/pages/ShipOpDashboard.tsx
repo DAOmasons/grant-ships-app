@@ -1,5 +1,6 @@
 import {
   Avatar,
+  Box,
   Skeleton,
   Stack,
   Tabs,
@@ -11,7 +12,6 @@ import { Link, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { DashShip, getShipDash } from '../queries/getShipDash';
 import { AppAlert } from '../components/UnderContruction';
-import { GrantCard } from '../components/dashboard/GrantCard';
 import { useTx } from '../hooks/useTx';
 import { notifications } from '@mantine/notifications';
 import { UpdateInput } from '../components/forms/UpdateInput';
@@ -24,10 +24,10 @@ import ShipAbi from '../abi/GrantShip.json';
 import { Tag } from '../constants/tags';
 import { Address } from 'viem';
 import { ZER0_ADDRESS } from '../constants/gameSetup';
-import { PortfolioReport } from '../components/dashboard/ship/PortfolioReport';
 import { ReportStatus } from '../types/common';
-import { getRecentPortfolioReport } from '../queries/getRecordsByTag';
+// import { getRecentPortfolioReport } from '../queries/getRecordsByTag';
 import { ADDR } from '../constants/addresses';
+import { SettingsPanel } from '../components/dashboard/ship/SettingsPanel';
 
 export const ShipOpDashboard = () => {
   const { id } = useParams();
@@ -36,26 +36,12 @@ export const ShipOpDashboard = () => {
     data: shipData,
     error: shipError,
     isLoading: shipLoading,
+    refetch: refetchShip,
   } = useQuery({
     queryKey: [`ship-dash-${id}`],
     queryFn: () => getShipDash(id as string),
     enabled: !!id,
   });
-
-  const { data: recentRecord, refetch: refetchRecentRecord } = useQuery({
-    queryKey: [`ship-portfolio-${id}`],
-    queryFn: () =>
-      getRecentPortfolioReport(
-        `${Tag.ShipSubmitReport}-${ADDR.VOTE_CONTEST}-${id}`
-      ),
-    enabled: !!id,
-  });
-
-  const porfolioGrants = shipData?.grants
-    ? shipData.grants.filter((grant) => grant.grantStatus >= 5)
-    : undefined;
-
-  const reportStatus = recentRecord ? ReportStatus.Review : ReportStatus.Submit;
 
   return (
     <MainSection>
@@ -69,7 +55,7 @@ export const ShipOpDashboard = () => {
           textDecoration: 'none',
         }}
       >
-        <Avatar size={30} src={shipData?.profileMetadata.imgUrl} mr={8} />
+        <Avatar size={30} src={shipData?.profileMetadata?.imgUrl} mr={8} />
         <Text td="none" fz="sm">
           {shipData?.name}
         </Text>
@@ -77,17 +63,28 @@ export const ShipOpDashboard = () => {
       <Tabs defaultValue="grants">
         <Tabs.List mb="xl" grow>
           <Tabs.Tab value="grants">Grants</Tabs.Tab>
-          <Tabs.Tab value="application">Portfolio Report</Tabs.Tab>
+          <Tabs.Tab value="settings">Settings</Tabs.Tab>
+          {/* <Tabs.Tab value="application">Portfolio Report</Tabs.Tab> */}
           <Tabs.Tab value="postUpdate">Post</Tabs.Tab>
         </Tabs.List>
         <Tabs.Panel value="grants">
-          <GrantManager
+          <></>
+          {/* <GrantManager
             shipData={shipData}
             shipError={shipError}
             shipLoading={shipLoading}
+          /> */}
+        </Tabs.Panel>
+        <Tabs.Panel value="settings">
+          <SettingsPanel
+            shipSrcAddress={shipData?.shipContractAddress as string | undefined}
+            shipAvatar={shipData?.profileMetadata?.imgUrl}
+            shipName={shipData?.name}
+            refetch={refetchShip}
+            beacon={shipData?.beaconMessage}
           />
         </Tabs.Panel>
-        <Tabs.Panel value="application">
+        {/* <Tabs.Panel value="application">
           {id && (
             <PortfolioReport
               grants={porfolioGrants}
@@ -102,9 +99,10 @@ export const ShipOpDashboard = () => {
               reportData={recentRecord}
             />
           )}
-        </Tabs.Panel>
+        </Tabs.Panel> */}
         <Tabs.Panel value="postUpdate">
-          <PostUpdatePanel ship={shipData} />
+          <></>
+          {/* <PostUpdatePanel ship={shipData} /> */}
         </Tabs.Panel>
       </Tabs>
     </MainSection>
@@ -149,21 +147,20 @@ export const GrantManager = ({
       />
     );
 
-  if (shipData.grants.length === 0)
-    return (
-      <AppAlert
-        title={'No Grants'}
-        description={'There are no grants for this ship.'}
-      />
-    );
+  // if (shipData.grants.length === 0)
+  //   return (
+  //     <AppAlert
+  //       title={'No Grants'}
+  //       description={'There are no grants for this ship.'}
+  //     />
+  //   );
 
-  return (
-    <Stack gap={'lg'}>
-      {shipData?.grants.map((grant) => (
-        <GrantCard key={grant.id} grant={grant} view="ship-dash" />
-      ))}
-    </Stack>
-  );
+  return null;
+  // <Stack gap={'lg'}>
+  //   {shipData?.grants.map((grant) => (
+  //     <GrantCard key={grant.id} grant={grant} view="ship-dash" />
+  //   ))}
+  // </Stack>
 };
 
 const PostUpdatePanel = ({ ship }: { ship?: DashShip }) => {
@@ -231,7 +228,7 @@ const PostUpdatePanel = ({ ship }: { ship?: DashShip }) => {
 
   return (
     <UpdateInput
-      imgUrl={ship?.profileMetadata.imgUrl}
+      imgUrl={ship?.profileMetadata?.imgUrl}
       onClick={handlePostUpdate}
     />
   );

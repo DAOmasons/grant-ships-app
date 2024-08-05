@@ -1,9 +1,12 @@
+import { Content } from '@tiptap/react';
+import { ShowcaseLink } from '../utils/media';
 import { GameStatus } from './common';
 
 export enum Player {
-  Facilitators = 'facilitators',
-  Ship = 'ship',
-  Project = 'project',
+  Project,
+  Ship,
+  Facilitators,
+  System,
 }
 
 export type FeedCardUI = {
@@ -11,15 +14,15 @@ export type FeedCardUI = {
     name: string;
     id: string;
     imgUrl?: string;
-    entityType: Player;
+    playerType: Player;
     description?: string;
   };
   object?: {
     name: string;
     id: string;
-    entityType: Player;
+    playerType: Player;
   };
-  content: string;
+  message?: string;
   timestamp: number;
   embedText?: string;
   embed?: {
@@ -27,6 +30,11 @@ export type FeedCardUI = {
     url: string;
   };
   sender: string;
+  richTextContent?: Content;
+  limitHeight?: boolean;
+  internalLink?: string;
+  externalLink?: string;
+  tag: string;
 };
 
 export enum MilestoneStatus {
@@ -50,8 +58,9 @@ export type ShipsCardUI = {
   description: string;
   amtAllocated: string;
   amtDistributed: string;
-  amtAvailable: string;
+
   balance: string;
+  shipContractAddress?: string | null;
 };
 
 export type ShipPageUI = {
@@ -61,10 +70,10 @@ export type ShipPageUI = {
   status: GameStatus;
   amtAllocated: string;
   amtDistributed: string;
-  amtAvailable: string;
+
   totalRoundAmount: string;
   balance: string;
-  shipContractAddress: string;
+  shipContractAddress?: string | null;
   members: string[];
   details: {
     thesis?: string;
@@ -114,4 +123,8 @@ export type ProjectPageUI = {
   discord: string;
   telegram: string;
   members: string[];
+  showcaseLinks?: ShowcaseLink[];
+  bannerImage?: string;
+  bannerImgUrl?: string;
+  mainDemoLink?: string;
 };

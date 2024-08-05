@@ -1,0 +1,5 @@
+query shipPageQuery($id: String!) {
+  GrantShip(where: { id: { _eq: $id } }) {
+    ...BaseShipData
+  }
+}

@@ -1,8 +1,9 @@
-import { getBuiltGraphSDK } from '../.graphclient';
+import { GrantBasicFragment, getBuiltGraphSDK } from '../.graphclient';
 import { ProjectPageUI } from '../types/ui';
 import { getGatewayUrl, getIpfsJson } from '../utils/ipfs/get';
 import { ProjectProfileMetadata } from '../utils/ipfs/metadataValidation';
 import { SUBGRAPH_URL } from '../constants/gameSetup';
+import { ShowcaseLink } from '../utils/media';
 
 export const getProjectPage = async (id: string): Promise<ProjectPageUI> => {
   try {
@@ -10,11 +11,13 @@ export const getProjectPage = async (id: string): Promise<ProjectPageUI> => {
       apiEndpoint: SUBGRAPH_URL,
     });
 
-    const { project } = await projectPageQuery({ id });
+    const { Project } = await projectPageQuery({ id });
 
-    if (!project) {
-      throw new Error('No project found');
+    if (!Project[0]) {
+      throw new Error('No Project found');
     }
+
+    const project = Project[0];
 
     const pointer = project.metadata?.pointer;
 
@@ -52,6 +55,12 @@ export const getProjectPage = async (id: string): Promise<ProjectPageUI> => {
       x: profileData.x,
       discord: profileData.discord,
       telegram: profileData.telegram,
+      mainDemoLink: profileData.mainDemoLink,
+      bannerImage: profileData.bannerImage,
+      bannerImgUrl: profileData.bannerImage
+        ? getGatewayUrl(profileData.bannerImage)
+        : undefined,
+      showcaseLinks: profileData.showcaseLinks as ShowcaseLink[] | undefined,
     };
   } catch (error) {
     console.error('Error in getProjectPage', error);

@@ -1,0 +1,11 @@
+query getFacilitatorGrants($gameId: String!) {
+  grants: Grant(where: { gameManager_id: { _eq: $gameId } }) {
+    ...GrantBasic
+    project {
+      ...ProjectDisplay
+    }
+    ship {
+      ...ShipDisplay
+    }
+  }
+}

@@ -1,0 +1,8 @@
+query getUpdates($entityAddress: String!) {
+  Update(
+    where: { entityAddress: { _eq: $entityAddress } }
+    order_by: { timestamp: desc }
+  ) {
+    ...UpdateBody
+  }
+}

@@ -3,7 +3,6 @@ import { fetchGsVoting, VoteData } from '../queries/getGsVoting';
 import { Address } from 'viem';
 import { useAccount } from 'wagmi';
 import { useQuery } from '@tanstack/react-query';
-import { ADDR } from '../constants/addresses';
 
 type VoteContextType = {
   gsVotes?: VoteData;

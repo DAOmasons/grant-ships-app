@@ -1,26 +1,49 @@
-import { getBuiltGraphSDK } from '../.graphclient';
-import { DashGrant, resolveGrants } from '../resolvers/grantResolvers';
-import { SUBGRAPH_URL } from '../constants/gameSetup';
+import {
+  GrantBasicFragment,
+  ShipDisplayFragment,
+  getBuiltGraphSDK,
+} from '../.graphclient';
+import { ShipMetadata, resolveShipMetadata } from '../resolvers/shipResolvers';
 
-export const getProjectGrants = async (
-  projectId: string
-): Promise<DashGrant[]> => {
-  try {
-    const { getProjectGrants } = getBuiltGraphSDK({
-      apiEndpoint: SUBGRAPH_URL,
-    });
+type ProjectGrantBasic = GrantBasicFragment & {
+  amountDistributed: string;
+  amountAllocated: string;
+};
 
-    const res = await getProjectGrants({ id: projectId });
+export type ProjectGrant = ProjectGrantBasic & {
+  ship: ShipDisplayFragment & {
+    profileMetadata: ShipMetadata;
+  };
+};
 
-    if (!res.project) {
-      throw new Error('No grant ship found');
-    }
+export const getProjectGrants = async (projectId: string, gameId: string) => {
+  const { getProjectGrants } = getBuiltGraphSDK();
 
-    const unpackedGrantData = await resolveGrants(res.project.grants);
+  const data = await getProjectGrants({
+    projectId,
+    gameId,
+  });
 
-    return unpackedGrantData as DashGrant[];
-  } catch (error) {
-    console.error('Error getting ship dash', error);
-    throw error;
+  if (!data?.grants) {
+    console.error('No grants found for project', projectId);
+    throw new Error('No grants found for project');
   }
+
+  const resolvedGrants = await Promise.all(
+    data.grants.map(async (grant) => {
+      const shipMetadata = await resolveShipMetadata(
+        grant.ship?.profileMetadata?.pointer
+      );
+
+      return {
+        ...grant,
+        ship: {
+          ...grant.ship,
+          profileMetadata: shipMetadata,
+        },
+      };
+    })
+  );
+
+  return resolvedGrants;
 };

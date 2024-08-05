@@ -1,0 +1,148 @@
+[
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_registryAddress",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "tag",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "profileId",
+        "type": "bytes32"
+      },
+      {
+        "components": [
+          { "internalType": "uint256", "name": "protocol", "type": "uint256" },
+          { "internalType": "string", "name": "pointer", "type": "string" }
+        ],
+        "indexed": false,
+        "internalType": "struct Metadata",
+        "name": "content",
+        "type": "tuple"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "profileAnchor",
+        "type": "address"
+      }
+    ],
+    "name": "PostEvent",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "tag",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "recordId",
+        "type": "bytes32"
+      },
+      {
+        "indexed": false,
+        "internalType": "bytes32",
+        "name": "profileId",
+        "type": "bytes32"
+      },
+      {
+        "components": [
+          { "internalType": "uint256", "name": "protocol", "type": "uint256" },
+          { "internalType": "string", "name": "pointer", "type": "string" }
+        ],
+        "indexed": false,
+        "internalType": "struct Metadata",
+        "name": "content",
+        "type": "tuple"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "profileAnchor",
+        "type": "address"
+      }
+    ],
+    "name": "PostRecord",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      { "internalType": "string", "name": "_tag", "type": "string" },
+      { "internalType": "bytes32", "name": "_recordId", "type": "bytes32" },
+      { "internalType": "bytes32", "name": "_profileId", "type": "bytes32" },
+      {
+        "components": [
+          { "internalType": "uint256", "name": "protocol", "type": "uint256" },
+          { "internalType": "string", "name": "pointer", "type": "string" }
+        ],
+        "internalType": "struct Metadata",
+        "name": "_content",
+        "type": "tuple"
+      }
+    ],
+    "name": "postRecord",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "string", "name": "_tag", "type": "string" },
+      { "internalType": "bytes32", "name": "_profileId", "type": "bytes32" },
+      {
+        "components": [
+          { "internalType": "uint256", "name": "protocol", "type": "uint256" },
+          { "internalType": "string", "name": "pointer", "type": "string" }
+        ],
+        "internalType": "struct Metadata",
+        "name": "_content",
+        "type": "tuple"
+      }
+    ],
+    "name": "postUpdate",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }],
+    "name": "records",
+    "outputs": [
+      { "internalType": "uint256", "name": "protocol", "type": "uint256" },
+      { "internalType": "string", "name": "pointer", "type": "string" },
+      { "internalType": "bool", "name": "exists", "type": "bool" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "registry",
+    "outputs": [
+      { "internalType": "contract IRegistry", "name": "", "type": "address" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]

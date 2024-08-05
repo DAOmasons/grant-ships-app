@@ -1,5 +1,13 @@
-import { ActionIcon, Avatar, Box, FileButton, Text } from '@mantine/core';
-import { IconPencil, IconUser } from '@tabler/icons-react';
+import {
+  ActionIcon,
+  Avatar,
+  Box,
+  FileButton,
+  InputLabel,
+  Text,
+  useMantineTheme,
+} from '@mantine/core';
+import { IconCameraPlus, IconPencil, IconUser } from '@tabler/icons-react';
 import { pinFileToIPFS } from '../utils/ipfs/pin';
 import { ReactNode, useEffect, useState } from 'react';
 import { getGatewayUrl } from '../utils/ipfs/get';
@@ -23,6 +31,7 @@ export const AvatarPickerIPFS = ({
 }: PickerProps) => {
   const [pfpIpfsHash, setIpfsHash] = useState<string | null>(defaultValue);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const theme = useMantineTheme();
 
   const handleUpload = async (e: File | null) => {
     if (!e) {
@@ -54,9 +63,22 @@ export const AvatarPickerIPFS = ({
 
   return (
     <>
-      <Box pos="relative" mb="lg" mt="xl">
-        <Avatar size={120} src={canPreview ? avatarPreview : undefined}>
-          {canPreview || <IconUser size={80} />}
+      <Box pos="relative" mb="lg">
+        <Avatar
+          size={160}
+          src={canPreview ? avatarPreview : undefined}
+          bg={theme.colors.dark[5]}
+          pos="relative"
+        >
+          {canPreview || (
+            <InputLabel
+              c={theme.colors.dark[0]}
+              pos="absolute"
+              bottom={'51%'}
+              right={'35%'}
+              required
+            ></InputLabel>
+          )}
         </Avatar>
         <FileButton
           onChange={handleUpload}
@@ -66,19 +88,22 @@ export const AvatarPickerIPFS = ({
             <ActionIcon
               {...props}
               pos={'absolute'}
-              bottom={0}
-              left={85}
+              bottom={'33%'}
+              left={'10%'}
               radius="xl"
+              bg={'rgba(255, 255, 255, 0.05)'}
               loading={isLoading}
               disabled={isLoading || disabled}
+              w={'50px'}
+              h={'50px'}
             >
-              <IconPencil />
+              <IconCameraPlus />
             </ActionIcon>
           )}
         </FileButton>
       </Box>
       {validationError && (
-        <Text fz={12} color="red">
+        <Text fz={12} c="red">
           {validationError}
         </Text>
       )}

@@ -1,0 +1,6 @@
+query getShipAddressById($shipId: String!) {
+  GrantShip_by_pk(id: $shipId) {
+    id
+    shipContractAddress
+  }
+}

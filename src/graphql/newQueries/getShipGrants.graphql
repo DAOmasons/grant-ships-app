@@ -1,0 +1,18 @@
+fragment ProjectDisplay on Project {
+  id
+  name
+  metadata {
+    pointer
+  }
+}
+
+query getShipGrants($shipId: String!, $gameId: String!) {
+  grants: Grant(
+    where: { ship_id: { _eq: $shipId }, gameManager_id: { _eq: $gameId } }
+  ) {
+    ...GrantBasic
+    project {
+      ...ProjectDisplay
+    }
+  }
+}

@@ -1,9 +1,0 @@
-fragment Update on Update {
-  id
-  content {
-    pointer
-  }
-  postedBy
-  entityAddress
-  timestamp
-}

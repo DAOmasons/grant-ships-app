@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { ShipProfileMetadata } from '../utils/ipfs/metadataValidation';
 import { FacShipDataFragment, getBuiltGraphSDK } from '../.graphclient';
 import { getIpfsJson } from '../utils/ipfs/get';
-import { SUBGRAPH_URL } from '../constants/gameSetup';
+import { GAME_MANAGER, SUBGRAPH_URL } from '../constants/gameSetup';
 
 type ShipMetadataType = z.infer<typeof ShipProfileMetadata>;
 
@@ -11,13 +11,13 @@ type RawReason = {
 };
 type QueryApplicant = FacShipDataFragment;
 type QueryApproved = FacShipDataFragment & {
-  approvedTime?: string | null;
+  approvedTime?: number | null;
   applicationReviewReason?: RawReason | null;
   shipAllocation?: string | null;
-  totalAvailableFunds?: string | null;
+  totalFundsReceived?: string | null;
 };
 type QueryRejected = FacShipDataFragment & {
-  rejectedTime?: string | null;
+  rejectedTime?: number | null;
   applicationReviewReason?: RawReason | null;
 };
 
@@ -92,7 +92,7 @@ export const getFacDashShipData = async (): Promise<FacShipData> => {
     });
 
     const { shipApplicants, approvedShips, rejectedShips } =
-      await facDashShipData();
+      await facDashShipData({ gameId: GAME_MANAGER.ADDRESS });
 
     const [resolvedApplicants, resolvedRejected, resolvedApproved] =
       await Promise.all([

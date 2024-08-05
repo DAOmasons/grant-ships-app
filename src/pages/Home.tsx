@@ -22,7 +22,7 @@ export const Home = () => {
       <Banner />
       <MainSection>
         <Tabs defaultValue="feed">
-          <Tabs.List mb={'xl'}>
+          <Tabs.List mb={'md'}>
             <Tabs.Tab value="feed" w="20%">
               Feed
             </Tabs.Tab>
@@ -107,7 +107,13 @@ const FeedPanel = () => {
         </Group>
       )}
       {!hasNextPage && (
-        <Flex w="100%" justify="center" align="center" direction="column">
+        <Flex
+          w="100%"
+          justify="center"
+          align="center"
+          direction="column"
+          mt="xl"
+        >
           <Text opacity={0.8}>You're all caught up!</Text>
           <Text opacity={0.7} fz="sm">
             Come back later to see more

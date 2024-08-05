@@ -20,11 +20,12 @@ export const Feed = ({
           cardIndex={i}
           cardCount={feed.length}
           onIntersect={fetchNext}
+          limitHeight
         />
       ))}
     </Box>
   ) : (
-    <Paper p="lg" bg={theme.colors.dark[6]}>
+    <Paper p="lg" bg={theme.colors.dark[6]} mb="md">
       <Text size="lg" mb="sm">
         Feed is empty
       </Text>

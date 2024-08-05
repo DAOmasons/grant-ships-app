@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { createContext } from 'react';
 import { GameManager, getGameManger } from '../queries/getGameManger';
-import { useAccount } from 'wagmi';
+import { useAccount, useChainId } from 'wagmi';
 import { UserData, getUserData } from '../queries/getUserData';
 
 type GlobalStateContext = {
@@ -32,6 +32,7 @@ export const GlobalStateProvider = ({
   children: React.ReactNode;
 }) => {
   const { address } = useAccount();
+  const chainId = useChainId();
 
   const {
     data: gameManager,
@@ -47,7 +48,7 @@ export const GlobalStateProvider = ({
     refetch: refetchUserState,
   } = useQuery({
     queryKey: [`user-state-${address}`],
-    queryFn: () => getUserData(address as string),
+    queryFn: () => getUserData(address as string, chainId),
     enabled: !!address,
   });
 

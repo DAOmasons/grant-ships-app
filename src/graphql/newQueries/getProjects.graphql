@@ -1,0 +1,31 @@
+fragment ProjectDetails on Project {
+  id
+  name
+  profileId
+  nonce
+  anchor
+  owner
+}
+
+fragment RawMetadata on RawMetadata {
+  protocol
+  pointer
+}
+
+query GetProjects($chainId: Int!) {
+  Project(where: { chainId: { _eq: $chainId } }) {
+    ...ProjectDetails
+    metadata {
+      ...RawMetadata
+    }
+  }
+}
+
+query GetUserProjects($id: String!) {
+  Project(where: { owner: { _eq: $id } }) {
+    ...ProjectDetails
+    metadata {
+      ...RawMetadata
+    }
+  }
+}

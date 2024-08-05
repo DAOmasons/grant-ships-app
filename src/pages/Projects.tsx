@@ -10,11 +10,15 @@ import {
 } from '../components/projectItems/ProjectCard';
 import { ReactNode } from 'react';
 import { AppAlert } from '../components/UnderContruction';
+import { useChainId } from 'wagmi';
 
 export const Projects = () => {
+  const chainId = useChainId();
+
   const { data, isLoading, error } = useQuery({
     queryKey: ['projects'],
-    queryFn: getProjectCards,
+    queryFn: () => getProjectCards({ chainId }),
+    enabled: !!chainId,
   });
 
   const theme = useMantineTheme();

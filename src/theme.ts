@@ -1,6 +1,16 @@
-import { Loader, Modal, Tooltip, createTheme } from '@mantine/core';
+import {
+  ActionIcon,
+  Button,
+  Drawer,
+  DrawerRoot,
+  Loader,
+  Modal,
+  Tooltip,
+  createTheme,
+} from '@mantine/core';
 import { RingLoader } from './components/loader/RingLoader';
 import { BreakPoint } from './constants/style';
+import btnExtend from './styles/extendButtonTheme.module.css';
 
 export const theme = createTheme({
   fontFamily: 'Roboto',
@@ -31,6 +41,17 @@ export const theme = createTheme({
       defaultProps: {
         lockScroll: false,
       },
+    }),
+    DrawerRoot: DrawerRoot.extend({
+      defaultProps: {
+        lockScroll: false,
+      },
+    }),
+    Button: Button.extend({
+      classNames: btnExtend,
+    }),
+    ActionIcon: ActionIcon.extend({
+      classNames: btnExtend,
     }),
   },
   breakpoints: {

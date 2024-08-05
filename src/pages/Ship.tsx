@@ -1,7 +1,6 @@
 import {
   Avatar,
   Box,
-  Button,
   Flex,
   Group,
   Loader,
@@ -20,12 +19,11 @@ import {
 } from '@tabler/icons-react';
 import { FundingIndicator } from '../components/shipItems/FundingIndicator';
 import { FeedPanel } from '../components/shipItems/FeedPanel';
-import { PortfolioPanel } from '../components/shipItems/PortfolioPanel';
 import { DetailsPanel } from '../components/shipItems/DetailsPanel';
-import { Link, useParams } from 'react-router-dom';
-import { GAME_TOKEN } from '../constants/gameSetup';
+import { useParams } from 'react-router-dom';
+import { GAME_MANAGER, GAME_TOKEN } from '../constants/gameSetup';
 import { AddressAvatarGroup } from '../components/AddressAvatar';
-import { GameStatus } from '../types/common';
+import { GameStatus, GrantStatus } from '../types/common';
 
 import { getShipPageData } from '../queries/getShipPage';
 import { useQuery, useInfiniteQuery } from '@tanstack/react-query';
@@ -35,11 +33,14 @@ import { SingleItemPageSkeleton } from '../components/skeletons';
 import { getEntityFeed } from '../queries/getFeed';
 import { formatEther } from 'viem';
 import { useUserData } from '../hooks/useUserState';
-import { UpdatesPanel } from '../components/shipItems/UpdatesPanel';
+// import { UpdatesPanel } from '../components/shipItems/UpdatesPanel';
 import { SHIP_STATUS_INFO } from '../constants/copy';
 import { useLaptop, useTablet } from '../hooks/useBreakpoint';
 import { useMemo } from 'react';
 import { ShipBadge } from '../components/RoleBadges';
+import { ApplyButton } from '../components/shipItems/ApplyButton';
+import { getShipGrants } from '../queries/getShipGrants';
+import { GrantCard } from '../components/grant/GrantCard';
 
 const infiniteWrapper = async ({ pageParam }: any) => {
   const result = await getEntityFeed(pageParam);
@@ -90,7 +91,19 @@ export const Ship = () => {
     enabled: !!id,
   });
 
+  console.log('ship', ship);
+
   const { userData } = useUserData();
+
+  const {
+    data: grants,
+    // isLoading: grantsLoading,
+    // error: grantsError,
+  } = useQuery({
+    queryKey: [`ship-grants-${id}`],
+    queryFn: () => getShipGrants(id as string, GAME_MANAGER.ADDRESS),
+    enabled: !!id,
+  });
 
   if (isLoading) {
     return <SingleItemPageSkeleton />;
@@ -171,7 +184,7 @@ export const Ship = () => {
               <Box>
                 <FundingIndicator
                   fullWidth
-                  available={ship.amtAvailable}
+                  available={ship.balance}
                   distributed={ship.amtDistributed}
                   allocated={ship.amtAllocated}
                 />
@@ -207,30 +220,29 @@ export const Ship = () => {
             addresses={ship.members}
             avatarProps={{ size: 32 }}
           />
-          <Button
-            component={Link}
-            to={`/apply-funding/${id}`}
-            disabled={!isShipActive}
-          >
-            Apply for Funding
-          </Button>
+          {ship.shipContractAddress && (
+            <ApplyButton
+              shipSrcAddress={ship.shipContractAddress}
+              disabled={isShipActive}
+            />
+          )}
         </Group>
-        <Tabs defaultValue="feed">
+        <Tabs defaultValue="updates">
           <Tabs.List mb={'xl'}>
-            <Tabs.Tab value="feed" w={isTablet ? '4.5rem' : '6rem'}>
-              Feed
-            </Tabs.Tab>
             <Tabs.Tab w={isTablet ? '4.5rem' : '6rem'} value="updates">
               Updates
             </Tabs.Tab>
-            <Tabs.Tab w={isTablet ? '4.5rem' : '6rem'} value="portfolio">
-              Portfolio
+            <Tabs.Tab w={isTablet ? '4.5rem' : '6rem'} value="grants">
+              Grants
+            </Tabs.Tab>
+            <Tabs.Tab value="history" w={isTablet ? '4.5rem' : '6rem'}>
+              History
             </Tabs.Tab>
             <Tabs.Tab w={isTablet ? '4.5rem' : '6rem'} value="details">
               Details
             </Tabs.Tab>
           </Tabs.List>
-          <Tabs.Panel value="feed">
+          <Tabs.Panel value="history">
             <FeedPanel
               feedItems={feedCards}
               isLoading={feedLoading}
@@ -254,15 +266,26 @@ export const Ship = () => {
           <Tabs.Panel value="details">
             <DetailsPanel details={ship.details} members={ship.members} />
           </Tabs.Panel>
-          <Tabs.Panel value="updates">
+          {/* <Tabs.Panel value="updates">
             <UpdatesPanel
               ship={ship}
               isShipOperator={isShipOperator}
               shipId={id}
             />
-          </Tabs.Panel>
-          <Tabs.Panel value="portfolio">
-            <PortfolioPanel />
+          </Tabs.Panel> */}
+          <Tabs.Panel value="grants">
+            <Stack>
+              {grants?.map((grant) => (
+                <GrantCard
+                  key={grant.id}
+                  avatarUrls={[grant.project?.metadata?.imgUrl || '']}
+                  label={`${grant.project.name}`}
+                  isActive={grant.status >= GrantStatus.Allocated}
+                  linkUrl={`/grant/${grant.id}/timeline`}
+                  status={grant.status}
+                />
+              ))}
+            </Stack>
           </Tabs.Panel>
         </Tabs>
       </MainSection>
@@ -296,7 +319,7 @@ export const Ship = () => {
               Total Round Amount
             </Text>
             <Text size="lg" mb={2}>
-              {formatEther(BigInt(ship.amtAvailable))} {GAME_TOKEN.SYMBOL}
+              {formatEther(BigInt(ship.balance))} {GAME_TOKEN.SYMBOL}
             </Text>
             <Text size="sm">Funding Available</Text>
           </Paper>
@@ -308,7 +331,7 @@ export const Ship = () => {
             </Text>
             {ship.status >= GameStatus.Active && (
               <FundingIndicator
-                available={ship.amtAvailable}
+                available={ship.balance}
                 distributed={ship.amtDistributed}
                 allocated={ship.amtAllocated}
               />

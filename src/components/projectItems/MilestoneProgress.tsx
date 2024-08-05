@@ -13,14 +13,26 @@ import { IconEye, IconX } from '@tabler/icons-react';
 import { IconCheck } from '@tabler/icons-react';
 import { formatEther } from 'viem';
 import { GAME_TOKEN } from '../../constants/gameSetup';
-import { DashGrant, PackedMilestoneData } from '../../resolvers/grantResolvers';
-import { AlloStatus } from '../../types/common';
+// import { DashGrant, PackedMilestoneData } from '../../resolvers/grantResolvers';
+import { AlloStatus, GameStatus } from '../../types/common';
 import { Link } from 'react-router-dom';
 import { IconExclamationMark } from '@tabler/icons-react';
 
+type Milestone = {
+  percentage: number;
+  status: GameStatus;
+  index: number;
+  id: string;
+};
+
 type MilestoneProgressProps = {
   onlyMilestones?: boolean;
-  grant: DashGrant;
+  amount: bigint;
+  shipName: string;
+  shipAvatar: string;
+  shipId: string;
+  milestones?: Milestone[];
+  //   grant: DashGrant;
 };
 
 const MilestoneStatusText: Record<number, string> = {
@@ -32,94 +44,41 @@ const MilestoneStatusText: Record<number, string> = {
   [AlloStatus.Rejected]: 'Ship Operators have rejected this milestone',
 } as const;
 
-const getBarStyle = ({ milestoneStatus }: PackedMilestoneData) => {
-  if (milestoneStatus === AlloStatus.None)
-    return `${classes.bar} ${classes.bgIdle}`;
-  if (milestoneStatus === AlloStatus.Pending)
+const getBarStyle = (status: GameStatus) => {
+  if (status === GameStatus.None) return `${classes.bar} ${classes.bgIdle}`;
+  if (status === GameStatus.Pending)
     return `${classes.bar} ${classes.bgInReview}`;
-  if (milestoneStatus === AlloStatus.Accepted)
+  if (status === GameStatus.Accepted)
     return `${classes.bar} ${classes.bgApproved}`;
-  if (milestoneStatus === AlloStatus.Rejected)
+  if (status === GameStatus.Rejected)
     return `${classes.bar} ${classes.bgRejected}`;
   return `${classes.bar}`;
 };
 
-const getCircleStyle = ({ milestoneStatus }: PackedMilestoneData) => {
-  if (milestoneStatus === AlloStatus.None)
+const getCircleStyle = (status: GameStatus) => {
+  if (status === GameStatus.None)
     return `${classes.statusIcon} ${classes.borderIdle}`;
-  if (milestoneStatus === AlloStatus.Pending)
+  if (status === GameStatus.Pending)
     return `${classes.statusIcon} ${classes.borderInReview}`;
-  if (milestoneStatus === AlloStatus.Accepted)
+  if (status === GameStatus.Accepted)
     return `${classes.statusIcon} ${classes.borderApproved}`;
-  if (milestoneStatus === AlloStatus.Rejected)
+  if (status === GameStatus.Rejected)
     return `${classes.statusIcon} ${classes.borderRejected}`;
   return `${classes.statusIcon}`;
 };
 
 export const MilestoneProgress = ({
-  grant,
+  amount,
   onlyMilestones,
+  shipName,
+  shipAvatar,
+  shipId,
+  milestones,
 }: MilestoneProgressProps) => {
-  const theme = useMantineTheme();
-  const grantAmount = grant.applicationData.grantAmount
-    ? formatEther(grant.applicationData.grantAmount)
-    : 0;
+  const grantAmount = amount ? formatEther(amount) : 0;
 
-  if (!grant.milestones)
-    return (
-      <>
-        {onlyMilestones ? (
-          <Group gap="4">
-            <IconExclamationMark
-              size={20}
-              color={theme.colors.orange[6]}
-              style={{
-                transform: 'translateY(-1px)',
-              }}
-            />
-            <Text fz="sm" c={theme.colors.orange[4]}>
-              Milestones have yet to be submitted for this grant.
-            </Text>
-          </Group>
-        ) : (
-          <Box>
-            <Group gap={6} mb={10} align="start">
-              <Text fz="sm">
-                <Text fz="sm" component="span" fw={600}>
-                  {grantAmount} {GAME_TOKEN.SYMBOL}{' '}
-                </Text>
-                funded by
-              </Text>
-              <Tooltip
-                label={
-                  <Box p={8}>
-                    <Avatar
-                      src={grant.shipMetadata.imgUrl}
-                      size={66}
-                      mb={'xs'}
-                    />
-                    <Text>{grant.shipMetadata.name}</Text>
-                  </Box>
-                }
-              >
-                <Avatar
-                  src={grant.shipMetadata.imgUrl}
-                  size={20}
-                  component={Link}
-                  to={`/ship/${grant.shipId.id}`}
-                />
-              </Tooltip>
-            </Group>
-            <Text fz="xs">Awaiting Milestones</Text>
-          </Box>
-        )}
-      </>
-    );
-
-  const amtCompleted = grant.milestones
-    ? grant.milestones.filter(
-        (ms) => ms.milestoneStatus === AlloStatus.Accepted
-      ).length
+  const amtCompleted = milestones
+    ? milestones.filter((ms) => ms.status === GameStatus.Accepted).length
     : [];
 
   return (
@@ -135,27 +94,26 @@ export const MilestoneProgress = ({
           <Tooltip
             label={
               <Box p={8}>
-                <Avatar src={grant.shipMetadata.imgUrl} size={66} mb={'xs'} />
-                <Text fz="sm">{grant.shipMetadata.name}</Text>
+                <Avatar src={shipAvatar} size={66} mb={'xs'} />
+                <Text fz="sm">{shipName}</Text>
               </Box>
             }
           >
             <Avatar
-              src={grant.shipMetadata.imgUrl}
+              src={shipAvatar}
               size={20}
               component={Link}
-              to={`/ship/${grant.shipId.id}`}
+              to={`/ship/${shipId}`}
             />
           </Tooltip>
         </Group>
       )}
       <MilestoneProgressSteps
-        totalAmount={grant.applicationData.grantAmount}
-        steps={grant.milestones}
+        totalAmount={amount ? BigInt(amount) : 0n}
+        steps={milestones}
       />
       <Text fz="xs" mt={8} opacity={0.8}>
-        {amtCompleted.toString()}/{grant.milestones.length} Milestones
-        distributed
+        {amtCompleted.toString()}/{milestones?.length} Milestones distributed
       </Text>
     </Box>
   );
@@ -166,32 +124,29 @@ export const MilestoneProgressSteps = ({
   totalAmount,
 }: {
   totalAmount: bigint;
-  steps: PackedMilestoneData[];
+  steps?: Milestone[];
 }) => {
   const theme = useMantineTheme();
 
-  const getCircleContent = (
-    { milestoneStatus }: PackedMilestoneData,
-    index: number
-  ) => {
-    if (milestoneStatus === AlloStatus.None)
+  const getCircleContent = ({ status }: Milestone, index: number) => {
+    if (status === GameStatus.None)
       return (
         <Text c={theme.colors.dark[3]} style={{ transform: 'translateY(1px)' }}>
           {index + 1}
         </Text>
       );
-    if (milestoneStatus === AlloStatus.Pending)
+    if (status === GameStatus.Pending)
       return <IconEye size={16} color={theme.colors.violet[6]} />;
-    if (milestoneStatus === AlloStatus.Accepted)
+    if (status === GameStatus.Accepted)
       return <IconCheck size={16} color={theme.colors.blue[6]} />;
-    if (milestoneStatus === AlloStatus.Rejected)
+    if (status === GameStatus.Rejected)
       return <IconX size={16} color={theme.colors.red[6]} />;
   };
   return (
     <Flex w={237} className={classes.milestoneBox}>
-      {steps.map((step, index) => (
+      {steps?.map((step, index) => (
         <Fragment key={`milestone-circle-${index}`}>
-          {index !== 0 && <Box className={getBarStyle(step)} />}
+          {index !== 0 && <Box className={getBarStyle(step.status)} />}
           <Tooltip
             label={
               <Box p={8}>
@@ -199,7 +154,7 @@ export const MilestoneProgressSteps = ({
                   <Text fz="sm" fw={600}>
                     Milestone {index + 1}
                   </Text>
-                  {step.milestoneStatus !== AlloStatus.None &&
+                  {step.status !== GameStatus.None &&
                     getCircleContent(step, index)}
                 </Group>
 
@@ -209,26 +164,26 @@ export const MilestoneProgressSteps = ({
                   opacity={0.8}
                   style={{ whiteSpace: 'pre-line' }}
                 >
-                  {MilestoneStatusText[step.milestoneStatus]}
+                  {MilestoneStatusText[step.status]}
                 </Text>
                 <Group mb="xs" gap={6}>
                   <Text fz="xs">
                     {formatEther(
-                      (totalAmount * step.amountPercentage) /
+                      (totalAmount * BigInt(step.percentage)) /
                         1000000000000000000n
                     )}{' '}
                     {GAME_TOKEN.SYMBOL}
                   </Text>
                   ·
                   <Text fz="xs">
-                    {formatEther(step.amountPercentage * BigInt(100))}% of total
-                    grant.
+                    {formatEther(BigInt(step.percentage) * BigInt(100))}% of
+                    total grant.
                   </Text>
                 </Group>
               </Box>
             }
           >
-            <Flex className={getCircleStyle(step)}>
+            <Flex className={getCircleStyle(step.status)}>
               {getCircleContent(step, index)}
             </Flex>
           </Tooltip>

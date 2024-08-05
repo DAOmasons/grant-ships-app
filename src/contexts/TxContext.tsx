@@ -13,7 +13,7 @@ import {
 } from '../components/modals/txModal/txModalStates';
 import { Button, Modal } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { pollEnvio, pollSubgraph } from '../queries/getRecentTransaction';
+import { pollEnvio } from '../queries/getRecentTransaction';
 
 type WriteContractParams = Parameters<
   ReturnType<typeof useWriteContract>['writeContract']
@@ -35,7 +35,6 @@ enum PollStatus {
 }
 
 type ViewParams = {
-  awaitGraphPoll?: boolean;
   awaitEnvioPoll?: boolean;
   loading?: {
     title?: string;
@@ -137,29 +136,7 @@ export const TxProvider = ({ children }: { children: ReactNode }) => {
       ...writeContractOptions,
       onSuccess: (data, variables, context) => {
         writeContractOptions?.onSuccess?.(data, variables, context);
-        if (
-          viewParams?.awaitGraphPoll !== false &&
-          data &&
-          !viewParams?.awaitEnvioPoll
-        ) {
-          setPollStatus(PollStatus.Polling);
-          pollSubgraph({
-            txHash: data,
-            onPollSuccess: () => {
-              writeContractOptions?.onPollSuccess?.();
-              setPollStatus(PollStatus.Success);
-              onComplete?.();
-            },
-            onPollError: () => {
-              writeContractOptions?.onPollError?.();
-              setPollStatus(PollStatus.Error);
-            },
-            onPollTimeout: () => {
-              writeContractOptions?.onPollTimeout?.();
-              setPollStatus(PollStatus.Timeout);
-            },
-          });
-        } else if (viewParams?.awaitEnvioPoll && data) {
+        if (viewParams?.awaitEnvioPoll !== false && data) {
           setPollStatus(PollStatus.Polling);
           pollEnvio({
             txHash: data,
@@ -197,7 +174,7 @@ export const TxProvider = ({ children }: { children: ReactNode }) => {
   }, [clearTx, close]);
 
   const shouldWaitForPoll =
-    viewParams?.awaitGraphPoll !== false && pollStatus === PollStatus.Polling;
+    viewParams?.awaitEnvioPoll !== false && pollStatus === PollStatus.Polling;
 
   const txModalContent = useMemo(() => {
     if (isConfirming || isAwaitingSignature || shouldWaitForPoll) {
@@ -205,10 +182,10 @@ export const TxProvider = ({ children }: { children: ReactNode }) => {
         viewParams?.loading?.title || 'Validating Transaction';
       const validateDescription =
         viewParams?.loading?.description || 'Please wait...';
-      const pollTitle = viewParams?.polling?.title || 'Polling Subgraph';
+      const pollTitle = viewParams?.polling?.title || 'Polling Indexer';
       const pollDescription =
         viewParams?.polling?.description ||
-        'Transaction successful! Indexing data to the subgraph...';
+        'Transaction successful! Indexing data to the indexer...';
 
       const title = shouldWaitForPoll ? pollTitle : validateTitle;
       const description = shouldWaitForPoll

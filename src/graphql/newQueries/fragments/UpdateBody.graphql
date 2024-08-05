@@ -1,0 +1,9 @@
+fragment UpdateBody on Update {
+  id
+  content {
+    pointer
+  }
+  postedBy
+  entityAddress
+  timestamp
+}

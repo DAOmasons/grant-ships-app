@@ -1,4 +1,3 @@
-/* eslint-disable prefer-const */
 import { Alert, Box, Text, TextInput, useMantineTheme } from '@mantine/core';
 import {
   Address,
@@ -7,7 +6,6 @@ import {
   parseAbiParameters,
   parseEther,
 } from 'viem';
-import { GAME_MANAGER, GAME_TOKEN } from '../../../constants/gameSetup';
 import { CompressedApprovedShip } from '../../../queries/getFacDashShipData';
 import { useMemo, useState } from 'react';
 import { useTx } from '../../../hooks/useTx';
@@ -15,6 +13,8 @@ import AlloAbi from '../../../abi/Allo.json';
 import { ADDR } from '../../../constants/addresses';
 import { TxButton } from '../../TxButton';
 import { useQueryClient } from '@tanstack/react-query';
+import { useGameManager } from '../../../hooks/useGameMangers';
+import { GAME_TOKEN } from '../../../constants/gameSetup';
 
 export const AllocationPanel = ({
   poolBalance,
@@ -31,6 +31,7 @@ export const AllocationPanel = ({
 
   const theme = useMantineTheme();
   const { tx } = useTx();
+  const { gm } = useGameManager();
 
   const [shipData, setShipData] = useState<Record<string, number>>({});
 
@@ -44,6 +45,7 @@ export const AllocationPanel = ({
   }, [shipData, poolBalance]);
 
   const handleAllocate = () => {
+    console.log('fired');
     let shipIds = [];
     let amounts = [];
 
@@ -62,7 +64,7 @@ export const AllocationPanel = ({
         functionName: 'allocate',
         abi: AlloAbi,
         address: ADDR.ALLO,
-        args: [GAME_MANAGER.POOL.ID, encoded],
+        args: [gm?.poolId, encoded],
       },
       onComplete() {
         queryClient.invalidateQueries({ queryKey: ['game-manager-state'] });
@@ -90,7 +92,7 @@ export const AllocationPanel = ({
       </Box>
     );
   }
-
+  console.log('render');
   return (
     <Box>
       <Text mb="sm" fw={600}>

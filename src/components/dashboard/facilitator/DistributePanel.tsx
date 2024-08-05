@@ -11,6 +11,7 @@ import { CompressedApprovedShip } from '../../../queries/getFacDashShipData';
 import { TxButton } from '../../TxButton';
 import { GameStatus } from '../../../types/common';
 import { useQueryClient } from '@tanstack/react-query';
+import { useGameManager } from '../../../hooks/useGameMangers';
 
 export const DistributePanel = ({
   approvedShips,
@@ -27,6 +28,8 @@ export const DistributePanel = ({
   const [startTime, setStartTime] = useState<DateValue>(null);
   const [endTime, setEndTime] = useState<DateValue>(null);
   const { tx } = useTx();
+
+  const { gm } = useGameManager();
 
   const theme = useMantineTheme();
 
@@ -59,7 +62,7 @@ export const DistributePanel = ({
         functionName: 'distribute',
         abi: AlloAbi,
         address: ADDR.ALLO,
-        args: [GAME_MANAGER.POOL.ID, shipIds, encoded],
+        args: [gm?.poolId, shipIds, encoded],
       },
       onComplete() {
         queryClient.invalidateQueries({ queryKey: ['game-manager-state'] });
@@ -77,8 +80,8 @@ export const DistributePanel = ({
           {approvedShips.map((ship) => (
             <Text fz={'sm'} key={`distro-txt-${ship.id}`} mb="xs">
               {ship.name}:{' '}
-              {ship.totalAvailableFunds
-                ? formatEther(BigInt(ship.totalAvailableFunds))
+              {ship.totalFundsReceived
+                ? formatEther(BigInt(ship.totalFundsReceived))
                 : 'Error'}{' '}
               {GAME_TOKEN.SYMBOL}
             </Text>

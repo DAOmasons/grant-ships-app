@@ -10,13 +10,12 @@ import { HATS } from '../constants/gameSetup';
 import { publicClient } from '../utils/config';
 import { getIpfsJson } from '../utils/ipfs/get';
 import { ShipProfileMetadata } from '../utils/ipfs/metadataValidation';
-import { SUBGRAPH_URL } from '../constants/gameSetup';
 import { PROJECT_FILTER_LIST } from '../constants/filterLists';
 
 type ShipMetadataType = z.infer<typeof ShipProfileMetadata>;
 
 type UserProjectData = ProjectDetailsFragment & {
-  metadata: RawMetadataFragment;
+  metadata: RawMetadataFragment | null;
   grants: { grantStatus: number; shipId: { id: string } }[];
 };
 
@@ -68,14 +67,12 @@ const checkIsShipOperator = async (address: string) => {
     const isOperator = results.find((result) => result.isOperator);
 
     if (isOperator) {
-      const { getShipIdByHatId } = getBuiltGraphSDK({
-        apiEndpoint: SUBGRAPH_URL,
-      });
+      const { getShipIdByHatId } = getBuiltGraphSDK({});
       const result = await getShipIdByHatId({
         hatId: isOperator.hatId.toString(),
       });
 
-      const shipAddress = result?.grantShips?.[0]?.id;
+      const shipAddress = result?.GrantShip?.[0]?.id;
 
       if (!shipAddress) {
         return false;
@@ -115,11 +112,14 @@ const resolveShipApplicationProfile = async (
   };
 };
 
-export const getUserData = async (address: string): Promise<UserData> => {
+export const getUserData = async (
+  address: string,
+  chainId: number
+): Promise<UserData> => {
   try {
-    const sdk = getBuiltGraphSDK({ apiEndpoint: SUBGRAPH_URL });
+    const sdk = getBuiltGraphSDK();
     const { getUserData } = sdk;
-    const data = await getUserData({ id: address });
+    const data = await getUserData({ id: address, chainId });
     const isFacilitator = await checkIsFacilitator(address);
     const isShipOperator = await checkIsShipOperator(address);
 
@@ -134,7 +134,7 @@ export const getUserData = async (address: string): Promise<UserData> => {
     if (isShipOperator) {
       return {
         ...data,
-        projects: filteredProjects,
+        projects: filteredProjects as UserProjectData[],
         isFacilitator,
         isShipOperator: true,
         shipAddress: isShipOperator.shipAddress,
@@ -153,7 +153,7 @@ export const getUserData = async (address: string): Promise<UserData> => {
 
       return {
         ...data,
-        projects: filteredProjects,
+        projects: filteredProjects as UserProjectData[],
         isFacilitator,
         isShipOperator: false,
         shipApplicants: resolved as ShipApplicantData[],
@@ -162,7 +162,7 @@ export const getUserData = async (address: string): Promise<UserData> => {
 
     return {
       ...data,
-      projects: filteredProjects,
+      projects: filteredProjects as UserProjectData[],
       isFacilitator,
       isShipOperator,
       shipApplicants: [],

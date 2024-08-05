@@ -1,5 +1,6 @@
 import { FeedDataFragment, getBuiltGraphSDK } from '../.graphclient';
-import { DAO_MASONS, SUBGRAPH_URL } from '../constants/gameSetup';
+import { DAO_MASONS, GAME_MANAGER, SUBGRAPH_URL } from '../constants/gameSetup';
+import { resolveRichTextMetadata } from '../resolvers/updates';
 import { FeedCardUI, Player } from '../types/ui';
 import { findValueByKey } from '../utils/helpers';
 import { getGatewayUrl, getIpfsJson, isCID } from '../utils/ipfs/get';
@@ -15,6 +16,7 @@ const handleEmbedText = async (
     | undefined
 ) => {
   if (!embed) return undefined;
+
   const isRawMessage = embed?.content && typeof embed?.content === 'string';
 
   if (isRawMessage) {
@@ -33,15 +35,15 @@ const handleEmbedText = async (
   }
 };
 
-const isPlayerType = (type: string): type is Player => {
+const isPlayerType = (type: number): type is Player => {
   return Object.values(Player).includes(type as any);
 };
 
 export const handleSubjectMetadata = async (
-  entityType: string,
+  playerType: number,
   metadataPointer: string
 ) => {
-  if (entityType === 'facilitators') {
+  if (playerType === Player.Facilitators) {
     return {
       imgCID: DAO_MASONS.AVATAR_IMG,
       description:
@@ -49,7 +51,7 @@ export const handleSubjectMetadata = async (
     };
   }
 
-  if (entityType === 'ship' || entityType === 'project') {
+  if (playerType === Player.Ship || playerType === Player.Project) {
     const data = await getIpfsJson(metadataPointer);
 
     const cid = data?.avatarHash_IPFS;
@@ -64,7 +66,7 @@ export const handleSubjectMetadata = async (
     return { imgCID: cid, description };
   }
 
-  console.warn('No image found for entity type', entityType);
+  console.warn('No image found for entity type', playerType);
   return { imgCID: undefined, description: '' };
 };
 
@@ -73,29 +75,40 @@ export const resolveFeedItem = async (
 ): Promise<FeedCardUI> => {
   //check entity type
 
+  if (!item.subject) {
+    console.warn('No subject found in feed item', item);
+    throw new Error(`No subject found in feed`);
+  }
+
   const { imgCID, description } = await handleSubjectMetadata(
-    item.subject.type,
+    item.subject.playerType,
     item.subjectMetadataPointer
   );
 
-  if (!isPlayerType(item.subject.type)) {
-    console.warn('Invalid entity type', item.subject.type);
+  if (!isPlayerType(item.subject.playerType)) {
+    console.warn('Invalid entity type', item.subject.playerType);
   }
-  if (item.object?.type && !isPlayerType(item.object.type)) {
-    console.warn('Invalid entity type', item.object.type);
+  if (item.object?.playerType && !isPlayerType(item.object.playerType)) {
+    console.warn('Invalid entity type', item.object.playerType);
   }
 
-  const hasObject = item.object?.type && item.object?.name;
+  const hasObject = item.object?.playerType != null && item.object?.name;
   const hasEmbed =
     (item.embed?.pointer && item.embed?.key) || item.embed?.content;
 
   const embedText = hasEmbed ? await handleEmbedText(item.embed!) : undefined;
 
+  const richTextPointer = item.richTextContent?.pointer;
+
+  const richTextContent = richTextPointer
+    ? await resolveRichTextMetadata(richTextPointer)
+    : undefined;
+
   return {
     subject: {
       name: item.subject.name,
       id: item.subject.id,
-      entityType: item.subject.type as Player,
+      playerType: item.subject.playerType as Player,
       imgUrl: imgCID ? getGatewayUrl(imgCID) : undefined,
       description,
     },
@@ -103,13 +116,17 @@ export const resolveFeedItem = async (
       ? {
           name: item.object?.name || '',
           id: item.object?.id || '',
-          entityType: (item.object?.type as Player) || '',
+          playerType: item.object?.playerType as Player,
         }
       : undefined,
-    content: item.content,
+    message: item.message as string | undefined,
     timestamp: item.timestamp,
-    sender: item.sender,
+    sender: item.sender!!,
     embedText,
+    richTextContent,
+    internalLink: item.internalLink || undefined,
+    externalLink: item.externalLink || undefined,
+    tag: item.tag,
   };
 };
 
@@ -125,12 +142,18 @@ export const getFeed = async ({
       apiEndpoint: SUBGRAPH_URL,
     });
 
-    const { feedItems } = await getFeed({
+    const { FeedCard } = await getFeed({
       first,
       skip,
-      orderBy: 'timestamp',
-      orderDirection: 'desc',
+      orderBy: { timestamp: 'desc' },
+      domainId: GAME_MANAGER.ADDRESS,
     });
+
+    const feedItems = FeedCard;
+
+    if (!feedItems) {
+      throw new Error('No feed items found');
+    }
 
     const resolved = await Promise.all(
       feedItems.map(async (item) => await resolveFeedItem(item))
@@ -161,8 +184,8 @@ export const getEntityFeed = async ({
       first: first,
       skip: skip,
       entityId: entityId,
-      orderBy: 'timestamp',
-      orderDirection: 'desc',
+      orderBy: { timestamp: 'desc' },
+      domainId: GAME_MANAGER.ADDRESS,
     });
 
     const resolved = await Promise.all(

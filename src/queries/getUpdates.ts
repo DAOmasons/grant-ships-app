@@ -1,20 +1,17 @@
 import { getBuiltGraphSDK } from '../.graphclient';
 import { resolveUpdates } from '../resolvers/updates';
-import { SUBGRAPH_URL } from '../constants/gameSetup';
 
 export const getUpdates = async (entityAddress: string) => {
   try {
-    const { getUpdates } = getBuiltGraphSDK({
-      apiEndpoint: SUBGRAPH_URL,
-    });
+    const { getUpdates } = getBuiltGraphSDK();
 
     const result = await getUpdates({ entityAddress: entityAddress });
 
-    if (!result.updates) {
+    if (!result.Update) {
       throw new Error('No updates found');
     }
 
-    const resolvedUpdates = await resolveUpdates(result.updates);
+    const resolvedUpdates = await resolveUpdates(result.Update);
 
     return resolvedUpdates;
   } catch (error) {

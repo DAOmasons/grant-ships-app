@@ -7,12 +7,15 @@ export const registerProjectSchema = z.object({
     .string()
     .min(3, { message: 'Name should have at least 3 characters' })
     .max(50, { message: 'Name should not have more than 50 characters' }),
-  teamMembers: z.array(z.string()).refine(
-    (val) => {
-      return val.every((address) => isAddress(address));
-    },
-    { message: 'Must be valid Ethereum addresses' }
-  ),
+  teamMembers: z
+    .array(z.string())
+    .refine(
+      (val) => {
+        return val.every((address) => isAddress(address));
+      },
+      { message: 'Must be valid Ethereum addresses' }
+    )
+    .optional(),
   description: z
     .string()
     .min(50, {
@@ -30,6 +33,21 @@ export const registerProjectSchema = z.object({
     .string()
     .url({ message: 'Invalid telegram url' })
     .or(z.literal('')),
+  showcaseLinks: z
+    .array(
+      z.object({
+        id: z.string(),
+        url: z.string(),
+        mediaType: z.string(),
+      })
+    )
+    .optional(),
+  bannerImage: z.string().optional(),
+  mainDemoLink: z
+    .string()
+    .url({ message: 'Invalid url' })
+    .or(z.literal(''))
+    .optional(),
 });
 
 export const registerShipSchema = z.object({

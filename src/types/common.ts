@@ -38,17 +38,17 @@ export enum TxStates {
 
 export enum GrantStatus {
   None,
-  Applied,
-  ShipRejected,
-  ShipApproved,
-  FacilitatorRejected,
-  FacilitatorApproved,
-  MilestonesProposed,
+  ProjectInitiated,
+  ShipInitiated,
+  ApplicationSubmitted,
+  ApplicationRejected,
+  ApplicationApproved,
+  MilestonesSubmitted,
   MilestonesRejected,
   MilestonesApproved,
-  MilestoneSubmitted,
-  MilestoneRejected,
-  MilestoneApproved,
+  FacilitatorRejected,
+  Allocated,
+  AllMilestonesComplete,
   Completed,
 }
 

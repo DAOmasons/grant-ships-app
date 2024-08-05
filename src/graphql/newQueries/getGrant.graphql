@@ -1,0 +1,110 @@
+fragment ProjectData on Project {
+  id
+  profileId
+  name
+  status
+  owner
+  metadata {
+    pointer
+  }
+  members {
+    addresses
+  }
+}
+
+fragment MilestoneStep on Milestone {
+  id
+  percentage
+  index
+  metadata {
+    pointer
+  }
+  milestoneSet {
+    id
+  }
+  status
+}
+
+fragment Milestones on MilestoneSet {
+  id
+  index
+  timestamp
+  status
+  milestoneLength
+  milestones {
+    ...MilestoneStep
+  }
+}
+
+fragment GrantUpdate on Update {
+  id
+  tag
+  playerType
+  entityAddress
+  postedBy
+  message
+  content {
+    pointer
+  }
+  contentSchema
+  timestamp
+}
+
+fragment GrantApplication on Application {
+  id
+  metadata {
+    pointer
+  }
+  amount
+  index
+  receivingAddress
+  status
+  timestamp
+}
+
+fragment GrantData on Grant {
+  id
+  status
+  lastUpdated
+  amount
+  isAllocated
+  grantCompleted
+  applicationApproved
+  hasPendingMilestones
+  hasRejectedMilestones
+  allMilestonesApproved
+  milestoneDrafts {
+    ...Milestones
+  }
+  currentMilestones {
+    ...Milestones
+  }
+  applications {
+    ...GrantApplication
+  }
+  currentApplication {
+    ...GrantApplication
+  }
+}
+
+query getGrant($grantId: String!, $projectId: String!, $shipSrc: String!) {
+  Project_by_pk(id: $projectId) {
+    ...ProjectData
+  }
+  GrantShip(where: { shipContractAddress: { _eq: $shipSrc } }, limit: 1) {
+    ...BaseShipData
+    beaconLastUpdated
+    beaconMessage {
+      pointer
+    }
+    customApplication {
+      pointer
+    }
+  }
+  Grant_by_pk(id: $grantId) {
+    ...GrantData
+  }
+  Update(where: { hostEntityId: { _eq: $grantId } }) {
+    ...GrantUpdate
+  }
+}

@@ -1,0 +1,30 @@
+.display {
+  :global(.tiptap.ProseMirror) {
+    padding: 0;
+  }
+
+  :global(br .ProseMirror-trailingBreak) {
+    /* display: none; */
+  }
+  p {
+    opacity: 0.9;
+  }
+  p br {
+    display: inline-block; /* Make <br> elements affect layout */
+  }
+
+  p br + br + br {
+    display: none; /* Hide any <br> that immediately follows another <br> */
+  }
+
+  p br:last-child,
+  p br:nth-last-child(2):not(:nth-last-child(3)) {
+    display: none;
+  }
+}
+
+.editor {
+  :global(.tiptap.ProseMirror) {
+    padding: 0;
+  }
+}

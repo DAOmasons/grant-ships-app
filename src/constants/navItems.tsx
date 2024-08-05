@@ -1,7 +1,7 @@
 import { Group, Text } from '@mantine/core';
 import {
   IconAward,
-  IconCheckbox,
+  // IconCheckbox,
   IconExternalLink,
   IconHome,
   IconPacman,
@@ -12,7 +12,7 @@ export const navItems = [
   { link: '/', label: 'Home', icon: IconHome },
   { link: '/ships', label: 'Ships', icon: IconRocket },
   { link: '/projects', label: 'Projects', icon: IconAward },
-  { link: '/vote', label: 'Vote', icon: IconCheckbox },
+  // { link: '/vote', label: 'Vote', icon: IconCheckbox },
   {
     href: 'https://rules.grantships.fun',
     label: (

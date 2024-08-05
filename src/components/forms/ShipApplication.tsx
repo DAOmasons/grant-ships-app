@@ -28,6 +28,7 @@ import { GAME_MANAGER } from '../../constants/gameSetup';
 import { useAccount, useConnect, useSwitchChain } from 'wagmi';
 import { injected } from 'wagmi/connectors';
 import { appNetwork } from '../../utils/config';
+import { useGameManager } from '../../hooks/useGameMangers';
 
 const defaultValues = {
   thesis: '',
@@ -51,6 +52,7 @@ export const ShipApplication = ({
   const { switchChainAsync } = useSwitchChain();
   const isMobile = useMediaQuery(`(max-width: ${em(750)})`);
   const { tx } = useTx();
+  const { gm } = useGameManager();
 
   const form = useForm({
     initialValues: defaultValues,
@@ -146,7 +148,7 @@ export const ShipApplication = ({
           abi: AlloAbi,
           address: ADDR.ALLO,
           functionName: 'registerRecipient',
-          args: [GAME_MANAGER.POOL.ID, initData],
+          args: [gm?.poolId, initData],
         },
         viewParams: {
           loading: {

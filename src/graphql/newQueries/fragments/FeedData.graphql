@@ -1,0 +1,31 @@
+fragment FeedData on FeedCard {
+  id
+  message
+  timestamp
+  sender
+  tag
+  subjectMetadataPointer
+  domain_id
+  subject {
+    id
+    name
+    playerType
+  }
+  object {
+    id
+    name
+    playerType
+  }
+  richTextContent {
+    protocol
+    pointer
+  }
+  embed {
+    key
+    pointer
+    protocol
+    content
+  }
+  internalLink
+  externalLink
+}

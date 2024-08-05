@@ -12,3 +12,34 @@
   color: var(--mantine-color-dark-3);
   height: rem(16);
 }
+
+.richTextDisplay {
+  max-height: 350px;
+  overflow: hidden;
+  position: relative;
+}
+
+.readMore {
+  /* display: none; */
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  text-align: left;
+}
+
+.fade {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  height: 50px;
+  width: 100%;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    var(--mantine-color-dark-7) 67%
+  );
+}
+
+.richTextDisplay:has(> *:first-child:nth-last-child(n + 2)) .readMore {
+  display: block;
+}

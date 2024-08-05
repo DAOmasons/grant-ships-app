@@ -1,4 +1,4 @@
-import { decodeAbiParameters, parseAbiParameters } from 'viem';
+import { Hex, decodeAbiParameters, parseAbiParameters } from 'viem';
 import { getBuiltGraphSDK } from '../.graphclient';
 import { getGatewayUrl, getIpfsJson } from '../utils/ipfs/get';
 import {
@@ -14,11 +14,13 @@ export const getShipPageData = async (id: string): Promise<ShipPageUI> => {
       apiEndpoint: SUBGRAPH_URL,
     });
 
-    const { grantShip } = await shipPageQuery({ id });
+    const { GrantShip } = await shipPageQuery({ id });
 
-    if (!grantShip) {
+    if (!GrantShip?.[0]) {
       throw new Error('No ship found');
     }
+
+    const grantShip = GrantShip[0];
 
     const pointer = grantShip?.profileMetadata?.pointer;
     if (!pointer) {
@@ -39,7 +41,7 @@ export const getShipPageData = async (id: string): Promise<ShipPageUI> => {
     if (grantShip.shipApplicationBytesData) {
       const decodedApplicationData = decodeAbiParameters(
         parseAbiParameters('address, string, (uint256, string)'),
-        grantShip.shipApplicationBytesData
+        grantShip.shipApplicationBytesData as Hex
       );
       const CID = decodedApplicationData[2][1];
       const applicationData = await getIpfsJson(CID);
@@ -74,7 +76,6 @@ export const getShipPageData = async (id: string): Promise<ShipPageUI> => {
       amtDistributed: grantShip.totalDistributed || '0',
       balance: grantShip.balance || '0',
       totalRoundAmount: grantShip.totalRoundAmount || '0',
-      amtAvailable: grantShip.totalAvailableFunds || '0',
       shipContractAddress: grantShip.shipContractAddress,
       members,
       details: {

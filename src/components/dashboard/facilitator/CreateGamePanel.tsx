@@ -49,7 +49,7 @@ export const CreateGamePanel = ({
     return (
       <Box>
         <Text fw={600} mb="sm">
-          Round {gm.currentRoundId} Created
+          Round {gm.currentRound_id} Created
         </Text>
         <Text size="sm" mb="xs">
           Amount funded for this round:{' '}

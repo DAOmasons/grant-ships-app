@@ -1,0 +1,11 @@
+query getRecentTransaction($txHash: String!) {
+  Transaction(where: { id: { _eq: $txHash } }) {
+    id
+  }
+}
+
+query getRecentEnvio($txHash: String!) {
+  EnvioTX(where: { id: { _eq: $txHash } }) {
+    id
+  }
+}

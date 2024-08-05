@@ -1,0 +1,15 @@
+query getFeed(
+  $first: Int!
+  $skip: Int!
+  $orderBy: [FeedCard_order_by!]
+  $domainId: String!
+) {
+  FeedCard(
+    limit: $first
+    offset: $skip
+    order_by: $orderBy
+    where: { domain_id: { _eq: $domainId } }
+  ) {
+    ...FeedData
+  }
+}
