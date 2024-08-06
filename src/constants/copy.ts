@@ -28,14 +28,14 @@ export const beaconNotSubmitted: Content = {
     {
       attrs: { level: 3 },
       type: 'heading',
-      content: [{ type: 'text', text: 'Beacon Not Submitted' }],
+      content: [{ type: 'text', text: 'Greeter Message Not Created' }],
     },
     {
       type: 'paragraph',
       content: [
         {
           type: 'text',
-          text: 'The beacon has not been submitted for this ship.',
+          text: `Grant Ship hasn't completed their welcome message yet.`,
         },
       ],
     },

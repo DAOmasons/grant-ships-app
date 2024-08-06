@@ -1,6 +1,6 @@
-query getUpdates($entityAddress: String!) {
+query getUpdates($entityAddress: String!, $scope: Int) {
   Update(
-    where: { entityAddress: { _eq: $entityAddress } }
+    where: { entityAddress: { _eq: $entityAddress }, scope: { _eq: $scope } }
     order_by: { timestamp: desc }
   ) {
     ...UpdateBody

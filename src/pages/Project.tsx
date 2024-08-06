@@ -1,14 +1,12 @@
 import {
   ActionIcon,
   Avatar,
-  AvatarGroup,
   Box,
   Collapse,
   Divider,
   Flex,
   Group,
   Loader,
-  Modal,
   Paper,
   Skeleton,
   Stack,
@@ -20,7 +18,6 @@ import {
 import { MainSection, PageTitle, ProfileSection } from '../layout/Sections';
 import {
   IconAward,
-  IconCheck,
   IconChevronDown,
   IconChevronUp,
   IconInfoCircle,
@@ -29,19 +26,17 @@ import {
 } from '@tabler/icons-react';
 import { FeedPanel } from '../components/shipItems/FeedPanel';
 import { GAME_MANAGER, GAME_TOKEN } from '../constants/gameSetup';
-// import { MilestoneProgress } from '../components/projectItems/MilestoneProgress';
 import { Contact } from '../components/Contact';
 
 import { formatEther } from 'viem';
 import { Link, useParams } from 'react-router-dom';
-import { useQuery, useInfiniteQuery, QueryClient } from '@tanstack/react-query';
+import { useQuery, useInfiniteQuery } from '@tanstack/react-query';
 import { getProjectPage } from '../queries/getProjectPage';
 import { AddressAvatarGroup } from '../components/AddressAvatar';
 import { AppAlert } from '../components/UnderContruction';
-import { GrantStatus } from '../types/common';
+import { GrantStatus, UpdateScope } from '../types/common';
 import { SingleItemPageSkeleton } from '../components/skeletons';
 import { getEntityFeed } from '../queries/getFeed';
-// import { DashGrant } from '../resolvers/grantResolvers';
 import { useMemo } from 'react';
 import { useUserData } from '../hooks/useUserState';
 import { useLaptop, useTablet } from '../hooks/useBreakpoint';
@@ -97,7 +92,7 @@ export const Project = () => {
     refetch: refetchUpdates,
   } = useQuery({
     queryKey: [`project-updates-${project?.id}`],
-    queryFn: () => getUpdates(project?.id as string),
+    queryFn: () => getUpdates(project?.id as string, UpdateScope.Project),
     enabled: !!project?.id,
   });
 
