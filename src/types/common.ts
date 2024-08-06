@@ -96,6 +96,13 @@ export enum VotingStage {
   Unknown,
 }
 
+export enum UpdateScope {
+  Game,
+  Ship,
+  Project,
+  Grant,
+}
+
 export const formatBalance = (balance?: bigint) => {
   if (!balance || typeof balance !== 'bigint') return 0;
   return Number(Number(formatEther(balance)).toFixed(2));

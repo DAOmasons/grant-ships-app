@@ -1,11 +1,15 @@
 import { getBuiltGraphSDK } from '../.graphclient';
 import { resolveUpdates } from '../resolvers/updates';
+import { UpdateScope } from '../types/common';
 
-export const getUpdates = async (entityAddress: string) => {
+export const getUpdates = async (entityAddress: string, scope: UpdateScope) => {
   try {
     const { getUpdates } = getBuiltGraphSDK();
 
-    const result = await getUpdates({ entityAddress: entityAddress });
+    const result = await getUpdates({
+      entityAddress: entityAddress,
+      scope: scope,
+    });
 
     if (!result.Update) {
       throw new Error('No updates found');

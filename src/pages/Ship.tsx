@@ -91,8 +91,6 @@ export const Ship = () => {
     enabled: !!id,
   });
 
-  console.log('ship', ship);
-
   const { userData } = useUserData();
 
   const {
@@ -223,7 +221,7 @@ export const Ship = () => {
           {ship.shipContractAddress && (
             <ApplyButton
               shipSrcAddress={ship.shipContractAddress}
-              disabled={isShipActive}
+              disabled={!isShipActive}
             />
           )}
         </Group>

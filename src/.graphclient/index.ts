@@ -10361,6 +10361,7 @@ export type getShipPoolIdQuery = { GrantShip: Array<Pick<GrantShip, 'poolId'>> }
 
 export type getUpdatesQueryVariables = Exact<{
   entityAddress: Scalars['String'];
+  scope?: InputMaybe<Scalars['Int']>;
 }>;
 
 
@@ -10987,9 +10988,9 @@ export const getShipPoolIdDocument = gql`
 }
     ` as unknown as DocumentNode<getShipPoolIdQuery, getShipPoolIdQueryVariables>;
 export const getUpdatesDocument = gql`
-    query getUpdates($entityAddress: String!) {
+    query getUpdates($entityAddress: String!, $scope: Int) {
   Update(
-    where: {entityAddress: {_eq: $entityAddress}}
+    where: {entityAddress: {_eq: $entityAddress}, scope: {_eq: $scope}}
     order_by: {timestamp: desc}
   ) {
     ...UpdateBody
