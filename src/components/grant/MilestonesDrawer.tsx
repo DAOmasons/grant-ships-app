@@ -289,7 +289,6 @@ export const MilestonesDrawer = ({
             <Group>
               <TextInput
                 required
-                component={NumberInput}
                 fw={400}
                 label={`Percentage`}
                 name={`milestone-perc-${index + 1}`}
