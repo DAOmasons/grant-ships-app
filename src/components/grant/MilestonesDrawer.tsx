@@ -4,7 +4,6 @@ import {
   Box,
   Button,
   Group,
-  NumberInput,
   Stack,
   Text,
   TextInput,
@@ -293,8 +292,6 @@ export const MilestonesDrawer = ({
                 label={`Percentage`}
                 name={`milestone-perc-${index + 1}`}
                 type="number"
-                min={1}
-                step={1}
                 placeholder="30"
                 w={'48%'}
                 value={formData[`milestone-perc-${index + 1}`]}

@@ -124,7 +124,7 @@ export const MediaForm = ({ form }: { form: UseFormReturnType<any> }) => {
             placeholder="https://image-hosting/id.png"
             {...form.getInputProps(`showcaseLinks.${i}.url`)}
             error={link.mediaType === MediaType.Unknown ? 'Invalid link' : null}
-            onBlur={(e) => {
+            onChange={(e) => {
               form.getInputProps(`showcaseLinks.${link.id}`).onBlur(e);
               handleLinkChange(link.id, e.currentTarget.value);
             }}

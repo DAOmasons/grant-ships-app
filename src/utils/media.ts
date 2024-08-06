@@ -12,8 +12,9 @@ export type ShowcaseLink = {
   mediaType: MediaType;
 };
 
-const youtubeRegex =
-  /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+const youtubeRegex = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\/.*$/i;
+const extractYoutubeIdRegex =
+  /(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
 
 const vimeoRegex =
   /(?:https?:\/\/)?(?:www\.)?vimeo\.com(?:\/manage\/videos)?\/(\d+)\/([a-zA-Z0-9]+)(?:\?.*)?$/;
@@ -40,14 +41,15 @@ export const detectMediaTypeFromUrl = (url: string): MediaType => {
 };
 
 const transformYoutubeUrl = (url: string) => {
-  const match = url.match(youtubeRegex);
+  const match = url.match(extractYoutubeIdRegex);
+  console.log('match', match);
 
-  if (match && match[2].length === 11) {
-    const videoId = match[2];
+  if (match && match[1]?.length === 11) {
+    const videoId = match[1];
     return `https://www.youtube.com/embed/${videoId}?rel=0&modestBranding=1&showinfo=0&controls=0&title=0`;
   }
 
-  return null;
+  return url;
 };
 
 const transformVimeoUrl = (url: string) => {
@@ -60,13 +62,15 @@ const transformVimeoUrl = (url: string) => {
     return `https://player.vimeo.com/video/${videoId}?h=${h_id}&autopause=0&player_id=0&byline=0&title=0&transparent=1&autoplay=1&dnt=1&controls=0&background=1`;
   }
 
-  return null;
+  return url;
 };
 
 export const parseShowcaseLink = (
   link: string
 ): { url: string | null; mediaType: MediaType } => {
   const mediaType = detectMediaTypeFromUrl(link);
+
+  console.log('mediaType', mediaType);
 
   if (mediaType === MediaType.Youtube) {
     return {
@@ -87,3 +91,19 @@ export const parseShowcaseLink = (
     mediaType,
   };
 };
+
+const testPNG = youtubeRegex.test(
+  'https://presskit.manada.dev/images/cloudlines/0000screenshot.png'
+);
+
+const youtubeURLTest = youtubeRegex.test(
+  'https://www.youtube.com/watch?v=Sg-G1E1UwAY'
+);
+
+const youtubeShareTest = youtubeRegex.test(
+  'https://youtu.be/Sg-G1E1UwAY?feature=shared'
+);
+
+console.log('test PNG', testPNG);
+console.log('youtubeTest', youtubeURLTest);
+console.log('youtubeShareTest', youtubeShareTest);
