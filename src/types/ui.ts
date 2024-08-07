@@ -70,7 +70,7 @@ export type ShipPageUI = {
   status: GameStatus;
   amtAllocated: string;
   amtDistributed: string;
-
+  hatId?: string;
   totalRoundAmount: string;
   balance: string;
   shipContractAddress?: string | null;

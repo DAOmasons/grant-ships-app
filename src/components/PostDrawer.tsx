@@ -15,16 +15,17 @@ import { pinJSONToIPFS } from '../utils/ipfs/pin';
 import { notifications } from '@mantine/notifications';
 import { TxButton } from './TxButton';
 import { PlayerAvatar } from './PlayerAvatar';
-import { GAME_MANAGER } from '../constants/gameSetup';
+import { GAME_MANAGER, ZER0_ADDRESS } from '../constants/gameSetup';
 import { RTEditor } from './RTEditor';
 import { PageDrawer } from './PageDrawer';
+import GrantShipAbi from '../abi/GrantShip.json';
+import { Address } from 'viem';
 
 type PostDrawerProps = {
   avatarImg?: string;
   name?: string;
   posterType: Player;
   posterId: string;
-  postType: string;
   refetch: () => void;
   content?: Content;
 };
@@ -32,9 +33,8 @@ type PostDrawerProps = {
 export const PostDrawer = ({
   avatarImg,
   name,
-  postType,
+  posterType,
   posterId,
-
   refetch,
   content = { type: 'doc', content: [] },
 }: PostDrawerProps) => {
@@ -48,20 +48,18 @@ export const PostDrawer = ({
     ],
     onUpdate({ editor }) {
       const newContent = editor.getJSON();
-      localStorage.setItem(postId, JSON.stringify(newContent));
+      localStorage.setItem(posterId, JSON.stringify(newContent));
     },
     content,
   });
   const { tx } = useTx();
 
-  const postId = `${postType}-${posterId}`;
-
   useEffect(() => {
-    const draft = localStorage.getItem(postId);
+    const draft = localStorage.getItem(posterId);
     if (editor && draft) {
       editor.commands.setContent(JSON.parse(draft));
     }
-  }, [postId, editor]);
+  }, [posterId, editor]);
 
   const isOpen = location.pathname.includes('post');
 
@@ -93,38 +91,47 @@ export const PostDrawer = ({
 
     onClose();
 
-    // tag: TAG tells the indexer to await for instructions
-    // action: PROJECT_POST action code to be executed index side
-    // postId:
-    // - posterId: the id of the poster, in this case it's the profileID
-    /// -  GAME_MANAGER.ADDRESS ensures that this post is only available within this game scope
+    if (posterType === Player.Project) {
+      const tag = `TAG:PROJECT_POST:${GAME_MANAGER.ADDRESS}`;
 
-    const tag = `TAG:PROJECT_POST:${postId}:${GAME_MANAGER.ADDRESS}`;
-
-    tx({
-      writeContractParams: {
-        abi: AlloPoster,
-        address: ADDR.ALLO_POSTER,
-        functionName: 'postUpdate',
-        args: [tag, posterId, [1n, pinRes.IpfsHash]],
-      },
-      writeContractOptions: {
-        onPollSuccess() {
-          refetch();
-          localStorage.removeItem(postId);
+      tx({
+        writeContractParams: {
+          abi: AlloPoster,
+          address: ADDR.ALLO_POSTER,
+          functionName: 'postUpdate',
+          args: [tag, posterId, [1n, pinRes.IpfsHash]],
         },
-      },
-    });
+        writeContractOptions: {
+          onPollSuccess() {
+            refetch();
+            localStorage.removeItem(posterId);
+          },
+        },
+      });
+    } else if (Player.Ship === posterType) {
+      const tag = `TAG:SHIP_POST:${GAME_MANAGER.ADDRESS}`;
+
+      tx({
+        writeContractParams: {
+          abi: GrantShipAbi,
+          address: posterId as Address,
+          functionName: 'postUpdate',
+          args: [tag, [1n, pinRes.IpfsHash], ZER0_ADDRESS],
+        },
+        writeContractOptions: {
+          onPollSuccess() {
+            refetch?.();
+            localStorage.removeItem(posterId);
+          },
+        },
+      });
+    }
   };
 
   return (
     <PageDrawer pageTitle="Post Update" opened={isOpen} onClose={onClose}>
       <Group mt="40" mb="lg" w="100%" justify="space-between">
-        <PlayerAvatar
-          playerType={Player.Project}
-          imgUrl={avatarImg}
-          name={name}
-        />
+        <PlayerAvatar playerType={posterType} imgUrl={avatarImg} name={name} />
         <Group gap="sm">
           <TxButton leftSection={<IconPlus />} onClick={postContent}>
             Post

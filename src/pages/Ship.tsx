@@ -23,7 +23,7 @@ import { DetailsPanel } from '../components/shipItems/DetailsPanel';
 import { useParams } from 'react-router-dom';
 import { GAME_MANAGER, GAME_TOKEN } from '../constants/gameSetup';
 import { AddressAvatarGroup } from '../components/AddressAvatar';
-import { GameStatus, GrantStatus } from '../types/common';
+import { GameStatus, GrantStatus, UpdateScope } from '../types/common';
 
 import { getShipPageData } from '../queries/getShipPage';
 import { useQuery, useInfiniteQuery } from '@tanstack/react-query';
@@ -33,7 +33,6 @@ import { SingleItemPageSkeleton } from '../components/skeletons';
 import { getEntityFeed } from '../queries/getFeed';
 import { formatEther } from 'viem';
 import { useUserData } from '../hooks/useUserState';
-// import { UpdatesPanel } from '../components/shipItems/UpdatesPanel';
 import { SHIP_STATUS_INFO } from '../constants/copy';
 import { useLaptop, useTablet } from '../hooks/useBreakpoint';
 import { useMemo } from 'react';
@@ -41,6 +40,11 @@ import { ShipBadge } from '../components/RoleBadges';
 import { ApplyButton } from '../components/shipItems/ApplyButton';
 import { getShipGrants } from '../queries/getShipGrants';
 import { GrantCard } from '../components/grant/GrantCard';
+import { PostDrawer } from '../components/PostDrawer';
+import { Player } from '../types/ui';
+import { PostAffix } from '../components/PostAffix';
+import { getUpdates } from '../queries/getUpdates';
+import { UpdatesPanel } from '../components/UpdatesPanel';
 
 const infiniteWrapper = async ({ pageParam }: any) => {
   const result = await getEntityFeed(pageParam);
@@ -88,6 +92,17 @@ export const Ship = () => {
   } = useQuery({
     queryKey: [`ship-page-${id}`],
     queryFn: () => getShipPageData(id as string),
+    enabled: !!id,
+  });
+
+  const {
+    data: updates,
+    error: updatesError,
+    isLoading: updatesLoading,
+    refetch: refetchUpdates,
+  } = useQuery({
+    queryKey: [`project-updates-${id}`],
+    queryFn: () => getUpdates(id as string, UpdateScope.Ship),
     enabled: !!id,
   });
 
@@ -264,13 +279,16 @@ export const Ship = () => {
           <Tabs.Panel value="details">
             <DetailsPanel details={ship.details} members={ship.members} />
           </Tabs.Panel>
-          {/* <Tabs.Panel value="updates">
+          <Tabs.Panel value="updates">
             <UpdatesPanel
-              ship={ship}
-              isShipOperator={isShipOperator}
-              shipId={id}
+              updates={updates}
+              error={updatesError}
+              name={ship.name}
+              isLoading={updatesLoading}
+              imgUrl={ship.imgUrl}
+              playerType={Player.Ship}
             />
-          </Tabs.Panel> */}
+          </Tabs.Panel>
           <Tabs.Panel value="grants">
             <Stack>
               {grants?.map((grant) => (
@@ -336,6 +354,18 @@ export const Ship = () => {
             )}
           </Paper>
         </Stack>
+      )}
+      {isShipOperator && <PostAffix />}
+      {isShipOperator && ship.shipContractAddress && (
+        <PostDrawer
+          avatarImg={ship.imgUrl}
+          name={ship.name}
+          posterType={Player.Ship}
+          posterId={ship.shipContractAddress}
+          refetch={() => {
+            refetchUpdates();
+          }}
+        />
       )}
     </Flex>
   );
