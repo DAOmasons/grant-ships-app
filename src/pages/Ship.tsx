@@ -44,6 +44,7 @@ import { PostDrawer } from '../components/PostDrawer';
 import { Player } from '../types/ui';
 import { PostAffix } from '../components/PostAffix';
 import { getUpdates } from '../queries/getUpdates';
+import { UpdatesPanel } from '../components/UpdatesPanel';
 
 const infiniteWrapper = async ({ pageParam }: any) => {
   const result = await getEntityFeed(pageParam);
@@ -278,13 +279,16 @@ export const Ship = () => {
           <Tabs.Panel value="details">
             <DetailsPanel details={ship.details} members={ship.members} />
           </Tabs.Panel>
-          {/* <Tabs.Panel value="updates">
+          <Tabs.Panel value="updates">
             <UpdatesPanel
-              ship={ship}
-              isShipOperator={isShipOperator}
-              shipId={id}
+              updates={updates}
+              error={updatesError}
+              name={ship.name}
+              isLoading={updatesLoading}
+              imgUrl={ship.imgUrl}
+              playerType={Player.Ship}
             />
-          </Tabs.Panel> */}
+          </Tabs.Panel>
           <Tabs.Panel value="grants">
             <Stack>
               {grants?.map((grant) => (
@@ -359,7 +363,7 @@ export const Ship = () => {
           posterType={Player.Ship}
           posterId={ship.shipContractAddress}
           refetch={() => {
-            // refetchUpdates();
+            refetchUpdates();
           }}
         />
       )}

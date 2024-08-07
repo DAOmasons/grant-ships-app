@@ -3,12 +3,10 @@ import {
   Avatar,
   Box,
   Collapse,
-  Divider,
   Flex,
   Group,
   Loader,
   Paper,
-  Skeleton,
   Stack,
   Tabs,
   Text,
@@ -55,11 +53,7 @@ import { MilestoneProgress } from '../components/projectItems/MilestoneProgress'
 import { GrantCard } from '../components/grant/GrantCard';
 import { GrantInvite } from '../components/projectItems/GrantInvite';
 import { getUpdates } from '../queries/getUpdates';
-import { Display } from '../components/Display';
-import { PlayerAvatar } from '../components/PlayerAvatar';
-import { RTDisplay } from '../components/RTDisplay';
-import { secondsToShortRelativeTime } from '../utils/time';
-import { ResolvedUpdate } from '../resolvers/updates';
+import { UpdatesPanel } from '../components/UpdatesPanel';
 
 const infiniteWrapper = async ({ pageParam }: any) => {
   const result = await getEntityFeed(pageParam);
@@ -368,12 +362,13 @@ export const Project = () => {
             )}
           </Tabs.Panel>
           <Tabs.Panel value="updates">
-            <ProjectUpdatesPanel
+            <UpdatesPanel
               updates={updates}
               error={updatesError}
-              projectName={project.name}
+              name={project.name}
               isLoading={updatesLoading}
               imgUrl={project.imgUrl}
+              playerType={Player.Project}
             />
           </Tabs.Panel>
           <Tabs.Panel value="grants">
@@ -472,69 +467,5 @@ export const Project = () => {
         />
       )}
     </Flex>
-  );
-};
-
-const ProjectUpdatesPanel = ({
-  updates,
-  projectName,
-  isLoading,
-  error,
-  imgUrl,
-}: {
-  updates?: ResolvedUpdate[];
-  imgUrl?: string;
-
-  projectName: string;
-  isLoading: boolean;
-  error: Error | null;
-}) => {
-  if (isLoading) {
-    return (
-      <Box>
-        <Box mt="200" />
-        <Skeleton h={1} mb={200} />
-        <Skeleton h={1} mb={200} />
-      </Box>
-    );
-  }
-
-  if (error) {
-    return <Display title="Error" description={error.message} />;
-  }
-
-  if (!updates || updates?.length === 0) {
-    return (
-      <Display
-        title="Just Getting Started"
-        description={`${projectName} hasn't posted any updates yet.`}
-      />
-    );
-  }
-
-  return (
-    <Box>
-      {updates.map((update) => (
-        <Box pb="lg" key={update.id}>
-          <Group mb="sm" gap={8}>
-            <PlayerAvatar
-              imgUrl={imgUrl || ''}
-              name={projectName}
-              playerType={Player.Project}
-            />
-            <Text size="sm" opacity={0.8}>
-              ·
-            </Text>
-            <Text size="sm" opacity={0.8}>
-              {secondsToShortRelativeTime(update.timestamp)}
-            </Text>
-          </Group>
-          <Box mb="lg" pl={50}>
-            <RTDisplay content={update.content} />
-          </Box>
-          <Divider mb="lg" />
-        </Box>
-      ))}
-    </Box>
   );
 };
