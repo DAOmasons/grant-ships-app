@@ -246,7 +246,7 @@ export const MilestonesDrawer = ({
   const alreadyHasMilestones = !!currentMilestoneSet;
 
   return (
-    <PageDrawer opened={opened} onClose={onClose}>
+    <PageDrawer opened={opened} onClose={onClose} closeOnBack>
       <Group mt="40" mb="lg" w="100%" justify="space-between">
         <PlayerAvatar
           playerType={Player.Project}

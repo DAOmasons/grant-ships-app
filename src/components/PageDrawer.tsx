@@ -7,11 +7,13 @@ export const PageDrawer = ({
   pageTitle,
   opened,
   onClose,
+  closeOnBack = false,
 }: {
   children: ReactNode;
-  pageTitle?: string;
+  pageTitle?: string | ReactNode;
   opened: boolean;
   onClose: () => void;
+  closeOnBack?: boolean;
 }) => {
   return (
     <Drawer.Root opened={opened} size={720} onClose={onClose} position="right">
@@ -19,7 +21,10 @@ export const PageDrawer = ({
       <Drawer.Content>
         <Flex w="100%" justify={'center'}>
           <Box mt="xl" w="600px">
-            <PageTitle title={pageTitle} />
+            <PageTitle
+              title={pageTitle}
+              backAction={closeOnBack ? onClose : undefined}
+            />
             {children}
           </Box>
         </Flex>

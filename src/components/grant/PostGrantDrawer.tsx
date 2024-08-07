@@ -117,7 +117,12 @@ export const PostGrantDrawer = ({
   };
 
   return (
-    <PageDrawer pageTitle="Post Message" opened={opened} onClose={onClose}>
+    <PageDrawer
+      pageTitle="Post Message"
+      opened={opened}
+      onClose={onClose}
+      closeOnBack
+    >
       <Group mt="40" mb="lg" w="100%" justify="space-between">
         <PlayerAvatar
           playerType={playerType}

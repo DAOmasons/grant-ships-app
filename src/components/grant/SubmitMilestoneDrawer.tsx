@@ -136,7 +136,7 @@ export const SubmitMilestoneDrawer = ({
     currentMilestone?.status !== GameStatus.Accepted;
 
   return (
-    <PageDrawer opened={opened} onClose={onClose}>
+    <PageDrawer opened={opened} onClose={onClose} closeOnBack>
       <Group justify="space-between">
         <PlayerAvatar
           playerType={Player.Project}
