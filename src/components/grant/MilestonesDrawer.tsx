@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   Group,
+  NumberInput,
   Stack,
   Text,
   TextInput,
@@ -85,6 +86,10 @@ export const MilestonesDrawer = ({
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const handleSetPerc = (value: number | string, id: string) => {
+    setFormData((prevData) => ({ ...prevData, [id]: value }));
+  };
+
   const handleDateChange = (dateObj: Date | null, key: string) => {
     if (!dateObj) return;
 
@@ -108,6 +113,8 @@ export const MilestonesDrawer = ({
       return newState;
     });
   };
+
+  console.log('formData', formData);
 
   const handlePostMilestones = async () => {
     setIsLoading(true);
@@ -286,18 +293,25 @@ export const MilestonesDrawer = ({
               </Text>
             )}
             <Group>
-              <TextInput
+              <NumberInput
                 required
                 fw={400}
                 label={`Percentage`}
                 name={`milestone-perc-${index + 1}`}
-                type="number"
                 placeholder="30"
+                suffix="%"
                 w={'48%'}
+                min={0}
+                max={100}
+                allowDecimal={false}
+                allowNegative={false}
                 value={formData[`milestone-perc-${index + 1}`]}
-                onChange={handleChanges}
+                onChange={(value) =>
+                  handleSetPerc(value, `milestone-perc-${index + 1}`)
+                }
                 mb="xs"
               />
+
               <DatePickerInput
                 required
                 fw={400}
