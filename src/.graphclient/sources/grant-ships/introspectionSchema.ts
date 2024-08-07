@@ -7689,10 +7689,16 @@ const schemaAST = {
           "type": {
             "kind": "NonNullType",
             "type": {
-              "kind": "NamedType",
-              "name": {
-                "kind": "Name",
-                "value": "_text"
+              "kind": "ListType",
+              "type": {
+                "kind": "NonNullType",
+                "type": {
+                  "kind": "NamedType",
+                  "name": {
+                    "kind": "Name",
+                    "value": "String"
+                  }
+                }
               }
             }
           },
@@ -7926,7 +7932,7 @@ const schemaAST = {
             "kind": "NamedType",
             "name": {
               "kind": "Name",
-              "value": "_text_comparison_exp"
+              "value": "String_array_comparison_exp"
             }
           },
           "directives": []
@@ -8413,10 +8419,16 @@ const schemaAST = {
             "value": "admins"
           },
           "type": {
-            "kind": "NamedType",
-            "name": {
-              "kind": "Name",
-              "value": "_text"
+            "kind": "ListType",
+            "type": {
+              "kind": "NonNullType",
+              "type": {
+                "kind": "NamedType",
+                "name": {
+                  "kind": "Name",
+                  "value": "String"
+                }
+              }
             }
           },
           "directives": []
@@ -19704,10 +19716,16 @@ const schemaAST = {
           "type": {
             "kind": "NonNullType",
             "type": {
-              "kind": "NamedType",
-              "name": {
-                "kind": "Name",
-                "value": "_text"
+              "kind": "ListType",
+              "type": {
+                "kind": "NonNullType",
+                "type": {
+                  "kind": "NamedType",
+                  "name": {
+                    "kind": "Name",
+                    "value": "String"
+                  }
+                }
               }
             }
           },
@@ -19723,10 +19741,16 @@ const schemaAST = {
           "type": {
             "kind": "NonNullType",
             "type": {
-              "kind": "NamedType",
-              "name": {
-                "kind": "Name",
-                "value": "_text"
+              "kind": "ListType",
+              "type": {
+                "kind": "NonNullType",
+                "type": {
+                  "kind": "NamedType",
+                  "name": {
+                    "kind": "Name",
+                    "value": "String"
+                  }
+                }
               }
             }
           },
@@ -20988,7 +21012,7 @@ const schemaAST = {
             "kind": "NamedType",
             "name": {
               "kind": "Name",
-              "value": "_text_comparison_exp"
+              "value": "String_array_comparison_exp"
             }
           },
           "directives": []
@@ -21003,7 +21027,7 @@ const schemaAST = {
             "kind": "NamedType",
             "name": {
               "kind": "Name",
-              "value": "_text_comparison_exp"
+              "value": "String_array_comparison_exp"
             }
           },
           "directives": []
@@ -21537,6 +21561,36 @@ const schemaAST = {
           "kind": "InputValueDefinition",
           "name": {
             "kind": "Name",
+            "value": "pastNames"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "order_by"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "pastProfileIds"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "order_by"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
             "value": "poolId"
           },
           "type": {
@@ -21988,6 +22042,36 @@ const schemaAST = {
           "name": {
             "kind": "Name",
             "value": "owner"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "order_by"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "pastNames"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "order_by"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "pastProfileIds"
           },
           "type": {
             "kind": "NamedType",
@@ -24634,10 +24718,16 @@ const schemaAST = {
             "value": "pastNames"
           },
           "type": {
-            "kind": "NamedType",
-            "name": {
-              "kind": "Name",
-              "value": "_text"
+            "kind": "ListType",
+            "type": {
+              "kind": "NonNullType",
+              "type": {
+                "kind": "NamedType",
+                "name": {
+                  "kind": "Name",
+                  "value": "String"
+                }
+              }
             }
           },
           "directives": []
@@ -24649,10 +24739,16 @@ const schemaAST = {
             "value": "pastProfileIds"
           },
           "type": {
-            "kind": "NamedType",
-            "name": {
-              "kind": "Name",
-              "value": "_text"
+            "kind": "ListType",
+            "type": {
+              "kind": "NonNullType",
+              "type": {
+                "kind": "NamedType",
+                "name": {
+                  "kind": "Name",
+                  "value": "String"
+                }
+              }
             }
           },
           "directives": []
@@ -30761,10 +30857,16 @@ const schemaAST = {
           "type": {
             "kind": "NonNullType",
             "type": {
-              "kind": "NamedType",
-              "name": {
-                "kind": "Name",
-                "value": "_numeric"
+              "kind": "ListType",
+              "type": {
+                "kind": "NonNullType",
+                "type": {
+                  "kind": "NamedType",
+                  "name": {
+                    "kind": "Name",
+                    "value": "numeric"
+                  }
+                }
               }
             }
           },
@@ -31064,7 +31166,7 @@ const schemaAST = {
             "kind": "NamedType",
             "name": {
               "kind": "Name",
-              "value": "_numeric_comparison_exp"
+              "value": "numeric_array_comparison_exp"
             }
           },
           "directives": []
@@ -31381,10 +31483,16 @@ const schemaAST = {
             "value": "hatIds"
           },
           "type": {
-            "kind": "NamedType",
-            "name": {
-              "kind": "Name",
-              "value": "_numeric"
+            "kind": "ListType",
+            "type": {
+              "kind": "NonNullType",
+              "type": {
+                "kind": "NamedType",
+                "name": {
+                  "kind": "Name",
+                  "value": "numeric"
+                }
+              }
             }
           },
           "directives": []
@@ -37784,10 +37892,16 @@ const schemaAST = {
           "type": {
             "kind": "NonNullType",
             "type": {
-              "kind": "NamedType",
-              "name": {
-                "kind": "Name",
-                "value": "_text"
+              "kind": "ListType",
+              "type": {
+                "kind": "NonNullType",
+                "type": {
+                  "kind": "NamedType",
+                  "name": {
+                    "kind": "Name",
+                    "value": "String"
+                  }
+                }
               }
             }
           },
@@ -37930,7 +38044,7 @@ const schemaAST = {
             "kind": "NamedType",
             "name": {
               "kind": "Name",
-              "value": "_text_comparison_exp"
+              "value": "String_array_comparison_exp"
             }
           },
           "directives": []
@@ -38202,10 +38316,16 @@ const schemaAST = {
             "value": "addresses"
           },
           "type": {
-            "kind": "NamedType",
-            "name": {
-              "kind": "Name",
-              "value": "_text"
+            "kind": "ListType",
+            "type": {
+              "kind": "NonNullType",
+              "type": {
+                "kind": "NamedType",
+                "name": {
+                  "kind": "Name",
+                  "value": "String"
+                }
+              }
             }
           },
           "directives": []
@@ -38649,10 +38769,16 @@ const schemaAST = {
           "type": {
             "kind": "NonNullType",
             "type": {
-              "kind": "NamedType",
-              "name": {
-                "kind": "Name",
-                "value": "_text"
+              "kind": "ListType",
+              "type": {
+                "kind": "NonNullType",
+                "type": {
+                  "kind": "NamedType",
+                  "name": {
+                    "kind": "Name",
+                    "value": "String"
+                  }
+                }
               }
             }
           },
@@ -38668,10 +38794,16 @@ const schemaAST = {
           "type": {
             "kind": "NonNullType",
             "type": {
-              "kind": "NamedType",
-              "name": {
-                "kind": "Name",
-                "value": "_text"
+              "kind": "ListType",
+              "type": {
+                "kind": "NonNullType",
+                "type": {
+                  "kind": "NamedType",
+                  "name": {
+                    "kind": "Name",
+                    "value": "String"
+                  }
+                }
               }
             }
           },
@@ -39012,7 +39144,7 @@ const schemaAST = {
             "kind": "NamedType",
             "name": {
               "kind": "Name",
-              "value": "_text_comparison_exp"
+              "value": "String_array_comparison_exp"
             }
           },
           "directives": []
@@ -39027,7 +39159,7 @@ const schemaAST = {
             "kind": "NamedType",
             "name": {
               "kind": "Name",
-              "value": "_text_comparison_exp"
+              "value": "String_array_comparison_exp"
             }
           },
           "directives": []
@@ -39802,10 +39934,16 @@ const schemaAST = {
             "value": "pastNames"
           },
           "type": {
-            "kind": "NamedType",
-            "name": {
-              "kind": "Name",
-              "value": "_text"
+            "kind": "ListType",
+            "type": {
+              "kind": "NonNullType",
+              "type": {
+                "kind": "NamedType",
+                "name": {
+                  "kind": "Name",
+                  "value": "String"
+                }
+              }
             }
           },
           "directives": []
@@ -39817,10 +39955,16 @@ const schemaAST = {
             "value": "pastProfileIds"
           },
           "type": {
-            "kind": "NamedType",
-            "name": {
-              "kind": "Name",
-              "value": "_text"
+            "kind": "ListType",
+            "type": {
+              "kind": "NonNullType",
+              "type": {
+                "kind": "NamedType",
+                "name": {
+                  "kind": "Name",
+                  "value": "String"
+                }
+              }
             }
           },
           "directives": []
@@ -47689,6 +47833,268 @@ const schemaAST = {
       },
       "name": {
         "kind": "Name",
+        "value": "String_array_comparison_exp"
+      },
+      "fields": [
+        {
+          "kind": "InputValueDefinition",
+          "description": {
+            "kind": "StringValue",
+            "value": "is the array contained in the given array value",
+            "block": true
+          },
+          "name": {
+            "kind": "Name",
+            "value": "_contained_in"
+          },
+          "type": {
+            "kind": "ListType",
+            "type": {
+              "kind": "NonNullType",
+              "type": {
+                "kind": "NamedType",
+                "name": {
+                  "kind": "Name",
+                  "value": "String"
+                }
+              }
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "description": {
+            "kind": "StringValue",
+            "value": "does the array contain the given value",
+            "block": true
+          },
+          "name": {
+            "kind": "Name",
+            "value": "_contains"
+          },
+          "type": {
+            "kind": "ListType",
+            "type": {
+              "kind": "NonNullType",
+              "type": {
+                "kind": "NamedType",
+                "name": {
+                  "kind": "Name",
+                  "value": "String"
+                }
+              }
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "_eq"
+          },
+          "type": {
+            "kind": "ListType",
+            "type": {
+              "kind": "NonNullType",
+              "type": {
+                "kind": "NamedType",
+                "name": {
+                  "kind": "Name",
+                  "value": "String"
+                }
+              }
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "_gt"
+          },
+          "type": {
+            "kind": "ListType",
+            "type": {
+              "kind": "NonNullType",
+              "type": {
+                "kind": "NamedType",
+                "name": {
+                  "kind": "Name",
+                  "value": "String"
+                }
+              }
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "_gte"
+          },
+          "type": {
+            "kind": "ListType",
+            "type": {
+              "kind": "NonNullType",
+              "type": {
+                "kind": "NamedType",
+                "name": {
+                  "kind": "Name",
+                  "value": "String"
+                }
+              }
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "_in"
+          },
+          "type": {
+            "kind": "ListType",
+            "type": {
+              "kind": "NonNullType",
+              "type": {
+                "kind": "ListType",
+                "type": {
+                  "kind": "NonNullType",
+                  "type": {
+                    "kind": "NamedType",
+                    "name": {
+                      "kind": "Name",
+                      "value": "String"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "_is_null"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "Boolean"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "_lt"
+          },
+          "type": {
+            "kind": "ListType",
+            "type": {
+              "kind": "NonNullType",
+              "type": {
+                "kind": "NamedType",
+                "name": {
+                  "kind": "Name",
+                  "value": "String"
+                }
+              }
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "_lte"
+          },
+          "type": {
+            "kind": "ListType",
+            "type": {
+              "kind": "NonNullType",
+              "type": {
+                "kind": "NamedType",
+                "name": {
+                  "kind": "Name",
+                  "value": "String"
+                }
+              }
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "_neq"
+          },
+          "type": {
+            "kind": "ListType",
+            "type": {
+              "kind": "NonNullType",
+              "type": {
+                "kind": "NamedType",
+                "name": {
+                  "kind": "Name",
+                  "value": "String"
+                }
+              }
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "_nin"
+          },
+          "type": {
+            "kind": "ListType",
+            "type": {
+              "kind": "NonNullType",
+              "type": {
+                "kind": "ListType",
+                "type": {
+                  "kind": "NonNullType",
+                  "type": {
+                    "kind": "NamedType",
+                    "name": {
+                      "kind": "Name",
+                      "value": "String"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "directives": []
+        }
+      ],
+      "directives": []
+    },
+    {
+      "kind": "InputObjectTypeDefinition",
+      "description": {
+        "kind": "StringValue",
+        "value": "Boolean expression to compare columns of type \"String\". All fields are combined with logical 'AND'.",
+        "block": true
+      },
+      "name": {
+        "kind": "Name",
         "value": "String_comparison_exp"
       },
       "fields": [
@@ -50733,346 +51139,6 @@ const schemaAST = {
             "name": {
               "kind": "Name",
               "value": "Int"
-            }
-          },
-          "directives": []
-        }
-      ],
-      "directives": []
-    },
-    {
-      "kind": "ScalarTypeDefinition",
-      "name": {
-        "kind": "Name",
-        "value": "_numeric"
-      },
-      "directives": []
-    },
-    {
-      "kind": "InputObjectTypeDefinition",
-      "description": {
-        "kind": "StringValue",
-        "value": "Boolean expression to compare columns of type \"_numeric\". All fields are combined with logical 'AND'.",
-        "block": true
-      },
-      "name": {
-        "kind": "Name",
-        "value": "_numeric_comparison_exp"
-      },
-      "fields": [
-        {
-          "kind": "InputValueDefinition",
-          "name": {
-            "kind": "Name",
-            "value": "_eq"
-          },
-          "type": {
-            "kind": "NamedType",
-            "name": {
-              "kind": "Name",
-              "value": "_numeric"
-            }
-          },
-          "directives": []
-        },
-        {
-          "kind": "InputValueDefinition",
-          "name": {
-            "kind": "Name",
-            "value": "_gt"
-          },
-          "type": {
-            "kind": "NamedType",
-            "name": {
-              "kind": "Name",
-              "value": "_numeric"
-            }
-          },
-          "directives": []
-        },
-        {
-          "kind": "InputValueDefinition",
-          "name": {
-            "kind": "Name",
-            "value": "_gte"
-          },
-          "type": {
-            "kind": "NamedType",
-            "name": {
-              "kind": "Name",
-              "value": "_numeric"
-            }
-          },
-          "directives": []
-        },
-        {
-          "kind": "InputValueDefinition",
-          "name": {
-            "kind": "Name",
-            "value": "_in"
-          },
-          "type": {
-            "kind": "ListType",
-            "type": {
-              "kind": "NonNullType",
-              "type": {
-                "kind": "NamedType",
-                "name": {
-                  "kind": "Name",
-                  "value": "_numeric"
-                }
-              }
-            }
-          },
-          "directives": []
-        },
-        {
-          "kind": "InputValueDefinition",
-          "name": {
-            "kind": "Name",
-            "value": "_is_null"
-          },
-          "type": {
-            "kind": "NamedType",
-            "name": {
-              "kind": "Name",
-              "value": "Boolean"
-            }
-          },
-          "directives": []
-        },
-        {
-          "kind": "InputValueDefinition",
-          "name": {
-            "kind": "Name",
-            "value": "_lt"
-          },
-          "type": {
-            "kind": "NamedType",
-            "name": {
-              "kind": "Name",
-              "value": "_numeric"
-            }
-          },
-          "directives": []
-        },
-        {
-          "kind": "InputValueDefinition",
-          "name": {
-            "kind": "Name",
-            "value": "_lte"
-          },
-          "type": {
-            "kind": "NamedType",
-            "name": {
-              "kind": "Name",
-              "value": "_numeric"
-            }
-          },
-          "directives": []
-        },
-        {
-          "kind": "InputValueDefinition",
-          "name": {
-            "kind": "Name",
-            "value": "_neq"
-          },
-          "type": {
-            "kind": "NamedType",
-            "name": {
-              "kind": "Name",
-              "value": "_numeric"
-            }
-          },
-          "directives": []
-        },
-        {
-          "kind": "InputValueDefinition",
-          "name": {
-            "kind": "Name",
-            "value": "_nin"
-          },
-          "type": {
-            "kind": "ListType",
-            "type": {
-              "kind": "NonNullType",
-              "type": {
-                "kind": "NamedType",
-                "name": {
-                  "kind": "Name",
-                  "value": "_numeric"
-                }
-              }
-            }
-          },
-          "directives": []
-        }
-      ],
-      "directives": []
-    },
-    {
-      "kind": "ScalarTypeDefinition",
-      "name": {
-        "kind": "Name",
-        "value": "_text"
-      },
-      "directives": []
-    },
-    {
-      "kind": "InputObjectTypeDefinition",
-      "description": {
-        "kind": "StringValue",
-        "value": "Boolean expression to compare columns of type \"_text\". All fields are combined with logical 'AND'.",
-        "block": true
-      },
-      "name": {
-        "kind": "Name",
-        "value": "_text_comparison_exp"
-      },
-      "fields": [
-        {
-          "kind": "InputValueDefinition",
-          "name": {
-            "kind": "Name",
-            "value": "_eq"
-          },
-          "type": {
-            "kind": "NamedType",
-            "name": {
-              "kind": "Name",
-              "value": "_text"
-            }
-          },
-          "directives": []
-        },
-        {
-          "kind": "InputValueDefinition",
-          "name": {
-            "kind": "Name",
-            "value": "_gt"
-          },
-          "type": {
-            "kind": "NamedType",
-            "name": {
-              "kind": "Name",
-              "value": "_text"
-            }
-          },
-          "directives": []
-        },
-        {
-          "kind": "InputValueDefinition",
-          "name": {
-            "kind": "Name",
-            "value": "_gte"
-          },
-          "type": {
-            "kind": "NamedType",
-            "name": {
-              "kind": "Name",
-              "value": "_text"
-            }
-          },
-          "directives": []
-        },
-        {
-          "kind": "InputValueDefinition",
-          "name": {
-            "kind": "Name",
-            "value": "_in"
-          },
-          "type": {
-            "kind": "ListType",
-            "type": {
-              "kind": "NonNullType",
-              "type": {
-                "kind": "NamedType",
-                "name": {
-                  "kind": "Name",
-                  "value": "_text"
-                }
-              }
-            }
-          },
-          "directives": []
-        },
-        {
-          "kind": "InputValueDefinition",
-          "name": {
-            "kind": "Name",
-            "value": "_is_null"
-          },
-          "type": {
-            "kind": "NamedType",
-            "name": {
-              "kind": "Name",
-              "value": "Boolean"
-            }
-          },
-          "directives": []
-        },
-        {
-          "kind": "InputValueDefinition",
-          "name": {
-            "kind": "Name",
-            "value": "_lt"
-          },
-          "type": {
-            "kind": "NamedType",
-            "name": {
-              "kind": "Name",
-              "value": "_text"
-            }
-          },
-          "directives": []
-        },
-        {
-          "kind": "InputValueDefinition",
-          "name": {
-            "kind": "Name",
-            "value": "_lte"
-          },
-          "type": {
-            "kind": "NamedType",
-            "name": {
-              "kind": "Name",
-              "value": "_text"
-            }
-          },
-          "directives": []
-        },
-        {
-          "kind": "InputValueDefinition",
-          "name": {
-            "kind": "Name",
-            "value": "_neq"
-          },
-          "type": {
-            "kind": "NamedType",
-            "name": {
-              "kind": "Name",
-              "value": "_text"
-            }
-          },
-          "directives": []
-        },
-        {
-          "kind": "InputValueDefinition",
-          "name": {
-            "kind": "Name",
-            "value": "_nin"
-          },
-          "type": {
-            "kind": "ListType",
-            "type": {
-              "kind": "NonNullType",
-              "type": {
-                "kind": "NamedType",
-                "name": {
-                  "kind": "Name",
-                  "value": "_text"
-                }
-              }
             }
           },
           "directives": []
@@ -57845,6 +57911,268 @@ const schemaAST = {
         "kind": "Name",
         "value": "numeric"
       },
+      "directives": []
+    },
+    {
+      "kind": "InputObjectTypeDefinition",
+      "description": {
+        "kind": "StringValue",
+        "value": "Boolean expression to compare columns of type \"numeric\". All fields are combined with logical 'AND'.",
+        "block": true
+      },
+      "name": {
+        "kind": "Name",
+        "value": "numeric_array_comparison_exp"
+      },
+      "fields": [
+        {
+          "kind": "InputValueDefinition",
+          "description": {
+            "kind": "StringValue",
+            "value": "is the array contained in the given array value",
+            "block": true
+          },
+          "name": {
+            "kind": "Name",
+            "value": "_contained_in"
+          },
+          "type": {
+            "kind": "ListType",
+            "type": {
+              "kind": "NonNullType",
+              "type": {
+                "kind": "NamedType",
+                "name": {
+                  "kind": "Name",
+                  "value": "numeric"
+                }
+              }
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "description": {
+            "kind": "StringValue",
+            "value": "does the array contain the given value",
+            "block": true
+          },
+          "name": {
+            "kind": "Name",
+            "value": "_contains"
+          },
+          "type": {
+            "kind": "ListType",
+            "type": {
+              "kind": "NonNullType",
+              "type": {
+                "kind": "NamedType",
+                "name": {
+                  "kind": "Name",
+                  "value": "numeric"
+                }
+              }
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "_eq"
+          },
+          "type": {
+            "kind": "ListType",
+            "type": {
+              "kind": "NonNullType",
+              "type": {
+                "kind": "NamedType",
+                "name": {
+                  "kind": "Name",
+                  "value": "numeric"
+                }
+              }
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "_gt"
+          },
+          "type": {
+            "kind": "ListType",
+            "type": {
+              "kind": "NonNullType",
+              "type": {
+                "kind": "NamedType",
+                "name": {
+                  "kind": "Name",
+                  "value": "numeric"
+                }
+              }
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "_gte"
+          },
+          "type": {
+            "kind": "ListType",
+            "type": {
+              "kind": "NonNullType",
+              "type": {
+                "kind": "NamedType",
+                "name": {
+                  "kind": "Name",
+                  "value": "numeric"
+                }
+              }
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "_in"
+          },
+          "type": {
+            "kind": "ListType",
+            "type": {
+              "kind": "NonNullType",
+              "type": {
+                "kind": "ListType",
+                "type": {
+                  "kind": "NonNullType",
+                  "type": {
+                    "kind": "NamedType",
+                    "name": {
+                      "kind": "Name",
+                      "value": "numeric"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "_is_null"
+          },
+          "type": {
+            "kind": "NamedType",
+            "name": {
+              "kind": "Name",
+              "value": "Boolean"
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "_lt"
+          },
+          "type": {
+            "kind": "ListType",
+            "type": {
+              "kind": "NonNullType",
+              "type": {
+                "kind": "NamedType",
+                "name": {
+                  "kind": "Name",
+                  "value": "numeric"
+                }
+              }
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "_lte"
+          },
+          "type": {
+            "kind": "ListType",
+            "type": {
+              "kind": "NonNullType",
+              "type": {
+                "kind": "NamedType",
+                "name": {
+                  "kind": "Name",
+                  "value": "numeric"
+                }
+              }
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "_neq"
+          },
+          "type": {
+            "kind": "ListType",
+            "type": {
+              "kind": "NonNullType",
+              "type": {
+                "kind": "NamedType",
+                "name": {
+                  "kind": "Name",
+                  "value": "numeric"
+                }
+              }
+            }
+          },
+          "directives": []
+        },
+        {
+          "kind": "InputValueDefinition",
+          "name": {
+            "kind": "Name",
+            "value": "_nin"
+          },
+          "type": {
+            "kind": "ListType",
+            "type": {
+              "kind": "NonNullType",
+              "type": {
+                "kind": "ListType",
+                "type": {
+                  "kind": "NonNullType",
+                  "type": {
+                    "kind": "NamedType",
+                    "name": {
+                      "kind": "Name",
+                      "value": "numeric"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "directives": []
+        }
+      ],
       "directives": []
     },
     {
