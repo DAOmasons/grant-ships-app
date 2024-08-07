@@ -33,7 +33,6 @@ import { SingleItemPageSkeleton } from '../components/skeletons';
 import { getEntityFeed } from '../queries/getFeed';
 import { formatEther } from 'viem';
 import { useUserData } from '../hooks/useUserState';
-// import { UpdatesPanel } from '../components/shipItems/UpdatesPanel';
 import { SHIP_STATUS_INFO } from '../constants/copy';
 import { useLaptop, useTablet } from '../hooks/useBreakpoint';
 import { useMemo } from 'react';
@@ -41,6 +40,8 @@ import { ShipBadge } from '../components/RoleBadges';
 import { ApplyButton } from '../components/shipItems/ApplyButton';
 import { getShipGrants } from '../queries/getShipGrants';
 import { GrantCard } from '../components/grant/GrantCard';
+import { PostDrawer } from '../components/PostDrawer';
+import { Player } from '../types/ui';
 
 const infiniteWrapper = async ({ pageParam }: any) => {
   const result = await getEntityFeed(pageParam);
@@ -336,6 +337,17 @@ export const Ship = () => {
             )}
           </Paper>
         </Stack>
+      )}
+      {isShipOperator && ship.shipContractAddress && (
+        <PostDrawer
+          avatarImg={ship.imgUrl}
+          name={ship.name}
+          posterType={Player.Ship}
+          posterId={ship.shipContractAddress}
+          refetch={() => {
+            // refetchUpdates();
+          }}
+        />
       )}
     </Flex>
   );

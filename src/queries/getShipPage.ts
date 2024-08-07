@@ -19,7 +19,7 @@ export const getShipPageData = async (id: string): Promise<ShipPageUI> => {
     if (!GrantShip?.[0]) {
       throw new Error('No ship found');
     }
-
+    console.log('GrantShip', GrantShip);
     const grantShip = GrantShip[0];
 
     const pointer = grantShip?.profileMetadata?.pointer;
@@ -78,6 +78,7 @@ export const getShipPageData = async (id: string): Promise<ShipPageUI> => {
       totalRoundAmount: grantShip.totalRoundAmount || '0',
       shipContractAddress: grantShip.shipContractAddress,
       members,
+      hatId: grantShip.hatId || undefined,
       details: {
         thesis: applyData?.thesis,
         apply: applyData?.guidelines,

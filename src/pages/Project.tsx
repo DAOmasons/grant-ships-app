@@ -458,7 +458,6 @@ export const Project = () => {
           name={project.name}
           posterType={Player.Project}
           posterId={project.profileId}
-          postType="richtext/post"
           refetch={() => {
             refetchUpdates();
           }}
