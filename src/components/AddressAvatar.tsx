@@ -64,7 +64,12 @@ export const AddressAvatar = ({
       }}
     >
       {withTooltip ? (
-        <Tooltip label={ensName ? name : address} position="top" withArrow>
+        <Tooltip
+          label={ensName ? name : address}
+          position="top"
+          withArrow
+          openDelay={200}
+        >
           <Avatar src={imgUrl} size={size} />
         </Tooltip>
       ) : (
