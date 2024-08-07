@@ -26,8 +26,7 @@ export const InsetUpdate = ({
         <Group gap={8} mb="xs">
           {symbolUI}
           <Text size="sm">
-            <Bold>{posterName}</Bold>
-            {tagline}
+            <Bold>{posterName}</Bold> {tagline}
           </Text>
           <Text size="sm" opacity={0.8}>
             ·
