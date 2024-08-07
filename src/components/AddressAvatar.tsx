@@ -1,6 +1,13 @@
-import { Avatar, Group, MantineSize, StyleProp, Text } from '@mantine/core';
+import {
+  Avatar,
+  Group,
+  MantineSize,
+  StyleProp,
+  Text,
+  Tooltip,
+} from '@mantine/core';
 import React, { ComponentProps } from 'react';
-import { Address } from 'viem';
+import { Address, isAddress } from 'viem';
 import { useEnsAvatar, useEnsName } from 'wagmi';
 import { ensConfig } from '../utils/config';
 import { mainnet } from 'viem/chains';
@@ -13,11 +20,13 @@ export const AddressAvatar = ({
   size = 28,
   fz,
   displayText = true,
+  withTooltip = false,
   canCopy,
 }: {
   address: Address;
   size?: MantineSize | number;
   fz?: StyleProp<number | MantineSize>;
+  withTooltip?: boolean;
   displayText?: boolean;
   hideText?: boolean;
   canCopy?: boolean;
@@ -54,7 +63,18 @@ export const AddressAvatar = ({
         }
       }}
     >
-      <Avatar src={imgUrl} size={size} />
+      {withTooltip ? (
+        <Tooltip
+          label={ensName ? name : address}
+          position="top"
+          withArrow
+          openDelay={200}
+        >
+          <Avatar src={imgUrl} size={size} />
+        </Tooltip>
+      ) : (
+        <Avatar src={imgUrl} size={size} />
+      )}
       {displayText && <Text fz={fz}>{name}</Text>}
     </Group>
   );
@@ -69,13 +89,17 @@ export const AddressAvatarGroup = ({
 }) => {
   return (
     <Avatar.Group>
-      {addresses.map((address) => (
-        <AvatarGroupItem
-          key={address}
-          address={address}
-          avatarProps={avatarProps}
-        />
-      ))}
+      {addresses.map((address) =>
+        isAddress(address) ? (
+          <AddressAvatar
+            address={address}
+            canCopy
+            withTooltip
+            key={address}
+            displayText={false}
+          />
+        ) : null
+      )}
     </Avatar.Group>
   );
 };

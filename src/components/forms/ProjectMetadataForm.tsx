@@ -275,7 +275,7 @@ export const ProjectMetadataForm = ({
             onClick={() => onSubmit(form.values)}
             disabled={!form.isValid()}
           >
-            {isEditing ? 'Edit Project' : 'Register Project'}
+            {isEditing ? 'Save' : 'Register Project'}
           </TxButton>
         </Group>
       </Stack>

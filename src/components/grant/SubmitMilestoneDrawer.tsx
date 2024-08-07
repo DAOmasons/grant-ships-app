@@ -136,7 +136,7 @@ export const SubmitMilestoneDrawer = ({
     currentMilestone?.status !== GameStatus.Accepted;
 
   return (
-    <PageDrawer opened={opened} onClose={onClose}>
+    <PageDrawer opened={opened} onClose={onClose} closeOnBack>
       <Group justify="space-between">
         <PlayerAvatar
           playerType={Player.Project}
@@ -160,7 +160,7 @@ export const SubmitMilestoneDrawer = ({
         onChange={setMilestoneId}
         value={milestoneId || currentMilestoneSet?.resolvedMilestones[0].id}
         data={
-          currentMilestoneSet?.resolvedMilestones.map((milestone, index) => {
+          currentMilestoneSet?.resolvedMilestones.map((milestone) => {
             return {
               value: milestone.id,
               label: (
@@ -177,7 +177,9 @@ export const SubmitMilestoneDrawer = ({
                   ) : (
                     <IconPennant size={16} />
                   )}
-                  <span style={{ fontWeight: 900 }}>Milestone {index + 1}</span>
+                  <span style={{ fontWeight: 900 }}>
+                    Milestone {milestone.index + 1}
+                  </span>
                 </Center>
               ),
             };

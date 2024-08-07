@@ -83,7 +83,7 @@ export const FacilitatorApprovalDrawer = ({
   };
 
   return (
-    <PageDrawer opened={opened} onClose={onClose}>
+    <PageDrawer opened={opened} onClose={onClose} closeOnBack>
       <PlayerAvatar
         imgUrl={getGatewayUrl(DAO_MASONS.AVATAR_IMG)}
         playerType={Player.Facilitators}

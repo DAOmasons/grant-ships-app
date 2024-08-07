@@ -200,9 +200,11 @@ export const getGrant = async (grantId: string) => {
         );
         return {
           ...set,
-          resolvedMilestones: resolvedMilestones.filter(
-            Boolean
-          ) as ResolvedMilestone[],
+          resolvedMilestones: resolvedMilestones
+            .filter(Boolean)
+            .sort((a, b) =>
+              a!.index > b!.index ? 1 : -1
+            ) as ResolvedMilestone[],
           tag: 'milestoneSet',
         } as MilestonesDisplay;
       } else {

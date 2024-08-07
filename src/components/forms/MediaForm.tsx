@@ -1,4 +1,5 @@
 import {
+  ActionIcon,
   Box,
   Button,
   Divider,
@@ -6,16 +7,17 @@ import {
   Stack,
   Text,
   TextInput,
+  Tooltip,
 } from '@mantine/core';
-import React from 'react';
+
 import { useMobile } from '../../hooks/useBreakpoint';
 import { PageTitle } from '../../layout/Sections';
 import {
   IconBrandVimeo,
   IconBrandYoutube,
-  IconDeviceFloppy,
   IconExclamationCircle,
   IconPhoto,
+  IconPlayerPlay,
   IconPlus,
   IconWorld,
 } from '@tabler/icons-react';
@@ -144,12 +146,37 @@ export const MediaForm = ({ form }: { form: UseFormReturnType<any> }) => {
       </Group>
 
       <Divider />
-      <TextInput
-        leftSection={<IconWorld size={18} />}
-        label="Demo Link"
-        placeholder="ex. Public Goods Death Star"
-        {...form.getInputProps('mainDemoLink')}
-      />
+      <Box mb="md">
+        <TextInput
+          mb="md"
+          leftSection={<IconWorld size={18} />}
+          label="Demo Link"
+          description="Link to your game or app. This will be displayed front and center on your project page."
+          placeholder="https://your-product-demo.com"
+          {...form.getInputProps('mainDemoLink')}
+        />
+        {form.values?.mainDemoLink &&
+          form.getInputProps('mainDemoLink').error === undefined && (
+            <Group>
+              <Text fz="sm" opacity={0.8}>
+                Test Demo
+              </Text>
+              <Tooltip label="Try Demo">
+                <ActionIcon
+                  variant="priority"
+                  size="lg"
+                  radius={100}
+                  component="a"
+                  href={form.values?.mainDemoLink}
+                  rel="noreferrer"
+                  target="_blank"
+                >
+                  <IconPlayerPlay size={16} />
+                </ActionIcon>
+              </Tooltip>
+            </Group>
+          )}
+      </Box>
       <Group w="100%" justify="flex-end" mt="md">
         <Button onClick={handleUpdate}>Update</Button>
       </Group>
