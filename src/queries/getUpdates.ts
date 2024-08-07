@@ -4,9 +4,9 @@ import { UpdateScope } from '../types/common';
 
 export const getUpdates = async (entityAddress: string, scope: UpdateScope) => {
   try {
-    const { getUpdates } = getBuiltGraphSDK();
+    const { getUpdatesQuery } = getBuiltGraphSDK();
 
-    const result = await getUpdates({
+    const result = await getUpdatesQuery({
       entityAddress: entityAddress,
       scope: scope,
     });

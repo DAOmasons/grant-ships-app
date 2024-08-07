@@ -9920,11 +9920,11 @@ const merger = new(BareMerger as any)({
         },
         location: 'GetShipPoolIdDocument.graphql'
       },{
-        document: GetUpdatesDocument,
+        document: GetUpdatesQueryDocument,
         get rawSDL() {
-          return printWithCache(GetUpdatesDocument);
+          return printWithCache(GetUpdatesQueryDocument);
         },
-        location: 'GetUpdatesDocument.graphql'
+        location: 'GetUpdatesQueryDocument.graphql'
       },{
         document: GetUserDataDocument,
         get rawSDL() {
@@ -10363,13 +10363,13 @@ export type getShipPoolIdQueryVariables = Exact<{
 
 export type getShipPoolIdQuery = { GrantShip: Array<Pick<GrantShip, 'poolId'>> };
 
-export type getUpdatesQueryVariables = Exact<{
+export type getUpdatesQueryQueryVariables = Exact<{
   entityAddress: Scalars['String'];
   scope?: InputMaybe<Scalars['Int']>;
 }>;
 
 
-export type getUpdatesQuery = { Update: Array<(
+export type getUpdatesQueryQuery = { Update: Array<(
     Pick<Update, 'id' | 'postedBy' | 'entityAddress' | 'timestamp'>
     & { content?: Maybe<Pick<RawMetadata, 'pointer'>> }
   )> };
@@ -10991,8 +10991,8 @@ export const getShipPoolIdDocument = gql`
   }
 }
     ` as unknown as DocumentNode<getShipPoolIdQuery, getShipPoolIdQueryVariables>;
-export const getUpdatesDocument = gql`
-    query getUpdates($entityAddress: String!, $scope: Int) {
+export const getUpdatesQueryDocument = gql`
+    query getUpdatesQuery($entityAddress: String!, $scope: Int) {
   Update(
     where: {entityAddress: {_eq: $entityAddress}, scope: {_eq: $scope}}
     order_by: {timestamp: desc}
@@ -11000,7 +11000,7 @@ export const getUpdatesDocument = gql`
     ...UpdateBody
   }
 }
-    ${UpdateBodyFragmentDoc}` as unknown as DocumentNode<getUpdatesQuery, getUpdatesQueryVariables>;
+    ${UpdateBodyFragmentDoc}` as unknown as DocumentNode<getUpdatesQueryQuery, getUpdatesQueryQueryVariables>;
 export const getUserDataDocument = gql`
     query getUserData($id: String!, $chainId: Int!) {
   projects: Project(where: {owner: {_eq: $id}, chainId: {_eq: $chainId}}) {
@@ -11170,8 +11170,8 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     getShipPoolId(variables: getShipPoolIdQueryVariables, options?: C): Promise<getShipPoolIdQuery> {
       return requester<getShipPoolIdQuery, getShipPoolIdQueryVariables>(getShipPoolIdDocument, variables, options) as Promise<getShipPoolIdQuery>;
     },
-    getUpdates(variables: getUpdatesQueryVariables, options?: C): Promise<getUpdatesQuery> {
-      return requester<getUpdatesQuery, getUpdatesQueryVariables>(getUpdatesDocument, variables, options) as Promise<getUpdatesQuery>;
+    getUpdatesQuery(variables: getUpdatesQueryQueryVariables, options?: C): Promise<getUpdatesQueryQuery> {
+      return requester<getUpdatesQueryQuery, getUpdatesQueryQueryVariables>(getUpdatesQueryDocument, variables, options) as Promise<getUpdatesQueryQuery>;
     },
     getUserData(variables: getUserDataQueryVariables, options?: C): Promise<getUserDataQuery> {
       return requester<getUserDataQuery, getUserDataQueryVariables>(getUserDataDocument, variables, options) as Promise<getUserDataQuery>;

@@ -23,7 +23,7 @@ import { DetailsPanel } from '../components/shipItems/DetailsPanel';
 import { useParams } from 'react-router-dom';
 import { GAME_MANAGER, GAME_TOKEN } from '../constants/gameSetup';
 import { AddressAvatarGroup } from '../components/AddressAvatar';
-import { GameStatus, GrantStatus } from '../types/common';
+import { GameStatus, GrantStatus, UpdateScope } from '../types/common';
 
 import { getShipPageData } from '../queries/getShipPage';
 import { useQuery, useInfiniteQuery } from '@tanstack/react-query';
@@ -42,6 +42,8 @@ import { getShipGrants } from '../queries/getShipGrants';
 import { GrantCard } from '../components/grant/GrantCard';
 import { PostDrawer } from '../components/PostDrawer';
 import { Player } from '../types/ui';
+import { PostAffix } from '../components/PostAffix';
+import { getUpdates } from '../queries/getUpdates';
 
 const infiniteWrapper = async ({ pageParam }: any) => {
   const result = await getEntityFeed(pageParam);
@@ -89,6 +91,17 @@ export const Ship = () => {
   } = useQuery({
     queryKey: [`ship-page-${id}`],
     queryFn: () => getShipPageData(id as string),
+    enabled: !!id,
+  });
+
+  const {
+    data: updates,
+    error: updatesError,
+    isLoading: updatesLoading,
+    refetch: refetchUpdates,
+  } = useQuery({
+    queryKey: [`project-updates-${id}`],
+    queryFn: () => getUpdates(id as string, UpdateScope.Ship),
     enabled: !!id,
   });
 
@@ -338,6 +351,7 @@ export const Ship = () => {
           </Paper>
         </Stack>
       )}
+      {isShipOperator && <PostAffix />}
       {isShipOperator && ship.shipContractAddress && (
         <PostDrawer
           avatarImg={ship.imgUrl}

@@ -15,7 +15,6 @@
 // import { FeedSkeletonCard } from '../skeletons';
 // import { AppAlert } from '../UnderContruction';
 // import { IconX } from '@tabler/icons-react';
-// import { getUpdates } from '../../queries/getUpdates';
 // import { FeedCard } from '../feed/FeedCard';
 // import { DashGrant } from '../../resolvers/grantResolvers';
 // import { useState } from 'react';

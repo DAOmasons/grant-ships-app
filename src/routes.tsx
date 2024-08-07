@@ -30,7 +30,7 @@ export const ClientRoutes = () => {
       <Route path="game-rules" element={<GameRules />} />
       <Route path="apply" element={<Apply />} />
       <Route path="grant/:id/*" element={<Grant />} />
-      <Route path="ship/:id" element={<Ship />} />
+      <Route path="ship/:id/*" element={<Ship />} />
       <Route path="project/:id/*" element={<Project />} />
       <Route path="facilitators" element={<Facilitators />} />
       <Route
