@@ -24,8 +24,8 @@ export const ProjectGrantHelpers = () => {
         icon={<IconFileDescription size={20} />}
         text={
           <Text fz="sm">
-            <Bold>Next Step: </Bold> send a <Bold>message</Bold> to the Ship
-            Operator or submit an <Bold>application</Bold>
+            <Bold>Next Step: </Bold> send a <Bold>Message</Bold> to the Ship{' '}
+            Operator or submit an <Bold>Application</Bold>
           </Text>
         }
       />
@@ -38,7 +38,7 @@ export const ProjectGrantHelpers = () => {
         icon={<IconFileDescription size={20} />}
         text={
           <Text fz="sm">
-            <Bold>Next Step: </Bold> wait for a response from the Operator or
+            <Bold>Next Step: </Bold> wait for a response from the Operator or{' '}
             submit an <Bold>application</Bold>
           </Text>
         }
@@ -154,7 +154,7 @@ export const ProjectGrantHelpers = () => {
           icon={<IconPennant size={20} />}
           text={
             <Text fz="sm">
-              <Bold>Next Step: </Bold> Incorporate the feedback and resubmit
+              <Bold>Next Step: </Bold> Incorporate the feedback and resubmit{' '}
               your <Bold>Milestone</Bold>{' '}
             </Text>
           }
