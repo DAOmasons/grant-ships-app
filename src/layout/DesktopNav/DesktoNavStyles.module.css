@@ -142,3 +142,29 @@
 .full-width {
   width: 100%;
 }
+
+.grantLink {
+  display: block;
+  text-decoration: none;
+  max-width: 230px;
+  padding: var(--mantine-spacing-xs);
+  &:hover {
+    background-color: var(--mantine-color-dark-6);
+  }
+  border-radius: var(--mantine-radius-sm);
+
+  &[data-active] {
+    &,
+    &:hover {
+      background-color: var(--mantine-color-blue-light);
+      color: var(--mantine-color-blue-light-color);
+    }
+  }
+}
+
+.grantLinkText {
+  flexgrow: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
