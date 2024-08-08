@@ -13,7 +13,10 @@ fragment RawMetadata on RawMetadata {
 }
 
 query GetProjects($chainId: Int!) {
-  Project(where: { chainId: { _eq: $chainId } }) {
+  Project(
+    order_by: { db_write_timestamp: desc, hasEditedProfile: desc_nulls_last }
+    where: { chainId: { _eq: $chainId } }
+  ) {
     ...ProjectDetails
     metadata {
       ...RawMetadata
@@ -22,7 +25,10 @@ query GetProjects($chainId: Int!) {
 }
 
 query GetUserProjects($id: String!) {
-  Project(where: { owner: { _eq: $id } }) {
+  Project(
+    order_by: { db_write_timestamp: desc, hasEditedProfile: desc_nulls_last }
+    where: { owner: { _eq: $id } }
+  ) {
     ...ProjectDetails
     metadata {
       ...RawMetadata

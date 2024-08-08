@@ -92,18 +92,14 @@ export const parseShowcaseLink = (
   };
 };
 
-const testPNG = youtubeRegex.test(
-  'https://presskit.manada.dev/images/cloudlines/0000screenshot.png'
-);
+// const testPNG = youtubeRegex.test(
+//   'https://presskit.manada.dev/images/cloudlines/0000screenshot.png'
+// );
 
-const youtubeURLTest = youtubeRegex.test(
-  'https://www.youtube.com/watch?v=Sg-G1E1UwAY'
-);
+// const youtubeURLTest = youtubeRegex.test(
+//   'https://www.youtube.com/watch?v=Sg-G1E1UwAY'
+// );
 
-const youtubeShareTest = youtubeRegex.test(
-  'https://youtu.be/Sg-G1E1UwAY?feature=shared'
-);
-
-console.log('test PNG', testPNG);
-console.log('youtubeTest', youtubeURLTest);
-console.log('youtubeShareTest', youtubeShareTest);
+// const youtubeShareTest = youtubeRegex.test(
+//   'https://youtu.be/Sg-G1E1UwAY?feature=shared'
+// );
