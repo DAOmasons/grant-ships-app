@@ -21,11 +21,17 @@ export const GrantsNavSection = () => {
   const { address } = useAccount();
   const theme = useMantineTheme();
 
-  const { data: grants } = useQuery({
+  const {
+    data: grants,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ['user-project-grants', address, GAME_MANAGER.ADDRESS],
     queryFn: () => getAllUserGrants(address as Address, GAME_MANAGER.ADDRESS),
     enabled: !!address,
   });
+
+  if (isLoading || error || !grants || grants.length === 0) return null;
 
   return (
     <Box>
@@ -60,9 +66,7 @@ const NavGrantLink = ({
   const location = useLocation();
   const isActive = location.pathname.includes(grantId);
 
-  console.log('isActive', isActive);
   return (
-    // <Group gap={8}>
     <Link
       to={`grant/${grantId}`}
       data-active={isActive ? grantId : undefined}
