@@ -6,7 +6,6 @@ import {
 } from '../.graphclient';
 import { getGatewayUrl, getIpfsJson } from '../utils/ipfs/get';
 import { ProjectProfileMetadata } from '../utils/ipfs/metadataValidation';
-import { SUBGRAPH_URL } from '../constants/gameSetup';
 import { PROJECT_FILTER_LIST } from '../constants/filterLists';
 
 type ProjectMetadataType = z.infer<typeof ProjectProfileMetadata>;
