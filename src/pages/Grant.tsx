@@ -1,13 +1,5 @@
 import { MainSection, PageTitle } from '../layout/Sections';
-import {
-  Button,
-  Center,
-  Flex,
-  SegmentedControl,
-  Stack,
-  Text,
-  useMantineTheme,
-} from '@mantine/core';
+import { Center, Flex, SegmentedControl, useMantineTheme } from '@mantine/core';
 import { useBreakpoints } from '../hooks/useBreakpoint';
 import {
   Route,
@@ -19,26 +11,13 @@ import {
 import {
   IconFileDescription,
   IconGitCommit,
-  IconPencil,
   IconPennant,
-  IconPlus,
-  IconRoute,
 } from '@tabler/icons-react';
-import { Player } from '../types/ui';
 import { TopSection } from '../components/grant/TopSection';
 import { GrantContextProvider } from '../contexts/GrantContext';
 import { useGrant } from '../hooks/useGrant';
 import { GrantTimeline } from '../components/grant/GrantTimeline';
-import { PostGrantDrawer } from '../components/grant/PostGrantDrawer';
-import { useDisclosure } from '@mantine/hooks';
-import { ApplicationDrawer } from '../components/grant/ApplicationDrawer';
-import { GameStatus, GrantStatus } from '../types/common';
-import { MilestonesDrawer } from '../components/grant/MilestonesDrawer';
 import { useUserData } from '../hooks/useUserState';
-import { FacilitatorApprovalDrawer } from '../components/grant/FacilitatorApprovalDrawer';
-import { PageDrawer } from '../components/PageDrawer';
-import { SubmitMilestoneDrawer } from '../components/grant/SubmitMilestoneDrawer';
-import { formatEther, parseEther, weiUnits } from 'viem';
 import { ProjectActions } from '../components/grant/ProjectActions';
 import { FacilitatorActions } from '../components/grant/FacilitatorActions';
 import { ShipActions } from '../components/grant/ShipActions';

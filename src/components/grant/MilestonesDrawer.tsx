@@ -7,7 +7,6 @@ import {
   NumberInput,
   Stack,
   Text,
-  TextInput,
   Textarea,
   useMantineTheme,
 } from '@mantine/core';

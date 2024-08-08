@@ -1,5 +1,7 @@
-query getShipIdByHatId($hatId: String!) {
-  GrantShip(where: { hatId: { _eq: $hatId } }) {
+query getShipIdByHatId($hatId: String!, $gameId: String!) {
+  GrantShip(
+    where: { hatId: { _eq: $hatId }, gameManager_id: { _eq: $gameId } }
+  ) {
     id
   }
 }

@@ -381,6 +381,9 @@ export const Project = () => {
                   label={`Grant with ${grant.ship.name}`}
                   isActive={grant.status >= GrantStatus.Allocated}
                   status={grant.status}
+                  hasPending={grant.hasPendingMilestones}
+                  hasRejected={grant.hasRejectedMilestones}
+                  allCompleted={grant.allMilestonesApproved}
                 />
               ))}
             </Stack>

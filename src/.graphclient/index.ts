@@ -38,6 +38,8 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  _numeric: any;
+  _text: any;
   contract_type: any;
   entity_type: any;
   event_type: any;
@@ -791,7 +793,7 @@ export type EventPost_variance_order_by = {
 /** columns and relationships of "FactoryEventsSummary" */
 export type FactoryEventsSummary = {
   address: Scalars['String'];
-  admins: Array<Scalars['String']>;
+  admins: Scalars['_text'];
   contestBuiltCount: Scalars['numeric'];
   contestCloneCount: Scalars['numeric'];
   contestTemplateCount: Scalars['numeric'];
@@ -807,7 +809,7 @@ export type FactoryEventsSummary_bool_exp = {
   _not?: InputMaybe<FactoryEventsSummary_bool_exp>;
   _or?: InputMaybe<Array<FactoryEventsSummary_bool_exp>>;
   address?: InputMaybe<String_comparison_exp>;
-  admins?: InputMaybe<String_array_comparison_exp>;
+  admins?: InputMaybe<_text_comparison_exp>;
   contestBuiltCount?: InputMaybe<numeric_comparison_exp>;
   contestCloneCount?: InputMaybe<numeric_comparison_exp>;
   contestTemplateCount?: InputMaybe<numeric_comparison_exp>;
@@ -862,7 +864,7 @@ export type FactoryEventsSummary_stream_cursor_input = {
 /** Initial value of the column from where the streaming should start */
 export type FactoryEventsSummary_stream_cursor_value_input = {
   address?: InputMaybe<Scalars['String']>;
-  admins?: InputMaybe<Array<Scalars['String']>>;
+  admins?: InputMaybe<Scalars['_text']>;
   contestBuiltCount?: InputMaybe<Scalars['numeric']>;
   contestCloneCount?: InputMaybe<Scalars['numeric']>;
   contestTemplateCount?: InputMaybe<Scalars['numeric']>;
@@ -1886,8 +1888,8 @@ export type GrantShip = {
   name: Scalars['String'];
   nonce: Scalars['numeric'];
   owner: Scalars['String'];
-  pastNames: Array<Scalars['String']>;
-  pastProfileIds: Array<Scalars['String']>;
+  pastNames: Scalars['_text'];
+  pastProfileIds: Scalars['_text'];
   poolActive?: Maybe<Scalars['Boolean']>;
   poolFunded: Scalars['Boolean'];
   poolId?: Maybe<Scalars['numeric']>;
@@ -1987,8 +1989,8 @@ export type GrantShip_bool_exp = {
   name?: InputMaybe<String_comparison_exp>;
   nonce?: InputMaybe<numeric_comparison_exp>;
   owner?: InputMaybe<String_comparison_exp>;
-  pastNames?: InputMaybe<String_array_comparison_exp>;
-  pastProfileIds?: InputMaybe<String_array_comparison_exp>;
+  pastNames?: InputMaybe<_text_comparison_exp>;
+  pastProfileIds?: InputMaybe<_text_comparison_exp>;
   poolActive?: InputMaybe<Boolean_comparison_exp>;
   poolFunded?: InputMaybe<Boolean_comparison_exp>;
   poolId?: InputMaybe<numeric_comparison_exp>;
@@ -2027,8 +2029,6 @@ export type GrantShip_max_order_by = {
   name?: InputMaybe<order_by>;
   nonce?: InputMaybe<order_by>;
   owner?: InputMaybe<order_by>;
-  pastNames?: InputMaybe<order_by>;
-  pastProfileIds?: InputMaybe<order_by>;
   poolId?: InputMaybe<order_by>;
   profileId?: InputMaybe<order_by>;
   profileMetadata_id?: InputMaybe<order_by>;
@@ -2063,8 +2063,6 @@ export type GrantShip_min_order_by = {
   name?: InputMaybe<order_by>;
   nonce?: InputMaybe<order_by>;
   owner?: InputMaybe<order_by>;
-  pastNames?: InputMaybe<order_by>;
-  pastProfileIds?: InputMaybe<order_by>;
   poolId?: InputMaybe<order_by>;
   profileId?: InputMaybe<order_by>;
   profileMetadata_id?: InputMaybe<order_by>;
@@ -2309,8 +2307,8 @@ export type GrantShip_stream_cursor_value_input = {
   name?: InputMaybe<Scalars['String']>;
   nonce?: InputMaybe<Scalars['numeric']>;
   owner?: InputMaybe<Scalars['String']>;
-  pastNames?: InputMaybe<Array<Scalars['String']>>;
-  pastProfileIds?: InputMaybe<Array<Scalars['String']>>;
+  pastNames?: InputMaybe<Scalars['_text']>;
+  pastProfileIds?: InputMaybe<Scalars['_text']>;
   poolActive?: InputMaybe<Scalars['Boolean']>;
   poolFunded?: InputMaybe<Scalars['Boolean']>;
   poolId?: InputMaybe<Scalars['numeric']>;
@@ -2848,7 +2846,7 @@ export type HatsPoster = {
   db_write_timestamp?: Maybe<Scalars['timestamp']>;
   /** An array relationship */
   eventPosts: Array<EventPost>;
-  hatIds: Array<Scalars['numeric']>;
+  hatIds: Scalars['_numeric'];
   hatsAddress: Scalars['String'];
   id: Scalars['String'];
   /** An array relationship */
@@ -2882,7 +2880,7 @@ export type HatsPoster_bool_exp = {
   _or?: InputMaybe<Array<HatsPoster_bool_exp>>;
   db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
   eventPosts?: InputMaybe<EventPost_bool_exp>;
-  hatIds?: InputMaybe<numeric_array_comparison_exp>;
+  hatIds?: InputMaybe<_numeric_comparison_exp>;
   hatsAddress?: InputMaybe<String_comparison_exp>;
   id?: InputMaybe<String_comparison_exp>;
   record?: InputMaybe<Record_bool_exp>;
@@ -2920,7 +2918,7 @@ export type HatsPoster_stream_cursor_input = {
 /** Initial value of the column from where the streaming should start */
 export type HatsPoster_stream_cursor_value_input = {
   db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
-  hatIds?: InputMaybe<Array<Scalars['numeric']>>;
+  hatIds?: InputMaybe<Scalars['_numeric']>;
   hatsAddress?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['String']>;
 };
@@ -3538,7 +3536,7 @@ export type ProfileIdToAnchor_stream_cursor_value_input = {
 
 /** columns and relationships of "ProfileMemberGroup" */
 export type ProfileMemberGroup = {
-  addresses: Array<Scalars['String']>;
+  addresses: Scalars['_text'];
   db_write_timestamp?: Maybe<Scalars['timestamp']>;
   id: Scalars['String'];
   role: Scalars['String'];
@@ -3549,7 +3547,7 @@ export type ProfileMemberGroup_bool_exp = {
   _and?: InputMaybe<Array<ProfileMemberGroup_bool_exp>>;
   _not?: InputMaybe<ProfileMemberGroup_bool_exp>;
   _or?: InputMaybe<Array<ProfileMemberGroup_bool_exp>>;
-  addresses?: InputMaybe<String_array_comparison_exp>;
+  addresses?: InputMaybe<_text_comparison_exp>;
   db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
   id?: InputMaybe<String_comparison_exp>;
   role?: InputMaybe<String_comparison_exp>;
@@ -3584,7 +3582,7 @@ export type ProfileMemberGroup_stream_cursor_input = {
 
 /** Initial value of the column from where the streaming should start */
 export type ProfileMemberGroup_stream_cursor_value_input = {
-  addresses?: InputMaybe<Array<Scalars['String']>>;
+  addresses?: InputMaybe<Scalars['_text']>;
   db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
   id?: InputMaybe<Scalars['String']>;
   role?: InputMaybe<Scalars['String']>;
@@ -3608,8 +3606,8 @@ export type Project = {
   name: Scalars['String'];
   nonce: Scalars['numeric'];
   owner: Scalars['String'];
-  pastNames: Array<Scalars['String']>;
-  pastProfileIds: Array<Scalars['String']>;
+  pastNames: Scalars['_text'];
+  pastProfileIds: Scalars['_text'];
   profileId: Scalars['String'];
   status: Scalars['Int'];
   totalAmountReceived: Scalars['numeric'];
@@ -3643,8 +3641,8 @@ export type Project_bool_exp = {
   name?: InputMaybe<String_comparison_exp>;
   nonce?: InputMaybe<numeric_comparison_exp>;
   owner?: InputMaybe<String_comparison_exp>;
-  pastNames?: InputMaybe<String_array_comparison_exp>;
-  pastProfileIds?: InputMaybe<String_array_comparison_exp>;
+  pastNames?: InputMaybe<_text_comparison_exp>;
+  pastProfileIds?: InputMaybe<_text_comparison_exp>;
   profileId?: InputMaybe<String_comparison_exp>;
   status?: InputMaybe<Int_comparison_exp>;
   totalAmountReceived?: InputMaybe<numeric_comparison_exp>;
@@ -3725,8 +3723,8 @@ export type Project_stream_cursor_value_input = {
   name?: InputMaybe<Scalars['String']>;
   nonce?: InputMaybe<Scalars['numeric']>;
   owner?: InputMaybe<Scalars['String']>;
-  pastNames?: InputMaybe<Array<Scalars['String']>>;
-  pastProfileIds?: InputMaybe<Array<Scalars['String']>>;
+  pastNames?: InputMaybe<Scalars['_text']>;
+  pastProfileIds?: InputMaybe<Scalars['_text']>;
   profileId?: InputMaybe<Scalars['String']>;
   status?: InputMaybe<Scalars['Int']>;
   totalAmountReceived?: InputMaybe<Scalars['numeric']>;
@@ -4522,23 +4520,6 @@ export type StemModule_stream_cursor_value_input = {
 };
 
 /** Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'. */
-export type String_array_comparison_exp = {
-  /** is the array contained in the given array value */
-  _contained_in?: InputMaybe<Array<Scalars['String']>>;
-  /** does the array contain the given value */
-  _contains?: InputMaybe<Array<Scalars['String']>>;
-  _eq?: InputMaybe<Array<Scalars['String']>>;
-  _gt?: InputMaybe<Array<Scalars['String']>>;
-  _gte?: InputMaybe<Array<Scalars['String']>>;
-  _in?: InputMaybe<Array<Array<Scalars['String']>>>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
-  _lt?: InputMaybe<Array<Scalars['String']>>;
-  _lte?: InputMaybe<Array<Scalars['String']>>;
-  _neq?: InputMaybe<Array<Scalars['String']>>;
-  _nin?: InputMaybe<Array<Array<Scalars['String']>>>;
-};
-
-/** Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'. */
 export type String_comparison_exp = {
   _eq?: InputMaybe<Scalars['String']>;
   _gt?: InputMaybe<Scalars['String']>;
@@ -4827,6 +4808,32 @@ export type Update_stream_cursor_value_input = {
   scope?: InputMaybe<Scalars['Int']>;
   tag?: InputMaybe<Scalars['String']>;
   timestamp?: InputMaybe<Scalars['Int']>;
+};
+
+/** Boolean expression to compare columns of type "_numeric". All fields are combined with logical 'AND'. */
+export type _numeric_comparison_exp = {
+  _eq?: InputMaybe<Scalars['_numeric']>;
+  _gt?: InputMaybe<Scalars['_numeric']>;
+  _gte?: InputMaybe<Scalars['_numeric']>;
+  _in?: InputMaybe<Array<Scalars['_numeric']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _lt?: InputMaybe<Scalars['_numeric']>;
+  _lte?: InputMaybe<Scalars['_numeric']>;
+  _neq?: InputMaybe<Scalars['_numeric']>;
+  _nin?: InputMaybe<Array<Scalars['_numeric']>>;
+};
+
+/** Boolean expression to compare columns of type "_text". All fields are combined with logical 'AND'. */
+export type _text_comparison_exp = {
+  _eq?: InputMaybe<Scalars['_text']>;
+  _gt?: InputMaybe<Scalars['_text']>;
+  _gte?: InputMaybe<Scalars['_text']>;
+  _in?: InputMaybe<Array<Scalars['_text']>>;
+  _is_null?: InputMaybe<Scalars['Boolean']>;
+  _lt?: InputMaybe<Scalars['_text']>;
+  _lte?: InputMaybe<Scalars['_text']>;
+  _neq?: InputMaybe<Scalars['_text']>;
+  _nin?: InputMaybe<Array<Scalars['_text']>>;
 };
 
 /** columns and relationships of "chain_metadata" */
@@ -5464,23 +5471,6 @@ export type json_comparison_exp = {
   _lte?: InputMaybe<Scalars['json']>;
   _neq?: InputMaybe<Scalars['json']>;
   _nin?: InputMaybe<Array<Scalars['json']>>;
-};
-
-/** Boolean expression to compare columns of type "numeric". All fields are combined with logical 'AND'. */
-export type numeric_array_comparison_exp = {
-  /** is the array contained in the given array value */
-  _contained_in?: InputMaybe<Array<Scalars['numeric']>>;
-  /** does the array contain the given value */
-  _contains?: InputMaybe<Array<Scalars['numeric']>>;
-  _eq?: InputMaybe<Array<Scalars['numeric']>>;
-  _gt?: InputMaybe<Array<Scalars['numeric']>>;
-  _gte?: InputMaybe<Array<Scalars['numeric']>>;
-  _in?: InputMaybe<Array<Array<Scalars['numeric']>>>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
-  _lt?: InputMaybe<Array<Scalars['numeric']>>;
-  _lte?: InputMaybe<Array<Scalars['numeric']>>;
-  _neq?: InputMaybe<Array<Scalars['numeric']>>;
-  _nin?: InputMaybe<Array<Array<Scalars['numeric']>>>;
 };
 
 /** Boolean expression to compare columns of type "numeric". All fields are combined with logical 'AND'. */
@@ -8266,7 +8256,6 @@ export type ResolversTypes = ResolversObject<{
   StemModule_stream_cursor_input: StemModule_stream_cursor_input;
   StemModule_stream_cursor_value_input: StemModule_stream_cursor_value_input;
   String: ResolverTypeWrapper<Scalars['String']>;
-  String_array_comparison_exp: String_array_comparison_exp;
   String_comparison_exp: String_comparison_exp;
   TVParams: ResolverTypeWrapper<TVParams>;
   TVParams_bool_exp: TVParams_bool_exp;
@@ -8286,6 +8275,10 @@ export type ResolversTypes = ResolversObject<{
   Update_select_column: Update_select_column;
   Update_stream_cursor_input: Update_stream_cursor_input;
   Update_stream_cursor_value_input: Update_stream_cursor_value_input;
+  _numeric: ResolverTypeWrapper<Scalars['_numeric']>;
+  _numeric_comparison_exp: _numeric_comparison_exp;
+  _text: ResolverTypeWrapper<Scalars['_text']>;
+  _text_comparison_exp: _text_comparison_exp;
   chain_metadata: ResolverTypeWrapper<chain_metadata>;
   chain_metadata_bool_exp: chain_metadata_bool_exp;
   chain_metadata_order_by: chain_metadata_order_by;
@@ -8338,7 +8331,6 @@ export type ResolversTypes = ResolversObject<{
   json: ResolverTypeWrapper<Scalars['json']>;
   json_comparison_exp: json_comparison_exp;
   numeric: ResolverTypeWrapper<Scalars['numeric']>;
-  numeric_array_comparison_exp: numeric_array_comparison_exp;
   numeric_comparison_exp: numeric_comparison_exp;
   order_by: order_by;
   persisted_state: ResolverTypeWrapper<persisted_state>;
@@ -8658,7 +8650,6 @@ export type ResolversParentTypes = ResolversObject<{
   StemModule_stream_cursor_input: StemModule_stream_cursor_input;
   StemModule_stream_cursor_value_input: StemModule_stream_cursor_value_input;
   String: Scalars['String'];
-  String_array_comparison_exp: String_array_comparison_exp;
   String_comparison_exp: String_comparison_exp;
   TVParams: TVParams;
   TVParams_bool_exp: TVParams_bool_exp;
@@ -8675,6 +8666,10 @@ export type ResolversParentTypes = ResolversObject<{
   Update_order_by: Update_order_by;
   Update_stream_cursor_input: Update_stream_cursor_input;
   Update_stream_cursor_value_input: Update_stream_cursor_value_input;
+  _numeric: Scalars['_numeric'];
+  _numeric_comparison_exp: _numeric_comparison_exp;
+  _text: Scalars['_text'];
+  _text_comparison_exp: _text_comparison_exp;
   chain_metadata: chain_metadata;
   chain_metadata_bool_exp: chain_metadata_bool_exp;
   chain_metadata_order_by: chain_metadata_order_by;
@@ -8721,7 +8716,6 @@ export type ResolversParentTypes = ResolversObject<{
   json: Scalars['json'];
   json_comparison_exp: json_comparison_exp;
   numeric: Scalars['numeric'];
-  numeric_array_comparison_exp: numeric_array_comparison_exp;
   numeric_comparison_exp: numeric_comparison_exp;
   persisted_state: persisted_state;
   persisted_state_bool_exp: persisted_state_bool_exp;
@@ -8835,7 +8829,7 @@ export type EventPostResolvers<ContextType = MeshContext, ParentType extends Res
 
 export type FactoryEventsSummaryResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['FactoryEventsSummary'] = ResolversParentTypes['FactoryEventsSummary']> = ResolversObject<{
   address?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  admins?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
+  admins?: Resolver<ResolversTypes['_text'], ParentType, ContextType>;
   contestBuiltCount?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
   contestCloneCount?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
   contestTemplateCount?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
@@ -9027,8 +9021,8 @@ export type GrantShipResolvers<ContextType = MeshContext, ParentType extends Res
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   nonce?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
   owner?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  pastNames?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
-  pastProfileIds?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
+  pastNames?: Resolver<ResolversTypes['_text'], ParentType, ContextType>;
+  pastProfileIds?: Resolver<ResolversTypes['_text'], ParentType, ContextType>;
   poolActive?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   poolFunded?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   poolId?: Resolver<Maybe<ResolversTypes['numeric']>, ParentType, ContextType>;
@@ -9079,7 +9073,7 @@ export type HALParamsResolvers<ContextType = MeshContext, ParentType extends Res
 export type HatsPosterResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['HatsPoster'] = ResolversParentTypes['HatsPoster']> = ResolversObject<{
   db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
   eventPosts?: Resolver<Array<ResolversTypes['EventPost']>, ParentType, ContextType, Partial<HatsPostereventPostsArgs>>;
-  hatIds?: Resolver<Array<ResolversTypes['numeric']>, ParentType, ContextType>;
+  hatIds?: Resolver<ResolversTypes['_numeric'], ParentType, ContextType>;
   hatsAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   record?: Resolver<Array<ResolversTypes['Record']>, ParentType, ContextType, Partial<HatsPosterrecordArgs>>;
@@ -9144,7 +9138,7 @@ export type ProfileIdToAnchorResolvers<ContextType = MeshContext, ParentType ext
 }>;
 
 export type ProfileMemberGroupResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['ProfileMemberGroup'] = ResolversParentTypes['ProfileMemberGroup']> = ResolversObject<{
-  addresses?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
+  addresses?: Resolver<ResolversTypes['_text'], ParentType, ContextType>;
   db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   role?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -9165,8 +9159,8 @@ export type ProjectResolvers<ContextType = MeshContext, ParentType extends Resol
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   nonce?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
   owner?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  pastNames?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
-  pastProfileIds?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;
+  pastNames?: Resolver<ResolversTypes['_text'], ParentType, ContextType>;
+  pastProfileIds?: Resolver<ResolversTypes['_text'], ParentType, ContextType>;
   profileId?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   status?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   totalAmountReceived?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
@@ -9296,6 +9290,14 @@ export type UpdateResolvers<ContextType = MeshContext, ParentType extends Resolv
   timestamp?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
+
+export interface _numericScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['_numeric'], any> {
+  name: '_numeric';
+}
+
+export interface _textScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['_text'], any> {
+  name: '_text';
+}
 
 export type chain_metadataResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['chain_metadata'] = ResolversParentTypes['chain_metadata']> = ResolversObject<{
   block_height?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -9694,6 +9696,8 @@ export type Resolvers<ContextType = MeshContext> = ResolversObject<{
   TVParams?: TVParamsResolvers<ContextType>;
   Transaction?: TransactionResolvers<ContextType>;
   Update?: UpdateResolvers<ContextType>;
+  _numeric?: GraphQLScalarType;
+  _text?: GraphQLScalarType;
   chain_metadata?: chain_metadataResolvers<ContextType>;
   contract_type?: GraphQLScalarType;
   dynamic_contract_registry?: dynamic_contract_registryResolvers<ContextType>;
@@ -9762,7 +9766,7 @@ const grantShipsTransforms = [];
 const additionalTypeDefs = [] as any[];
 const grantShipsHandler = new GraphqlHandler({
               name: "grant-ships",
-              config: {"endpoint":"https://indexer.bigdevenergy.link/e09c75f/v1/graphql"},
+              config: {"endpoint":"http://localhost:8080/v1/graphql"},
               baseDir,
               cache,
               pubsub,
@@ -10310,6 +10314,7 @@ export type getShipFundsAvailableQuery = { GrantShip: Array<Pick<GrantShip, 'tot
 
 export type getShipIdByHatIdQueryVariables = Exact<{
   hatId: Scalars['String'];
+  gameId: Scalars['String'];
 }>;
 
 
@@ -10956,8 +10961,8 @@ export const getShipFundsAvailableDocument = gql`
 }
     ` as unknown as DocumentNode<getShipFundsAvailableQuery, getShipFundsAvailableQueryVariables>;
 export const getShipIdByHatIdDocument = gql`
-    query getShipIdByHatId($hatId: String!) {
-  GrantShip(where: {hatId: {_eq: $hatId}}) {
+    query getShipIdByHatId($hatId: String!, $gameId: String!) {
+  GrantShip(where: {hatId: {_eq: $hatId}, gameManager_id: {_eq: $gameId}}) {
     id
   }
 }
