@@ -35,9 +35,9 @@ export const RTEditor = ({
 
   return (
     <RichTextEditor
-      ref={editorContainerRef}
       editor={editor}
-      h={editorHeight}
+      mih={editorHeight}
+      ref={editorContainerRef}
       bg={'transparent'}
       classNames={{ root: classes.editor }}
     >
@@ -65,7 +65,8 @@ export const RTEditor = ({
         p="lg"
         fz="md"
         bg={'transparent'}
-        mih={editorHeight}
+        // mih={editorHeight}
+        // h="100%"
         onClick={handleContentEditorFocus}
       />
     </RichTextEditor>

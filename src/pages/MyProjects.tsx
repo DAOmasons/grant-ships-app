@@ -43,7 +43,6 @@ const getUserProjects = async (projects: ProjectCardFromQuery[]) => {
 };
 
 export const MyProjects = () => {
-  const chainId = useChainId();
   const { id } = useParams();
   const theme = useMantineTheme();
 

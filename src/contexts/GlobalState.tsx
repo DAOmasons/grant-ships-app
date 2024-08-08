@@ -47,7 +47,7 @@ export const GlobalStateProvider = ({
     error: userStateError,
     refetch: refetchUserState,
   } = useQuery({
-    queryKey: [`user-state-${address}`],
+    queryKey: [`user-state-${address}`, chainId],
     queryFn: () => getUserData(address as string, chainId),
     enabled: !!address,
   });

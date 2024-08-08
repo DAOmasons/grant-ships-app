@@ -50,7 +50,7 @@ export const RichTextUpdate = () => {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ['post', id],
+    queryKey: ['post', id, chainId],
     queryFn: () => getRTUpdate(id as string, chainId),
     enabled: !!id,
   });

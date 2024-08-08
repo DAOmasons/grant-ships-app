@@ -10253,7 +10253,7 @@ export type GetProjectsQuery = { Project: Array<(
   )> };
 
 export type GetUserProjectsQueryVariables = Exact<{
-  id: Scalars['String'];
+  chainId: Scalars['String'];
 }>;
 
 
@@ -10889,10 +10889,10 @@ export const GetProjectsDocument = gql`
     ${ProjectDetailsFragmentDoc}
 ${RawMetadataFragmentDoc}` as unknown as DocumentNode<GetProjectsQuery, GetProjectsQueryVariables>;
 export const GetUserProjectsDocument = gql`
-    query GetUserProjects($id: String!) {
+    query GetUserProjects($chainId: String!) {
   Project(
     order_by: {db_write_timestamp: desc, hasEditedProfile: desc_nulls_last}
-    where: {owner: {_eq: $id}}
+    where: {owner: {_eq: $chainId}}
   ) {
     ...ProjectDetails
     metadata {
