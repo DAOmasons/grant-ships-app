@@ -10876,7 +10876,10 @@ export const getProjectGrantsDocument = gql`
 ${ShipDisplayFragmentDoc}` as unknown as DocumentNode<getProjectGrantsQuery, getProjectGrantsQueryVariables>;
 export const GetProjectsDocument = gql`
     query GetProjects($chainId: Int!) {
-  Project(where: {chainId: {_eq: $chainId}}) {
+  Project(
+    order_by: {db_write_timestamp: desc, hasEditedProfile: desc_nulls_last}
+    where: {chainId: {_eq: $chainId}}
+  ) {
     ...ProjectDetails
     metadata {
       ...RawMetadata
@@ -10887,7 +10890,10 @@ export const GetProjectsDocument = gql`
 ${RawMetadataFragmentDoc}` as unknown as DocumentNode<GetProjectsQuery, GetProjectsQueryVariables>;
 export const GetUserProjectsDocument = gql`
     query GetUserProjects($id: String!) {
-  Project(where: {owner: {_eq: $id}}) {
+  Project(
+    order_by: {db_write_timestamp: desc, hasEditedProfile: desc_nulls_last}
+    where: {owner: {_eq: $id}}
+  ) {
     ...ProjectDetails
     metadata {
       ...RawMetadata
