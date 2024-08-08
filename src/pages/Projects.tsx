@@ -16,7 +16,7 @@ export const Projects = () => {
   const chainId = useChainId();
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ['projects'],
+    queryKey: ['projects', chainId],
     queryFn: () => getProjectCards({ chainId }),
     enabled: !!chainId,
   });

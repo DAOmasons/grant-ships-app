@@ -113,8 +113,6 @@ export const MilestonesDrawer = ({
     });
   };
 
-  console.log('formData', formData);
-
   const handlePostMilestones = async () => {
     setIsLoading(true);
 

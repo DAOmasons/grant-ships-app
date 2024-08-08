@@ -106,7 +106,7 @@ const GrantStatusIndicator = ({
   if (status === GrantStatus.ApplicationSubmitted) {
     return (
       <StatusIndicator
-        text="Application Started"
+        text="Application Submitted"
         icon={<IconFileDescription size={16} />}
       />
     );
@@ -122,7 +122,7 @@ const GrantStatusIndicator = ({
   if (status === GrantStatus.ApplicationApproved) {
     return (
       <StatusIndicator
-        text="Application Not Approved"
+        text="Application Approved"
         icon={<IconFileCheck size={16} />}
       />
     );

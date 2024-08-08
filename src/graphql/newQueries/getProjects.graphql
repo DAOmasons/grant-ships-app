@@ -24,10 +24,10 @@ query GetProjects($chainId: Int!) {
   }
 }
 
-query GetUserProjects($id: String!) {
+query GetUserProjects($chainId: String!) {
   Project(
     order_by: { db_write_timestamp: desc, hasEditedProfile: desc_nulls_last }
-    where: { owner: { _eq: $id } }
+    where: { owner: { _eq: $chainId } }
   ) {
     ...ProjectDetails
     metadata {

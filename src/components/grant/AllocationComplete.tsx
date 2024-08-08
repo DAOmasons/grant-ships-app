@@ -1,7 +1,7 @@
 import { formatEther } from 'viem';
 import { useGrant } from '../../hooks/useGrant';
 import { InsetUpdate } from './InsetUpdate';
-import { IconLock, IconShieldHalf } from '@tabler/icons-react';
+import { IconShieldHalf } from '@tabler/icons-react';
 import { Text } from '@mantine/core';
 import { Bold } from '../Typography';
 import { GAME_TOKEN } from '../../constants/gameSetup';
