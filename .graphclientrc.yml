@@ -2,8 +2,8 @@ sources:
   - name: grant-ships
     handler: 
       graphql: 
-        # endpoint: https://indexer.bigdevenergy.link/e09c75f/v1/graphql
-        endpoint: http://localhost:8080/v1/graphql
+        endpoint: https://indexer.bigdevenergy.link/e09c75f/v1/graphql
+        # endpoint: http://localhost:8080/v1/graphql
   # - name: gs-voting
   #   handler: 
   #     graphql: 
