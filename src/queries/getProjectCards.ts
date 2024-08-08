@@ -40,7 +40,6 @@ const projectMetadataResolver = async (project: ProjectCardFromQuery) => {
 export const getProjectCards = async ({ chainId }: { chainId: number }) => {
   try {
     const { GetProjects } = getBuiltGraphSDK();
-    console.log('chainId', chainId);
     const result = await GetProjects({ chainId });
 
     const filteredProjects = result.Project?.filter(
