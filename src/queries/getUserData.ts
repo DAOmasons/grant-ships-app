@@ -6,7 +6,7 @@ import {
   getBuiltGraphSDK,
 } from '../.graphclient';
 import HatsAbi from '../abi/Hats.json';
-import { HATS } from '../constants/gameSetup';
+import { GAME_MANAGER, HATS } from '../constants/gameSetup';
 import { publicClient } from '../utils/config';
 import { getIpfsJson } from '../utils/ipfs/get';
 import { ShipProfileMetadata } from '../utils/ipfs/metadataValidation';
@@ -70,6 +70,7 @@ const checkIsShipOperator = async (address: string) => {
       const { getShipIdByHatId } = getBuiltGraphSDK({});
       const result = await getShipIdByHatId({
         hatId: isOperator.hatId.toString(),
+        gameId: GAME_MANAGER.ADDRESS,
       });
 
       const shipAddress = result?.GrantShip?.[0]?.id;

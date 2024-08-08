@@ -10310,6 +10310,7 @@ export type getShipFundsAvailableQuery = { GrantShip: Array<Pick<GrantShip, 'tot
 
 export type getShipIdByHatIdQueryVariables = Exact<{
   hatId: Scalars['String'];
+  gameId: Scalars['String'];
 }>;
 
 
@@ -10956,8 +10957,8 @@ export const getShipFundsAvailableDocument = gql`
 }
     ` as unknown as DocumentNode<getShipFundsAvailableQuery, getShipFundsAvailableQueryVariables>;
 export const getShipIdByHatIdDocument = gql`
-    query getShipIdByHatId($hatId: String!) {
-  GrantShip(where: {hatId: {_eq: $hatId}}) {
+    query getShipIdByHatId($hatId: String!, $gameId: String!) {
+  GrantShip(where: {hatId: {_eq: $hatId}, gameManager_id: {_eq: $gameId}}) {
     id
   }
 }

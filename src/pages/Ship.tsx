@@ -293,6 +293,9 @@ export const Ship = () => {
             <Stack>
               {grants?.map((grant) => (
                 <GrantCard
+                  hasPending={grant.hasPendingMilestones}
+                  hasRejected={grant.hasRejectedMilestones}
+                  allCompleted={grant.allMilestonesApproved}
                   key={grant.id}
                   avatarUrls={[grant.project?.metadata?.imgUrl || '']}
                   label={`${grant.project.name}`}
