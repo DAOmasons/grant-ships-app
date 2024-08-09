@@ -1,4 +1,4 @@
-import { Tabs } from '@mantine/core';
+import { Box, Stack, Tabs, Text, useMantineTheme } from '@mantine/core';
 import { MainSection, PageTitle } from '../layout/Sections';
 
 import { useQuery } from '@tanstack/react-query';
@@ -8,18 +8,30 @@ import { FacilitatorGameDash } from '../components/dashboard/facilitator/Facilit
 import { useGameManager } from '../hooks/useGameMangers';
 import GameManagerAbi from '../abi/GameManager.json';
 import { useMemo } from 'react';
-import { NETWORK_ID, SHIP_AMOUNT } from '../constants/gameSetup';
+import { GAME_MANAGER, NETWORK_ID, SHIP_AMOUNT } from '../constants/gameSetup';
 import { useReadContract } from 'wagmi';
 import { ADDR } from '../constants/addresses';
-import { GameStatus } from '../types/common';
+import { GameStatus, GrantStatus } from '../types/common';
 // import { ProjectApproval } from '../components/dashboard/facilitator/ProjectApproval';
 import { FacPostUpdatePanel } from '../components/dashboard/facilitator/FacPostUpdatePanel';
 import { useVoting } from '../hooks/useVoting';
+import { getFacilitatorGrants } from '../queries/getFacilitatorGrants';
+import { GrantCard } from '../components/grant/GrantCard';
 
 export const FacilitatorDashboard = () => {
   const { data: shipData, isLoading: shipsLoading } = useQuery({
     queryKey: ['fac-ship-data'],
     queryFn: getFacDashShipData,
+  });
+
+  const {
+    data: grants,
+    // isLoading: grantsLoading,
+    // error: grantsError,
+  } = useQuery({
+    queryKey: [`facilitator-grants`, GAME_MANAGER.ADDRESS],
+    queryFn: () => getFacilitatorGrants(GAME_MANAGER.ADDRESS),
+    enabled: !!GAME_MANAGER.ADDRESS,
   });
 
   const { gm, isLoadingGm } = useGameManager();
@@ -31,8 +43,8 @@ export const FacilitatorDashboard = () => {
     address: ADDR.GAME_MANAGER,
   });
 
-  const { contestStatus, votingExists, isVotingActive, isLoadingVoting } =
-    useVoting();
+  const { isLoadingVoting } = useVoting();
+  const theme = useMantineTheme();
 
   const gameOperationStage = useMemo(() => {
     if (!gm || !shipData || typeof poolBalance !== 'bigint') {
@@ -112,6 +124,29 @@ export const FacilitatorDashboard = () => {
     // }
   }, [shipData, gm, poolBalance]);
 
+  const { needsAttention, idleGrants } = useMemo(() => {
+    if (!grants)
+      return {
+        needsAttention: null,
+        idleGrants: null,
+      };
+
+    let needsAttention = [];
+    let idleGrants = [];
+
+    for (let grant of grants) {
+      if (grant.status === GrantStatus.MilestonesApproved) {
+        needsAttention.push(grant);
+      } else {
+        idleGrants.push(grant);
+      }
+    }
+    return {
+      needsAttention,
+      idleGrants,
+    };
+  }, [grants]);
+
   return (
     <MainSection>
       <PageTitle title="Facilitator Dashboard" />
@@ -119,7 +154,7 @@ export const FacilitatorDashboard = () => {
         <Tabs.List mb="xl" grow>
           <Tabs.Tab value="game-manager">Game</Tabs.Tab>
           <Tabs.Tab value="ships">Ships</Tabs.Tab>
-          <Tabs.Tab value="projects">Approvals</Tabs.Tab>
+          <Tabs.Tab value="grants">Grants</Tabs.Tab>
           <Tabs.Tab value="post">Post</Tabs.Tab>
         </Tabs.List>
         <Tabs.Panel value="ships">
@@ -139,9 +174,56 @@ export const FacilitatorDashboard = () => {
             shipData={shipData}
           />
         </Tabs.Panel>
-        <Tabs.Panel value="projects">
-          <></>
-          {/* <ProjectApproval /> */}
+        <Tabs.Panel value="grants">
+          <Stack>
+            <Box>
+              <Text fz="sm" mb={'md'} c={theme.colors.gray[6]}>
+                Needs Attention
+              </Text>
+              <Stack>
+                {needsAttention?.map((grant) => (
+                  <GrantCard
+                    hasPending={grant.hasPendingMilestones}
+                    hasRejected={grant.hasRejectedMilestones}
+                    allCompleted={grant.allMilestonesApproved}
+                    key={grant.id}
+                    avatarUrls={[
+                      grant.project?.metadata?.imgUrl || '',
+                      grant.ship?.profileMetadata.imgUrl || '',
+                    ]}
+                    label={`${grant.project.name}`}
+                    isActive={grant.status >= GrantStatus.Allocated}
+                    linkUrl={`/grant/${grant.id}/timeline`}
+                    status={grant.status}
+                    notify
+                  />
+                ))}
+              </Stack>
+            </Box>
+            <Box>
+              <Text fz="sm" mb={'md'} c={theme.colors.gray[6]}>
+                Idle
+              </Text>
+              <Stack>
+                {idleGrants?.map((grant) => (
+                  <GrantCard
+                    hasPending={grant.hasPendingMilestones}
+                    hasRejected={grant.hasRejectedMilestones}
+                    allCompleted={grant.allMilestonesApproved}
+                    key={grant.id}
+                    avatarUrls={[
+                      grant.project?.metadata?.imgUrl || '',
+                      grant.ship?.profileMetadata.imgUrl || '',
+                    ]}
+                    label={`${grant.project.name}`}
+                    isActive={grant.status >= GrantStatus.Allocated}
+                    linkUrl={`/grant/${grant.id}/timeline`}
+                    status={grant.status}
+                  />
+                ))}
+              </Stack>
+            </Box>
+          </Stack>
         </Tabs.Panel>
         <Tabs.Panel value="post">
           <FacPostUpdatePanel />

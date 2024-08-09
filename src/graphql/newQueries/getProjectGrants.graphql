@@ -19,3 +19,22 @@ query getProjectGrants($projectId: String!, $gameId: String!) {
     }
   }
 }
+
+query getAllProjectGrants($userAddress: String!, $gameId: String!) {
+  grants: Grant(
+    where: {
+      gameManager_id: { _eq: $gameId }
+      project: { owner: { _eq: $userAddress } }
+    }
+  ) {
+    ...GrantBasic
+    amountDistributed
+    amountAllocated
+    ship {
+      ...ShipDisplay
+    }
+    project {
+      ...ProjectDisplay
+    }
+  }
+}

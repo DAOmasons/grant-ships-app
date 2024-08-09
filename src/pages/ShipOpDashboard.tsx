@@ -23,14 +23,18 @@ import {
 import ShipAbi from '../abi/GrantShip.json';
 import { Tag } from '../constants/tags';
 import { Address } from 'viem';
-import { ZER0_ADDRESS } from '../constants/gameSetup';
-import { ReportStatus } from '../types/common';
-// import { getRecentPortfolioReport } from '../queries/getRecordsByTag';
-import { ADDR } from '../constants/addresses';
+import { GAME_MANAGER, ZER0_ADDRESS } from '../constants/gameSetup';
+
 import { SettingsPanel } from '../components/dashboard/ship/SettingsPanel';
+import { getShipGrants } from '../queries/getShipGrants';
+import { GrantCard } from '../components/grant/GrantCard';
+import { GrantStatus } from '../types/common';
+import { useMemo } from 'react';
 
 export const ShipOpDashboard = () => {
   const { id } = useParams();
+
+  const theme = useMantineTheme();
 
   const {
     data: shipData,
@@ -42,6 +46,46 @@ export const ShipOpDashboard = () => {
     queryFn: () => getShipDash(id as string),
     enabled: !!id,
   });
+
+  const {
+    data: grants,
+    // isLoading: grantsLoading,
+    // error: grantsError,
+  } = useQuery({
+    queryKey: [`ship-grants-${id}`],
+    queryFn: () => getShipGrants(id as string, GAME_MANAGER.ADDRESS),
+    enabled: !!id,
+  });
+
+  const { needsAttention, idleGrants } = useMemo(() => {
+    if (!grants)
+      return {
+        needsAttention: null,
+        idleGrants: null,
+      };
+
+    let needsAttention = [];
+    let idleGrants = [];
+
+    for (let grant of grants) {
+      if (
+        grant.hasPendingMilestones ||
+        grant.status === GrantStatus.ProjectInitiated ||
+        grant.status === GrantStatus.ApplicationSubmitted ||
+        grant.status === GrantStatus.MilestonesSubmitted ||
+        grant.status === GrantStatus.FacilitatorRejected
+        // grant.status === GrantStatus.AllMilestonesComplete
+      ) {
+        needsAttention.push(grant);
+      } else {
+        idleGrants.push(grant);
+      }
+    }
+    return {
+      needsAttention,
+      idleGrants,
+    };
+  }, [grants]);
 
   return (
     <MainSection>
@@ -68,12 +112,49 @@ export const ShipOpDashboard = () => {
           <Tabs.Tab value="postUpdate">Post</Tabs.Tab>
         </Tabs.List>
         <Tabs.Panel value="grants">
-          <></>
-          {/* <GrantManager
-            shipData={shipData}
-            shipError={shipError}
-            shipLoading={shipLoading}
-          /> */}
+          <Stack>
+            <Box>
+              <Text fz="sm" mb={'md'} c={theme.colors.gray[6]}>
+                Needs Attention
+              </Text>
+              <Stack>
+                {needsAttention?.map((grant) => (
+                  <GrantCard
+                    hasPending={grant.hasPendingMilestones}
+                    hasRejected={grant.hasRejectedMilestones}
+                    allCompleted={grant.allMilestonesApproved}
+                    key={grant.id}
+                    avatarUrls={[grant.project?.metadata?.imgUrl || '']}
+                    label={`${grant.project.name}`}
+                    isActive={grant.status >= GrantStatus.Allocated}
+                    linkUrl={`/grant/${grant.id}/timeline`}
+                    status={grant.status}
+                    notify
+                  />
+                ))}
+              </Stack>
+            </Box>
+            <Box>
+              <Text fz="sm" mb={'md'} c={theme.colors.gray[6]}>
+                Idle
+              </Text>
+              <Stack>
+                {idleGrants?.map((grant) => (
+                  <GrantCard
+                    hasPending={grant.hasPendingMilestones}
+                    hasRejected={grant.hasRejectedMilestones}
+                    allCompleted={grant.allMilestonesApproved}
+                    key={grant.id}
+                    avatarUrls={[grant.project?.metadata?.imgUrl || '']}
+                    label={`${grant.project.name}`}
+                    isActive={grant.status >= GrantStatus.Allocated}
+                    linkUrl={`/grant/${grant.id}/timeline`}
+                    status={grant.status}
+                  />
+                ))}
+              </Stack>
+            </Box>
+          </Stack>
         </Tabs.Panel>
         <Tabs.Panel value="settings">
           <SettingsPanel

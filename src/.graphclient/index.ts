@@ -9844,6 +9844,12 @@ const merger = new(BareMerger as any)({
         },
         location: 'GetProjectGrantsDocument.graphql'
       },{
+        document: GetAllProjectGrantsDocument,
+        get rawSDL() {
+          return printWithCache(GetAllProjectGrantsDocument);
+        },
+        location: 'GetAllProjectGrantsDocument.graphql'
+      },{
         document: GetProjectsDocument,
         get rawSDL() {
           return printWithCache(GetProjectsDocument);
@@ -10232,6 +10238,26 @@ export type getProjectGrantsQuery = { grants: Array<(
     & { ship?: Maybe<(
       Pick<GrantShip, 'id' | 'name' | 'shipContractAddress'>
       & { profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
+    )>, currentMilestones?: Maybe<(
+      Pick<MilestoneSet, 'id' | 'milestoneLength' | 'milestonesCompleted' | 'milestonesRejected' | 'milestonesPending'>
+      & { milestones: Array<Pick<Milestone, 'id' | 'index' | 'percentage' | 'status'>> }
+    )> }
+  )> };
+
+export type getAllProjectGrantsQueryVariables = Exact<{
+  userAddress: Scalars['String'];
+  gameId: Scalars['String'];
+}>;
+
+
+export type getAllProjectGrantsQuery = { grants: Array<(
+    Pick<Grant, 'amountDistributed' | 'amountAllocated' | 'id' | 'status' | 'lastUpdated' | 'amount' | 'grantCompleted' | 'hasPendingMilestones' | 'hasRejectedMilestones' | 'allMilestonesApproved'>
+    & { ship?: Maybe<(
+      Pick<GrantShip, 'id' | 'name' | 'shipContractAddress'>
+      & { profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
+    )>, project?: Maybe<(
+      Pick<Project, 'id' | 'name'>
+      & { metadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
     )>, currentMilestones?: Maybe<(
       Pick<MilestoneSet, 'id' | 'milestoneLength' | 'milestonesCompleted' | 'milestonesRejected' | 'milestonesPending'>
       & { milestones: Array<Pick<Milestone, 'id' | 'index' | 'percentage' | 'status'>> }
@@ -10874,6 +10900,25 @@ export const getProjectGrantsDocument = gql`
 }
     ${GrantBasicFragmentDoc}
 ${ShipDisplayFragmentDoc}` as unknown as DocumentNode<getProjectGrantsQuery, getProjectGrantsQueryVariables>;
+export const getAllProjectGrantsDocument = gql`
+    query getAllProjectGrants($userAddress: String!, $gameId: String!) {
+  grants: Grant(
+    where: {gameManager_id: {_eq: $gameId}, project: {owner: {_eq: $userAddress}}}
+  ) {
+    ...GrantBasic
+    amountDistributed
+    amountAllocated
+    ship {
+      ...ShipDisplay
+    }
+    project {
+      ...ProjectDisplay
+    }
+  }
+}
+    ${GrantBasicFragmentDoc}
+${ShipDisplayFragmentDoc}
+${ProjectDisplayFragmentDoc}` as unknown as DocumentNode<getAllProjectGrantsQuery, getAllProjectGrantsQueryVariables>;
 export const GetProjectsDocument = gql`
     query GetProjects($chainId: Int!) {
   Project(
@@ -11110,6 +11155,7 @@ export const ShipsPageQueryDocument = gql`
 
 
 
+
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
@@ -11136,6 +11182,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     getProjectGrants(variables: getProjectGrantsQueryVariables, options?: C): Promise<getProjectGrantsQuery> {
       return requester<getProjectGrantsQuery, getProjectGrantsQueryVariables>(getProjectGrantsDocument, variables, options) as Promise<getProjectGrantsQuery>;
+    },
+    getAllProjectGrants(variables: getAllProjectGrantsQueryVariables, options?: C): Promise<getAllProjectGrantsQuery> {
+      return requester<getAllProjectGrantsQuery, getAllProjectGrantsQueryVariables>(getAllProjectGrantsDocument, variables, options) as Promise<getAllProjectGrantsQuery>;
     },
     GetProjects(variables: GetProjectsQueryVariables, options?: C): Promise<GetProjectsQuery> {
       return requester<GetProjectsQuery, GetProjectsQueryVariables>(GetProjectsDocument, variables, options) as Promise<GetProjectsQuery>;

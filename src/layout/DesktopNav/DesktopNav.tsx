@@ -1,4 +1,11 @@
-import { Group, Code, Title, useMantineTheme, Tooltip } from '@mantine/core';
+import {
+  Group,
+  Code,
+  Title,
+  useMantineTheme,
+  Tooltip,
+  Divider,
+} from '@mantine/core';
 import {
   IconRocket,
   IconAward,
@@ -16,6 +23,7 @@ import { useUserData } from '../../hooks/useUserState';
 import { useAccount } from 'wagmi';
 import { navItems } from '../../constants/navItems';
 import { useTablet } from '../../hooks/useBreakpoint';
+import { GrantsNavSection } from './GrantsNavSection';
 
 export function DesktopNav() {
   const location = useLocation();
@@ -156,11 +164,11 @@ export function DesktopNav() {
           )}
         </Group>
         {links}
+        <GrantsNavSection />
       </div>
 
       <div className={classes.footer}>{dashboardLink}</div>
       <ConnectButton />
-
       {!isTablet && (
         <Code w="fit-content" ml={'sm'} mt={'lg'}>
           v{process.env.PACKAGE_VERSION}
