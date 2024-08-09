@@ -2,6 +2,7 @@ import {
   Avatar,
   Box,
   Flex,
+  Group,
   Paper,
   Skeleton,
   Text,
@@ -9,6 +10,7 @@ import {
 } from '@mantine/core';
 import { useBreakpoints } from '../../hooks/useBreakpoint';
 import { useGrant } from '../../hooks/useGrant';
+import { IconExclamationCircle } from '@tabler/icons-react';
 
 export const TopSection = () => {
   const { project, ship, isLoadingGrant } = useGrant();
@@ -47,17 +49,42 @@ export const TopSection = () => {
           {isLoadingGrant ? (
             <Skeleton w={175} h={20} mb="sm" />
           ) : (
-            <Text fz="xl" fw={600} c={theme.colors.dark[0]} mb={2}>
-              Grant Partnership
-            </Text>
-          )}
-          {isLoadingGrant ? (
-            <Skeleton w={120} h={16} />
-          ) : (
-            <Text fz="sm" c={theme.colors.dark[2]}>
+            <Text
+              fz="xl"
+              fw={600}
+              c={theme.colors.dark[0]}
+              mb={'sm'}
+              lineClamp={1}
+            >
               {projectName} {'<>'} {shipName}
             </Text>
           )}
+          <Group>
+            <Box>
+              <Group gap={4}>
+                <Text fz="sm" c={theme.colors.gray[6]}>
+                  Funding Allocated
+                </Text>
+                <IconExclamationCircle
+                  size={16}
+                  color={theme.colors.yellow[6]}
+                />
+              </Group>
+              <Text>1500 GSBT</Text>
+            </Box>
+            <Box>
+              <Group gap={4}>
+                <Text fz="sm" c={theme.colors.gray[6]}>
+                  Funding Received
+                </Text>
+                <IconExclamationCircle
+                  size={16}
+                  color={theme.colors.yellow[6]}
+                />
+              </Group>
+              <Text>777 GSBT</Text>
+            </Box>
+          </Group>
         </Box>
       </Flex>
     </Paper>
