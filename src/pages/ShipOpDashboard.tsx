@@ -29,9 +29,12 @@ import { SettingsPanel } from '../components/dashboard/ship/SettingsPanel';
 import { getShipGrants } from '../queries/getShipGrants';
 import { GrantCard } from '../components/grant/GrantCard';
 import { GrantStatus } from '../types/common';
+import { useMemo } from 'react';
 
 export const ShipOpDashboard = () => {
   const { id } = useParams();
+
+  const theme = useMantineTheme();
 
   const {
     data: shipData,
@@ -53,6 +56,36 @@ export const ShipOpDashboard = () => {
     queryFn: () => getShipGrants(id as string, GAME_MANAGER.ADDRESS),
     enabled: !!id,
   });
+
+  const { needsAttention, idleGrants } = useMemo(() => {
+    if (!grants)
+      return {
+        needsAttention: null,
+        idleGrants: null,
+      };
+
+    let needsAttention = [];
+    let idleGrants = [];
+
+    for (let grant of grants) {
+      if (
+        grant.hasPendingMilestones ||
+        grant.status === GrantStatus.ProjectInitiated ||
+        grant.status === GrantStatus.ApplicationSubmitted ||
+        grant.status === GrantStatus.MilestonesSubmitted ||
+        grant.status === GrantStatus.FacilitatorRejected
+        // grant.status === GrantStatus.AllMilestonesComplete
+      ) {
+        needsAttention.push(grant);
+      } else {
+        idleGrants.push(grant);
+      }
+    }
+    return {
+      needsAttention,
+      idleGrants,
+    };
+  }, [grants]);
 
   return (
     <MainSection>
@@ -80,19 +113,47 @@ export const ShipOpDashboard = () => {
         </Tabs.List>
         <Tabs.Panel value="grants">
           <Stack>
-            {grants?.map((grant) => (
-              <GrantCard
-                hasPending={grant.hasPendingMilestones}
-                hasRejected={grant.hasRejectedMilestones}
-                allCompleted={grant.allMilestonesApproved}
-                key={grant.id}
-                avatarUrls={[grant.project?.metadata?.imgUrl || '']}
-                label={`${grant.project.name}`}
-                isActive={grant.status >= GrantStatus.Allocated}
-                linkUrl={`/grant/${grant.id}/timeline`}
-                status={grant.status}
-              />
-            ))}
+            <Box>
+              <Text fz="sm" mb={'md'} c={theme.colors.gray[6]}>
+                Needs Attention
+              </Text>
+              <Stack>
+                {needsAttention?.map((grant) => (
+                  <GrantCard
+                    hasPending={grant.hasPendingMilestones}
+                    hasRejected={grant.hasRejectedMilestones}
+                    allCompleted={grant.allMilestonesApproved}
+                    key={grant.id}
+                    avatarUrls={[grant.project?.metadata?.imgUrl || '']}
+                    label={`${grant.project.name}`}
+                    isActive={grant.status >= GrantStatus.Allocated}
+                    linkUrl={`/grant/${grant.id}/timeline`}
+                    status={grant.status}
+                    notify
+                  />
+                ))}
+              </Stack>
+            </Box>
+            <Box>
+              <Text fz="sm" mb={'md'} c={theme.colors.gray[6]}>
+                Idle
+              </Text>
+              <Stack>
+                {idleGrants?.map((grant) => (
+                  <GrantCard
+                    hasPending={grant.hasPendingMilestones}
+                    hasRejected={grant.hasRejectedMilestones}
+                    allCompleted={grant.allMilestonesApproved}
+                    key={grant.id}
+                    avatarUrls={[grant.project?.metadata?.imgUrl || '']}
+                    label={`${grant.project.name}`}
+                    isActive={grant.status >= GrantStatus.Allocated}
+                    linkUrl={`/grant/${grant.id}/timeline`}
+                    status={grant.status}
+                  />
+                ))}
+              </Stack>
+            </Box>
           </Stack>
         </Tabs.Panel>
         <Tabs.Panel value="settings">

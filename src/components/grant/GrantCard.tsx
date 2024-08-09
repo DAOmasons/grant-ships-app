@@ -1,6 +1,7 @@
 import {
   Avatar,
   Group,
+  Indicator,
   Paper,
   Text,
   Tooltip,
@@ -21,7 +22,7 @@ import {
   IconShieldX,
 } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
-import { ReactNode } from 'react';
+import { ReactNode, useMemo } from 'react';
 
 export const GrantCard = ({
   avatarUrls,
@@ -32,6 +33,7 @@ export const GrantCard = ({
   hasPending,
   hasRejected,
   allCompleted,
+  notify,
 }: {
   linkUrl: string;
   isActive: boolean;
@@ -41,43 +43,60 @@ export const GrantCard = ({
   hasPending: boolean;
   hasRejected: boolean;
   allCompleted: boolean;
+  notify?: boolean;
 }) => {
   const theme = useMantineTheme();
 
-  return (
-    <Paper
-      w="100%"
-      bg={theme.colors.dark[6]}
-      p="lg"
-      component={Link}
-      to={linkUrl}
-    >
-      <Group justify="space-between">
-        <Group gap={8}>
-          <Avatar.Group>
-            {avatarUrls.map((url) => (
-              <Avatar size={32} src={url} key={url} />
-            ))}
-          </Avatar.Group>
-          <Text fz="sm" fw={500}>
-            {label}
-          </Text>
-          <Tooltip label={isActive ? 'Active' : 'Inactive'}>
-            <IconCheck
-              size={16}
-              color={isActive ? theme.colors.blue[6] : theme.colors.dark[5]}
-            />
-          </Tooltip>
+  const cardGuts = useMemo(() => {
+    return (
+      <Paper
+        w="100%"
+        bg={theme.colors.dark[6]}
+        p="lg"
+        component={Link}
+        to={linkUrl}
+      >
+        <Group justify="space-between">
+          <Group gap={8}>
+            <Avatar.Group>
+              {avatarUrls.map((url) => (
+                <Avatar size={32} src={url} key={url} />
+              ))}
+            </Avatar.Group>
+            <Text fz="sm" fw={500}>
+              {label}
+            </Text>
+            <Tooltip label={isActive ? 'Active' : 'Inactive'}>
+              <IconCheck
+                size={16}
+                color={isActive ? theme.colors.blue[6] : theme.colors.dark[5]}
+              />
+            </Tooltip>
+          </Group>
+          <GrantStatusIndicator
+            hasPending={hasPending}
+            hasRejected={hasRejected}
+            allCompleted={allCompleted}
+            status={status}
+          />
         </Group>
-        <GrantStatusIndicator
-          hasPending={hasPending}
-          hasRejected={hasRejected}
-          allCompleted={allCompleted}
-          status={status}
-        />
-      </Group>
-    </Paper>
-  );
+      </Paper>
+    );
+  }, [
+    avatarUrls,
+    label,
+    isActive,
+    linkUrl,
+    status,
+    hasPending,
+    hasRejected,
+    allCompleted,
+  ]);
+
+  if (notify) {
+    return <Indicator>{cardGuts}</Indicator>;
+  }
+  return cardGuts;
 };
 
 const GrantStatusIndicator = ({
