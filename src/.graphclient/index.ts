@@ -9762,7 +9762,7 @@ const grantShipsTransforms = [];
 const additionalTypeDefs = [] as any[];
 const grantShipsHandler = new GraphqlHandler({
               name: "grant-ships",
-              config: {"endpoint":"https://indexer.bigdevenergy.link/e09c75f/v1/graphql"},
+              config: {"endpoint":"https://indexer.bigdevenergy.link/3a96753/v1/graphql"},
               baseDir,
               cache,
               pubsub,
