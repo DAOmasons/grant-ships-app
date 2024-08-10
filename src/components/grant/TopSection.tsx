@@ -11,7 +11,12 @@ import {
 } from '@mantine/core';
 import { useBreakpoints } from '../../hooks/useBreakpoint';
 import { useGrant } from '../../hooks/useGrant';
-import { IconCircleCheck, IconExclamationCircle } from '@tabler/icons-react';
+import {
+  IconCircle,
+  IconCircleCheck,
+  IconCircleX,
+  IconExclamationCircle,
+} from '@tabler/icons-react';
 import { ReactNode } from 'react';
 import { GrantStatus } from '../../types/common';
 
@@ -127,13 +132,19 @@ const ApplicationProgress = () => {
           ? colors.red[6]
           : colors.green[6];
 
-  return (
-    <ProgressText
-      color={color}
-      icon={<IconCircleCheck size={16} color={color} />}
-      text="Grant Application"
-    />
+  const icon = !grant?.status ? (
+    <IconCircle size={16} color={color} />
+  ) : grant.status < GrantStatus.ApplicationSubmitted ? (
+    <IconCircle size={16} color={color} />
+  ) : grant.status === GrantStatus.ApplicationSubmitted ? (
+    <IconExclamationCircle size={16} color={color} />
+  ) : grant.status === GrantStatus.ApplicationRejected ? (
+    <IconCircleX size={16} color={color} />
+  ) : (
+    <IconCircleCheck size={16} color={color} />
   );
+
+  return <ProgressText color={color} icon={icon} text="Grant Application" />;
 };
 
 const MilestonesProgress = () => {
@@ -152,13 +163,21 @@ const MilestonesProgress = () => {
             ? colors.red[6]
             : colors.green[6];
 
-  return (
-    <ProgressText
-      color={color}
-      icon={<IconExclamationCircle size={16} color={color} />}
-      text="Milestone Plan"
-    />
+  const icon = !grant?.status ? (
+    <IconCircle size={16} color={color} />
+  ) : grant.status < GrantStatus.ApplicationApproved ? (
+    <IconCircle size={16} color={color} />
+  ) : grant.status === GrantStatus.ApplicationApproved ? (
+    <IconExclamationCircle size={16} color={color} />
+  ) : grant.status === GrantStatus.MilestonesSubmitted ? (
+    <IconExclamationCircle size={16} color={color} />
+  ) : grant.status === GrantStatus.MilestonesRejected ? (
+    <IconCircleX size={16} color={color} />
+  ) : (
+    <IconCircleCheck size={16} color={color} />
   );
+
+  return <ProgressText color={color} icon={icon} text="Milestone Plan" />;
 };
 
 const FacilitatorReview = () => {
@@ -174,13 +193,19 @@ const FacilitatorReview = () => {
         : grant.status === GrantStatus.FacilitatorRejected
           ? colors.red[6]
           : colors.green[6];
-  return (
-    <ProgressText
-      color={color}
-      icon={<IconExclamationCircle size={16} color={color} />}
-      text="Facilitator Approval"
-    />
+
+  const icon = !grant?.status ? (
+    <IconCircle size={16} color={color} />
+  ) : grant.status < GrantStatus.MilestonesApproved ? (
+    <IconCircle size={16} color={color} />
+  ) : grant.status === GrantStatus.MilestonesApproved ? (
+    <IconExclamationCircle size={16} color={color} />
+  ) : grant.status === GrantStatus.FacilitatorRejected ? (
+    <IconCircleX size={16} color={color} />
+  ) : (
+    <IconCircleCheck size={16} color={color} />
   );
+  return <ProgressText color={color} icon={icon} text="Facilitator Approval" />;
 };
 
 const MilestoneSubmitProgress = () => {
@@ -201,13 +226,23 @@ const MilestoneSubmitProgress = () => {
               ? colors.yellow[6]
               : colors.dark[3];
 
-  return (
-    <ProgressText
-      color={color}
-      icon={<IconExclamationCircle size={16} color={color} />}
-      text="Milestones (0/0)"
-    />
+  const icon = !grant?.status ? (
+    <IconCircle size={16} color={color} />
+  ) : grant.status < GrantStatus.Allocated ? (
+    <IconCircle size={16} color={color} />
+  ) : grant.status > GrantStatus.Allocated ? (
+    <IconCircleCheck size={16} color={color} />
+  ) : grant.allMilestonesApproved ? (
+    <IconCircleCheck size={16} color={color} />
+  ) : grant.hasRejectedMilestones ? (
+    <IconCircleX size={16} color={color} />
+  ) : grant.hasPendingMilestones ? (
+    <IconExclamationCircle size={16} color={color} />
+  ) : (
+    <IconExclamationCircle size={16} color={color} />
   );
+
+  return <ProgressText color={color} icon={icon} text="Milestones (0/0)" />;
 };
 
 const GrantCompleteProgress = () => {
@@ -221,13 +256,17 @@ const GrantCompleteProgress = () => {
       : grant.status === GrantStatus.AllMilestonesComplete
         ? colors.dark[3]
         : colors.green[6];
-  return (
-    <ProgressText
-      color={color}
-      icon={<IconExclamationCircle size={16} color={color} />}
-      text="Completed"
-    />
+
+  const icon = !grant?.status ? (
+    <IconCircle size={16} color={color} />
+  ) : grant.status < GrantStatus.AllMilestonesComplete ? (
+    <IconCircle size={16} color={color} />
+  ) : grant.status === GrantStatus.AllMilestonesComplete ? (
+    <IconExclamationCircle size={16} color={color} />
+  ) : (
+    <IconCircleCheck size={16} color={color} />
   );
+  return <ProgressText color={color} icon={icon} text="Completed" />;
 };
 
 const ProgressText = ({
