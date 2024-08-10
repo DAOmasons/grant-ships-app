@@ -9762,7 +9762,7 @@ const grantShipsTransforms = [];
 const additionalTypeDefs = [] as any[];
 const grantShipsHandler = new GraphqlHandler({
               name: "grant-ships",
-              config: {"endpoint":"https://indexer.bigdevenergy.link/e09c75f/v1/graphql"},
+              config: {"endpoint":"https://indexer.bigdevenergy.link/3a96753/v1/graphql"},
               baseDir,
               cache,
               pubsub,
@@ -10151,7 +10151,7 @@ export type GrantApplicationFragment = (
 );
 
 export type GrantDataFragment = (
-  Pick<Grant, 'id' | 'status' | 'lastUpdated' | 'amount' | 'isAllocated' | 'grantCompleted' | 'applicationApproved' | 'hasPendingMilestones' | 'hasRejectedMilestones' | 'allMilestonesApproved'>
+  Pick<Grant, 'id' | 'status' | 'lastUpdated' | 'amount' | 'isAllocated' | 'grantCompleted' | 'applicationApproved' | 'hasPendingMilestones' | 'hasRejectedMilestones' | 'allMilestonesApproved' | 'amountDistributed'>
   & { milestoneDrafts: Array<(
     Pick<MilestoneSet, 'id' | 'index' | 'timestamp' | 'status' | 'milestoneLength'>
     & { milestones: Array<(
@@ -10187,7 +10187,7 @@ export type getGrantQuery = { Project_by_pk?: Maybe<(
     Pick<GrantShip, 'beaconLastUpdated' | 'id' | 'name' | 'status' | 'poolId' | 'shipContractAddress' | 'shipApplicationBytesData' | 'owner' | 'balance' | 'totalFundsReceived' | 'totalAllocated' | 'totalDistributed' | 'totalRoundAmount'>
     & { beaconMessage?: Maybe<Pick<RawMetadata, 'pointer'>>, customApplication?: Maybe<Pick<RawMetadata, 'pointer'>>, profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>>, alloProfileMembers?: Maybe<Pick<ProfileMemberGroup, 'addresses'>> }
   )>, Grant_by_pk?: Maybe<(
-    Pick<Grant, 'id' | 'status' | 'lastUpdated' | 'amount' | 'isAllocated' | 'grantCompleted' | 'applicationApproved' | 'hasPendingMilestones' | 'hasRejectedMilestones' | 'allMilestonesApproved'>
+    Pick<Grant, 'id' | 'status' | 'lastUpdated' | 'amount' | 'isAllocated' | 'grantCompleted' | 'applicationApproved' | 'hasPendingMilestones' | 'hasRejectedMilestones' | 'allMilestonesApproved' | 'amountDistributed'>
     & { milestoneDrafts: Array<(
       Pick<MilestoneSet, 'id' | 'index' | 'timestamp' | 'status' | 'milestoneLength'>
       & { milestones: Array<(
@@ -10679,6 +10679,7 @@ export const GrantDataFragmentDoc = gql`
   hasPendingMilestones
   hasRejectedMilestones
   allMilestonesApproved
+  amountDistributed
   milestoneDrafts {
     ...Milestones
   }
