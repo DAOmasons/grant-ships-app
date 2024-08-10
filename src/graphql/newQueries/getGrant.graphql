@@ -73,6 +73,7 @@ fragment GrantData on Grant {
   hasPendingMilestones
   hasRejectedMilestones
   allMilestonesApproved
+  amountDistributed
   milestoneDrafts {
     ...Milestones
   }

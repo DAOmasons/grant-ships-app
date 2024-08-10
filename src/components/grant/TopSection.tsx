@@ -18,10 +18,12 @@ import {
   IconExclamationCircle,
 } from '@tabler/icons-react';
 import { ReactNode } from 'react';
-import { GrantStatus } from '../../types/common';
+import { GameStatus, GrantStatus } from '../../types/common';
+import { Link } from 'react-router-dom';
+import { formatEther } from 'viem';
 
 export const TopSection = () => {
-  const { project, ship, isLoadingGrant } = useGrant();
+  const { project, ship, isLoadingGrant, grant } = useGrant();
   const theme = useMantineTheme();
   const { isTablet, isMobile } = useBreakpoints();
 
@@ -47,10 +49,20 @@ export const TopSection = () => {
         mb={'md'}
       >
         <Avatar.Group spacing={'xl'}>
-          <Avatar size={avatarSize} src={shipImg ? shipImg : null}>
+          <Avatar
+            size={avatarSize}
+            src={shipImg ? shipImg : null}
+            component={Link}
+            to={ship?.id ? `/ship/${ship?.id}` : ''}
+          >
             <Skeleton h={avatarSize} w={avatarSize} circle />
           </Avatar>
-          <Avatar size={avatarSize} src={projectImg ? projectImg : null}>
+          <Avatar
+            size={avatarSize}
+            src={projectImg ? projectImg : null}
+            component={Link}
+            to={project?.id ? `/project/${project?.id}` : ''}
+          >
             <Skeleton h={avatarSize} w={avatarSize} circle />
           </Avatar>
         </Avatar.Group>
@@ -58,15 +70,37 @@ export const TopSection = () => {
           {isLoadingGrant ? (
             <Skeleton w={175} h={20} mb="sm" />
           ) : (
-            <Text
-              fz="xl"
-              fw={600}
-              c={theme.colors.dark[0]}
-              mb={'sm'}
-              lineClamp={1}
-            >
-              {projectName} {'<>'} {shipName}
-            </Text>
+            <Group gap={8}>
+              <Text
+                fz="xl"
+                fw={600}
+                c={theme.colors.dark[0]}
+                mb={'sm'}
+                lineClamp={1}
+              >
+                {shipName}
+              </Text>
+              <Text
+                fz="xl"
+                fw={600}
+                c={theme.colors.dark[0]}
+                mb={'sm'}
+                lineClamp={1}
+              >
+                {' <> '}
+              </Text>
+              <Text
+                fz="xl"
+                fw={600}
+                component={Link}
+                to={project?.id ? `/project/${project?.id}` : ''}
+                c={theme.colors.dark[0]}
+                mb={'sm'}
+                lineClamp={1}
+              >
+                {projectName}
+              </Text>
+            </Group>
           )}
           <Group justify="space-between">
             <Box>
@@ -81,7 +115,12 @@ export const TopSection = () => {
                   />
                 </Tooltip>
               </Group>
-              <Text>1500 GSBT</Text>
+              <Text>
+                {grant?.status && grant.status >= GrantStatus.Allocated
+                  ? formatEther(BigInt(grant?.amount || 0))
+                  : 0}{' '}
+                GSBT
+              </Text>
             </Box>
             <Box>
               <Group gap={4}>
@@ -95,7 +134,9 @@ export const TopSection = () => {
                   />
                 </Tooltip>
               </Group>
-              <Text>777 GSBT</Text>
+              <Text>
+                {formatEther(BigInt(grant?.amountDistributed || 0))} GSBT
+              </Text>
             </Box>
           </Group>
         </Box>
@@ -210,7 +251,13 @@ const FacilitatorReview = () => {
 
 const MilestoneSubmitProgress = () => {
   const { colors } = useMantineTheme();
-  const { grant } = useGrant();
+  const { grant, currentMilestoneSet } = useGrant();
+
+  const milestoneAmt = currentMilestoneSet?.milestones?.length || 0;
+  const milestonesCompleted =
+    currentMilestoneSet?.milestones?.filter(
+      (ms) => ms.status === GameStatus.Accepted
+    ).length || 0;
 
   const color = !grant?.status
     ? colors.dark[4]
@@ -242,7 +289,13 @@ const MilestoneSubmitProgress = () => {
     <IconExclamationCircle size={16} color={color} />
   );
 
-  return <ProgressText color={color} icon={icon} text="Milestones (0/0)" />;
+  return (
+    <ProgressText
+      color={color}
+      icon={icon}
+      text={`Milestones (${milestonesCompleted}/${milestoneAmt})`}
+    />
+  );
 };
 
 const GrantCompleteProgress = () => {
