@@ -95,7 +95,14 @@ export const TopSection = () => {
           </Group>
         </Box>
       </Flex>
-      <Group gap={6}>
+      <Group
+        gap={0}
+        justify="space-around"
+        px={8}
+        py={2}
+        bg={theme.colors.dark[8]}
+        style={{ borderRadius: '6px' }}
+      >
         <ApplicationProgress />
         <MilestonesProgress />
         <FacilitatorReview />
@@ -111,9 +118,9 @@ const ApplicationProgress = () => {
   const { colors } = useMantineTheme();
 
   const color = !grant?.status
-    ? colors.dark[2]
+    ? colors.dark[4]
     : grant.status < GrantStatus.ApplicationSubmitted
-      ? colors.dark[2]
+      ? colors.dark[3]
       : grant.status === GrantStatus.ApplicationSubmitted
         ? colors.yellow[6]
         : grant.status === GrantStatus.ApplicationRejected
@@ -134,14 +141,16 @@ const MilestonesProgress = () => {
   const { grant } = useGrant();
 
   const color = !grant?.status
-    ? colors.dark[2]
-    : grant.status < GrantStatus.MilestonesSubmitted
-      ? colors.dark[2]
-      : grant.status === GrantStatus.MilestonesSubmitted
-        ? colors.yellow[6]
-        : grant.status === GrantStatus.MilestonesRejected
-          ? colors.red[6]
-          : colors.green[6];
+    ? colors.dark[4]
+    : grant.status < GrantStatus.ApplicationApproved
+      ? colors.dark[4]
+      : grant.status === GrantStatus.ApplicationApproved
+        ? colors.dark[3]
+        : grant.status === GrantStatus.MilestonesSubmitted
+          ? colors.yellow[6]
+          : grant.status === GrantStatus.MilestonesRejected
+            ? colors.red[6]
+            : colors.green[6];
 
   return (
     <ProgressText
@@ -157,9 +166,9 @@ const FacilitatorReview = () => {
   const { grant } = useGrant();
 
   const color = !grant?.status
-    ? colors.dark[2]
+    ? colors.dark[4]
     : grant.status < GrantStatus.MilestonesApproved
-      ? colors.dark[2]
+      ? colors.dark[4]
       : grant.status === GrantStatus.MilestonesApproved
         ? colors.yellow[6]
         : grant.status === GrantStatus.FacilitatorRejected
@@ -179,9 +188,9 @@ const MilestoneSubmitProgress = () => {
   const { grant } = useGrant();
 
   const color = !grant?.status
-    ? colors.dark[2]
+    ? colors.dark[4]
     : grant.status < GrantStatus.Allocated
-      ? colors.dark[2]
+      ? colors.dark[4]
       : grant.status > GrantStatus.Allocated
         ? colors.green[6]
         : grant.allMilestonesApproved
@@ -190,7 +199,7 @@ const MilestoneSubmitProgress = () => {
             ? colors.red[6]
             : grant.hasPendingMilestones
               ? colors.yellow[6]
-              : colors.dark[2];
+              : colors.dark[3];
 
   return (
     <ProgressText
@@ -206,11 +215,11 @@ const GrantCompleteProgress = () => {
   const { grant } = useGrant();
 
   const color = !grant?.status
-    ? colors.dark[2]
+    ? colors.dark[4]
     : grant.status < GrantStatus.AllMilestonesComplete
-      ? colors.dark[2]
+      ? colors.dark[4]
       : grant.status === GrantStatus.AllMilestonesComplete
-        ? colors.yellow[6]
+        ? colors.dark[3]
         : colors.green[6];
   return (
     <ProgressText
@@ -230,9 +239,8 @@ const ProgressText = ({
   icon: ReactNode;
   text: string;
 }) => {
-  const theme = useMantineTheme();
   return (
-    <Group gap={4} bg={theme.colors.dark[8]}>
+    <Group px={6} gap={4} style={{ cursor: 'default' }}>
       {icon}
       <Text fz={10} c={color} fw={600}>
         {text}
