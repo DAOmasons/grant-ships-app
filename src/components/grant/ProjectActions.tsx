@@ -32,7 +32,7 @@ export const ProjectActions = () => {
   const isMilestonePlanning =
     grant?.status &&
     grant.status >= GrantStatus.ApplicationApproved &&
-    grant?.status <= GrantStatus.Allocated;
+    grant?.status < GrantStatus.MilestonesApproved;
 
   const areMilestonesLocked =
     grant?.status &&
