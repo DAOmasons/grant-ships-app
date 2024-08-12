@@ -45,7 +45,6 @@ export const AllocationPanel = ({
   }, [shipData, poolBalance]);
 
   const handleAllocate = () => {
-    console.log('fired');
     let shipIds = [];
     let amounts = [];
 
@@ -92,7 +91,7 @@ export const AllocationPanel = ({
       </Box>
     );
   }
-  console.log('render');
+
   return (
     <Box>
       <Text mb="sm" fw={600}>

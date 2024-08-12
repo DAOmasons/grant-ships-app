@@ -4,11 +4,6 @@ sources:
       graphql: 
         endpoint: https://indexer.bigdevenergy.link/3a96753/v1/graphql
         # endpoint: http://localhost:8080/v1/graphql
-  # - name: gs-voting
-  #   handler: 
-  #     graphql: 
-  #       # endpoint: http://localhost:8080/v1/graphql
-  #       endpoint: https://indexer.bigdevenergy.link/d18cda9/v1/graphql
 documents: 
   # - './src/**/*.graphql'
   - './src/graphql/newQueries/**/*.graphql'

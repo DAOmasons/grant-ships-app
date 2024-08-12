@@ -124,7 +124,7 @@ export const MilestoneDisplay = ({
             <Text fz="sm" fw={700} mb={4}>
               Description
             </Text>
-            <Text fz="sm">
+            <Text fz="sm" className="ws-pre-wrap">
               {currentMilestone?.milestoneContent.milestoneDetails}
             </Text>
           </Box>

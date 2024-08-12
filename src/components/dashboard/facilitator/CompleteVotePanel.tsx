@@ -12,7 +12,7 @@ export const CompleteVotePanel = () => {
   const { contest, refetchGsVotes, votingStage } = useVoting();
 
   const { tx } = useTx();
-  console.log('contest', contest);
+
   const finalizeVoting = () => {
     if (!contest || votingStage !== VotingStage.Closed) {
       notifications.show({
