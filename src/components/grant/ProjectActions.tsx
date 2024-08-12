@@ -61,6 +61,15 @@ export const ProjectActions = () => {
             <Text>Milestones</Text>
           </Button>
         )}
+        {areMilestonesLocked && (
+          <Button
+            variant="menu"
+            leftSection={<IconPlus />}
+            onClick={openMilestones}
+          >
+            <Text>Milestones</Text>
+          </Button>
+        )}
         {isApplicationStage && alreadyHasApplication && (
           <Button
             variant="menu"
