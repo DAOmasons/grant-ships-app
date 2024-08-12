@@ -106,7 +106,11 @@ export const MilestoneSetDisplay = ({ doc }: { doc: MilestonesDisplay }) => {
           <Text size="sm" fw={700} mb={4}>
             Description
           </Text>
-          <Text size="sm" td={isOldOrRejected ? 'line-through' : undefined}>
+          <Text
+            size="sm"
+            td={isOldOrRejected ? 'line-through' : undefined}
+            className="ws-pre-wrap"
+          >
             {milestone.milestoneContent.milestoneDetails}
           </Text>
         </Box>
