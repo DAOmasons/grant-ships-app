@@ -1,7 +1,7 @@
 import React from 'react';
 import { useVoting } from '../../../hooks/useVoting';
 import { VotingStage } from '../../../types/common';
-import { Box, Button, Text } from '@mantine/core';
+import { Box, Text } from '@mantine/core';
 import { notifications } from '@mantine/notifications';
 import { useTx } from '../../../hooks/useTx';
 import TimedVotes from '../../../abi/TimedVotes.json';
