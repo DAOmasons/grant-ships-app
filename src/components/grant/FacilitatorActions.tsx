@@ -8,6 +8,7 @@ import { PostDrawer } from '../PostDrawer';
 import { DAO_MASONS, HATS } from '../../constants/gameSetup';
 import { Player } from '../../types/ui';
 import { PostGrantDrawer } from './PostGrantDrawer';
+import { getGatewayUrl } from '../../utils/ipfs/get';
 
 export const FacilitatorActions = () => {
   const [approvalOpened, { open: openApprove, close: closeApprove }] =
@@ -41,7 +42,7 @@ export const FacilitatorActions = () => {
         opened={postOpened}
         onClose={closePost}
         projectId={project?.id || ''}
-        avatarImg={DAO_MASONS.AVATAR_IMG}
+        avatarImg={getGatewayUrl(DAO_MASONS.AVATAR_IMG) || ''}
         avatarName={'Facilitators'}
         shipSrcAddress={ship?.shipContractAddress || ''}
         playerType={Player.Facilitators}
