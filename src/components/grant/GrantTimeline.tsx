@@ -23,7 +23,7 @@ import { getGatewayUrl } from '../../utils/ipfs/get';
 
 export const GrantTimeline = () => {
   const { timeline, ship, project } = useGrant();
-  console.log('timeLine', timeline);
+
   return (
     <Box>
       <GrantHelper />
@@ -44,7 +44,6 @@ export const GrantTimeline = () => {
         }
         if (item.tag === 'grant/update/ship') {
           const update = item as GrantUpdate;
-
           return (
             <UserUpdate
               key={update.id}
@@ -71,7 +70,6 @@ export const GrantTimeline = () => {
         }
         if (item.tag === 'grant/update/facilitator') {
           const update = item as GrantUpdate;
-
           return (
             <UserUpdate
               key={update.id}
@@ -85,7 +83,6 @@ export const GrantTimeline = () => {
         }
         if (item.tag === 'grant/invite/ship') {
           const update = item as GrantUpdate;
-
           return (
             <InsetUpdate
               key={update.id}
