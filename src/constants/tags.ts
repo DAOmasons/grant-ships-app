@@ -9,4 +9,5 @@ export enum Tag {
   ShipSubmitReport = 'TAG:SHIP_SUBMIT_REPORT',
   ProjectGrantUpdate = 'TAG:PROJECT_GRANT_UPDATE',
   ShipGrantUpdate = 'TAG:SHIP_GRANT_UPDATE',
+  FacilitatorGrantUpdate = 'TAG:FACILITATOR_GRANT_UPDATE',
 }

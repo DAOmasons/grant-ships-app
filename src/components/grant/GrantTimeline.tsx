@@ -21,7 +21,7 @@ import { IconMail } from '@tabler/icons-react';
 
 export const GrantTimeline = () => {
   const { timeline, ship, project } = useGrant();
-
+  console.log('timeLine', timeline);
   return (
     <Box>
       <GrantHelper />
@@ -66,6 +66,9 @@ export const GrantTimeline = () => {
               timestamp={update.timestamp}
             />
           );
+        }
+        if (item.tag === 'grant/update/facilitator') {
+          return 'test';
         }
         if (item.tag === 'grant/invite/ship') {
           const update = item as GrantUpdate;
