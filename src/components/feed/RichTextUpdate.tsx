@@ -12,6 +12,9 @@ import { secondsToShortRelativeTime } from '../../utils/time';
 import { AddressAvatar } from '../AddressAvatar';
 import { Address } from 'viem';
 import { RTDisplay } from '../RTDisplay';
+import { Player } from '../../types/ui';
+import { getGatewayUrl } from '../../utils/ipfs/get';
+import { DAO_MASONS } from '../../constants/gameSetup';
 
 export const getRTUpdate = async (id: string, chainId: number) => {
   const { getRTUpdate } = getBuiltGraphSDK();
@@ -21,7 +24,7 @@ export const getRTUpdate = async (id: string, chainId: number) => {
     chainId: chainId,
   });
 
-  if (!Update) {
+  if (!Update[0].content) {
     throw new Error('No update found');
   }
 
@@ -77,9 +80,23 @@ export const RichTextUpdate = () => {
     return <MainSection maw={675}>Error: {error.message}</MainSection>;
   }
 
-  if (!update || !update.content || !update.posterProfile) {
+  if (!update || !update.content) {
     return <MainSection maw={675}>404: No update found</MainSection>;
   }
+
+  const imgUrl =
+    update.playerType === Player.Facilitators
+      ? getGatewayUrl(DAO_MASONS.AVATAR_IMG)
+      : update?.posterProfile?.imgUrl
+        ? update.posterProfile.imgUrl
+        : '?';
+
+  const name =
+    update?.playerType === Player.Facilitators
+      ? 'Facilitators'
+      : update?.posterProfile?.name
+        ? update?.posterProfile?.name
+        : 'Unknown';
 
   return (
     <MainSection maw={675}>
@@ -88,8 +105,8 @@ export const RichTextUpdate = () => {
         <PlayerAvatar
           display="fullPage"
           playerType={update.playerType}
-          imgUrl={update?.posterProfile.imgUrl}
-          name={update?.posterProfile.name}
+          imgUrl={imgUrl}
+          name={name}
         />
         <Text size="sm" opacity={0.8}>
           ·
