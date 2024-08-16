@@ -18,6 +18,8 @@ import { FundsDistributed } from './FundsDistributed';
 import { GrantHelper } from './GrantHelpers';
 import { InsetUpdate } from './InsetUpdate';
 import { IconMail } from '@tabler/icons-react';
+import { DAO_MASONS } from '../../constants/gameSetup';
+import { getGatewayUrl } from '../../utils/ipfs/get';
 
 export const GrantTimeline = () => {
   const { timeline, ship, project } = useGrant();
@@ -42,7 +44,6 @@ export const GrantTimeline = () => {
         }
         if (item.tag === 'grant/update/ship') {
           const update = item as GrantUpdate;
-
           return (
             <UserUpdate
               key={update.id}
@@ -67,9 +68,21 @@ export const GrantTimeline = () => {
             />
           );
         }
+        if (item.tag === 'grant/update/facilitator') {
+          const update = item as GrantUpdate;
+          return (
+            <UserUpdate
+              key={update.id}
+              content={update.updateContent}
+              posterImg={getGatewayUrl(DAO_MASONS.AVATAR_IMG)}
+              posterName={'Facilitators'}
+              playerType={update.playerType}
+              timestamp={update.timestamp}
+            />
+          );
+        }
         if (item.tag === 'grant/invite/ship') {
           const update = item as GrantUpdate;
-
           return (
             <InsetUpdate
               key={update.id}

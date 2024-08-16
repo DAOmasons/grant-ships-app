@@ -29,7 +29,6 @@ import { Link } from 'react-router-dom';
 import { GAME_TOKEN } from '../../constants/gameSetup';
 import { useElementSize, useIntersection } from '@mantine/hooks';
 import { IconAward } from '@tabler/icons-react';
-
 import { PlayerAvatar } from '../PlayerAvatar';
 import { Content } from '@tiptap/react';
 import { RTDisplay } from '../RTDisplay';
@@ -246,13 +245,20 @@ export const FeedCard = ({
 
   if (internalLink) {
     return (
-      <Box pt={'lg'}>
-        <Box
-          component={Link}
-          ref={observer.ref}
-          to={internalLink}
-          style={{ textDecoration: 'none' }}
-        >
+      <Box pt={'lg'} pos="relative">
+        <Box ref={observer.ref} style={{ textDecoration: 'none' }}>
+          <Link
+            to={internalLink}
+            style={{
+              textDecoration: 'none',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              bottom: 0,
+              right: 0,
+              zIndex: 1,
+            }}
+          />
           {Inner}
         </Box>
       </Box>
@@ -261,15 +267,22 @@ export const FeedCard = ({
 
   if (externalLink) {
     return (
-      <Box pt={'lg'}>
-        <Box
-          component="a"
-          ref={observer.ref}
+      <Box pt={'lg'} style={{ textDecoration: 'none', position: 'relative' }}>
+        <a
           href={externalLink}
-          style={{ textDecoration: 'none' }}
-        >
-          {Inner}
-        </Box>
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            textDecoration: 'none',
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            bottom: 0,
+            right: 0,
+            zIndex: 1,
+          }}
+        />
+        <Box ref={observer.ref}>{Inner}</Box>
       </Box>
     );
   }

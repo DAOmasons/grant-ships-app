@@ -40,6 +40,7 @@ export const RTEditor = ({
       ref={editorContainerRef}
       bg={'transparent'}
       classNames={{ root: classes.editor }}
+      onClick={handleContentEditorFocus}
     >
       <RichTextEditor.Toolbar bg={'transparent'}>
         <RichTextEditor.ControlsGroup style={{ border: 'none' }}>
@@ -65,8 +66,6 @@ export const RTEditor = ({
         p="lg"
         fz="md"
         bg={'transparent'}
-        // mih={editorHeight}
-        // h="100%"
         onClick={handleContentEditorFocus}
       />
     </RichTextEditor>

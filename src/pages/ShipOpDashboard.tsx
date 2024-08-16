@@ -1,12 +1,15 @@
 import {
   Avatar,
   Box,
+  Group,
   Skeleton,
   Stack,
   Tabs,
   Text,
   useMantineTheme,
 } from '@mantine/core';
+import { Link as TipTapLink } from '@tiptap/extension-link';
+import { Image as TipTapImage } from '@tiptap/extension-image';
 import { MainSection, PageTitle } from '../layout/Sections';
 import { Link, useParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
@@ -14,14 +17,8 @@ import { DashShip, getShipDash } from '../queries/getShipDash';
 import { AppAlert } from '../components/UnderContruction';
 import { useTx } from '../hooks/useTx';
 import { notifications } from '@mantine/notifications';
-import { UpdateInput } from '../components/forms/UpdateInput';
 import { pinJSONToIPFS } from '../utils/ipfs/pin';
-import {
-  ContentSchema,
-  basicUpdateSchema,
-} from '../components/forms/validationSchemas/updateSchemas';
 import ShipAbi from '../abi/GrantShip.json';
-import { Tag } from '../constants/tags';
 import { Address } from 'viem';
 import { GAME_MANAGER, ZER0_ADDRESS } from '../constants/gameSetup';
 
@@ -30,6 +27,15 @@ import { getShipGrants } from '../queries/getShipGrants';
 import { GrantCard } from '../components/grant/GrantCard';
 import { GrantStatus } from '../types/common';
 import { useMemo } from 'react';
+import { Player } from '../types/ui';
+
+import { PlayerAvatar } from '../components/PlayerAvatar';
+import { TxButton } from '../components/TxButton';
+import { IconPlus } from '@tabler/icons-react';
+import { tiptapContentSchema } from '../components/forms/validationSchemas/tiptap';
+import { useEditor } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import { RTEditor } from '../components/RTEditor';
 
 export const ShipOpDashboard = () => {
   const { id } = useParams();
@@ -182,8 +188,7 @@ export const ShipOpDashboard = () => {
           )}
         </Tabs.Panel> */}
         <Tabs.Panel value="postUpdate">
-          <></>
-          {/* <PostUpdatePanel ship={shipData} /> */}
+          <PostUpdatePanel ship={shipData} />
         </Tabs.Panel>
       </Tabs>
     </MainSection>
@@ -244,10 +249,23 @@ export const GrantManager = ({
   // </Stack>
 };
 
+const defaultContent = { type: 'doc', content: [] };
 const PostUpdatePanel = ({ ship }: { ship?: DashShip }) => {
   const { tx } = useTx();
 
-  const handlePostUpdate = async (text: string, clear: () => void) => {
+  const editor = useEditor({
+    extensions: [
+      StarterKit,
+      TipTapLink,
+      TipTapImage.configure({ inline: true, allowBase64: true }),
+    ],
+    content: defaultContent,
+  });
+
+  const handlePostUpdate = async () => {
+    if (!editor) {
+      return;
+    }
     if (!ship || !ship.shipContractAddress) {
       notifications.show({
         title: 'Error',
@@ -258,20 +276,7 @@ const PostUpdatePanel = ({ ship }: { ship?: DashShip }) => {
       return;
     }
 
-    if (text === '' || text === null) {
-      notifications.show({
-        title: 'Error',
-        message: 'Update text is missing',
-        color: 'red',
-      });
-
-      return;
-    }
-
-    const metadata = basicUpdateSchema.safeParse({
-      text,
-      contentSchema: ContentSchema.BasicUpdate,
-    });
+    const metadata = tiptapContentSchema.safeParse(editor.getJSON());
 
     if (!metadata.success) {
       notifications.show({
@@ -284,7 +289,7 @@ const PostUpdatePanel = ({ ship }: { ship?: DashShip }) => {
     }
 
     const pinRes = await pinJSONToIPFS(metadata.data);
-
+    const tag = `TAG:SHIP_POST:${GAME_MANAGER.ADDRESS}`;
     if (typeof pinRes.IpfsHash !== 'string' && pinRes.IpfsHash[0] !== 'Q') {
       notifications.show({
         title: 'IPFS Upload Error',
@@ -299,18 +304,26 @@ const PostUpdatePanel = ({ ship }: { ship?: DashShip }) => {
         abi: ShipAbi,
         functionName: 'postUpdate',
         address: ship?.shipContractAddress as Address,
-        args: [Tag.ShipPostUpdate, [1n, pinRes.IpfsHash], ZER0_ADDRESS],
-      },
-      onComplete() {
-        clear?.();
+        args: [tag, [1n, pinRes.IpfsHash], ZER0_ADDRESS],
       },
     });
   };
 
   return (
-    <UpdateInput
-      imgUrl={ship?.profileMetadata?.imgUrl}
-      onClick={handlePostUpdate}
-    />
+    <>
+      <Group mt="40" mb="lg" w="100%" justify="space-between">
+        <PlayerAvatar
+          playerType={Player.Ship}
+          imgUrl={ship?.profileMetadata?.imgUrl}
+          name={ship?.name}
+        />
+        <Group gap="sm">
+          <TxButton leftSection={<IconPlus />} onClick={handlePostUpdate}>
+            Post
+          </TxButton>
+        </Group>
+      </Group>
+      <RTEditor editor={editor} growHeight={false} />
+    </>
   );
 };

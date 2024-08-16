@@ -12,7 +12,6 @@ import { GAME_MANAGER, NETWORK_ID, SHIP_AMOUNT } from '../constants/gameSetup';
 import { useReadContract } from 'wagmi';
 import { ADDR } from '../constants/addresses';
 import { GameStatus, GrantStatus } from '../types/common';
-// import { ProjectApproval } from '../components/dashboard/facilitator/ProjectApproval';
 import { FacPostUpdatePanel } from '../components/dashboard/facilitator/FacPostUpdatePanel';
 import { useVoting } from '../hooks/useVoting';
 import { getFacilitatorGrants } from '../queries/getFacilitatorGrants';

@@ -95,7 +95,7 @@ export const PostGrantDrawer = ({
       return;
     }
 
-    const FULL_TAG = `${playerType === Player.Project ? Tag.ProjectGrantUpdate : Tag.ShipGrantUpdate}:${projectId}`;
+    const FULL_TAG = `${playerType === Player.Project ? Tag.ProjectGrantUpdate : playerType === Player.Ship ? Tag.ShipGrantUpdate : Tag.FacilitatorGrantUpdate}:${projectId}`;
 
     tx({
       writeContractParams: {

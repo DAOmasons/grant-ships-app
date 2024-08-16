@@ -46,20 +46,9 @@ export const PostDrawer = ({
       Link,
       Image.configure({ inline: true, allowBase64: true }),
     ],
-    onUpdate({ editor }) {
-      const newContent = editor.getJSON();
-      localStorage.setItem(posterId, JSON.stringify(newContent));
-    },
     content,
   });
   const { tx } = useTx();
-
-  useEffect(() => {
-    const draft = localStorage.getItem(posterId);
-    if (editor && draft) {
-      editor.commands.setContent(JSON.parse(draft));
-    }
-  }, [posterId, editor]);
 
   const isOpen = location.pathname.includes('post');
 
@@ -121,7 +110,6 @@ export const PostDrawer = ({
         writeContractOptions: {
           onPollSuccess() {
             refetch?.();
-            localStorage.removeItem(posterId);
           },
         },
       });
