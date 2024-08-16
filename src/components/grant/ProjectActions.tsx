@@ -28,7 +28,8 @@ export const ProjectActions = () => {
     useDisclosure();
 
   const isApplicationStage =
-    !grant || (grant?.status && grant.status < GrantStatus.ApplicationApproved);
+    !grant || (grant?.status && grant.status < GrantStatus.MilestonesApproved);
+
   const isMilestonePlanning =
     grant?.status &&
     grant.status >= GrantStatus.ApplicationApproved &&
@@ -45,6 +46,20 @@ export const ProjectActions = () => {
   return (
     <>
       <Stack pos="fixed" top={'260px'} gap="sm">
+        {isApplicationStage && alreadyHasApplication && (
+          <Button
+            variant={
+              grant?.status && grant.status > GrantStatus.ApplicationApproved
+                ? 'menu-fade'
+                : 'menu'
+            }
+            leftSection={<IconPencil />}
+            onClick={openApplication}
+          >
+            <Text>Application</Text>
+          </Button>
+        )}
+
         {isMilestonePlanning && (
           <Button
             variant="menu"
@@ -70,16 +85,6 @@ export const ProjectActions = () => {
             <Text>Milestones</Text>
           </Button>
         )}
-        {isApplicationStage && alreadyHasApplication && (
-          <Button
-            variant="menu"
-            leftSection={<IconPencil />}
-            onClick={openApplication}
-          >
-            <Text>Resubmit Application</Text>
-          </Button>
-        )}
-
         {isApplicationStage && !alreadyHasApplication && (
           <Button
             variant="menu"

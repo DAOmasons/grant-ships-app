@@ -79,4 +79,25 @@
       color: var(--mantine-color-gray-9);
     }
   }
+  &[data-variant='menu-fade'] {
+    background-color: transparent;
+    color: var(--mantine-color-dark-3);
+
+    border-radius: var(--mantine-radius-xl);
+    width: fit-content;
+    height: 40px;
+    transition:
+      background-color 100ms,
+      color 100ms;
+    border: 1px solid var(--mantine-color-dark-6);
+    &:hover {
+      background-color: var(--mantine-color-dark-6);
+
+      color: var(--mantine-color-gray-2);
+    }
+    &:disabled {
+      background-color: var(--mantine-color-gray-6);
+      color: var(--mantine-color-gray-9);
+    }
+  }
 }

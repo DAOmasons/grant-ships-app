@@ -216,8 +216,9 @@ export const ApplicationDrawer = ({
       {alreadyHasApplication &&
         currentApplication.status !== GameStatus.Rejected && (
           <Text mb="md" size="sm" c={theme.colors.yellow[6]}>
-            You have already submitted an application. Resubmitting an old
-            application will overwrite the previous one.
+            WARNING: You have already submitted an application. Resubmitting an
+            old application will overwrite the previous one and restart the
+            grant process from the beginning.
           </Text>
         )}
       <Stack mb="md">

@@ -17,16 +17,10 @@ import { DashShip, getShipDash } from '../queries/getShipDash';
 import { AppAlert } from '../components/UnderContruction';
 import { useTx } from '../hooks/useTx';
 import { notifications } from '@mantine/notifications';
-import { UpdateInput } from '../components/forms/UpdateInput';
 import { pinJSONToIPFS } from '../utils/ipfs/pin';
-import {
-  ContentSchema,
-  basicUpdateSchema,
-} from '../components/forms/validationSchemas/updateSchemas';
 import ShipAbi from '../abi/GrantShip.json';
-import { Tag } from '../constants/tags';
 import { Address } from 'viem';
-import { DAO_MASONS, GAME_MANAGER, ZER0_ADDRESS } from '../constants/gameSetup';
+import { GAME_MANAGER, ZER0_ADDRESS } from '../constants/gameSetup';
 
 import { SettingsPanel } from '../components/dashboard/ship/SettingsPanel';
 import { getShipGrants } from '../queries/getShipGrants';
@@ -34,14 +28,13 @@ import { GrantCard } from '../components/grant/GrantCard';
 import { GrantStatus } from '../types/common';
 import { useMemo } from 'react';
 import { Player } from '../types/ui';
-import { getGatewayUrl } from '../utils/ipfs/get';
+
 import { PlayerAvatar } from '../components/PlayerAvatar';
 import { TxButton } from '../components/TxButton';
 import { IconPlus } from '@tabler/icons-react';
 import { tiptapContentSchema } from '../components/forms/validationSchemas/tiptap';
 import { useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import { useGameManager } from '../hooks/useGameMangers';
 import { RTEditor } from '../components/RTEditor';
 
 export const ShipOpDashboard = () => {

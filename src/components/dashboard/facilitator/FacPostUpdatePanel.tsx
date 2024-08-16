@@ -1,7 +1,5 @@
-import React from 'react';
 import { DAO_MASONS } from '../../../constants/gameSetup';
-import { UpdateInput } from '../../forms/UpdateInput';
-import { PINATA_GATEWAY, getGatewayUrl } from '../../../utils/ipfs/get';
+import { getGatewayUrl } from '../../../utils/ipfs/get';
 import { useTx } from '../../../hooks/useTx';
 import GameManagerAbi from '../../../abi/GameManager.json';
 import { ADDR } from '../../../constants/addresses';
