@@ -66,8 +66,6 @@ export const RTEditor = ({
         p="lg"
         fz="md"
         bg={'transparent'}
-        // mih={editorHeight}
-        // h="100%"
         onClick={handleContentEditorFocus}
       />
     </RichTextEditor>

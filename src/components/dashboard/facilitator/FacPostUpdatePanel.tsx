@@ -7,10 +7,7 @@ import GameManagerAbi from '../../../abi/GameManager.json';
 import { ADDR } from '../../../constants/addresses';
 import { Tag } from '../../../constants/tags';
 import { notifications } from '@mantine/notifications';
-import {
-  ContentSchema,
-  basicUpdateSchema,
-} from '../../forms/validationSchemas/updateSchemas';
+
 import { pinJSONToIPFS } from '../../../utils/ipfs/pin';
 import { Group } from '@mantine/core';
 import { PlayerAvatar } from '../../PlayerAvatar';
@@ -73,6 +70,7 @@ export const FacPostUpdatePanel = () => {
       },
       onComplete() {
         refetchGameManager();
+        editor?.commands.setContent(defaultContent);
       },
     });
   };
@@ -91,7 +89,7 @@ export const FacPostUpdatePanel = () => {
           </TxButton>
         </Group>
       </Group>
-      <RTEditor editor={editor} />
+      <RTEditor editor={editor} growHeight={false} />
     </>
   );
 };
