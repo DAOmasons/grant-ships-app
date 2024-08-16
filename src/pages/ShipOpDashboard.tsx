@@ -42,6 +42,7 @@ import { tiptapContentSchema } from '../components/forms/validationSchemas/tipta
 import { useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import { useGameManager } from '../hooks/useGameMangers';
+import { RTEditor } from '../components/RTEditor';
 
 export const ShipOpDashboard = () => {
   const { id } = useParams();
@@ -316,17 +317,20 @@ const PostUpdatePanel = ({ ship }: { ship?: DashShip }) => {
   };
 
   return (
-    <Group mt="40" mb="lg" w="100%" justify="space-between">
-      <PlayerAvatar
-        playerType={Player.Ship}
-        imgUrl={ship?.profileMetadata?.imgUrl}
-        name={ship?.name}
-      />
-      <Group gap="sm">
-        <TxButton leftSection={<IconPlus />} onClick={handlePostUpdate}>
-          Post
-        </TxButton>
+    <>
+      <Group mt="40" mb="lg" w="100%" justify="space-between">
+        <PlayerAvatar
+          playerType={Player.Ship}
+          imgUrl={ship?.profileMetadata?.imgUrl}
+          name={ship?.name}
+        />
+        <Group gap="sm">
+          <TxButton leftSection={<IconPlus />} onClick={handlePostUpdate}>
+            Post
+          </TxButton>
+        </Group>
       </Group>
-    </Group>
+      <RTEditor editor={editor} growHeight={false} />
+    </>
   );
 };
