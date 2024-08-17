@@ -9,7 +9,7 @@ import {
   Tooltip,
   useMantineTheme,
 } from '@mantine/core';
-import { useBreakpoints, useMobile } from '../../hooks/useBreakpoint';
+import { useBreakpoints } from '../../hooks/useBreakpoint';
 import { useGrant } from '../../hooks/useGrant';
 import {
   IconCircle,
@@ -79,24 +79,12 @@ export const TopSection = () => {
                 >
                   {shipName ? charLimit(shipName, 18) : ''}
                 </Link>
-                {/* </Text> */}
-                {/* <Text fz="xl" fw={600} c={theme.colors.dark[0]} lineClamp={1}> */}
                 {' <> '}
-                {/* </Text> */}
-                {/* <Text
-                fz="xl"
-                fw={600}
-                component={Link}
-                to={project?.id ? `/project/${project?.id}` : ''}
-                c={theme.colors.dark[0]}
-                lineClamp={1}
-              > */}
-
                 <Link
                   to={project?.id ? `/project/${project?.id}` : ''}
                   style={{ textDecoration: 'none' }}
                 >
-                  {projectName}
+                  {projectName ? charLimit(projectName, 18) : ''}
                 </Link>
               </Text>
             </Group>
