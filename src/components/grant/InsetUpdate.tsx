@@ -1,7 +1,8 @@
-import { Box, Divider, Group, Text } from '@mantine/core';
+import { Box, Divider, Flex, Group, Text } from '@mantine/core';
 import { ReactNode, useMemo } from 'react';
 import { Bold } from '../Typography';
 import { secondsToShortRelativeTime } from '../../utils/time';
+import { useMobile } from '../../hooks/useBreakpoint';
 
 export const InsetUpdate = ({
   posterName,
@@ -16,14 +17,16 @@ export const InsetUpdate = ({
   posterName: string;
   timestamp: number;
 }) => {
+  const isMobile = useMobile();
+
   const time = useMemo(() => {
     if (!timestamp) return '';
     return secondsToShortRelativeTime(timestamp);
   }, [timestamp]);
   return (
     <>
-      <Box pl={50}>
-        <Group gap={8} mb="xs">
+      <Box pl={isMobile ? 0 : 50}>
+        <Flex gap={8} mb="xs" style={{ flexShrink: 0, flexWrap: 'wrap' }}>
           {symbolUI}
           <Text size="sm">
             <Bold>{posterName}</Bold> {tagline}
@@ -34,7 +37,7 @@ export const InsetUpdate = ({
           <Text size="sm" opacity={0.8}>
             {time}
           </Text>
-        </Group>
+        </Flex>
         <Box mb="lg">{bodyUI}</Box>
       </Box>
       <Divider mb="lg" />

@@ -8,6 +8,7 @@ import { ReactNode, useMemo } from 'react';
 import { Player } from '../../types/ui';
 import { RTDisplay } from '../RTDisplay';
 import { Content } from '@tiptap/react';
+import { useMobile } from '../../hooks/useBreakpoint';
 
 export const UserUpdate = ({
   content,
@@ -24,6 +25,7 @@ export const UserUpdate = ({
   timestamp: number;
   innerUI?: ReactNode;
 }) => {
+  const isMobile = useMobile();
   const time = useMemo(() => {
     if (!timestamp) return '';
     return secondsToShortRelativeTime(timestamp);
@@ -48,7 +50,7 @@ export const UserUpdate = ({
           </>
         )}
       </Group>
-      <Box pl={50} mb="lg">
+      <Box pl={isMobile ? 0 : 50} mb="lg">
         <RTDisplay content={content} minified={true} />
         {innerUI}
       </Box>

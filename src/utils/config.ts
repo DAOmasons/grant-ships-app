@@ -5,6 +5,7 @@ import { safe, walletConnect } from 'wagmi/connectors';
 
 export const appNetwork =
   import.meta.env.VITE_RUNTIME_ENV === 'dev' ? arbitrumSepolia : arbitrum;
+
 const appRpc =
   import.meta.env.VITE_RUNTIME_ENV === 'dev'
     ? import.meta.env.VITE_RPC_URL_TESTNET

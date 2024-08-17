@@ -9,7 +9,7 @@ import {
   Tooltip,
   useMantineTheme,
 } from '@mantine/core';
-import { useBreakpoints } from '../../hooks/useBreakpoint';
+import { useBreakpoints, useMobile } from '../../hooks/useBreakpoint';
 import { useGrant } from '../../hooks/useGrant';
 import {
   IconCircle,
@@ -21,6 +21,7 @@ import { ReactNode } from 'react';
 import { GameStatus, GrantStatus } from '../../types/common';
 import { Link } from 'react-router-dom';
 import { formatEther } from 'viem';
+import { charLimit } from '../../utils/helpers';
 
 export const TopSection = () => {
   const { project, ship, isLoadingGrant, grant } = useGrant();
@@ -70,35 +71,33 @@ export const TopSection = () => {
           {isLoadingGrant ? (
             <Skeleton w={175} h={20} mb="sm" />
           ) : (
-            <Group gap={8}>
-              <Text
-                fz="xl"
-                fw={600}
-                c={theme.colors.dark[0]}
-                mb={'sm'}
-                lineClamp={1}
-              >
-                {shipName}
-              </Text>
-              <Text
-                fz="xl"
-                fw={600}
-                c={theme.colors.dark[0]}
-                mb={'sm'}
-                lineClamp={1}
-              >
+            <Group mb={'sm'}>
+              <Text fz="xl" fw={600} c={theme.colors.dark[0]} lineClamp={1}>
+                <Link
+                  to={project?.id ? `/project/${project?.id}` : ''}
+                  style={{ textDecoration: 'none' }}
+                >
+                  {shipName ? charLimit(shipName, 18) : ''}
+                </Link>
+                {/* </Text> */}
+                {/* <Text fz="xl" fw={600} c={theme.colors.dark[0]} lineClamp={1}> */}
                 {' <> '}
-              </Text>
-              <Text
+                {/* </Text> */}
+                {/* <Text
                 fz="xl"
                 fw={600}
                 component={Link}
                 to={project?.id ? `/project/${project?.id}` : ''}
                 c={theme.colors.dark[0]}
-                mb={'sm'}
                 lineClamp={1}
-              >
-                {projectName}
+              > */}
+
+                <Link
+                  to={project?.id ? `/project/${project?.id}` : ''}
+                  style={{ textDecoration: 'none' }}
+                >
+                  {projectName}
+                </Link>
               </Text>
             </Group>
           )}
@@ -147,7 +146,11 @@ export const TopSection = () => {
         px={8}
         py={2}
         bg={theme.colors.dark[8]}
-        style={{ borderRadius: '6px' }}
+        style={{
+          borderRadius: '6px',
+          flexDirection: isTablet ? 'column' : 'row',
+          alignItems: 'start',
+        }}
       >
         <ApplicationProgress />
         <MilestonesProgress />
