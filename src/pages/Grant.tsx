@@ -38,10 +38,13 @@ import {
 } from '../components/grant/ShipActions';
 import { GrantApplication } from '../components/grant/GrantApplication';
 import { GrantMilestones } from '../components/grant/GrantMilestones';
+import { useMediaQuery } from '@mantine/hooks';
 
 export const Grant = () => {
   const theme = useMantineTheme();
-  const { isMobile, isLaptop } = useBreakpoints();
+  const { isMobile } = useBreakpoints();
+
+  const isObstructed = useMediaQuery(`(max-width: 1064px`);
 
   const navigate = useNavigate();
   const { id } = useParams();
@@ -54,7 +57,7 @@ export const Grant = () => {
         <MainSection maw={640}>
           <PageTitle title="Grant" />
           <TopSection />
-          <ActionsPanelMobile />
+          {isObstructed && <ActionsPanelMobile />}
 
           <SegmentedControl
             value={layout || 'timeline'}
@@ -101,6 +104,7 @@ export const Grant = () => {
             <Route path="*" element={<GrantTimeline />} />
           </Routes>
         </MainSection>
+        {!isObstructed && <ActionsPanel />}
       </Flex>
     </GrantContextProvider>
   );
