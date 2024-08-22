@@ -18,6 +18,7 @@ import { ADDR } from './constants/addresses';
 import { RegisterProject } from './pages/RegisterProject';
 import { RichTextUpdate } from './components/feed/RichTextUpdate';
 import { Grant } from './pages/Grant';
+import { BadgeManager } from './pages/BadgeManager';
 
 export const ClientRoutes = () => {
   return (
@@ -44,6 +45,7 @@ export const ClientRoutes = () => {
           </VoteProvider>
         }
       />
+      <Route path="badges" element={<BadgeManager />} />
       <Route path="ship-operator-dashboard/:id" element={<ShipOpDashboard />} />
       <Route path="my-projects/:id" element={<MyProjects />} />
       {/* <Route path="dev-panel" element={<DevPanel />} /> */}

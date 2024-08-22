@@ -1,4 +1,4 @@
-import { Box, Stack, Tabs, Text, useMantineTheme } from '@mantine/core';
+import { Box, Button, Stack, Tabs, Text, useMantineTheme } from '@mantine/core';
 import { MainSection, PageTitle } from '../layout/Sections';
 
 import { useQuery } from '@tanstack/react-query';
@@ -16,6 +16,8 @@ import { FacPostUpdatePanel } from '../components/dashboard/facilitator/FacPostU
 import { useVoting } from '../hooks/useVoting';
 import { getFacilitatorGrants } from '../queries/getFacilitatorGrants';
 import { GrantCard } from '../components/grant/GrantCard';
+import { IconBadge } from '@tabler/icons-react';
+import { Link } from 'react-router-dom';
 
 export const FacilitatorDashboard = () => {
   const { data: shipData, isLoading: shipsLoading } = useQuery({
@@ -130,10 +132,10 @@ export const FacilitatorDashboard = () => {
         idleGrants: null,
       };
 
-    let needsAttention = [];
-    let idleGrants = [];
+    const needsAttention = [];
+    const idleGrants = [];
 
-    for (let grant of grants) {
+    for (const grant of grants) {
       if (grant.status === GrantStatus.MilestonesApproved) {
         needsAttention.push(grant);
       } else {
@@ -149,6 +151,14 @@ export const FacilitatorDashboard = () => {
   return (
     <MainSection>
       <PageTitle title="Facilitator Dashboard" />
+      <Button
+        variant="default"
+        leftSection={<IconBadge />}
+        component={Link}
+        to="/badges"
+      >
+        Manage Badges
+      </Button>
       <Tabs defaultValue="game-manager">
         <Tabs.List mb="xl" grow>
           <Tabs.Tab value="game-manager">Game</Tabs.Tab>

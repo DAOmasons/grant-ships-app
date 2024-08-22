@@ -17,6 +17,7 @@ export const FacilitatorActions = () => {
   const { grant, project, ship, refetchGrant } = useGrant();
 
   const isReadyToApprove = grant?.status === GrantStatus.MilestonesApproved;
+
   return (
     <>
       <Stack pos="fixed" top={'260px'} gap="sm">

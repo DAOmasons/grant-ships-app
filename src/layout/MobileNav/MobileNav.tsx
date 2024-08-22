@@ -49,11 +49,7 @@ export const MobileNav = () => {
 
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const {
-    data: grants,
-    isLoading,
-    error,
-  } = useQuery({
+  const { data: grants } = useQuery({
     queryKey: ['user-project-grants', address, GAME_MANAGER.ADDRESS],
     queryFn: () => getAllUserGrants(address as Address, GAME_MANAGER.ADDRESS),
     enabled: !!address,
