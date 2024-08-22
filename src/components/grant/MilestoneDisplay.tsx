@@ -22,6 +22,7 @@ import { formatEther } from 'viem';
 import { secondsToLongDate } from '../../utils/time';
 import { RTDisplay } from '../RTDisplay';
 import { MilestoneVerdictControls } from './MilestoneVerdictControls';
+import { useMobile } from '../../hooks/useBreakpoint';
 
 export const MilestoneDisplay = ({
   updateData,
@@ -29,6 +30,8 @@ export const MilestoneDisplay = ({
   updateData: GrantUpdate;
 }) => {
   const theme = useMantineTheme();
+  const isMobile = useMobile();
+
   const { currentMilestoneSet, project, isShipOperator } = useGrant();
 
   const milestoneId = updateData.id.split(':')[0];
@@ -88,7 +91,7 @@ export const MilestoneDisplay = ({
           </Text>
         </Group>
       </Box>
-      <Box pl={50} mb="lg">
+      <Box pl={isMobile ? 0 : 50} mb="lg">
         <Group gap="8" mb="lg">
           <PlayerAvatar
             playerType={Player.Project}

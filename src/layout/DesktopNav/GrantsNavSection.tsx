@@ -4,13 +4,11 @@ import {
   Box,
   Divider,
   Flex,
-  Group,
   Text,
   useMantineTheme,
 } from '@mantine/core';
 import { useQuery } from '@tanstack/react-query';
-import { useAccount, useChainId } from 'wagmi';
-import { useUserData } from '../../hooks/useUserState';
+import { useAccount } from 'wagmi';
 import { getAllUserGrants } from '../../queries/getProjectGrants';
 import { GAME_MANAGER } from '../../constants/gameSetup';
 import { Address } from 'viem';

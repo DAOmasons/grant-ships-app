@@ -2,7 +2,7 @@ import { MainSection, PageTitle } from '../../layout/Sections';
 import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
 import { getBuiltGraphSDK } from '../../.graphclient';
-import { useChainId } from 'wagmi';
+import { useChainId, useConfig } from 'wagmi';
 import { resolveProjectMetadata } from '../../resolvers/projectResolvers';
 import { Box, Divider, Group, Skeleton, Text } from '@mantine/core';
 import { resolveRichTextMetadata } from '../../resolvers/updates';
@@ -16,7 +16,7 @@ import { Player } from '../../types/ui';
 import { getGatewayUrl } from '../../utils/ipfs/get';
 import { DAO_MASONS } from '../../constants/gameSetup';
 
-export const getRTUpdate = async (id: string, chainId: number) => {
+const getRTUpdate = async (id: string, chainId: number) => {
   const { getRTUpdate } = getBuiltGraphSDK();
 
   const { Update } = await getRTUpdate({

@@ -1,5 +1,11 @@
 import { MainSection, PageTitle } from '../layout/Sections';
-import { Center, Flex, SegmentedControl, useMantineTheme } from '@mantine/core';
+import {
+  Center,
+  Flex,
+  Group,
+  SegmentedControl,
+  useMantineTheme,
+} from '@mantine/core';
 import { useBreakpoints } from '../hooks/useBreakpoint';
 import {
   Route,
@@ -18,15 +24,27 @@ import { GrantContextProvider } from '../contexts/GrantContext';
 import { useGrant } from '../hooks/useGrant';
 import { GrantTimeline } from '../components/grant/GrantTimeline';
 import { useUserData } from '../hooks/useUserState';
-import { ProjectActions } from '../components/grant/ProjectActions';
-import { FacilitatorActions } from '../components/grant/FacilitatorActions';
-import { ShipActions } from '../components/grant/ShipActions';
+import {
+  ProjectActions,
+  ProjectActionsMobile,
+} from '../components/grant/ProjectActions';
+import {
+  FacActionsMobile,
+  FacilitatorActions,
+} from '../components/grant/FacilitatorActions';
+import {
+  ShipActions,
+  ShipActionsMobile,
+} from '../components/grant/ShipActions';
 import { GrantApplication } from '../components/grant/GrantApplication';
 import { GrantMilestones } from '../components/grant/GrantMilestones';
+import { useMediaQuery } from '@mantine/hooks';
 
 export const Grant = () => {
   const theme = useMantineTheme();
   const { isMobile } = useBreakpoints();
+
+  const isObstructed = useMediaQuery(`(max-width: 1064px`);
 
   const navigate = useNavigate();
   const { id } = useParams();
@@ -39,6 +57,8 @@ export const Grant = () => {
         <MainSection maw={640}>
           <PageTitle title="Grant" />
           <TopSection />
+          {isObstructed && <ActionsPanelMobile />}
+
           <SegmentedControl
             value={layout || 'timeline'}
             size={isMobile ? 'sm' : 'md'}
@@ -75,6 +95,7 @@ export const Grant = () => {
             ]}
             onChange={(value) => navigate(`/grant/${id}/${value}`)}
           />
+
           <Routes>
             <Route path="/" element={<GrantTimeline />} />
             <Route path="application" element={<GrantApplication />} />
@@ -83,7 +104,7 @@ export const Grant = () => {
             <Route path="*" element={<GrantTimeline />} />
           </Routes>
         </MainSection>
-        <ActionsPanel />
+        {!isObstructed && <ActionsPanel />}
       </Flex>
     </GrantContextProvider>
   );
@@ -104,5 +125,23 @@ const ActionsPanel = () => {
         <ProjectActions />
       ) : null}
     </Flex>
+  );
+};
+
+const ActionsPanelMobile = () => {
+  const { userData } = useUserData();
+
+  const { isFacilitator } = userData || {};
+  const { isProjectMember, isShipOperator } = useGrant();
+  return (
+    <Group mb="md">
+      {isFacilitator ? (
+        <FacActionsMobile />
+      ) : isShipOperator ? (
+        <ShipActionsMobile />
+      ) : isProjectMember ? (
+        <ProjectActionsMobile />
+      ) : null}
+    </Group>
   );
 };

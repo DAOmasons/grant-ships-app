@@ -29,9 +29,12 @@ import {
 import { MilestoneSetVerdictControls } from './MilestoneSetVerdictControls';
 import { useMemo } from 'react';
 import classes from '../../styles/Spoiler.module.css';
+import { useMobile } from '../../hooks/useBreakpoint';
 
 export const MilestoneSetDisplay = ({ doc }: { doc: MilestonesDisplay }) => {
   const theme = useMantineTheme();
+  const isMobile = useMobile();
+
   const { status, id, resolvedMilestones } = doc;
   const { project, grant, isShipOperator } = useGrant();
 
@@ -135,7 +138,7 @@ export const MilestoneSetDisplay = ({ doc }: { doc: MilestonesDisplay }) => {
           </Text>
         </Group>
       </Box>
-      <Box pl={50} mb="lg">
+      <Box pl={isMobile ? 0 : 50} mb="lg">
         <Group gap={8} mb={'lg'}>
           <PlayerAvatar
             playerType={Player.Project}

@@ -1,8 +1,12 @@
 import {
+  Avatar,
+  AvatarGroup,
   Box,
   Button,
+  Divider,
   Flex,
   Menu,
+  MenuItem,
   Modal,
   Stack,
   Text,
@@ -30,6 +34,11 @@ import {
 import { notifications } from '@mantine/notifications';
 import { useUserData } from '../../hooks/useUserState';
 
+import { getAllUserGrants } from '../../queries/getProjectGrants';
+import { GAME_MANAGER } from '../../constants/gameSetup';
+import { Address } from 'viem';
+import { useQuery } from '@tanstack/react-query';
+
 export const MobileNav = () => {
   const theme = useMantineTheme();
   const location = useLocation();
@@ -39,6 +48,16 @@ export const MobileNav = () => {
   const { disconnect } = useDisconnect();
 
   const [menuOpen, setMenuOpen] = useState(false);
+
+  const {
+    data: grants,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ['user-project-grants', address, GAME_MANAGER.ADDRESS],
+    queryFn: () => getAllUserGrants(address as Address, GAME_MANAGER.ADDRESS),
+    enabled: !!address,
+  });
 
   const isCorrectNetwork = appNetwork.id === chain?.id;
   return (
@@ -77,12 +96,54 @@ export const MobileNav = () => {
                 </Flex>
               );
             })}
+
           {isConnected ? (
             <Menu opened={menuOpen} onChange={setMenuOpen} offset={12}>
               <Menu.Target>
                 <IconChevronUp size={24} />
               </Menu.Target>
               <Menu.Dropdown w="100%">
+                {grants?.length && grants.length > 0 && (
+                  <Box mb="md" mt="sm">
+                    <Text fz="sm" ml="sm" mb="sm" c={theme.colors.gray[6]}>
+                      Grants
+                    </Text>
+                    {grants?.map((grant, index) => (
+                      <MenuItem
+                        component={Link}
+                        to={`grant/${grant.id}`}
+                        key={grant.id}
+                        mb={grants?.length - 1 === index ? 'md' : 0}
+                      >
+                        <Flex align="center" gap={8}>
+                          <AvatarGroup>
+                            <Avatar
+                              src={grant.project.metadata.imgUrl}
+                              size={24}
+                            />
+                            <Avatar
+                              src={grant.ship.profileMetadata.imgUrl}
+                              size={24}
+                            />
+                          </AvatarGroup>
+                          <Text
+                            fz="sm"
+                            style={{
+                              flexGrow: 1,
+                              overflow: 'hidden',
+                              textOverflow: 'ellipsis',
+                              whiteSpace: 'nowrap',
+                            }}
+                          >
+                            {grant.project?.name} {'<>'} {grant.ship?.name}
+                          </Text>
+                        </Flex>
+                      </MenuItem>
+                    ))}
+
+                    <Divider />
+                  </Box>
+                )}
                 {!isCorrectNetwork && (
                   <Menu.Item
                     onClick={() => {

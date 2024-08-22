@@ -33,6 +33,7 @@ import { GameStatus } from '../../types/common';
 import classes from '../../styles/Spoiler.module.css';
 import { ApplicationVerdictControls } from './ApplicationVerdictControls';
 import { useMemo } from 'react';
+import { useMobile } from '../../hooks/useBreakpoint';
 
 export const ApplicationDisplay = ({
   amountRequested,
@@ -55,6 +56,8 @@ export const ApplicationDisplay = ({
 }) => {
   const theme = useMantineTheme();
   const { project, grant, isShipOperator } = useGrant();
+
+  const isMobile = useMobile();
 
   const formattedTime = secondsToLongDate(dueDate);
   const formattedAmount = formatEther(BigInt(amountRequested));
@@ -135,7 +138,7 @@ export const ApplicationDisplay = ({
           </>
         )}
       </Group>
-      <Box pl={50} mb="lg">
+      <Box pl={isMobile ? 0 : 50} mb="lg">
         <Group gap={8} mb={'lg'}>
           <PlayerAvatar
             playerType={Player.Project}
