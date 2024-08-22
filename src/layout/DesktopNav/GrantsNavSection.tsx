@@ -4,21 +4,16 @@ import {
   Box,
   Divider,
   Flex,
-  Group,
-  Menu,
   Text,
   useMantineTheme,
 } from '@mantine/core';
 import { useQuery } from '@tanstack/react-query';
-import { useAccount, useChainId } from 'wagmi';
-import { useUserData } from '../../hooks/useUserState';
+import { useAccount } from 'wagmi';
 import { getAllUserGrants } from '../../queries/getProjectGrants';
 import { GAME_MANAGER } from '../../constants/gameSetup';
 import { Address } from 'viem';
 import { Link, useLocation } from 'react-router-dom';
 import classes from './DesktoNavStyles.module.css';
-import { useState } from 'react';
-import { IconChevronUp } from '@tabler/icons-react';
 
 export const GrantsNavSection = () => {
   const { address } = useAccount();
