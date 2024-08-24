@@ -12012,7 +12012,7 @@ export const getBadgeManagerDocument = gql`
       address
       symbol
     }
-    templates {
+    templates(where: {exists: {_eq: true}}) {
       ...BadgeTemplate
     }
   }

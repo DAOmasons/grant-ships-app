@@ -43,7 +43,7 @@ query getBadgeManager($shamanId: String!) {
       address
       symbol
     }
-    templates {
+    templates(where: { exists: { _eq: true } }) {
       ...BadgeTemplate
     }
   }

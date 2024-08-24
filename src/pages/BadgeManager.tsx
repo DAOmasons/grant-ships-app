@@ -172,7 +172,9 @@ export const BadgeManager = () => {
           opened={createOpened}
           onClose={closeCreate}
           shaman={shaman}
-          onPollSuccess={() => {}}
+          onPollSuccess={() => {
+            refetchShaman();
+          }}
         />
       </MainSection>
       <Box pos="relative" mt="82">
