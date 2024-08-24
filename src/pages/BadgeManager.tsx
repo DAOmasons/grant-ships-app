@@ -26,19 +26,28 @@ import {
   IconUser,
 } from '@tabler/icons-react';
 import { getGatewayUrl } from '../utils/ipfs/get';
-import { pinFileToIPFS } from '../utils/ipfs/pin';
+import { pinFileToIPFS, pinJSONToIPFS } from '../utils/ipfs/pin';
 import { PageDrawer } from '../components/PageDrawer';
 import { useDisclosure } from '@mantine/hooks';
 import { IconTrash } from '@tabler/icons-react';
 import { useQuery } from '@tanstack/react-query';
-import { getBadgeShamans, ResolvedTemplate } from '../queries/getBadgeManager';
+import {
+  BadgeManager as BadgeShaman,
+  getBadgeShaman,
+  ResolvedTemplate,
+} from '../queries/getBadgeManager';
 import { useTx } from '../hooks/useTx';
 import ScaffoldShaman from '../abi/ScaffoldShaman.json';
 import { BADGE_SHAMAN } from '../constants/addresses';
 import { TxButton } from '../components/TxButton';
 import { useForm, zodResolver } from '@mantine/form';
 import { z } from 'zod';
-import { badgeTemplateForm } from '../components/forms/validationSchemas/badge';
+import {
+  badgeTemplateForm,
+  badgeTemplateSchema,
+} from '../components/forms/validationSchemas/badge';
+import { parseEther } from 'viem';
+import { notifications } from '@mantine/notifications';
 
 export const BadgeManager = () => {
   const theme = useMantineTheme();
@@ -50,9 +59,11 @@ export const BadgeManager = () => {
 
   const { data: shaman } = useQuery({
     queryKey: ['badge-shaman'],
-    queryFn: getBadgeShamans,
+    queryFn: getBadgeShaman,
     enabled: true,
   });
+
+  if (!shaman) return null;
 
   const selectTemplate = (template: ResolvedTemplate) => {
     if (shaman) {
@@ -123,7 +134,11 @@ export const BadgeManager = () => {
             </Avatar>
           ))}
         </Flex>
-        <BadgeTemplateDrawer opened={createOpened} onClose={closeCreate} />
+        <BadgeTemplateDrawer
+          opened={createOpened}
+          onClose={closeCreate}
+          shaman={shaman}
+        />
       </MainSection>
       <Box pos="relative" mt="82">
         <Stack pos="fixed">
@@ -170,7 +185,9 @@ type BadgeTemplateForm = z.infer<typeof badgeTemplateForm>;
 const BadgeTemplateDrawer = ({
   opened,
   onClose,
+  shaman,
 }: {
+  shaman?: BadgeShaman;
   opened: boolean;
   onClose: () => void;
 }) => {
@@ -178,11 +195,12 @@ const BadgeTemplateDrawer = ({
     initialValues: {
       name: '',
       description: '',
-      amount: 0n,
-      isVotingToken: false,
-      hasFixedAmount: false,
-      isSlash: false,
+      amount: 0,
+      isVotingToken: 'nv',
+      hasFixedAmount: 'fixed',
+      isSlash: 'award',
     },
+    validateInputOnBlur: true,
     validate: zodResolver(badgeTemplateForm),
   });
 
@@ -209,41 +227,68 @@ const BadgeTemplateDrawer = ({
     }
   };
 
-  const createBadge = () => {
-    const values = {
-      name: '',
-      description: '',
-      ipfsHash,
-      amount: 0n,
-      isVotingToken: false,
-      hasFixedAmount: false,
-      isSlash: false,
-      exists: true,
+  const createBadge = async (values: BadgeTemplateForm) => {
+    const amount =
+      values.hasFixedAmount === 'fixed'
+        ? parseEther(values.amount.toString())
+        : 0n;
+
+    const badgeMetadata = {
+      avatarIPFSHash: ipfsHash,
+      description: values.description,
     };
+
+    const validation = badgeTemplateSchema.safeParse(badgeMetadata);
+
+    if (!validation.success) {
+      notifications.show({
+        title: 'Validation Error',
+        message: "Badge metadata doesn't match the schema",
+        color: 'red',
+      });
+      return;
+    }
+
+    const ipfsRes = await pinJSONToIPFS(badgeMetadata);
+
+    if (typeof ipfsRes.IpfsHash !== 'string') {
+      notifications.show({
+        title: 'Error',
+        message: 'Failed to pin badge metadata to IPFS',
+        color: 'red',
+      });
+      return;
+    }
+
+    const isVotingToken = values.isVotingToken === 'v';
+    const isSlash = values.isSlash === 'slash';
+    const isFixedAmount = values.hasFixedAmount === 'fixed';
+
+    const args = [
+      [
+        values.name,
+        [1n, values.description],
+        amount,
+        isVotingToken,
+        isFixedAmount,
+        isSlash,
+        true,
+      ],
+    ];
 
     tx({
       writeContractParams: {
         abi: ScaffoldShaman,
         functionName: 'createBadge',
         address: BADGE_SHAMAN,
-        args: [
-          [
-            values.name,
-            [1n, values.description],
-            values.amount,
-            values.isVotingToken,
-            values.hasFixedAmount,
-            values.isSlash,
-            true,
-          ],
-        ],
+        args,
       },
     });
   };
 
   return (
     <PageDrawer opened={opened} onClose={onClose} closeOnBack>
-      <Box mb="lg">
+      <Box pb="xl">
         <Text mb="lg" fz="lg" fw={600}>
           Create a Badge
         </Text>
@@ -286,7 +331,11 @@ const BadgeTemplateDrawer = ({
               )}
             </FileButton>
           </Box>
-          <TxButton leftSection={<IconPlus />} onClick={createBadge}>
+          <TxButton
+            disabled={form.isValid() === false || ipfsHash === ''}
+            leftSection={<IconPlus />}
+            onClick={() => createBadge(form.values)}
+          >
             Create Template
           </TxButton>
         </Group>
@@ -310,30 +359,38 @@ const BadgeTemplateDrawer = ({
             defaultValue="fixed"
             label="Fixed or Dynamic Value"
             description={`Will the value of the token be decided at the time awarding a badge, or is it fixed?`}
-            {...form.getInputProps('isVotingToken')}
+            {...form.getInputProps('hasFixedAmount')}
           >
             <Stack gap="sm" mt="sm">
               <Radio label="Fixed" value="fixed" />
               <Radio label="Dynamic" value="dynamic" />
             </Stack>
           </Radio.Group>
-          <NumberInput
-            label="Badge Award Amount"
-            placeholder="Grant Ripper!"
-            required
-            hideControls={true}
-            {...form.getInputProps('amount')}
-          />
+          {form.values.hasFixedAmount === 'fixed' && (
+            <NumberInput
+              label="Badge Award Amount"
+              placeholder="Grant Ripper!"
+              required={form.values.hasFixedAmount === 'fixed'}
+              hideControls={true}
+              min={0}
+              {...form.getInputProps('amount')}
+            />
+          )}
           <Radio.Group
             required
-            defaultValue="nv"
             label="Badge Reward Token"
-            {...form.getInputProps('isV')}
-            description={`Will the tokens awarded be in voting token {} or non-voting token {}?`}
+            description={`Will the tokens awarded be in voting token ${shaman?.sharesToken.symbol} or non-voting token ${shaman?.lootToken.symbol}?`}
+            {...form.getInputProps('isVotingToken')}
           >
             <Stack gap="sm" mt="sm">
-              <Radio label="Award WARP Token" value="nv" />
-              <Radio label="Award VOTEWARP Token" value="v" />
+              <Radio
+                label={`Award ${shaman?.lootToken.symbol} Token`}
+                value="nv"
+              />
+              <Radio
+                label={`Award ${shaman?.sharesToken.symbol} Token`}
+                value="v"
+              />
             </Stack>
           </Radio.Group>
           <Radio.Group
@@ -341,6 +398,7 @@ const BadgeTemplateDrawer = ({
             defaultValue="award"
             label="Award/Slash"
             description="Will this badge award a balance of token the recipient or will it slash."
+            {...form.getInputProps('isSlash')}
           >
             <Stack gap="sm" mt="sm">
               <Radio label="Award" value="award" />

@@ -4,11 +4,17 @@ import { BADGE_SHAMAN } from '../constants/addresses';
 import { SUBGRAPH_URL } from '../constants/gameSetup';
 import { getIpfsJson } from '../utils/ipfs/get';
 
+export type BadgeManager = {
+  address: string;
+  lootToken: { address: string; symbol: string };
+  sharesToken: { address: string; symbol: string };
+  templates: BadgeTemplateFragment[];
+};
 export type ResolvedTemplate = BadgeTemplateFragment & {
   templateMetadata: { description: string; avatarIPFSHash: string };
 };
 
-export const getBadgeShamans = async () => {
+export const getBadgeShaman = async () => {
   try {
     const { getBadgeManager } = getBuiltGraphSDK({
       apiEndpoint: SUBGRAPH_URL,
@@ -52,8 +58,16 @@ export const getBadgeShamans = async () => {
         : null;
       return {
         address: shaman?.address,
+        lootToken: {
+          address: shaman?.lootToken?.address,
+          symbol: shaman?.lootToken?.symbol,
+        },
+        sharesToken: {
+          address: shaman?.sharesToken?.address,
+          symbol: shaman?.sharesToken?.symbol,
+        },
         templates: withMetadata as ResolvedTemplate[],
-      };
+      } as BadgeManager;
     }
   } catch (error) {
     console.error(error);
