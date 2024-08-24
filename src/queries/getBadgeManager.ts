@@ -2,16 +2,20 @@ import { BadgeTemplateFragment, getBuiltGraphSDK } from '../.graphclient';
 import { badgeTemplateSchema } from '../components/forms/validationSchemas/badge';
 import { BADGE_SHAMAN } from '../constants/addresses';
 import { SUBGRAPH_URL } from '../constants/gameSetup';
-import { getIpfsJson } from '../utils/ipfs/get';
+import { getGatewayUrl, getIpfsJson } from '../utils/ipfs/get';
 
 export type BadgeManager = {
   address: string;
   lootToken: { address: string; symbol: string };
   sharesToken: { address: string; symbol: string };
-  templates: BadgeTemplateFragment[];
+  templates: ResolvedTemplate[];
 };
 export type ResolvedTemplate = BadgeTemplateFragment & {
-  templateMetadata: { description: string; avatarIPFSHash: string };
+  templateMetadata: {
+    description: string;
+    avatarIPFSHash: string;
+    imgUrl: string;
+  };
 };
 
 export const getBadgeShaman = async () => {
@@ -34,28 +38,39 @@ export const getBadgeShaman = async () => {
               const metadata = await getIpfsJson(
                 template.metadata?.pointer as string
               );
-
+              console.log(
+                'template.metadata?.pointer',
+                template.metadata?.pointer
+              );
               const validated = badgeTemplateSchema.safeParse(metadata);
 
               if (!validated.success) {
                 console.warn('Invalid metadata', validated.error);
-
+                console.warn('Metadata', metadata);
                 return {
                   ...template,
                   templateMetadata: {
                     description: '',
                     avatarIPFSHash: '',
+                    imgUrl: '',
                   },
                 };
               }
 
               return {
                 ...template,
-                templateMetadata: validated,
+                templateMetadata: {
+                  ...validated.data,
+                  imgUrl: getGatewayUrl(validated.data.avatarIPFSHash),
+                },
               };
             })
           )
         : null;
+
+      if (!withMetadata) {
+        throw new Error('No metadata found');
+      }
       return {
         address: shaman?.address,
         lootToken: {

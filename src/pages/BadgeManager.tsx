@@ -46,8 +46,9 @@ import {
   badgeTemplateForm,
   badgeTemplateSchema,
 } from '../components/forms/validationSchemas/badge';
-import { parseEther } from 'viem';
+import { formatEther, parseEther } from 'viem';
 import { notifications } from '@mantine/notifications';
+import { Bold } from '../components/Typography';
 
 export const BadgeManager = () => {
   const theme = useMantineTheme();
@@ -57,7 +58,7 @@ export const BadgeManager = () => {
   const [selectedTemplate, setSelectedTemplate] =
     useState<ResolvedTemplate | null>(null);
 
-  const { data: shaman } = useQuery({
+  const { data: shaman, refetch: refetchShaman } = useQuery({
     queryKey: ['badge-shaman'],
     queryFn: getBadgeShaman,
     enabled: true,
@@ -82,7 +83,7 @@ export const BadgeManager = () => {
         <Group align="start" gap="md" w="100%" mb="xl">
           <Avatar
             bg={theme.colors.dark[5]}
-            src={''}
+            src={selectedTemplate?.templateMetadata.imgUrl || undefined}
             size={240}
             radius={'sm'}
             pos="relative"
@@ -90,9 +91,9 @@ export const BadgeManager = () => {
             <IconBadge size={80} />
           </Avatar>
           {selectedTemplate ? (
-            <Box w={280}>
+            <Stack w={280} gap="xs">
               <Text fw={600} lineClamp={1}>
-                Badge Name
+                {selectedTemplate.name}
               </Text>
               <Text
                 fz={'sm'}
@@ -101,13 +102,40 @@ export const BadgeManager = () => {
                 style={{
                   wordBreak: 'break-word',
                   whiteSpace: 'pre-wrap',
-                  width: '40%',
                 }}
-              ></Text>
-            </Box>
+              >
+                {selectedTemplate.templateMetadata.description}
+              </Text>
+              <Text fz={'sm'} opacity={0.8}>
+                <Bold>Badge ID: </Bold>
+                {selectedTemplate.badgeId}
+              </Text>
+              <Text
+                fz={'sm'}
+                opacity={0.8}
+                c={
+                  selectedTemplate?.isSlash
+                    ? theme.colors.red[6]
+                    : theme.colors.green[6]
+                }
+              >
+                <Bold>
+                  {selectedTemplate?.isSlash ? 'Penalty: ' : 'Reward: '}{' '}
+                </Bold>
+                {selectedTemplate?.hasFixedAmount
+                  ? formatEther(selectedTemplate.amount)
+                  : 'Dynamic (determined at mint)'}
+              </Text>
+              <Text fz={'sm'} opacity={0.8}>
+                <Bold>Token: </Bold>
+                {selectedTemplate.isVotingToken
+                  ? `${shaman.sharesToken.symbol} (Voting Token)`
+                  : `${shaman.lootToken.symbol} (Non-Voting Token)`}
+              </Text>
+            </Stack>
           ) : (
-            <Box w={280}>
-              <Text fw={600} lineClamp={1} mb="sm">
+            <Stack w={280} gap="xs">
+              <Text fw={600} lineClamp={1}>
                 Badge Manager
               </Text>
               <Text
@@ -123,13 +151,19 @@ export const BadgeManager = () => {
                   ? 'Select a badge from below to award it to any user'
                   : 'Create a new badge to award it to an user'}
               </Text>
-            </Box>
+            </Stack>
           )}
         </Group>
         <Divider mb="xl" />
         <Flex gap={'md'} wrap={'wrap'}>
           {shaman?.templates?.map((template) => (
-            <Avatar key={template.badgeId} size={94} radius="sm">
+            <Avatar
+              key={template.badgeId}
+              size={94}
+              radius="sm"
+              src={template.templateMetadata.imgUrl || ''}
+              onClick={() => selectTemplate(template)}
+            >
               <IconBadge />
             </Avatar>
           ))}
@@ -138,6 +172,7 @@ export const BadgeManager = () => {
           opened={createOpened}
           onClose={closeCreate}
           shaman={shaman}
+          onPollSuccess={() => {}}
         />
       </MainSection>
       <Box pos="relative" mt="82">
@@ -186,10 +221,12 @@ const BadgeTemplateDrawer = ({
   opened,
   onClose,
   shaman,
+  onPollSuccess,
 }: {
   shaman?: BadgeShaman;
   opened: boolean;
   onClose: () => void;
+  onPollSuccess: () => void;
 }) => {
   const form = useForm({
     initialValues: {
@@ -269,7 +306,7 @@ const BadgeTemplateDrawer = ({
     const args = [
       [
         values.name,
-        [1n, values.description],
+        [1n, ipfsRes.IpfsHash],
         amount,
         isVotingToken,
         isFixedAmount,
@@ -284,6 +321,14 @@ const BadgeTemplateDrawer = ({
         functionName: 'createBadge',
         address: BADGE_SHAMAN,
         args,
+      },
+      writeContractOptions: {
+        onPollSuccess: () => {
+          form.reset();
+          setIpfsHash('');
+          setLoading(false);
+          onPollSuccess();
+        },
       },
     });
   };
