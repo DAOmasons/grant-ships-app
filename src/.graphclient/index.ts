@@ -11230,6 +11230,11 @@ export type UpdateBodyFragment = (
   & { content?: Maybe<Pick<RawMetadata, 'pointer'>> }
 );
 
+export type BadgeTemplateFragment = (
+  Pick<BadgeTemplate, 'amount' | 'badgeId' | 'exists' | 'hasFixedAmount' | 'isSlash' | 'isVotingToken' | 'name'>
+  & { metadata?: Maybe<Pick<RawMetadata, 'pointer' | 'protocol'>> }
+);
+
 export type getBadgeManagerQueryVariables = Exact<{
   shamanId: Scalars['String'];
 }>;
@@ -11775,6 +11780,21 @@ export const UpdateBodyFragmentDoc = gql`
   timestamp
 }
     ` as unknown as DocumentNode<UpdateBodyFragment, unknown>;
+export const BadgeTemplateFragmentDoc = gql`
+    fragment BadgeTemplate on BadgeTemplate {
+  amount
+  badgeId
+  exists
+  hasFixedAmount
+  isSlash
+  isVotingToken
+  name
+  metadata {
+    pointer
+    protocol
+  }
+}
+    ` as unknown as DocumentNode<BadgeTemplateFragment, unknown>;
 export const FacShipDataFragmentDoc = gql`
     fragment FacShipData on GrantShip {
   id
@@ -11993,21 +12013,11 @@ export const getBadgeManagerDocument = gql`
       symbol
     }
     templates {
-      amount
-      badgeId
-      exists
-      hasFixedAmount
-      isSlash
-      isVotingToken
-      name
-      metadata {
-        pointer
-        protocol
-      }
+      ...BadgeTemplate
     }
   }
 }
-    ` as unknown as DocumentNode<getBadgeManagerQuery, getBadgeManagerQueryVariables>;
+    ${BadgeTemplateFragmentDoc}` as unknown as DocumentNode<getBadgeManagerQuery, getBadgeManagerQueryVariables>;
 export const facDashShipDataDocument = gql`
     query facDashShipData($gameId: String!) {
   shipApplicants: GrantShip(

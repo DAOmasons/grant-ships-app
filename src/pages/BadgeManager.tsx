@@ -30,11 +30,20 @@ import { pinFileToIPFS } from '../utils/ipfs/pin';
 import { PageDrawer } from '../components/PageDrawer';
 import { useDisclosure } from '@mantine/hooks';
 import { IconTrash } from '@tabler/icons-react';
+import { useQuery } from '@tanstack/react-query';
+import { getBadgeShamans } from '../queries/getBadgeManager';
 
 export const BadgeManager = () => {
   const theme = useMantineTheme();
   const [createOpened, { close: closeCreate, open: openCreate }] =
     useDisclosure(false);
+  const { data } = useQuery({
+    queryKey: ['badge-shaman'],
+    queryFn: getBadgeShamans,
+    enabled: true,
+  });
+
+  console.log('data', data);
 
   const badges = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
