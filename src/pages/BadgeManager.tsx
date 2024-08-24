@@ -31,27 +31,44 @@ import { PageDrawer } from '../components/PageDrawer';
 import { useDisclosure } from '@mantine/hooks';
 import { IconTrash } from '@tabler/icons-react';
 import { useQuery } from '@tanstack/react-query';
-import { getBadgeShamans } from '../queries/getBadgeManager';
+import { getBadgeShamans, ResolvedTemplate } from '../queries/getBadgeManager';
+import { useTx } from '../hooks/useTx';
+import ScaffoldShaman from '../abi/ScaffoldShaman.json';
+import { BADGE_SHAMAN } from '../constants/addresses';
+import { TxButton } from '../components/TxButton';
+import { useForm, zodResolver } from '@mantine/form';
+import { z } from 'zod';
+import { badgeTemplateForm } from '../components/forms/validationSchemas/badge';
 
 export const BadgeManager = () => {
   const theme = useMantineTheme();
   const [createOpened, { close: closeCreate, open: openCreate }] =
     useDisclosure(false);
-  const { data } = useQuery({
+
+  const [selectedTemplate, setSelectedTemplate] =
+    useState<ResolvedTemplate | null>(null);
+
+  const { data: shaman } = useQuery({
     queryKey: ['badge-shaman'],
     queryFn: getBadgeShamans,
     enabled: true,
   });
 
-  console.log('data', data);
-
-  const badges = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  const selectTemplate = (template: ResolvedTemplate) => {
+    if (shaman) {
+      if (selectedTemplate?.badgeId === template.badgeId) {
+        setSelectedTemplate(null);
+      } else {
+        setSelectedTemplate(template);
+      }
+    }
+  };
 
   return (
     <Flex h={'200vh'}>
       <MainSection>
         <PageTitle title="Badge Manager" />
-        <Group align="start" gap="xl" w="100%" mb="xl">
+        <Group align="start" gap="md" w="100%" mb="xl">
           <Avatar
             bg={theme.colors.dark[5]}
             src={''}
@@ -61,36 +78,52 @@ export const BadgeManager = () => {
           >
             <IconBadge size={80} />
           </Avatar>
-          <Box w="40%">
-            <Text fw={600} lineClamp={1}>
-              Badge Name
-            </Text>
-            <Text
-              fz={'sm'}
-              opacity={0.8}
-              lineClamp={4}
-              style={{
-                wordBreak: 'break-word',
-                whiteSpace: 'pre-wrap',
-                width: '100%',
-              }}
-            >
-              sdfalkjdfl;aksjdflkasjdflkjasdlfkjasdlkfj asdlkfj asdflkjha sdfk
-              sadf jasdlkf asdklfjsaldk fjlsakd fjsak ldfjlsakd fas
-              dfjsalkdjfla;skdjf l;askdj flka;s df asdflkj asdflkjsadlkf alsdkjf
-              asdf sa dfas d fsjhglaskdjg asldkfjlaskdfjlask;djf ;laskdfj
-            </Text>
-          </Box>
+          {selectedTemplate ? (
+            <Box w={280}>
+              <Text fw={600} lineClamp={1}>
+                Badge Name
+              </Text>
+              <Text
+                fz={'sm'}
+                opacity={0.8}
+                lineClamp={4}
+                style={{
+                  wordBreak: 'break-word',
+                  whiteSpace: 'pre-wrap',
+                  width: '40%',
+                }}
+              ></Text>
+            </Box>
+          ) : (
+            <Box w={280}>
+              <Text fw={600} lineClamp={1} mb="sm">
+                Badge Manager
+              </Text>
+              <Text
+                fz={'sm'}
+                opacity={0.8}
+                lineClamp={4}
+                style={{
+                  wordBreak: 'break-word',
+                  whiteSpace: 'pre-wrap',
+                }}
+              >
+                {shaman?.templates && shaman?.templates.length > 0
+                  ? 'Select a badge from below to award it to any user'
+                  : 'Create a new badge to award it to an user'}
+              </Text>
+            </Box>
+          )}
         </Group>
         <Divider mb="xl" />
         <Flex gap={'md'} wrap={'wrap'}>
-          {badges.map((badge) => (
-            <Avatar key={badge} size={94} radius="sm">
+          {shaman?.templates?.map((template) => (
+            <Avatar key={template.badgeId} size={94} radius="sm">
               <IconBadge />
             </Avatar>
           ))}
         </Flex>
-        <BadgeDrawer opened={createOpened} onClose={closeCreate} />
+        <BadgeTemplateDrawer opened={createOpened} onClose={closeCreate} />
       </MainSection>
       <Box pos="relative" mt="82">
         <Stack pos="fixed">
@@ -101,41 +134,60 @@ export const BadgeManager = () => {
           >
             Create Badge
           </Button>
-          <Button
-            onClick={openCreate}
-            leftSection={<IconUser />}
-            variant="menu"
-          >
-            Apply Badge
-          </Button>
-          <Button
-            onClick={openCreate}
-            leftSection={<IconPencil />}
-            variant="menu"
-          >
-            Edit Badge
-          </Button>
-          <Button
-            onClick={openCreate}
-            leftSection={<IconTrash />}
-            variant="menu"
-          >
-            Delete Badge
-          </Button>
+          {selectedTemplate && (
+            <>
+              <Button
+                onClick={openCreate}
+                leftSection={<IconUser />}
+                variant="menu"
+              >
+                Apply Badge
+              </Button>
+              <Button
+                onClick={openCreate}
+                leftSection={<IconPencil />}
+                variant="menu"
+              >
+                Edit Badge
+              </Button>
+              <Button
+                onClick={openCreate}
+                leftSection={<IconTrash />}
+                variant="menu"
+              >
+                Delete Badge
+              </Button>
+            </>
+          )}
         </Stack>
       </Box>
     </Flex>
   );
 };
 
-const BadgeDrawer = ({
+type BadgeTemplateForm = z.infer<typeof badgeTemplateForm>;
+
+const BadgeTemplateDrawer = ({
   opened,
   onClose,
 }: {
   opened: boolean;
   onClose: () => void;
 }) => {
+  const form = useForm({
+    initialValues: {
+      name: '',
+      description: '',
+      amount: 0n,
+      isVotingToken: false,
+      hasFixedAmount: false,
+      isSlash: false,
+    },
+    validate: zodResolver(badgeTemplateForm),
+  });
+
   const theme = useMantineTheme();
+  const { tx } = useTx();
   const [isLoading, setLoading] = useState(false);
   const [ipfsHash, setIpfsHash] = useState('');
 
@@ -157,68 +209,112 @@ const BadgeDrawer = ({
     }
   };
 
+  const createBadge = () => {
+    const values = {
+      name: '',
+      description: '',
+      ipfsHash,
+      amount: 0n,
+      isVotingToken: false,
+      hasFixedAmount: false,
+      isSlash: false,
+      exists: true,
+    };
+
+    tx({
+      writeContractParams: {
+        abi: ScaffoldShaman,
+        functionName: 'createBadge',
+        address: BADGE_SHAMAN,
+        args: [
+          [
+            values.name,
+            [1n, values.description],
+            values.amount,
+            values.isVotingToken,
+            values.hasFixedAmount,
+            values.isSlash,
+            true,
+          ],
+        ],
+      },
+    });
+  };
+
   return (
     <PageDrawer opened={opened} onClose={onClose} closeOnBack>
       <Box mb="lg">
         <Text mb="lg" fz="lg" fw={600}>
           Create a Badge
         </Text>
-        <Box pos="relative" display={'inline-block'} mb="xl">
-          <Avatar
-            bg={theme.colors.dark[5]}
-            src={canPreview ? avatarPreview : undefined}
-            size={240}
-            radius={'sm'}
-            pos="relative"
-          >
-            <InputLabel
-              c={theme.colors.dark[0]}
-              pos="absolute"
-              bottom={'55%'}
-              right={'42%'}
-              required
-            ></InputLabel>
-          </Avatar>
-          <FileButton
-            onChange={handleUpload}
-            accept={'image/png,image/jpeg,image/webp'}
-          >
-            {(props) => (
-              <ActionIcon
-                {...props}
-                pos={'absolute'}
-                bottom={'45%'}
-                left={'38%'}
-                radius="xl"
-                bg={'rgba(255, 255, 255, 0.05)'}
-                loading={isLoading}
-                disabled={isLoading}
-                w={'50px'}
-                h={'50px'}
-              >
-                <IconCameraPlus />
-              </ActionIcon>
-            )}
-          </FileButton>
-        </Box>
+        <Group align="start" justify="space-between">
+          <Box pos="relative" display={'inline-block'} mb="xl">
+            <Avatar
+              bg={theme.colors.dark[5]}
+              src={canPreview ? avatarPreview : undefined}
+              size={240}
+              radius={'sm'}
+              pos="relative"
+            >
+              <InputLabel
+                c={theme.colors.dark[0]}
+                pos="absolute"
+                bottom={'55%'}
+                right={'42%'}
+                required
+              ></InputLabel>
+            </Avatar>
+            <FileButton
+              onChange={handleUpload}
+              accept={'image/png,image/jpeg,image/webp'}
+            >
+              {(props) => (
+                <ActionIcon
+                  {...props}
+                  pos={'absolute'}
+                  bottom={'45%'}
+                  left={'38%'}
+                  radius="xl"
+                  bg={'rgba(255, 255, 255, 0.05)'}
+                  loading={isLoading}
+                  disabled={isLoading}
+                  w={'50px'}
+                  h={'50px'}
+                >
+                  <IconCameraPlus />
+                </ActionIcon>
+              )}
+            </FileButton>
+          </Box>
+          <TxButton leftSection={<IconPlus />} onClick={createBadge}>
+            Create Template
+          </TxButton>
+        </Group>
         <Stack>
-          <TextInput label="Badge Name" placeholder="Grant Ripper!" required />
+          <TextInput
+            label="Badge Name"
+            placeholder="Grant Ripper!"
+            required
+            {...form.getInputProps('name')}
+          />
           <Textarea
             autosize
             required
             minRows={4}
             label="Badge Description"
             placeholder="A description of the badge. What is it for? What are the rules for getting assigned this badge?"
+            {...form.getInputProps('description')}
           />
           <Radio.Group
             required
-            defaultValue="nv"
+            defaultValue="fixed"
             label="Fixed or Dynamic Value"
             description={`Will the value of the token be decided at the time awarding a badge, or is it fixed?`}
+            {...form.getInputProps('isVotingToken')}
           >
             <Stack gap="sm" mt="sm">
-              <Radio label="Fixed" value="nv" />
-              <Radio label="Dynamic" value="v" />
+              <Radio label="Fixed" value="fixed" />
+              <Radio label="Dynamic" value="dynamic" />
             </Stack>
           </Radio.Group>
           <NumberInput
@@ -226,11 +322,13 @@ const BadgeDrawer = ({
             placeholder="Grant Ripper!"
             required
             hideControls={true}
+            {...form.getInputProps('amount')}
           />
           <Radio.Group
             required
             defaultValue="nv"
             label="Badge Reward Token"
+            {...form.getInputProps('isV')}
             description={`Will the tokens awarded be in voting token {} or non-voting token {}?`}
           >
             <Stack gap="sm" mt="sm">

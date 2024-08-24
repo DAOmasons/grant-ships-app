@@ -4,9 +4,9 @@ import { BADGE_SHAMAN } from '../constants/addresses';
 import { SUBGRAPH_URL } from '../constants/gameSetup';
 import { getIpfsJson } from '../utils/ipfs/get';
 
-type ResolvedTemplate = (BadgeTemplateFragment & {
+export type ResolvedTemplate = BadgeTemplateFragment & {
   templateMetadata: { description: string; avatarIPFSHash: string };
-})[];
+};
 
 export const getBadgeShamans = async () => {
   try {
@@ -52,7 +52,7 @@ export const getBadgeShamans = async () => {
         : null;
       return {
         address: shaman?.address,
-        templates: withMetadata as ResolvedTemplate,
+        templates: withMetadata as ResolvedTemplate[],
       };
     }
   } catch (error) {

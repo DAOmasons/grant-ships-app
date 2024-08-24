@@ -1,0 +1,459 @@
+[
+  {
+    "inputs": [
+      { "internalType": "bytes", "name": "_initParams", "type": "bytes" }
+    ],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "badgeId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "recipient",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "components": [
+          { "internalType": "uint256", "name": "protocol", "type": "uint256" },
+          { "internalType": "string", "name": "pointer", "type": "string" }
+        ],
+        "indexed": false,
+        "internalType": "struct Metadata",
+        "name": "comment",
+        "type": "tuple"
+      }
+    ],
+    "name": "BadgeAssigned",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "badgeId",
+        "type": "uint256"
+      }
+    ],
+    "name": "BadgeRemoved",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "badgeId",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "name",
+        "type": "string"
+      },
+      {
+        "components": [
+          { "internalType": "uint256", "name": "protocol", "type": "uint256" },
+          { "internalType": "string", "name": "pointer", "type": "string" }
+        ],
+        "indexed": false,
+        "internalType": "struct Metadata",
+        "name": "metadata",
+        "type": "tuple"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "amount",
+        "type": "uint256"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "isVotingToken",
+        "type": "bool"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "hasFixedAmount",
+        "type": "bool"
+      },
+      {
+        "indexed": false,
+        "internalType": "bool",
+        "name": "isSlash",
+        "type": "bool"
+      }
+    ],
+    "name": "BadgeSaved",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint8",
+        "name": "gateIndex",
+        "type": "uint8"
+      },
+      {
+        "indexed": false,
+        "internalType": "enum GateType",
+        "name": "gateType",
+        "type": "uint8"
+      },
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "hatId",
+        "type": "uint256"
+      }
+    ],
+    "name": "GateUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "components": [
+          {
+            "internalType": "enum GateType",
+            "name": "gateType",
+            "type": "uint8"
+          },
+          { "internalType": "uint256", "name": "hatId", "type": "uint256" }
+        ],
+        "indexed": false,
+        "internalType": "struct Gate[]",
+        "name": "gates",
+        "type": "tuple[]"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "dao",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "hats",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "lootTokenAddress",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "sharesTokenAddress",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "lootTokenSymbol",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "sharesTokenSymbol",
+        "type": "string"
+      }
+    ],
+    "name": "Inintialized",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256[]", "name": "_badgeIds", "type": "uint256[]" },
+      { "internalType": "uint256[]", "name": "_amounts", "type": "uint256[]" },
+      {
+        "components": [
+          { "internalType": "uint256", "name": "protocol", "type": "uint256" },
+          { "internalType": "string", "name": "pointer", "type": "string" }
+        ],
+        "internalType": "struct Metadata[]",
+        "name": "_comments",
+        "type": "tuple[]"
+      },
+      {
+        "internalType": "address[]",
+        "name": "_recipients",
+        "type": "address[]"
+      }
+    ],
+    "name": "applyBadges",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "badgeNonce",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "name": "badges",
+    "outputs": [
+      { "internalType": "string", "name": "name", "type": "string" },
+      {
+        "components": [
+          { "internalType": "uint256", "name": "protocol", "type": "uint256" },
+          { "internalType": "string", "name": "pointer", "type": "string" }
+        ],
+        "internalType": "struct Metadata",
+        "name": "metadata",
+        "type": "tuple"
+      },
+      { "internalType": "uint256", "name": "amount", "type": "uint256" },
+      { "internalType": "bool", "name": "isVotingToken", "type": "bool" },
+      { "internalType": "bool", "name": "hasFixedAmount", "type": "bool" },
+      { "internalType": "bool", "name": "isSlash", "type": "bool" },
+      { "internalType": "bool", "name": "exists", "type": "bool" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "components": [
+          { "internalType": "string", "name": "name", "type": "string" },
+          {
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "protocol",
+                "type": "uint256"
+              },
+              { "internalType": "string", "name": "pointer", "type": "string" }
+            ],
+            "internalType": "struct Metadata",
+            "name": "metadata",
+            "type": "tuple"
+          },
+          { "internalType": "uint256", "name": "amount", "type": "uint256" },
+          { "internalType": "bool", "name": "isVotingToken", "type": "bool" },
+          { "internalType": "bool", "name": "hasFixedAmount", "type": "bool" },
+          { "internalType": "bool", "name": "isSlash", "type": "bool" },
+          { "internalType": "bool", "name": "exists", "type": "bool" }
+        ],
+        "internalType": "struct Badge",
+        "name": "_badge",
+        "type": "tuple"
+      }
+    ],
+    "name": "createBadge",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "dao",
+    "outputs": [
+      { "internalType": "contract IBaal", "name": "", "type": "address" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "name": "gates",
+    "outputs": [
+      { "internalType": "enum GateType", "name": "gateType", "type": "uint8" },
+      { "internalType": "uint256", "name": "hatId", "type": "uint256" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "_badgeId", "type": "uint256" }
+    ],
+    "name": "getBadge",
+    "outputs": [
+      {
+        "components": [
+          { "internalType": "string", "name": "name", "type": "string" },
+          {
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "protocol",
+                "type": "uint256"
+              },
+              { "internalType": "string", "name": "pointer", "type": "string" }
+            ],
+            "internalType": "struct Metadata",
+            "name": "metadata",
+            "type": "tuple"
+          },
+          { "internalType": "uint256", "name": "amount", "type": "uint256" },
+          { "internalType": "bool", "name": "isVotingToken", "type": "bool" },
+          { "internalType": "bool", "name": "hasFixedAmount", "type": "bool" },
+          { "internalType": "bool", "name": "isSlash", "type": "bool" },
+          { "internalType": "bool", "name": "exists", "type": "bool" }
+        ],
+        "internalType": "struct Badge",
+        "name": "badge",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint8", "name": "_gateIndex", "type": "uint8" }
+    ],
+    "name": "getGate",
+    "outputs": [
+      {
+        "components": [
+          {
+            "internalType": "enum GateType",
+            "name": "gateType",
+            "type": "uint8"
+          },
+          { "internalType": "uint256", "name": "hatId", "type": "uint256" }
+        ],
+        "internalType": "struct Gate",
+        "name": "gate",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "hats",
+    "outputs": [
+      { "internalType": "contract IHats", "name": "", "type": "address" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_sender", "type": "address" }
+    ],
+    "name": "isDAO",
+    "outputs": [{ "internalType": "bool", "name": "result", "type": "bool" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "_sender", "type": "address" },
+      { "internalType": "uint256", "name": "_hatId", "type": "uint256" }
+    ],
+    "name": "isWearer",
+    "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "loot",
+    "outputs": [
+      { "internalType": "contract IBaalToken", "name": "", "type": "address" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint8", "name": "_gateIndex", "type": "uint8" },
+      { "internalType": "enum GateType", "name": "_gateType", "type": "uint8" },
+      { "internalType": "uint256", "name": "_hatId", "type": "uint256" }
+    ],
+    "name": "manageGate",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "_badgeId", "type": "uint256" }
+    ],
+    "name": "removeBadge",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "_badgeId", "type": "uint256" },
+      {
+        "components": [
+          { "internalType": "string", "name": "name", "type": "string" },
+          {
+            "components": [
+              {
+                "internalType": "uint256",
+                "name": "protocol",
+                "type": "uint256"
+              },
+              { "internalType": "string", "name": "pointer", "type": "string" }
+            ],
+            "internalType": "struct Metadata",
+            "name": "metadata",
+            "type": "tuple"
+          },
+          { "internalType": "uint256", "name": "amount", "type": "uint256" },
+          { "internalType": "bool", "name": "isVotingToken", "type": "bool" },
+          { "internalType": "bool", "name": "hasFixedAmount", "type": "bool" },
+          { "internalType": "bool", "name": "isSlash", "type": "bool" },
+          { "internalType": "bool", "name": "exists", "type": "bool" }
+        ],
+        "internalType": "struct Badge",
+        "name": "_badge",
+        "type": "tuple"
+      }
+    ],
+    "name": "replaceBadge",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "shares",
+    "outputs": [
+      { "internalType": "contract IBaalToken", "name": "", "type": "address" }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+]
