@@ -260,6 +260,8 @@ const BadgeTemplateDrawer = ({
       return;
     }
 
+    onClose();
+
     const isVotingToken = values.isVotingToken === 'v';
     const isSlash = values.isSlash === 'slash';
     const isFixedAmount = values.hasFixedAmount === 'fixed';
