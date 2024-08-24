@@ -20,12 +20,16 @@ import { getBadgeShaman, ResolvedTemplate } from '../queries/getBadgeManager';
 import { formatEther } from 'viem';
 import { Bold } from '../components/Typography';
 import { BadgeTemplateDrawer } from '../components/dashboard/facilitator/BadgeTemplateDrawer';
+import { DeleteBadgeModal } from '../components/dashboard/facilitator/DeleteBadgeModal';
 
 export const BadgeManager = () => {
   const theme = useMantineTheme();
   const [createOpened, { close: closeCreate, open: openCreate }] =
     useDisclosure(false);
   const [editOpened, { close: closeEdit, open: openEdit }] =
+    useDisclosure(false);
+
+  const [deleteOpened, { close: closeDelete, open: openDelete }] =
     useDisclosure(false);
 
   const [selectedTemplate, setSelectedTemplate] =
@@ -161,16 +165,28 @@ export const BadgeManager = () => {
             }}
           />
         )}
+        {selectedTemplate && deleteOpened && (
+          <DeleteBadgeModal
+            opened={deleteOpened}
+            onClose={closeDelete}
+            template={selectedTemplate}
+            onPollSuccess={() => {
+              refetchShaman();
+            }}
+          />
+        )}
       </MainSection>
       <Box pos="relative" mt="82">
         <Stack pos="fixed">
-          <Button
-            onClick={openCreate}
-            leftSection={<IconPlus />}
-            variant="menu"
-          >
-            Create Badge
-          </Button>
+          {!selectedTemplate && (
+            <Button
+              onClick={openCreate}
+              leftSection={<IconPlus />}
+              variant="menu"
+            >
+              Create Badge
+            </Button>
+          )}
           {selectedTemplate && (
             <>
               <Button
@@ -189,7 +205,15 @@ export const BadgeManager = () => {
               </Button>
               <Button
                 onClick={openCreate}
+                leftSection={<IconPlus />}
+                variant="menu"
+              >
+                Create Badge
+              </Button>
+              <Button
+                onClick={openDelete}
                 leftSection={<IconTrash />}
+                c={theme.colors.red[6]}
                 variant="menu"
               >
                 Delete Badge

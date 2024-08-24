@@ -58,7 +58,11 @@ export const BadgeTemplateDrawer = ({
         ? Number(formatEther(selectedTemplate.amount))
         : 0,
       isVotingToken: selectedTemplate?.isVotingToken ? 'v' : 'nv',
-      hasFixedAmount: selectedTemplate?.hasFixedAmount ? 'fixed' : 'dynamic',
+      hasFixedAmount: selectedTemplate
+        ? selectedTemplate?.hasFixedAmount
+          ? 'fixed'
+          : 'dynamic'
+        : 'fixed',
       isSlash: selectedTemplate?.isSlash ? 'slash' : 'award',
     },
     validateInputOnBlur: true,
