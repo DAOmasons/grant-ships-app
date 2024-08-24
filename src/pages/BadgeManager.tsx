@@ -25,6 +25,8 @@ export const BadgeManager = () => {
   const theme = useMantineTheme();
   const [createOpened, { close: closeCreate, open: openCreate }] =
     useDisclosure(false);
+  const [editOpened, { close: closeEdit, open: openEdit }] =
+    useDisclosure(false);
 
   const [selectedTemplate, setSelectedTemplate] =
     useState<ResolvedTemplate | null>(null);
@@ -147,6 +149,18 @@ export const BadgeManager = () => {
             refetchShaman();
           }}
         />
+        {selectedTemplate && (
+          <BadgeTemplateDrawer
+            key={selectedTemplate.badgeId}
+            opened={editOpened}
+            onClose={closeEdit}
+            shaman={shaman}
+            selectedTemplate={selectedTemplate}
+            onPollSuccess={() => {
+              refetchShaman();
+            }}
+          />
+        )}
       </MainSection>
       <Box pos="relative" mt="82">
         <Stack pos="fixed">
@@ -164,10 +178,10 @@ export const BadgeManager = () => {
                 leftSection={<IconUser />}
                 variant="menu"
               >
-                Apply Badge
+                Award Badge
               </Button>
               <Button
-                onClick={openCreate}
+                onClick={openEdit}
                 leftSection={<IconPencil />}
                 variant="menu"
               >

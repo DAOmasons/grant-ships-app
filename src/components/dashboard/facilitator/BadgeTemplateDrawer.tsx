@@ -22,10 +22,13 @@ import { useTx } from '../../../hooks/useTx';
 import { useState } from 'react';
 import { getGatewayUrl } from '../../../utils/ipfs/get';
 import { pinFileToIPFS, pinJSONToIPFS } from '../../../utils/ipfs/pin';
-import { parseEther } from 'viem';
+import { formatEther, parseEther } from 'viem';
 import { notifications } from '@mantine/notifications';
 import ScaffoldShaman from '../../../abi/ScaffoldShaman.json';
-import { BadgeManager } from '../../../queries/getBadgeManager';
+import {
+  BadgeManager,
+  ResolvedTemplate,
+} from '../../../queries/getBadgeManager';
 import { BADGE_SHAMAN } from '../../../constants/addresses';
 import { PageDrawer } from '../../PageDrawer';
 import { z } from 'zod';
@@ -39,20 +42,24 @@ export const BadgeTemplateDrawer = ({
   onClose,
   shaman,
   onPollSuccess,
+  selectedTemplate,
 }: {
   shaman?: BadgeManager;
   opened: boolean;
   onClose: () => void;
   onPollSuccess: () => void;
+  selectedTemplate?: ResolvedTemplate;
 }) => {
   const form = useForm({
     initialValues: {
-      name: '',
-      description: '',
-      amount: 0,
-      isVotingToken: 'nv',
-      hasFixedAmount: 'fixed',
-      isSlash: 'award',
+      name: selectedTemplate?.name || '',
+      description: selectedTemplate?.templateMetadata?.description || '',
+      amount: selectedTemplate?.amount
+        ? Number(formatEther(selectedTemplate.amount))
+        : 0,
+      isVotingToken: selectedTemplate?.isVotingToken ? 'v' : 'nv',
+      hasFixedAmount: selectedTemplate?.hasFixedAmount ? 'fixed' : 'dynamic',
+      isSlash: selectedTemplate?.isSlash ? 'slash' : 'award',
     },
     validateInputOnBlur: true,
     validate: zodResolver(badgeTemplateForm),
@@ -61,7 +68,9 @@ export const BadgeTemplateDrawer = ({
   const theme = useMantineTheme();
   const { tx } = useTx();
   const [isLoading, setLoading] = useState(false);
-  const [ipfsHash, setIpfsHash] = useState('');
+  const [ipfsHash, setIpfsHash] = useState(
+    selectedTemplate?.templateMetadata.avatarIPFSHash || ''
+  );
 
   const avatarPreview = ipfsHash ? getGatewayUrl(ipfsHash) : null;
   const canPreview = avatarPreview && !isLoading;
@@ -120,34 +129,66 @@ export const BadgeTemplateDrawer = ({
     const isSlash = values.isSlash === 'slash';
     const isFixedAmount = values.hasFixedAmount === 'fixed';
 
-    const args = [
-      [
-        values.name,
-        [1n, ipfsRes.IpfsHash],
-        amount,
-        isVotingToken,
-        isFixedAmount,
-        isSlash,
-        true,
-      ],
-    ];
+    if (selectedTemplate) {
+      const args = [
+        selectedTemplate.badgeId,
+        [
+          values.name,
+          [1n, ipfsRes.IpfsHash],
+          amount,
+          isVotingToken,
+          isFixedAmount,
+          isSlash,
+          true,
+        ],
+      ];
 
-    tx({
-      writeContractParams: {
-        abi: ScaffoldShaman,
-        functionName: 'createBadge',
-        address: BADGE_SHAMAN,
-        args,
-      },
-      writeContractOptions: {
-        onPollSuccess: () => {
-          form.reset();
-          setIpfsHash('');
-          setLoading(false);
-          onPollSuccess();
+      tx({
+        writeContractParams: {
+          abi: ScaffoldShaman,
+          functionName: 'replaceBadge',
+          address: BADGE_SHAMAN,
+          args,
         },
-      },
-    });
+        writeContractOptions: {
+          onPollSuccess: () => {
+            form.reset();
+            setIpfsHash('');
+            setLoading(false);
+            onPollSuccess();
+          },
+        },
+      });
+    } else {
+      const args = [
+        [
+          values.name,
+          [1n, ipfsRes.IpfsHash],
+          amount,
+          isVotingToken,
+          isFixedAmount,
+          isSlash,
+          true,
+        ],
+      ];
+
+      tx({
+        writeContractParams: {
+          abi: ScaffoldShaman,
+          functionName: 'createBadge',
+          address: BADGE_SHAMAN,
+          args,
+        },
+        writeContractOptions: {
+          onPollSuccess: () => {
+            form.reset();
+            setIpfsHash('');
+            setLoading(false);
+            onPollSuccess();
+          },
+        },
+      });
+    }
   };
 
   return (
