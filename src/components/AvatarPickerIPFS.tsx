@@ -7,7 +7,7 @@ import {
   Text,
   useMantineTheme,
 } from '@mantine/core';
-import { IconCameraPlus, IconPencil, IconUser } from '@tabler/icons-react';
+import { IconCameraPlus } from '@tabler/icons-react';
 import { pinFileToIPFS } from '../utils/ipfs/pin';
 import { ReactNode, useEffect, useState } from 'react';
 import { getGatewayUrl } from '../utils/ipfs/get';
