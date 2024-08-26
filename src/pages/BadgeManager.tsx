@@ -21,6 +21,7 @@ import { formatEther } from 'viem';
 import { Bold } from '../components/Typography';
 import { BadgeTemplateDrawer } from '../components/dashboard/facilitator/BadgeTemplateDrawer';
 import { DeleteBadgeModal } from '../components/dashboard/facilitator/DeleteBadgeModal';
+import { BadgeMintDrawer } from '../components/dashboard/facilitator/BadgeMintDrawer';
 
 export const BadgeManager = () => {
   const theme = useMantineTheme();
@@ -30,6 +31,9 @@ export const BadgeManager = () => {
     useDisclosure(false);
 
   const [deleteOpened, { close: closeDelete, open: openDelete }] =
+    useDisclosure(false);
+
+  const [applyOpened, { close: closeApply, open: openApply }] =
     useDisclosure(false);
 
   const [selectedTemplate, setSelectedTemplate] =
@@ -175,6 +179,17 @@ export const BadgeManager = () => {
             }}
           />
         )}
+        {selectedTemplate && (
+          <BadgeMintDrawer
+            opened={applyOpened}
+            onClose={closeApply}
+            shaman={shaman}
+            onPollSuccess={() => {
+              refetchShaman();
+            }}
+            selectedTemplate={selectedTemplate}
+          />
+        )}
       </MainSection>
       <Box pos="relative" mt="82">
         <Stack pos="fixed">
@@ -190,7 +205,7 @@ export const BadgeManager = () => {
           {selectedTemplate && (
             <>
               <Button
-                onClick={openCreate}
+                onClick={openApply}
                 leftSection={<IconUser />}
                 variant="menu"
               >
