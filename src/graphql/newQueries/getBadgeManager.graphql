@@ -1,3 +1,14 @@
+fragment Badge on Badge {
+  amount
+  reason {
+    pointer
+    protocol
+  }
+  wearer {
+    address
+  }
+}
+
 fragment BadgeTemplate on BadgeTemplate {
   amount
   badgeId
@@ -9,6 +20,9 @@ fragment BadgeTemplate on BadgeTemplate {
   metadata {
     pointer
     protocol
+  }
+  badges {
+    ...Badge
   }
 }
 

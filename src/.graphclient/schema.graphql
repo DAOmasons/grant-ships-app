@@ -358,6 +358,19 @@ columns and relationships of "BadgeTemplate"
 type BadgeTemplate {
   amount: numeric!
   badgeId: numeric!
+  """An array relationship"""
+  badges(
+    """distinct select on columns"""
+    distinct_on: [Badge_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [Badge_order_by!]
+    """filter the rows returned"""
+    where: Badge_bool_exp
+  ): [Badge!]!
   dao: String!
   db_write_timestamp: timestamp
   exists: Boolean!
@@ -408,6 +421,7 @@ input BadgeTemplate_bool_exp {
   _or: [BadgeTemplate_bool_exp!]
   amount: numeric_comparison_exp
   badgeId: numeric_comparison_exp
+  badges: Badge_bool_exp
   dao: String_comparison_exp
   db_write_timestamp: timestamp_comparison_exp
   exists: Boolean_comparison_exp
@@ -454,6 +468,7 @@ input BadgeTemplate_min_order_by {
 input BadgeTemplate_order_by {
   amount: order_by
   badgeId: order_by
+  badges_aggregate: Badge_aggregate_order_by
   dao: order_by
   db_write_timestamp: order_by
   exists: order_by

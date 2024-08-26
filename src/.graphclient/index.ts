@@ -351,6 +351,8 @@ export type BadgeHolder_stream_cursor_value_input = {
 export type BadgeTemplate = {
   amount: Scalars['numeric'];
   badgeId: Scalars['numeric'];
+  /** An array relationship */
+  badges: Array<Badge>;
   dao: Scalars['String'];
   db_write_timestamp?: Maybe<Scalars['timestamp']>;
   exists: Scalars['Boolean'];
@@ -365,6 +367,16 @@ export type BadgeTemplate = {
   /** An object relationship */
   shaman?: Maybe<ScaffoldShaman>;
   shaman_id: Scalars['String'];
+};
+
+
+/** columns and relationships of "BadgeTemplate" */
+export type BadgeTemplatebadgesArgs = {
+  distinct_on?: InputMaybe<Array<Badge_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Badge_order_by>>;
+  where?: InputMaybe<Badge_bool_exp>;
 };
 
 /** order by aggregate values of table "BadgeTemplate" */
@@ -395,6 +407,7 @@ export type BadgeTemplate_bool_exp = {
   _or?: InputMaybe<Array<BadgeTemplate_bool_exp>>;
   amount?: InputMaybe<numeric_comparison_exp>;
   badgeId?: InputMaybe<numeric_comparison_exp>;
+  badges?: InputMaybe<Badge_bool_exp>;
   dao?: InputMaybe<String_comparison_exp>;
   db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
   exists?: InputMaybe<Boolean_comparison_exp>;
@@ -437,6 +450,7 @@ export type BadgeTemplate_min_order_by = {
 export type BadgeTemplate_order_by = {
   amount?: InputMaybe<order_by>;
   badgeId?: InputMaybe<order_by>;
+  badges_aggregate?: InputMaybe<Badge_aggregate_order_by>;
   dao?: InputMaybe<order_by>;
   db_write_timestamp?: InputMaybe<order_by>;
   exists?: InputMaybe<order_by>;
@@ -9856,6 +9870,7 @@ export type BadgeHolderResolvers<ContextType = MeshContext, ParentType extends R
 export type BadgeTemplateResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['BadgeTemplate'] = ResolversParentTypes['BadgeTemplate']> = ResolversObject<{
   amount?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
   badgeId?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
+  badges?: Resolver<Array<ResolversTypes['Badge']>, ParentType, ContextType, Partial<BadgeTemplatebadgesArgs>>;
   dao?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
   exists?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
@@ -11230,9 +11245,17 @@ export type UpdateBodyFragment = (
   & { content?: Maybe<Pick<RawMetadata, 'pointer'>> }
 );
 
+export type BadgeFragment = (
+  Pick<Badge, 'amount'>
+  & { reason?: Maybe<Pick<RawMetadata, 'pointer' | 'protocol'>>, wearer?: Maybe<Pick<BadgeHolder, 'address'>> }
+);
+
 export type BadgeTemplateFragment = (
   Pick<BadgeTemplate, 'amount' | 'badgeId' | 'exists' | 'hasFixedAmount' | 'isSlash' | 'isVotingToken' | 'name'>
-  & { metadata?: Maybe<Pick<RawMetadata, 'pointer' | 'protocol'>> }
+  & { metadata?: Maybe<Pick<RawMetadata, 'pointer' | 'protocol'>>, badges: Array<(
+    Pick<Badge, 'amount'>
+    & { reason?: Maybe<Pick<RawMetadata, 'pointer' | 'protocol'>>, wearer?: Maybe<Pick<BadgeHolder, 'address'>> }
+  )> }
 );
 
 export type getBadgeManagerQueryVariables = Exact<{
@@ -11244,7 +11267,10 @@ export type getBadgeManagerQuery = { ScaffoldShaman_by_pk?: Maybe<(
     Pick<ScaffoldShaman, 'id' | 'address' | 'dao'>
     & { controlGate?: Maybe<Pick<Gate, 'gateId' | 'gateType' | 'hatId' | 'id'>>, lootToken?: Maybe<Pick<DAOToken, 'address' | 'symbol'>>, managerGate?: Maybe<Pick<Gate, 'gateId' | 'gateType' | 'hatId' | 'id'>>, minterGate?: Maybe<Pick<Gate, 'gateId' | 'gateType' | 'hatId' | 'id'>>, sharesToken?: Maybe<Pick<DAOToken, 'address' | 'symbol'>>, templates: Array<(
       Pick<BadgeTemplate, 'amount' | 'badgeId' | 'exists' | 'hasFixedAmount' | 'isSlash' | 'isVotingToken' | 'name'>
-      & { metadata?: Maybe<Pick<RawMetadata, 'pointer' | 'protocol'>> }
+      & { metadata?: Maybe<Pick<RawMetadata, 'pointer' | 'protocol'>>, badges: Array<(
+        Pick<Badge, 'amount'>
+        & { reason?: Maybe<Pick<RawMetadata, 'pointer' | 'protocol'>>, wearer?: Maybe<Pick<BadgeHolder, 'address'>> }
+      )> }
     )> }
   )> };
 
@@ -11780,6 +11806,18 @@ export const UpdateBodyFragmentDoc = gql`
   timestamp
 }
     ` as unknown as DocumentNode<UpdateBodyFragment, unknown>;
+export const BadgeFragmentDoc = gql`
+    fragment Badge on Badge {
+  amount
+  reason {
+    pointer
+    protocol
+  }
+  wearer {
+    address
+  }
+}
+    ` as unknown as DocumentNode<BadgeFragment, unknown>;
 export const BadgeTemplateFragmentDoc = gql`
     fragment BadgeTemplate on BadgeTemplate {
   amount
@@ -11793,8 +11831,11 @@ export const BadgeTemplateFragmentDoc = gql`
     pointer
     protocol
   }
+  badges {
+    ...Badge
+  }
 }
-    ` as unknown as DocumentNode<BadgeTemplateFragment, unknown>;
+    ${BadgeFragmentDoc}` as unknown as DocumentNode<BadgeTemplateFragment, unknown>;
 export const FacShipDataFragmentDoc = gql`
     fragment FacShipData on GrantShip {
   id

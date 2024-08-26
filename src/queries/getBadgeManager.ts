@@ -1,8 +1,13 @@
-import { BadgeTemplateFragment, getBuiltGraphSDK } from '../.graphclient';
+import {
+  BadgeFragment,
+  BadgeTemplateFragment,
+  getBuiltGraphSDK,
+} from '../.graphclient';
 import { badgeTemplateSchema } from '../components/forms/validationSchemas/badge';
 import { BADGE_SHAMAN } from '../constants/addresses';
 import { SUBGRAPH_URL } from '../constants/gameSetup';
 import { getGatewayUrl, getIpfsJson } from '../utils/ipfs/get';
+import { reasonSchema } from '../utils/ipfs/metadataValidation';
 
 export type BadgeManager = {
   address: string;
@@ -16,6 +21,11 @@ export type ResolvedTemplate = BadgeTemplateFragment & {
     avatarIPFSHash: string;
     imgUrl: string;
   };
+  badges: ResolvedBadge[];
+};
+
+export type ResolvedBadge = BadgeFragment & {
+  reason: string | null;
 };
 
 export const getBadgeShaman = async () => {
@@ -56,6 +66,34 @@ export const getBadgeShaman = async () => {
                   },
                 };
               }
+
+              const resolvedBadges = await Promise.all(
+                template.badges.map(async (badge) => {
+                  if (badge.reason?.protocol === 0n) {
+                    return {
+                      ...badge,
+                      reason: null,
+                    } as ResolvedBadge;
+                  }
+
+                  const metadata = await getIpfsJson(
+                    badge.reason?.pointer as string
+                  );
+
+                  const validated = reasonSchema.safeParse(metadata);
+
+                  if (!validated.success) {
+                    console.warn('Invalid metadata', validated.error);
+                    console.warn('Metadata', metadata);
+                    return null;
+                  }
+
+                  return {
+                    ...badge,
+                    reason: validated.data.reason,
+                  } as ResolvedBadge;
+                })
+              );
 
               return {
                 ...template,
