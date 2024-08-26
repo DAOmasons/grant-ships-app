@@ -19,6 +19,7 @@ import { RegisterProject } from './pages/RegisterProject';
 import { RichTextUpdate } from './components/feed/RichTextUpdate';
 import { Grant } from './pages/Grant';
 import { BadgeManager } from './pages/BadgeManager';
+import { BadgePage } from './pages/BadgePage';
 
 export const ClientRoutes = () => {
   return (
@@ -45,7 +46,7 @@ export const ClientRoutes = () => {
           </VoteProvider>
         }
       />
-      <Route path="badges" element={<BadgeManager />} />
+      <Route path="badges/*" element={<BadgePage />} />
       <Route path="ship-operator-dashboard/:id" element={<ShipOpDashboard />} />
       <Route path="my-projects/:id" element={<MyProjects />} />
       {/* <Route path="dev-panel" element={<DevPanel />} /> */}

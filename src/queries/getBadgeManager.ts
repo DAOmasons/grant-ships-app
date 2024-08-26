@@ -97,6 +97,7 @@ export const getBadgeShaman = async () => {
 
               return {
                 ...template,
+                badges: resolvedBadges,
                 templateMetadata: {
                   ...validated.data,
                   imgUrl: getGatewayUrl(validated.data.avatarIPFSHash),

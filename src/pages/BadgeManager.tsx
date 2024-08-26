@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { MainSection, PageTitle } from '../layout/Sections';
 import {
   Avatar,
   Box,
@@ -14,8 +13,10 @@ import {
 import { IconBadge, IconPencil, IconPlus, IconUser } from '@tabler/icons-react';
 import { useDisclosure } from '@mantine/hooks';
 import { IconTrash } from '@tabler/icons-react';
-import { useQuery } from '@tanstack/react-query';
-import { getBadgeShaman, ResolvedTemplate } from '../queries/getBadgeManager';
+import {
+  BadgeManager as BadgeManagerType,
+  ResolvedTemplate,
+} from '../queries/getBadgeManager';
 
 import { formatEther } from 'viem';
 import { Bold } from '../components/Typography';
@@ -23,7 +24,13 @@ import { BadgeTemplateDrawer } from '../components/dashboard/facilitator/BadgeTe
 import { DeleteBadgeModal } from '../components/dashboard/facilitator/DeleteBadgeModal';
 import { BadgeMintDrawer } from '../components/dashboard/facilitator/BadgeMintDrawer';
 
-export const BadgeManager = () => {
+export const BadgeManager = ({
+  shaman,
+  refetchShaman,
+}: {
+  shaman: BadgeManagerType;
+  refetchShaman: () => void;
+}) => {
   const theme = useMantineTheme();
   const [createOpened, { close: closeCreate, open: openCreate }] =
     useDisclosure(false);
@@ -39,14 +46,6 @@ export const BadgeManager = () => {
   const [selectedTemplate, setSelectedTemplate] =
     useState<ResolvedTemplate | null>(null);
 
-  const { data: shaman, refetch: refetchShaman } = useQuery({
-    queryKey: ['badge-shaman'],
-    queryFn: getBadgeShaman,
-    enabled: true,
-  });
-
-  if (!shaman) return null;
-
   const selectTemplate = (template: ResolvedTemplate) => {
     if (shaman) {
       if (selectedTemplate?.badgeId === template.badgeId) {
@@ -58,9 +57,8 @@ export const BadgeManager = () => {
   };
 
   return (
-    <Flex h={'200vh'}>
-      <MainSection>
-        <PageTitle title="Badge Manager" />
+    <Flex>
+      <Box>
         <Group align="start" gap="md" w="100%" mb="xl">
           <Avatar
             bg={theme.colors.dark[5]}
@@ -190,8 +188,8 @@ export const BadgeManager = () => {
             selectedTemplate={selectedTemplate}
           />
         )}
-      </MainSection>
-      <Box pos="relative" mt="82">
+      </Box>
+      <Box pos="relative">
         <Stack pos="fixed">
           {!selectedTemplate && (
             <Button
