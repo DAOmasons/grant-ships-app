@@ -21,10 +21,12 @@ export type ResolvedTemplate = BadgeTemplateFragment & {
     avatarIPFSHash: string;
     imgUrl: string;
   };
-  badges: ResolvedBadge[];
+  resolvedBadges: ResolvedBadge[];
 };
 
-export type ResolvedBadge = BadgeFragment & {
+export type ResolvedBadge = {
+  wearer: string;
+  amount: bigint;
   reason: string | null;
 };
 
@@ -71,7 +73,8 @@ export const getBadgeShaman = async () => {
                 template.badges.map(async (badge) => {
                   if (badge.reason?.protocol === 0n) {
                     return {
-                      ...badge,
+                      wearer: badge?.wearer?.address,
+                      amount: badge.amount,
                       reason: null,
                     } as ResolvedBadge;
                   }
@@ -89,7 +92,8 @@ export const getBadgeShaman = async () => {
                   }
 
                   return {
-                    ...badge,
+                    wearer: badge?.wearer?.address,
+                    amount: badge.amount,
                     reason: validated.data.reason,
                   } as ResolvedBadge;
                 })
@@ -97,7 +101,7 @@ export const getBadgeShaman = async () => {
 
               return {
                 ...template,
-                badges: resolvedBadges,
+                resolvedBadges,
                 templateMetadata: {
                   ...validated.data,
                   imgUrl: getGatewayUrl(validated.data.avatarIPFSHash),
