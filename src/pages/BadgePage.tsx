@@ -5,7 +5,6 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Tabs } from '@mantine/core';
 import { BadgeManager } from './BadgeManager';
 import { MainSection, PageTitle } from '../layout/Sections';
-import { getLeaderboardQuery } from '../queries/getLeaderboard';
 import { BadgeRecordsPage } from '../components/dashboard/facilitator/BadgeRecordsPage';
 import { Leaderboard } from './Leaderboard';
 

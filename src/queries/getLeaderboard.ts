@@ -60,12 +60,16 @@ export const getLeaderboardQuery = async (): Promise<LeaderboardHolder[]> => {
         return {
           badgeBalance: BigInt(holder.badgeBalance),
           address: holder.address,
-          badges: badgesWithMetadata,
+          badges: badgesWithMetadata.sort((a, b) =>
+            b.amount < a.amount ? 1 : -1
+          ),
         };
       })
     );
 
-    return withBadgeMetadata;
+    return withBadgeMetadata.sort((a, b) =>
+      b.badgeBalance > a.badgeBalance ? 1 : -1
+    );
   } catch (error) {
     console.error(error);
     throw error;
