@@ -1,5 +1,6 @@
 query getLeaderboard {
   BadgeHolder {
+    id
     address
     badgeBalance
     badges {

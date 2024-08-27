@@ -11470,7 +11470,7 @@ export type getLeaderboardQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type getLeaderboardQuery = { BadgeHolder: Array<(
-    Pick<BadgeHolder, 'address' | 'badgeBalance'>
+    Pick<BadgeHolder, 'id' | 'address' | 'badgeBalance'>
     & { badges: Array<(
       Pick<Badge, 'amount'>
       & { template?: Maybe<(
@@ -12210,6 +12210,7 @@ export const getGsVotingDocument = gql`
 export const getLeaderboardDocument = gql`
     query getLeaderboard {
   BadgeHolder {
+    id
     address
     badgeBalance
     badges {
