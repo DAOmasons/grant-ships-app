@@ -1,8 +1,4 @@
-import {
-  BadgeFragment,
-  BadgeTemplateFragment,
-  getBuiltGraphSDK,
-} from '../.graphclient';
+import { BadgeTemplateFragment, getBuiltGraphSDK } from '../.graphclient';
 import { badgeTemplateSchema } from '../components/forms/validationSchemas/badge';
 import { BADGE_SHAMAN } from '../constants/addresses';
 import { SUBGRAPH_URL } from '../constants/gameSetup';
@@ -71,7 +67,7 @@ export const getBadgeShaman = async () => {
 
               const resolvedBadges = await Promise.all(
                 template.badges.map(async (badge) => {
-                  if (badge.reason?.protocol === 0n) {
+                  if (badge.reason?.protocol === '0') {
                     return {
                       wearer: badge?.wearer?.address,
                       amount: badge.amount,

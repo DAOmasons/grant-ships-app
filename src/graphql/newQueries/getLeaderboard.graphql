@@ -1,0 +1,15 @@
+query getLeaderboard {
+  BadgeHolder {
+    address
+    badgeBalance
+    badges {
+      amount
+      template {
+        name
+        metadata {
+          pointer
+        }
+      }
+    }
+  }
+}

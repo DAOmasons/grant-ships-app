@@ -1,0 +1,23 @@
+fragment BadgeTemplate_ on BadgeTemplate {
+  amount
+  badgeId
+  exists
+  hasFixedAmount
+  isSlash
+  isVotingToken
+  name
+  metadata {
+    pointer
+    protocol
+  }
+  badges {
+    amount
+    reason {
+      pointer
+      protocol
+    }
+    wearer {
+      address
+    }
+  }
+}

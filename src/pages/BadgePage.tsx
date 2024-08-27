@@ -12,6 +12,7 @@ import { Address, formatEther } from 'viem';
 import { charLimit } from '../utils/helpers';
 import { AddressAvatar } from '../components/AddressAvatar';
 import { Display } from '../components/Display';
+import { getLeaderboardQuery } from '../queries/getLeaderboard';
 
 export const BadgePage = () => {
   const { data: shaman, refetch: refetchShaman } = useQuery({
@@ -37,12 +38,16 @@ export const BadgePage = () => {
         <Tabs.List mb="lg">
           <Tabs.Tab value="manager">Manager</Tabs.Tab>
           <Tabs.Tab value="records">Records</Tabs.Tab>
+          <Tabs.Tab value="leaderboard">Leaderboard</Tabs.Tab>
         </Tabs.List>
         <Tabs.Panel value="manager">
           <BadgeManager shaman={shaman} refetchShaman={refetchShaman} />
         </Tabs.Panel>
         <Tabs.Panel value="records">
           <BadgeRecordsPage shaman={shaman} />
+        </Tabs.Panel>
+        <Tabs.Panel value="leaderboard">
+          <Leaderboard />
         </Tabs.Panel>
       </Tabs>
     </MainSection>
@@ -68,30 +73,32 @@ const BadgeRecordsPage = ({ shaman }: { shaman: BadgeManagerType }) => {
                     <Table.Th>Comment</Table.Th>
                   </Table.Tr>
                 </Table.Thead>
-                {template.resolvedBadges.map((badge) => (
-                  <Table.Tr>
-                    <Table.Td maw={'30%'}>
-                      <Link
-                        to={`/profile/${badge.wearer}`}
-                        style={{ cursor: 'pointer' }}
-                      >
-                        <AddressAvatar
-                          address={badge.wearer as Address}
-                          size={20}
-                        />
-                      </Link>
-                    </Table.Td>
-                    <Table.Td>
-                      {formatEther(badge?.amount)}{' '}
-                      {template?.isVotingToken
-                        ? shaman?.sharesToken.symbol
-                        : shaman?.lootToken.symbol}
-                    </Table.Td>
-                    <Table.Td>
-                      {badge.reason ? charLimit(badge?.reason || '') : '--'}
-                    </Table.Td>
-                  </Table.Tr>
-                ))}
+                <Table.Tbody>
+                  {template.resolvedBadges.map((badge) => (
+                    <Table.Tr key={`${template.badgeId}-${badge.wearer}`}>
+                      <Table.Td maw={'30%'}>
+                        <Link
+                          to={`/profile/${badge.wearer}`}
+                          style={{ cursor: 'pointer' }}
+                        >
+                          <AddressAvatar
+                            address={badge.wearer as Address}
+                            size={20}
+                          />
+                        </Link>
+                      </Table.Td>
+                      <Table.Td>
+                        {formatEther(badge?.amount)}{' '}
+                        {template?.isVotingToken
+                          ? shaman?.sharesToken.symbol
+                          : shaman?.lootToken.symbol}
+                      </Table.Td>
+                      <Table.Td>
+                        {badge.reason ? charLimit(badge?.reason || '') : '--'}
+                      </Table.Td>
+                    </Table.Tr>
+                  ))}
+                </Table.Tbody>
               </Table>
             ) : (
               <Display
@@ -106,4 +113,16 @@ const BadgeRecordsPage = ({ shaman }: { shaman: BadgeManagerType }) => {
       )}
     </Box>
   );
+};
+
+const Leaderboard = () => {
+  const { data } = useQuery({
+    queryKey: ['leaderboard'],
+    queryFn: getLeaderboardQuery,
+    enabled: true,
+  });
+
+  console.log('data', data);
+
+  return <></>;
 };

@@ -11052,6 +11052,12 @@ const merger = new(BareMerger as any)({
         },
         location: 'GetGsVotingDocument.graphql'
       },{
+        document: GetLeaderboardDocument,
+        get rawSDL() {
+          return printWithCache(GetLeaderboardDocument);
+        },
+        location: 'GetLeaderboardDocument.graphql'
+      },{
         document: GetProjectGrantsDocument,
         get rawSDL() {
           return printWithCache(GetProjectGrantsDocument);
@@ -11215,6 +11221,14 @@ export function getBuiltGraphSDK<TGlobalContext = any, TOperationContext = any>(
   const sdkRequester$ = getBuiltGraphClient().then(({ sdkRequesterFactory }) => sdkRequesterFactory(globalContext));
   return getSdk<TOperationContext, TGlobalContext>((...args) => sdkRequester$.then(sdkRequester => sdkRequester(...args)));
 }
+export type BadgeTemplate_Fragment = (
+  Pick<BadgeTemplate, 'amount' | 'badgeId' | 'exists' | 'hasFixedAmount' | 'isSlash' | 'isVotingToken' | 'name'>
+  & { metadata?: Maybe<Pick<RawMetadata, 'pointer' | 'protocol'>>, badges: Array<(
+    Pick<Badge, 'amount'>
+    & { reason?: Maybe<Pick<RawMetadata, 'pointer' | 'protocol'>>, wearer?: Maybe<Pick<BadgeHolder, 'address'>> }
+  )> }
+);
+
 export type BaseShipDataFragment = (
   Pick<GrantShip, 'id' | 'name' | 'status' | 'poolId' | 'shipContractAddress' | 'shipApplicationBytesData' | 'owner' | 'balance' | 'totalFundsReceived' | 'totalAllocated' | 'totalDistributed' | 'totalRoundAmount'>
   & { profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>>, alloProfileMembers?: Maybe<Pick<ProfileMemberGroup, 'addresses'>> }
@@ -11243,19 +11257,6 @@ export type GrantBasicFragment = (
 export type UpdateBodyFragment = (
   Pick<Update, 'id' | 'postedBy' | 'entityAddress' | 'timestamp'>
   & { content?: Maybe<Pick<RawMetadata, 'pointer'>> }
-);
-
-export type BadgeFragment = (
-  Pick<Badge, 'amount'>
-  & { reason?: Maybe<Pick<RawMetadata, 'pointer' | 'protocol'>>, wearer?: Maybe<Pick<BadgeHolder, 'address'>> }
-);
-
-export type BadgeTemplateFragment = (
-  Pick<BadgeTemplate, 'amount' | 'badgeId' | 'exists' | 'hasFixedAmount' | 'isSlash' | 'isVotingToken' | 'name'>
-  & { metadata?: Maybe<Pick<RawMetadata, 'pointer' | 'protocol'>>, badges: Array<(
-    Pick<Badge, 'amount'>
-    & { reason?: Maybe<Pick<RawMetadata, 'pointer' | 'protocol'>>, wearer?: Maybe<Pick<BadgeHolder, 'address'>> }
-  )> }
 );
 
 export type getBadgeManagerQueryVariables = Exact<{
@@ -11463,6 +11464,20 @@ export type getGsVotingQueryVariables = Exact<{
 export type getGsVotingQuery = { GrantShipsVoting: Array<(
     Pick<GrantShipsVoting, 'id' | 'endTime' | 'startTime' | 'totalVotes' | 'voteDuration' | 'voteTokenAddress' | 'votingCheckpoint' | 'isVotingActive' | 'isSBTVoting'>
     & { choices: Array<Pick<ShipChoice, 'active' | 'id' | 'mdPointer' | 'mdProtocol' | 'voteTally'>>, contest?: Maybe<Pick<Contest, 'votesModule_id' | 'choicesModule_id' | 'pointsModule_id' | 'executionModule_id' | 'contestStatus'>> }
+  )> };
+
+export type getLeaderboardQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type getLeaderboardQuery = { BadgeHolder: Array<(
+    Pick<BadgeHolder, 'address' | 'badgeBalance'>
+    & { badges: Array<(
+      Pick<Badge, 'amount'>
+      & { template?: Maybe<(
+        Pick<BadgeTemplate, 'name'>
+        & { metadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
+      )> }
+    )> }
   )> };
 
 export type ShipDisplayFragment = (
@@ -11705,6 +11720,31 @@ export type ShipsPageQueryQuery = { GrantShip: Array<(
     & { profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>>, alloProfileMembers?: Maybe<Pick<ProfileMemberGroup, 'addresses'>> }
   )> };
 
+export const BadgeTemplate_FragmentDoc = gql`
+    fragment BadgeTemplate_ on BadgeTemplate {
+  amount
+  badgeId
+  exists
+  hasFixedAmount
+  isSlash
+  isVotingToken
+  name
+  metadata {
+    pointer
+    protocol
+  }
+  badges {
+    amount
+    reason {
+      pointer
+      protocol
+    }
+    wearer {
+      address
+    }
+  }
+}
+    ` as unknown as DocumentNode<BadgeTemplate_Fragment, unknown>;
 export const BaseShipDataFragmentDoc = gql`
     fragment BaseShipData on GrantShip {
   id
@@ -11806,36 +11846,6 @@ export const UpdateBodyFragmentDoc = gql`
   timestamp
 }
     ` as unknown as DocumentNode<UpdateBodyFragment, unknown>;
-export const BadgeFragmentDoc = gql`
-    fragment Badge on Badge {
-  amount
-  reason {
-    pointer
-    protocol
-  }
-  wearer {
-    address
-  }
-}
-    ` as unknown as DocumentNode<BadgeFragment, unknown>;
-export const BadgeTemplateFragmentDoc = gql`
-    fragment BadgeTemplate on BadgeTemplate {
-  amount
-  badgeId
-  exists
-  hasFixedAmount
-  isSlash
-  isVotingToken
-  name
-  metadata {
-    pointer
-    protocol
-  }
-  badges {
-    ...Badge
-  }
-}
-    ${BadgeFragmentDoc}` as unknown as DocumentNode<BadgeTemplateFragment, unknown>;
 export const FacShipDataFragmentDoc = gql`
     fragment FacShipData on GrantShip {
   id
@@ -12054,11 +12064,11 @@ export const getBadgeManagerDocument = gql`
       symbol
     }
     templates(where: {exists: {_eq: true}}) {
-      ...BadgeTemplate
+      ...BadgeTemplate_
     }
   }
 }
-    ${BadgeTemplateFragmentDoc}` as unknown as DocumentNode<getBadgeManagerQuery, getBadgeManagerQueryVariables>;
+    ${BadgeTemplate_FragmentDoc}` as unknown as DocumentNode<getBadgeManagerQuery, getBadgeManagerQueryVariables>;
 export const facDashShipDataDocument = gql`
     query facDashShipData($gameId: String!) {
   shipApplicants: GrantShip(
@@ -12197,6 +12207,23 @@ export const getGsVotingDocument = gql`
   }
 }
     ` as unknown as DocumentNode<getGsVotingQuery, getGsVotingQueryVariables>;
+export const getLeaderboardDocument = gql`
+    query getLeaderboard {
+  BadgeHolder {
+    address
+    badgeBalance
+    badges {
+      amount
+      template {
+        name
+        metadata {
+          pointer
+        }
+      }
+    }
+  }
+}
+    ` as unknown as DocumentNode<getLeaderboardQuery, getLeaderboardQueryVariables>;
 export const getProjectGrantsDocument = gql`
     query getProjectGrants($projectId: String!, $gameId: String!) {
   grants: Grant(
@@ -12469,6 +12496,7 @@ export const ShipsPageQueryDocument = gql`
 
 
 
+
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
@@ -12495,6 +12523,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     getGsVoting(variables: getGsVotingQueryVariables, options?: C): Promise<getGsVotingQuery> {
       return requester<getGsVotingQuery, getGsVotingQueryVariables>(getGsVotingDocument, variables, options) as Promise<getGsVotingQuery>;
+    },
+    getLeaderboard(variables?: getLeaderboardQueryVariables, options?: C): Promise<getLeaderboardQuery> {
+      return requester<getLeaderboardQuery, getLeaderboardQueryVariables>(getLeaderboardDocument, variables, options) as Promise<getLeaderboardQuery>;
     },
     getProjectGrants(variables: getProjectGrantsQueryVariables, options?: C): Promise<getProjectGrantsQuery> {
       return requester<getProjectGrantsQuery, getProjectGrantsQueryVariables>(getProjectGrantsDocument, variables, options) as Promise<getProjectGrantsQuery>;

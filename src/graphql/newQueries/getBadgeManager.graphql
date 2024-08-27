@@ -1,31 +1,3 @@
-fragment Badge on Badge {
-  amount
-  reason {
-    pointer
-    protocol
-  }
-  wearer {
-    address
-  }
-}
-
-fragment BadgeTemplate on BadgeTemplate {
-  amount
-  badgeId
-  exists
-  hasFixedAmount
-  isSlash
-  isVotingToken
-  name
-  metadata {
-    pointer
-    protocol
-  }
-  badges {
-    ...Badge
-  }
-}
-
 query getBadgeManager($shamanId: String!) {
   ScaffoldShaman_by_pk(id: $shamanId) {
     id
@@ -58,7 +30,7 @@ query getBadgeManager($shamanId: String!) {
       symbol
     }
     templates(where: { exists: { _eq: true } }) {
-      ...BadgeTemplate
+      ...BadgeTemplate_
     }
   }
 }
