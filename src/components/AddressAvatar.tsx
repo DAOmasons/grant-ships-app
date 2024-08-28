@@ -7,7 +7,7 @@ import {
   Text,
   Tooltip,
 } from '@mantine/core';
-import React, { ComponentProps } from 'react';
+import { ComponentProps } from 'react';
 import { Address, isAddress } from 'viem';
 import { useEnsAvatar, useEnsName } from 'wagmi';
 import { ensConfig } from '../utils/config';

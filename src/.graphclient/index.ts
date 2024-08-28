@@ -11148,6 +11148,12 @@ const merger = new(BareMerger as any)({
         },
         location: 'GetUpdatesQueryDocument.graphql'
       },{
+        document: GetUserBadgesDocument,
+        get rawSDL() {
+          return printWithCache(GetUserBadgesDocument);
+        },
+        location: 'GetUserBadgesDocument.graphql'
+      },{
         document: GetUserDataDocument,
         get rawSDL() {
           return printWithCache(GetUserDataDocument);
@@ -11653,6 +11659,22 @@ export type getUpdatesQueryQueryVariables = Exact<{
 export type getUpdatesQueryQuery = { Update: Array<(
     Pick<Update, 'id' | 'postedBy' | 'entityAddress' | 'timestamp'>
     & { content?: Maybe<Pick<RawMetadata, 'pointer'>> }
+  )> };
+
+export type getUserBadgesQueryVariables = Exact<{
+  address: Scalars['String'];
+}>;
+
+
+export type getUserBadgesQuery = { BadgeHolder: Array<(
+    Pick<BadgeHolder, 'badgeBalance'>
+    & { shaman?: Maybe<{ lootToken?: Maybe<Pick<DAOToken, 'symbol'>>, sharesToken?: Maybe<Pick<DAOToken, 'symbol'>> }>, badges: Array<(
+      Pick<Badge, 'amount'>
+      & { template?: Maybe<(
+        Pick<BadgeTemplate, 'name' | 'hasFixedAmount' | 'isSlash' | 'isVotingToken'>
+        & { metadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
+      )> }
+    )> }
   )> };
 
 export type getUserDataQueryVariables = Exact<{
@@ -12389,6 +12411,33 @@ export const getUpdatesQueryDocument = gql`
   }
 }
     ${UpdateBodyFragmentDoc}` as unknown as DocumentNode<getUpdatesQueryQuery, getUpdatesQueryQueryVariables>;
+export const getUserBadgesDocument = gql`
+    query getUserBadges($address: String!) {
+  BadgeHolder(where: {address: {_eq: $address}}) {
+    badgeBalance
+    shaman {
+      lootToken {
+        symbol
+      }
+      sharesToken {
+        symbol
+      }
+    }
+    badges {
+      amount
+      template {
+        name
+        hasFixedAmount
+        isSlash
+        isVotingToken
+        metadata {
+          pointer
+        }
+      }
+    }
+  }
+}
+    ` as unknown as DocumentNode<getUserBadgesQuery, getUserBadgesQueryVariables>;
 export const getUserDataDocument = gql`
     query getUserData($id: String!, $chainId: Int!) {
   projects: Project(where: {owner: {_eq: $id}, chainId: {_eq: $chainId}}) {
@@ -12498,6 +12547,7 @@ export const ShipsPageQueryDocument = gql`
 
 
 
+
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
@@ -12572,6 +12622,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     getUpdatesQuery(variables: getUpdatesQueryQueryVariables, options?: C): Promise<getUpdatesQueryQuery> {
       return requester<getUpdatesQueryQuery, getUpdatesQueryQueryVariables>(getUpdatesQueryDocument, variables, options) as Promise<getUpdatesQueryQuery>;
+    },
+    getUserBadges(variables: getUserBadgesQueryVariables, options?: C): Promise<getUserBadgesQuery> {
+      return requester<getUserBadgesQuery, getUserBadgesQueryVariables>(getUserBadgesDocument, variables, options) as Promise<getUserBadgesQuery>;
     },
     getUserData(variables: getUserDataQueryVariables, options?: C): Promise<getUserDataQuery> {
       return requester<getUserDataQuery, getUserDataQueryVariables>(getUserDataDocument, variables, options) as Promise<getUserDataQuery>;

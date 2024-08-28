@@ -1,4 +1,4 @@
-import { BadgeTemplateFragment, getBuiltGraphSDK } from '../.graphclient';
+import { BadgeTemplate_Fragment, getBuiltGraphSDK } from '../.graphclient';
 import { badgeTemplateSchema } from '../components/forms/validationSchemas/badge';
 import { BADGE_SHAMAN } from '../constants/addresses';
 import { SUBGRAPH_URL } from '../constants/gameSetup';
@@ -11,7 +11,7 @@ export type BadgeManager = {
   sharesToken: { address: string; symbol: string };
   templates: ResolvedTemplate[];
 };
-export type ResolvedTemplate = BadgeTemplateFragment & {
+export type ResolvedTemplate = BadgeTemplate_Fragment & {
   templateMetadata: {
     description: string;
     avatarIPFSHash: string;
@@ -46,10 +46,7 @@ export const getBadgeShaman = async () => {
               const metadata = await getIpfsJson(
                 template.metadata?.pointer as string
               );
-              console.log(
-                'template.metadata?.pointer',
-                template.metadata?.pointer
-              );
+
               const validated = badgeTemplateSchema.safeParse(metadata);
 
               if (!validated.success) {
