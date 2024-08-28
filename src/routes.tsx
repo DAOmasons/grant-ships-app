@@ -46,7 +46,7 @@ export const ClientRoutes = () => {
           </VoteProvider>
         }
       />
-      <Route path="profile/:id" element={<Profile />} />
+      <Route path="profile/:id/*" element={<Profile />} />
       <Route path="badges/*" element={<BadgePage />} />
       <Route path="ship-operator-dashboard/:id" element={<ShipOpDashboard />} />
       <Route path="my-projects/:id" element={<MyProjects />} />

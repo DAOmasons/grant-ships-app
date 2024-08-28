@@ -11669,8 +11669,8 @@ export type getUserBadgesQueryVariables = Exact<{
 export type getUserBadgesQuery = { BadgeHolder: Array<(
     Pick<BadgeHolder, 'badgeBalance'>
     & { shaman?: Maybe<{ lootToken?: Maybe<Pick<DAOToken, 'symbol'>>, sharesToken?: Maybe<Pick<DAOToken, 'symbol'>> }>, badges: Array<(
-      Pick<Badge, 'amount'>
-      & { template?: Maybe<(
+      Pick<Badge, 'id' | 'amount'>
+      & { reason?: Maybe<Pick<RawMetadata, 'pointer' | 'protocol'>>, template?: Maybe<(
         Pick<BadgeTemplate, 'name' | 'hasFixedAmount' | 'isSlash' | 'isVotingToken'>
         & { metadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
       )> }
@@ -12424,6 +12424,11 @@ export const getUserBadgesDocument = gql`
       }
     }
     badges {
+      id
+      reason {
+        pointer
+        protocol
+      }
       amount
       template {
         name

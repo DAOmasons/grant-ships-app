@@ -20,7 +20,7 @@ export const BadgePage = () => {
 
   if (!shaman) return null;
 
-  const tab = location.pathname.split('/').pop();
+  const tab = location.pathname.split('/badges/')?.[1];
 
   return (
     <MainSection>

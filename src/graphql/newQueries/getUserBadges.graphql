@@ -10,6 +10,11 @@ query getUserBadges($address: String!) {
       }
     }
     badges {
+      id
+      reason {
+        pointer
+        protocol
+      }
       amount
       template {
         name

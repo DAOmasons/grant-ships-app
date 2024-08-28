@@ -1,7 +1,15 @@
 import { useQuery } from '@tanstack/react-query';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { MainSection, PageTitle } from '../layout/Sections';
-import { ActionIcon, Avatar, Box, Divider, Group, Text } from '@mantine/core';
+import {
+  ActionIcon,
+  Avatar,
+  Box,
+  Flex,
+  Group,
+  Tabs,
+  Text,
+} from '@mantine/core';
 import { Address } from 'viem';
 import { useChainId, useEnsAvatar, useEnsName } from 'wagmi';
 import { ensConfig } from '../utils/config';
@@ -22,6 +30,8 @@ export const Profile = () => {
     enabled: !!id && !!chainId,
   });
 
+  const navigate = useNavigate();
+
   const { userData, badges } = data || {};
 
   const { data: ensName } = useEnsName({
@@ -40,12 +50,14 @@ export const Profile = () => {
   const name = ensName || id!.slice(0, 6) + '...' + id!.slice(-4);
   const imgUrl = ensAvatar || `https://effigy.im/a/${id}.svg`;
 
+  const tab = location.pathname.split('/')[3] || 'badges';
+
   return (
     <MainSection>
       <PageTitle title="Profile" />
       <Box mt="xl">
         <Avatar size={160} mb="md" src={imgUrl} />
-        <Group gap={'8'}>
+        <Group gap={'8'} mb="lg">
           <Text fz={'lg'} fw={500}>
             {name}
           </Text>
@@ -63,7 +75,25 @@ export const Profile = () => {
             <IconCopy size={16} />
           </ActionIcon>
         </Group>
-        <Divider />
+        <Tabs value={tab} onChange={(tab) => navigate(`/profile/${id}/${tab}`)}>
+          <Tabs.List mb="lg">
+            <Tabs.Tab value="badges">Badges</Tabs.Tab>
+            <Tabs.Tab value="entities">Projects</Tabs.Tab>
+          </Tabs.List>
+          <Tabs.Panel value="badges">
+            <Flex gap="md" wrap={'wrap'}>
+              {badges?.map((badge) => (
+                <Avatar
+                  style={{ cursor: 'pointer' }}
+                  src={badge.imgUrl}
+                  key={badge.id}
+                  size={80}
+                  radius="md"
+                />
+              ))}
+            </Flex>
+          </Tabs.Panel>
+        </Tabs>
       </Box>
     </MainSection>
   );
