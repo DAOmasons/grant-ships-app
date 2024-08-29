@@ -12,12 +12,12 @@ export const BadgeRecordsPage = ({ shaman }: { shaman: BadgeManager }) => {
       {shaman.templates?.length > 0 ? (
         shaman.templates?.map((template) => (
           <Box mb="xl" key={`template-${template.badgeId}`}>
-            <Group mb="sm">
+            <Group>
               <Avatar src={template.templateMetadata.imgUrl} />
               <Text fw={600}>{template.name}</Text>
             </Group>
             {template.resolvedBadges.length > 0 ? (
-              <Table>
+              <Table verticalSpacing={'md'}>
                 <Table.Thead>
                   <Table.Tr>
                     <Table.Th>Recipient</Table.Th>

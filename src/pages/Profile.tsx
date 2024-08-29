@@ -30,6 +30,8 @@ import {
   ProjectCardFromQuery,
   ProjectCard as ProjectCardType,
 } from '../queries/getProjectCards';
+import { ProjectCard } from '../components/projectItems/ProjectCard';
+import { Display } from '../components/Display';
 
 const getUserProjects = async (projects: ProjectCardFromQuery[]) => {
   const res = await Promise.all(
@@ -121,6 +123,18 @@ export const Profile = () => {
                 badges={badges}
                 lootTokenSymbol={lootTokenSymbol || ''}
                 sharesTokenSymbol={sharesTokenSymbol || ''}
+              />
+            )}
+          </Tabs.Panel>
+          <Tabs.Panel value="entities">
+            {projects && projects?.length > 0 ? (
+              projects?.map((project) => (
+                <ProjectCard key={project.anchor} project={project} />
+              ))
+            ) : (
+              <Display
+                title="No Projects"
+                description="This user has not created any projects yet."
               />
             )}
           </Tabs.Panel>
