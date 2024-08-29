@@ -2,18 +2,14 @@ import {
   ActionIcon,
   BackgroundImage,
   Box,
-  Button,
   DefaultMantineColor,
-  FileButton,
   Group,
-  Image,
-  Modal,
   StyleProp,
   Text,
   useMantineTheme,
 } from '@mantine/core';
 import { IconArrowNarrowLeft } from '@tabler/icons-react';
-import { ReactNode, useMemo, useState } from 'react';
+import { ReactNode, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useLaptop, useMobile } from '../hooks/useBreakpoint';
 
