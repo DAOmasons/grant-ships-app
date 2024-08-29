@@ -7,18 +7,23 @@ import {
   Box,
   Flex,
   Group,
+  Modal,
+  Stack,
   Tabs,
   Text,
+  useMantineTheme,
 } from '@mantine/core';
-import { Address } from 'viem';
+import { Address, formatEther } from 'viem';
 import { useChainId, useEnsAvatar, useEnsName } from 'wagmi';
 import { ensConfig } from '../utils/config';
 import { mainnet } from 'viem/chains';
 import { normalize } from 'path';
 import { IconCopy } from '@tabler/icons-react';
-import { useClipboard } from '@mantine/hooks';
+import { useClipboard, useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
-import { getUserProfile } from '../queries/getUserProfile';
+import { getUserProfile, UserBadge } from '../queries/getUserProfile';
+import { useState } from 'react';
+import { Bold } from '../components/Typography';
 
 export const Profile = () => {
   const { id } = useParams();
@@ -32,7 +37,7 @@ export const Profile = () => {
 
   const navigate = useNavigate();
 
-  const { userData, badges } = data || {};
+  const { userData, badges, sharesTokenSymbol, lootTokenSymbol } = data || {};
 
   const { data: ensName } = useEnsName({
     address: id as Address,
@@ -81,20 +86,95 @@ export const Profile = () => {
             <Tabs.Tab value="entities">Projects</Tabs.Tab>
           </Tabs.List>
           <Tabs.Panel value="badges">
-            <Flex gap="md" wrap={'wrap'}>
-              {badges?.map((badge) => (
-                <Avatar
-                  style={{ cursor: 'pointer' }}
-                  src={badge.imgUrl}
-                  key={badge.id}
-                  size={80}
-                  radius="md"
-                />
-              ))}
-            </Flex>
+            {badges && (
+              <BadgeTab
+                badges={badges}
+                lootTokenSymbol={lootTokenSymbol || ''}
+                sharesTokenSymbol={sharesTokenSymbol || ''}
+              />
+            )}
           </Tabs.Panel>
         </Tabs>
       </Box>
     </MainSection>
+  );
+};
+
+const BadgeTab = ({
+  badges,
+  lootTokenSymbol,
+  sharesTokenSymbol,
+}: {
+  badges: UserBadge[];
+  lootTokenSymbol: string;
+  sharesTokenSymbol: string;
+}) => {
+  const [viewOpened, { open: openView, close: closeView }] = useDisclosure();
+
+  const theme = useMantineTheme();
+
+  const [selectedBadge, setSelectedBadge] = useState<UserBadge | null>(null);
+
+  const handleOpen = (badge: UserBadge) => {
+    setSelectedBadge(badge);
+    openView();
+  };
+
+  const handleClose = () => {
+    closeView();
+    setSelectedBadge(null);
+  };
+
+  return (
+    <Flex gap="md" wrap={'wrap'}>
+      {badges?.map((badge) => (
+        <Avatar
+          style={{ cursor: 'pointer' }}
+          src={badge.imgUrl}
+          key={badge.id}
+          size={80}
+          radius="md"
+          onClick={() => handleOpen(badge)}
+        />
+      ))}
+      <Modal
+        opened={viewOpened}
+        onClose={handleClose}
+        title={<Text fz="lg">{selectedBadge?.name}</Text>}
+        centered
+      >
+        <Modal.Body>
+          <Flex w="100%" gap="sm">
+            <Avatar src={selectedBadge?.imgUrl} size={200} radius="md" />
+            <Stack gap={4}>
+              <Text fw={600} mb="xs">
+                {selectedBadge?.name}
+              </Text>
+              <Text fz={'sm'} opacity={0.8}>
+                <Bold>ID: </Bold>
+                {selectedBadge?.badgeId}
+              </Text>
+              <Text
+                fz={'sm'}
+                opacity={0.8}
+                c={
+                  selectedBadge?.isSlash
+                    ? theme.colors.red[7]
+                    : theme.colors.green[7]
+                }
+              >
+                <Bold>Amount: </Bold>
+                {selectedBadge?.amount
+                  ? formatEther(selectedBadge?.amount)
+                  : 0}{' '}
+                {selectedBadge?.isVotingToken
+                  ? sharesTokenSymbol
+                  : lootTokenSymbol}
+              </Text>
+            </Stack>
+          </Flex>
+        </Modal.Body>
+      </Modal>
+    </Flex>
   );
 };

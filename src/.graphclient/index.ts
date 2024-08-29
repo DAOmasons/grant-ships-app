@@ -11671,7 +11671,7 @@ export type getUserBadgesQuery = { BadgeHolder: Array<(
     & { shaman?: Maybe<{ lootToken?: Maybe<Pick<DAOToken, 'symbol'>>, sharesToken?: Maybe<Pick<DAOToken, 'symbol'>> }>, badges: Array<(
       Pick<Badge, 'id' | 'amount'>
       & { reason?: Maybe<Pick<RawMetadata, 'pointer' | 'protocol'>>, template?: Maybe<(
-        Pick<BadgeTemplate, 'name' | 'hasFixedAmount' | 'isSlash' | 'isVotingToken'>
+        Pick<BadgeTemplate, 'name' | 'badgeId' | 'hasFixedAmount' | 'isSlash' | 'isVotingToken'>
         & { metadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
       )> }
     )> }
@@ -12432,6 +12432,7 @@ export const getUserBadgesDocument = gql`
       amount
       template {
         name
+        badgeId
         hasFixedAmount
         isSlash
         isVotingToken

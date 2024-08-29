@@ -6,10 +6,14 @@ import { getUserData } from './getUserData';
 
 export type UserBadge = {
   id: string;
+  badgeId: string;
   amount: bigint;
   imgUrl: string;
   name: string;
   comment: string | null;
+  hasFixedAmount: boolean;
+  isSlash: boolean;
+  isVotingToken: boolean;
 };
 
 export const getUserProfile = async (address: string, chainId: number) => {
@@ -32,10 +36,14 @@ export const getUserProfile = async (address: string, chainId: number) => {
         if (!templatePointer) {
           return {
             id: badge.id,
+            badgeId: badge?.template?.badgeId || 'UNKNOWN',
             amount: BigInt(badge.amount),
             imgUrl: '',
             name: badge?.template?.name || '',
             comment: null,
+            isSlash: badge?.template?.isSlash || false,
+            isVotingToken: badge?.template?.isVotingToken || false,
+            hasFixedAmount: badge?.template?.hasFixedAmount || false,
           };
         }
         const templateMetadata = await getIpfsJson(templatePointer);
@@ -47,10 +55,14 @@ export const getUserProfile = async (address: string, chainId: number) => {
           console.warn('Metadata', templateMetadata);
           return {
             id: badge.id,
+            badgeId: badge?.template?.badgeId || 'UNKNOWN',
             amount: BigInt(badge.amount),
             imgUrl: '',
             name: badge?.template?.name || '',
             comment: null,
+            isSlash: badge?.template?.isSlash || false,
+            isVotingToken: badge?.template?.isVotingToken || false,
+            hasFixedAmount: badge?.template?.hasFixedAmount || false,
           };
         }
 
@@ -78,10 +90,14 @@ export const getUserProfile = async (address: string, chainId: number) => {
 
         return {
           id: badge.id,
+          badgeId: badge?.template?.badgeId,
           amount: BigInt(badge.amount),
           imgUrl: getGatewayUrl(validated.data.avatarIPFSHash),
           name: badge?.template?.name || '',
           comment: comment,
+          isSlash: badge?.template?.isSlash || false,
+          isVotingToken: badge?.template?.isVotingToken || false,
+          hasFixedAmount: badge?.template?.hasFixedAmount || false,
         };
       })
     );

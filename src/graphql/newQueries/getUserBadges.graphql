@@ -18,6 +18,7 @@ query getUserBadges($address: String!) {
       amount
       template {
         name
+        badgeId
         hasFixedAmount
         isSlash
         isVotingToken
