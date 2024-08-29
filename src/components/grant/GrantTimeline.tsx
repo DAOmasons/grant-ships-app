@@ -206,6 +206,21 @@ export const GrantTimeline = () => {
             />
           );
         }
+
+        if (item.tag === 'grant/clawback') {
+          console.log('test 1');
+          const doc = item as VerdictUpdate;
+          return (
+            <VerdictDisplay
+              key={doc.id}
+              timestamp={doc.timestamp}
+              entityReviewed={'this Grant'}
+              posterName={'Facilitators'}
+              reason={doc.reason}
+              hasApproved={false}
+            />
+          );
+        }
         if (item.tag === 'grant/distributed') {
           const doc = item as GrantUpdate;
 
