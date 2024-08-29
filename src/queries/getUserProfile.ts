@@ -8,6 +8,7 @@ export type UserBadge = {
   id: string;
   badgeId: string;
   amount: bigint;
+  description: string;
   imgUrl: string;
   name: string;
   comment: string | null;
@@ -40,6 +41,7 @@ export const getUserProfile = async (address: string, chainId: number) => {
             amount: BigInt(badge.amount),
             imgUrl: '',
             name: badge?.template?.name || '',
+            description: '',
             comment: null,
             isSlash: badge?.template?.isSlash || false,
             isVotingToken: badge?.template?.isVotingToken || false,
@@ -47,7 +49,7 @@ export const getUserProfile = async (address: string, chainId: number) => {
           };
         }
         const templateMetadata = await getIpfsJson(templatePointer);
-
+        console.log('templateMetadata', templateMetadata);
         const validated = badgeTemplateSchema.safeParse(templateMetadata);
 
         if (!validated.success) {
@@ -59,6 +61,7 @@ export const getUserProfile = async (address: string, chainId: number) => {
             amount: BigInt(badge.amount),
             imgUrl: '',
             name: badge?.template?.name || '',
+            description: '',
             comment: null,
             isSlash: badge?.template?.isSlash || false,
             isVotingToken: badge?.template?.isVotingToken || false,
@@ -85,6 +88,8 @@ export const getUserProfile = async (address: string, chainId: number) => {
             throw new Error('Invalid metadata: Data does not match the schema');
           }
 
+          console.log('validated', validated);
+
           comment = validated.data.reason;
         }
 
@@ -93,6 +98,7 @@ export const getUserProfile = async (address: string, chainId: number) => {
           badgeId: badge?.template?.badgeId,
           amount: BigInt(badge.amount),
           imgUrl: getGatewayUrl(validated.data.avatarIPFSHash),
+          description: templateMetadata.description,
           name: badge?.template?.name || '',
           comment: comment,
           isSlash: badge?.template?.isSlash || false,

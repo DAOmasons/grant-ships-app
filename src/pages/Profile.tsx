@@ -5,6 +5,7 @@ import {
   ActionIcon,
   Avatar,
   Box,
+  Divider,
   Flex,
   Group,
   Modal,
@@ -23,7 +24,26 @@ import { useClipboard, useDisclosure } from '@mantine/hooks';
 import { notifications } from '@mantine/notifications';
 import { getUserProfile, UserBadge } from '../queries/getUserProfile';
 import { useState } from 'react';
-import { Bold } from '../components/Typography';
+import { Bold, Italic } from '../components/Typography';
+import { resolveProjectMetadata } from '../resolvers/projectResolvers';
+import {
+  ProjectCardFromQuery,
+  ProjectCard as ProjectCardType,
+} from '../queries/getProjectCards';
+
+const getUserProjects = async (projects: ProjectCardFromQuery[]) => {
+  const res = await Promise.all(
+    projects.map(async (project) => {
+      const metadata = await resolveProjectMetadata(project.metadata.pointer);
+      return {
+        ...project,
+        metadata: metadata,
+        imgUrl: metadata.imgUrl,
+      } as any as ProjectCardType;
+    })
+  );
+  return res;
+};
 
 export const Profile = () => {
   const { id } = useParams();
@@ -34,10 +54,20 @@ export const Profile = () => {
     queryFn: () => getUserProfile(id as string, chainId),
     enabled: !!id && !!chainId,
   });
+  const { badges, sharesTokenSymbol, lootTokenSymbol, userData } = data || {};
+
+  const {
+    data: projects,
+    isLoading: projectsLoading,
+    error: projectsError,
+  } = useQuery({
+    queryKey: [`user-projects-${id}`],
+    queryFn: () =>
+      getUserProjects(userData?.projects as ProjectCardFromQuery[]),
+    enabled: !!(userData?.projects?.length || 0 > 0),
+  });
 
   const navigate = useNavigate();
-
-  const { userData, badges, sharesTokenSymbol, lootTokenSymbol } = data || {};
 
   const { data: ensName } = useEnsName({
     address: id as Address,
@@ -122,7 +152,7 @@ const BadgeTab = ({
 
   const handleClose = () => {
     closeView();
-    setSelectedBadge(null);
+    setTimeout(() => setSelectedBadge(null), 200);
   };
 
   return (
@@ -144,7 +174,7 @@ const BadgeTab = ({
         centered
       >
         <Modal.Body>
-          <Flex w="100%" gap="sm">
+          <Flex w="100%" gap="sm" mb="xl">
             <Avatar src={selectedBadge?.imgUrl} size={200} radius="md" />
             <Stack gap={4}>
               <Text fw={600} mb="xs">
@@ -173,6 +203,18 @@ const BadgeTab = ({
               </Text>
             </Stack>
           </Flex>
+          <Divider mb="xs" />
+          <Text fz="sm" mb="md">
+            <Bold>Badge Description: </Bold>
+            {selectedBadge?.description || 'N/A'}
+          </Text>
+          <Divider mb="xs" />
+          {selectedBadge?.comment && (
+            <Text fz="sm" mb="md">
+              <Bold>Minter Comment: </Bold>
+              <Italic>"{selectedBadge?.comment}" </Italic>
+            </Text>
+          )}
         </Modal.Body>
       </Modal>
     </Flex>
