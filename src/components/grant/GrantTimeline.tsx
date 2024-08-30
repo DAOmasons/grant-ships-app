@@ -208,7 +208,6 @@ export const GrantTimeline = () => {
         }
 
         if (item.tag === 'grant/clawback') {
-          console.log('test 1');
           const doc = item as VerdictUpdate;
           return (
             <VerdictDisplay
