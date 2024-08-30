@@ -56,11 +56,7 @@ export const DeleteBadgeModal = ({
     >
       <Modal.Body>
         <Group w="100%" justify="center" my="xl">
-          <Avatar
-            src={template.templateMetadata.imgUrl || ''}
-            size={248}
-            radius="sm"
-          />
+          <Avatar src={template.templateMetadata.imgUrl || ''} size={248} />
         </Group>
         <Group justify="flex-end" mt="md">
           <Button variant="secondary" onClick={onClose}>

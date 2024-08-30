@@ -187,7 +187,6 @@ export const BadgeMintDrawer = ({
           bg={theme.colors.dark[5]}
           src={selectedTemplate.templateMetadata.imgUrl}
           size={240}
-          radius={'sm'}
           pos="relative"
         />
         <TxButton

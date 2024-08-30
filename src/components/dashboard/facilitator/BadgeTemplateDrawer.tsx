@@ -207,7 +207,6 @@ export const BadgeTemplateDrawer = ({
               bg={theme.colors.dark[5]}
               src={canPreview ? avatarPreview : undefined}
               size={240}
-              radius={'sm'}
               pos="relative"
             >
               <InputLabel
