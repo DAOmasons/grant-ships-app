@@ -108,7 +108,6 @@ const GrantStatusIndicator = ({
   status,
   hasPending,
   hasRejected,
-  allCompleted,
   requestingEarlyReview,
 }: {
   status: GrantStatus;
@@ -117,8 +116,6 @@ const GrantStatusIndicator = ({
   allCompleted: boolean;
   requestingEarlyReview?: boolean;
 }) => {
-  const theme = useMantineTheme();
-
   if (status === GrantStatus.ProjectInitiated)
     return (
       <StatusIndicator text="Grant Started" icon={<IconFilePlus size={16} />} />
