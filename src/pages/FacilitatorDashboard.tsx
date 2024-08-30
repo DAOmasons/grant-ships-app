@@ -138,6 +138,8 @@ export const FacilitatorDashboard = () => {
     for (const grant of grants) {
       if (grant.status === GrantStatus.MilestonesApproved) {
         needsAttention.push(grant);
+      } else if (grant.requestingEarlyReview) {
+        needsAttention.push(grant);
       } else {
         idleGrants.push(grant);
       }
@@ -156,6 +158,7 @@ export const FacilitatorDashboard = () => {
         leftSection={<IconBadge />}
         component={Link}
         to="/badges"
+        mb="lg"
       >
         Manage Badges
       </Button>
@@ -195,6 +198,7 @@ export const FacilitatorDashboard = () => {
                     hasPending={grant.hasPendingMilestones}
                     hasRejected={grant.hasRejectedMilestones}
                     allCompleted={grant.allMilestonesApproved}
+                    requestingEarlyReview={grant.requestingEarlyReview}
                     key={grant.id}
                     avatarUrls={[
                       grant.project?.metadata?.imgUrl || '',

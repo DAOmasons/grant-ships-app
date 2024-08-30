@@ -60,7 +60,7 @@ export const PlayerAvatar = ({
       return <FacilitatorBadge size={18} />;
     }
     return null;
-  }, [playerType]);
+  }, [playerType, display]);
 
   const { gap, fontSize, avatarSize } = displayParams[display];
 
