@@ -2407,6 +2407,7 @@ export type Grant = {
   /** An object relationship */
   project?: Maybe<Project>;
   project_id: Scalars['String'];
+  requestingEarlyReview: Scalars['Boolean'];
   /** An object relationship */
   ship?: Maybe<GrantShip>;
   ship_id: Scalars['String'];
@@ -3175,6 +3176,7 @@ export type Grant_bool_exp = {
   milestoneDrafts?: InputMaybe<MilestoneSet_bool_exp>;
   project?: InputMaybe<Project_bool_exp>;
   project_id?: InputMaybe<String_comparison_exp>;
+  requestingEarlyReview?: InputMaybe<Boolean_comparison_exp>;
   ship?: InputMaybe<GrantShip_bool_exp>;
   ship_id?: InputMaybe<String_comparison_exp>;
   status?: InputMaybe<Int_comparison_exp>;
@@ -3236,6 +3238,7 @@ export type Grant_order_by = {
   milestoneDrafts_aggregate?: InputMaybe<MilestoneSet_aggregate_order_by>;
   project?: InputMaybe<Project_order_by>;
   project_id?: InputMaybe<order_by>;
+  requestingEarlyReview?: InputMaybe<order_by>;
   ship?: InputMaybe<GrantShip_order_by>;
   ship_id?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
@@ -3275,6 +3278,8 @@ export type Grant_select_column =
   | 'lastUpdated'
   /** column name */
   | 'project_id'
+  /** column name */
+  | 'requestingEarlyReview'
   /** column name */
   | 'ship_id'
   /** column name */
@@ -3333,6 +3338,7 @@ export type Grant_stream_cursor_value_input = {
   isAllocated?: InputMaybe<Scalars['Boolean']>;
   lastUpdated?: InputMaybe<Scalars['Int']>;
   project_id?: InputMaybe<Scalars['String']>;
+  requestingEarlyReview?: InputMaybe<Scalars['Boolean']>;
   ship_id?: InputMaybe<Scalars['String']>;
   status?: InputMaybe<Scalars['Int']>;
 };
@@ -10131,6 +10137,7 @@ export type GrantResolvers<ContextType = MeshContext, ParentType extends Resolve
   milestoneDrafts?: Resolver<Array<ResolversTypes['MilestoneSet']>, ParentType, ContextType, Partial<GrantmilestoneDraftsArgs>>;
   project?: Resolver<Maybe<ResolversTypes['Project']>, ParentType, ContextType>;
   project_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  requestingEarlyReview?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   ship?: Resolver<Maybe<ResolversTypes['GrantShip']>, ParentType, ContextType>;
   ship_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   status?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -11401,7 +11408,7 @@ export type GrantApplicationFragment = (
 );
 
 export type GrantDataFragment = (
-  Pick<Grant, 'id' | 'status' | 'lastUpdated' | 'amount' | 'isAllocated' | 'grantCompleted' | 'applicationApproved' | 'hasPendingMilestones' | 'hasRejectedMilestones' | 'allMilestonesApproved' | 'amountDistributed'>
+  Pick<Grant, 'id' | 'status' | 'lastUpdated' | 'amount' | 'isAllocated' | 'grantCompleted' | 'applicationApproved' | 'hasPendingMilestones' | 'hasRejectedMilestones' | 'allMilestonesApproved' | 'requestingEarlyReview' | 'amountDistributed'>
   & { milestoneDrafts: Array<(
     Pick<MilestoneSet, 'id' | 'index' | 'timestamp' | 'status' | 'milestoneLength'>
     & { milestones: Array<(
@@ -11437,7 +11444,7 @@ export type getGrantQuery = { Project_by_pk?: Maybe<(
     Pick<GrantShip, 'beaconLastUpdated' | 'id' | 'name' | 'status' | 'poolId' | 'shipContractAddress' | 'shipApplicationBytesData' | 'owner' | 'balance' | 'totalFundsReceived' | 'totalAllocated' | 'totalDistributed' | 'totalRoundAmount'>
     & { beaconMessage?: Maybe<Pick<RawMetadata, 'pointer'>>, customApplication?: Maybe<Pick<RawMetadata, 'pointer'>>, profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>>, alloProfileMembers?: Maybe<Pick<ProfileMemberGroup, 'addresses'>> }
   )>, Grant_by_pk?: Maybe<(
-    Pick<Grant, 'id' | 'status' | 'lastUpdated' | 'amount' | 'isAllocated' | 'grantCompleted' | 'applicationApproved' | 'hasPendingMilestones' | 'hasRejectedMilestones' | 'allMilestonesApproved' | 'amountDistributed'>
+    Pick<Grant, 'id' | 'status' | 'lastUpdated' | 'amount' | 'isAllocated' | 'grantCompleted' | 'applicationApproved' | 'hasPendingMilestones' | 'hasRejectedMilestones' | 'allMilestonesApproved' | 'requestingEarlyReview' | 'amountDistributed'>
     & { milestoneDrafts: Array<(
       Pick<MilestoneSet, 'id' | 'index' | 'timestamp' | 'status' | 'milestoneLength'>
       & { milestones: Array<(
@@ -11984,6 +11991,7 @@ export const GrantDataFragmentDoc = gql`
   hasPendingMilestones
   hasRejectedMilestones
   allMilestonesApproved
+  requestingEarlyReview
   amountDistributed
   milestoneDrafts {
     ...Milestones

@@ -2385,6 +2385,7 @@ export type Grant = {
   /** An object relationship */
   project?: Maybe<Project>;
   project_id: Scalars['String'];
+  requestingEarlyReview: Scalars['Boolean'];
   /** An object relationship */
   ship?: Maybe<GrantShip>;
   ship_id: Scalars['String'];
@@ -3153,6 +3154,7 @@ export type Grant_bool_exp = {
   milestoneDrafts?: InputMaybe<MilestoneSet_bool_exp>;
   project?: InputMaybe<Project_bool_exp>;
   project_id?: InputMaybe<String_comparison_exp>;
+  requestingEarlyReview?: InputMaybe<Boolean_comparison_exp>;
   ship?: InputMaybe<GrantShip_bool_exp>;
   ship_id?: InputMaybe<String_comparison_exp>;
   status?: InputMaybe<Int_comparison_exp>;
@@ -3214,6 +3216,7 @@ export type Grant_order_by = {
   milestoneDrafts_aggregate?: InputMaybe<MilestoneSet_aggregate_order_by>;
   project?: InputMaybe<Project_order_by>;
   project_id?: InputMaybe<order_by>;
+  requestingEarlyReview?: InputMaybe<order_by>;
   ship?: InputMaybe<GrantShip_order_by>;
   ship_id?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
@@ -3253,6 +3256,8 @@ export type Grant_select_column =
   | 'lastUpdated'
   /** column name */
   | 'project_id'
+  /** column name */
+  | 'requestingEarlyReview'
   /** column name */
   | 'ship_id'
   /** column name */
@@ -3311,6 +3316,7 @@ export type Grant_stream_cursor_value_input = {
   isAllocated?: InputMaybe<Scalars['Boolean']>;
   lastUpdated?: InputMaybe<Scalars['Int']>;
   project_id?: InputMaybe<Scalars['String']>;
+  requestingEarlyReview?: InputMaybe<Scalars['Boolean']>;
   ship_id?: InputMaybe<Scalars['String']>;
   status?: InputMaybe<Scalars['Int']>;
 };

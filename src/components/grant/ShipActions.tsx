@@ -1,16 +1,11 @@
 import { useDisclosure } from '@mantine/hooks';
 import { useGrant } from '../../hooks/useGrant';
-import { Button, Group, Stack, Text, Tooltip } from '@mantine/core';
-import {
-  IconExclamationCircle,
-  IconPlus,
-  IconShieldHalf,
-} from '@tabler/icons-react';
+import { Button, Group, Stack, Text } from '@mantine/core';
+import { IconPlus } from '@tabler/icons-react';
 import { PostGrantDrawer } from './PostGrantDrawer';
 import { Player } from '../../types/ui';
 import { GrantStatus } from '../../types/common';
-import { useTx } from '../../hooks/useTx';
-import { notifications } from '@mantine/notifications';
+import { EarlyReviewButton } from './EarlyReview';
 
 export const ShipActions = () => {
   const { refetchGrant, project, ship, grant } = useGrant();
@@ -70,36 +65,5 @@ export const ShipActionsMobile = () => {
         refetch={refetchGrant}
       />
     </>
-  );
-};
-
-const EarlyReviewButton = () => {
-  const { tx } = useTx();
-  const { grant, ship, project } = useGrant();
-
-  const handleRequestEarlyReview = () => {
-    if (!ship?.shipContractAddress || !project?.id) {
-      notifications.show({
-        title: 'Error',
-        message: 'Ship not found',
-        color: 'red',
-      });
-      return;
-    }
-  };
-
-  return (
-    <Button
-      variant="menu"
-      leftSection={<IconShieldHalf />}
-      rightSection={
-        <Tooltip label="Requests an early review from facilitators">
-          <IconExclamationCircle size={14} />
-        </Tooltip>
-      }
-      onClick={handleRequestEarlyReview}
-    >
-      <Text>Early Review</Text>
-    </Button>
   );
 };

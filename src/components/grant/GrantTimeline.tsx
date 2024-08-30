@@ -17,7 +17,7 @@ import { FundsDistributed } from './FundsDistributed';
 
 import { GrantHelper } from './GrantHelpers';
 import { InsetUpdate } from './InsetUpdate';
-import { IconMail } from '@tabler/icons-react';
+import { IconMail, IconShield } from '@tabler/icons-react';
 import { DAO_MASONS } from '../../constants/gameSetup';
 import { getGatewayUrl } from '../../utils/ipfs/get';
 
@@ -217,6 +217,18 @@ export const GrantTimeline = () => {
               posterName={'Facilitators'}
               reason={doc.reason}
               hasApproved={false}
+            />
+          );
+        }
+
+        if (item.tag === 'grant/request-facilitator') {
+          return (
+            <InsetUpdate
+              key={item.id}
+              posterName={ship?.name || ''}
+              tagline={` has requested and advance facilitator review`}
+              symbolUI={<IconShield />}
+              timestamp={item.timestamp}
             />
           );
         }

@@ -7,14 +7,16 @@ import { IconExclamationCircle, IconShieldHalf } from '@tabler/icons-react';
 import ShipAbi from '../../abi/GrantShip.json';
 import { useState } from 'react';
 import { Address } from 'viem';
+import { ZER0_ADDRESS } from '../../constants/gameSetup';
 
-const EarlyReviewButton = () => {
+export const EarlyReviewButton = () => {
   const { tx } = useTx();
   const [isLoading, setIsLoading] = useState(false);
   const { grant, ship, project, refetchGrant } = useGrant();
 
   const handleRequestEarlyReview = () => {
     try {
+      setIsLoading(true);
       if (!ship?.shipContractAddress || !project?.id) {
         notifications.show({
           title: 'Error',
@@ -24,7 +26,11 @@ const EarlyReviewButton = () => {
         return;
       }
 
-      const args = [`${Tag.RequestFacilitator}:${project?.id}`, [0n, 'NULL']];
+      const args = [
+        `${Tag.RequestFacilitator}:${project?.id}`,
+        [0n, 'NULL'],
+        ZER0_ADDRESS,
+      ];
 
       tx({
         writeContractParams: {
@@ -36,6 +42,9 @@ const EarlyReviewButton = () => {
         writeContractOptions: {
           onPollSuccess() {
             refetchGrant();
+            setIsLoading(false);
+          },
+          onError() {
             setIsLoading(false);
           },
           onPollError() {
@@ -64,9 +73,10 @@ const EarlyReviewButton = () => {
         </Tooltip>
       }
       loading={isLoading}
+      disabled={grant?.requestingEarlyReview}
       onClick={handleRequestEarlyReview}
     >
-      <Text>Early Review</Text>
+      <Text>Early Revdiew</Text>
     </Button>
   );
 };

@@ -5,7 +5,7 @@ import { useMemo } from 'react';
 
 type DisplayParams = {
   gap: string | number;
-  fontSize: StyleProp<number | MantineSize | (string & {})> | undefined;
+  fontSize: StyleProp<number | MantineSize | (string & object)> | undefined;
   avatarSize: number;
   displayBadge: boolean;
 };

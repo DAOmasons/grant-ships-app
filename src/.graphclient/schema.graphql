@@ -2708,6 +2708,7 @@ type Grant {
   """An object relationship"""
   project: Project
   project_id: String!
+  requestingEarlyReview: Boolean!
   """An object relationship"""
   ship: GrantShip
   ship_id: String!
@@ -3505,6 +3506,7 @@ input Grant_bool_exp {
   milestoneDrafts: MilestoneSet_bool_exp
   project: Project_bool_exp
   project_id: String_comparison_exp
+  requestingEarlyReview: Boolean_comparison_exp
   ship: GrantShip_bool_exp
   ship_id: String_comparison_exp
   status: Int_comparison_exp
@@ -3570,6 +3572,7 @@ input Grant_order_by {
   milestoneDrafts_aggregate: MilestoneSet_aggregate_order_by
   project: Project_order_by
   project_id: order_by
+  requestingEarlyReview: order_by
   ship: GrantShip_order_by
   ship_id: order_by
   status: order_by
@@ -3611,6 +3614,8 @@ enum Grant_select_column {
   lastUpdated
   """column name"""
   project_id
+  """column name"""
+  requestingEarlyReview
   """column name"""
   ship_id
   """column name"""
@@ -3678,6 +3683,7 @@ input Grant_stream_cursor_value_input {
   isAllocated: Boolean
   lastUpdated: Int
   project_id: String
+  requestingEarlyReview: Boolean
   ship_id: String
   status: Int
 }
