@@ -76,7 +76,7 @@ export const EarlyReviewButton = () => {
       disabled={grant?.requestingEarlyReview}
       onClick={handleRequestEarlyReview}
     >
-      <Text>Early Revdiew</Text>
+      <Text>Early Review</Text>
     </Button>
   );
 };
