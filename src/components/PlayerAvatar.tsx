@@ -5,7 +5,7 @@ import { useMemo } from 'react';
 
 type DisplayParams = {
   gap: string | number;
-  fontSize: StyleProp<number | MantineSize | (string & {})> | undefined;
+  fontSize: StyleProp<number | MantineSize | (string & object)> | undefined;
   avatarSize: number;
   displayBadge: boolean;
 };
@@ -60,7 +60,7 @@ export const PlayerAvatar = ({
       return <FacilitatorBadge size={18} />;
     }
     return null;
-  }, [playerType]);
+  }, [playerType, display]);
 
   const { gap, fontSize, avatarSize } = displayParams[display];
 

@@ -19,7 +19,7 @@ export type ResolvedUpdate = UpdateBodyFragment & {
 export const resolveUpdates = async (updateData: UpdateBodyFragment[]) => {
   const resolved = await Promise.all(
     updateData.map(async (update) => {
-      const res = await getIpfsJson(update.content!!.pointer);
+      const res = await getIpfsJson(update.content!.pointer);
 
       const validated = tiptapContentSchema.safeParse(res);
 

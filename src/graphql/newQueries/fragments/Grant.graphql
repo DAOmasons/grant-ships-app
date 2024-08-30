@@ -25,6 +25,7 @@ fragment GrantBasic on Grant {
   hasPendingMilestones
   hasRejectedMilestones
   allMilestonesApproved
+  requestingEarlyReview
   currentMilestones {
     ...MilestoneSetBasic
   }

@@ -28,15 +28,16 @@ export const ProjectActions = () => {
     useDisclosure();
 
   const isApplicationStage =
-    !grant || (grant?.status && grant.status < GrantStatus.MilestonesApproved);
+    !grant ||
+    (grant?.status != null && grant.status < GrantStatus.MilestonesApproved);
 
   const isMilestonePlanning =
-    grant?.status &&
+    grant?.status != null &&
     grant.status >= GrantStatus.ApplicationApproved &&
     grant?.status < GrantStatus.MilestonesApproved;
 
   const areMilestonesLocked =
-    grant?.status &&
+    grant?.status != null &&
     grant.status === GrantStatus.Allocated &&
     grant?.currentMilestones?.status === GameStatus.Accepted;
 
@@ -162,15 +163,16 @@ export const ProjectActionsMobile = () => {
     useDisclosure();
 
   const isApplicationStage =
-    !grant || (grant?.status && grant.status < GrantStatus.MilestonesApproved);
+    !grant ||
+    (grant?.status != null && grant.status < GrantStatus.MilestonesApproved);
 
   const isMilestonePlanning =
-    grant?.status &&
+    grant?.status != null &&
     grant.status >= GrantStatus.ApplicationApproved &&
     grant?.status < GrantStatus.MilestonesApproved;
 
   const areMilestonesLocked =
-    grant?.status &&
+    grant?.status != null &&
     grant.status === GrantStatus.Allocated &&
     grant?.currentMilestones?.status === GameStatus.Accepted;
 

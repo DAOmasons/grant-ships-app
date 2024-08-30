@@ -240,6 +240,535 @@ input Application_variance_order_by {
 }
 
 """
+columns and relationships of "Badge"
+"""
+type Badge {
+  amount: numeric!
+  dao: String!
+  db_write_timestamp: timestamp
+  id: String!
+  """An object relationship"""
+  reason: RawMetadata
+  reason_id: String!
+  """An object relationship"""
+  template: BadgeTemplate
+  template_id: String!
+  """An object relationship"""
+  wearer: BadgeHolder
+  wearer_id: String!
+}
+
+"""
+columns and relationships of "BadgeHolder"
+"""
+type BadgeHolder {
+  address: String!
+  badgeBalance: numeric!
+  """An array relationship"""
+  badges(
+    """distinct select on columns"""
+    distinct_on: [Badge_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [Badge_order_by!]
+    """filter the rows returned"""
+    where: Badge_bool_exp
+  ): [Badge!]!
+  dao: String!
+  db_write_timestamp: timestamp
+  id: String!
+  """An object relationship"""
+  shaman: ScaffoldShaman
+  shaman_id: String!
+}
+
+"""
+Boolean expression to filter rows from the table "BadgeHolder". All fields are combined with a logical 'AND'.
+"""
+input BadgeHolder_bool_exp {
+  _and: [BadgeHolder_bool_exp!]
+  _not: BadgeHolder_bool_exp
+  _or: [BadgeHolder_bool_exp!]
+  address: String_comparison_exp
+  badgeBalance: numeric_comparison_exp
+  badges: Badge_bool_exp
+  dao: String_comparison_exp
+  db_write_timestamp: timestamp_comparison_exp
+  id: String_comparison_exp
+  shaman: ScaffoldShaman_bool_exp
+  shaman_id: String_comparison_exp
+}
+
+"""Ordering options when selecting data from "BadgeHolder"."""
+input BadgeHolder_order_by {
+  address: order_by
+  badgeBalance: order_by
+  badges_aggregate: Badge_aggregate_order_by
+  dao: order_by
+  db_write_timestamp: order_by
+  id: order_by
+  shaman: ScaffoldShaman_order_by
+  shaman_id: order_by
+}
+
+"""
+select columns of table "BadgeHolder"
+"""
+enum BadgeHolder_select_column {
+  """column name"""
+  address
+  """column name"""
+  badgeBalance
+  """column name"""
+  dao
+  """column name"""
+  db_write_timestamp
+  """column name"""
+  id
+  """column name"""
+  shaman_id
+}
+
+"""
+Streaming cursor of the table "BadgeHolder"
+"""
+input BadgeHolder_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: BadgeHolder_stream_cursor_value_input!
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input BadgeHolder_stream_cursor_value_input {
+  address: String
+  badgeBalance: numeric
+  dao: String
+  db_write_timestamp: timestamp
+  id: String
+  shaman_id: String
+}
+
+"""
+columns and relationships of "BadgeTemplate"
+"""
+type BadgeTemplate {
+  amount: numeric!
+  badgeId: numeric!
+  """An array relationship"""
+  badges(
+    """distinct select on columns"""
+    distinct_on: [Badge_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [Badge_order_by!]
+    """filter the rows returned"""
+    where: Badge_bool_exp
+  ): [Badge!]!
+  dao: String!
+  db_write_timestamp: timestamp
+  exists: Boolean!
+  hasFixedAmount: Boolean!
+  id: String!
+  isSlash: Boolean!
+  isVotingToken: Boolean!
+  """An object relationship"""
+  metadata: RawMetadata
+  metadata_id: String!
+  name: String!
+  """An object relationship"""
+  shaman: ScaffoldShaman
+  shaman_id: String!
+}
+
+"""
+order by aggregate values of table "BadgeTemplate"
+"""
+input BadgeTemplate_aggregate_order_by {
+  avg: BadgeTemplate_avg_order_by
+  count: order_by
+  max: BadgeTemplate_max_order_by
+  min: BadgeTemplate_min_order_by
+  stddev: BadgeTemplate_stddev_order_by
+  stddev_pop: BadgeTemplate_stddev_pop_order_by
+  stddev_samp: BadgeTemplate_stddev_samp_order_by
+  sum: BadgeTemplate_sum_order_by
+  var_pop: BadgeTemplate_var_pop_order_by
+  var_samp: BadgeTemplate_var_samp_order_by
+  variance: BadgeTemplate_variance_order_by
+}
+
+"""
+order by avg() on columns of table "BadgeTemplate"
+"""
+input BadgeTemplate_avg_order_by {
+  amount: order_by
+  badgeId: order_by
+}
+
+"""
+Boolean expression to filter rows from the table "BadgeTemplate". All fields are combined with a logical 'AND'.
+"""
+input BadgeTemplate_bool_exp {
+  _and: [BadgeTemplate_bool_exp!]
+  _not: BadgeTemplate_bool_exp
+  _or: [BadgeTemplate_bool_exp!]
+  amount: numeric_comparison_exp
+  badgeId: numeric_comparison_exp
+  badges: Badge_bool_exp
+  dao: String_comparison_exp
+  db_write_timestamp: timestamp_comparison_exp
+  exists: Boolean_comparison_exp
+  hasFixedAmount: Boolean_comparison_exp
+  id: String_comparison_exp
+  isSlash: Boolean_comparison_exp
+  isVotingToken: Boolean_comparison_exp
+  metadata: RawMetadata_bool_exp
+  metadata_id: String_comparison_exp
+  name: String_comparison_exp
+  shaman: ScaffoldShaman_bool_exp
+  shaman_id: String_comparison_exp
+}
+
+"""
+order by max() on columns of table "BadgeTemplate"
+"""
+input BadgeTemplate_max_order_by {
+  amount: order_by
+  badgeId: order_by
+  dao: order_by
+  db_write_timestamp: order_by
+  id: order_by
+  metadata_id: order_by
+  name: order_by
+  shaman_id: order_by
+}
+
+"""
+order by min() on columns of table "BadgeTemplate"
+"""
+input BadgeTemplate_min_order_by {
+  amount: order_by
+  badgeId: order_by
+  dao: order_by
+  db_write_timestamp: order_by
+  id: order_by
+  metadata_id: order_by
+  name: order_by
+  shaman_id: order_by
+}
+
+"""Ordering options when selecting data from "BadgeTemplate"."""
+input BadgeTemplate_order_by {
+  amount: order_by
+  badgeId: order_by
+  badges_aggregate: Badge_aggregate_order_by
+  dao: order_by
+  db_write_timestamp: order_by
+  exists: order_by
+  hasFixedAmount: order_by
+  id: order_by
+  isSlash: order_by
+  isVotingToken: order_by
+  metadata: RawMetadata_order_by
+  metadata_id: order_by
+  name: order_by
+  shaman: ScaffoldShaman_order_by
+  shaman_id: order_by
+}
+
+"""
+select columns of table "BadgeTemplate"
+"""
+enum BadgeTemplate_select_column {
+  """column name"""
+  amount
+  """column name"""
+  badgeId
+  """column name"""
+  dao
+  """column name"""
+  db_write_timestamp
+  """column name"""
+  exists
+  """column name"""
+  hasFixedAmount
+  """column name"""
+  id
+  """column name"""
+  isSlash
+  """column name"""
+  isVotingToken
+  """column name"""
+  metadata_id
+  """column name"""
+  name
+  """column name"""
+  shaman_id
+}
+
+"""
+order by stddev() on columns of table "BadgeTemplate"
+"""
+input BadgeTemplate_stddev_order_by {
+  amount: order_by
+  badgeId: order_by
+}
+
+"""
+order by stddev_pop() on columns of table "BadgeTemplate"
+"""
+input BadgeTemplate_stddev_pop_order_by {
+  amount: order_by
+  badgeId: order_by
+}
+
+"""
+order by stddev_samp() on columns of table "BadgeTemplate"
+"""
+input BadgeTemplate_stddev_samp_order_by {
+  amount: order_by
+  badgeId: order_by
+}
+
+"""
+Streaming cursor of the table "BadgeTemplate"
+"""
+input BadgeTemplate_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: BadgeTemplate_stream_cursor_value_input!
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input BadgeTemplate_stream_cursor_value_input {
+  amount: numeric
+  badgeId: numeric
+  dao: String
+  db_write_timestamp: timestamp
+  exists: Boolean
+  hasFixedAmount: Boolean
+  id: String
+  isSlash: Boolean
+  isVotingToken: Boolean
+  metadata_id: String
+  name: String
+  shaman_id: String
+}
+
+"""
+order by sum() on columns of table "BadgeTemplate"
+"""
+input BadgeTemplate_sum_order_by {
+  amount: order_by
+  badgeId: order_by
+}
+
+"""
+order by var_pop() on columns of table "BadgeTemplate"
+"""
+input BadgeTemplate_var_pop_order_by {
+  amount: order_by
+  badgeId: order_by
+}
+
+"""
+order by var_samp() on columns of table "BadgeTemplate"
+"""
+input BadgeTemplate_var_samp_order_by {
+  amount: order_by
+  badgeId: order_by
+}
+
+"""
+order by variance() on columns of table "BadgeTemplate"
+"""
+input BadgeTemplate_variance_order_by {
+  amount: order_by
+  badgeId: order_by
+}
+
+"""
+order by aggregate values of table "Badge"
+"""
+input Badge_aggregate_order_by {
+  avg: Badge_avg_order_by
+  count: order_by
+  max: Badge_max_order_by
+  min: Badge_min_order_by
+  stddev: Badge_stddev_order_by
+  stddev_pop: Badge_stddev_pop_order_by
+  stddev_samp: Badge_stddev_samp_order_by
+  sum: Badge_sum_order_by
+  var_pop: Badge_var_pop_order_by
+  var_samp: Badge_var_samp_order_by
+  variance: Badge_variance_order_by
+}
+
+"""
+order by avg() on columns of table "Badge"
+"""
+input Badge_avg_order_by {
+  amount: order_by
+}
+
+"""
+Boolean expression to filter rows from the table "Badge". All fields are combined with a logical 'AND'.
+"""
+input Badge_bool_exp {
+  _and: [Badge_bool_exp!]
+  _not: Badge_bool_exp
+  _or: [Badge_bool_exp!]
+  amount: numeric_comparison_exp
+  dao: String_comparison_exp
+  db_write_timestamp: timestamp_comparison_exp
+  id: String_comparison_exp
+  reason: RawMetadata_bool_exp
+  reason_id: String_comparison_exp
+  template: BadgeTemplate_bool_exp
+  template_id: String_comparison_exp
+  wearer: BadgeHolder_bool_exp
+  wearer_id: String_comparison_exp
+}
+
+"""
+order by max() on columns of table "Badge"
+"""
+input Badge_max_order_by {
+  amount: order_by
+  dao: order_by
+  db_write_timestamp: order_by
+  id: order_by
+  reason_id: order_by
+  template_id: order_by
+  wearer_id: order_by
+}
+
+"""
+order by min() on columns of table "Badge"
+"""
+input Badge_min_order_by {
+  amount: order_by
+  dao: order_by
+  db_write_timestamp: order_by
+  id: order_by
+  reason_id: order_by
+  template_id: order_by
+  wearer_id: order_by
+}
+
+"""Ordering options when selecting data from "Badge"."""
+input Badge_order_by {
+  amount: order_by
+  dao: order_by
+  db_write_timestamp: order_by
+  id: order_by
+  reason: RawMetadata_order_by
+  reason_id: order_by
+  template: BadgeTemplate_order_by
+  template_id: order_by
+  wearer: BadgeHolder_order_by
+  wearer_id: order_by
+}
+
+"""
+select columns of table "Badge"
+"""
+enum Badge_select_column {
+  """column name"""
+  amount
+  """column name"""
+  dao
+  """column name"""
+  db_write_timestamp
+  """column name"""
+  id
+  """column name"""
+  reason_id
+  """column name"""
+  template_id
+  """column name"""
+  wearer_id
+}
+
+"""
+order by stddev() on columns of table "Badge"
+"""
+input Badge_stddev_order_by {
+  amount: order_by
+}
+
+"""
+order by stddev_pop() on columns of table "Badge"
+"""
+input Badge_stddev_pop_order_by {
+  amount: order_by
+}
+
+"""
+order by stddev_samp() on columns of table "Badge"
+"""
+input Badge_stddev_samp_order_by {
+  amount: order_by
+}
+
+"""
+Streaming cursor of the table "Badge"
+"""
+input Badge_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: Badge_stream_cursor_value_input!
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input Badge_stream_cursor_value_input {
+  amount: numeric
+  dao: String
+  db_write_timestamp: timestamp
+  id: String
+  reason_id: String
+  template_id: String
+  wearer_id: String
+}
+
+"""
+order by sum() on columns of table "Badge"
+"""
+input Badge_sum_order_by {
+  amount: order_by
+}
+
+"""
+order by var_pop() on columns of table "Badge"
+"""
+input Badge_var_pop_order_by {
+  amount: order_by
+}
+
+"""
+order by var_samp() on columns of table "Badge"
+"""
+input Badge_var_samp_order_by {
+  amount: order_by
+}
+
+"""
+order by variance() on columns of table "Badge"
+"""
+input Badge_variance_order_by {
+  amount: order_by
+}
+
+"""
 Boolean expression to compare columns of type "Boolean". All fields are combined with logical 'AND'.
 """
 input Boolean_comparison_exp {
@@ -529,6 +1058,85 @@ input Contest_stream_cursor_value_input {
   isRetractable: Boolean
   pointsModule_id: String
   votesModule_id: String
+}
+
+"""
+columns and relationships of "DAOToken"
+"""
+type DAOToken {
+  address: String!
+  dao: String!
+  db_write_timestamp: timestamp
+  id: String!
+  """An object relationship"""
+  shaman: ScaffoldShaman
+  shaman_id: String!
+  symbol: String!
+}
+
+"""
+Boolean expression to filter rows from the table "DAOToken". All fields are combined with a logical 'AND'.
+"""
+input DAOToken_bool_exp {
+  _and: [DAOToken_bool_exp!]
+  _not: DAOToken_bool_exp
+  _or: [DAOToken_bool_exp!]
+  address: String_comparison_exp
+  dao: String_comparison_exp
+  db_write_timestamp: timestamp_comparison_exp
+  id: String_comparison_exp
+  shaman: ScaffoldShaman_bool_exp
+  shaman_id: String_comparison_exp
+  symbol: String_comparison_exp
+}
+
+"""Ordering options when selecting data from "DAOToken"."""
+input DAOToken_order_by {
+  address: order_by
+  dao: order_by
+  db_write_timestamp: order_by
+  id: order_by
+  shaman: ScaffoldShaman_order_by
+  shaman_id: order_by
+  symbol: order_by
+}
+
+"""
+select columns of table "DAOToken"
+"""
+enum DAOToken_select_column {
+  """column name"""
+  address
+  """column name"""
+  dao
+  """column name"""
+  db_write_timestamp
+  """column name"""
+  id
+  """column name"""
+  shaman_id
+  """column name"""
+  symbol
+}
+
+"""
+Streaming cursor of the table "DAOToken"
+"""
+input DAOToken_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: DAOToken_stream_cursor_value_input!
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input DAOToken_stream_cursor_value_input {
+  address: String
+  dao: String
+  db_write_timestamp: timestamp
+  id: String
+  shaman_id: String
+  symbol: String
 }
 
 """
@@ -1978,6 +2586,75 @@ input GameRound_variance_order_by {
 }
 
 """
+columns and relationships of "Gate"
+"""
+type Gate {
+  db_write_timestamp: timestamp
+  gateId: Int!
+  gateType: Int!
+  hatId: numeric!
+  id: String!
+}
+
+"""
+Boolean expression to filter rows from the table "Gate". All fields are combined with a logical 'AND'.
+"""
+input Gate_bool_exp {
+  _and: [Gate_bool_exp!]
+  _not: Gate_bool_exp
+  _or: [Gate_bool_exp!]
+  db_write_timestamp: timestamp_comparison_exp
+  gateId: Int_comparison_exp
+  gateType: Int_comparison_exp
+  hatId: numeric_comparison_exp
+  id: String_comparison_exp
+}
+
+"""Ordering options when selecting data from "Gate"."""
+input Gate_order_by {
+  db_write_timestamp: order_by
+  gateId: order_by
+  gateType: order_by
+  hatId: order_by
+  id: order_by
+}
+
+"""
+select columns of table "Gate"
+"""
+enum Gate_select_column {
+  """column name"""
+  db_write_timestamp
+  """column name"""
+  gateId
+  """column name"""
+  gateType
+  """column name"""
+  hatId
+  """column name"""
+  id
+}
+
+"""
+Streaming cursor of the table "Gate"
+"""
+input Gate_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: Gate_stream_cursor_value_input!
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input Gate_stream_cursor_value_input {
+  db_write_timestamp: timestamp
+  gateId: Int
+  gateType: Int
+  hatId: numeric
+  id: String
+}
+
+"""
 columns and relationships of "Grant"
 """
 type Grant {
@@ -2031,6 +2708,7 @@ type Grant {
   """An object relationship"""
   project: Project
   project_id: String!
+  requestingEarlyReview: Boolean!
   """An object relationship"""
   ship: GrantShip
   ship_id: String!
@@ -2832,6 +3510,7 @@ input Grant_bool_exp {
   milestoneDrafts: MilestoneSet_bool_exp
   project: Project_bool_exp
   project_id: String_comparison_exp
+  requestingEarlyReview: Boolean_comparison_exp
   ship: GrantShip_bool_exp
   ship_id: String_comparison_exp
   status: Int_comparison_exp
@@ -2897,6 +3576,7 @@ input Grant_order_by {
   milestoneDrafts_aggregate: MilestoneSet_aggregate_order_by
   project: Project_order_by
   project_id: order_by
+  requestingEarlyReview: order_by
   ship: GrantShip_order_by
   ship_id: order_by
   status: order_by
@@ -2938,6 +3618,8 @@ enum Grant_select_column {
   lastUpdated
   """column name"""
   project_id
+  """column name"""
+  requestingEarlyReview
   """column name"""
   ship_id
   """column name"""
@@ -3005,6 +3687,7 @@ input Grant_stream_cursor_value_input {
   isAllocated: Boolean
   lastUpdated: Int
   project_id: String
+  requestingEarlyReview: Boolean
   ship_id: String
   status: Int
 }
@@ -4445,6 +5128,134 @@ input SBTBalParams_stream_cursor_value_input {
   db_write_timestamp: timestamp
   id: String
   voteTokenAddress: String
+}
+
+"""
+columns and relationships of "ScaffoldShaman"
+"""
+type ScaffoldShaman {
+  address: String!
+  """An object relationship"""
+  controlGate: Gate
+  controlGate_id: String!
+  dao: String!
+  db_write_timestamp: timestamp
+  id: String!
+  """An object relationship"""
+  lootToken: DAOToken
+  lootToken_id: String!
+  """An object relationship"""
+  managerGate: Gate
+  managerGate_id: String!
+  """An object relationship"""
+  minterGate: Gate
+  minterGate_id: String!
+  """An object relationship"""
+  sharesToken: DAOToken
+  sharesToken_id: String!
+  """An array relationship"""
+  templates(
+    """distinct select on columns"""
+    distinct_on: [BadgeTemplate_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [BadgeTemplate_order_by!]
+    """filter the rows returned"""
+    where: BadgeTemplate_bool_exp
+  ): [BadgeTemplate!]!
+}
+
+"""
+Boolean expression to filter rows from the table "ScaffoldShaman". All fields are combined with a logical 'AND'.
+"""
+input ScaffoldShaman_bool_exp {
+  _and: [ScaffoldShaman_bool_exp!]
+  _not: ScaffoldShaman_bool_exp
+  _or: [ScaffoldShaman_bool_exp!]
+  address: String_comparison_exp
+  controlGate: Gate_bool_exp
+  controlGate_id: String_comparison_exp
+  dao: String_comparison_exp
+  db_write_timestamp: timestamp_comparison_exp
+  id: String_comparison_exp
+  lootToken: DAOToken_bool_exp
+  lootToken_id: String_comparison_exp
+  managerGate: Gate_bool_exp
+  managerGate_id: String_comparison_exp
+  minterGate: Gate_bool_exp
+  minterGate_id: String_comparison_exp
+  sharesToken: DAOToken_bool_exp
+  sharesToken_id: String_comparison_exp
+  templates: BadgeTemplate_bool_exp
+}
+
+"""Ordering options when selecting data from "ScaffoldShaman"."""
+input ScaffoldShaman_order_by {
+  address: order_by
+  controlGate: Gate_order_by
+  controlGate_id: order_by
+  dao: order_by
+  db_write_timestamp: order_by
+  id: order_by
+  lootToken: DAOToken_order_by
+  lootToken_id: order_by
+  managerGate: Gate_order_by
+  managerGate_id: order_by
+  minterGate: Gate_order_by
+  minterGate_id: order_by
+  sharesToken: DAOToken_order_by
+  sharesToken_id: order_by
+  templates_aggregate: BadgeTemplate_aggregate_order_by
+}
+
+"""
+select columns of table "ScaffoldShaman"
+"""
+enum ScaffoldShaman_select_column {
+  """column name"""
+  address
+  """column name"""
+  controlGate_id
+  """column name"""
+  dao
+  """column name"""
+  db_write_timestamp
+  """column name"""
+  id
+  """column name"""
+  lootToken_id
+  """column name"""
+  managerGate_id
+  """column name"""
+  minterGate_id
+  """column name"""
+  sharesToken_id
+}
+
+"""
+Streaming cursor of the table "ScaffoldShaman"
+"""
+input ScaffoldShaman_stream_cursor_input {
+  """Stream column input with initial value"""
+  initial_value: ScaffoldShaman_stream_cursor_value_input!
+  """cursor ordering"""
+  ordering: cursor_ordering
+}
+
+"""Initial value of the column from where the streaming should start"""
+input ScaffoldShaman_stream_cursor_value_input {
+  address: String
+  controlGate_id: String
+  dao: String
+  db_write_timestamp: timestamp
+  id: String
+  lootToken_id: String
+  managerGate_id: String
+  minterGate_id: String
+  sharesToken_id: String
 }
 
 """
@@ -6251,6 +7062,57 @@ type query_root {
   """fetch data from the table: "Application" using primary key columns"""
   Application_by_pk(id: String!): Application
   """
+  fetch data from the table: "Badge"
+  """
+  Badge(
+    """distinct select on columns"""
+    distinct_on: [Badge_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [Badge_order_by!]
+    """filter the rows returned"""
+    where: Badge_bool_exp
+  ): [Badge!]!
+  """
+  fetch data from the table: "BadgeHolder"
+  """
+  BadgeHolder(
+    """distinct select on columns"""
+    distinct_on: [BadgeHolder_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [BadgeHolder_order_by!]
+    """filter the rows returned"""
+    where: BadgeHolder_bool_exp
+  ): [BadgeHolder!]!
+  """fetch data from the table: "BadgeHolder" using primary key columns"""
+  BadgeHolder_by_pk(id: String!): BadgeHolder
+  """
+  fetch data from the table: "BadgeTemplate"
+  """
+  BadgeTemplate(
+    """distinct select on columns"""
+    distinct_on: [BadgeTemplate_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [BadgeTemplate_order_by!]
+    """filter the rows returned"""
+    where: BadgeTemplate_bool_exp
+  ): [BadgeTemplate!]!
+  """fetch data from the table: "BadgeTemplate" using primary key columns"""
+  BadgeTemplate_by_pk(id: String!): BadgeTemplate
+  """fetch data from the table: "Badge" using primary key columns"""
+  Badge_by_pk(id: String!): Badge
+  """
   fetch data from the table: "Contest"
   """
   Contest(
@@ -6301,6 +7163,23 @@ type query_root {
   ContestTemplate_by_pk(id: String!): ContestTemplate
   """fetch data from the table: "Contest" using primary key columns"""
   Contest_by_pk(id: String!): Contest
+  """
+  fetch data from the table: "DAOToken"
+  """
+  DAOToken(
+    """distinct select on columns"""
+    distinct_on: [DAOToken_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [DAOToken_order_by!]
+    """filter the rows returned"""
+    where: DAOToken_bool_exp
+  ): [DAOToken!]!
+  """fetch data from the table: "DAOToken" using primary key columns"""
+  DAOToken_by_pk(id: String!): DAOToken
   """
   fetch data from the table: "ERCPointParams"
   """
@@ -6528,6 +7407,23 @@ type query_root {
   ): [GameRound!]!
   """fetch data from the table: "GameRound" using primary key columns"""
   GameRound_by_pk(id: String!): GameRound
+  """
+  fetch data from the table: "Gate"
+  """
+  Gate(
+    """distinct select on columns"""
+    distinct_on: [Gate_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [Gate_order_by!]
+    """filter the rows returned"""
+    where: Gate_bool_exp
+  ): [Gate!]!
+  """fetch data from the table: "Gate" using primary key columns"""
+  Gate_by_pk(id: String!): Gate
   """
   fetch data from the table: "Grant"
   """
@@ -6789,6 +7685,23 @@ type query_root {
   ): [SBTBalParams!]!
   """fetch data from the table: "SBTBalParams" using primary key columns"""
   SBTBalParams_by_pk(id: String!): SBTBalParams
+  """
+  fetch data from the table: "ScaffoldShaman"
+  """
+  ScaffoldShaman(
+    """distinct select on columns"""
+    distinct_on: [ScaffoldShaman_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [ScaffoldShaman_order_by!]
+    """filter the rows returned"""
+    where: ScaffoldShaman_bool_exp
+  ): [ScaffoldShaman!]!
+  """fetch data from the table: "ScaffoldShaman" using primary key columns"""
+  ScaffoldShaman_by_pk(id: String!): ScaffoldShaman
   """
   fetch data from the table: "ShipChoice"
   """
@@ -7211,6 +8124,90 @@ type subscription_root {
     where: Application_bool_exp
   ): [Application!]!
   """
+  fetch data from the table: "Badge"
+  """
+  Badge(
+    """distinct select on columns"""
+    distinct_on: [Badge_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [Badge_order_by!]
+    """filter the rows returned"""
+    where: Badge_bool_exp
+  ): [Badge!]!
+  """
+  fetch data from the table: "BadgeHolder"
+  """
+  BadgeHolder(
+    """distinct select on columns"""
+    distinct_on: [BadgeHolder_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [BadgeHolder_order_by!]
+    """filter the rows returned"""
+    where: BadgeHolder_bool_exp
+  ): [BadgeHolder!]!
+  """fetch data from the table: "BadgeHolder" using primary key columns"""
+  BadgeHolder_by_pk(id: String!): BadgeHolder
+  """
+  fetch data from the table in a streaming manner: "BadgeHolder"
+  """
+  BadgeHolder_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [BadgeHolder_stream_cursor_input]!
+    """filter the rows returned"""
+    where: BadgeHolder_bool_exp
+  ): [BadgeHolder!]!
+  """
+  fetch data from the table: "BadgeTemplate"
+  """
+  BadgeTemplate(
+    """distinct select on columns"""
+    distinct_on: [BadgeTemplate_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [BadgeTemplate_order_by!]
+    """filter the rows returned"""
+    where: BadgeTemplate_bool_exp
+  ): [BadgeTemplate!]!
+  """fetch data from the table: "BadgeTemplate" using primary key columns"""
+  BadgeTemplate_by_pk(id: String!): BadgeTemplate
+  """
+  fetch data from the table in a streaming manner: "BadgeTemplate"
+  """
+  BadgeTemplate_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [BadgeTemplate_stream_cursor_input]!
+    """filter the rows returned"""
+    where: BadgeTemplate_bool_exp
+  ): [BadgeTemplate!]!
+  """fetch data from the table: "Badge" using primary key columns"""
+  Badge_by_pk(id: String!): Badge
+  """
+  fetch data from the table in a streaming manner: "Badge"
+  """
+  Badge_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [Badge_stream_cursor_input]!
+    """filter the rows returned"""
+    where: Badge_bool_exp
+  ): [Badge!]!
+  """
   fetch data from the table: "Contest"
   """
   Contest(
@@ -7294,6 +8291,34 @@ type subscription_root {
     """filter the rows returned"""
     where: Contest_bool_exp
   ): [Contest!]!
+  """
+  fetch data from the table: "DAOToken"
+  """
+  DAOToken(
+    """distinct select on columns"""
+    distinct_on: [DAOToken_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [DAOToken_order_by!]
+    """filter the rows returned"""
+    where: DAOToken_bool_exp
+  ): [DAOToken!]!
+  """fetch data from the table: "DAOToken" using primary key columns"""
+  DAOToken_by_pk(id: String!): DAOToken
+  """
+  fetch data from the table in a streaming manner: "DAOToken"
+  """
+  DAOToken_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [DAOToken_stream_cursor_input]!
+    """filter the rows returned"""
+    where: DAOToken_bool_exp
+  ): [DAOToken!]!
   """
   fetch data from the table: "ERCPointParams"
   """
@@ -7664,6 +8689,34 @@ type subscription_root {
     """filter the rows returned"""
     where: GameRound_bool_exp
   ): [GameRound!]!
+  """
+  fetch data from the table: "Gate"
+  """
+  Gate(
+    """distinct select on columns"""
+    distinct_on: [Gate_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [Gate_order_by!]
+    """filter the rows returned"""
+    where: Gate_bool_exp
+  ): [Gate!]!
+  """fetch data from the table: "Gate" using primary key columns"""
+  Gate_by_pk(id: String!): Gate
+  """
+  fetch data from the table in a streaming manner: "Gate"
+  """
+  Gate_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [Gate_stream_cursor_input]!
+    """filter the rows returned"""
+    where: Gate_bool_exp
+  ): [Gate!]!
   """
   fetch data from the table: "Grant"
   """
@@ -8090,6 +9143,34 @@ type subscription_root {
     """filter the rows returned"""
     where: SBTBalParams_bool_exp
   ): [SBTBalParams!]!
+  """
+  fetch data from the table: "ScaffoldShaman"
+  """
+  ScaffoldShaman(
+    """distinct select on columns"""
+    distinct_on: [ScaffoldShaman_select_column!]
+    """limit the number of rows returned"""
+    limit: Int
+    """skip the first n rows. Use only with order_by"""
+    offset: Int
+    """sort the rows by one or more columns"""
+    order_by: [ScaffoldShaman_order_by!]
+    """filter the rows returned"""
+    where: ScaffoldShaman_bool_exp
+  ): [ScaffoldShaman!]!
+  """fetch data from the table: "ScaffoldShaman" using primary key columns"""
+  ScaffoldShaman_by_pk(id: String!): ScaffoldShaman
+  """
+  fetch data from the table in a streaming manner: "ScaffoldShaman"
+  """
+  ScaffoldShaman_stream(
+    """maximum number of rows returned in a single batch"""
+    batch_size: Int!
+    """cursor to stream the results returned by the query"""
+    cursor: [ScaffoldShaman_stream_cursor_input]!
+    """filter the rows returned"""
+    where: ScaffoldShaman_bool_exp
+  ): [ScaffoldShaman!]!
   """
   fetch data from the table: "ShipChoice"
   """

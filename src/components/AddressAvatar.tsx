@@ -2,11 +2,12 @@ import {
   Avatar,
   Group,
   MantineSize,
+  MantineSpacing,
   StyleProp,
   Text,
   Tooltip,
 } from '@mantine/core';
-import React, { ComponentProps } from 'react';
+import { ComponentProps } from 'react';
 import { Address, isAddress } from 'viem';
 import { useEnsAvatar, useEnsName } from 'wagmi';
 import { ensConfig } from '../utils/config';
@@ -21,6 +22,7 @@ export const AddressAvatar = ({
   fz,
   displayText = true,
   withTooltip = false,
+  gap,
   canCopy,
 }: {
   address: Address;
@@ -30,6 +32,7 @@ export const AddressAvatar = ({
   displayText?: boolean;
   hideText?: boolean;
   canCopy?: boolean;
+  gap?: MantineSpacing;
 }) => {
   const { data: ensName } = useEnsName({
     address,
@@ -50,6 +53,7 @@ export const AddressAvatar = ({
 
   return (
     <Group
+      gap={gap}
       style={{
         cursor: canCopy ? 'pointer' : 'default',
       }}

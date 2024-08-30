@@ -244,6 +244,462 @@ export type Application_variance_order_by = {
   timestamp?: InputMaybe<order_by>;
 };
 
+/** columns and relationships of "Badge" */
+export type Badge = {
+  amount: Scalars['numeric'];
+  dao: Scalars['String'];
+  db_write_timestamp?: Maybe<Scalars['timestamp']>;
+  id: Scalars['String'];
+  /** An object relationship */
+  reason?: Maybe<RawMetadata>;
+  reason_id: Scalars['String'];
+  /** An object relationship */
+  template?: Maybe<BadgeTemplate>;
+  template_id: Scalars['String'];
+  /** An object relationship */
+  wearer?: Maybe<BadgeHolder>;
+  wearer_id: Scalars['String'];
+};
+
+/** columns and relationships of "BadgeHolder" */
+export type BadgeHolder = {
+  address: Scalars['String'];
+  badgeBalance: Scalars['numeric'];
+  /** An array relationship */
+  badges: Array<Badge>;
+  dao: Scalars['String'];
+  db_write_timestamp?: Maybe<Scalars['timestamp']>;
+  id: Scalars['String'];
+  /** An object relationship */
+  shaman?: Maybe<ScaffoldShaman>;
+  shaman_id: Scalars['String'];
+};
+
+
+/** columns and relationships of "BadgeHolder" */
+export type BadgeHolderbadgesArgs = {
+  distinct_on?: InputMaybe<Array<Badge_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Badge_order_by>>;
+  where?: InputMaybe<Badge_bool_exp>;
+};
+
+/** Boolean expression to filter rows from the table "BadgeHolder". All fields are combined with a logical 'AND'. */
+export type BadgeHolder_bool_exp = {
+  _and?: InputMaybe<Array<BadgeHolder_bool_exp>>;
+  _not?: InputMaybe<BadgeHolder_bool_exp>;
+  _or?: InputMaybe<Array<BadgeHolder_bool_exp>>;
+  address?: InputMaybe<String_comparison_exp>;
+  badgeBalance?: InputMaybe<numeric_comparison_exp>;
+  badges?: InputMaybe<Badge_bool_exp>;
+  dao?: InputMaybe<String_comparison_exp>;
+  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
+  id?: InputMaybe<String_comparison_exp>;
+  shaman?: InputMaybe<ScaffoldShaman_bool_exp>;
+  shaman_id?: InputMaybe<String_comparison_exp>;
+};
+
+/** Ordering options when selecting data from "BadgeHolder". */
+export type BadgeHolder_order_by = {
+  address?: InputMaybe<order_by>;
+  badgeBalance?: InputMaybe<order_by>;
+  badges_aggregate?: InputMaybe<Badge_aggregate_order_by>;
+  dao?: InputMaybe<order_by>;
+  db_write_timestamp?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  shaman?: InputMaybe<ScaffoldShaman_order_by>;
+  shaman_id?: InputMaybe<order_by>;
+};
+
+/** select columns of table "BadgeHolder" */
+export type BadgeHolder_select_column =
+  /** column name */
+  | 'address'
+  /** column name */
+  | 'badgeBalance'
+  /** column name */
+  | 'dao'
+  /** column name */
+  | 'db_write_timestamp'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'shaman_id';
+
+/** Streaming cursor of the table "BadgeHolder" */
+export type BadgeHolder_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: BadgeHolder_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type BadgeHolder_stream_cursor_value_input = {
+  address?: InputMaybe<Scalars['String']>;
+  badgeBalance?: InputMaybe<Scalars['numeric']>;
+  dao?: InputMaybe<Scalars['String']>;
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
+  id?: InputMaybe<Scalars['String']>;
+  shaman_id?: InputMaybe<Scalars['String']>;
+};
+
+/** columns and relationships of "BadgeTemplate" */
+export type BadgeTemplate = {
+  amount: Scalars['numeric'];
+  badgeId: Scalars['numeric'];
+  /** An array relationship */
+  badges: Array<Badge>;
+  dao: Scalars['String'];
+  db_write_timestamp?: Maybe<Scalars['timestamp']>;
+  exists: Scalars['Boolean'];
+  hasFixedAmount: Scalars['Boolean'];
+  id: Scalars['String'];
+  isSlash: Scalars['Boolean'];
+  isVotingToken: Scalars['Boolean'];
+  /** An object relationship */
+  metadata?: Maybe<RawMetadata>;
+  metadata_id: Scalars['String'];
+  name: Scalars['String'];
+  /** An object relationship */
+  shaman?: Maybe<ScaffoldShaman>;
+  shaman_id: Scalars['String'];
+};
+
+
+/** columns and relationships of "BadgeTemplate" */
+export type BadgeTemplatebadgesArgs = {
+  distinct_on?: InputMaybe<Array<Badge_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Badge_order_by>>;
+  where?: InputMaybe<Badge_bool_exp>;
+};
+
+/** order by aggregate values of table "BadgeTemplate" */
+export type BadgeTemplate_aggregate_order_by = {
+  avg?: InputMaybe<BadgeTemplate_avg_order_by>;
+  count?: InputMaybe<order_by>;
+  max?: InputMaybe<BadgeTemplate_max_order_by>;
+  min?: InputMaybe<BadgeTemplate_min_order_by>;
+  stddev?: InputMaybe<BadgeTemplate_stddev_order_by>;
+  stddev_pop?: InputMaybe<BadgeTemplate_stddev_pop_order_by>;
+  stddev_samp?: InputMaybe<BadgeTemplate_stddev_samp_order_by>;
+  sum?: InputMaybe<BadgeTemplate_sum_order_by>;
+  var_pop?: InputMaybe<BadgeTemplate_var_pop_order_by>;
+  var_samp?: InputMaybe<BadgeTemplate_var_samp_order_by>;
+  variance?: InputMaybe<BadgeTemplate_variance_order_by>;
+};
+
+/** order by avg() on columns of table "BadgeTemplate" */
+export type BadgeTemplate_avg_order_by = {
+  amount?: InputMaybe<order_by>;
+  badgeId?: InputMaybe<order_by>;
+};
+
+/** Boolean expression to filter rows from the table "BadgeTemplate". All fields are combined with a logical 'AND'. */
+export type BadgeTemplate_bool_exp = {
+  _and?: InputMaybe<Array<BadgeTemplate_bool_exp>>;
+  _not?: InputMaybe<BadgeTemplate_bool_exp>;
+  _or?: InputMaybe<Array<BadgeTemplate_bool_exp>>;
+  amount?: InputMaybe<numeric_comparison_exp>;
+  badgeId?: InputMaybe<numeric_comparison_exp>;
+  badges?: InputMaybe<Badge_bool_exp>;
+  dao?: InputMaybe<String_comparison_exp>;
+  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
+  exists?: InputMaybe<Boolean_comparison_exp>;
+  hasFixedAmount?: InputMaybe<Boolean_comparison_exp>;
+  id?: InputMaybe<String_comparison_exp>;
+  isSlash?: InputMaybe<Boolean_comparison_exp>;
+  isVotingToken?: InputMaybe<Boolean_comparison_exp>;
+  metadata?: InputMaybe<RawMetadata_bool_exp>;
+  metadata_id?: InputMaybe<String_comparison_exp>;
+  name?: InputMaybe<String_comparison_exp>;
+  shaman?: InputMaybe<ScaffoldShaman_bool_exp>;
+  shaman_id?: InputMaybe<String_comparison_exp>;
+};
+
+/** order by max() on columns of table "BadgeTemplate" */
+export type BadgeTemplate_max_order_by = {
+  amount?: InputMaybe<order_by>;
+  badgeId?: InputMaybe<order_by>;
+  dao?: InputMaybe<order_by>;
+  db_write_timestamp?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  metadata_id?: InputMaybe<order_by>;
+  name?: InputMaybe<order_by>;
+  shaman_id?: InputMaybe<order_by>;
+};
+
+/** order by min() on columns of table "BadgeTemplate" */
+export type BadgeTemplate_min_order_by = {
+  amount?: InputMaybe<order_by>;
+  badgeId?: InputMaybe<order_by>;
+  dao?: InputMaybe<order_by>;
+  db_write_timestamp?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  metadata_id?: InputMaybe<order_by>;
+  name?: InputMaybe<order_by>;
+  shaman_id?: InputMaybe<order_by>;
+};
+
+/** Ordering options when selecting data from "BadgeTemplate". */
+export type BadgeTemplate_order_by = {
+  amount?: InputMaybe<order_by>;
+  badgeId?: InputMaybe<order_by>;
+  badges_aggregate?: InputMaybe<Badge_aggregate_order_by>;
+  dao?: InputMaybe<order_by>;
+  db_write_timestamp?: InputMaybe<order_by>;
+  exists?: InputMaybe<order_by>;
+  hasFixedAmount?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  isSlash?: InputMaybe<order_by>;
+  isVotingToken?: InputMaybe<order_by>;
+  metadata?: InputMaybe<RawMetadata_order_by>;
+  metadata_id?: InputMaybe<order_by>;
+  name?: InputMaybe<order_by>;
+  shaman?: InputMaybe<ScaffoldShaman_order_by>;
+  shaman_id?: InputMaybe<order_by>;
+};
+
+/** select columns of table "BadgeTemplate" */
+export type BadgeTemplate_select_column =
+  /** column name */
+  | 'amount'
+  /** column name */
+  | 'badgeId'
+  /** column name */
+  | 'dao'
+  /** column name */
+  | 'db_write_timestamp'
+  /** column name */
+  | 'exists'
+  /** column name */
+  | 'hasFixedAmount'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'isSlash'
+  /** column name */
+  | 'isVotingToken'
+  /** column name */
+  | 'metadata_id'
+  /** column name */
+  | 'name'
+  /** column name */
+  | 'shaman_id';
+
+/** order by stddev() on columns of table "BadgeTemplate" */
+export type BadgeTemplate_stddev_order_by = {
+  amount?: InputMaybe<order_by>;
+  badgeId?: InputMaybe<order_by>;
+};
+
+/** order by stddev_pop() on columns of table "BadgeTemplate" */
+export type BadgeTemplate_stddev_pop_order_by = {
+  amount?: InputMaybe<order_by>;
+  badgeId?: InputMaybe<order_by>;
+};
+
+/** order by stddev_samp() on columns of table "BadgeTemplate" */
+export type BadgeTemplate_stddev_samp_order_by = {
+  amount?: InputMaybe<order_by>;
+  badgeId?: InputMaybe<order_by>;
+};
+
+/** Streaming cursor of the table "BadgeTemplate" */
+export type BadgeTemplate_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: BadgeTemplate_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type BadgeTemplate_stream_cursor_value_input = {
+  amount?: InputMaybe<Scalars['numeric']>;
+  badgeId?: InputMaybe<Scalars['numeric']>;
+  dao?: InputMaybe<Scalars['String']>;
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
+  exists?: InputMaybe<Scalars['Boolean']>;
+  hasFixedAmount?: InputMaybe<Scalars['Boolean']>;
+  id?: InputMaybe<Scalars['String']>;
+  isSlash?: InputMaybe<Scalars['Boolean']>;
+  isVotingToken?: InputMaybe<Scalars['Boolean']>;
+  metadata_id?: InputMaybe<Scalars['String']>;
+  name?: InputMaybe<Scalars['String']>;
+  shaman_id?: InputMaybe<Scalars['String']>;
+};
+
+/** order by sum() on columns of table "BadgeTemplate" */
+export type BadgeTemplate_sum_order_by = {
+  amount?: InputMaybe<order_by>;
+  badgeId?: InputMaybe<order_by>;
+};
+
+/** order by var_pop() on columns of table "BadgeTemplate" */
+export type BadgeTemplate_var_pop_order_by = {
+  amount?: InputMaybe<order_by>;
+  badgeId?: InputMaybe<order_by>;
+};
+
+/** order by var_samp() on columns of table "BadgeTemplate" */
+export type BadgeTemplate_var_samp_order_by = {
+  amount?: InputMaybe<order_by>;
+  badgeId?: InputMaybe<order_by>;
+};
+
+/** order by variance() on columns of table "BadgeTemplate" */
+export type BadgeTemplate_variance_order_by = {
+  amount?: InputMaybe<order_by>;
+  badgeId?: InputMaybe<order_by>;
+};
+
+/** order by aggregate values of table "Badge" */
+export type Badge_aggregate_order_by = {
+  avg?: InputMaybe<Badge_avg_order_by>;
+  count?: InputMaybe<order_by>;
+  max?: InputMaybe<Badge_max_order_by>;
+  min?: InputMaybe<Badge_min_order_by>;
+  stddev?: InputMaybe<Badge_stddev_order_by>;
+  stddev_pop?: InputMaybe<Badge_stddev_pop_order_by>;
+  stddev_samp?: InputMaybe<Badge_stddev_samp_order_by>;
+  sum?: InputMaybe<Badge_sum_order_by>;
+  var_pop?: InputMaybe<Badge_var_pop_order_by>;
+  var_samp?: InputMaybe<Badge_var_samp_order_by>;
+  variance?: InputMaybe<Badge_variance_order_by>;
+};
+
+/** order by avg() on columns of table "Badge" */
+export type Badge_avg_order_by = {
+  amount?: InputMaybe<order_by>;
+};
+
+/** Boolean expression to filter rows from the table "Badge". All fields are combined with a logical 'AND'. */
+export type Badge_bool_exp = {
+  _and?: InputMaybe<Array<Badge_bool_exp>>;
+  _not?: InputMaybe<Badge_bool_exp>;
+  _or?: InputMaybe<Array<Badge_bool_exp>>;
+  amount?: InputMaybe<numeric_comparison_exp>;
+  dao?: InputMaybe<String_comparison_exp>;
+  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
+  id?: InputMaybe<String_comparison_exp>;
+  reason?: InputMaybe<RawMetadata_bool_exp>;
+  reason_id?: InputMaybe<String_comparison_exp>;
+  template?: InputMaybe<BadgeTemplate_bool_exp>;
+  template_id?: InputMaybe<String_comparison_exp>;
+  wearer?: InputMaybe<BadgeHolder_bool_exp>;
+  wearer_id?: InputMaybe<String_comparison_exp>;
+};
+
+/** order by max() on columns of table "Badge" */
+export type Badge_max_order_by = {
+  amount?: InputMaybe<order_by>;
+  dao?: InputMaybe<order_by>;
+  db_write_timestamp?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  reason_id?: InputMaybe<order_by>;
+  template_id?: InputMaybe<order_by>;
+  wearer_id?: InputMaybe<order_by>;
+};
+
+/** order by min() on columns of table "Badge" */
+export type Badge_min_order_by = {
+  amount?: InputMaybe<order_by>;
+  dao?: InputMaybe<order_by>;
+  db_write_timestamp?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  reason_id?: InputMaybe<order_by>;
+  template_id?: InputMaybe<order_by>;
+  wearer_id?: InputMaybe<order_by>;
+};
+
+/** Ordering options when selecting data from "Badge". */
+export type Badge_order_by = {
+  amount?: InputMaybe<order_by>;
+  dao?: InputMaybe<order_by>;
+  db_write_timestamp?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  reason?: InputMaybe<RawMetadata_order_by>;
+  reason_id?: InputMaybe<order_by>;
+  template?: InputMaybe<BadgeTemplate_order_by>;
+  template_id?: InputMaybe<order_by>;
+  wearer?: InputMaybe<BadgeHolder_order_by>;
+  wearer_id?: InputMaybe<order_by>;
+};
+
+/** select columns of table "Badge" */
+export type Badge_select_column =
+  /** column name */
+  | 'amount'
+  /** column name */
+  | 'dao'
+  /** column name */
+  | 'db_write_timestamp'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'reason_id'
+  /** column name */
+  | 'template_id'
+  /** column name */
+  | 'wearer_id';
+
+/** order by stddev() on columns of table "Badge" */
+export type Badge_stddev_order_by = {
+  amount?: InputMaybe<order_by>;
+};
+
+/** order by stddev_pop() on columns of table "Badge" */
+export type Badge_stddev_pop_order_by = {
+  amount?: InputMaybe<order_by>;
+};
+
+/** order by stddev_samp() on columns of table "Badge" */
+export type Badge_stddev_samp_order_by = {
+  amount?: InputMaybe<order_by>;
+};
+
+/** Streaming cursor of the table "Badge" */
+export type Badge_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: Badge_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Badge_stream_cursor_value_input = {
+  amount?: InputMaybe<Scalars['numeric']>;
+  dao?: InputMaybe<Scalars['String']>;
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
+  id?: InputMaybe<Scalars['String']>;
+  reason_id?: InputMaybe<Scalars['String']>;
+  template_id?: InputMaybe<Scalars['String']>;
+  wearer_id?: InputMaybe<Scalars['String']>;
+};
+
+/** order by sum() on columns of table "Badge" */
+export type Badge_sum_order_by = {
+  amount?: InputMaybe<order_by>;
+};
+
+/** order by var_pop() on columns of table "Badge" */
+export type Badge_var_pop_order_by = {
+  amount?: InputMaybe<order_by>;
+};
+
+/** order by var_samp() on columns of table "Badge" */
+export type Badge_var_samp_order_by = {
+  amount?: InputMaybe<order_by>;
+};
+
+/** order by variance() on columns of table "Badge" */
+export type Badge_variance_order_by = {
+  amount?: InputMaybe<order_by>;
+};
+
 /** Boolean expression to compare columns of type "Boolean". All fields are combined with logical 'AND'. */
 export type Boolean_comparison_exp = {
   _eq?: InputMaybe<Scalars['Boolean']>;
@@ -505,6 +961,76 @@ export type Contest_stream_cursor_value_input = {
   isRetractable?: InputMaybe<Scalars['Boolean']>;
   pointsModule_id?: InputMaybe<Scalars['String']>;
   votesModule_id?: InputMaybe<Scalars['String']>;
+};
+
+/** columns and relationships of "DAOToken" */
+export type DAOToken = {
+  address: Scalars['String'];
+  dao: Scalars['String'];
+  db_write_timestamp?: Maybe<Scalars['timestamp']>;
+  id: Scalars['String'];
+  /** An object relationship */
+  shaman?: Maybe<ScaffoldShaman>;
+  shaman_id: Scalars['String'];
+  symbol: Scalars['String'];
+};
+
+/** Boolean expression to filter rows from the table "DAOToken". All fields are combined with a logical 'AND'. */
+export type DAOToken_bool_exp = {
+  _and?: InputMaybe<Array<DAOToken_bool_exp>>;
+  _not?: InputMaybe<DAOToken_bool_exp>;
+  _or?: InputMaybe<Array<DAOToken_bool_exp>>;
+  address?: InputMaybe<String_comparison_exp>;
+  dao?: InputMaybe<String_comparison_exp>;
+  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
+  id?: InputMaybe<String_comparison_exp>;
+  shaman?: InputMaybe<ScaffoldShaman_bool_exp>;
+  shaman_id?: InputMaybe<String_comparison_exp>;
+  symbol?: InputMaybe<String_comparison_exp>;
+};
+
+/** Ordering options when selecting data from "DAOToken". */
+export type DAOToken_order_by = {
+  address?: InputMaybe<order_by>;
+  dao?: InputMaybe<order_by>;
+  db_write_timestamp?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  shaman?: InputMaybe<ScaffoldShaman_order_by>;
+  shaman_id?: InputMaybe<order_by>;
+  symbol?: InputMaybe<order_by>;
+};
+
+/** select columns of table "DAOToken" */
+export type DAOToken_select_column =
+  /** column name */
+  | 'address'
+  /** column name */
+  | 'dao'
+  /** column name */
+  | 'db_write_timestamp'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'shaman_id'
+  /** column name */
+  | 'symbol';
+
+/** Streaming cursor of the table "DAOToken" */
+export type DAOToken_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: DAOToken_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type DAOToken_stream_cursor_value_input = {
+  address?: InputMaybe<Scalars['String']>;
+  dao?: InputMaybe<Scalars['String']>;
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
+  id?: InputMaybe<Scalars['String']>;
+  shaman_id?: InputMaybe<Scalars['String']>;
+  symbol?: InputMaybe<Scalars['String']>;
 };
 
 /** columns and relationships of "ERCPointParams" */
@@ -1789,6 +2315,66 @@ export type GameRound_variance_order_by = {
   totalRoundAmount?: InputMaybe<order_by>;
 };
 
+/** columns and relationships of "Gate" */
+export type Gate = {
+  db_write_timestamp?: Maybe<Scalars['timestamp']>;
+  gateId: Scalars['Int'];
+  gateType: Scalars['Int'];
+  hatId: Scalars['numeric'];
+  id: Scalars['String'];
+};
+
+/** Boolean expression to filter rows from the table "Gate". All fields are combined with a logical 'AND'. */
+export type Gate_bool_exp = {
+  _and?: InputMaybe<Array<Gate_bool_exp>>;
+  _not?: InputMaybe<Gate_bool_exp>;
+  _or?: InputMaybe<Array<Gate_bool_exp>>;
+  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
+  gateId?: InputMaybe<Int_comparison_exp>;
+  gateType?: InputMaybe<Int_comparison_exp>;
+  hatId?: InputMaybe<numeric_comparison_exp>;
+  id?: InputMaybe<String_comparison_exp>;
+};
+
+/** Ordering options when selecting data from "Gate". */
+export type Gate_order_by = {
+  db_write_timestamp?: InputMaybe<order_by>;
+  gateId?: InputMaybe<order_by>;
+  gateType?: InputMaybe<order_by>;
+  hatId?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+};
+
+/** select columns of table "Gate" */
+export type Gate_select_column =
+  /** column name */
+  | 'db_write_timestamp'
+  /** column name */
+  | 'gateId'
+  /** column name */
+  | 'gateType'
+  /** column name */
+  | 'hatId'
+  /** column name */
+  | 'id';
+
+/** Streaming cursor of the table "Gate" */
+export type Gate_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: Gate_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Gate_stream_cursor_value_input = {
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
+  gateId?: InputMaybe<Scalars['Int']>;
+  gateType?: InputMaybe<Scalars['Int']>;
+  hatId?: InputMaybe<Scalars['numeric']>;
+  id?: InputMaybe<Scalars['String']>;
+};
+
 /** columns and relationships of "Grant" */
 export type Grant = {
   allMilestonesApproved: Scalars['Boolean'];
@@ -1819,6 +2405,7 @@ export type Grant = {
   /** An object relationship */
   project?: Maybe<Project>;
   project_id: Scalars['String'];
+  requestingEarlyReview: Scalars['Boolean'];
   /** An object relationship */
   ship?: Maybe<GrantShip>;
   ship_id: Scalars['String'];
@@ -2591,6 +3178,7 @@ export type Grant_bool_exp = {
   milestoneDrafts?: InputMaybe<MilestoneSet_bool_exp>;
   project?: InputMaybe<Project_bool_exp>;
   project_id?: InputMaybe<String_comparison_exp>;
+  requestingEarlyReview?: InputMaybe<Boolean_comparison_exp>;
   ship?: InputMaybe<GrantShip_bool_exp>;
   ship_id?: InputMaybe<String_comparison_exp>;
   status?: InputMaybe<Int_comparison_exp>;
@@ -2652,6 +3240,7 @@ export type Grant_order_by = {
   milestoneDrafts_aggregate?: InputMaybe<MilestoneSet_aggregate_order_by>;
   project?: InputMaybe<Project_order_by>;
   project_id?: InputMaybe<order_by>;
+  requestingEarlyReview?: InputMaybe<order_by>;
   ship?: InputMaybe<GrantShip_order_by>;
   ship_id?: InputMaybe<order_by>;
   status?: InputMaybe<order_by>;
@@ -2691,6 +3280,8 @@ export type Grant_select_column =
   | 'lastUpdated'
   /** column name */
   | 'project_id'
+  /** column name */
+  | 'requestingEarlyReview'
   /** column name */
   | 'ship_id'
   /** column name */
@@ -2749,6 +3340,7 @@ export type Grant_stream_cursor_value_input = {
   isAllocated?: InputMaybe<Scalars['Boolean']>;
   lastUpdated?: InputMaybe<Scalars['Int']>;
   project_id?: InputMaybe<Scalars['String']>;
+  requestingEarlyReview?: InputMaybe<Scalars['Boolean']>;
   ship_id?: InputMaybe<Scalars['String']>;
   status?: InputMaybe<Scalars['Int']>;
 };
@@ -4001,6 +4593,124 @@ export type SBTBalParams_stream_cursor_value_input = {
   db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
   id?: InputMaybe<Scalars['String']>;
   voteTokenAddress?: InputMaybe<Scalars['String']>;
+};
+
+/** columns and relationships of "ScaffoldShaman" */
+export type ScaffoldShaman = {
+  address: Scalars['String'];
+  /** An object relationship */
+  controlGate?: Maybe<Gate>;
+  controlGate_id: Scalars['String'];
+  dao: Scalars['String'];
+  db_write_timestamp?: Maybe<Scalars['timestamp']>;
+  id: Scalars['String'];
+  /** An object relationship */
+  lootToken?: Maybe<DAOToken>;
+  lootToken_id: Scalars['String'];
+  /** An object relationship */
+  managerGate?: Maybe<Gate>;
+  managerGate_id: Scalars['String'];
+  /** An object relationship */
+  minterGate?: Maybe<Gate>;
+  minterGate_id: Scalars['String'];
+  /** An object relationship */
+  sharesToken?: Maybe<DAOToken>;
+  sharesToken_id: Scalars['String'];
+  /** An array relationship */
+  templates: Array<BadgeTemplate>;
+};
+
+
+/** columns and relationships of "ScaffoldShaman" */
+export type ScaffoldShamantemplatesArgs = {
+  distinct_on?: InputMaybe<Array<BadgeTemplate_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<BadgeTemplate_order_by>>;
+  where?: InputMaybe<BadgeTemplate_bool_exp>;
+};
+
+/** Boolean expression to filter rows from the table "ScaffoldShaman". All fields are combined with a logical 'AND'. */
+export type ScaffoldShaman_bool_exp = {
+  _and?: InputMaybe<Array<ScaffoldShaman_bool_exp>>;
+  _not?: InputMaybe<ScaffoldShaman_bool_exp>;
+  _or?: InputMaybe<Array<ScaffoldShaman_bool_exp>>;
+  address?: InputMaybe<String_comparison_exp>;
+  controlGate?: InputMaybe<Gate_bool_exp>;
+  controlGate_id?: InputMaybe<String_comparison_exp>;
+  dao?: InputMaybe<String_comparison_exp>;
+  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
+  id?: InputMaybe<String_comparison_exp>;
+  lootToken?: InputMaybe<DAOToken_bool_exp>;
+  lootToken_id?: InputMaybe<String_comparison_exp>;
+  managerGate?: InputMaybe<Gate_bool_exp>;
+  managerGate_id?: InputMaybe<String_comparison_exp>;
+  minterGate?: InputMaybe<Gate_bool_exp>;
+  minterGate_id?: InputMaybe<String_comparison_exp>;
+  sharesToken?: InputMaybe<DAOToken_bool_exp>;
+  sharesToken_id?: InputMaybe<String_comparison_exp>;
+  templates?: InputMaybe<BadgeTemplate_bool_exp>;
+};
+
+/** Ordering options when selecting data from "ScaffoldShaman". */
+export type ScaffoldShaman_order_by = {
+  address?: InputMaybe<order_by>;
+  controlGate?: InputMaybe<Gate_order_by>;
+  controlGate_id?: InputMaybe<order_by>;
+  dao?: InputMaybe<order_by>;
+  db_write_timestamp?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  lootToken?: InputMaybe<DAOToken_order_by>;
+  lootToken_id?: InputMaybe<order_by>;
+  managerGate?: InputMaybe<Gate_order_by>;
+  managerGate_id?: InputMaybe<order_by>;
+  minterGate?: InputMaybe<Gate_order_by>;
+  minterGate_id?: InputMaybe<order_by>;
+  sharesToken?: InputMaybe<DAOToken_order_by>;
+  sharesToken_id?: InputMaybe<order_by>;
+  templates_aggregate?: InputMaybe<BadgeTemplate_aggregate_order_by>;
+};
+
+/** select columns of table "ScaffoldShaman" */
+export type ScaffoldShaman_select_column =
+  /** column name */
+  | 'address'
+  /** column name */
+  | 'controlGate_id'
+  /** column name */
+  | 'dao'
+  /** column name */
+  | 'db_write_timestamp'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'lootToken_id'
+  /** column name */
+  | 'managerGate_id'
+  /** column name */
+  | 'minterGate_id'
+  /** column name */
+  | 'sharesToken_id';
+
+/** Streaming cursor of the table "ScaffoldShaman" */
+export type ScaffoldShaman_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: ScaffoldShaman_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type ScaffoldShaman_stream_cursor_value_input = {
+  address?: InputMaybe<Scalars['String']>;
+  controlGate_id?: InputMaybe<Scalars['String']>;
+  dao?: InputMaybe<Scalars['String']>;
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
+  id?: InputMaybe<Scalars['String']>;
+  lootToken_id?: InputMaybe<Scalars['String']>;
+  managerGate_id?: InputMaybe<Scalars['String']>;
+  minterGate_id?: InputMaybe<Scalars['String']>;
+  sharesToken_id?: InputMaybe<Scalars['String']>;
 };
 
 /** columns and relationships of "ShipChoice" */
@@ -5582,6 +6292,18 @@ export type query_root = {
   Application: Array<Application>;
   /** fetch data from the table: "Application" using primary key columns */
   Application_by_pk?: Maybe<Application>;
+  /** fetch data from the table: "Badge" */
+  Badge: Array<Badge>;
+  /** fetch data from the table: "BadgeHolder" */
+  BadgeHolder: Array<BadgeHolder>;
+  /** fetch data from the table: "BadgeHolder" using primary key columns */
+  BadgeHolder_by_pk?: Maybe<BadgeHolder>;
+  /** fetch data from the table: "BadgeTemplate" */
+  BadgeTemplate: Array<BadgeTemplate>;
+  /** fetch data from the table: "BadgeTemplate" using primary key columns */
+  BadgeTemplate_by_pk?: Maybe<BadgeTemplate>;
+  /** fetch data from the table: "Badge" using primary key columns */
+  Badge_by_pk?: Maybe<Badge>;
   /** fetch data from the table: "Contest" */
   Contest: Array<Contest>;
   /** fetch data from the table: "ContestClone" */
@@ -5594,6 +6316,10 @@ export type query_root = {
   ContestTemplate_by_pk?: Maybe<ContestTemplate>;
   /** fetch data from the table: "Contest" using primary key columns */
   Contest_by_pk?: Maybe<Contest>;
+  /** fetch data from the table: "DAOToken" */
+  DAOToken: Array<DAOToken>;
+  /** fetch data from the table: "DAOToken" using primary key columns */
+  DAOToken_by_pk?: Maybe<DAOToken>;
   /** fetch data from the table: "ERCPointParams" */
   ERCPointParams: Array<ERCPointParams>;
   /** fetch data from the table: "ERCPointParams" using primary key columns */
@@ -5646,6 +6372,10 @@ export type query_root = {
   GameRound: Array<GameRound>;
   /** fetch data from the table: "GameRound" using primary key columns */
   GameRound_by_pk?: Maybe<GameRound>;
+  /** fetch data from the table: "Gate" */
+  Gate: Array<Gate>;
+  /** fetch data from the table: "Gate" using primary key columns */
+  Gate_by_pk?: Maybe<Gate>;
   /** fetch data from the table: "Grant" */
   Grant: Array<Grant>;
   /** fetch data from the table: "GrantShip" */
@@ -5706,6 +6436,10 @@ export type query_root = {
   SBTBalParams: Array<SBTBalParams>;
   /** fetch data from the table: "SBTBalParams" using primary key columns */
   SBTBalParams_by_pk?: Maybe<SBTBalParams>;
+  /** fetch data from the table: "ScaffoldShaman" */
+  ScaffoldShaman: Array<ScaffoldShaman>;
+  /** fetch data from the table: "ScaffoldShaman" using primary key columns */
+  ScaffoldShaman_by_pk?: Maybe<ScaffoldShaman>;
   /** fetch data from the table: "ShipChoice" */
   ShipChoice: Array<ShipChoice>;
   /** fetch data from the table: "ShipChoice" using primary key columns */
@@ -5781,6 +6515,48 @@ export type query_rootApplication_by_pkArgs = {
 };
 
 
+export type query_rootBadgeArgs = {
+  distinct_on?: InputMaybe<Array<Badge_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Badge_order_by>>;
+  where?: InputMaybe<Badge_bool_exp>;
+};
+
+
+export type query_rootBadgeHolderArgs = {
+  distinct_on?: InputMaybe<Array<BadgeHolder_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<BadgeHolder_order_by>>;
+  where?: InputMaybe<BadgeHolder_bool_exp>;
+};
+
+
+export type query_rootBadgeHolder_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type query_rootBadgeTemplateArgs = {
+  distinct_on?: InputMaybe<Array<BadgeTemplate_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<BadgeTemplate_order_by>>;
+  where?: InputMaybe<BadgeTemplate_bool_exp>;
+};
+
+
+export type query_rootBadgeTemplate_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type query_rootBadge_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
 export type query_rootContestArgs = {
   distinct_on?: InputMaybe<Array<Contest_select_column>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -5819,6 +6595,20 @@ export type query_rootContestTemplate_by_pkArgs = {
 
 
 export type query_rootContest_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type query_rootDAOTokenArgs = {
+  distinct_on?: InputMaybe<Array<DAOToken_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<DAOToken_order_by>>;
+  where?: InputMaybe<DAOToken_bool_exp>;
+};
+
+
+export type query_rootDAOToken_by_pkArgs = {
   id: Scalars['String'];
 };
 
@@ -6001,6 +6791,20 @@ export type query_rootGameRoundArgs = {
 
 
 export type query_rootGameRound_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type query_rootGateArgs = {
+  distinct_on?: InputMaybe<Array<Gate_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Gate_order_by>>;
+  where?: InputMaybe<Gate_bool_exp>;
+};
+
+
+export type query_rootGate_by_pkArgs = {
   id: Scalars['String'];
 };
 
@@ -6211,6 +7015,20 @@ export type query_rootSBTBalParamsArgs = {
 
 
 export type query_rootSBTBalParams_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type query_rootScaffoldShamanArgs = {
+  distinct_on?: InputMaybe<Array<ScaffoldShaman_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<ScaffoldShaman_order_by>>;
+  where?: InputMaybe<ScaffoldShaman_bool_exp>;
+};
+
+
+export type query_rootScaffoldShaman_by_pkArgs = {
   id: Scalars['String'];
 };
 
@@ -6561,6 +7379,24 @@ export type subscription_root = {
   Application_by_pk?: Maybe<Application>;
   /** fetch data from the table in a streaming manner: "Application" */
   Application_stream: Array<Application>;
+  /** fetch data from the table: "Badge" */
+  Badge: Array<Badge>;
+  /** fetch data from the table: "BadgeHolder" */
+  BadgeHolder: Array<BadgeHolder>;
+  /** fetch data from the table: "BadgeHolder" using primary key columns */
+  BadgeHolder_by_pk?: Maybe<BadgeHolder>;
+  /** fetch data from the table in a streaming manner: "BadgeHolder" */
+  BadgeHolder_stream: Array<BadgeHolder>;
+  /** fetch data from the table: "BadgeTemplate" */
+  BadgeTemplate: Array<BadgeTemplate>;
+  /** fetch data from the table: "BadgeTemplate" using primary key columns */
+  BadgeTemplate_by_pk?: Maybe<BadgeTemplate>;
+  /** fetch data from the table in a streaming manner: "BadgeTemplate" */
+  BadgeTemplate_stream: Array<BadgeTemplate>;
+  /** fetch data from the table: "Badge" using primary key columns */
+  Badge_by_pk?: Maybe<Badge>;
+  /** fetch data from the table in a streaming manner: "Badge" */
+  Badge_stream: Array<Badge>;
   /** fetch data from the table: "Contest" */
   Contest: Array<Contest>;
   /** fetch data from the table: "ContestClone" */
@@ -6579,6 +7415,12 @@ export type subscription_root = {
   Contest_by_pk?: Maybe<Contest>;
   /** fetch data from the table in a streaming manner: "Contest" */
   Contest_stream: Array<Contest>;
+  /** fetch data from the table: "DAOToken" */
+  DAOToken: Array<DAOToken>;
+  /** fetch data from the table: "DAOToken" using primary key columns */
+  DAOToken_by_pk?: Maybe<DAOToken>;
+  /** fetch data from the table in a streaming manner: "DAOToken" */
+  DAOToken_stream: Array<DAOToken>;
   /** fetch data from the table: "ERCPointParams" */
   ERCPointParams: Array<ERCPointParams>;
   /** fetch data from the table: "ERCPointParams" using primary key columns */
@@ -6657,6 +7499,12 @@ export type subscription_root = {
   GameRound_by_pk?: Maybe<GameRound>;
   /** fetch data from the table in a streaming manner: "GameRound" */
   GameRound_stream: Array<GameRound>;
+  /** fetch data from the table: "Gate" */
+  Gate: Array<Gate>;
+  /** fetch data from the table: "Gate" using primary key columns */
+  Gate_by_pk?: Maybe<Gate>;
+  /** fetch data from the table in a streaming manner: "Gate" */
+  Gate_stream: Array<Gate>;
   /** fetch data from the table: "Grant" */
   Grant: Array<Grant>;
   /** fetch data from the table: "GrantShip" */
@@ -6747,6 +7595,12 @@ export type subscription_root = {
   SBTBalParams_by_pk?: Maybe<SBTBalParams>;
   /** fetch data from the table in a streaming manner: "SBTBalParams" */
   SBTBalParams_stream: Array<SBTBalParams>;
+  /** fetch data from the table: "ScaffoldShaman" */
+  ScaffoldShaman: Array<ScaffoldShaman>;
+  /** fetch data from the table: "ScaffoldShaman" using primary key columns */
+  ScaffoldShaman_by_pk?: Maybe<ScaffoldShaman>;
+  /** fetch data from the table in a streaming manner: "ScaffoldShaman" */
+  ScaffoldShaman_stream: Array<ScaffoldShaman>;
   /** fetch data from the table: "ShipChoice" */
   ShipChoice: Array<ShipChoice>;
   /** fetch data from the table: "ShipChoice" using primary key columns */
@@ -6857,6 +7711,69 @@ export type subscription_rootApplication_streamArgs = {
 };
 
 
+export type subscription_rootBadgeArgs = {
+  distinct_on?: InputMaybe<Array<Badge_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Badge_order_by>>;
+  where?: InputMaybe<Badge_bool_exp>;
+};
+
+
+export type subscription_rootBadgeHolderArgs = {
+  distinct_on?: InputMaybe<Array<BadgeHolder_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<BadgeHolder_order_by>>;
+  where?: InputMaybe<BadgeHolder_bool_exp>;
+};
+
+
+export type subscription_rootBadgeHolder_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type subscription_rootBadgeHolder_streamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<BadgeHolder_stream_cursor_input>>;
+  where?: InputMaybe<BadgeHolder_bool_exp>;
+};
+
+
+export type subscription_rootBadgeTemplateArgs = {
+  distinct_on?: InputMaybe<Array<BadgeTemplate_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<BadgeTemplate_order_by>>;
+  where?: InputMaybe<BadgeTemplate_bool_exp>;
+};
+
+
+export type subscription_rootBadgeTemplate_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type subscription_rootBadgeTemplate_streamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<BadgeTemplate_stream_cursor_input>>;
+  where?: InputMaybe<BadgeTemplate_bool_exp>;
+};
+
+
+export type subscription_rootBadge_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type subscription_rootBadge_streamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Badge_stream_cursor_input>>;
+  where?: InputMaybe<Badge_bool_exp>;
+};
+
+
 export type subscription_rootContestArgs = {
   distinct_on?: InputMaybe<Array<Contest_select_column>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -6917,6 +7834,27 @@ export type subscription_rootContest_streamArgs = {
   batch_size: Scalars['Int'];
   cursor: Array<InputMaybe<Contest_stream_cursor_input>>;
   where?: InputMaybe<Contest_bool_exp>;
+};
+
+
+export type subscription_rootDAOTokenArgs = {
+  distinct_on?: InputMaybe<Array<DAOToken_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<DAOToken_order_by>>;
+  where?: InputMaybe<DAOToken_bool_exp>;
+};
+
+
+export type subscription_rootDAOToken_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type subscription_rootDAOToken_streamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<DAOToken_stream_cursor_input>>;
+  where?: InputMaybe<DAOToken_bool_exp>;
 };
 
 
@@ -7190,6 +8128,27 @@ export type subscription_rootGameRound_streamArgs = {
   batch_size: Scalars['Int'];
   cursor: Array<InputMaybe<GameRound_stream_cursor_input>>;
   where?: InputMaybe<GameRound_bool_exp>;
+};
+
+
+export type subscription_rootGateArgs = {
+  distinct_on?: InputMaybe<Array<Gate_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<Gate_order_by>>;
+  where?: InputMaybe<Gate_bool_exp>;
+};
+
+
+export type subscription_rootGate_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type subscription_rootGate_streamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<Gate_stream_cursor_input>>;
+  where?: InputMaybe<Gate_bool_exp>;
 };
 
 
@@ -7505,6 +8464,27 @@ export type subscription_rootSBTBalParams_streamArgs = {
   batch_size: Scalars['Int'];
   cursor: Array<InputMaybe<SBTBalParams_stream_cursor_input>>;
   where?: InputMaybe<SBTBalParams_bool_exp>;
+};
+
+
+export type subscription_rootScaffoldShamanArgs = {
+  distinct_on?: InputMaybe<Array<ScaffoldShaman_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<ScaffoldShaman_order_by>>;
+  where?: InputMaybe<ScaffoldShaman_bool_exp>;
+};
+
+
+export type subscription_rootScaffoldShaman_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type subscription_rootScaffoldShaman_streamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<ScaffoldShaman_stream_cursor_input>>;
+  where?: InputMaybe<ScaffoldShaman_bool_exp>;
 };
 
 
@@ -7952,6 +8932,46 @@ export type ResolversTypes = ResolversObject<{
   Application_var_pop_order_by: Application_var_pop_order_by;
   Application_var_samp_order_by: Application_var_samp_order_by;
   Application_variance_order_by: Application_variance_order_by;
+  Badge: ResolverTypeWrapper<Badge>;
+  BadgeHolder: ResolverTypeWrapper<BadgeHolder>;
+  BadgeHolder_bool_exp: BadgeHolder_bool_exp;
+  BadgeHolder_order_by: BadgeHolder_order_by;
+  BadgeHolder_select_column: BadgeHolder_select_column;
+  BadgeHolder_stream_cursor_input: BadgeHolder_stream_cursor_input;
+  BadgeHolder_stream_cursor_value_input: BadgeHolder_stream_cursor_value_input;
+  BadgeTemplate: ResolverTypeWrapper<BadgeTemplate>;
+  BadgeTemplate_aggregate_order_by: BadgeTemplate_aggregate_order_by;
+  BadgeTemplate_avg_order_by: BadgeTemplate_avg_order_by;
+  BadgeTemplate_bool_exp: BadgeTemplate_bool_exp;
+  BadgeTemplate_max_order_by: BadgeTemplate_max_order_by;
+  BadgeTemplate_min_order_by: BadgeTemplate_min_order_by;
+  BadgeTemplate_order_by: BadgeTemplate_order_by;
+  BadgeTemplate_select_column: BadgeTemplate_select_column;
+  BadgeTemplate_stddev_order_by: BadgeTemplate_stddev_order_by;
+  BadgeTemplate_stddev_pop_order_by: BadgeTemplate_stddev_pop_order_by;
+  BadgeTemplate_stddev_samp_order_by: BadgeTemplate_stddev_samp_order_by;
+  BadgeTemplate_stream_cursor_input: BadgeTemplate_stream_cursor_input;
+  BadgeTemplate_stream_cursor_value_input: BadgeTemplate_stream_cursor_value_input;
+  BadgeTemplate_sum_order_by: BadgeTemplate_sum_order_by;
+  BadgeTemplate_var_pop_order_by: BadgeTemplate_var_pop_order_by;
+  BadgeTemplate_var_samp_order_by: BadgeTemplate_var_samp_order_by;
+  BadgeTemplate_variance_order_by: BadgeTemplate_variance_order_by;
+  Badge_aggregate_order_by: Badge_aggregate_order_by;
+  Badge_avg_order_by: Badge_avg_order_by;
+  Badge_bool_exp: Badge_bool_exp;
+  Badge_max_order_by: Badge_max_order_by;
+  Badge_min_order_by: Badge_min_order_by;
+  Badge_order_by: Badge_order_by;
+  Badge_select_column: Badge_select_column;
+  Badge_stddev_order_by: Badge_stddev_order_by;
+  Badge_stddev_pop_order_by: Badge_stddev_pop_order_by;
+  Badge_stddev_samp_order_by: Badge_stddev_samp_order_by;
+  Badge_stream_cursor_input: Badge_stream_cursor_input;
+  Badge_stream_cursor_value_input: Badge_stream_cursor_value_input;
+  Badge_sum_order_by: Badge_sum_order_by;
+  Badge_var_pop_order_by: Badge_var_pop_order_by;
+  Badge_var_samp_order_by: Badge_var_samp_order_by;
+  Badge_variance_order_by: Badge_variance_order_by;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   Boolean_comparison_exp: Boolean_comparison_exp;
   Contest: ResolverTypeWrapper<Contest>;
@@ -7972,6 +8992,12 @@ export type ResolversTypes = ResolversObject<{
   Contest_select_column: Contest_select_column;
   Contest_stream_cursor_input: Contest_stream_cursor_input;
   Contest_stream_cursor_value_input: Contest_stream_cursor_value_input;
+  DAOToken: ResolverTypeWrapper<DAOToken>;
+  DAOToken_bool_exp: DAOToken_bool_exp;
+  DAOToken_order_by: DAOToken_order_by;
+  DAOToken_select_column: DAOToken_select_column;
+  DAOToken_stream_cursor_input: DAOToken_stream_cursor_input;
+  DAOToken_stream_cursor_value_input: DAOToken_stream_cursor_value_input;
   ERCPointParams: ResolverTypeWrapper<ERCPointParams>;
   ERCPointParams_bool_exp: ERCPointParams_bool_exp;
   ERCPointParams_order_by: ERCPointParams_order_by;
@@ -8072,6 +9098,12 @@ export type ResolversTypes = ResolversObject<{
   GameRound_var_pop_order_by: GameRound_var_pop_order_by;
   GameRound_var_samp_order_by: GameRound_var_samp_order_by;
   GameRound_variance_order_by: GameRound_variance_order_by;
+  Gate: ResolverTypeWrapper<Gate>;
+  Gate_bool_exp: Gate_bool_exp;
+  Gate_order_by: Gate_order_by;
+  Gate_select_column: Gate_select_column;
+  Gate_stream_cursor_input: Gate_stream_cursor_input;
+  Gate_stream_cursor_value_input: Gate_stream_cursor_value_input;
   Grant: ResolverTypeWrapper<Grant>;
   GrantShip: ResolverTypeWrapper<GrantShip>;
   GrantShip_aggregate_order_by: GrantShip_aggregate_order_by;
@@ -8219,6 +9251,12 @@ export type ResolversTypes = ResolversObject<{
   SBTBalParams_select_column: SBTBalParams_select_column;
   SBTBalParams_stream_cursor_input: SBTBalParams_stream_cursor_input;
   SBTBalParams_stream_cursor_value_input: SBTBalParams_stream_cursor_value_input;
+  ScaffoldShaman: ResolverTypeWrapper<ScaffoldShaman>;
+  ScaffoldShaman_bool_exp: ScaffoldShaman_bool_exp;
+  ScaffoldShaman_order_by: ScaffoldShaman_order_by;
+  ScaffoldShaman_select_column: ScaffoldShaman_select_column;
+  ScaffoldShaman_stream_cursor_input: ScaffoldShaman_stream_cursor_input;
+  ScaffoldShaman_stream_cursor_value_input: ScaffoldShaman_stream_cursor_value_input;
   ShipChoice: ResolverTypeWrapper<ShipChoice>;
   ShipChoice_aggregate_order_by: ShipChoice_aggregate_order_by;
   ShipChoice_avg_order_by: ShipChoice_avg_order_by;
@@ -8379,6 +9417,43 @@ export type ResolversParentTypes = ResolversObject<{
   Application_var_pop_order_by: Application_var_pop_order_by;
   Application_var_samp_order_by: Application_var_samp_order_by;
   Application_variance_order_by: Application_variance_order_by;
+  Badge: Badge;
+  BadgeHolder: BadgeHolder;
+  BadgeHolder_bool_exp: BadgeHolder_bool_exp;
+  BadgeHolder_order_by: BadgeHolder_order_by;
+  BadgeHolder_stream_cursor_input: BadgeHolder_stream_cursor_input;
+  BadgeHolder_stream_cursor_value_input: BadgeHolder_stream_cursor_value_input;
+  BadgeTemplate: BadgeTemplate;
+  BadgeTemplate_aggregate_order_by: BadgeTemplate_aggregate_order_by;
+  BadgeTemplate_avg_order_by: BadgeTemplate_avg_order_by;
+  BadgeTemplate_bool_exp: BadgeTemplate_bool_exp;
+  BadgeTemplate_max_order_by: BadgeTemplate_max_order_by;
+  BadgeTemplate_min_order_by: BadgeTemplate_min_order_by;
+  BadgeTemplate_order_by: BadgeTemplate_order_by;
+  BadgeTemplate_stddev_order_by: BadgeTemplate_stddev_order_by;
+  BadgeTemplate_stddev_pop_order_by: BadgeTemplate_stddev_pop_order_by;
+  BadgeTemplate_stddev_samp_order_by: BadgeTemplate_stddev_samp_order_by;
+  BadgeTemplate_stream_cursor_input: BadgeTemplate_stream_cursor_input;
+  BadgeTemplate_stream_cursor_value_input: BadgeTemplate_stream_cursor_value_input;
+  BadgeTemplate_sum_order_by: BadgeTemplate_sum_order_by;
+  BadgeTemplate_var_pop_order_by: BadgeTemplate_var_pop_order_by;
+  BadgeTemplate_var_samp_order_by: BadgeTemplate_var_samp_order_by;
+  BadgeTemplate_variance_order_by: BadgeTemplate_variance_order_by;
+  Badge_aggregate_order_by: Badge_aggregate_order_by;
+  Badge_avg_order_by: Badge_avg_order_by;
+  Badge_bool_exp: Badge_bool_exp;
+  Badge_max_order_by: Badge_max_order_by;
+  Badge_min_order_by: Badge_min_order_by;
+  Badge_order_by: Badge_order_by;
+  Badge_stddev_order_by: Badge_stddev_order_by;
+  Badge_stddev_pop_order_by: Badge_stddev_pop_order_by;
+  Badge_stddev_samp_order_by: Badge_stddev_samp_order_by;
+  Badge_stream_cursor_input: Badge_stream_cursor_input;
+  Badge_stream_cursor_value_input: Badge_stream_cursor_value_input;
+  Badge_sum_order_by: Badge_sum_order_by;
+  Badge_var_pop_order_by: Badge_var_pop_order_by;
+  Badge_var_samp_order_by: Badge_var_samp_order_by;
+  Badge_variance_order_by: Badge_variance_order_by;
   Boolean: Scalars['Boolean'];
   Boolean_comparison_exp: Boolean_comparison_exp;
   Contest: Contest;
@@ -8396,6 +9471,11 @@ export type ResolversParentTypes = ResolversObject<{
   Contest_order_by: Contest_order_by;
   Contest_stream_cursor_input: Contest_stream_cursor_input;
   Contest_stream_cursor_value_input: Contest_stream_cursor_value_input;
+  DAOToken: DAOToken;
+  DAOToken_bool_exp: DAOToken_bool_exp;
+  DAOToken_order_by: DAOToken_order_by;
+  DAOToken_stream_cursor_input: DAOToken_stream_cursor_input;
+  DAOToken_stream_cursor_value_input: DAOToken_stream_cursor_value_input;
   ERCPointParams: ERCPointParams;
   ERCPointParams_bool_exp: ERCPointParams_bool_exp;
   ERCPointParams_order_by: ERCPointParams_order_by;
@@ -8483,6 +9563,11 @@ export type ResolversParentTypes = ResolversObject<{
   GameRound_var_pop_order_by: GameRound_var_pop_order_by;
   GameRound_var_samp_order_by: GameRound_var_samp_order_by;
   GameRound_variance_order_by: GameRound_variance_order_by;
+  Gate: Gate;
+  Gate_bool_exp: Gate_bool_exp;
+  Gate_order_by: Gate_order_by;
+  Gate_stream_cursor_input: Gate_stream_cursor_input;
+  Gate_stream_cursor_value_input: Gate_stream_cursor_value_input;
   Grant: Grant;
   GrantShip: GrantShip;
   GrantShip_aggregate_order_by: GrantShip_aggregate_order_by;
@@ -8615,6 +9700,11 @@ export type ResolversParentTypes = ResolversObject<{
   SBTBalParams_order_by: SBTBalParams_order_by;
   SBTBalParams_stream_cursor_input: SBTBalParams_stream_cursor_input;
   SBTBalParams_stream_cursor_value_input: SBTBalParams_stream_cursor_value_input;
+  ScaffoldShaman: ScaffoldShaman;
+  ScaffoldShaman_bool_exp: ScaffoldShaman_bool_exp;
+  ScaffoldShaman_order_by: ScaffoldShaman_order_by;
+  ScaffoldShaman_stream_cursor_input: ScaffoldShaman_stream_cursor_input;
+  ScaffoldShaman_stream_cursor_value_input: ScaffoldShaman_stream_cursor_value_input;
   ShipChoice: ShipChoice;
   ShipChoice_aggregate_order_by: ShipChoice_aggregate_order_by;
   ShipChoice_avg_order_by: ShipChoice_avg_order_by;
@@ -8763,6 +9853,51 @@ export type ApplicationResolvers<ContextType = MeshContext, ParentType extends R
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type BadgeResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Badge'] = ResolversParentTypes['Badge']> = ResolversObject<{
+  amount?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
+  dao?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  reason?: Resolver<Maybe<ResolversTypes['RawMetadata']>, ParentType, ContextType>;
+  reason_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  template?: Resolver<Maybe<ResolversTypes['BadgeTemplate']>, ParentType, ContextType>;
+  template_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  wearer?: Resolver<Maybe<ResolversTypes['BadgeHolder']>, ParentType, ContextType>;
+  wearer_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type BadgeHolderResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['BadgeHolder'] = ResolversParentTypes['BadgeHolder']> = ResolversObject<{
+  address?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  badgeBalance?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
+  badges?: Resolver<Array<ResolversTypes['Badge']>, ParentType, ContextType, Partial<BadgeHolderbadgesArgs>>;
+  dao?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  shaman?: Resolver<Maybe<ResolversTypes['ScaffoldShaman']>, ParentType, ContextType>;
+  shaman_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type BadgeTemplateResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['BadgeTemplate'] = ResolversParentTypes['BadgeTemplate']> = ResolversObject<{
+  amount?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
+  badgeId?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
+  badges?: Resolver<Array<ResolversTypes['Badge']>, ParentType, ContextType, Partial<BadgeTemplatebadgesArgs>>;
+  dao?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
+  exists?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  hasFixedAmount?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  isSlash?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  isVotingToken?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  metadata?: Resolver<Maybe<ResolversTypes['RawMetadata']>, ParentType, ContextType>;
+  metadata_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  shaman?: Resolver<Maybe<ResolversTypes['ScaffoldShaman']>, ParentType, ContextType>;
+  shaman_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type ContestResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Contest'] = ResolversParentTypes['Contest']> = ResolversObject<{
   choicesModule?: Resolver<Maybe<ResolversTypes['StemModule']>, ParentType, ContextType>;
   choicesModule_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -8800,6 +9935,17 @@ export type ContestTemplateResolvers<ContextType = MeshContext, ParentType exten
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   mdPointer?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   mdProtocol?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type DAOTokenResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['DAOToken'] = ResolversParentTypes['DAOToken']> = ResolversObject<{
+  address?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  dao?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  shaman?: Resolver<Maybe<ResolversTypes['ScaffoldShaman']>, ParentType, ContextType>;
+  shaman_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  symbol?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -8965,6 +10111,15 @@ export type GameRoundResolvers<ContextType = MeshContext, ParentType extends Res
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type GateResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Gate'] = ResolversParentTypes['Gate']> = ResolversObject<{
+  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
+  gateId?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  gateType?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  hatId?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type GrantResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['Grant'] = ResolversParentTypes['Grant']> = ResolversObject<{
   allMilestonesApproved?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   amount?: Resolver<Maybe<ResolversTypes['numeric']>, ParentType, ContextType>;
@@ -8988,6 +10143,7 @@ export type GrantResolvers<ContextType = MeshContext, ParentType extends Resolve
   milestoneDrafts?: Resolver<Array<ResolversTypes['MilestoneSet']>, ParentType, ContextType, Partial<GrantmilestoneDraftsArgs>>;
   project?: Resolver<Maybe<ResolversTypes['Project']>, ParentType, ContextType>;
   project_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  requestingEarlyReview?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   ship?: Resolver<Maybe<ResolversTypes['GrantShip']>, ParentType, ContextType>;
   ship_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   status?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -9201,6 +10357,25 @@ export type SBTBalParamsResolvers<ContextType = MeshContext, ParentType extends 
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
+export type ScaffoldShamanResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['ScaffoldShaman'] = ResolversParentTypes['ScaffoldShaman']> = ResolversObject<{
+  address?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  controlGate?: Resolver<Maybe<ResolversTypes['Gate']>, ParentType, ContextType>;
+  controlGate_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  dao?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  lootToken?: Resolver<Maybe<ResolversTypes['DAOToken']>, ParentType, ContextType>;
+  lootToken_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  managerGate?: Resolver<Maybe<ResolversTypes['Gate']>, ParentType, ContextType>;
+  managerGate_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  minterGate?: Resolver<Maybe<ResolversTypes['Gate']>, ParentType, ContextType>;
+  minterGate_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  sharesToken?: Resolver<Maybe<ResolversTypes['DAOToken']>, ParentType, ContextType>;
+  sharesToken_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  templates?: Resolver<Array<ResolversTypes['BadgeTemplate']>, ParentType, ContextType, Partial<ScaffoldShamantemplatesArgs>>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
 export type ShipChoiceResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['ShipChoice'] = ResolversParentTypes['ShipChoice']> = ResolversObject<{
   active?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   choiceData?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -9394,12 +10569,20 @@ export type persisted_stateResolvers<ContextType = MeshContext, ParentType exten
 export type query_rootResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['query_root'] = ResolversParentTypes['query_root']> = ResolversObject<{
   Application?: Resolver<Array<ResolversTypes['Application']>, ParentType, ContextType, Partial<query_rootApplicationArgs>>;
   Application_by_pk?: Resolver<Maybe<ResolversTypes['Application']>, ParentType, ContextType, RequireFields<query_rootApplication_by_pkArgs, 'id'>>;
+  Badge?: Resolver<Array<ResolversTypes['Badge']>, ParentType, ContextType, Partial<query_rootBadgeArgs>>;
+  BadgeHolder?: Resolver<Array<ResolversTypes['BadgeHolder']>, ParentType, ContextType, Partial<query_rootBadgeHolderArgs>>;
+  BadgeHolder_by_pk?: Resolver<Maybe<ResolversTypes['BadgeHolder']>, ParentType, ContextType, RequireFields<query_rootBadgeHolder_by_pkArgs, 'id'>>;
+  BadgeTemplate?: Resolver<Array<ResolversTypes['BadgeTemplate']>, ParentType, ContextType, Partial<query_rootBadgeTemplateArgs>>;
+  BadgeTemplate_by_pk?: Resolver<Maybe<ResolversTypes['BadgeTemplate']>, ParentType, ContextType, RequireFields<query_rootBadgeTemplate_by_pkArgs, 'id'>>;
+  Badge_by_pk?: Resolver<Maybe<ResolversTypes['Badge']>, ParentType, ContextType, RequireFields<query_rootBadge_by_pkArgs, 'id'>>;
   Contest?: Resolver<Array<ResolversTypes['Contest']>, ParentType, ContextType, Partial<query_rootContestArgs>>;
   ContestClone?: Resolver<Array<ResolversTypes['ContestClone']>, ParentType, ContextType, Partial<query_rootContestCloneArgs>>;
   ContestClone_by_pk?: Resolver<Maybe<ResolversTypes['ContestClone']>, ParentType, ContextType, RequireFields<query_rootContestClone_by_pkArgs, 'id'>>;
   ContestTemplate?: Resolver<Array<ResolversTypes['ContestTemplate']>, ParentType, ContextType, Partial<query_rootContestTemplateArgs>>;
   ContestTemplate_by_pk?: Resolver<Maybe<ResolversTypes['ContestTemplate']>, ParentType, ContextType, RequireFields<query_rootContestTemplate_by_pkArgs, 'id'>>;
   Contest_by_pk?: Resolver<Maybe<ResolversTypes['Contest']>, ParentType, ContextType, RequireFields<query_rootContest_by_pkArgs, 'id'>>;
+  DAOToken?: Resolver<Array<ResolversTypes['DAOToken']>, ParentType, ContextType, Partial<query_rootDAOTokenArgs>>;
+  DAOToken_by_pk?: Resolver<Maybe<ResolversTypes['DAOToken']>, ParentType, ContextType, RequireFields<query_rootDAOToken_by_pkArgs, 'id'>>;
   ERCPointParams?: Resolver<Array<ResolversTypes['ERCPointParams']>, ParentType, ContextType, Partial<query_rootERCPointParamsArgs>>;
   ERCPointParams_by_pk?: Resolver<Maybe<ResolversTypes['ERCPointParams']>, ParentType, ContextType, RequireFields<query_rootERCPointParams_by_pkArgs, 'id'>>;
   EnvioTX?: Resolver<Array<ResolversTypes['EnvioTX']>, ParentType, ContextType, Partial<query_rootEnvioTXArgs>>;
@@ -9426,6 +10609,8 @@ export type query_rootResolvers<ContextType = MeshContext, ParentType extends Re
   GameManager_by_pk?: Resolver<Maybe<ResolversTypes['GameManager']>, ParentType, ContextType, RequireFields<query_rootGameManager_by_pkArgs, 'id'>>;
   GameRound?: Resolver<Array<ResolversTypes['GameRound']>, ParentType, ContextType, Partial<query_rootGameRoundArgs>>;
   GameRound_by_pk?: Resolver<Maybe<ResolversTypes['GameRound']>, ParentType, ContextType, RequireFields<query_rootGameRound_by_pkArgs, 'id'>>;
+  Gate?: Resolver<Array<ResolversTypes['Gate']>, ParentType, ContextType, Partial<query_rootGateArgs>>;
+  Gate_by_pk?: Resolver<Maybe<ResolversTypes['Gate']>, ParentType, ContextType, RequireFields<query_rootGate_by_pkArgs, 'id'>>;
   Grant?: Resolver<Array<ResolversTypes['Grant']>, ParentType, ContextType, Partial<query_rootGrantArgs>>;
   GrantShip?: Resolver<Array<ResolversTypes['GrantShip']>, ParentType, ContextType, Partial<query_rootGrantShipArgs>>;
   GrantShip_by_pk?: Resolver<Maybe<ResolversTypes['GrantShip']>, ParentType, ContextType, RequireFields<query_rootGrantShip_by_pkArgs, 'id'>>;
@@ -9456,6 +10641,8 @@ export type query_rootResolvers<ContextType = MeshContext, ParentType extends Re
   Record_by_pk?: Resolver<Maybe<ResolversTypes['Record']>, ParentType, ContextType, RequireFields<query_rootRecord_by_pkArgs, 'id'>>;
   SBTBalParams?: Resolver<Array<ResolversTypes['SBTBalParams']>, ParentType, ContextType, Partial<query_rootSBTBalParamsArgs>>;
   SBTBalParams_by_pk?: Resolver<Maybe<ResolversTypes['SBTBalParams']>, ParentType, ContextType, RequireFields<query_rootSBTBalParams_by_pkArgs, 'id'>>;
+  ScaffoldShaman?: Resolver<Array<ResolversTypes['ScaffoldShaman']>, ParentType, ContextType, Partial<query_rootScaffoldShamanArgs>>;
+  ScaffoldShaman_by_pk?: Resolver<Maybe<ResolversTypes['ScaffoldShaman']>, ParentType, ContextType, RequireFields<query_rootScaffoldShaman_by_pkArgs, 'id'>>;
   ShipChoice?: Resolver<Array<ResolversTypes['ShipChoice']>, ParentType, ContextType, Partial<query_rootShipChoiceArgs>>;
   ShipChoice_by_pk?: Resolver<Maybe<ResolversTypes['ShipChoice']>, ParentType, ContextType, RequireFields<query_rootShipChoice_by_pkArgs, 'id'>>;
   ShipContext?: Resolver<Array<ResolversTypes['ShipContext']>, ParentType, ContextType, Partial<query_rootShipContextArgs>>;
@@ -9508,6 +10695,15 @@ export type subscription_rootResolvers<ContextType = MeshContext, ParentType ext
   Application?: SubscriptionResolver<Array<ResolversTypes['Application']>, "Application", ParentType, ContextType, Partial<subscription_rootApplicationArgs>>;
   Application_by_pk?: SubscriptionResolver<Maybe<ResolversTypes['Application']>, "Application_by_pk", ParentType, ContextType, RequireFields<subscription_rootApplication_by_pkArgs, 'id'>>;
   Application_stream?: SubscriptionResolver<Array<ResolversTypes['Application']>, "Application_stream", ParentType, ContextType, RequireFields<subscription_rootApplication_streamArgs, 'batch_size' | 'cursor'>>;
+  Badge?: SubscriptionResolver<Array<ResolversTypes['Badge']>, "Badge", ParentType, ContextType, Partial<subscription_rootBadgeArgs>>;
+  BadgeHolder?: SubscriptionResolver<Array<ResolversTypes['BadgeHolder']>, "BadgeHolder", ParentType, ContextType, Partial<subscription_rootBadgeHolderArgs>>;
+  BadgeHolder_by_pk?: SubscriptionResolver<Maybe<ResolversTypes['BadgeHolder']>, "BadgeHolder_by_pk", ParentType, ContextType, RequireFields<subscription_rootBadgeHolder_by_pkArgs, 'id'>>;
+  BadgeHolder_stream?: SubscriptionResolver<Array<ResolversTypes['BadgeHolder']>, "BadgeHolder_stream", ParentType, ContextType, RequireFields<subscription_rootBadgeHolder_streamArgs, 'batch_size' | 'cursor'>>;
+  BadgeTemplate?: SubscriptionResolver<Array<ResolversTypes['BadgeTemplate']>, "BadgeTemplate", ParentType, ContextType, Partial<subscription_rootBadgeTemplateArgs>>;
+  BadgeTemplate_by_pk?: SubscriptionResolver<Maybe<ResolversTypes['BadgeTemplate']>, "BadgeTemplate_by_pk", ParentType, ContextType, RequireFields<subscription_rootBadgeTemplate_by_pkArgs, 'id'>>;
+  BadgeTemplate_stream?: SubscriptionResolver<Array<ResolversTypes['BadgeTemplate']>, "BadgeTemplate_stream", ParentType, ContextType, RequireFields<subscription_rootBadgeTemplate_streamArgs, 'batch_size' | 'cursor'>>;
+  Badge_by_pk?: SubscriptionResolver<Maybe<ResolversTypes['Badge']>, "Badge_by_pk", ParentType, ContextType, RequireFields<subscription_rootBadge_by_pkArgs, 'id'>>;
+  Badge_stream?: SubscriptionResolver<Array<ResolversTypes['Badge']>, "Badge_stream", ParentType, ContextType, RequireFields<subscription_rootBadge_streamArgs, 'batch_size' | 'cursor'>>;
   Contest?: SubscriptionResolver<Array<ResolversTypes['Contest']>, "Contest", ParentType, ContextType, Partial<subscription_rootContestArgs>>;
   ContestClone?: SubscriptionResolver<Array<ResolversTypes['ContestClone']>, "ContestClone", ParentType, ContextType, Partial<subscription_rootContestCloneArgs>>;
   ContestClone_by_pk?: SubscriptionResolver<Maybe<ResolversTypes['ContestClone']>, "ContestClone_by_pk", ParentType, ContextType, RequireFields<subscription_rootContestClone_by_pkArgs, 'id'>>;
@@ -9517,6 +10713,9 @@ export type subscription_rootResolvers<ContextType = MeshContext, ParentType ext
   ContestTemplate_stream?: SubscriptionResolver<Array<ResolversTypes['ContestTemplate']>, "ContestTemplate_stream", ParentType, ContextType, RequireFields<subscription_rootContestTemplate_streamArgs, 'batch_size' | 'cursor'>>;
   Contest_by_pk?: SubscriptionResolver<Maybe<ResolversTypes['Contest']>, "Contest_by_pk", ParentType, ContextType, RequireFields<subscription_rootContest_by_pkArgs, 'id'>>;
   Contest_stream?: SubscriptionResolver<Array<ResolversTypes['Contest']>, "Contest_stream", ParentType, ContextType, RequireFields<subscription_rootContest_streamArgs, 'batch_size' | 'cursor'>>;
+  DAOToken?: SubscriptionResolver<Array<ResolversTypes['DAOToken']>, "DAOToken", ParentType, ContextType, Partial<subscription_rootDAOTokenArgs>>;
+  DAOToken_by_pk?: SubscriptionResolver<Maybe<ResolversTypes['DAOToken']>, "DAOToken_by_pk", ParentType, ContextType, RequireFields<subscription_rootDAOToken_by_pkArgs, 'id'>>;
+  DAOToken_stream?: SubscriptionResolver<Array<ResolversTypes['DAOToken']>, "DAOToken_stream", ParentType, ContextType, RequireFields<subscription_rootDAOToken_streamArgs, 'batch_size' | 'cursor'>>;
   ERCPointParams?: SubscriptionResolver<Array<ResolversTypes['ERCPointParams']>, "ERCPointParams", ParentType, ContextType, Partial<subscription_rootERCPointParamsArgs>>;
   ERCPointParams_by_pk?: SubscriptionResolver<Maybe<ResolversTypes['ERCPointParams']>, "ERCPointParams_by_pk", ParentType, ContextType, RequireFields<subscription_rootERCPointParams_by_pkArgs, 'id'>>;
   ERCPointParams_stream?: SubscriptionResolver<Array<ResolversTypes['ERCPointParams']>, "ERCPointParams_stream", ParentType, ContextType, RequireFields<subscription_rootERCPointParams_streamArgs, 'batch_size' | 'cursor'>>;
@@ -9556,6 +10755,9 @@ export type subscription_rootResolvers<ContextType = MeshContext, ParentType ext
   GameRound?: SubscriptionResolver<Array<ResolversTypes['GameRound']>, "GameRound", ParentType, ContextType, Partial<subscription_rootGameRoundArgs>>;
   GameRound_by_pk?: SubscriptionResolver<Maybe<ResolversTypes['GameRound']>, "GameRound_by_pk", ParentType, ContextType, RequireFields<subscription_rootGameRound_by_pkArgs, 'id'>>;
   GameRound_stream?: SubscriptionResolver<Array<ResolversTypes['GameRound']>, "GameRound_stream", ParentType, ContextType, RequireFields<subscription_rootGameRound_streamArgs, 'batch_size' | 'cursor'>>;
+  Gate?: SubscriptionResolver<Array<ResolversTypes['Gate']>, "Gate", ParentType, ContextType, Partial<subscription_rootGateArgs>>;
+  Gate_by_pk?: SubscriptionResolver<Maybe<ResolversTypes['Gate']>, "Gate_by_pk", ParentType, ContextType, RequireFields<subscription_rootGate_by_pkArgs, 'id'>>;
+  Gate_stream?: SubscriptionResolver<Array<ResolversTypes['Gate']>, "Gate_stream", ParentType, ContextType, RequireFields<subscription_rootGate_streamArgs, 'batch_size' | 'cursor'>>;
   Grant?: SubscriptionResolver<Array<ResolversTypes['Grant']>, "Grant", ParentType, ContextType, Partial<subscription_rootGrantArgs>>;
   GrantShip?: SubscriptionResolver<Array<ResolversTypes['GrantShip']>, "GrantShip", ParentType, ContextType, Partial<subscription_rootGrantShipArgs>>;
   GrantShip_by_pk?: SubscriptionResolver<Maybe<ResolversTypes['GrantShip']>, "GrantShip_by_pk", ParentType, ContextType, RequireFields<subscription_rootGrantShip_by_pkArgs, 'id'>>;
@@ -9601,6 +10803,9 @@ export type subscription_rootResolvers<ContextType = MeshContext, ParentType ext
   SBTBalParams?: SubscriptionResolver<Array<ResolversTypes['SBTBalParams']>, "SBTBalParams", ParentType, ContextType, Partial<subscription_rootSBTBalParamsArgs>>;
   SBTBalParams_by_pk?: SubscriptionResolver<Maybe<ResolversTypes['SBTBalParams']>, "SBTBalParams_by_pk", ParentType, ContextType, RequireFields<subscription_rootSBTBalParams_by_pkArgs, 'id'>>;
   SBTBalParams_stream?: SubscriptionResolver<Array<ResolversTypes['SBTBalParams']>, "SBTBalParams_stream", ParentType, ContextType, RequireFields<subscription_rootSBTBalParams_streamArgs, 'batch_size' | 'cursor'>>;
+  ScaffoldShaman?: SubscriptionResolver<Array<ResolversTypes['ScaffoldShaman']>, "ScaffoldShaman", ParentType, ContextType, Partial<subscription_rootScaffoldShamanArgs>>;
+  ScaffoldShaman_by_pk?: SubscriptionResolver<Maybe<ResolversTypes['ScaffoldShaman']>, "ScaffoldShaman_by_pk", ParentType, ContextType, RequireFields<subscription_rootScaffoldShaman_by_pkArgs, 'id'>>;
+  ScaffoldShaman_stream?: SubscriptionResolver<Array<ResolversTypes['ScaffoldShaman']>, "ScaffoldShaman_stream", ParentType, ContextType, RequireFields<subscription_rootScaffoldShaman_streamArgs, 'batch_size' | 'cursor'>>;
   ShipChoice?: SubscriptionResolver<Array<ResolversTypes['ShipChoice']>, "ShipChoice", ParentType, ContextType, Partial<subscription_rootShipChoiceArgs>>;
   ShipChoice_by_pk?: SubscriptionResolver<Maybe<ResolversTypes['ShipChoice']>, "ShipChoice_by_pk", ParentType, ContextType, RequireFields<subscription_rootShipChoice_by_pkArgs, 'id'>>;
   ShipChoice_stream?: SubscriptionResolver<Array<ResolversTypes['ShipChoice']>, "ShipChoice_stream", ParentType, ContextType, RequireFields<subscription_rootShipChoice_streamArgs, 'batch_size' | 'cursor'>>;
@@ -9656,9 +10861,13 @@ export interface timestamptzScalarConfig extends GraphQLScalarTypeConfig<Resolve
 
 export type Resolvers<ContextType = MeshContext> = ResolversObject<{
   Application?: ApplicationResolvers<ContextType>;
+  Badge?: BadgeResolvers<ContextType>;
+  BadgeHolder?: BadgeHolderResolvers<ContextType>;
+  BadgeTemplate?: BadgeTemplateResolvers<ContextType>;
   Contest?: ContestResolvers<ContextType>;
   ContestClone?: ContestCloneResolvers<ContextType>;
   ContestTemplate?: ContestTemplateResolvers<ContextType>;
+  DAOToken?: DAOTokenResolvers<ContextType>;
   ERCPointParams?: ERCPointParamsResolvers<ContextType>;
   EnvioTX?: EnvioTXResolvers<ContextType>;
   EventPost?: EventPostResolvers<ContextType>;
@@ -9672,6 +10881,7 @@ export type Resolvers<ContextType = MeshContext> = ResolversObject<{
   GameManagerFactory?: GameManagerFactoryResolvers<ContextType>;
   GameManagerTemplate?: GameManagerTemplateResolvers<ContextType>;
   GameRound?: GameRoundResolvers<ContextType>;
+  Gate?: GateResolvers<ContextType>;
   Grant?: GrantResolvers<ContextType>;
   GrantShip?: GrantShipResolvers<ContextType>;
   GrantShipsVoting?: GrantShipsVotingResolvers<ContextType>;
@@ -9687,6 +10897,7 @@ export type Resolvers<ContextType = MeshContext> = ResolversObject<{
   RawMetadata?: RawMetadataResolvers<ContextType>;
   Record?: RecordResolvers<ContextType>;
   SBTBalParams?: SBTBalParamsResolvers<ContextType>;
+  ScaffoldShaman?: ScaffoldShamanResolvers<ContextType>;
   ShipChoice?: ShipChoiceResolvers<ContextType>;
   ShipContext?: ShipContextResolvers<ContextType>;
   ShipVote?: ShipVoteResolvers<ContextType>;
@@ -9796,6 +11007,12 @@ const merger = new(BareMerger as any)({
     get documents() {
       return [
       {
+        document: GetBadgeManagerDocument,
+        get rawSDL() {
+          return printWithCache(GetBadgeManagerDocument);
+        },
+        location: 'GetBadgeManagerDocument.graphql'
+      },{
         document: FacDashShipDataDocument,
         get rawSDL() {
           return printWithCache(FacDashShipDataDocument);
@@ -9837,6 +11054,12 @@ const merger = new(BareMerger as any)({
           return printWithCache(GetGsVotingDocument);
         },
         location: 'GetGsVotingDocument.graphql'
+      },{
+        document: GetLeaderboardDocument,
+        get rawSDL() {
+          return printWithCache(GetLeaderboardDocument);
+        },
+        location: 'GetLeaderboardDocument.graphql'
       },{
         document: GetProjectGrantsDocument,
         get rawSDL() {
@@ -9928,6 +11151,12 @@ const merger = new(BareMerger as any)({
         },
         location: 'GetUpdatesQueryDocument.graphql'
       },{
+        document: GetUserBadgesDocument,
+        get rawSDL() {
+          return printWithCache(GetUserBadgesDocument);
+        },
+        location: 'GetUserBadgesDocument.graphql'
+      },{
         document: GetUserDataDocument,
         get rawSDL() {
           return printWithCache(GetUserDataDocument);
@@ -10001,6 +11230,14 @@ export function getBuiltGraphSDK<TGlobalContext = any, TOperationContext = any>(
   const sdkRequester$ = getBuiltGraphClient().then(({ sdkRequesterFactory }) => sdkRequesterFactory(globalContext));
   return getSdk<TOperationContext, TGlobalContext>((...args) => sdkRequester$.then(sdkRequester => sdkRequester(...args)));
 }
+export type BadgeTemplate_Fragment = (
+  Pick<BadgeTemplate, 'amount' | 'badgeId' | 'exists' | 'hasFixedAmount' | 'isSlash' | 'isVotingToken' | 'name'>
+  & { metadata?: Maybe<Pick<RawMetadata, 'pointer' | 'protocol'>>, badges: Array<(
+    Pick<Badge, 'amount'>
+    & { reason?: Maybe<Pick<RawMetadata, 'pointer' | 'protocol'>>, wearer?: Maybe<Pick<BadgeHolder, 'address'>> }
+  )> }
+);
+
 export type BaseShipDataFragment = (
   Pick<GrantShip, 'id' | 'name' | 'status' | 'poolId' | 'shipContractAddress' | 'shipApplicationBytesData' | 'owner' | 'balance' | 'totalFundsReceived' | 'totalAllocated' | 'totalDistributed' | 'totalRoundAmount'>
   & { profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>>, alloProfileMembers?: Maybe<Pick<ProfileMemberGroup, 'addresses'>> }
@@ -10019,7 +11256,7 @@ export type MilestoneSetBasicFragment = (
 );
 
 export type GrantBasicFragment = (
-  Pick<Grant, 'id' | 'status' | 'lastUpdated' | 'amount' | 'grantCompleted' | 'hasPendingMilestones' | 'hasRejectedMilestones' | 'allMilestonesApproved'>
+  Pick<Grant, 'id' | 'status' | 'lastUpdated' | 'amount' | 'grantCompleted' | 'hasPendingMilestones' | 'hasRejectedMilestones' | 'allMilestonesApproved' | 'requestingEarlyReview'>
   & { currentMilestones?: Maybe<(
     Pick<MilestoneSet, 'id' | 'milestoneLength' | 'milestonesCompleted' | 'milestonesRejected' | 'milestonesPending'>
     & { milestones: Array<Pick<Milestone, 'id' | 'index' | 'percentage' | 'status'>> }
@@ -10030,6 +11267,22 @@ export type UpdateBodyFragment = (
   Pick<Update, 'id' | 'postedBy' | 'entityAddress' | 'timestamp'>
   & { content?: Maybe<Pick<RawMetadata, 'pointer'>> }
 );
+
+export type getBadgeManagerQueryVariables = Exact<{
+  shamanId: Scalars['String'];
+}>;
+
+
+export type getBadgeManagerQuery = { ScaffoldShaman_by_pk?: Maybe<(
+    Pick<ScaffoldShaman, 'id' | 'address' | 'dao'>
+    & { controlGate?: Maybe<Pick<Gate, 'gateId' | 'gateType' | 'hatId' | 'id'>>, lootToken?: Maybe<Pick<DAOToken, 'address' | 'symbol'>>, managerGate?: Maybe<Pick<Gate, 'gateId' | 'gateType' | 'hatId' | 'id'>>, minterGate?: Maybe<Pick<Gate, 'gateId' | 'gateType' | 'hatId' | 'id'>>, sharesToken?: Maybe<Pick<DAOToken, 'address' | 'symbol'>>, templates: Array<(
+      Pick<BadgeTemplate, 'amount' | 'badgeId' | 'exists' | 'hasFixedAmount' | 'isSlash' | 'isVotingToken' | 'name'>
+      & { metadata?: Maybe<Pick<RawMetadata, 'pointer' | 'protocol'>>, badges: Array<(
+        Pick<Badge, 'amount'>
+        & { reason?: Maybe<Pick<RawMetadata, 'pointer' | 'protocol'>>, wearer?: Maybe<Pick<BadgeHolder, 'address'>> }
+      )> }
+    )> }
+  )> };
 
 export type FacShipDataFragment = (
   Pick<GrantShip, 'id' | 'name' | 'status' | 'applicationSubmittedTime' | 'shipApplicationBytesData'>
@@ -10058,7 +11311,7 @@ export type getFacilitatorGrantsQueryVariables = Exact<{
 
 
 export type getFacilitatorGrantsQuery = { grants: Array<(
-    Pick<Grant, 'id' | 'status' | 'lastUpdated' | 'amount' | 'grantCompleted' | 'hasPendingMilestones' | 'hasRejectedMilestones' | 'allMilestonesApproved'>
+    Pick<Grant, 'id' | 'status' | 'lastUpdated' | 'amount' | 'grantCompleted' | 'hasPendingMilestones' | 'hasRejectedMilestones' | 'allMilestonesApproved' | 'requestingEarlyReview'>
     & { project?: Maybe<(
       Pick<Project, 'id' | 'name'>
       & { metadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
@@ -10151,7 +11404,7 @@ export type GrantApplicationFragment = (
 );
 
 export type GrantDataFragment = (
-  Pick<Grant, 'id' | 'status' | 'lastUpdated' | 'amount' | 'isAllocated' | 'grantCompleted' | 'applicationApproved' | 'hasPendingMilestones' | 'hasRejectedMilestones' | 'allMilestonesApproved' | 'amountDistributed'>
+  Pick<Grant, 'id' | 'status' | 'lastUpdated' | 'amount' | 'isAllocated' | 'grantCompleted' | 'applicationApproved' | 'hasPendingMilestones' | 'hasRejectedMilestones' | 'allMilestonesApproved' | 'requestingEarlyReview' | 'amountDistributed'>
   & { milestoneDrafts: Array<(
     Pick<MilestoneSet, 'id' | 'index' | 'timestamp' | 'status' | 'milestoneLength'>
     & { milestones: Array<(
@@ -10187,7 +11440,7 @@ export type getGrantQuery = { Project_by_pk?: Maybe<(
     Pick<GrantShip, 'beaconLastUpdated' | 'id' | 'name' | 'status' | 'poolId' | 'shipContractAddress' | 'shipApplicationBytesData' | 'owner' | 'balance' | 'totalFundsReceived' | 'totalAllocated' | 'totalDistributed' | 'totalRoundAmount'>
     & { beaconMessage?: Maybe<Pick<RawMetadata, 'pointer'>>, customApplication?: Maybe<Pick<RawMetadata, 'pointer'>>, profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>>, alloProfileMembers?: Maybe<Pick<ProfileMemberGroup, 'addresses'>> }
   )>, Grant_by_pk?: Maybe<(
-    Pick<Grant, 'id' | 'status' | 'lastUpdated' | 'amount' | 'isAllocated' | 'grantCompleted' | 'applicationApproved' | 'hasPendingMilestones' | 'hasRejectedMilestones' | 'allMilestonesApproved' | 'amountDistributed'>
+    Pick<Grant, 'id' | 'status' | 'lastUpdated' | 'amount' | 'isAllocated' | 'grantCompleted' | 'applicationApproved' | 'hasPendingMilestones' | 'hasRejectedMilestones' | 'allMilestonesApproved' | 'requestingEarlyReview' | 'amountDistributed'>
     & { milestoneDrafts: Array<(
       Pick<MilestoneSet, 'id' | 'index' | 'timestamp' | 'status' | 'milestoneLength'>
       & { milestones: Array<(
@@ -10222,6 +11475,20 @@ export type getGsVotingQuery = { GrantShipsVoting: Array<(
     & { choices: Array<Pick<ShipChoice, 'active' | 'id' | 'mdPointer' | 'mdProtocol' | 'voteTally'>>, contest?: Maybe<Pick<Contest, 'votesModule_id' | 'choicesModule_id' | 'pointsModule_id' | 'executionModule_id' | 'contestStatus'>> }
   )> };
 
+export type getLeaderboardQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type getLeaderboardQuery = { BadgeHolder: Array<(
+    Pick<BadgeHolder, 'id' | 'address' | 'badgeBalance'>
+    & { badges: Array<(
+      Pick<Badge, 'amount'>
+      & { template?: Maybe<(
+        Pick<BadgeTemplate, 'name'>
+        & { metadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
+      )> }
+    )> }
+  )> };
+
 export type ShipDisplayFragment = (
   Pick<GrantShip, 'id' | 'name' | 'shipContractAddress'>
   & { profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
@@ -10234,7 +11501,7 @@ export type getProjectGrantsQueryVariables = Exact<{
 
 
 export type getProjectGrantsQuery = { grants: Array<(
-    Pick<Grant, 'amountDistributed' | 'amountAllocated' | 'id' | 'status' | 'lastUpdated' | 'amount' | 'grantCompleted' | 'hasPendingMilestones' | 'hasRejectedMilestones' | 'allMilestonesApproved'>
+    Pick<Grant, 'amountDistributed' | 'amountAllocated' | 'id' | 'status' | 'lastUpdated' | 'amount' | 'grantCompleted' | 'hasPendingMilestones' | 'hasRejectedMilestones' | 'allMilestonesApproved' | 'requestingEarlyReview'>
     & { ship?: Maybe<(
       Pick<GrantShip, 'id' | 'name' | 'shipContractAddress'>
       & { profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
@@ -10251,7 +11518,7 @@ export type getAllProjectGrantsQueryVariables = Exact<{
 
 
 export type getAllProjectGrantsQuery = { grants: Array<(
-    Pick<Grant, 'amountDistributed' | 'amountAllocated' | 'id' | 'status' | 'lastUpdated' | 'amount' | 'grantCompleted' | 'hasPendingMilestones' | 'hasRejectedMilestones' | 'allMilestonesApproved'>
+    Pick<Grant, 'amountDistributed' | 'amountAllocated' | 'id' | 'status' | 'lastUpdated' | 'amount' | 'grantCompleted' | 'hasPendingMilestones' | 'hasRejectedMilestones' | 'allMilestonesApproved' | 'requestingEarlyReview'>
     & { ship?: Maybe<(
       Pick<GrantShip, 'id' | 'name' | 'shipContractAddress'>
       & { profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
@@ -10369,7 +11636,7 @@ export type getShipGrantsQueryVariables = Exact<{
 
 
 export type getShipGrantsQuery = { grants: Array<(
-    Pick<Grant, 'id' | 'status' | 'lastUpdated' | 'amount' | 'grantCompleted' | 'hasPendingMilestones' | 'hasRejectedMilestones' | 'allMilestonesApproved'>
+    Pick<Grant, 'id' | 'status' | 'lastUpdated' | 'amount' | 'grantCompleted' | 'hasPendingMilestones' | 'hasRejectedMilestones' | 'allMilestonesApproved' | 'requestingEarlyReview'>
     & { project?: Maybe<(
       Pick<Project, 'id' | 'name'>
       & { metadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
@@ -10395,6 +11662,22 @@ export type getUpdatesQueryQueryVariables = Exact<{
 export type getUpdatesQueryQuery = { Update: Array<(
     Pick<Update, 'id' | 'postedBy' | 'entityAddress' | 'timestamp'>
     & { content?: Maybe<Pick<RawMetadata, 'pointer'>> }
+  )> };
+
+export type getUserBadgesQueryVariables = Exact<{
+  address: Scalars['String'];
+}>;
+
+
+export type getUserBadgesQuery = { BadgeHolder: Array<(
+    Pick<BadgeHolder, 'badgeBalance'>
+    & { shaman?: Maybe<{ lootToken?: Maybe<Pick<DAOToken, 'symbol'>>, sharesToken?: Maybe<Pick<DAOToken, 'symbol'>> }>, badges: Array<(
+      Pick<Badge, 'id' | 'amount'>
+      & { reason?: Maybe<Pick<RawMetadata, 'pointer' | 'protocol'>>, template?: Maybe<(
+        Pick<BadgeTemplate, 'name' | 'badgeId' | 'hasFixedAmount' | 'isSlash' | 'isVotingToken'>
+        & { metadata?: Maybe<Pick<RawMetadata, 'pointer'>> }
+      )> }
+    )> }
   )> };
 
 export type getUserDataQueryVariables = Exact<{
@@ -10462,6 +11745,31 @@ export type ShipsPageQueryQuery = { GrantShip: Array<(
     & { profileMetadata?: Maybe<Pick<RawMetadata, 'pointer'>>, alloProfileMembers?: Maybe<Pick<ProfileMemberGroup, 'addresses'>> }
   )> };
 
+export const BadgeTemplate_FragmentDoc = gql`
+    fragment BadgeTemplate_ on BadgeTemplate {
+  amount
+  badgeId
+  exists
+  hasFixedAmount
+  isSlash
+  isVotingToken
+  name
+  metadata {
+    pointer
+    protocol
+  }
+  badges {
+    amount
+    reason {
+      pointer
+      protocol
+    }
+    wearer {
+      address
+    }
+  }
+}
+    ` as unknown as DocumentNode<BadgeTemplate_Fragment, unknown>;
 export const BaseShipDataFragmentDoc = gql`
     fragment BaseShipData on GrantShip {
   id
@@ -10547,6 +11855,7 @@ export const GrantBasicFragmentDoc = gql`
   hasPendingMilestones
   hasRejectedMilestones
   allMilestonesApproved
+  requestingEarlyReview
   currentMilestones {
     ...MilestoneSetBasic
   }
@@ -10679,6 +11988,7 @@ export const GrantDataFragmentDoc = gql`
   hasPendingMilestones
   hasRejectedMilestones
   allMilestonesApproved
+  requestingEarlyReview
   amountDistributed
   milestoneDrafts {
     ...Milestones
@@ -10748,6 +12058,44 @@ export const ProjectDisplayFragmentDoc = gql`
   }
 }
     ` as unknown as DocumentNode<ProjectDisplayFragment, unknown>;
+export const getBadgeManagerDocument = gql`
+    query getBadgeManager($shamanId: String!) {
+  ScaffoldShaman_by_pk(id: $shamanId) {
+    id
+    address
+    dao
+    controlGate {
+      gateId
+      gateType
+      hatId
+      id
+    }
+    lootToken {
+      address
+      symbol
+    }
+    managerGate {
+      gateId
+      gateType
+      hatId
+      id
+    }
+    minterGate {
+      gateId
+      gateType
+      hatId
+      id
+    }
+    sharesToken {
+      address
+      symbol
+    }
+    templates(where: {exists: {_eq: true}}) {
+      ...BadgeTemplate_
+    }
+  }
+}
+    ${BadgeTemplate_FragmentDoc}` as unknown as DocumentNode<getBadgeManagerQuery, getBadgeManagerQueryVariables>;
 export const facDashShipDataDocument = gql`
     query facDashShipData($gameId: String!) {
   shipApplicants: GrantShip(
@@ -10886,6 +12234,24 @@ export const getGsVotingDocument = gql`
   }
 }
     ` as unknown as DocumentNode<getGsVotingQuery, getGsVotingQueryVariables>;
+export const getLeaderboardDocument = gql`
+    query getLeaderboard {
+  BadgeHolder {
+    id
+    address
+    badgeBalance
+    badges {
+      amount
+      template {
+        name
+        metadata {
+          pointer
+        }
+      }
+    }
+  }
+}
+    ` as unknown as DocumentNode<getLeaderboardQuery, getLeaderboardQueryVariables>;
 export const getProjectGrantsDocument = gql`
     query getProjectGrants($projectId: String!, $gameId: String!) {
   grants: Grant(
@@ -11050,6 +12416,39 @@ export const getUpdatesQueryDocument = gql`
   }
 }
     ${UpdateBodyFragmentDoc}` as unknown as DocumentNode<getUpdatesQueryQuery, getUpdatesQueryQueryVariables>;
+export const getUserBadgesDocument = gql`
+    query getUserBadges($address: String!) {
+  BadgeHolder(where: {address: {_eq: $address}}) {
+    badgeBalance
+    shaman {
+      lootToken {
+        symbol
+      }
+      sharesToken {
+        symbol
+      }
+    }
+    badges {
+      id
+      reason {
+        pointer
+        protocol
+      }
+      amount
+      template {
+        name
+        badgeId
+        hasFixedAmount
+        isSlash
+        isVotingToken
+        metadata {
+          pointer
+        }
+      }
+    }
+  }
+}
+    ` as unknown as DocumentNode<getUserBadgesQuery, getUserBadgesQueryVariables>;
 export const getUserDataDocument = gql`
     query getUserData($id: String!, $chainId: Int!) {
   projects: Project(where: {owner: {_eq: $id}, chainId: {_eq: $chainId}}) {
@@ -11157,9 +12556,15 @@ export const ShipsPageQueryDocument = gql`
 
 
 
+
+
+
 export type Requester<C = {}, E = unknown> = <R, V>(doc: DocumentNode, vars?: V, options?: C) => Promise<R> | AsyncIterable<R>
 export function getSdk<C, E>(requester: Requester<C, E>) {
   return {
+    getBadgeManager(variables: getBadgeManagerQueryVariables, options?: C): Promise<getBadgeManagerQuery> {
+      return requester<getBadgeManagerQuery, getBadgeManagerQueryVariables>(getBadgeManagerDocument, variables, options) as Promise<getBadgeManagerQuery>;
+    },
     facDashShipData(variables: facDashShipDataQueryVariables, options?: C): Promise<facDashShipDataQuery> {
       return requester<facDashShipDataQuery, facDashShipDataQueryVariables>(facDashShipDataDocument, variables, options) as Promise<facDashShipDataQuery>;
     },
@@ -11180,6 +12585,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     getGsVoting(variables: getGsVotingQueryVariables, options?: C): Promise<getGsVotingQuery> {
       return requester<getGsVotingQuery, getGsVotingQueryVariables>(getGsVotingDocument, variables, options) as Promise<getGsVotingQuery>;
+    },
+    getLeaderboard(variables?: getLeaderboardQueryVariables, options?: C): Promise<getLeaderboardQuery> {
+      return requester<getLeaderboardQuery, getLeaderboardQueryVariables>(getLeaderboardDocument, variables, options) as Promise<getLeaderboardQuery>;
     },
     getProjectGrants(variables: getProjectGrantsQueryVariables, options?: C): Promise<getProjectGrantsQuery> {
       return requester<getProjectGrantsQuery, getProjectGrantsQueryVariables>(getProjectGrantsDocument, variables, options) as Promise<getProjectGrantsQuery>;
@@ -11225,6 +12633,9 @@ export function getSdk<C, E>(requester: Requester<C, E>) {
     },
     getUpdatesQuery(variables: getUpdatesQueryQueryVariables, options?: C): Promise<getUpdatesQueryQuery> {
       return requester<getUpdatesQueryQuery, getUpdatesQueryQueryVariables>(getUpdatesQueryDocument, variables, options) as Promise<getUpdatesQueryQuery>;
+    },
+    getUserBadges(variables: getUserBadgesQueryVariables, options?: C): Promise<getUserBadgesQuery> {
+      return requester<getUserBadgesQuery, getUserBadgesQueryVariables>(getUserBadgesDocument, variables, options) as Promise<getUserBadgesQuery>;
     },
     getUserData(variables: getUserDataQueryVariables, options?: C): Promise<getUserDataQuery> {
       return requester<getUserDataQuery, getUserDataQueryVariables>(getUserDataDocument, variables, options) as Promise<getUserDataQuery>;

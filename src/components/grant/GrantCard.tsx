@@ -19,6 +19,7 @@ import {
   IconPennantOff,
   IconRoute,
   IconRouteX,
+  IconShieldHalf,
   IconShieldX,
 } from '@tabler/icons-react';
 import { Link } from 'react-router-dom';
@@ -33,6 +34,7 @@ export const GrantCard = ({
   hasPending,
   hasRejected,
   allCompleted,
+  requestingEarlyReview,
   notify,
 }: {
   linkUrl: string;
@@ -40,6 +42,7 @@ export const GrantCard = ({
   avatarUrls: string[];
   label: string;
   status: GrantStatus;
+  requestingEarlyReview?: boolean;
   hasPending: boolean;
   hasRejected: boolean;
   allCompleted: boolean;
@@ -78,6 +81,7 @@ export const GrantCard = ({
             hasRejected={hasRejected}
             allCompleted={allCompleted}
             status={status}
+            requestingEarlyReview={requestingEarlyReview}
           />
         </Group>
       </Paper>
@@ -91,6 +95,7 @@ export const GrantCard = ({
     hasPending,
     hasRejected,
     allCompleted,
+    requestingEarlyReview,
   ]);
 
   if (notify) {
@@ -103,15 +108,14 @@ const GrantStatusIndicator = ({
   status,
   hasPending,
   hasRejected,
-  allCompleted,
+  requestingEarlyReview,
 }: {
   status: GrantStatus;
   hasPending: boolean;
   hasRejected: boolean;
   allCompleted: boolean;
+  requestingEarlyReview?: boolean;
 }) => {
-  const theme = useMantineTheme();
-
   if (status === GrantStatus.ProjectInitiated)
     return (
       <StatusIndicator text="Grant Started" icon={<IconFilePlus size={16} />} />
@@ -119,6 +123,14 @@ const GrantStatusIndicator = ({
   if (status === GrantStatus.ShipInitiated) {
     return (
       <StatusIndicator text="Grant Started" icon={<IconFilePlus size={16} />} />
+    );
+  }
+  if (requestingEarlyReview) {
+    return (
+      <StatusIndicator
+        text="Requesting Early Review"
+        icon={<IconShieldHalf size={16} />}
+      />
     );
   }
   if (status === GrantStatus.ApplicationSubmitted) {
@@ -129,6 +141,7 @@ const GrantStatusIndicator = ({
       />
     );
   }
+
   if (status === GrantStatus.ApplicationRejected) {
     return (
       <StatusIndicator

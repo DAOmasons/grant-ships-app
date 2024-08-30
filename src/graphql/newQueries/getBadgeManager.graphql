@@ -1,0 +1,36 @@
+query getBadgeManager($shamanId: String!) {
+  ScaffoldShaman_by_pk(id: $shamanId) {
+    id
+    address
+    dao
+    controlGate {
+      gateId
+      gateType
+      hatId
+      id
+    }
+    lootToken {
+      address
+      symbol
+    }
+    managerGate {
+      gateId
+      gateType
+      hatId
+      id
+    }
+    minterGate {
+      gateId
+      gateType
+      hatId
+      id
+    }
+    sharesToken {
+      address
+      symbol
+    }
+    templates(where: { exists: { _eq: true } }) {
+      ...BadgeTemplate_
+    }
+  }
+}

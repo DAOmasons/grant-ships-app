@@ -4,10 +4,17 @@ import { Button, Group, Stack, Text } from '@mantine/core';
 import { IconPlus } from '@tabler/icons-react';
 import { PostGrantDrawer } from './PostGrantDrawer';
 import { Player } from '../../types/ui';
+import { GrantStatus } from '../../types/common';
+import { EarlyReviewButton } from './EarlyReview';
 
 export const ShipActions = () => {
-  const { refetchGrant, project, ship } = useGrant();
+  const { refetchGrant, project, ship, grant } = useGrant();
   const [postOpened, { open: openPost, close: closePost }] = useDisclosure();
+
+  const canRequestEarly =
+    grant?.status != null &&
+    grant.status >= GrantStatus.ApplicationSubmitted &&
+    grant.status < GrantStatus.MilestonesApproved;
 
   return (
     <>
@@ -15,6 +22,7 @@ export const ShipActions = () => {
         <Button variant="menu" leftSection={<IconPlus />} onClick={openPost}>
           <Text>Message</Text>
         </Button>
+        {canRequestEarly && <EarlyReviewButton />}
       </Stack>
       <PostGrantDrawer
         opened={postOpened}
