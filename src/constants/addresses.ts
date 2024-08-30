@@ -26,7 +26,7 @@ export const ADDR_PROD: Record<string, Address> = {
   SBT_VOTE_CONTEST: '0xF46DA452C2D3f40Cf8402FFF5EdfdB4D6b6F0C9F',
 } as const;
 
-export const BADGE_SHAMAN = '0x70DaE101c0377bD0EaA1360bDFF367Fd853F7FF0';
+export const BADGE_SHAMAN = '0x31090103830d168E508399e2149524B8906773Ca';
 
 export const ADDR: Record<string, Address> =
   import.meta.env.VITE_RUNTIME_ENV === 'dev' ? ADDR_TESTNET : ADDR_PROD;
