@@ -215,7 +215,6 @@ const BadgeTab = ({
           src={badge.imgUrl}
           key={badge.id}
           size={80}
-          radius="md"
           onClick={() => handleOpen(badge)}
         />
       ))}
@@ -227,7 +226,7 @@ const BadgeTab = ({
       >
         <Modal.Body>
           <Flex w="100%" gap="sm" mb="xl">
-            <Avatar src={selectedBadge?.imgUrl} size={200} radius="md" />
+            <Avatar src={selectedBadge?.imgUrl} size={200} />
             <Stack gap={4}>
               <Text fw={600} mb="xs">
                 {selectedBadge?.name}

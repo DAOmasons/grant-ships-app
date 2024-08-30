@@ -64,7 +64,6 @@ export const BadgeManager = ({
             bg={theme.colors.dark[5]}
             src={selectedTemplate?.templateMetadata.imgUrl || undefined}
             size={240}
-            radius={'sm'}
             pos="relative"
           >
             <IconBadge size={80} />
@@ -139,7 +138,6 @@ export const BadgeManager = ({
             <Avatar
               key={template.badgeId}
               size={94}
-              radius="sm"
               src={template.templateMetadata.imgUrl || ''}
               onClick={() => selectTemplate(template)}
             >
