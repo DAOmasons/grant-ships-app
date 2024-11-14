@@ -40,8 +40,7 @@ export type Scalars = {
   Float: number;
   contract_type: any;
   entity_type: any;
-  event_type: any;
-  json: any;
+  jsonb: any;
   numeric: any;
   timestamp: any;
   timestamptz: any;
@@ -1031,6 +1030,126 @@ export type DAOToken_stream_cursor_value_input = {
   id?: InputMaybe<Scalars['String']>;
   shaman_id?: InputMaybe<Scalars['String']>;
   symbol?: InputMaybe<Scalars['String']>;
+};
+
+/** columns and relationships of "DualTokenPointsParams" */
+export type DualTokenPointsParams = {
+  contextTokenAddress: Scalars['String'];
+  daoTokenAddress: Scalars['String'];
+  db_write_timestamp?: Maybe<Scalars['timestamp']>;
+  id: Scalars['String'];
+  votingCheckpoint: Scalars['numeric'];
+};
+
+/** Boolean expression to filter rows from the table "DualTokenPointsParams". All fields are combined with a logical 'AND'. */
+export type DualTokenPointsParams_bool_exp = {
+  _and?: InputMaybe<Array<DualTokenPointsParams_bool_exp>>;
+  _not?: InputMaybe<DualTokenPointsParams_bool_exp>;
+  _or?: InputMaybe<Array<DualTokenPointsParams_bool_exp>>;
+  contextTokenAddress?: InputMaybe<String_comparison_exp>;
+  daoTokenAddress?: InputMaybe<String_comparison_exp>;
+  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
+  id?: InputMaybe<String_comparison_exp>;
+  votingCheckpoint?: InputMaybe<numeric_comparison_exp>;
+};
+
+/** Ordering options when selecting data from "DualTokenPointsParams". */
+export type DualTokenPointsParams_order_by = {
+  contextTokenAddress?: InputMaybe<order_by>;
+  daoTokenAddress?: InputMaybe<order_by>;
+  db_write_timestamp?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  votingCheckpoint?: InputMaybe<order_by>;
+};
+
+/** select columns of table "DualTokenPointsParams" */
+export type DualTokenPointsParams_select_column =
+  /** column name */
+  | 'contextTokenAddress'
+  /** column name */
+  | 'daoTokenAddress'
+  /** column name */
+  | 'db_write_timestamp'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'votingCheckpoint';
+
+/** Streaming cursor of the table "DualTokenPointsParams" */
+export type DualTokenPointsParams_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: DualTokenPointsParams_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type DualTokenPointsParams_stream_cursor_value_input = {
+  contextTokenAddress?: InputMaybe<Scalars['String']>;
+  daoTokenAddress?: InputMaybe<Scalars['String']>;
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
+  id?: InputMaybe<Scalars['String']>;
+  votingCheckpoint?: InputMaybe<Scalars['numeric']>;
+};
+
+/** columns and relationships of "DualTokenTVParams" */
+export type DualTokenTVParams = {
+  contextTokenAddress: Scalars['String'];
+  daoTokenAddress: Scalars['String'];
+  db_write_timestamp?: Maybe<Scalars['timestamp']>;
+  id: Scalars['String'];
+  voteDuration: Scalars['numeric'];
+};
+
+/** Boolean expression to filter rows from the table "DualTokenTVParams". All fields are combined with a logical 'AND'. */
+export type DualTokenTVParams_bool_exp = {
+  _and?: InputMaybe<Array<DualTokenTVParams_bool_exp>>;
+  _not?: InputMaybe<DualTokenTVParams_bool_exp>;
+  _or?: InputMaybe<Array<DualTokenTVParams_bool_exp>>;
+  contextTokenAddress?: InputMaybe<String_comparison_exp>;
+  daoTokenAddress?: InputMaybe<String_comparison_exp>;
+  db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
+  id?: InputMaybe<String_comparison_exp>;
+  voteDuration?: InputMaybe<numeric_comparison_exp>;
+};
+
+/** Ordering options when selecting data from "DualTokenTVParams". */
+export type DualTokenTVParams_order_by = {
+  contextTokenAddress?: InputMaybe<order_by>;
+  daoTokenAddress?: InputMaybe<order_by>;
+  db_write_timestamp?: InputMaybe<order_by>;
+  id?: InputMaybe<order_by>;
+  voteDuration?: InputMaybe<order_by>;
+};
+
+/** select columns of table "DualTokenTVParams" */
+export type DualTokenTVParams_select_column =
+  /** column name */
+  | 'contextTokenAddress'
+  /** column name */
+  | 'daoTokenAddress'
+  /** column name */
+  | 'db_write_timestamp'
+  /** column name */
+  | 'id'
+  /** column name */
+  | 'voteDuration';
+
+/** Streaming cursor of the table "DualTokenTVParams" */
+export type DualTokenTVParams_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: DualTokenTVParams_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type DualTokenTVParams_stream_cursor_value_input = {
+  contextTokenAddress?: InputMaybe<Scalars['String']>;
+  daoTokenAddress?: InputMaybe<Scalars['String']>;
+  db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
+  id?: InputMaybe<Scalars['String']>;
+  voteDuration?: InputMaybe<Scalars['numeric']>;
 };
 
 /** columns and relationships of "ERCPointParams" */
@@ -2999,6 +3118,7 @@ export type GrantShipsVoting = {
   hatId: Scalars['numeric'];
   hatsAddress: Scalars['String'];
   id: Scalars['String'];
+  isDualToken: Scalars['Boolean'];
   isSBTVoting: Scalars['Boolean'];
   isVotingActive: Scalars['Boolean'];
   startTime?: Maybe<Scalars['numeric']>;
@@ -3043,6 +3163,7 @@ export type GrantShipsVoting_bool_exp = {
   hatId?: InputMaybe<numeric_comparison_exp>;
   hatsAddress?: InputMaybe<String_comparison_exp>;
   id?: InputMaybe<String_comparison_exp>;
+  isDualToken?: InputMaybe<Boolean_comparison_exp>;
   isSBTVoting?: InputMaybe<Boolean_comparison_exp>;
   isVotingActive?: InputMaybe<Boolean_comparison_exp>;
   startTime?: InputMaybe<numeric_comparison_exp>;
@@ -3063,6 +3184,7 @@ export type GrantShipsVoting_order_by = {
   hatId?: InputMaybe<order_by>;
   hatsAddress?: InputMaybe<order_by>;
   id?: InputMaybe<order_by>;
+  isDualToken?: InputMaybe<order_by>;
   isSBTVoting?: InputMaybe<order_by>;
   isVotingActive?: InputMaybe<order_by>;
   startTime?: InputMaybe<order_by>;
@@ -3087,6 +3209,8 @@ export type GrantShipsVoting_select_column =
   | 'hatsAddress'
   /** column name */
   | 'id'
+  /** column name */
+  | 'isDualToken'
   /** column name */
   | 'isSBTVoting'
   /** column name */
@@ -3118,6 +3242,7 @@ export type GrantShipsVoting_stream_cursor_value_input = {
   hatId?: InputMaybe<Scalars['numeric']>;
   hatsAddress?: InputMaybe<Scalars['String']>;
   id?: InputMaybe<Scalars['String']>;
+  isDualToken?: InputMaybe<Scalars['Boolean']>;
   isSBTVoting?: InputMaybe<Scalars['Boolean']>;
   isVotingActive?: InputMaybe<Scalars['Boolean']>;
   startTime?: InputMaybe<Scalars['numeric']>;
@@ -4720,6 +4845,8 @@ export type ShipChoice = {
   /** An object relationship */
   contest?: Maybe<GrantShipsVoting>;
   contest_id: Scalars['String'];
+  contextTokenTally: Scalars['numeric'];
+  daoTokenTally: Scalars['numeric'];
   db_write_timestamp?: Maybe<Scalars['timestamp']>;
   id: Scalars['String'];
   mdPointer: Scalars['String'];
@@ -4756,6 +4883,8 @@ export type ShipChoice_aggregate_order_by = {
 
 /** order by avg() on columns of table "ShipChoice" */
 export type ShipChoice_avg_order_by = {
+  contextTokenTally?: InputMaybe<order_by>;
+  daoTokenTally?: InputMaybe<order_by>;
   mdProtocol?: InputMaybe<order_by>;
   voteTally?: InputMaybe<order_by>;
 };
@@ -4769,6 +4898,8 @@ export type ShipChoice_bool_exp = {
   choiceData?: InputMaybe<String_comparison_exp>;
   contest?: InputMaybe<GrantShipsVoting_bool_exp>;
   contest_id?: InputMaybe<String_comparison_exp>;
+  contextTokenTally?: InputMaybe<numeric_comparison_exp>;
+  daoTokenTally?: InputMaybe<numeric_comparison_exp>;
   db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
   id?: InputMaybe<String_comparison_exp>;
   mdPointer?: InputMaybe<String_comparison_exp>;
@@ -4781,6 +4912,8 @@ export type ShipChoice_bool_exp = {
 export type ShipChoice_max_order_by = {
   choiceData?: InputMaybe<order_by>;
   contest_id?: InputMaybe<order_by>;
+  contextTokenTally?: InputMaybe<order_by>;
+  daoTokenTally?: InputMaybe<order_by>;
   db_write_timestamp?: InputMaybe<order_by>;
   id?: InputMaybe<order_by>;
   mdPointer?: InputMaybe<order_by>;
@@ -4792,6 +4925,8 @@ export type ShipChoice_max_order_by = {
 export type ShipChoice_min_order_by = {
   choiceData?: InputMaybe<order_by>;
   contest_id?: InputMaybe<order_by>;
+  contextTokenTally?: InputMaybe<order_by>;
+  daoTokenTally?: InputMaybe<order_by>;
   db_write_timestamp?: InputMaybe<order_by>;
   id?: InputMaybe<order_by>;
   mdPointer?: InputMaybe<order_by>;
@@ -4805,6 +4940,8 @@ export type ShipChoice_order_by = {
   choiceData?: InputMaybe<order_by>;
   contest?: InputMaybe<GrantShipsVoting_order_by>;
   contest_id?: InputMaybe<order_by>;
+  contextTokenTally?: InputMaybe<order_by>;
+  daoTokenTally?: InputMaybe<order_by>;
   db_write_timestamp?: InputMaybe<order_by>;
   id?: InputMaybe<order_by>;
   mdPointer?: InputMaybe<order_by>;
@@ -4822,6 +4959,10 @@ export type ShipChoice_select_column =
   /** column name */
   | 'contest_id'
   /** column name */
+  | 'contextTokenTally'
+  /** column name */
+  | 'daoTokenTally'
+  /** column name */
   | 'db_write_timestamp'
   /** column name */
   | 'id'
@@ -4834,18 +4975,24 @@ export type ShipChoice_select_column =
 
 /** order by stddev() on columns of table "ShipChoice" */
 export type ShipChoice_stddev_order_by = {
+  contextTokenTally?: InputMaybe<order_by>;
+  daoTokenTally?: InputMaybe<order_by>;
   mdProtocol?: InputMaybe<order_by>;
   voteTally?: InputMaybe<order_by>;
 };
 
 /** order by stddev_pop() on columns of table "ShipChoice" */
 export type ShipChoice_stddev_pop_order_by = {
+  contextTokenTally?: InputMaybe<order_by>;
+  daoTokenTally?: InputMaybe<order_by>;
   mdProtocol?: InputMaybe<order_by>;
   voteTally?: InputMaybe<order_by>;
 };
 
 /** order by stddev_samp() on columns of table "ShipChoice" */
 export type ShipChoice_stddev_samp_order_by = {
+  contextTokenTally?: InputMaybe<order_by>;
+  daoTokenTally?: InputMaybe<order_by>;
   mdProtocol?: InputMaybe<order_by>;
   voteTally?: InputMaybe<order_by>;
 };
@@ -4863,6 +5010,8 @@ export type ShipChoice_stream_cursor_value_input = {
   active?: InputMaybe<Scalars['Boolean']>;
   choiceData?: InputMaybe<Scalars['String']>;
   contest_id?: InputMaybe<Scalars['String']>;
+  contextTokenTally?: InputMaybe<Scalars['numeric']>;
+  daoTokenTally?: InputMaybe<Scalars['numeric']>;
   db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
   id?: InputMaybe<Scalars['String']>;
   mdPointer?: InputMaybe<Scalars['String']>;
@@ -4872,24 +5021,32 @@ export type ShipChoice_stream_cursor_value_input = {
 
 /** order by sum() on columns of table "ShipChoice" */
 export type ShipChoice_sum_order_by = {
+  contextTokenTally?: InputMaybe<order_by>;
+  daoTokenTally?: InputMaybe<order_by>;
   mdProtocol?: InputMaybe<order_by>;
   voteTally?: InputMaybe<order_by>;
 };
 
 /** order by var_pop() on columns of table "ShipChoice" */
 export type ShipChoice_var_pop_order_by = {
+  contextTokenTally?: InputMaybe<order_by>;
+  daoTokenTally?: InputMaybe<order_by>;
   mdProtocol?: InputMaybe<order_by>;
   voteTally?: InputMaybe<order_by>;
 };
 
 /** order by var_samp() on columns of table "ShipChoice" */
 export type ShipChoice_var_samp_order_by = {
+  contextTokenTally?: InputMaybe<order_by>;
+  daoTokenTally?: InputMaybe<order_by>;
   mdProtocol?: InputMaybe<order_by>;
   voteTally?: InputMaybe<order_by>;
 };
 
 /** order by variance() on columns of table "ShipChoice" */
 export type ShipChoice_variance_order_by = {
+  contextTokenTally?: InputMaybe<order_by>;
+  daoTokenTally?: InputMaybe<order_by>;
   mdProtocol?: InputMaybe<order_by>;
   voteTally?: InputMaybe<order_by>;
 };
@@ -4976,6 +5133,7 @@ export type ShipVote = {
   isRetractVote: Scalars['Boolean'];
   mdPointer: Scalars['String'];
   mdProtocol: Scalars['numeric'];
+  token: Scalars['String'];
   /** An object relationship */
   voter?: Maybe<GSVoter>;
   voter_id: Scalars['String'];
@@ -5017,6 +5175,7 @@ export type ShipVote_bool_exp = {
   isRetractVote?: InputMaybe<Boolean_comparison_exp>;
   mdPointer?: InputMaybe<String_comparison_exp>;
   mdProtocol?: InputMaybe<numeric_comparison_exp>;
+  token?: InputMaybe<String_comparison_exp>;
   voter?: InputMaybe<GSVoter_bool_exp>;
   voter_id?: InputMaybe<String_comparison_exp>;
 };
@@ -5030,6 +5189,7 @@ export type ShipVote_max_order_by = {
   id?: InputMaybe<order_by>;
   mdPointer?: InputMaybe<order_by>;
   mdProtocol?: InputMaybe<order_by>;
+  token?: InputMaybe<order_by>;
   voter_id?: InputMaybe<order_by>;
 };
 
@@ -5042,6 +5202,7 @@ export type ShipVote_min_order_by = {
   id?: InputMaybe<order_by>;
   mdPointer?: InputMaybe<order_by>;
   mdProtocol?: InputMaybe<order_by>;
+  token?: InputMaybe<order_by>;
   voter_id?: InputMaybe<order_by>;
 };
 
@@ -5057,6 +5218,7 @@ export type ShipVote_order_by = {
   isRetractVote?: InputMaybe<order_by>;
   mdPointer?: InputMaybe<order_by>;
   mdProtocol?: InputMaybe<order_by>;
+  token?: InputMaybe<order_by>;
   voter?: InputMaybe<GSVoter_order_by>;
   voter_id?: InputMaybe<order_by>;
 };
@@ -5079,6 +5241,8 @@ export type ShipVote_select_column =
   | 'mdPointer'
   /** column name */
   | 'mdProtocol'
+  /** column name */
+  | 'token'
   /** column name */
   | 'voter_id';
 
@@ -5118,6 +5282,7 @@ export type ShipVote_stream_cursor_value_input = {
   isRetractVote?: InputMaybe<Scalars['Boolean']>;
   mdPointer?: InputMaybe<Scalars['String']>;
   mdProtocol?: InputMaybe<Scalars['numeric']>;
+  token?: InputMaybe<Scalars['String']>;
   voter_id?: InputMaybe<Scalars['String']>;
 };
 
@@ -5657,11 +5822,15 @@ export type cursor_ordering =
 
 /** columns and relationships of "dynamic_contract_registry" */
 export type dynamic_contract_registry = {
-  block_timestamp: Scalars['Int'];
   chain_id: Scalars['Int'];
   contract_address: Scalars['String'];
   contract_type: Scalars['contract_type'];
-  event_id: Scalars['numeric'];
+  registering_event_block_number: Scalars['Int'];
+  registering_event_block_timestamp: Scalars['Int'];
+  registering_event_contract_name: Scalars['String'];
+  registering_event_log_index: Scalars['Int'];
+  registering_event_name: Scalars['String'];
+  registering_event_src_address: Scalars['String'];
 };
 
 /** Boolean expression to filter rows from the table "dynamic_contract_registry". All fields are combined with a logical 'AND'. */
@@ -5669,26 +5838,32 @@ export type dynamic_contract_registry_bool_exp = {
   _and?: InputMaybe<Array<dynamic_contract_registry_bool_exp>>;
   _not?: InputMaybe<dynamic_contract_registry_bool_exp>;
   _or?: InputMaybe<Array<dynamic_contract_registry_bool_exp>>;
-  block_timestamp?: InputMaybe<Int_comparison_exp>;
   chain_id?: InputMaybe<Int_comparison_exp>;
   contract_address?: InputMaybe<String_comparison_exp>;
   contract_type?: InputMaybe<contract_type_comparison_exp>;
-  event_id?: InputMaybe<numeric_comparison_exp>;
+  registering_event_block_number?: InputMaybe<Int_comparison_exp>;
+  registering_event_block_timestamp?: InputMaybe<Int_comparison_exp>;
+  registering_event_contract_name?: InputMaybe<String_comparison_exp>;
+  registering_event_log_index?: InputMaybe<Int_comparison_exp>;
+  registering_event_name?: InputMaybe<String_comparison_exp>;
+  registering_event_src_address?: InputMaybe<String_comparison_exp>;
 };
 
 /** Ordering options when selecting data from "dynamic_contract_registry". */
 export type dynamic_contract_registry_order_by = {
-  block_timestamp?: InputMaybe<order_by>;
   chain_id?: InputMaybe<order_by>;
   contract_address?: InputMaybe<order_by>;
   contract_type?: InputMaybe<order_by>;
-  event_id?: InputMaybe<order_by>;
+  registering_event_block_number?: InputMaybe<order_by>;
+  registering_event_block_timestamp?: InputMaybe<order_by>;
+  registering_event_contract_name?: InputMaybe<order_by>;
+  registering_event_log_index?: InputMaybe<order_by>;
+  registering_event_name?: InputMaybe<order_by>;
+  registering_event_src_address?: InputMaybe<order_by>;
 };
 
 /** select columns of table "dynamic_contract_registry" */
 export type dynamic_contract_registry_select_column =
-  /** column name */
-  | 'block_timestamp'
   /** column name */
   | 'chain_id'
   /** column name */
@@ -5696,7 +5871,17 @@ export type dynamic_contract_registry_select_column =
   /** column name */
   | 'contract_type'
   /** column name */
-  | 'event_id';
+  | 'registering_event_block_number'
+  /** column name */
+  | 'registering_event_block_timestamp'
+  /** column name */
+  | 'registering_event_contract_name'
+  /** column name */
+  | 'registering_event_log_index'
+  /** column name */
+  | 'registering_event_name'
+  /** column name */
+  | 'registering_event_src_address';
 
 /** Streaming cursor of the table "dynamic_contract_registry" */
 export type dynamic_contract_registry_stream_cursor_input = {
@@ -5708,11 +5893,69 @@ export type dynamic_contract_registry_stream_cursor_input = {
 
 /** Initial value of the column from where the streaming should start */
 export type dynamic_contract_registry_stream_cursor_value_input = {
-  block_timestamp?: InputMaybe<Scalars['Int']>;
   chain_id?: InputMaybe<Scalars['Int']>;
   contract_address?: InputMaybe<Scalars['String']>;
   contract_type?: InputMaybe<Scalars['contract_type']>;
-  event_id?: InputMaybe<Scalars['numeric']>;
+  registering_event_block_number?: InputMaybe<Scalars['Int']>;
+  registering_event_block_timestamp?: InputMaybe<Scalars['Int']>;
+  registering_event_contract_name?: InputMaybe<Scalars['String']>;
+  registering_event_log_index?: InputMaybe<Scalars['Int']>;
+  registering_event_name?: InputMaybe<Scalars['String']>;
+  registering_event_src_address?: InputMaybe<Scalars['String']>;
+};
+
+/** columns and relationships of "end_of_block_range_scanned_data" */
+export type end_of_block_range_scanned_data = {
+  block_hash: Scalars['String'];
+  block_number: Scalars['Int'];
+  block_timestamp: Scalars['Int'];
+  chain_id: Scalars['Int'];
+};
+
+/** Boolean expression to filter rows from the table "end_of_block_range_scanned_data". All fields are combined with a logical 'AND'. */
+export type end_of_block_range_scanned_data_bool_exp = {
+  _and?: InputMaybe<Array<end_of_block_range_scanned_data_bool_exp>>;
+  _not?: InputMaybe<end_of_block_range_scanned_data_bool_exp>;
+  _or?: InputMaybe<Array<end_of_block_range_scanned_data_bool_exp>>;
+  block_hash?: InputMaybe<String_comparison_exp>;
+  block_number?: InputMaybe<Int_comparison_exp>;
+  block_timestamp?: InputMaybe<Int_comparison_exp>;
+  chain_id?: InputMaybe<Int_comparison_exp>;
+};
+
+/** Ordering options when selecting data from "end_of_block_range_scanned_data". */
+export type end_of_block_range_scanned_data_order_by = {
+  block_hash?: InputMaybe<order_by>;
+  block_number?: InputMaybe<order_by>;
+  block_timestamp?: InputMaybe<order_by>;
+  chain_id?: InputMaybe<order_by>;
+};
+
+/** select columns of table "end_of_block_range_scanned_data" */
+export type end_of_block_range_scanned_data_select_column =
+  /** column name */
+  | 'block_hash'
+  /** column name */
+  | 'block_number'
+  /** column name */
+  | 'block_timestamp'
+  /** column name */
+  | 'chain_id';
+
+/** Streaming cursor of the table "end_of_block_range_scanned_data" */
+export type end_of_block_range_scanned_data_stream_cursor_input = {
+  /** Stream column input with initial value */
+  initial_value: end_of_block_range_scanned_data_stream_cursor_value_input;
+  /** cursor ordering */
+  ordering?: InputMaybe<cursor_ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type end_of_block_range_scanned_data_stream_cursor_value_input = {
+  block_hash?: InputMaybe<Scalars['String']>;
+  block_number?: InputMaybe<Scalars['Int']>;
+  block_timestamp?: InputMaybe<Scalars['Int']>;
+  chain_id?: InputMaybe<Scalars['Int']>;
 };
 
 /** columns and relationships of "entity_history" */
@@ -5725,7 +5968,7 @@ export type entity_history = {
   /** An object relationship */
   event?: Maybe<raw_events>;
   log_index: Scalars['Int'];
-  params?: Maybe<Scalars['json']>;
+  params?: Maybe<Scalars['jsonb']>;
   previous_block_number?: Maybe<Scalars['Int']>;
   previous_block_timestamp?: Maybe<Scalars['Int']>;
   previous_chain_id?: Maybe<Scalars['Int']>;
@@ -5777,7 +6020,7 @@ export type entity_history_bool_exp = {
   entity_type?: InputMaybe<entity_type_comparison_exp>;
   event?: InputMaybe<raw_events_bool_exp>;
   log_index?: InputMaybe<Int_comparison_exp>;
-  params?: InputMaybe<json_comparison_exp>;
+  params?: InputMaybe<jsonb_comparison_exp>;
   previous_block_number?: InputMaybe<Int_comparison_exp>;
   previous_block_timestamp?: InputMaybe<Int_comparison_exp>;
   previous_chain_id?: InputMaybe<Int_comparison_exp>;
@@ -5794,9 +6037,9 @@ export type entity_history_filter = {
   /** An object relationship */
   event?: Maybe<raw_events>;
   log_index: Scalars['Int'];
-  new_val?: Maybe<Scalars['json']>;
-  old_val?: Maybe<Scalars['json']>;
-  previous_block_number: Scalars['Int'];
+  new_val?: Maybe<Scalars['jsonb']>;
+  old_val?: Maybe<Scalars['jsonb']>;
+  previous_block_number?: Maybe<Scalars['Int']>;
   previous_log_index: Scalars['Int'];
 };
 
@@ -5824,8 +6067,8 @@ export type entity_history_filter_bool_exp = {
   entity_type?: InputMaybe<entity_type_comparison_exp>;
   event?: InputMaybe<raw_events_bool_exp>;
   log_index?: InputMaybe<Int_comparison_exp>;
-  new_val?: InputMaybe<json_comparison_exp>;
-  old_val?: InputMaybe<json_comparison_exp>;
+  new_val?: InputMaybe<jsonb_comparison_exp>;
+  old_val?: InputMaybe<jsonb_comparison_exp>;
   previous_block_number?: InputMaybe<Int_comparison_exp>;
   previous_log_index?: InputMaybe<Int_comparison_exp>;
 };
@@ -5884,8 +6127,8 @@ export type entity_history_filter_stream_cursor_value_input = {
   entity_id?: InputMaybe<Scalars['String']>;
   entity_type?: InputMaybe<Scalars['entity_type']>;
   log_index?: InputMaybe<Scalars['Int']>;
-  new_val?: InputMaybe<Scalars['json']>;
-  old_val?: InputMaybe<Scalars['json']>;
+  new_val?: InputMaybe<Scalars['jsonb']>;
+  old_val?: InputMaybe<Scalars['jsonb']>;
   previous_block_number?: InputMaybe<Scalars['Int']>;
   previous_log_index?: InputMaybe<Scalars['Int']>;
 };
@@ -6011,7 +6254,7 @@ export type entity_history_stream_cursor_value_input = {
   entity_id?: InputMaybe<Scalars['String']>;
   entity_type?: InputMaybe<Scalars['entity_type']>;
   log_index?: InputMaybe<Scalars['Int']>;
-  params?: InputMaybe<Scalars['json']>;
+  params?: InputMaybe<Scalars['jsonb']>;
   previous_block_number?: InputMaybe<Scalars['Int']>;
   previous_block_timestamp?: InputMaybe<Scalars['Int']>;
   previous_chain_id?: InputMaybe<Scalars['Int']>;
@@ -6084,8 +6327,8 @@ export type event_sync_state = {
   block_number: Scalars['Int'];
   block_timestamp: Scalars['Int'];
   chain_id: Scalars['Int'];
+  is_pre_registering_dynamic_contracts: Scalars['Boolean'];
   log_index: Scalars['Int'];
-  transaction_index: Scalars['Int'];
 };
 
 /** Boolean expression to filter rows from the table "event_sync_state". All fields are combined with a logical 'AND'. */
@@ -6096,8 +6339,8 @@ export type event_sync_state_bool_exp = {
   block_number?: InputMaybe<Int_comparison_exp>;
   block_timestamp?: InputMaybe<Int_comparison_exp>;
   chain_id?: InputMaybe<Int_comparison_exp>;
+  is_pre_registering_dynamic_contracts?: InputMaybe<Boolean_comparison_exp>;
   log_index?: InputMaybe<Int_comparison_exp>;
-  transaction_index?: InputMaybe<Int_comparison_exp>;
 };
 
 /** Ordering options when selecting data from "event_sync_state". */
@@ -6105,8 +6348,8 @@ export type event_sync_state_order_by = {
   block_number?: InputMaybe<order_by>;
   block_timestamp?: InputMaybe<order_by>;
   chain_id?: InputMaybe<order_by>;
+  is_pre_registering_dynamic_contracts?: InputMaybe<order_by>;
   log_index?: InputMaybe<order_by>;
-  transaction_index?: InputMaybe<order_by>;
 };
 
 /** select columns of table "event_sync_state" */
@@ -6118,9 +6361,9 @@ export type event_sync_state_select_column =
   /** column name */
   | 'chain_id'
   /** column name */
-  | 'log_index'
+  | 'is_pre_registering_dynamic_contracts'
   /** column name */
-  | 'transaction_index';
+  | 'log_index';
 
 /** Streaming cursor of the table "event_sync_state" */
 export type event_sync_state_stream_cursor_input = {
@@ -6135,21 +6378,8 @@ export type event_sync_state_stream_cursor_value_input = {
   block_number?: InputMaybe<Scalars['Int']>;
   block_timestamp?: InputMaybe<Scalars['Int']>;
   chain_id?: InputMaybe<Scalars['Int']>;
+  is_pre_registering_dynamic_contracts?: InputMaybe<Scalars['Boolean']>;
   log_index?: InputMaybe<Scalars['Int']>;
-  transaction_index?: InputMaybe<Scalars['Int']>;
-};
-
-/** Boolean expression to compare columns of type "event_type". All fields are combined with logical 'AND'. */
-export type event_type_comparison_exp = {
-  _eq?: InputMaybe<Scalars['event_type']>;
-  _gt?: InputMaybe<Scalars['event_type']>;
-  _gte?: InputMaybe<Scalars['event_type']>;
-  _in?: InputMaybe<Array<Scalars['event_type']>>;
-  _is_null?: InputMaybe<Scalars['Boolean']>;
-  _lt?: InputMaybe<Scalars['event_type']>;
-  _lte?: InputMaybe<Scalars['event_type']>;
-  _neq?: InputMaybe<Scalars['event_type']>;
-  _nin?: InputMaybe<Array<Scalars['event_type']>>;
 };
 
 export type get_entity_history_filter_args = {
@@ -6163,17 +6393,32 @@ export type get_entity_history_filter_args = {
   start_timestamp?: InputMaybe<Scalars['Int']>;
 };
 
-/** Boolean expression to compare columns of type "json". All fields are combined with logical 'AND'. */
-export type json_comparison_exp = {
-  _eq?: InputMaybe<Scalars['json']>;
-  _gt?: InputMaybe<Scalars['json']>;
-  _gte?: InputMaybe<Scalars['json']>;
-  _in?: InputMaybe<Array<Scalars['json']>>;
+export type jsonb_cast_exp = {
+  String?: InputMaybe<String_comparison_exp>;
+};
+
+/** Boolean expression to compare columns of type "jsonb". All fields are combined with logical 'AND'. */
+export type jsonb_comparison_exp = {
+  _cast?: InputMaybe<jsonb_cast_exp>;
+  /** is the column contained in the given json value */
+  _contained_in?: InputMaybe<Scalars['jsonb']>;
+  /** does the column contain the given json value at the top level */
+  _contains?: InputMaybe<Scalars['jsonb']>;
+  _eq?: InputMaybe<Scalars['jsonb']>;
+  _gt?: InputMaybe<Scalars['jsonb']>;
+  _gte?: InputMaybe<Scalars['jsonb']>;
+  /** does the string exist as a top-level key in the column */
+  _has_key?: InputMaybe<Scalars['String']>;
+  /** do all of these strings exist as top-level keys in the column */
+  _has_keys_all?: InputMaybe<Array<Scalars['String']>>;
+  /** do any of these strings exist as top-level keys in the column */
+  _has_keys_any?: InputMaybe<Array<Scalars['String']>>;
+  _in?: InputMaybe<Array<Scalars['jsonb']>>;
   _is_null?: InputMaybe<Scalars['Boolean']>;
-  _lt?: InputMaybe<Scalars['json']>;
-  _lte?: InputMaybe<Scalars['json']>;
-  _neq?: InputMaybe<Scalars['json']>;
-  _nin?: InputMaybe<Array<Scalars['json']>>;
+  _lt?: InputMaybe<Scalars['jsonb']>;
+  _lte?: InputMaybe<Scalars['jsonb']>;
+  _neq?: InputMaybe<Scalars['jsonb']>;
+  _nin?: InputMaybe<Array<Scalars['jsonb']>>;
 };
 
 /** Boolean expression to compare columns of type "numeric". All fields are combined with logical 'AND'. */
@@ -6320,6 +6565,14 @@ export type query_root = {
   DAOToken: Array<DAOToken>;
   /** fetch data from the table: "DAOToken" using primary key columns */
   DAOToken_by_pk?: Maybe<DAOToken>;
+  /** fetch data from the table: "DualTokenPointsParams" */
+  DualTokenPointsParams: Array<DualTokenPointsParams>;
+  /** fetch data from the table: "DualTokenPointsParams" using primary key columns */
+  DualTokenPointsParams_by_pk?: Maybe<DualTokenPointsParams>;
+  /** fetch data from the table: "DualTokenTVParams" */
+  DualTokenTVParams: Array<DualTokenTVParams>;
+  /** fetch data from the table: "DualTokenTVParams" using primary key columns */
+  DualTokenTVParams_by_pk?: Maybe<DualTokenTVParams>;
   /** fetch data from the table: "ERCPointParams" */
   ERCPointParams: Array<ERCPointParams>;
   /** fetch data from the table: "ERCPointParams" using primary key columns */
@@ -6476,6 +6729,10 @@ export type query_root = {
   dynamic_contract_registry: Array<dynamic_contract_registry>;
   /** fetch data from the table: "dynamic_contract_registry" using primary key columns */
   dynamic_contract_registry_by_pk?: Maybe<dynamic_contract_registry>;
+  /** fetch data from the table: "end_of_block_range_scanned_data" */
+  end_of_block_range_scanned_data: Array<end_of_block_range_scanned_data>;
+  /** fetch data from the table: "end_of_block_range_scanned_data" using primary key columns */
+  end_of_block_range_scanned_data_by_pk?: Maybe<end_of_block_range_scanned_data>;
   /** fetch data from the table: "entity_history" */
   entity_history: Array<entity_history>;
   /** fetch data from the table: "entity_history" using primary key columns */
@@ -6609,6 +6866,34 @@ export type query_rootDAOTokenArgs = {
 
 
 export type query_rootDAOToken_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type query_rootDualTokenPointsParamsArgs = {
+  distinct_on?: InputMaybe<Array<DualTokenPointsParams_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<DualTokenPointsParams_order_by>>;
+  where?: InputMaybe<DualTokenPointsParams_bool_exp>;
+};
+
+
+export type query_rootDualTokenPointsParams_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type query_rootDualTokenTVParamsArgs = {
+  distinct_on?: InputMaybe<Array<DualTokenTVParams_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<DualTokenTVParams_order_by>>;
+  where?: InputMaybe<DualTokenTVParams_bool_exp>;
+};
+
+
+export type query_rootDualTokenTVParams_by_pkArgs = {
   id: Scalars['String'];
 };
 
@@ -7160,6 +7445,21 @@ export type query_rootdynamic_contract_registry_by_pkArgs = {
 };
 
 
+export type query_rootend_of_block_range_scanned_dataArgs = {
+  distinct_on?: InputMaybe<Array<end_of_block_range_scanned_data_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<end_of_block_range_scanned_data_order_by>>;
+  where?: InputMaybe<end_of_block_range_scanned_data_bool_exp>;
+};
+
+
+export type query_rootend_of_block_range_scanned_data_by_pkArgs = {
+  block_number: Scalars['Int'];
+  chain_id: Scalars['Int'];
+};
+
+
 export type query_rootentity_historyArgs = {
   distinct_on?: InputMaybe<Array<entity_history_select_column>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -7190,10 +7490,11 @@ export type query_rootentity_history_filterArgs = {
 
 export type query_rootentity_history_filter_by_pkArgs = {
   block_number: Scalars['Int'];
+  block_timestamp: Scalars['Int'];
   chain_id: Scalars['Int'];
   entity_id: Scalars['String'];
+  entity_type: Scalars['entity_type'];
   log_index: Scalars['Int'];
-  previous_block_number: Scalars['Int'];
   previous_log_index: Scalars['Int'];
 };
 
@@ -7252,20 +7553,27 @@ export type query_rootraw_events_by_pkArgs = {
 
 /** columns and relationships of "raw_events" */
 export type raw_events = {
+  block_fields: Scalars['jsonb'];
   block_hash: Scalars['String'];
   block_number: Scalars['Int'];
   block_timestamp: Scalars['Int'];
   chain_id: Scalars['Int'];
+  contract_name: Scalars['String'];
   db_write_timestamp?: Maybe<Scalars['timestamp']>;
   /** An array relationship */
   event_history: Array<entity_history>;
   event_id: Scalars['numeric'];
-  event_type: Scalars['event_type'];
+  event_name: Scalars['String'];
   log_index: Scalars['Int'];
-  params: Scalars['json'];
+  params: Scalars['jsonb'];
   src_address: Scalars['String'];
-  transaction_hash: Scalars['String'];
-  transaction_index: Scalars['Int'];
+  transaction_fields: Scalars['jsonb'];
+};
+
+
+/** columns and relationships of "raw_events" */
+export type raw_eventsblock_fieldsArgs = {
+  path?: InputMaybe<Scalars['String']>;
 };
 
 
@@ -7284,45 +7592,55 @@ export type raw_eventsparamsArgs = {
   path?: InputMaybe<Scalars['String']>;
 };
 
+
+/** columns and relationships of "raw_events" */
+export type raw_eventstransaction_fieldsArgs = {
+  path?: InputMaybe<Scalars['String']>;
+};
+
 /** Boolean expression to filter rows from the table "raw_events". All fields are combined with a logical 'AND'. */
 export type raw_events_bool_exp = {
   _and?: InputMaybe<Array<raw_events_bool_exp>>;
   _not?: InputMaybe<raw_events_bool_exp>;
   _or?: InputMaybe<Array<raw_events_bool_exp>>;
+  block_fields?: InputMaybe<jsonb_comparison_exp>;
   block_hash?: InputMaybe<String_comparison_exp>;
   block_number?: InputMaybe<Int_comparison_exp>;
   block_timestamp?: InputMaybe<Int_comparison_exp>;
   chain_id?: InputMaybe<Int_comparison_exp>;
+  contract_name?: InputMaybe<String_comparison_exp>;
   db_write_timestamp?: InputMaybe<timestamp_comparison_exp>;
   event_history?: InputMaybe<entity_history_bool_exp>;
   event_id?: InputMaybe<numeric_comparison_exp>;
-  event_type?: InputMaybe<event_type_comparison_exp>;
+  event_name?: InputMaybe<String_comparison_exp>;
   log_index?: InputMaybe<Int_comparison_exp>;
-  params?: InputMaybe<json_comparison_exp>;
+  params?: InputMaybe<jsonb_comparison_exp>;
   src_address?: InputMaybe<String_comparison_exp>;
-  transaction_hash?: InputMaybe<String_comparison_exp>;
-  transaction_index?: InputMaybe<Int_comparison_exp>;
+  transaction_fields?: InputMaybe<jsonb_comparison_exp>;
 };
 
 /** Ordering options when selecting data from "raw_events". */
 export type raw_events_order_by = {
+  block_fields?: InputMaybe<order_by>;
   block_hash?: InputMaybe<order_by>;
   block_number?: InputMaybe<order_by>;
   block_timestamp?: InputMaybe<order_by>;
   chain_id?: InputMaybe<order_by>;
+  contract_name?: InputMaybe<order_by>;
   db_write_timestamp?: InputMaybe<order_by>;
   event_history_aggregate?: InputMaybe<entity_history_aggregate_order_by>;
   event_id?: InputMaybe<order_by>;
-  event_type?: InputMaybe<order_by>;
+  event_name?: InputMaybe<order_by>;
   log_index?: InputMaybe<order_by>;
   params?: InputMaybe<order_by>;
   src_address?: InputMaybe<order_by>;
-  transaction_hash?: InputMaybe<order_by>;
-  transaction_index?: InputMaybe<order_by>;
+  transaction_fields?: InputMaybe<order_by>;
 };
 
 /** select columns of table "raw_events" */
 export type raw_events_select_column =
+  /** column name */
+  | 'block_fields'
   /** column name */
   | 'block_hash'
   /** column name */
@@ -7332,11 +7650,13 @@ export type raw_events_select_column =
   /** column name */
   | 'chain_id'
   /** column name */
+  | 'contract_name'
+  /** column name */
   | 'db_write_timestamp'
   /** column name */
   | 'event_id'
   /** column name */
-  | 'event_type'
+  | 'event_name'
   /** column name */
   | 'log_index'
   /** column name */
@@ -7344,9 +7664,7 @@ export type raw_events_select_column =
   /** column name */
   | 'src_address'
   /** column name */
-  | 'transaction_hash'
-  /** column name */
-  | 'transaction_index';
+  | 'transaction_fields';
 
 /** Streaming cursor of the table "raw_events" */
 export type raw_events_stream_cursor_input = {
@@ -7358,18 +7676,19 @@ export type raw_events_stream_cursor_input = {
 
 /** Initial value of the column from where the streaming should start */
 export type raw_events_stream_cursor_value_input = {
+  block_fields?: InputMaybe<Scalars['jsonb']>;
   block_hash?: InputMaybe<Scalars['String']>;
   block_number?: InputMaybe<Scalars['Int']>;
   block_timestamp?: InputMaybe<Scalars['Int']>;
   chain_id?: InputMaybe<Scalars['Int']>;
+  contract_name?: InputMaybe<Scalars['String']>;
   db_write_timestamp?: InputMaybe<Scalars['timestamp']>;
   event_id?: InputMaybe<Scalars['numeric']>;
-  event_type?: InputMaybe<Scalars['event_type']>;
+  event_name?: InputMaybe<Scalars['String']>;
   log_index?: InputMaybe<Scalars['Int']>;
-  params?: InputMaybe<Scalars['json']>;
+  params?: InputMaybe<Scalars['jsonb']>;
   src_address?: InputMaybe<Scalars['String']>;
-  transaction_hash?: InputMaybe<Scalars['String']>;
-  transaction_index?: InputMaybe<Scalars['Int']>;
+  transaction_fields?: InputMaybe<Scalars['jsonb']>;
 };
 
 export type subscription_root = {
@@ -7421,6 +7740,18 @@ export type subscription_root = {
   DAOToken_by_pk?: Maybe<DAOToken>;
   /** fetch data from the table in a streaming manner: "DAOToken" */
   DAOToken_stream: Array<DAOToken>;
+  /** fetch data from the table: "DualTokenPointsParams" */
+  DualTokenPointsParams: Array<DualTokenPointsParams>;
+  /** fetch data from the table: "DualTokenPointsParams" using primary key columns */
+  DualTokenPointsParams_by_pk?: Maybe<DualTokenPointsParams>;
+  /** fetch data from the table in a streaming manner: "DualTokenPointsParams" */
+  DualTokenPointsParams_stream: Array<DualTokenPointsParams>;
+  /** fetch data from the table: "DualTokenTVParams" */
+  DualTokenTVParams: Array<DualTokenTVParams>;
+  /** fetch data from the table: "DualTokenTVParams" using primary key columns */
+  DualTokenTVParams_by_pk?: Maybe<DualTokenTVParams>;
+  /** fetch data from the table in a streaming manner: "DualTokenTVParams" */
+  DualTokenTVParams_stream: Array<DualTokenTVParams>;
   /** fetch data from the table: "ERCPointParams" */
   ERCPointParams: Array<ERCPointParams>;
   /** fetch data from the table: "ERCPointParams" using primary key columns */
@@ -7655,6 +7986,12 @@ export type subscription_root = {
   dynamic_contract_registry_by_pk?: Maybe<dynamic_contract_registry>;
   /** fetch data from the table in a streaming manner: "dynamic_contract_registry" */
   dynamic_contract_registry_stream: Array<dynamic_contract_registry>;
+  /** fetch data from the table: "end_of_block_range_scanned_data" */
+  end_of_block_range_scanned_data: Array<end_of_block_range_scanned_data>;
+  /** fetch data from the table: "end_of_block_range_scanned_data" using primary key columns */
+  end_of_block_range_scanned_data_by_pk?: Maybe<end_of_block_range_scanned_data>;
+  /** fetch data from the table in a streaming manner: "end_of_block_range_scanned_data" */
+  end_of_block_range_scanned_data_stream: Array<end_of_block_range_scanned_data>;
   /** fetch data from the table: "entity_history" */
   entity_history: Array<entity_history>;
   /** fetch data from the table: "entity_history" using primary key columns */
@@ -7855,6 +8192,48 @@ export type subscription_rootDAOToken_streamArgs = {
   batch_size: Scalars['Int'];
   cursor: Array<InputMaybe<DAOToken_stream_cursor_input>>;
   where?: InputMaybe<DAOToken_bool_exp>;
+};
+
+
+export type subscription_rootDualTokenPointsParamsArgs = {
+  distinct_on?: InputMaybe<Array<DualTokenPointsParams_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<DualTokenPointsParams_order_by>>;
+  where?: InputMaybe<DualTokenPointsParams_bool_exp>;
+};
+
+
+export type subscription_rootDualTokenPointsParams_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type subscription_rootDualTokenPointsParams_streamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<DualTokenPointsParams_stream_cursor_input>>;
+  where?: InputMaybe<DualTokenPointsParams_bool_exp>;
+};
+
+
+export type subscription_rootDualTokenTVParamsArgs = {
+  distinct_on?: InputMaybe<Array<DualTokenTVParams_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<DualTokenTVParams_order_by>>;
+  where?: InputMaybe<DualTokenTVParams_bool_exp>;
+};
+
+
+export type subscription_rootDualTokenTVParams_by_pkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type subscription_rootDualTokenTVParams_streamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<DualTokenTVParams_stream_cursor_input>>;
+  where?: InputMaybe<DualTokenTVParams_bool_exp>;
 };
 
 
@@ -8678,6 +9057,28 @@ export type subscription_rootdynamic_contract_registry_streamArgs = {
 };
 
 
+export type subscription_rootend_of_block_range_scanned_dataArgs = {
+  distinct_on?: InputMaybe<Array<end_of_block_range_scanned_data_select_column>>;
+  limit?: InputMaybe<Scalars['Int']>;
+  offset?: InputMaybe<Scalars['Int']>;
+  order_by?: InputMaybe<Array<end_of_block_range_scanned_data_order_by>>;
+  where?: InputMaybe<end_of_block_range_scanned_data_bool_exp>;
+};
+
+
+export type subscription_rootend_of_block_range_scanned_data_by_pkArgs = {
+  block_number: Scalars['Int'];
+  chain_id: Scalars['Int'];
+};
+
+
+export type subscription_rootend_of_block_range_scanned_data_streamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<InputMaybe<end_of_block_range_scanned_data_stream_cursor_input>>;
+  where?: InputMaybe<end_of_block_range_scanned_data_bool_exp>;
+};
+
+
 export type subscription_rootentity_historyArgs = {
   distinct_on?: InputMaybe<Array<entity_history_select_column>>;
   limit?: InputMaybe<Scalars['Int']>;
@@ -8708,10 +9109,11 @@ export type subscription_rootentity_history_filterArgs = {
 
 export type subscription_rootentity_history_filter_by_pkArgs = {
   block_number: Scalars['Int'];
+  block_timestamp: Scalars['Int'];
   chain_id: Scalars['Int'];
   entity_id: Scalars['String'];
+  entity_type: Scalars['entity_type'];
   log_index: Scalars['Int'];
-  previous_block_number: Scalars['Int'];
   previous_log_index: Scalars['Int'];
 };
 
@@ -8998,6 +9400,18 @@ export type ResolversTypes = ResolversObject<{
   DAOToken_select_column: DAOToken_select_column;
   DAOToken_stream_cursor_input: DAOToken_stream_cursor_input;
   DAOToken_stream_cursor_value_input: DAOToken_stream_cursor_value_input;
+  DualTokenPointsParams: ResolverTypeWrapper<DualTokenPointsParams>;
+  DualTokenPointsParams_bool_exp: DualTokenPointsParams_bool_exp;
+  DualTokenPointsParams_order_by: DualTokenPointsParams_order_by;
+  DualTokenPointsParams_select_column: DualTokenPointsParams_select_column;
+  DualTokenPointsParams_stream_cursor_input: DualTokenPointsParams_stream_cursor_input;
+  DualTokenPointsParams_stream_cursor_value_input: DualTokenPointsParams_stream_cursor_value_input;
+  DualTokenTVParams: ResolverTypeWrapper<DualTokenTVParams>;
+  DualTokenTVParams_bool_exp: DualTokenTVParams_bool_exp;
+  DualTokenTVParams_order_by: DualTokenTVParams_order_by;
+  DualTokenTVParams_select_column: DualTokenTVParams_select_column;
+  DualTokenTVParams_stream_cursor_input: DualTokenTVParams_stream_cursor_input;
+  DualTokenTVParams_stream_cursor_value_input: DualTokenTVParams_stream_cursor_value_input;
   ERCPointParams: ResolverTypeWrapper<ERCPointParams>;
   ERCPointParams_bool_exp: ERCPointParams_bool_exp;
   ERCPointParams_order_by: ERCPointParams_order_by;
@@ -9339,6 +9753,12 @@ export type ResolversTypes = ResolversObject<{
   dynamic_contract_registry_select_column: dynamic_contract_registry_select_column;
   dynamic_contract_registry_stream_cursor_input: dynamic_contract_registry_stream_cursor_input;
   dynamic_contract_registry_stream_cursor_value_input: dynamic_contract_registry_stream_cursor_value_input;
+  end_of_block_range_scanned_data: ResolverTypeWrapper<end_of_block_range_scanned_data>;
+  end_of_block_range_scanned_data_bool_exp: end_of_block_range_scanned_data_bool_exp;
+  end_of_block_range_scanned_data_order_by: end_of_block_range_scanned_data_order_by;
+  end_of_block_range_scanned_data_select_column: end_of_block_range_scanned_data_select_column;
+  end_of_block_range_scanned_data_stream_cursor_input: end_of_block_range_scanned_data_stream_cursor_input;
+  end_of_block_range_scanned_data_stream_cursor_value_input: end_of_block_range_scanned_data_stream_cursor_value_input;
   entity_history: ResolverTypeWrapper<entity_history>;
   entity_history_aggregate_order_by: entity_history_aggregate_order_by;
   entity_history_avg_order_by: entity_history_avg_order_by;
@@ -9370,11 +9790,10 @@ export type ResolversTypes = ResolversObject<{
   event_sync_state_select_column: event_sync_state_select_column;
   event_sync_state_stream_cursor_input: event_sync_state_stream_cursor_input;
   event_sync_state_stream_cursor_value_input: event_sync_state_stream_cursor_value_input;
-  event_type: ResolverTypeWrapper<Scalars['event_type']>;
-  event_type_comparison_exp: event_type_comparison_exp;
   get_entity_history_filter_args: get_entity_history_filter_args;
-  json: ResolverTypeWrapper<Scalars['json']>;
-  json_comparison_exp: json_comparison_exp;
+  jsonb: ResolverTypeWrapper<Scalars['jsonb']>;
+  jsonb_cast_exp: jsonb_cast_exp;
+  jsonb_comparison_exp: jsonb_comparison_exp;
   numeric: ResolverTypeWrapper<Scalars['numeric']>;
   numeric_array_comparison_exp: numeric_array_comparison_exp;
   numeric_comparison_exp: numeric_comparison_exp;
@@ -9476,6 +9895,16 @@ export type ResolversParentTypes = ResolversObject<{
   DAOToken_order_by: DAOToken_order_by;
   DAOToken_stream_cursor_input: DAOToken_stream_cursor_input;
   DAOToken_stream_cursor_value_input: DAOToken_stream_cursor_value_input;
+  DualTokenPointsParams: DualTokenPointsParams;
+  DualTokenPointsParams_bool_exp: DualTokenPointsParams_bool_exp;
+  DualTokenPointsParams_order_by: DualTokenPointsParams_order_by;
+  DualTokenPointsParams_stream_cursor_input: DualTokenPointsParams_stream_cursor_input;
+  DualTokenPointsParams_stream_cursor_value_input: DualTokenPointsParams_stream_cursor_value_input;
+  DualTokenTVParams: DualTokenTVParams;
+  DualTokenTVParams_bool_exp: DualTokenTVParams_bool_exp;
+  DualTokenTVParams_order_by: DualTokenTVParams_order_by;
+  DualTokenTVParams_stream_cursor_input: DualTokenTVParams_stream_cursor_input;
+  DualTokenTVParams_stream_cursor_value_input: DualTokenTVParams_stream_cursor_value_input;
   ERCPointParams: ERCPointParams;
   ERCPointParams_bool_exp: ERCPointParams_bool_exp;
   ERCPointParams_order_by: ERCPointParams_order_by;
@@ -9777,6 +10206,11 @@ export type ResolversParentTypes = ResolversObject<{
   dynamic_contract_registry_order_by: dynamic_contract_registry_order_by;
   dynamic_contract_registry_stream_cursor_input: dynamic_contract_registry_stream_cursor_input;
   dynamic_contract_registry_stream_cursor_value_input: dynamic_contract_registry_stream_cursor_value_input;
+  end_of_block_range_scanned_data: end_of_block_range_scanned_data;
+  end_of_block_range_scanned_data_bool_exp: end_of_block_range_scanned_data_bool_exp;
+  end_of_block_range_scanned_data_order_by: end_of_block_range_scanned_data_order_by;
+  end_of_block_range_scanned_data_stream_cursor_input: end_of_block_range_scanned_data_stream_cursor_input;
+  end_of_block_range_scanned_data_stream_cursor_value_input: end_of_block_range_scanned_data_stream_cursor_value_input;
   entity_history: entity_history;
   entity_history_aggregate_order_by: entity_history_aggregate_order_by;
   entity_history_avg_order_by: entity_history_avg_order_by;
@@ -9805,11 +10239,10 @@ export type ResolversParentTypes = ResolversObject<{
   event_sync_state_order_by: event_sync_state_order_by;
   event_sync_state_stream_cursor_input: event_sync_state_stream_cursor_input;
   event_sync_state_stream_cursor_value_input: event_sync_state_stream_cursor_value_input;
-  event_type: Scalars['event_type'];
-  event_type_comparison_exp: event_type_comparison_exp;
   get_entity_history_filter_args: get_entity_history_filter_args;
-  json: Scalars['json'];
-  json_comparison_exp: json_comparison_exp;
+  jsonb: Scalars['jsonb'];
+  jsonb_cast_exp: jsonb_cast_exp;
+  jsonb_comparison_exp: jsonb_comparison_exp;
   numeric: Scalars['numeric'];
   numeric_array_comparison_exp: numeric_array_comparison_exp;
   numeric_comparison_exp: numeric_comparison_exp;
@@ -9946,6 +10379,24 @@ export type DAOTokenResolvers<ContextType = MeshContext, ParentType extends Reso
   shaman?: Resolver<Maybe<ResolversTypes['ScaffoldShaman']>, ParentType, ContextType>;
   shaman_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   symbol?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type DualTokenPointsParamsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['DualTokenPointsParams'] = ResolversParentTypes['DualTokenPointsParams']> = ResolversObject<{
+  contextTokenAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  daoTokenAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  votingCheckpoint?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type DualTokenTVParamsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['DualTokenTVParams'] = ResolversParentTypes['DualTokenTVParams']> = ResolversObject<{
+  contextTokenAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  daoTokenAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  voteDuration?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -10213,6 +10664,7 @@ export type GrantShipsVotingResolvers<ContextType = MeshContext, ParentType exte
   hatId?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
   hatsAddress?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  isDualToken?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   isSBTVoting?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   isVotingActive?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   startTime?: Resolver<Maybe<ResolversTypes['numeric']>, ParentType, ContextType>;
@@ -10381,6 +10833,8 @@ export type ShipChoiceResolvers<ContextType = MeshContext, ParentType extends Re
   choiceData?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   contest?: Resolver<Maybe<ResolversTypes['GrantShipsVoting']>, ParentType, ContextType>;
   contest_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  contextTokenTally?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
+  daoTokenTally?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
   db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   mdPointer?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -10412,6 +10866,7 @@ export type ShipVoteResolvers<ContextType = MeshContext, ParentType extends Reso
   isRetractVote?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   mdPointer?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   mdProtocol?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
+  token?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   voter?: Resolver<Maybe<ResolversTypes['GSVoter']>, ParentType, ContextType>;
   voter_id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
@@ -10492,11 +10947,23 @@ export interface contract_typeScalarConfig extends GraphQLScalarTypeConfig<Resol
 }
 
 export type dynamic_contract_registryResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['dynamic_contract_registry'] = ResolversParentTypes['dynamic_contract_registry']> = ResolversObject<{
-  block_timestamp?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   chain_id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   contract_address?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   contract_type?: Resolver<ResolversTypes['contract_type'], ParentType, ContextType>;
-  event_id?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
+  registering_event_block_number?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  registering_event_block_timestamp?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  registering_event_contract_name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  registering_event_log_index?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  registering_event_name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  registering_event_src_address?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
+}>;
+
+export type end_of_block_range_scanned_dataResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['end_of_block_range_scanned_data'] = ResolversParentTypes['end_of_block_range_scanned_data']> = ResolversObject<{
+  block_hash?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  block_number?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  block_timestamp?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  chain_id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -10508,7 +10975,7 @@ export type entity_historyResolvers<ContextType = MeshContext, ParentType extend
   entity_type?: Resolver<ResolversTypes['entity_type'], ParentType, ContextType>;
   event?: Resolver<Maybe<ResolversTypes['raw_events']>, ParentType, ContextType>;
   log_index?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  params?: Resolver<Maybe<ResolversTypes['json']>, ParentType, ContextType, Partial<entity_historyparamsArgs>>;
+  params?: Resolver<Maybe<ResolversTypes['jsonb']>, ParentType, ContextType, Partial<entity_historyparamsArgs>>;
   previous_block_number?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   previous_block_timestamp?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   previous_chain_id?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
@@ -10524,9 +10991,9 @@ export type entity_history_filterResolvers<ContextType = MeshContext, ParentType
   entity_type?: Resolver<ResolversTypes['entity_type'], ParentType, ContextType>;
   event?: Resolver<Maybe<ResolversTypes['raw_events']>, ParentType, ContextType>;
   log_index?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  new_val?: Resolver<Maybe<ResolversTypes['json']>, ParentType, ContextType, Partial<entity_history_filternew_valArgs>>;
-  old_val?: Resolver<Maybe<ResolversTypes['json']>, ParentType, ContextType, Partial<entity_history_filterold_valArgs>>;
-  previous_block_number?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  new_val?: Resolver<Maybe<ResolversTypes['jsonb']>, ParentType, ContextType, Partial<entity_history_filternew_valArgs>>;
+  old_val?: Resolver<Maybe<ResolversTypes['jsonb']>, ParentType, ContextType, Partial<entity_history_filterold_valArgs>>;
+  previous_block_number?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   previous_log_index?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
@@ -10539,17 +11006,13 @@ export type event_sync_stateResolvers<ContextType = MeshContext, ParentType exte
   block_number?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   block_timestamp?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   chain_id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  is_pre_registering_dynamic_contracts?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   log_index?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  transaction_index?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
-export interface event_typeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['event_type'], any> {
-  name: 'event_type';
-}
-
-export interface jsonScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['json'], any> {
-  name: 'json';
+export interface jsonbScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['jsonb'], any> {
+  name: 'jsonb';
 }
 
 export interface numericScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['numeric'], any> {
@@ -10583,6 +11046,10 @@ export type query_rootResolvers<ContextType = MeshContext, ParentType extends Re
   Contest_by_pk?: Resolver<Maybe<ResolversTypes['Contest']>, ParentType, ContextType, RequireFields<query_rootContest_by_pkArgs, 'id'>>;
   DAOToken?: Resolver<Array<ResolversTypes['DAOToken']>, ParentType, ContextType, Partial<query_rootDAOTokenArgs>>;
   DAOToken_by_pk?: Resolver<Maybe<ResolversTypes['DAOToken']>, ParentType, ContextType, RequireFields<query_rootDAOToken_by_pkArgs, 'id'>>;
+  DualTokenPointsParams?: Resolver<Array<ResolversTypes['DualTokenPointsParams']>, ParentType, ContextType, Partial<query_rootDualTokenPointsParamsArgs>>;
+  DualTokenPointsParams_by_pk?: Resolver<Maybe<ResolversTypes['DualTokenPointsParams']>, ParentType, ContextType, RequireFields<query_rootDualTokenPointsParams_by_pkArgs, 'id'>>;
+  DualTokenTVParams?: Resolver<Array<ResolversTypes['DualTokenTVParams']>, ParentType, ContextType, Partial<query_rootDualTokenTVParamsArgs>>;
+  DualTokenTVParams_by_pk?: Resolver<Maybe<ResolversTypes['DualTokenTVParams']>, ParentType, ContextType, RequireFields<query_rootDualTokenTVParams_by_pkArgs, 'id'>>;
   ERCPointParams?: Resolver<Array<ResolversTypes['ERCPointParams']>, ParentType, ContextType, Partial<query_rootERCPointParamsArgs>>;
   ERCPointParams_by_pk?: Resolver<Maybe<ResolversTypes['ERCPointParams']>, ParentType, ContextType, RequireFields<query_rootERCPointParams_by_pkArgs, 'id'>>;
   EnvioTX?: Resolver<Array<ResolversTypes['EnvioTX']>, ParentType, ContextType, Partial<query_rootEnvioTXArgs>>;
@@ -10661,10 +11128,12 @@ export type query_rootResolvers<ContextType = MeshContext, ParentType extends Re
   chain_metadata_by_pk?: Resolver<Maybe<ResolversTypes['chain_metadata']>, ParentType, ContextType, RequireFields<query_rootchain_metadata_by_pkArgs, 'chain_id'>>;
   dynamic_contract_registry?: Resolver<Array<ResolversTypes['dynamic_contract_registry']>, ParentType, ContextType, Partial<query_rootdynamic_contract_registryArgs>>;
   dynamic_contract_registry_by_pk?: Resolver<Maybe<ResolversTypes['dynamic_contract_registry']>, ParentType, ContextType, RequireFields<query_rootdynamic_contract_registry_by_pkArgs, 'chain_id' | 'contract_address'>>;
+  end_of_block_range_scanned_data?: Resolver<Array<ResolversTypes['end_of_block_range_scanned_data']>, ParentType, ContextType, Partial<query_rootend_of_block_range_scanned_dataArgs>>;
+  end_of_block_range_scanned_data_by_pk?: Resolver<Maybe<ResolversTypes['end_of_block_range_scanned_data']>, ParentType, ContextType, RequireFields<query_rootend_of_block_range_scanned_data_by_pkArgs, 'block_number' | 'chain_id'>>;
   entity_history?: Resolver<Array<ResolversTypes['entity_history']>, ParentType, ContextType, Partial<query_rootentity_historyArgs>>;
   entity_history_by_pk?: Resolver<Maybe<ResolversTypes['entity_history']>, ParentType, ContextType, RequireFields<query_rootentity_history_by_pkArgs, 'block_number' | 'block_timestamp' | 'chain_id' | 'entity_id' | 'entity_type' | 'log_index'>>;
   entity_history_filter?: Resolver<Array<ResolversTypes['entity_history_filter']>, ParentType, ContextType, Partial<query_rootentity_history_filterArgs>>;
-  entity_history_filter_by_pk?: Resolver<Maybe<ResolversTypes['entity_history_filter']>, ParentType, ContextType, RequireFields<query_rootentity_history_filter_by_pkArgs, 'block_number' | 'chain_id' | 'entity_id' | 'log_index' | 'previous_block_number' | 'previous_log_index'>>;
+  entity_history_filter_by_pk?: Resolver<Maybe<ResolversTypes['entity_history_filter']>, ParentType, ContextType, RequireFields<query_rootentity_history_filter_by_pkArgs, 'block_number' | 'block_timestamp' | 'chain_id' | 'entity_id' | 'entity_type' | 'log_index' | 'previous_log_index'>>;
   event_sync_state?: Resolver<Array<ResolversTypes['event_sync_state']>, ParentType, ContextType, Partial<query_rootevent_sync_stateArgs>>;
   event_sync_state_by_pk?: Resolver<Maybe<ResolversTypes['event_sync_state']>, ParentType, ContextType, RequireFields<query_rootevent_sync_state_by_pkArgs, 'chain_id'>>;
   get_entity_history_filter?: Resolver<Array<ResolversTypes['entity_history_filter']>, ParentType, ContextType, RequireFields<query_rootget_entity_history_filterArgs, 'args'>>;
@@ -10675,19 +11144,20 @@ export type query_rootResolvers<ContextType = MeshContext, ParentType extends Re
 }>;
 
 export type raw_eventsResolvers<ContextType = MeshContext, ParentType extends ResolversParentTypes['raw_events'] = ResolversParentTypes['raw_events']> = ResolversObject<{
+  block_fields?: Resolver<ResolversTypes['jsonb'], ParentType, ContextType, Partial<raw_eventsblock_fieldsArgs>>;
   block_hash?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   block_number?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   block_timestamp?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   chain_id?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  contract_name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   db_write_timestamp?: Resolver<Maybe<ResolversTypes['timestamp']>, ParentType, ContextType>;
   event_history?: Resolver<Array<ResolversTypes['entity_history']>, ParentType, ContextType, Partial<raw_eventsevent_historyArgs>>;
   event_id?: Resolver<ResolversTypes['numeric'], ParentType, ContextType>;
-  event_type?: Resolver<ResolversTypes['event_type'], ParentType, ContextType>;
+  event_name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   log_index?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  params?: Resolver<ResolversTypes['json'], ParentType, ContextType, Partial<raw_eventsparamsArgs>>;
+  params?: Resolver<ResolversTypes['jsonb'], ParentType, ContextType, Partial<raw_eventsparamsArgs>>;
   src_address?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  transaction_hash?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  transaction_index?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  transaction_fields?: Resolver<ResolversTypes['jsonb'], ParentType, ContextType, Partial<raw_eventstransaction_fieldsArgs>>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType, ContextType>;
 }>;
 
@@ -10716,6 +11186,12 @@ export type subscription_rootResolvers<ContextType = MeshContext, ParentType ext
   DAOToken?: SubscriptionResolver<Array<ResolversTypes['DAOToken']>, "DAOToken", ParentType, ContextType, Partial<subscription_rootDAOTokenArgs>>;
   DAOToken_by_pk?: SubscriptionResolver<Maybe<ResolversTypes['DAOToken']>, "DAOToken_by_pk", ParentType, ContextType, RequireFields<subscription_rootDAOToken_by_pkArgs, 'id'>>;
   DAOToken_stream?: SubscriptionResolver<Array<ResolversTypes['DAOToken']>, "DAOToken_stream", ParentType, ContextType, RequireFields<subscription_rootDAOToken_streamArgs, 'batch_size' | 'cursor'>>;
+  DualTokenPointsParams?: SubscriptionResolver<Array<ResolversTypes['DualTokenPointsParams']>, "DualTokenPointsParams", ParentType, ContextType, Partial<subscription_rootDualTokenPointsParamsArgs>>;
+  DualTokenPointsParams_by_pk?: SubscriptionResolver<Maybe<ResolversTypes['DualTokenPointsParams']>, "DualTokenPointsParams_by_pk", ParentType, ContextType, RequireFields<subscription_rootDualTokenPointsParams_by_pkArgs, 'id'>>;
+  DualTokenPointsParams_stream?: SubscriptionResolver<Array<ResolversTypes['DualTokenPointsParams']>, "DualTokenPointsParams_stream", ParentType, ContextType, RequireFields<subscription_rootDualTokenPointsParams_streamArgs, 'batch_size' | 'cursor'>>;
+  DualTokenTVParams?: SubscriptionResolver<Array<ResolversTypes['DualTokenTVParams']>, "DualTokenTVParams", ParentType, ContextType, Partial<subscription_rootDualTokenTVParamsArgs>>;
+  DualTokenTVParams_by_pk?: SubscriptionResolver<Maybe<ResolversTypes['DualTokenTVParams']>, "DualTokenTVParams_by_pk", ParentType, ContextType, RequireFields<subscription_rootDualTokenTVParams_by_pkArgs, 'id'>>;
+  DualTokenTVParams_stream?: SubscriptionResolver<Array<ResolversTypes['DualTokenTVParams']>, "DualTokenTVParams_stream", ParentType, ContextType, RequireFields<subscription_rootDualTokenTVParams_streamArgs, 'batch_size' | 'cursor'>>;
   ERCPointParams?: SubscriptionResolver<Array<ResolversTypes['ERCPointParams']>, "ERCPointParams", ParentType, ContextType, Partial<subscription_rootERCPointParamsArgs>>;
   ERCPointParams_by_pk?: SubscriptionResolver<Maybe<ResolversTypes['ERCPointParams']>, "ERCPointParams_by_pk", ParentType, ContextType, RequireFields<subscription_rootERCPointParams_by_pkArgs, 'id'>>;
   ERCPointParams_stream?: SubscriptionResolver<Array<ResolversTypes['ERCPointParams']>, "ERCPointParams_stream", ParentType, ContextType, RequireFields<subscription_rootERCPointParams_streamArgs, 'batch_size' | 'cursor'>>;
@@ -10833,10 +11309,13 @@ export type subscription_rootResolvers<ContextType = MeshContext, ParentType ext
   dynamic_contract_registry?: SubscriptionResolver<Array<ResolversTypes['dynamic_contract_registry']>, "dynamic_contract_registry", ParentType, ContextType, Partial<subscription_rootdynamic_contract_registryArgs>>;
   dynamic_contract_registry_by_pk?: SubscriptionResolver<Maybe<ResolversTypes['dynamic_contract_registry']>, "dynamic_contract_registry_by_pk", ParentType, ContextType, RequireFields<subscription_rootdynamic_contract_registry_by_pkArgs, 'chain_id' | 'contract_address'>>;
   dynamic_contract_registry_stream?: SubscriptionResolver<Array<ResolversTypes['dynamic_contract_registry']>, "dynamic_contract_registry_stream", ParentType, ContextType, RequireFields<subscription_rootdynamic_contract_registry_streamArgs, 'batch_size' | 'cursor'>>;
+  end_of_block_range_scanned_data?: SubscriptionResolver<Array<ResolversTypes['end_of_block_range_scanned_data']>, "end_of_block_range_scanned_data", ParentType, ContextType, Partial<subscription_rootend_of_block_range_scanned_dataArgs>>;
+  end_of_block_range_scanned_data_by_pk?: SubscriptionResolver<Maybe<ResolversTypes['end_of_block_range_scanned_data']>, "end_of_block_range_scanned_data_by_pk", ParentType, ContextType, RequireFields<subscription_rootend_of_block_range_scanned_data_by_pkArgs, 'block_number' | 'chain_id'>>;
+  end_of_block_range_scanned_data_stream?: SubscriptionResolver<Array<ResolversTypes['end_of_block_range_scanned_data']>, "end_of_block_range_scanned_data_stream", ParentType, ContextType, RequireFields<subscription_rootend_of_block_range_scanned_data_streamArgs, 'batch_size' | 'cursor'>>;
   entity_history?: SubscriptionResolver<Array<ResolversTypes['entity_history']>, "entity_history", ParentType, ContextType, Partial<subscription_rootentity_historyArgs>>;
   entity_history_by_pk?: SubscriptionResolver<Maybe<ResolversTypes['entity_history']>, "entity_history_by_pk", ParentType, ContextType, RequireFields<subscription_rootentity_history_by_pkArgs, 'block_number' | 'block_timestamp' | 'chain_id' | 'entity_id' | 'entity_type' | 'log_index'>>;
   entity_history_filter?: SubscriptionResolver<Array<ResolversTypes['entity_history_filter']>, "entity_history_filter", ParentType, ContextType, Partial<subscription_rootentity_history_filterArgs>>;
-  entity_history_filter_by_pk?: SubscriptionResolver<Maybe<ResolversTypes['entity_history_filter']>, "entity_history_filter_by_pk", ParentType, ContextType, RequireFields<subscription_rootentity_history_filter_by_pkArgs, 'block_number' | 'chain_id' | 'entity_id' | 'log_index' | 'previous_block_number' | 'previous_log_index'>>;
+  entity_history_filter_by_pk?: SubscriptionResolver<Maybe<ResolversTypes['entity_history_filter']>, "entity_history_filter_by_pk", ParentType, ContextType, RequireFields<subscription_rootentity_history_filter_by_pkArgs, 'block_number' | 'block_timestamp' | 'chain_id' | 'entity_id' | 'entity_type' | 'log_index' | 'previous_log_index'>>;
   entity_history_filter_stream?: SubscriptionResolver<Array<ResolversTypes['entity_history_filter']>, "entity_history_filter_stream", ParentType, ContextType, RequireFields<subscription_rootentity_history_filter_streamArgs, 'batch_size' | 'cursor'>>;
   entity_history_stream?: SubscriptionResolver<Array<ResolversTypes['entity_history']>, "entity_history_stream", ParentType, ContextType, RequireFields<subscription_rootentity_history_streamArgs, 'batch_size' | 'cursor'>>;
   event_sync_state?: SubscriptionResolver<Array<ResolversTypes['event_sync_state']>, "event_sync_state", ParentType, ContextType, Partial<subscription_rootevent_sync_stateArgs>>;
@@ -10868,6 +11347,8 @@ export type Resolvers<ContextType = MeshContext> = ResolversObject<{
   ContestClone?: ContestCloneResolvers<ContextType>;
   ContestTemplate?: ContestTemplateResolvers<ContextType>;
   DAOToken?: DAOTokenResolvers<ContextType>;
+  DualTokenPointsParams?: DualTokenPointsParamsResolvers<ContextType>;
+  DualTokenTVParams?: DualTokenTVParamsResolvers<ContextType>;
   ERCPointParams?: ERCPointParamsResolvers<ContextType>;
   EnvioTX?: EnvioTXResolvers<ContextType>;
   EventPost?: EventPostResolvers<ContextType>;
@@ -10908,12 +11389,12 @@ export type Resolvers<ContextType = MeshContext> = ResolversObject<{
   chain_metadata?: chain_metadataResolvers<ContextType>;
   contract_type?: GraphQLScalarType;
   dynamic_contract_registry?: dynamic_contract_registryResolvers<ContextType>;
+  end_of_block_range_scanned_data?: end_of_block_range_scanned_dataResolvers<ContextType>;
   entity_history?: entity_historyResolvers<ContextType>;
   entity_history_filter?: entity_history_filterResolvers<ContextType>;
   entity_type?: GraphQLScalarType;
   event_sync_state?: event_sync_stateResolvers<ContextType>;
-  event_type?: GraphQLScalarType;
-  json?: GraphQLScalarType;
+  jsonb?: GraphQLScalarType;
   numeric?: GraphQLScalarType;
   persisted_state?: persisted_stateResolvers<ContextType>;
   query_root?: query_rootResolvers<ContextType>;
@@ -10973,7 +11454,7 @@ const grantShipsTransforms = [];
 const additionalTypeDefs = [] as any[];
 const grantShipsHandler = new GraphqlHandler({
               name: "grant-ships",
-              config: {"endpoint":"https://indexer.bigdevenergy.link/3a96753/v1/graphql"},
+              config: {"endpoint":"https://indexer.dev.hyperindex.xyz/6410aa4/v1/graphql"},
               baseDir,
               cache,
               pubsub,
