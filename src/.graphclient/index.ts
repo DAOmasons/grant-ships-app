@@ -11454,7 +11454,7 @@ const grantShipsTransforms = [];
 const additionalTypeDefs = [] as any[];
 const grantShipsHandler = new GraphqlHandler({
               name: "grant-ships",
-              config: {"endpoint":"https://indexer.dev.hyperindex.xyz/6410aa4/v1/graphql"},
+              config: {"endpoint":"https://daomasons-3a96753.dedicated.hyperindex.xyz/v1/graphql"},
               baseDir,
               cache,
               pubsub,
